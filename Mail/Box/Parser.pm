@@ -5,7 +5,7 @@ package Mail::Box::Parser;
 use base 'Mail::Reporter';
 use Carp;
 
-our $VERSION = 2.017;
+our $VERSION = 2.018;
 
 =head1 NAME
 
@@ -52,17 +52,18 @@ L<Mail::Reporter> (MR).
 
 The general methods for C<Mail::Box::Parser> objects:
 
-      bodyAsFile FILEHANDLE [,CHA...       popSeparator
-      bodyAsList [,CHARS [,LINES]]         pushSeparator STRING|REGEXP
-      bodyAsString [,CHARS [,LINES]]       readHeader WRAP
-      bodyDelayed [,CHARS [,LINES]]        readSeparator OPTIONS
-      defaultParserType [CLASS]         MR report [LEVEL]
-   MR errors                            MR reportAll [LEVEL]
+      bodyAsFile FILEHANDLE [,CHA...       new [OPTIONS]
+      bodyAsList [,CHARS [,LINES]]         popSeparator
+      bodyAsString [,CHARS [,LINES]]       pushSeparator STRING|REGEXP
+      bodyDelayed [,CHARS [,LINES]]        readHeader WRAP
+      defaultParserType [CLASS]            readSeparator OPTIONS
+   MR errors                            MR report [LEVEL]
+      fileChanged                       MR reportAll [LEVEL]
       filePosition [POSITION]              start OPTIONS
-      foldHeaderLine LINE, LENGTH          stop
+      filename                             stop
+      foldHeaderLine LINE, LENGTH          takeFileInfo
       lineSeparator                     MR trace [LEVEL]
    MR log [LEVEL [,STRINGS]]            MR warnings
-      new [OPTIONS]
 
 The extra methods for extension writers:
 
@@ -141,9 +142,7 @@ sub init(@)
     $self->{MBP_filename}  = $args->{filename}
         or confess "Filename obligatory to create a parser.";
 
-    @$self{ qw/MBP_size MBP_mtime/ }
-                           = (stat $filename)[7,9];
-
+    $self->takeFileInfo;
     $self->log(NOTICE => "Created parser for $filename");
 
     $self;
@@ -218,13 +217,10 @@ will refuse to start, unless this option is true.
 sub start(@)
 {   my ($self, %args) = @_;
 
-    my $filename = $self->{MBP_filename};
+    my $filename = $self->filename;
 
     unless($args{trust_file})
-    {   my ($size, $mtime) = (stat $filename)[7,9];
-
-        unless(   (defined $mtime && $self->{MBP_mtime} == $mtime)
-               && $self->{MBP_size} == $size)
+    {   if($self->fileChanged)
         {   $self->log(ERROR => "File $filename changed, refuse to continue.");
             return;
         }
@@ -239,23 +235,64 @@ sub start(@)
 =item stop
 
 Stop the parser, which will include a close of the file.  The lock on the
-folder will not be removed.
+folder will not be removed (is not the responsibility of the parser).
 
 =cut
 
 sub stop()
-{   my $self = shift;
+{   my $self     = shift;
+    my $filename = $self->filename;
 
-    my $filename       = $self->{MBP_filename};
-    my ($size, $mtime) = (stat $filename)[7,9];
-
-    $self->log(ERROR => "File $filename changed during access.")
-       if  defined $mtime && $self->{MBP_mtime} != $mtime
-        || $self->{MBP_size} != $size;
+    $self->log(WARNING => "File $filename changed during access.")
+       if $self->fileChanged;
 
     $self->log(NOTICE => "Close parser for file $filename");
     $self;
 }
+
+#------------------------------------------
+
+=item takeFileInfo
+
+Capture some dat about the file being parsed, to be compared later.
+
+=cut
+
+sub takeFileInfo()
+{   my $self     = shift;
+    my $filename = $self->filename;
+    @$self{ qw/MBP_size MBP_mtime/ } = (stat $filename)[7,9];
+}
+
+#------------------------------------------
+
+=item fileChanged
+
+Returns wether the file which is parsed has changed after the last
+time C<takeFileInfo> was called.
+
+=cut
+
+sub fileChanged()
+{   my $self = shift;
+    my $filename       = $self->filename;
+    my ($size, $mtime) = (stat $filename)[7,9];
+    return 0 unless $size;
+
+      $size != $self->{MBP_size} ? 0
+    : !defined $mtime            ? 1
+    : $mtime != $self->{MBP_mtime};
+}
+    
+#------------------------------------------
+
+=item filename
+
+Returns the name of the file this parser is working on.
+
+=cut
+
+sub filename() {shift->{MBP_filename}}
 
 #------------------------------------------
 
@@ -431,11 +468,11 @@ sub foldHeaderLine($$) {shift->notImplemented}
 
 #------------------------------------------
 
-#sub DESTROY
-#{   my $self = shift;
-#    $self->SUPER::DESTROY;
-#    $self->stop;
-#}
+sub DESTROY
+{   my $self = shift;
+    $self->SUPER::DESTROY;
+    $self->stop;
+}
 
 #------------------------------------------
 
@@ -455,7 +492,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.017.
+This code is beta, version 2.018.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

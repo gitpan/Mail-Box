@@ -5,7 +5,7 @@ use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
 
-our $VERSION = 2.017;
+our $VERSION = 2.018;
 
 use Carp;
 use File::Copy;
@@ -65,19 +65,19 @@ The extra methods for extension writers:
 
    MR AUTOLOAD                          MB organization
    MB DESTROY                           MB read OPTIONS
-   MB appendMessages OPTIONS           MBD readAllHeaders
-   MB clone OPTIONS                    MBD readMessageFilenames DIRECTORY
-   MB coerce MESSAGE                    MB readMessages OPTIONS
-   MB determineBodyType MESSAGE, ...    MB scanForMessages MESSAGE, ME...
-  MBD folderToDirectory FOLDERNAM...    MB sort PREPARE, COMPARE, LIST
-   MB folderdir [DIR]                   MB storeMessage MESSAGE
-   MB foundIn [FOLDERNAME], OPTIONS     MB timespan2seconds TIME
-   MR inGlobalDestruction               MB toBeThreaded MESSAGES
-   MB lineSeparator [STRING|'CR'|...    MB toBeUnthreaded MESSAGES
-   MR logPriority LEVEL                 MB update OPTIONS
-   MR logSettings                       MB updateMessages OPTIONS
-   MR notImplemented                    MB write OPTIONS
-   MB openRelatedFolder OPTIONS            writeMessages [OPTIONS]
+   MB appendMessages OPTIONS           MBD readMessageFilenames DIRECTORY
+   MB clone OPTIONS                     MB readMessages OPTIONS
+   MB coerce MESSAGE                    MB scanForMessages MESSAGE, ME...
+   MB determineBodyType MESSAGE, ...    MB sort PREPARE, COMPARE, LIST
+  MBD folderToDirectory FOLDERNAM...    MB storeMessage MESSAGE
+   MB folderdir [DIR]                   MB timespan2seconds TIME
+   MB foundIn [FOLDERNAME], OPTIONS     MB toBeThreaded MESSAGES
+   MR inGlobalDestruction               MB toBeUnthreaded MESSAGES
+   MB lineSeparator [STRING|'CR'|...    MB update OPTIONS
+   MR logPriority LEVEL                 MB updateMessages OPTIONS
+   MR logSettings                       MB write OPTIONS
+   MR notImplemented                       writeMessages [OPTIONS]
+   MB openRelatedFolder OPTIONS
 
 =head1 METHODS
 
@@ -616,7 +616,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.017.
+This code is beta, version 2.018.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

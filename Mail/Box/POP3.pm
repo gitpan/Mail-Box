@@ -1,11 +1,14 @@
 
-use strict;
 package Mail::Box::POP3;
 use base 'Mail::Box::Net';
 
-our $VERSION = 2.017;
+use strict;
+use warnings;
+
+our $VERSION = 2.018;
 
 use Mail::Box::POP3::Message;
+use Mail::Box::Parser::Perl;
 
 use IO::File;
 use File::Spec;
@@ -63,20 +66,21 @@ The general methods for C<Mail::Box::POP3> objects:
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MB organization
-   MB DESTROY                           MB read OPTIONS
-   MB appendMessages OPTIONS           MBN readAllHeaders
-   MB clone OPTIONS                     MB readMessages OPTIONS
-   MB coerce MESSAGE                    MB scanForMessages MESSAGE, ME...
-   MB determineBodyType MESSAGE, ...    MB sort PREPARE, COMPARE, LIST
-   MB folderdir [DIR]                   MB storeMessage MESSAGE
-   MB foundIn [FOLDERNAME], OPTIONS     MB timespan2seconds TIME
-   MR inGlobalDestruction               MB toBeThreaded MESSAGES
-   MB lineSeparator [STRING|'CR'|...    MB toBeUnthreaded MESSAGES
-   MR logPriority LEVEL                 MB update OPTIONS
-   MR logSettings                       MB updateMessages OPTIONS
-   MR notImplemented                    MB write OPTIONS
-   MB openRelatedFolder OPTIONS         MB writeMessages
+   MR AUTOLOAD                          MB openRelatedFolder OPTIONS
+   MB DESTROY                           MB organization
+   MB appendMessages OPTIONS               popClient
+   MB clone OPTIONS                     MB read OPTIONS
+   MB coerce MESSAGE                    MB readMessages OPTIONS
+   MB determineBodyType MESSAGE, ...    MB scanForMessages MESSAGE, ME...
+   MB folderdir [DIR]                   MB sort PREPARE, COMPARE, LIST
+   MB foundIn [FOLDERNAME], OPTIONS     MB storeMessage MESSAGE
+      getHead MESSAGE                   MB timespan2seconds TIME
+      getHeadAndBody MESSAGE            MB toBeThreaded MESSAGES
+   MR inGlobalDestruction               MB toBeUnthreaded MESSAGES
+   MB lineSeparator [STRING|'CR'|...    MB update OPTIONS
+   MR logPriority LEVEL                 MB updateMessages OPTIONS
+   MR logSettings                       MB write OPTIONS
+   MR notImplemented                    MB writeMessages
 
 =head1 METHODS
 
@@ -106,15 +110,14 @@ see below, but first the full list.
  lock_timeout      Mail::Box          <not used>
  lock_wait         Mail::Box          <not used>
  log               Mail::Reporter     'WARNINGS'
- password          Mail::Box::POP3    undef
- pop_client        Mail::Box::POP3    undef
- pop_server        Mail::Box::POP3    undef
- server_port       Mail::Box::POP3    110
+ password          Mail::Box::Net     undef
  remove_when_empty Mail::Box          <never>
  save_on_exit      Mail::Box          1
+ server_name       Mail::Box::Net     undef
+ server_port       Mail::Box::Net     110
  trace             Mail::Reporter     'WARNINGS'
  trusted           Mail::Box          0
- user              Mail::Box::POP3    undef
+ username          Mail::Box::Net     undef
 
 Only useful to write extension to C<Mail::Box::POP3>.  Common users of
 folders you will not specify these:
@@ -155,7 +158,7 @@ The password string for authentication.
 You may want to specify your own pop-client object.  The object
 which is passed must extend C<Mail::Transport::POP3>.
 
-=item * pop_server =E<gt> HOSTNAME
+=item * server_name =E<gt> HOSTNAME
 
 The HOSTNAME of the POP3 server.
 
@@ -163,7 +166,7 @@ The HOSTNAME of the POP3 server.
 
 The PORT behind which the POP3 daemon is running on the pop-server host.
 
-=item * user =E<gt> STRING
+=item * username =E<gt> STRING
 
 The user's name to login on the POP3 server.
 
@@ -171,61 +174,30 @@ The user's name to login on the POP3 server.
 
 Examples:
 
- my $pop = Mail::Box::POP3->new('pop3://pop.xs4all.nl;user@passwd');
+ my $pop = Mail::Box::POP3->new('pop3://user:password@pop.xs4all.nl');
 
  my $pop = $mgr->open(type => 'pop3', user => 'myname',
-    password => 'mypassword', host => 'pop-host');
+    password => 'mypassword', server_name => 'pop.xs4all.nl');
 
 =cut
-
-my $default_folder_dir = exists $ENV{HOME} ? "$ENV{HOME}/.POP3" : '.';
 
 sub init($)
 {   my ($self, $args) = @_;
 
-    $args->{trusted} ||= 0;
+    $args->{trusted}     ||= 0;
+    $args->{server_port} ||= 110;
+
+    my $client             = $args->{pop_client};
+    $args->{foldername}  ||= defined $client ? $client->url : undef;
 
     $self->SUPER::init($args);
 
-    # About the authentication.
+    $self->{MBP_client}    = $client;
+    $self->{MBP_auth}      = $args->{authenicate} || 'LOGIN';
 
-    my ($client, $foldername);
-    if($client = $args->{pop_client}) { $foldername = $client->url }
-    elsif($args->{folder})            { $foldername = $args->{folder} }
-    else
-    {   my $user = defined $args->{user} ? $args->{user}
-            : croak "Username required for POP3 login.";
-
-        my $password = defined $args->{password} ? $args->{password}
-            : croak "Password required for POP3 login.";
-
-        my $host = $args->{pop_server}
-            or croak "The hostname of the POP3 server must be specified.";
-
-        my $port = $args->{server_port}  || 110;
-        $foldername = "pop3://$host:$port;$user@$password";
-    }
-
-    unless($client)
-    {   my $auth = $args->{authenticate} || 'LOGIN';
-
-        require Mail::Transport::POP3;
-        $client  = Mail::Transport::POP3->new
-          ( $foldername
-          , authenticate => $auth
-          );
-
-        unless($client)
-        {   $self->log(ERROR => "Unable to connect to $foldername.");
-            return undef;
-        }
-
-        $self->log(PROGRESS =>"Connection to $foldername established.");
-    }
-
-    $self->{MBP_client} = $client;
     $self;
 }
+
 
 #-------------------------------------------
 
@@ -251,9 +223,40 @@ sub openSubFolder($@) { undef }  # fails
 
 #-------------------------------------------
 
-sub foundIn($@)
-{   my ($self, $foldername) = @_;
-    $foldername =~ m/^\s*pop3?\:/i;
+sub foundIn(@)
+{   my $self = shift;
+    unshift @_, 'folder' if @_ % 2;
+    my %options = @_;
+
+       (exists $options{type}   && lc $options{type} eq 'pop3')
+    || (exists $options{folder} && $options{folder} =~ m/^pop/);
+}
+
+#-------------------------------------------
+
+=item popClient
+
+Returns the pop client object.  This does not establish the connection.
+
+=cut
+
+sub popClient()
+{   my $self = shift;
+
+    return $self->{MBP_client} if exists $self->{MBP_client};
+
+    my $auth = $self->{auth};
+
+    require Mail::Transport::POP3;
+    my $client  = Mail::Transport::POP3->new
+     ( username     => $self->{MBN_username}
+     , password     => $self->{MBN_password}
+     , hostname     => $self->{MBN_server_name}
+     , port         => $self->{MBN_server_port}
+     , authenticate => $self->{MBP_auth}
+     );
+
+    $self->{MBP_client} = $client;
 }
 
 #-------------------------------------------
@@ -291,6 +294,72 @@ sub readMessages(@)
  
 #-------------------------------------------
 
+=item getHead MESSAGE
+
+Read the header for the specified message from the remote server.
+
+=cut
+
+sub getHead($)
+{   my ($self, $message) = @_;
+    my $pop   = $self->popClient or return;
+
+    my $uidl  = $message->uidl;
+    my $lines = $pop->top($uidl, 0);
+
+    unless(defined $lines)
+    {   $lines = [];
+        $self->log(WARNING  => "Message $uidl disappeared.");
+     }
+
+    my $parser = Mail::Box::Parser::Perl->new   # not parseable by C parser
+     ( filename  => "$pop"
+     , file      => IO::ScalarArray->new($lines)
+     );
+
+    my $head     = $self->readHead($parser);
+    $parser->stop;
+
+    $self->log(PROGRESS => "Loaded head $uidl.");
+    $head;
+}
+
+#-------------------------------------------
+
+=item getHeadAndBody MESSAGE
+
+Read all data for the specified message from the remote server.
+
+=cut
+
+sub getHeadAndBody($)
+{   my ($self, $message) = @_;
+    my $pop   = $self->popClient or return;
+
+    my $uidl  = $message->uidl;
+    my $lines = $pop->top($uidl);
+
+    unless(defined $lines)
+    {   $lines = [];
+        $self->log(WARNING  => "Message $uidl disappeared.");
+     }
+
+    my $parser = Mail::Box::Parser::Perl->new   # not parseable by C parser
+     ( filename  => "$pop"
+     , file      => IO::ScalarArray->new($lines)
+     );
+
+    my $head     = $message->readHead($parser);
+    my $body     = $message->readBody($parser, $head);
+
+    $parser->stop;
+
+    $self->log(PROGRESS => "Loaded head $uidl.");
+    ($head, $body);
+}
+
+#-------------------------------------------
+
 sub writeMessages($@)
 {   my ($self, $args) = @_;
 
@@ -326,7 +395,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.017.
+This code is beta, version 2.018.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

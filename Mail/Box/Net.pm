@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Net;
 
 use base 'Mail::Box';
-our $VERSION = 2.017;
+our $VERSION = 2.018;
 
 use Mail::Box::Net::Message;
 
@@ -75,18 +75,18 @@ The extra methods for extension writers:
 
    MR AUTOLOAD                          MB organization
    MB DESTROY                           MB read OPTIONS
-   MB appendMessages OPTIONS               readAllHeaders
-   MB clone OPTIONS                     MB readMessages OPTIONS
-   MB coerce MESSAGE                    MB scanForMessages MESSAGE, ME...
-   MB determineBodyType MESSAGE, ...    MB sort PREPARE, COMPARE, LIST
-   MB folderdir [DIR]                   MB storeMessage MESSAGE
-   MB foundIn [FOLDERNAME], OPTIONS     MB timespan2seconds TIME
-   MR inGlobalDestruction               MB toBeThreaded MESSAGES
-   MB lineSeparator [STRING|'CR'|...    MB toBeUnthreaded MESSAGES
-   MR logPriority LEVEL                 MB update OPTIONS
-   MR logSettings                       MB updateMessages OPTIONS
-   MR notImplemented                    MB write OPTIONS
-   MB openRelatedFolder OPTIONS         MB writeMessages
+   MB appendMessages OPTIONS            MB readMessages OPTIONS
+   MB clone OPTIONS                     MB scanForMessages MESSAGE, ME...
+   MB coerce MESSAGE                    MB sort PREPARE, COMPARE, LIST
+   MB determineBodyType MESSAGE, ...    MB storeMessage MESSAGE
+   MB folderdir [DIR]                   MB timespan2seconds TIME
+   MB foundIn [FOLDERNAME], OPTIONS     MB toBeThreaded MESSAGES
+   MR inGlobalDestruction               MB toBeUnthreaded MESSAGES
+   MB lineSeparator [STRING|'CR'|...    MB update OPTIONS
+   MR logPriority LEVEL                 MB updateMessages OPTIONS
+   MR logSettings                       MB write OPTIONS
+   MR notImplemented                    MB writeMessages
+   MB openRelatedFolder OPTIONS
 
 =head1 METHODS
 
@@ -115,10 +115,14 @@ see below, but first the full list.
  lock_timeout      Mail::Box          3600    (1 hour)
  lock_wait         Mail::Box          10      (seconds)
  log               Mail::Reporter     'WARNINGS'
+ password          Mail::Box::Net     undef
  remove_when_empty Mail::Box          1
  save_on_exit      Mail::Box          1
+ server_name       Mail::Box::Net     undef
+ server_port       Mail::Box::Net     undef
  trace             Mail::Reporter     'WARNINGS'
  trusted           Mail::Box          <depends on folder location>
+ username          Mail::Box::Net     undef
 
 Only useful to write extension to C<Mail::Box::Net>.  Common users of
 folders you will not specify these:
@@ -136,15 +140,43 @@ folders you will not specify these:
  message_type      Mail::Box          'Mail::Box::Net::Message'
  realhead_type     Mail::Box          'Mail::Message::Head'
 
+For each of the following options, extensions of this class may
+have usefull defaults.
+
+=over 4
+
+=item * hostname =E<gt> HOSTNAME
+
+The name of the host which contains the remote mail server.
+
+=item * password =E<gt> STRING
+
+The password which is required to contact the remote server.
+
+=item * username =E<gt> STRING
+
+The username which is to be used for the remote server.
+
+=item * port =E<gt> INTEGER
+
+Portnumber in use by the server application.
+
+=back
+
+
 =cut
 
 sub init($)
 {   my ($self, $args)    = @_;
 
-    $args->{body_type} ||= sub {'Mail::Message::Body::Lines'};
+    $args->{body_type} ||= 'Mail::Message::Body::Lines';
 
-    return undef
-        unless $self->SUPER::init($args);
+    $self->SUPER::init($args);
+
+    $self->{MBN_username} = $args->{username};
+    $self->{MBN_password} = $args->{password};
+    $self->{MBN_hostname} = $args->{hostname};
+    $self->{MBN_port}     = $args->{port};
 
     $self;
 }
@@ -152,65 +184,6 @@ sub init($)
 #-------------------------------------------
 
 sub organization() { 'REMOTE' }
-
-#-------------------------------------------
-
-sub messageId($;$)
-{   my ($self, $msgid) = (shift, shift);
-
-    # Set or remove message-id
-    if(@_)
-    {   if(my $message = shift)
-        {   # Define loaded message.
-            $self->SUPER::messageId($msgid, $message);
-            return $self->{MB_msgid}{$msgid};
-        }
-        else
-        {   delete $self->{MB_msgid}{$msgid};
-            return;
-        }
-    }
-
-    # Message-id not found yet. Trigger autoload until the message-id appears.
-    foreach my $message (reverse $self->messages)
-    {   $message->head;
-        last if exists $self->{MB_msgid}{$msgid};
-    }
-
-    $self->{MB_msgid}{$msgid};
-}
-
-sub messageID(@) {shift->messageId(@_)} # compatibility
-
-#-------------------------------------------
-
-sub allMessageIds() {shift->readAllHeaders->SUPER::allMessageIds }
-
-#-------------------------------------------
-
-=back
-
-=head1 METHODS for extension writers
-
-=over 4
-
-=cut
-
-#-------------------------------------------
-
-=item readAllHeaders
-
-Force all messages to be read at least till their header information
-is known.
-
-=cut
-
-sub readAllHeaders()
-{   my $self = shift;
-    my $nrmsgs = $self->messages;
-    $self->readMessage($_, 0) foreach 0..$nrmsgs-1;
-    $self;
-}
 
 #-------------------------------------------
 
@@ -230,7 +203,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.017.
+This code is beta, version 2.018.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

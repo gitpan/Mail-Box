@@ -74,14 +74,17 @@ sub name() {'MULTI'}
  expires        Mail::Box::Locker          1 hour
  trace          Mail::Reporter             'WARNINGS'
  timeout        Mail::Box::Locker          10 seconds
- use            Mail::Box::Locker::Multi   [ 'NFS', 'POSIX', 'Flock' ]
+ use            Mail::Box::Locker::Multi   <all possible>
 
 =over 4
 
 =item * use =E<gt> ARRAY
 
-Array of locker types and locker objects to be used.  All types are
-converted into objects.
+Array of locker types and locker objects to be used to lock one
+folder.  The type names are converted into objects.
+
+Some locking types are not available on some platforms, so they will
+not be excluded from the default list (NFS POSIX Flock).
 
 =over
 
@@ -91,7 +94,11 @@ sub init($)
 {   my ($self, $args) = @_;
     $self->SUPER::init($args);
 
-    my @use = exists $args->{use} ? @{$args->{use}} : qw/NFS POSIX Flock/;
+    my @use
+     = exists $args->{use} ? @{$args->{use}}
+     : $^O =~ m/mswin/i    ? qw/    POSIX Flock/
+     :                       qw/NFS POSIX Flock/;
+
     my (@lockers, @used);
 
     foreach my $method (@use)
@@ -199,7 +206,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.017.
+This code is beta, version 2.018.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

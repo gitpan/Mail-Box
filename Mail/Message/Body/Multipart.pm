@@ -7,7 +7,7 @@ use base 'Mail::Message::Body';
 use Mail::Message::Body::Lines;
 use Mail::Message::Part;
 
-our $VERSION = 2.017;
+our $VERSION = 2.018;
 
 use Carp;
 
@@ -606,7 +606,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.017.
+This code is beta, version 2.018.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

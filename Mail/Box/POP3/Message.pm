@@ -108,7 +108,7 @@ Messages in POP3 folders use the following options:
 Only for extension writers:
 
  OPTION      DESCRIBED IN             DEFAULT
- body_type   Mail::Box::Message       <not used>
+ body_type   Mail::Box::Message       'Mail::Message::Body::Lines'
  field_type  Mail::Message            undef
  head_type   Mail::Message            'Mail::Message::Head::Complete'
 
@@ -116,9 +116,12 @@ Only for extension writers:
 
 sub init($)
 {   my ($self, $args) = @_;
+
+    $args->{body_type} ||= 'Mail::Message::Body::Lines';
+
     $self->SUPER::init($args);
 
-    $args->{MBPM_uidl} = $args->{uidl}
+    $self->{MBPM_uidl} = $args->{uidl}
         or croak "No uidl specified for POP3 message.";
 
     $self;
@@ -133,6 +136,33 @@ sub init($)
 =over 4
 
 =cut
+
+#-------------------------------------------
+
+sub loadHead()
+{   my $self     = shift;
+    my $head     = $self->head;
+    return $head unless $head->isDelayed;
+
+    $self->head($self->folder->getHead($self));
+}
+
+#-------------------------------------------
+
+sub loadBody()
+{   my $self     = shift;
+
+    my $body     = $self->body;
+    return $body unless $body->isDelayed;
+
+    my ($head, $newbody) = $self->folder->getHeadAndBody($self);
+    $self->head($head) if defined $head;
+    $self->body($newbody);
+}
+
+#-------------------------------------------
+
+sub create(@) {undef}    # Creation not possible
 
 #-------------------------------------------
 
@@ -152,7 +182,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.017.
+This code is beta, version 2.018.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -97,6 +97,7 @@ Message construction   Mail::Message::Construct
 
 Folder manager:
    60mgr.t             locating/opening/closing folders.
+   60mgr2url.t         specifying a folder as url.
    61threads.t         thread detection and processing.
 
 Folder trucs:

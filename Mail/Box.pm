@@ -9,7 +9,7 @@ use Mail::Box::Message;
 use Mail::Box::Locker;
 use File::Spec;
 
-our $VERSION = 2.017;
+our $VERSION = 2.018;
 
 use Carp;
 use Scalar::Util 'weaken';
@@ -438,7 +438,7 @@ USAGE
       , init_options => [ @_ ]  # for clone
       ) or return;
 
-    $self->read if $self->{MB_access} =~ /r|a/;
+    $self->read if $self->{MB_access} =~ /r/;
     $self;
 }
 
@@ -468,7 +468,7 @@ sub init($)
     $self->{MB_organization} = $args->{organization}      || 'FILE';
     $self->{MB_head_wrap}    = $args->{head_wrap} if defined $args->{head_wrap};
     $self->{MB_linesep}      = "\n";
-    $self->{MB_keep_dups}    = $args->{keep_dups};
+    $self->{MB_keep_dups}    = !$self->writable || $args->{keep_dups};
 
     my $folderdir = $self->folderdir($args->{folderdir});
     $self->{MB_trusted}      = exists $args->{trusted} ? $args->{trusted}
@@ -560,7 +560,7 @@ sub close(@)
 {   my ($self, %args) = @_;
     my $force = $args{force} || 0;
 
-    return if exists $self->{MB_is_closed};
+    return if $self->{MB_is_closed};
     $self->{MB_is_closed} = 1;
 
     # Inform manager that the folder is closed.
@@ -710,7 +710,7 @@ sub modified($)
     return 1 if $self->{MB_modified};
 
     foreach (@{$self->{MB_messages}})
-    {   return $self->{MB_modified} = 1
+    {    return $self->{MB_modified} = 1
             if $_->deleted || $_->modified;
     }
 
@@ -777,6 +777,7 @@ sub messageId($;$)
     }
 
     return $self->{MB_msgid}{$msgid} unless @_;
+
     my $message = shift;
 
     # Undefine message?
@@ -923,9 +924,9 @@ Examples:
 
 =cut
 
-sub messageIds()    { keys %{shift->{MB_msgid}} }
-sub allMessageIds() {shift->allMessageIds}  # compatibilty
-sub allMessageIDs() {shift->allMessageIds}  # compatibilty
+sub messageIds()    { map {$_->messageId} shift->messages }
+sub allMessageIds() {shift->messageIds}  # compatibilty
+sub allMessageIDs() {shift->messageIds}  # compatibilty
 
 #-------------------------------------------
 
@@ -963,9 +964,12 @@ ERROR
     unless($message->head->isDelayed)
     {   # Do not add the same message twice, unless keep_dups.
         my $msgid = $message->messageId;
-        if(!$self->{MB_keep_dups} && (my $found = $self->messageId($msgid)))
-        {   $message->delete;
-            return $found;
+
+        unless($self->{MB_keep_dups})
+        {   if(my $found = $self->messageId($msgid))
+            {   $message->delete;
+                return $found;
+            }
         }
 
         $self->messageId($msgid, $message);
@@ -1109,8 +1113,8 @@ sub _copy_to($@)
 
     # Take messages from this folder.
     foreach my $msg ($self->messages($select))
-    {   $msg->copyTo($to) or return;
-        $msg->delete if $delete;
+    {   if($msg->copyTo($to)) { $msg->delete if $delete }
+        else { $self->log(ERROR => "Copy failed.") }
     }
 
     return $self unless $flatten || $recurse;
@@ -1128,7 +1132,7 @@ sub _copy_to($@)
              }
         }
         else           # recurse
-        {    my $subto = $to->openSubFolder($_, create => 1, access => 'w');
+        {    my $subto = $to->openSubFolder($_, create => 1, access => 'rw');
              unless($subto)
              {   $self->log(ERROR => "Unable to create subfolder $_ to $to");
                  $subfolder->close;
@@ -1200,31 +1204,6 @@ Examples:
 =cut
 
 sub listSubFolders(@) { () }
-
-#-------------------------------------------
-
-#=item AUTOLOAD
-
-#There are more mathods available for a C<Mail::Box>, which are
-#supplied in C<Mail::Box::HTML>.  That package adds methods to
-#general use for any C<Mail::Box> type and is autoloaded on
-#demand.
-#
-#=cut
-
-#sub AUTOLOAD(@)
-#{   my $self  = shift;
-#    our $AUTOLOAD;
-#    (my $call = $AUTOLOAD) =~ s/.*\:\://g;
-#    use Mail::Box::HTML;
-
-#    no strict 'refs';
-#    return $self->$call(@_) if $self->can($call);
-#
-#    our @ISA;
-#    $call = "${ISA[0]}::$call";   # $call on base class.
-#    $self->$call(@_);
-#}
 
 #-------------------------------------------
 
@@ -1561,10 +1540,7 @@ Examples:
 
 sub folderdir(;$)
 {   my $self = shift;
-    if(@_)
-    {   # Add / or \ to the end of the directory path.
-        $self->{MB_folderdir} = File::Spec->catfile(shift, "");
-    }
+    $self->{MB_folderdir} = shift if @_;
     $self->{MB_folderdir};
 }
 
@@ -1695,10 +1671,7 @@ Examples:
 
 =cut
 
-sub foundIn($@)
-{   my ($class, $folder, @options) = @_;
-    $class->notImplemented;
-}
+sub foundIn($@) { shift->notImplemented }
 
 #-------------------------------------------
 
@@ -1906,7 +1879,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.017.
+This code is beta, version 2.018.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

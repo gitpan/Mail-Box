@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::MH;
 use base 'Mail::Box::Dir';
 
-our $VERSION = 2.017;
+our $VERSION = 2.018;
 
 use Mail::Box::MH::Index;
 use Mail::Box::MH::Message;
@@ -62,10 +62,10 @@ The general methods for C<Mail::Box::MH> objects:
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MB openRelatedFolder OPTIONS
-   MB DESTROY                           MB organization
-   MB appendMessages OPTIONS            MB read OPTIONS
-   MB clone OPTIONS                    MBD readAllHeaders
+   MR AUTOLOAD                          MR notImplemented
+   MB DESTROY                           MB openRelatedFolder OPTIONS
+   MB appendMessages OPTIONS            MB organization
+   MB clone OPTIONS                     MB read OPTIONS
    MB coerce MESSAGE                   MBD readMessageFilenames DIRECTORY
    MB determineBodyType MESSAGE, ...    MB readMessages OPTIONS
   MBD folderToDirectory FOLDERNAM...    MB scanForMessages MESSAGE, ME...
@@ -78,7 +78,6 @@ The extra methods for extension writers:
    MB lineSeparator [STRING|'CR'|...    MB updateMessages OPTIONS
    MR logPriority LEVEL                 MB write OPTIONS
    MR logSettings                          writeMessages [OPTIONS]
-   MR notImplemented
 
 =head1 METHODS
 
@@ -684,7 +683,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.017.
+This code is beta, version 2.018.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -15,7 +15,7 @@ use Tools;
 use File::Compare;
 use File::Copy;
 
-BEGIN {plan tests => 99}
+BEGIN {plan tests => 97}
 
 #
 # We will work with a copy of the original to avoid that we write
@@ -60,7 +60,8 @@ ok(grep m/not changed/, @progress);
 
 my $msgnr = 0;
 foreach ($folder->messages)
-{   if($_->isDelayed)  {ok(1)}
+{   my $body = $_->body;
+    if($body->isDelayed || $body->isNested || $body->isMultipart) {ok(1)}
     else { warn "Warn: failed message $msgnr.\n"; ok(0) }
     $msgnr++;
 }
@@ -79,7 +80,9 @@ ok($folder->write(policy => 'INPLACE'));
 
 $msgnr = 0;
 foreach ($folder->messages)
-{   my $right = $_->isDelayed ? ($msgnr < $modmsgnr) : ($msgnr >= $modmsgnr);
+{   my $body = $_->body;
+    my $right = ($body->isDelayed || $body->isMultipart || $body->isNested)
+        ? ($msgnr < $modmsgnr) : ($msgnr >= $modmsgnr);
     warn "Warn: failed message $msgnr.\n" unless $right;
     ok($right);
     $msgnr++;
@@ -89,13 +92,13 @@ foreach ($folder->messages)
 # Try to read it back
 
 my $copy = new Mail::Box::Mbox
-  ( folder    => '=mbox.cpy'
+  ( folder    => "=$cpyfn"
   , folderdir => 't'
   , lock_type => 'NONE'
   , extract   => 'ALWAYS'
   );
 
-ok($copy);
+ok(defined $copy);
 ok($folder->messages==$copy->messages);
 
 # Check also if the subjects are the same.
@@ -108,14 +111,7 @@ while(@folder_subjects)
 }
 ok(!@folder_subjects);
 
-#
-# Now the same check, but using delete... removing two messages.
-#
+$folder->close(write => 'NEVER');
+$copy->close(write => 'NEVER');
 
-$folder->message(5)->delete;
-ok(1);
-$folder->message(35)->delete;
-ok(1);
-
-### work to be done
 unlink $cpy;

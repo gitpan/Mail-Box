@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox;
 use base 'Mail::Box';
 
-our $VERSION = 2.017;
+our $VERSION = 2.018;
 
 use Mail::Box::Mbox::Message;
 
@@ -259,6 +259,7 @@ sub close(@)
     undef $_[0];                 #    ref to undef, as the SUPER does.
     shift;
 
+    $self->parserClose;
     $self->SUPER::close(@_);
 }
 
@@ -425,9 +426,7 @@ sub openSubFolder($@)
 =item parser
 
 Create a parser for this mailbox.  The parser stays alive as long as
-some data from the folder still has to be parsed, and may be revived
-when the information is to be written to a new file (or to update the
-folder).
+the folder is open.
 
 =cut
 
@@ -435,7 +434,7 @@ sub parser()
 {   my $self = shift;
 
     return $self->{MBM_parser}
-        if exists $self->{MBM_parser};
+        if defined $self->{MBM_parser};
 
     my $source = $self->filename;
 
@@ -483,9 +482,6 @@ sub readMessages(@)
     # On a directory, simulate an empty folder with only subfolders.
     return $self if -d $filename;
 
-    my $parser   = $self->parser or return;
-    my $delayed  = 0;
-
     my @msgopts  =
       ( $self->logSettings
       , folder     => $self
@@ -495,15 +491,15 @@ sub readMessages(@)
       , trusted    => $args{trusted}
       );
 
+    my $parser   = $self->parser;
+
     while(1)
     {   my $message = $args{message_type}->new(@msgopts);
         last unless $message->readFromParser($parser);
-        $delayed++ if !$delayed && $message->isDelayed;
         $self->storeMessage($message);
     }
 
     # Release the folder.
-    $self->parserClose unless $delayed;
     $self;
 }
  
@@ -659,9 +655,10 @@ sub _write_replace($)
             seek FILE, $begin, 0;
             my $whole;
 
-            my $size = read FILE, $whole, $end-$begin;
+            my $need = $end-$begin;
+            my $size = read FILE, $whole, $need;
             $self->log(ERROR => 'File too short to get write message.')
-               if $size != $end-$begin;
+               if $size != $need;
 
             $new->print($whole);
             $message->moveLocation($newbegin - $oldbegin);
@@ -674,11 +671,14 @@ sub _write_replace($)
 
     if(move $tmpnew, $filename)
     {    $self->log(PROGRESS => "Folder $self replaced ($kept, $reprint)");
+         $self->parser->takeFileInfo;
+         $self->parserClose;
     }
     else
     {   $self->log(WARNING =>
             "Could not replace $filename by $tmpnew, to update $self: $!");
         unlink $tmpnew;
+        return 0;
     }
 
     1;
@@ -706,7 +706,6 @@ sub _write_inplace($)
     }
 
     $_->body->load foreach @messages;
-    $self->parserClose;
 
     my $mode     = $^O =~ m/^Win/i ? 'a' : '+<';
     my $filename = $self->filename;
@@ -732,6 +731,7 @@ sub _write_inplace($)
 
     CORE::close FILE;
     $self->log(PROGRESS => "Folder $self updated in-place ($kept, $printed)");
+    $self->parser->takeFileInfo;
 
     1;
 }
@@ -923,7 +923,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.017.
+This code is beta, version 2.018.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

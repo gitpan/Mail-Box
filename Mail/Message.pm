@@ -14,7 +14,7 @@ use Mail::Message::Body::Nested;
 use Carp;
 use IO::ScalarArray;
 
-our $VERSION = 2.017;
+our $VERSION = 2.018;
 
 =head1 NAME
 
@@ -924,20 +924,15 @@ my $lbody  = 'Mail::Message::Body::Lines';
 sub readBody($$;$)
 {   my ($self, $parser, $head, $getbodytype) = @_;
 
-    my $bodytype
-      = ! $getbodytype   ? ($self->{MM_body_type} || $lbody)
-      : ref $getbodytype ? $getbodytype->($self, $head)
-      :                    $getbodytype;
-
-    # Overrule short-comings of some 'getbodytype' specs
-
     my $ct   = $head->get('Content-Type');
     my $type = defined $ct ? lc $ct->body : 'text/plain';
 
-    if(substr($type, 0, 10) eq 'multipart/')
-    {   $bodytype = $mpbody unless $bodytype->isa($mpbody) }
-    elsif($type eq 'message/rfc822')
-    {   $bodytype = $nbody unless $bodytype->isa($nbody) }
+    my $bodytype
+      = substr($type, 0, 10) eq 'multipart/' ? $mpbody
+      : $type eq 'message/rfc822'            ? $nbody
+      : ! $getbodytype   ? ($self->{MM_body_type} || $lbody)
+      : ref $getbodytype ? $getbodytype->($self, $head)
+      :                    $getbodytype;
 
     my $lines   = $head->get('Lines');
     my $size    = $head->guessBodySize;
@@ -1000,14 +995,13 @@ sub body(;$@)
     return $self->{MM_body} unless @_;
 
     my ($rawbody, %args) = @_;
-    unless($rawbody)
+    unless(defined $rawbody)
     {   # Disconnect body from message.
         my $body = delete $self->{MM_body};
         if(defined(my $head = $self->head))
         {   $head->reset($_) foreach @bodydata_in_header;
         }
 
-        $self->modified(1);
         $body->message(undef) if defined $body;
         return $body;
     }
@@ -1343,7 +1337,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.017.
+This code is beta, version 2.018.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

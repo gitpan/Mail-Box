@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Reporter;
 
-our $VERSION = 2.017;
+our $VERSION = 2.018;
 
 use Carp;
 
@@ -294,8 +294,9 @@ and then croaks.  This is used by extension writers.
 =cut
 
 sub notImplemented(@)
-{   my $self = shift;
-    my ($package, $sub) = (caller 1)[0,3];
+{   my $self    = shift;
+    my $package = ref $self || $self;
+    my $sub     = (caller 1)[3];
 
     $self->log(INTERNAL => "$package does not implement $sub.");
     confess "Please warn the author, this shouldn't happen.";
@@ -388,7 +389,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.017.
+This code is beta, version 2.018.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -114,7 +114,7 @@ foreach ($folder->messages)
 {  $parsed++ unless $_->isDelayed;
    $heads++  unless $_->head->isDelayed;
 }
-ok($parsed==1);  # message 7
+ok($parsed==4);  # message 7 + 3 multiparts
 ok($heads==45);
 
 #

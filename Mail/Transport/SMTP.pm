@@ -2,12 +2,11 @@ use strict;
 use warnings;
 
 package Mail::Transport::SMTP;
-use base 'Mail::Transport';
+use base 'Mail::Transport::Send';
 
-#use Mail::Transport::SMTP::Server;
 use Net::SMTP;
 
-our $VERSION = 2.017;
+our $VERSION = 2.018;
 
 =head1 NAME
 
@@ -16,6 +15,7 @@ Mail::Transport::SMTP - transmit messages without external program
 =head1 CLASS HIERARCHY
 
  Mail::Transport::SMTP
+ is a Mail::Transport::Send
  is a Mail::Transport
  is a Mail::Reporter
 
@@ -28,8 +28,6 @@ Mail::Transport::SMTP - transmit messages without external program
 
 =head1 DESCRIPTION
 
-USE WITH CARE! THIS MODULE IS VERY NEW, SO MAY CONTAIN BUGS
-
 This module implements transport of C<Mail::Message> objects by negotiating
 to the destination host directly by using the SMTP protocol, without help of
 C<sendmail>, C<mail>, or other programs on the local host.
@@ -37,11 +35,11 @@ C<sendmail>, C<mail>, or other programs on the local host.
 =head1 METHOD INDEX
 
 Methods prefixed with an abbreviation are described in
-L<Mail::Reporter> (MR), L<Mail::Transport> (MT).
+L<Mail::Reporter> (MR), L<Mail::Transport> (MT), L<Mail::Transport::Send> (MTS).
 
 The general methods for C<Mail::Transport::SMTP> objects:
 
-      contactAnyServer                  MT send MESSAGE, OPTIONS
+      contactAnyServer                 MTS send MESSAGE, OPTIONS
    MR errors                            MR trace [LEVEL]
    MR log [LEVEL [,STRINGS]]               tryConnectTo HOST, OPTIONS
       new OPTIONS                          trySend MESSAGE, OPTIONS
@@ -50,10 +48,11 @@ The general methods for C<Mail::Transport::SMTP> objects:
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MR logPriority LEVEL
-   MR DESTROY                           MR logSettings
-   MT findBinary NAME [, DIRECTOR...    MR notImplemented
-   MR inGlobalDestruction               MT putContent MESSAGE, FILEHAN...
+   MR AUTOLOAD                          MR logSettings
+   MR DESTROY                           MR notImplemented
+   MT findBinary NAME [, DIRECTOR...   MTS putContent MESSAGE, FILEHAN...
+   MR inGlobalDestruction               MT remoteHost
+   MR logPriority LEVEL                 MT retry
 
 =head1 METHODS
 
@@ -65,14 +64,20 @@ The extra methods for extension writers:
 
 =item new OPTIONS
 
- OPTION       DESCRIBED IN           DEFAULT
- debug        Mail::Transport::SMTP  0
- helo_domain  Mail::Transport::SMTP  <from Net::Config>
- log          Mail::Reporter         'WARNINGS'
- proxy        Mail::Transport::STMP  <from Net::Config>
- timeout      Mail::Transport::SMTP  120
- trace        Mail::Reporter         'WARNINGS'
- via          Mail::Transport        <unused>
+ OPTION      DESCRIBED IN           DEFAULT
+ debug       Mail::Transport::SMTP  0
+ helo_domain Mail::Transport::SMTP  <from Net::Config>
+ hostname    Mail::Transport        <from Net::Config>
+ interval    Mail::Transport        30
+ log         Mail::Reporter         'WARNINGS'
+ password    Mail::Transport        <not used>
+ proxy       Mail::Transport::STMP  <from Net::Config>
+ retry       Mail::Transport        undef
+ timeout     Mail::Transport::SMTP  120
+ trace       Mail::Reporter         'WARNINGS'
+ username    Mail::Transport        <not used>
+ via         Mail::Transport        'smtp'
+
 
 =over 4
 
@@ -89,12 +94,6 @@ L<Net::Config> or else L<Net::Domain> are questioned to find it.
 When even these do not supply a valid name, the name of the domain in the
 C<From> line of the message is assumed.
 
-=item proxy =E<gt> HOST|ARRAY-OF-HOSTS
-
-Specifies the system which is used as relay HOST.  By default, the
-configuration of L<Net::Config> is used.  When more than one hostname
-is specified, the first host which can be contacted will be used.
-
 =item timeout =E<gt> SECONDS
 
 The number of seconds to wait for a valid response from the server before
@@ -107,23 +106,17 @@ failing.
 sub init($)
 {   my ($self, $args) = @_;
 
-    $self->SUPER::init($args);
-
-    # Collect the data for a connection to the server
-
-    my $hosts   = $args->{proxy};
+    my $hosts   = $args->{hostname};
     unless($hosts)
     {   require Net::Config;
         $hosts  = $Net::Config::NetConfig{smtp_hosts};
         undef $hosts unless @$hosts;
+        $args->{hostname} = $hosts;
     }
 
-    my @hosts
-      = ref $hosts     ? @$hosts
-      : defined $hosts ? $hosts
-      :                 'localhost';
+    $args->{via} = 'smtp';
 
-    $self->{MTS_hosts} = \@hosts;
+    $self->SUPER::init($args);
 
     my $helo = $args->{helo}
       || eval { require Net::Config; $Net::Config::inet_domain }
@@ -131,7 +124,6 @@ sub init($)
 
     $self->{MTS_net_smtp_opts}
        = { Hello   => $helo
-         , Timeout => (defined $args->{timeout} ? $args->{timeout} : 120)
          , Debug   => ($args->{debug} || 0)
          };
 
@@ -264,9 +256,17 @@ C<IO::Server::INET> object is returned.
 sub contactAnyServer()
 {   my $self = shift;
 
-    foreach my $host (@{$self->{MTS_hosts}})
-    {   my $server = $self->tryConnectTo($host, %{$self->{MTS_net_smtp_opts}} )
-            or next;
+    my ($interval, $count, $timeout) = $self->retry;
+    my ($host, $username, $password) = $self->remoteHost;
+    my @hosts = ref $host ? @$host : $host;
+
+    foreach my $host (@hosts)
+    {   my $server = $self->tryConnectTo
+         ( $host
+         , %{$self->{MTS_net_smtp_opts}}, Timeout => $timeout
+         );
+
+        defined $server or next;
 
         $self->log(PROGRESS => "Opened SMTP connection to $host.\n");
         return $server;
@@ -307,7 +307,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.017.
+This code is beta, version 2.018.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

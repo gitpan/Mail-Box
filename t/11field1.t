@@ -128,10 +128,10 @@ ok($p->attribute(charset => 'us-ascii') eq 'us-ascii');
 ok($p->attribute('charset') eq 'us-ascii');
 ok($p->comment eq 'charset="us-ascii"; format=flowed');
 ok($p->attribute(format => 'newform') eq 'newform');
-ok($p->comment eq 'charset="us-ascii"; format=newform');
+ok($p->comment eq 'charset="us-ascii"; format="newform"');
 ok($p->attribute(newfield => 'bull') eq 'bull');
 ok($p->attribute('newfield') eq 'bull');
-ok($p->comment eq 'charset="us-ascii"; format=newform; newfield="bull"');
+ok($p->comment eq 'charset="us-ascii"; format="newform"; newfield="bull"');
 
 my $q = Mail::Message::Field::Fast->new('Content-Type: text/plain');
 ok($q->toString eq "Content-Type: text/plain\n");

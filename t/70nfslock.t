@@ -17,7 +17,15 @@ use File::Spec;
 
 my $fakefolder = bless {MB_foldername=> 'this'}, 'Mail::Box';
 
-BEGIN {plan tests => 7}
+BEGIN {
+   if($^O =~ m/mswin/i)
+   {   warn "not available on MicroSoft Windows.\n";
+       plan tests => 0;
+       exit 0;
+   }
+
+   plan tests => 7
+}
 
 my $lockfile  = File::Spec->catfile('t', 'lockfiletest');
 unlink $lockfile;

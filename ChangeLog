@@ -7,7 +7,78 @@ NOTE: The number of changes and fixes for each release seem large, but
       usually limited to areas which are under development.  Mail::Box
       is a huge module, so there is always a lot of activity.
 
-version 2.017:
+version 2.018:
+
+	Fixes:
+
+	- Parser will immediately study multipart en nested messages,
+	  because otherwise it will get stuck in nasty multi-level
+	  situations.  Discovered by [Francois Petillon]
+
+	- More picky with quotes in header field attributes...  Continuing
+	  story with weird multipart boundary strings.  This time,
+	  [Blair Zajac] forced some improvements.
+
+	- Empty headers were not properly skipped.  Usually this went
+	  undetected...  however not in a very rare case [Blair Zajac]
+
+	- For read-only folders, the manager always complained about
+	  "closing changed folders".  Reported by [Blair Zajac] and fixed.
+
+	- [Greg Matheson] tries to get Mail::Box running on the Cygwin
+	  platform, which will benefit everyone, because it is stricter
+	  than UNIX in some cases.... for instance, the Perl parser 
+	  objects left the file-handle open....
+
+	- [Blair Zajac] detected that double messages in a read-only
+	  folder cause "Changes not written to read-only folder"
+	  messages.  Not anymore: the doubles will not be flagged for
+	  deletion.
+
+	Improvements:
+
+	- Filenames sometime contained double /'s between folderdir and
+	  foldername.  Removed.
+
+	- Foldernames can be specified like this:
+	     pop3://username:password@host:port/folder
+	  which is broken into separate arguments in a very early stage.
+	  This is especially useful when the name is passed in $ENV{MAIL}
+
+	- Start of implementation for Mail::Transport::POP3.
+
+	- To make space for ::POP3, which is a message receiver, the
+	  message senders are now derived from Mail::Transport::Send.
+	  New options are added which certainly improve the interface.
+	  New packages:
+	     Mail::Transport::Send
+	     Mail::Transport::Receive
+	     Mail::Transport::POP3
+	  
+	- Foldernames via $mgr->open() may be specified as URL, for instance
+	     $mgr->open('mbox:/tmp/inbox')
+	     $mgr->open('pop3://me:secret@pop3.server.com:120')
+
+	- $mgr->close($folder) and ->closeAllFolders() accept the
+	  normal options for $folder->close(OPTIONS).
+
+	- $folder->appendMessage($msg) now returns the coerced message.
+
+	- Mail::Box::Dir::messageId() should not trigger headers to
+	  find unparsed headers with the id: that's the task of
+	  Mail::Box::find().  The code was not consistent with the docs.
+
+	- Removed Mail::Box::Dir::readAllHeaders()... it contained a
+	  bug, so was apperently never used.  And that's a good thing.
+
+	- Small set of additions to Mail::Box::Net and Mail::Box::POP3
+	  Still in the early stages of development.
+
+	- The parser will complain about files which were modified while
+	  it was working with it.  Some cases where the parser accidentally
+	  stayed open were closed to resolve the complaints for the tests.
+
+version 2.017: Fri Jul  5 17:06:08 CEST 2002
 
 	Fixes:
 

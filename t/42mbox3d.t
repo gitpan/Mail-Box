@@ -111,9 +111,8 @@ ok(!@f_subjects);
 #
 
 my $parsed = 0;
-$parsed ||= $_->isParsed foreach $folder->messages;
-ok(!$parsed);
-
+$_->isParsed && $parsed++ foreach $folder->messages;
+ok($parsed==3);   # only multiparts
 
 #
 # Check that the whole folder is continuous
@@ -143,14 +142,14 @@ ok($end== -s $copy->filename);
 #
 
 $parsed = 0;
-$parsed ||= $_->isParsed foreach $copy->messages;
-ok(!$parsed);
+$_->isParsed && $parsed++ foreach $copy->messages;
+ok($parsed==3);   # three multiparts
 
 #
 # Force one message to be loaded.
 #
 
-my $message = $folder->message(3)->forceLoad;
+my $message = $copy->message(3)->forceLoad;
 ok(ref $message);
 my $body = $message->body;
 ok($message->isParsed);
@@ -164,9 +163,9 @@ ok($message->isa('Mail::Message'));
 
 ok(!defined $message->head->get('xyz'));
 
-ok(not $folder->message(2)->isParsed);
-ok(defined $folder->message(2)->head->get('x-mailer'));
-ok($folder->message(2)->head->isa('Mail::Message::Head::Complete'));
-ok(not $folder->message(2)->isParsed);
+ok(not $copy->message(2)->isParsed);
+ok(defined $copy->message(2)->head->get('x-mailer'));
+ok($copy->message(2)->head->isa('Mail::Message::Head::Complete'));
+ok(not $copy->message(2)->isParsed);
 
 #unlink $cpy;

@@ -11,10 +11,13 @@ use warnings;
 use lib qw(. t);
 use Tools;
 use Mail::Box::Manager;
+use File::Copy;
 
 use IO::Scalar;
 
-BEGIN {plan tests => 25}
+BEGIN {plan tests => 26}
+
+copy $src, $cpy or die "Copy failed";
 
 #
 # Build a complex system with MH folders and sub-folders.
@@ -35,6 +38,7 @@ $mgr->copyMessage($a, $folder->message($_)) for 0..9;
 my $b = $a->openSubFolder('b', create => 1, access => 'w');
 ok(defined $b);
 $mgr->copyMessage($b, $folder->message($_)) for 10..19;
+ok($b->messages==10);
 $b->close;
 
 my $c = $a->openSubFolder('c', create => 1, access => 'w');
@@ -85,8 +89,6 @@ $e->delete;
 $e = $mgr->open('e', type => 'mbox', create => 1, access => 'rw');
 ok(defined $a->copyTo($e, select => 'ACTIVE', subfolders => 'RECURSE'));
 ok($e->messages==7);
-
-$a->delete;
 
 my @subs = sort $e->listSubFolders;
 ok(@subs==2);

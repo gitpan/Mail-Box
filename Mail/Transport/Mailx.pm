@@ -2,11 +2,11 @@ use strict;
 use warnings;
 
 package Mail::Transport::Mailx;
-use base 'Mail::Transport';
+use base 'Mail::Transport::Send';
 
 use Carp;
 
-our $VERSION = 2.017;
+our $VERSION = 2.018;
 
 =head1 NAME
 
@@ -15,6 +15,7 @@ Mail::Transport::Mailx - transmit messages using external mailx program
 =head1 CLASS HIERARCHY
 
  Mail::Transport::Mailx
+ is a Mail::Transport::Send
  is a Mail::Transport
  is a Mail::Reporter
 
@@ -38,22 +39,23 @@ transport mechanism.
 =head1 METHOD INDEX
 
 Methods prefixed with an abbreviation are described in
-L<Mail::Reporter> (MR), L<Mail::Transport> (MT).
+L<Mail::Reporter> (MR), L<Mail::Transport> (MT), L<Mail::Transport::Send> (MTS).
 
 The general methods for C<Mail::Transport::Mailx> objects:
 
-   MR errors                            MT send MESSAGE, OPTIONS
+   MR errors                           MTS send MESSAGE, OPTIONS
    MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
-      new OPTIONS                       MT trySend MESSAGE, OPTIONS
+      new OPTIONS                      MTS trySend MESSAGE, OPTIONS
    MR report [LEVEL]                    MR warnings
    MR reportAll [LEVEL]
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MR logPriority LEVEL
-   MR DESTROY                           MR logSettings
-   MT findBinary NAME [, DIRECTOR...    MR notImplemented
-   MR inGlobalDestruction               MT putContent MESSAGE, FILEHAN...
+   MR AUTOLOAD                          MR logSettings
+   MR DESTROY                           MR notImplemented
+   MT findBinary NAME [, DIRECTOR...   MTS putContent MESSAGE, FILEHAN...
+   MR inGlobalDestruction               MT remoteHost
+   MR logPriority LEVEL                 MT retry
 
 =head1 METHODS
 
@@ -65,16 +67,39 @@ The extra methods for extension writers:
 
 =item new OPTIONS
 
- OPTION       DESCRIBED IN       DEFAULT
- log          Mail::Reporter     'WARNINGS'
- proxy        Mail::Transport    undef
- trace        Mail::Reporter     'WARNINGS'
- via          Mail::Transport    <unused>
+ OPTION    DESCRIBED IN           DEFAULT
+ hostname  Mail::Transport        <not used>
+ interval  Mail::Transport        30
+ log       Mail::Reporter         'WARNINGS'
+ password  Mail::Transport        <not used>
+ proxy     Mail::Transport        <autodetect>
+ retry     Mail::Transport        undef
+ style     Mail::Transport::Mailx <autodetect>
+ trace     Mail::Reporter         'WARNINGS'
+ timeout   Mail::Transport        <not used>
+ username  Mail::Transport        <not used>
+ via       Mail::Transport        'mailx'
+
+=over 4
+
+=item * style =<gt> 'BSD'|'RFC822'
+
+There are two version of the C<mail> program.  The newest accepts
+RFC822 messages, and automagically collect information about where
+the message is to be send to.  The BSD style mail command predates
+MIME, and expects lines which start with a '~' (tilde) to specify
+destinations and such.  This field is autodetect, however on some
+platforms both versions of C<mail> can live (like verious Linux
+distributions).
+
+=back
 
 =cut
 
 sub init($)
 {   my ($self, $args) = @_;
+
+    $args->{via} = 'mailx';
 
     $self->SUPER::init($args);
 
@@ -84,6 +109,11 @@ sub init($)
      || $self->findBinary('Mail')
      || $self->findBinary('mail')
      || return;
+
+    $self->{MTM_style}
+      = defined $args->{style}                       ? $args->{style}
+      : $^O =~ m/linux|freebsd|bsdos|netbsd|openbsd/ ? 'BSD'
+      :                                                'RFC822';
 
     $self;
 }
@@ -130,12 +160,11 @@ sub _try_send_bsdish($$)
 sub trySend($@)
 {   my ($self, $message, %args) = @_;
 
-    my $os = $^O;
     return $self->_try_send_bsdish($message, \%args)
-        if $os =~ m/linux|freebsd|bsdos|netbsd|openbsd/;
+        if $self->{MTM_style} eq 'BSD';
 
     my $program = $self->{MTM_program};
-    unless(open(MAILER, '|-', $program, '-t'))
+    unless(open MAILER, '|-', $program, '-t')
     {   $self->log(NOTICE => "Cannot start contact to $program: $!");
         return 0;
     }
@@ -149,16 +178,6 @@ sub trySend($@)
 
     1;
 }
-
-#------------------------------------------
-
-#=back
-#
-#=head1 METHODS for extension writers
-#
-#=over 4
-#
-#=cut
 
 #------------------------------------------
 
@@ -178,7 +197,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.017.
+This code is beta, version 2.018.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

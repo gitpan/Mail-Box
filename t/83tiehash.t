@@ -25,6 +25,7 @@ my $folder = new Mail::Box::Mbox
   , folderdir => 't'
   , lock_type => 'NONE'
   , extract   => 'ALWAYS'
+  , access    => 'rw'
   );
 
 ok(defined $folder);

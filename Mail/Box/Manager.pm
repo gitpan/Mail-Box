@@ -4,7 +4,7 @@ use warnings;
 package Mail::Box::Manager;
 use base 'Mail::Reporter';
 
-our $VERSION = 2.017;
+our $VERSION = 2.018;
 use Mail::Box;
 
 use Carp;
@@ -60,17 +60,17 @@ L<Mail::Reporter> (MR).
 
 The general methods for C<Mail::Box::Manager> objects:
 
-      appendMessages [FOLDER|FOLD...       open [FOLDERNAME], OPTIONS
-      close FOLDER                         openFolders
-      closeAllFolders                      registerType TYPE =E<gt> CL...
-      copyMessage [FOLDER|FOLDERN...    MR report [LEVEL]
+      appendMessages [FOLDER|FOLD...       new ARGS
+      close FOLDER, OPTIONS                open [FOLDERNAME], OPTIONS
+      closeAllFolders, OPTIONS             openFolders
+      copyMessage [FOLDER|FOLDERN...       registerType TYPE =E<gt> CL...
+      decodeFolderURL URL               MR report [LEVEL]
       delete FOLDERNAME [,OPTIONS]      MR reportAll [LEVEL]
    MR errors                               threads [FOLDERS], OPTIONS
       folderTypes                          toBeThreaded FOLDER, MESSAGES
       isOpenFolder FOLDER                  toBeUnthreaded FOLDER, MESS...
    MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
       moveMessage [FOLDER|FOLDERN...    MR warnings
-      new ARGS
 
 The extra methods for extension writers:
 
@@ -136,6 +136,8 @@ my @basic_folder_types =
   ( [ mbox    => 'Mail::Box::Mbox'    ]
   , [ mh      => 'Mail::Box::MH'      ]
   , [ maildir => 'Mail::Box::Maildir' ]
+  , [ pop     => 'Mail::Box::POP3'    ]
+  , [ pop3    => 'Mail::Box::POP3'    ]
   );
 
 my @managers;  # usually only one, but there may be more around :(
@@ -249,9 +251,27 @@ The options which are most common to C<open()>:
 
 =over 4
 
-=item * folder =E<gt> FOLDERNAME
+=item * create =E<gt> BOOL
 
-Which folder to open.  The default folder is $ENV{MAIL}.
+Create the folder if it does not exist. By default, this is not done.
+The C<type> option specifies which type of folder is created.
+
+=item * folder =E<gt> NAME|URL
+
+Which folder to open, specified by NAME or special URL.  The default
+folder is taken from $ENV{MAIL}.
+
+The URL format is composed as
+
+ type://username:password@hostname:port/foldername
+
+Like real urls, all fields are optional and have smart defaults, as long
+as the string starts with a known folder type.  Far
+from all folder types support all these options, but at least they are
+all split-out.
+
+When you specify anything which does not match the URL format, it is
+passed directly to the C<new> method of the folder which is opened.
 
 =item * folderdir =E<gt> DIRECTORY
 
@@ -266,11 +286,6 @@ folder for writing, then the default will be the most recently registered
 type. (If you add more than one type at once, the first of the list is
 used.)
 
-=item * create =E<gt> BOOL
-
-Create the folder if it does not exist. By default, this is not done.
-The C<type> option specifies which type of folder is created.
-
 =back
 
 Examples:
@@ -280,6 +295,11 @@ Examples:
 
  my $inbox = $manager->open('Inbox')
     or die "Cannot open Inbox.\n";
+
+ my $send  = $manager->open('pop3://myself:secret@pop3.server.com:120/x');
+ my $send  = $manager->open(folder => '/x', type => 'pop3'
+   , username    => 'myself', password => 'secret'
+   , server_name => 'pop3.server.com', server_port => '120');
 
 =cut
 
@@ -291,7 +311,22 @@ sub open(@)
     $name    = defined $args{folder} ? $args{folder} : $ENV{MAIL}
         unless defined $name;
 
-    $args{folder} = $name;
+    if($name =~ m/^(\w+)\:/ && grep { $_ eq $1 } $self->foldertypes)
+    {   # Complicated folder URL
+        my %decoded = $self->decodeFolderURL($name);
+        if(keys %decoded)
+        {   # accept decoded info
+            @args{keys %decoded} = values %decoded;
+        }
+        else
+        {   $self->log(ERROR => "Illegal folder URL '$name'.");
+            return;
+        }
+    }
+    else
+    {   # Simple folder name
+        $args{folder} = $name;
+    }
 
     unless(defined $name && length $name)
     {   $self->log(ERROR => "No foldername specified to open.\n");
@@ -426,23 +461,24 @@ sub isOpenFolder($)
 
 #-------------------------------------------
 
-=item close FOLDER
+=item close FOLDER, OPTIONS
 
-=item closeAllFolders
+=item closeAllFolders, OPTIONS
 
 C<close> removes the specified folder from the list of open folders.
 Indirectly it will update the files on disk if needed (depends on
-the C<save_on_exit> flag for each folder).  The folder's messages
-will also be withdrawn from the known message threads.
+the C<save_on_exit> flag for each folder). OPTIONS are passed to
+the C<close> method of each folder.
 
+The folder's messages will also be withdrawn from the known message threads.
 You may also close the folder directly. The manager will be informed
 about this event and take appropriate actions.
 
 Examples:
 
-    my $inbox = $mgr->open('inbox');
-    $mgr->close($inbox);
-    $inbox->close;        # alternative
+ my $inbox = $mgr->open('inbox');
+ $mgr->close($inbox);
+ $inbox->close;        # alternative
 
 C<closeAllFolders> calls C<close> for each folder managed by
 this object.  It is called just before the program stops (before global
@@ -450,8 +486,8 @@ cleanup).
 
 =cut
 
-sub close($)
-{   my ($self, $folder) = @_;
+sub close($@)
+{   my ($self, $folder, @options) = @_;
     return unless $folder;
 
     my $name      = $folder->name;
@@ -463,13 +499,13 @@ sub close($)
     $self->{MBM_folders} = [ @remaining ];
     $_->removeFolder($folder) foreach @{$self->{MBM_threads}};
 
-    $folder->close(close_by_manager => 1);
+    $folder->close(close_by_manager => 1, @options);
     $self;
 }
 
-sub closeAllFolders()
-{   my $self = shift;
-    $_->close foreach $self->openFolders;
+sub closeAllFolders(@)
+{   my ($self, @options) = @_;
+    $_->close(@options) foreach $self->openFolders;
     $self;
 }
 
@@ -510,7 +546,11 @@ Examples:
 
 =cut
 
-sub appendMessage(@) {shift->appendMessages(@_)} # compatibility
+sub appendMessage(@)
+{   my $self     = shift;
+    my @appended = $self->appendMessages(@_);
+    wantarray ? @appended : $appended[0];
+}
 
 sub appendMessages(@)
 {   my $self = shift;
@@ -551,6 +591,9 @@ sub appendMessages(@)
 
     foreach (@{$self->{MBM_folder_types}})
     {   ($name, $class, @gen_options) = @$_;
+        eval "require $class";
+        next if $@;
+
         if($class->foundIn($folder, @gen_options))
         {   $found++;
             last;
@@ -777,6 +820,43 @@ sub toBeUnthreaded($@)
 
 #-------------------------------------------
 
+=item decodeFolderURL URL
+
+Try to decompose a folder name which is specified as URL (see the
+C<open> method) into separate options.
+
+=cut
+
+sub decodeFolderURL($)
+{   my ($self, $name) = @_;
+
+    return unless
+       my ($type, $username, $password, $hostname, $port, $path)
+          = $name =~ m!^(\w+)\:             # protocol
+                       (?://
+                          (?:([^:@./]*)     # username
+                            (?:\:([^@/]*))? # password
+                           \@)?
+                           ([\w.-]+)?       # hostname
+                           (?:\:(\d+))?     # portnumber
+                        )?
+                        (.*)                # foldername
+                      !x;
+
+    $username ||= $ENV{USER} || $ENV{LOGNAME};
+    $password ||= '';
+    $hostname ||= 'localhost';
+    $path     ||= '=';
+
+    { type        => $type,     folder      => $path
+    , username    => $username, password    => $password
+    , server_name => $hostname, server_port => $port
+    };
+}
+
+
+#-------------------------------------------
+
 =back
 
 =head1 SEE ALSO
@@ -793,7 +873,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.017.
+This code is beta, version 2.018.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
