@@ -3,6 +3,11 @@ CHANGELOG of Mail::Box
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
+version 1.318: Wed Jul 18 08:14:59 CEST 2001
+
+	* open file rw is impossible, of course!  Should be r+
+          not rw
+
 version 1.317: Mon Jul 16 22:53:36 CEST 2001
 
 	* [Tassilo von Parseval] added scripts/takemail

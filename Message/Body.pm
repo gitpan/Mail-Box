@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = '1.317';
+our $VERSION = '1.318';
 
 use Mail::Message;
 
