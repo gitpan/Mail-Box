@@ -1,0 +1,231 @@
+
+=head1 NAME
+
+
+Mail::Reporter - manage errors and traces for various Mail::* modules
+
+=head1 CLASS INHERITANCE
+
+Mail::Reporter
+
+Mail::Reporter is extended by
+   Mail::Box
+   Mail::Box::Locker
+   Mail::Box::MH::Index
+   Mail::Box::MH::Labels
+   Mail::Box::Manager
+   Mail::Box::Parser
+   Mail::Box::Search
+   Mail::Box::Thread::Manager
+   Mail::Box::Thread::Node
+   Mail::Message
+   Mail::Message::Body
+   Mail::Message::Body::Delayed
+   Mail::Message::Convert
+   Mail::Message::Head
+   Mail::Message::TransferEnc
+   Mail::Transport
+
+=head1 SYNOPSIS
+
+
+ $folder->log(WARNING => 'go away');
+ print $folder->trace;        # current level
+ $folder->trace('PROGRESS');  # set level
+ print $folder->errors;
+ print $folder->report('PROGRESS');
+
+=head1 DESCRIPTION
+
+
+Read C<Mail::Box-Overview> first.  There are a few objects which produce
+error messages, but which will not break the program.  For instance, an
+erroneous message doesn't break a whole folder.
+
+The C<Mail::Reporter> class is the base class for each object which can
+produce errors, and can be configured for each mailbox, mail message,
+and mail manager separately.
+
+=head1 METHODS
+
+The C<Mail::Reporter> class is the base for nearly all other
+objects.  It can store and report problems, and contains the general
+constructor new().
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS X<new>
+
+This error container is also the base constructor for all modules, (as long
+as there is no need for an other base object)  The constructor always accepts
+the following OPTIONS related to error reports.
+
+ OPTION               DEFAULT
+ log                  'WARNINGS'
+ trace                'WARNINGS'
+
+=over 4
+
+=item B<log> =E<gt> LEVEL X<new(log)>
+
+Log messages which have a priority higher or equal to the specified
+level are stored internally and can be retrieved later.
+
+Known levels are C<'INTERNAL'>, C<'ERRORS'>, C<'WARNINGS'>, C<'PROGRESS'>,
+C<'NOTICES'> C<'DEBUG'>, and C<'NONE'>.  The C<PROGRESS> level relates to
+the reading and writing of folders.  C<NONE> will cause only C<INTERNAL>
+errors to be logged.
+By the way: C<ERROR> is an alias for C<ERRORS>, as C<WARNING> is an alias
+for C<WARNINGS>, and C<NOTICE> for C<NOTICES>.
+
+=item B<trace> =E<gt> LEVEL X<new(trace)>
+
+Trace messages which have a level higher or equal to the specified level
+are directly printed using warn.
+
+=back
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors>  X<errors>
+
+Equivalent to C<< $folder->report('ERRORS') >>
+
+=item B<log> [LEVEL [,STRINGS]] X<log>
+
+This method has three uses.  Without any argument, it returns the name
+of the current log level.  With one argument, a new level of logging
+detail is set.  With more arguments, it is a report which may need to be
+logged or traced.
+
+Each log-entry has a LEVEL (see above), and a text string which will
+be constructed by joining the STRINGS.  If there is no newline, it will
+be added.
+
+Examples:
+
+ print $message->log;      # may print   NOTICE
+ $message->log('ERRORS');  # sets a new level
+
+ $message->log(WARNING => "This message is too large.");
+ $folder ->log(NOTICE  => "Cannot read from file $filename.");
+ $manager->log(DEBUG   => "Hi there!", reverse sort @l);
+
+=item B<report> [LEVEL] X<report>
+
+Get logged reports, as list of strings.  If a LEVEL is specified, the log
+for that level is returned.
+
+In case no LEVEL is specified, you get all messages each as reference
+to a tuple with level and message.
+
+Examples:
+
+ my @warns = $message->report('WARNINGS');
+   # previous indirectly callable with
+   my @warns = $msg->warnings;
+
+ print $folder->report('ERRORS');
+
+ if($folder->report('DEBUG')) {...}
+
+ my @reports = $folder->report;
+ foreach (@reports) {
+    my ($level, $text) = @$_;
+    print "$level report: $text";
+ }
+
+=item B<reportAll> [LEVEL] X<reportAll>
+
+Report all messages which were produced by this object and all the objects
+which are maintained by this object.  This will return a list of triplets,
+each containing a reference to the object which caught the report, the
+level of the report, and the message.
+
+Examples:
+
+ my $folder = Mail::Box::Manager->new->open(folder => 'inbox');
+ my @reports = $folder->reportAll;
+ foreach (@reports) {
+    my ($object, $level, $text) = @$_;
+
+    if($object->isa('Mail::Box')) {
+       print "Folder $object: $level: $message";
+    } elsif($object->isa('Mail::Message') {
+       print "Message ".$object->seqnr.": $level: $message";
+    }
+ }
+
+=item B<trace> [LEVEL] X<trace>
+
+Change the trace level of the object.  It returns the number which
+is internally used to represent the level.
+
+=item B<warnings>  X<warnings>
+
+Equivalent to C<< $folder->report('WARNINGS') >>
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD>  X<AUTOLOAD>
+
+produce a nice warning if the sub-classes cannot resolve a method.
+
+=item B<DESTROY>  X<DESTROY>
+
+Cleanup.
+
+=item B<inGlobalDestruction>  X<inGlobalDestruction>
+
+Returns whether the program is breaking down.  This is used in DESTROY,
+where during global destructions references cannot be used.
+
+=item B<logPriority> LEVEL X<logPriority>
+
+(Class and instance method)   Returns the priority of the named level as
+numeric value.  The higher the number, the more important the message.
+Only messages about C<INTERNAL> problems are more important than C<NONE>.
+
+=item B<logSettings>  X<logSettings>
+
+Returns a list of (key => value) pairs which can be used to initiate
+a new object with the same log-settings as this one.
+
+Examples:
+
+ $head->new($folder->logSettings);
+
+=item B<notImplemented>  X<notImplemented>
+
+A special case of the above log(), which logs a C<INTERNAL>-error
+and then croaks.  This is used by extension writers.
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

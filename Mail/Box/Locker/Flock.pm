@@ -1,7 +1,7 @@
-
 use strict;
 
 package Mail::Box::Locker::Flock;
+our $VERSION = 2.019;  # Part of Mail::Box
 use base 'Mail::Box::Locker';
 
 use Fcntl         qw/:DEFAULT :flock/;
@@ -9,60 +9,7 @@ use IO::File;
 use Errno         qw/EAGAIN/;
 use FileHandle;
 
-=head1 NAME
-
-Mail::Box::Locker::Flock - lock a folder using kernel file-locking
-
-=head1 CLASS HIERARCHY
-
- Mail::Box::Locker::Flock
- is a Mail::Box::Locker
- is a Mail::Reporter
-
-=head1 SYNOPSIS
-
- See Mail::Box::Locker
-
-=head1 DESCRIPTION
-
-The C<::Flock> object lock the folder by creating an exclusive lock on
-the file using the kernel's C<flock()> facilities.  This lock is created
-on a separate file-handle to the folder file, so not the handle which
-is reading.
-
-File locking does not work in some situations, for instance for
-operating systems do not support C<flock()>.
-
-=head1 METHOD INDEX
-
-Methods prefixed with an abbreviation are described in
-L<Mail::Reporter> (MR), L<Mail::Box::Locker> (MBL).
-
-The general methods for C<Mail::Box::Locker::Flock> objects:
-
-  MBL DESTROY                          MBL name
-   MR errors                           MBL new OPTIONS
-  MBL filename                          MR report [LEVEL]
-  MBL hasLock                           MR reportAll [LEVEL]
-  MBL isLocked                          MR trace [LEVEL]
-  MBL lock FOLDER                      MBL unlock
-   MR log [LEVEL [,STRINGS]]            MR warnings
-
-The extra methods for extension writers:
-
-   MR AUTOLOAD                          MR logPriority LEVEL
-   MR DESTROY                           MR logSettings
-   MR inGlobalDestruction               MR notImplemented
-
-=head1 METHODS
-
-=cut
-
-#-------------------------------------------
-
 sub name() {'FLOCK'}
-
-#-------------------------------------------
 
 sub _try_lock($)
 {   my ($self, $file) = @_;
@@ -76,9 +23,7 @@ sub _unlock($)
     $self;
 }
 
-#-------------------------------------------
-
-# 'r+' is require under Solaris and AIX, other OSes are satified with 'r'.
+# 'r+' is require under Solaris and AIX, other OSes are satisfied with 'r'.
 my $lockfile_access_mode = ($^O eq 'solaris' || $^O eq 'aix') ? 'r+' : 'r';
 
 sub lock()
@@ -115,8 +60,6 @@ sub lock()
     return 0;
 }
 
-#-------------------------------------------
-
 sub isLocked()
 {   my $self     = shift;
     my $filename = $self->filename;
@@ -134,8 +77,6 @@ sub isLocked()
     1;
 }
 
-#-------------------------------------------
-
 sub unlock()
 {   my $self = shift;
 
@@ -144,29 +85,5 @@ sub unlock()
 
     $self;
 }
-
-#-------------------------------------------
-
-=head1 SEE ALSO
-
-L<Mail::Box-Overview>
-
-For support and additional documentation, see http://perl.overmeer.net/mailbox/
-
-=head1 AUTHOR
-
-Mark Overmeer (F<mailbox@overmeer.net>).
-All rights reserved.  This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-=head1 VERSION
-
-This code is beta, version 2.018.
-
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=cut
 
 1;

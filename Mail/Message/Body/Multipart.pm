@@ -2,156 +2,14 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Multipart;
+our $VERSION = 2.019;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
 use Mail::Message::Part;
 
-our $VERSION = 2.018;
-
 use Carp;
-
-=head1 NAME
-
-Mail::Message::Body::Multipart - body of a message with attachments
-
-=head1 CLASS HIERARCHY
-
- Mail::Message::Body::Multipart
- is a Mail::Message::Body + ::Construct + ::Encode
- is a Mail::Reporter
-
-=head1 SYNOPSIS
-
- See Mail::Message::Body, plus
-
- if($body->isMultipart) {
-    my @attachments = $body->parts;
-    my $attachment3 = $body->part(2);
-    my $before      = $body->preamble;
-    my $after       = $body->epiloque;
-    $body->part(1)->delete;
- }
-
-=head1 DESCRIPTION
-
-READ C<Mail::Message::Body> FIRST. This manual-page only describes the
-extentions to the default body functionality.
-
-The body (content) of a message can be stored in various ways.  In this
-manual-page you find the description of extra functionality you have
-when a message contains attachments (parts).
-
-=head1 METHOD INDEX
-
-Methods prefixed with an abbreviation are described in
-L<Mail::Reporter> (MR), L<Mail::Message::Body> (MMB), L<Mail::Message::Body::Construct> (MMBC), L<Mail::Message::Body::Encode> (MMBE).
-
-The general methods for C<Mail::Message::Body::Multipart> objects:
-
-      attach MESSAGES|BODIES           MMB lines
-      boundary [STRING]                 MR log [LEVEL [,STRINGS]]
-  MMB charset                          MMB message [MESSAGE]
- MMBE check                            MMB mimeType
-  MMB checked [BOOLEAN]                MMB modified [BOOL]
- MMBC concatenate COMPONENTS               new OPTIONS
-  MMB decoded OPTIONS                  MMB nrLines
-  MMB disposition [STRING|FIELD]           part INDEX
- MMBE encode OPTIONS                       parts ['ALL'|'ACTIVE'|'DELE...
- MMBE encoded                              preamble
-  MMB eol ['CR'|'LF'|'CRLF'|'NATI...   MMB print [FILE]
-      epilogue                         MMB reply OPTIONS
-   MR errors                            MR report [LEVEL]
-  MMB file                              MR reportAll [LEVEL]
-      foreachComponent CODE            MMB size
- MMBC foreachLine CODE                 MMB string
- MMBE isBinary                             stripSignature OPTIONS
-  MMB isDelayed                         MR trace [LEVEL]
-  MMB isMultipart                      MMB transferEncoding [STRING|FI...
-  MMB isNested                         MMB type
- MMBE isText                            MR warnings
-
-The extra methods for extension writers:
-
-   MR AUTOLOAD                         MMB load
-   MR DESTROY                           MR logPriority LEVEL
- MMBE addTransferEncHandler NAME,...    MR logSettings
-  MMB clone                            MMB moveLocation [DISTANCE]
-  MMB fileLocation [BEGIN,END]          MR notImplemented
- MMBE getTransferEncHandler TYPE       MMB read PARSER, HEAD, BODYTYPE...
-   MR inGlobalDestruction             MMBE unify BODY
-
-=head1 METHODS
-
-=over 4
-
-=cut
-
-#------------------------------------------
-
-=item new OPTIONS
-
- OPTION      DESCRIBED IN                   DEFAULT
- based_on    Mail::Message::Body            undef
- boundary    Mail::Message::Body::Multipart undef
- charset     Mail::Message::Body            'us-ascii'
- data        Mail::Message::Body            undef
- disposition Mail::Message::Body            undef
- epilogue    Mail::Message::Body::Multipart undef
- log         Mail::Reporter                 'WARNINGS'
- message     Mail::Message::Body            undef
- mime_type   Mail::Message::Body            'multipart/mixed'
- modified    Mail::Message::Body            0
- parts       Mail::Message::Body::Multipart undef
- preamble    Mail::Message::Body::Multipart undef
- trace       Mail::Reporter                 'WARNINGS'
- transfer_encoding Mail::Message::Body      'NONE'
-
-=over 4
-
-=item * boundary =E<gt> STRING
-
-Seperatory to be used between parts of the message.  This seperator must
-be unique in case the message contains nested multiparts (which are not
-unusual).  If <undef>, a nice unique boundary will be generated.
-
-=item * epilogue =E<gt> BODY
-
-The text which is included in the main body after the final boundary.  This
-is usually empty, and has no meaning.
-
-=item * parts =E<gt> ARRAY-OF-(MESSAGES|BODIES)
-
-Specifies an initial list of parts in this body.  These may be full
-MESSAGES, or BODIES which transformed into messages before use.  Each
-message is coerced into a C<Mail::Message::Part> object.
-
-C<MIME::Entity> and C<Mail::Internet> objects are acceptable in the
-list, because they are coerceable into C<Mail::Message::Part>'s.  Values
-of C<undef> will be skipped silently.
-
-=item * preamble =E<gt> BODY
-
-The text which is included in the body before the first part.  It is
-common use to include a text to warn the user that the message is a
-multipart.  However, this was useful in earlier days: most mail
-agents are very capable in warning the user themselves.
-
-=back
-
-Example:
-
- my $intro = Mail::Message::Body->new(data => ['part one']);
- my $pgp   = Mail::Message::Body->new(data => ['part three']);
-
- my $body  = Mail::Message::Body::Multipart->new
-   ( boundary => time . '--it-s-mine'
-   , parts    => [ $intro, $folder->message(3)->decoded, $pgp ]
-   );
-
-=cut
-
-#------------------------------------------
+use IO::Lines;
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -165,7 +23,7 @@ sub init($)
         {   next unless defined $raw;
             my $cooked = Mail::Message::Part->coerce($raw, $self);
 
-            croak 'Data not convertable to a message (type is ', ref $raw,")\n"
+            croak 'Data not convertible to a message (type is ', ref $raw,")\n"
                 unless defined $cooked;
 
             push @parts, $cooked;
@@ -193,32 +51,99 @@ sub init($)
     $self;
 }
 
-#------------------------------------------
-
 sub isMultipart() {1}
 
 # A multipart body is never binary itself.  The parts may be.
 sub isBinary() {0}
 
-#------------------------------------------
+sub clone()
+{   my $self     = shift;
+    my $preamble = $self->preamble;
+    my $epilogue = $self->epilogue;
 
-=item foreachComponent CODE
+    my $body     = ref($self)->new
+     ( $self->logSettings
+     , based_on => $self
+     , preamble => ($preamble ? $preamble->clone : undef)
+     , epilogue => ($epilogue ? $epilogue->clone : undef)
+     , parts    => [ map {$_->clone} $self->parts('ACTIVE') ]
+     );
 
-Execute the CODE for each component of the message: the preamble, the
-epilogue, and each of the parts.
+}
 
-Each component is a body and is passed as second argument to the CODE.
-The first argument is a reference to this multi-parted body.  The CODE
-returns a body object.  When any of the returned bodies differs from
-the body which was passed, then a new multi-part body will be returned.
-Reference to the not-changed bodies and the changed bodies will be
-included in that new multi-part.
+sub nrLines()
+{   my $self   = shift;
+    my $nr     = 1;     # trailing boundary
 
-Example:
+    if(my $preamble = $self->preamble) { $nr += $preamble->nrLines }
+    $nr += 2 + $_->nrLines foreach $self->parts('ACTIVE');
+    if(my $epilogue = $self->epilogue) { $nr += $epilogue->nrLines }
+    $nr;
+}
 
- my $checked = $multi->foreachComponent(sub {$_[1]->check});
+sub size()
+{   my $self   = shift;
+    my $bbytes = length($self->boundary) +3;
+    $bbytes++ if $self->eol eq 'CRLF';
 
-=cut
+    my $bytes  = 0;
+    if(my $preamble = $self->preamble) { $bytes += $preamble->size }
+    $bytes     += $bbytes + 2;  # last boundary
+    $bytes += $bbytes + 1 + $_->size foreach $self->parts('ACTIVE');
+    if(my $epilogue = $self->epilogue) { $bytes += $epilogue->size }
+
+    $bytes;
+}
+
+sub string() { join '', shift->lines }
+
+sub lines()
+{   my $self     = shift;
+
+    my $boundary = $self->boundary;
+    my @lines;
+
+    my $preamble = $self->preamble;
+    push @lines, $preamble->lines if $preamble;
+
+    push @lines, "--$boundary\n", $_->body->lines
+        foreach $self->parts('ACTIVE');
+
+    push @lines, "\n--$boundary--\n";
+
+    my $epilogue = $self->epilogue;
+    push @lines, $epilogue->lines if $epilogue;
+
+    wantarray ? @lines : \@lines;
+}
+
+sub file()                    # It may be possible to speed-improve the next
+{   my $self   = shift;       # code, which first produces a full print of
+    my @lines;                # the message in memory...
+    my $dump   = IO::Lines->new(\@lines);
+    $self->print($dump);
+    $dump->seek(0,0);
+    $dump;
+}
+
+sub print(;$)
+{   my $self = shift;
+    my $out  = shift || select;
+
+    my $boundary = $self->boundary;
+    if(my $preamble = $self->preamble) { $preamble->print($out) }
+
+    foreach my $part ($self->parts('ACTIVE'))
+    {   $out->print("--$boundary\n");
+        $part->print($out);
+        $out->print("\n");
+    }
+
+    $out->print("--$boundary--\n");
+    if(my $epilogue = $self->epilogue) { $epilogue->print($out) }
+
+    $self;
+}
 
 sub foreachComponent($)
 {   my ($self, $code) = @_;
@@ -263,152 +188,9 @@ sub foreachComponent($)
       );
 }
 
-#------------------------------------------
-
-sub check()
-{   my $self = shift;
-    $self->foreachComponent( sub {$_[1]->check} );
-}
-
-#------------------------------------------
-
-sub encode(@)
-{   my ($self, %args) = @_;
-    $self->foreachComponent( sub {$_[1]->encode(%args)} );
-}
-
-#------------------------------------------
-
-sub encoded()
-{   my $self = shift;
-    $self->foreachComponent( sub {$_[1]->encoded} );
-}
-
-#------------------------------------------
-
-sub string() { join '', shift->lines }
-
-#------------------------------------------
-
-sub lines()
-{   my $self     = shift;
-
-    my $boundary = $self->boundary;
-    my @lines;
-
-    my $preamble = $self->preamble;
-    push @lines, $preamble->lines if $preamble;
-
-    push @lines, "--$boundary\n", $_->body->lines
-        foreach $self->parts('ACTIVE');
-
-    push @lines, "\n--$boundary--\n";
-
-    my $epilogue = $self->epilogue;
-    push @lines, $epilogue->lines if $epilogue;
-
-    wantarray ? @lines : \@lines;
-}
-
-#------------------------------------------
-
-sub file() {shift->notImplemented}
-
-#------------------------------------------
-
-sub nrLines()
-{   my $self   = shift;
-    my $nr     = 1;     # trailing boundary
-
-    if(my $preamble = $self->preamble) { $nr += $preamble->nrLines }
-    $nr += 2 + $_->nrLines foreach $self->parts('ACTIVE');
-    if(my $epilogue = $self->epilogue) { $nr += $epilogue->nrLines }
-    $nr;
-}
-
-#------------------------------------------
-
-sub size()
-{   my $self   = shift;
-    my $bbytes = length($self->boundary) +3;
-    $bbytes++ if $self->eol eq 'CRLF';
-
-    my $bytes  = 0;
-    if(my $preamble = $self->preamble) { $bytes += $preamble->size }
-    $bytes     += $bbytes + 2;  # last boundary
-    $bytes += $bbytes + 1 + $_->size foreach $self->parts('ACTIVE');
-    if(my $epilogue = $self->epilogue) { $bytes += $epilogue->size }
-
-    $bytes;
-}
-
-#------------------------------------------
-
-sub print(;$)
-{   my $self = shift;
-    my $out  = shift || select;
-
-    my $boundary = $self->boundary;
-    if(my $preamble = $self->preamble) { $preamble->print($out) }
-
-    foreach my $part ($self->parts('ACTIVE'))
-    {   $out->print("--$boundary\n");
-        $part->print($out);
-        $out->print("\n");
-    }
-
-    $out->print("--$boundary--\n");
-    if(my $epilogue = $self->epilogue) { $epilogue->print($out) }
-
-    $self;
-}
-
-#------------------------------------------
-
-=item preamble
-
-Returns the preamble (the text before the first message part --attachment),
-The preamble is stored in a BODY object, and its encoding is derived
-from the multipart header.
-
-=cut
-
 sub preamble() {shift->{MMBM_preamble}}
 
-#------------------------------------------
-
-=item epilogue
-
-Returns the epilogue (the text after the last message part --attachment),
-The preamble is stored in a BODY object, and its encoding is derived
-from the multipart header.
-
-=cut
-
 sub epilogue() {shift->{MMBM_epilogue}}
-
-#------------------------------------------
-
-=item parts ['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER]
-
-Return all parts by default, or when ALL is specified.  ACTIVE returns
-the parts which are not flagged for deletion, as opposite to DELETED.
-RECURSE descents into all nested multiparts to collect all parts.
-
-You may also specify a code reference which is called for each nested
-part.  The first argument will be the message part.  When the code
-returns true, the part is incorporated in the return list.
-
-Examples:
-
- print "Number of attachments: ",
-     scalar $message->body->parts('ACTIVE');
-
- foreach my $part ($message->body->parts) {
-     print "Type: ", $part->get('Content-Type');
- }
-
-=cut
 
 sub parts(;$)
 {   my $self  = shift;
@@ -425,32 +207,7 @@ sub parts(;$)
     : confess "Select with what?";
 }
 
-#-------------------------------------------
-
-=item part INDEX
-
-Returns only the part with the specified INDEX.  You may use a negative
-value here, which counts from the back in the list.  Parts which are
-flagged to be deleted are included in the count.
-
-Example:
-
- $message->body->part(2)->print;
- $body->part(1)->delete;
-
-=cut
-
 sub part($) { shift->{MMBM_parts}[shift] }
-
-#-------------------------------------------
-
-=item boundary [STRING]
-
-Returns the boundary which is used to separate the parts in this
-body.  If none was read from file, then one will be assigned.  With
-STRING you explicitly set the boundary to be used.
-
-=cut
 
 my $unique_boundary = time;
 
@@ -466,17 +223,20 @@ sub boundary(;$)
     $self->type->attribute(boundary => "boundary-".$unique_boundary++);
 }
 
-#-------------------------------------------
+sub check()
+{   my $self = shift;
+    $self->foreachComponent( sub {$_[1]->check} );
+}
 
-=item attach MESSAGES|BODIES
+sub encode(@)
+{   my ($self, %args) = @_;
+    $self->foreachComponent( sub {$_[1]->encode(%args)} );
+}
 
-Attach a list of MESSAGES to this multipart.  A new body is returned.
-When you specify BODIES, they will first be translated into
-real messages.  C<MIME::Entity> and C<Mail::Internet> objects may be
-specified too.  In any case, the parts will be coerced into
-C<Mail::Message::Part>'s.
-
-=cut
+sub encoded()
+{   my $self = shift;
+    $self->foreachComponent( sub {$_[1]->encoded} );
+}
 
 sub attach(@)
 {   my $self  = shift;
@@ -485,18 +245,6 @@ sub attach(@)
       , parts    => [$self->parts, @_]
       );
 }
-
-#-------------------------------------------
-
-=item stripSignature OPTIONS
-
-Removes all parts which contains data usually defined as being signature.
-The C<MIME::Type> module provides this knowledge.  A new multipart is
-returned, containing the remaining parts.  No OPTIONS are defined yet,
-although some may be specified, because this method overrules the
-C<stripSignature> method for normal bodies.
-
-=cut
 
 sub stripSignature(@)
 {   my $self  = shift;
@@ -507,18 +255,6 @@ sub stripSignature(@)
     @allparts==@parts ? $self
     : (ref $self)->new(based_on => $self, parts => \@parts);
 }
-
-#-------------------------------------------
-
-=back
-
-=head1 METHODS for extension writers
-
-=over 4
-
-=cut
-
-#------------------------------------------
 
 sub read($$$$)
 {   my ($self, $parser, $head, $bodytype) = @_;
@@ -531,7 +267,7 @@ sub read($$$$)
      , head_wrap => $head->wrapLength
      );
 
-    my @sloppyopts = 
+    my @sloppyopts =
       ( mime_type         => 'text/plain'
       , transfer_encoding => ($head->get('Content-Transfer-Encoding') || undef)
       );
@@ -570,48 +306,5 @@ sub read($$$$)
 
     $self;
 }
-
-#------------------------------------------
-
-sub clone()
-{   my $self     = shift;
-    my $preamble = $self->preamble;
-    my $epilogue = $self->epilogue;
-
-    my $body     = ref($self)->new
-     ( $self->logSettings
-     , based_on => $self
-     , preamble => ($preamble ? $preamble->clone : undef)
-     , epilogue => ($epilogue ? $epilogue->clone : undef)
-     , parts    => [ map {$_->clone} $self->parts('ACTIVE') ]
-     );
-
-}
-
-#-------------------------------------------
-
-=back
-
-=head1 SEE ALSO
-
-L<Mail::Box-Overview>
-
-For support and additional documentation, see http://perl.overmeer.net/mailbox/
-
-=head1 AUTHOR
-
-Mark Overmeer (F<mailbox@overmeer.net>).
-All rights reserved.  This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-=head1 VERSION
-
-This code is beta, version 2.018.
-
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=cut
 
 1;

@@ -2,6 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Head::Complete;
+our $VERSION = 2.019;  # Part of Mail::Box
 use base 'Mail::Message::Head';
 
 use Mail::Box::Parser;
@@ -9,93 +10,18 @@ use Mail::Box::Parser;
 use Carp;
 use Date::Parse;
 
-our $VERSION = 2.018;
+sub isDelayed() {0}
 
-use overload qq("") => 'toString';
+sub clone(;@)
+{   my $self   = shift;
+    my $copy   = ref($self)->new($self->logSettings);
 
-=head1 NAME
+    foreach my $name ($self->grepNames(@_))
+    {   $copy->add($_->clone) foreach $self->get($name);
+    }
 
-Mail::Message::Head::Complete - the header of one message
-
-=head1 CLASS HIERARCHY
-
- Mail::Message::Head::Complete
- is a Mail::Message::Head
- is a Mail::Reporter
-
-=head1 SYNOPSIS
-
- my $head = Mail::Message::Head::Complete->new;
- See Mail::Message::Head
-
-=head1 DESCRIPTION
-
-A mail's message can be in various states: unread, partially read, and
-fully read.  The class stores a message of which all header lines are
-known for sure.
-
-=head1 METHOD INDEX
-
-Methods prefixed with an abbreviation are described in
-L<Mail::Reporter> (MR), L<Mail::Message::Head> (MMH).
-
-The general methods for C<Mail::Message::Head::Complete> objects:
-
-  MMH add ...                              new OPTIONS
-  MMH build FIELDS                     MMH nrLines
-  MMH count NAME                       MMH print [FILEHANDLE]
-  MMH delete NAME                      MMH printUndisclosed [FILEHANDLE]
-   MR errors                            MR report [LEVEL]
-  MMH get NAME [,INDEX]                 MR reportAll [LEVEL]
-  MMH isDelayed                        MMH reset NAME, FIELDS
-  MMH isMultipart                      MMH set ...
-  MMH isResent                         MMH size
-  MMH knownNames                       MMH timestamp
-   MR log [LEVEL [,STRINGS]]           MMH toString
-  MMH modified [BOOL]                   MR trace [LEVEL]
-  MMH names                             MR warnings
-
-The extra methods for extension writers:
-
-   MR AUTOLOAD                          MR inGlobalDestruction
-   MR DESTROY                          MMH load
-  MMH addNoRealize FIELD                MR logPriority LEVEL
-  MMH clone [FIELDS]                    MR logSettings
-  MMH createFromLine                   MMH message [MESSAGE]
-  MMH createMessageId                  MMH moveLocation DISTANCE
-  MMH fileLocation                      MR notImplemented
-  MMH grepNames [NAMES|ARRAY-OF-N...   MMH read PARSER
-  MMH guessBodySize                    MMH setNoRealize FIELD
-  MMH guessTimestamp                   MMH wrapLength [CHARS]
-
-=head1 METHODS
-
-=over 4
-
-=cut
-
-#------------------------------------------
-
-=item new OPTIONS
-
-Create a new message header object.  The object will store all the
-fields of a header.
-
-The following options can be specified:
-
- OPTION      DEFINED BY              DEFAULT
- field_type  Mail::Message::Head     'Mail::Message::Field::Fast'
- log         Mail::Reporter          'WARNINGS'
- message     Mail::Message::Head     undef
- modified    Mail::Message::Head     0
- trace       Mail::Reporter          'WARNINGS'
- wrap_length Mail::Message::Head     72
-
-No options are specific to a C<Mail::Message::Head::Complete>
-
-=cut
-
-#------------------------------------------
+    $copy;
+}
 
 sub add(@)
 {   my $self = shift;
@@ -132,8 +58,6 @@ sub add(@)
     $self->{MMH_modified}++;
     $field;
 }
-
-#------------------------------------------
 
 my @skip_none = qw/content-transfer-encoding content-disposition/;
 my %skip_none = map { ($_ => 1) } @skip_none;
@@ -178,8 +102,6 @@ sub set(@)
     $field;
 }
 
-#------------------------------------------
-
 sub reset($@)
 {   my ($self, $name) = (shift, lc shift);
     my $known = $self->{MMH_fields};
@@ -191,8 +113,8 @@ sub reset($@)
     $self->{MMH_modified}++;
     $self;
 }
- 
-#------------------------------------------
+
+sub delete($) { $_[0]->reset($_[1]) }
 
 sub count($)
 {   my $known = shift->{MMH_fields};
@@ -203,11 +125,27 @@ sub count($)
     :                    1;
 }
 
-#------------------------------------------
-
 sub names() {shift->knownNames}
- 
-#------------------------------------------
+
+sub grepNames(@)
+{   my $self = shift;
+    my @take;
+    push @take, (ref $_ eq 'ARRAY' ? @$_ : $_) foreach @_;
+
+    return $self->names unless @take;
+
+    my $take;
+    if(@take==1 && ref $take[0] eq 'Regexp')
+    {   $take    = $take[0];   # one regexp prepared already
+    }
+    else
+    {   # I love this tric:
+        local $" = ')|(?:';
+        $take    = qr/^(?:(?:@take))/i;
+    }
+
+    grep {$_ =~ $take} $self->names;
+}
 
 sub print(;$)
 {   my $self  = shift;
@@ -241,8 +179,6 @@ sub printUndisclosed($)
     $self;
 }
 
-#------------------------------------------
-
 sub toString()
 {   my $self  = shift;
     my $known = $self->{MMH_fields};
@@ -258,12 +194,6 @@ sub toString()
     wantarray ? @lines : join('', @lines);
 }
 
-#------------------------------------------
-
-sub isDelayed() {0}
-
-#------------------------------------------
-
 sub nrLines()
 {   my $self = shift;
     my $nr   = 1;  # trailing
@@ -271,10 +201,9 @@ sub nrLines()
     foreach my $name ($self->names)
     {   $nr += $_->nrLines foreach $self->get($name);
     }
+
     $nr;
 }
-
-#------------------------------------------
 
 sub size()
 {   my $self  = shift;
@@ -285,34 +214,7 @@ sub size()
     $bytes;
 }
 
-#------------------------------------------
-
 sub timestamp() {shift->guessTimestamp || time}
-
-#------------------------------------------
-
-=back
-
-=head1 METHODS for extension writers
-
-=over 4
-
-=cut
-
-#------------------------------------------
-
-sub clone(;@)
-{   my $self   = shift;
-    my $copy   = ref($self)->new($self->logSettings);
-
-    foreach my $name ($self->grepNames(@_))
-    {   $copy->add($_->clone) foreach $self->get($name);
-    }
-
-    $copy;
-}
-
-#------------------------------------------
 
 sub guessTimestamp()
 {   my $self = shift;
@@ -333,8 +235,6 @@ sub guessTimestamp()
     $self->{MBM_timestamp} = $stamp;
 }
 
-#------------------------------------------
-
 sub guessBodySize()
 {   my $self = shift;
 
@@ -342,12 +242,10 @@ sub guessBodySize()
     return $1 if defined $cl && $cl =~ m/(\d+)/;
 
     my $lines = $self->get('Lines');   # 40 chars per lines
-    return $1*40 if defined $lines && $lines =~ m/(\d+)/;
+    return $1 * 40   if defined $lines && $lines =~ m/(\d+)/;
 
     undef;
 }
-
-#------------------------------------------
 
 sub createFromLine()
 {   my $self   = shift;
@@ -358,30 +256,8 @@ sub createFromLine()
     "From $sender ".(gmtime $stamp)."\n";
 }
 
-#------------------------------------------
+my $unique_id = time;
 
-=back
-
-=head1 SEE ALSO
-
-L<Mail::Box-Overview>
-
-For support and additional documentation, see http://perl.overmeer.net/mailbox/
-
-=head1 AUTHOR
-
-Mark Overmeer (F<mailbox@overmeer.net>).
-All rights reserved.  This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-=head1 VERSION
-
-This code is beta, version 2.018.
-
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=cut
+sub createMessageId() { 'mailbox-'.$unique_id++ }
 
 1;

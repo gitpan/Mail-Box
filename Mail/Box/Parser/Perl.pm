@@ -2,63 +2,12 @@ use strict;
 use warnings;
 
 package Mail::Box::Parser::Perl;
+our $VERSION = 2.019;  # Part of Mail::Box
 use base 'Mail::Box::Parser';
 
 use Mail::Message::Field;
 use List::Util 'sum';
 use FileHandle;
-
-our $VERSION = 2.018;
-
-=head1 NAME
-
-Mail::Box::Parser::Perl - reading messages from file using Perl
-
-=head1 CLASS HIERARCHY
-
- Mail::Box::Parser::Perl
- is a Mail::Box::Parser
- is a Mail::Reporter
-
-=head1 SYNOPSIS
-
-=head1 DESCRIPTION
-
-The C<Mail::Box::Parser::Perl> implements parsing of messages in Perl.
-This may be a little slower than the C<C> based parser, but will also
-work on platforms where no C compiler is available.
-
-=head1 METHOD INDEX
-
-Methods prefixed with an abbreviation are described in
-L<Mail::Reporter> (MR), L<Mail::Box::Parser> (MBP).
-
-The general methods for C<Mail::Box::Parser::Perl> objects:
-
-  MBP bodyAsFile FILEHANDLE [,CHA...   MBP new [OPTIONS]
-  MBP bodyAsList [,CHARS [,LINES]]     MBP popSeparator
-  MBP bodyAsString [,CHARS [,LINES]]   MBP pushSeparator STRING|REGEXP
-  MBP bodyDelayed [,CHARS [,LINES]]    MBP readHeader WRAP
-  MBP defaultParserType [CLASS]        MBP readSeparator OPTIONS
-   MR errors                            MR report [LEVEL]
-  MBP fileChanged                       MR reportAll [LEVEL]
-  MBP filePosition [POSITION]          MBP start OPTIONS
-  MBP filename                         MBP stop
-  MBP foldHeaderLine LINE, LENGTH      MBP takeFileInfo
-  MBP lineSeparator                     MR trace [LEVEL]
-   MR log [LEVEL [,STRINGS]]            MR warnings
-
-The extra methods for extension writers:
-
-   MR AUTOLOAD                          MR logPriority LEVEL
-   MR DESTROY                           MR logSettings
-   MR inGlobalDestruction               MR notImplemented
-
-=head1 METHODS
-
-=over 4
-
-=cut
 
 sub init(@)
 {   my ($self, $args) = @_;
@@ -74,7 +23,7 @@ sub init(@)
 
     $self->{MBPP_file}       = $file;
     $self->{MBPP_filename}   = $filename;
-    $self->{MBPP_seperator}  = $args->{seperator} || undef;
+    $self->{MBPP_separator}  = $args->{separator} || undef;
     $self->{MBPP_separators} = [];
     $self->{MBPP_trusted}    = $args->{trusted};
 
@@ -93,22 +42,16 @@ sub init(@)
     $self;
 }
 
-#------------------------------------------
-
 sub start(@)
 {   my $self = shift;
     $self->SUPER::start(trust_file => $self->{MBPP_trusted}, @_);
 }
-
-#------------------------------------------
 
 sub stop(@)
 {   my $self = shift;
     $self->closeFile;
     $self->SUPER::stop(@_);
 }
-
-#------------------------------------------
 
 sub closeFile()
 {   my $self = shift;
@@ -120,8 +63,6 @@ sub closeFile()
     $self;
 }
 
-#------------------------------------------
-
 sub pushSeparator($)
 {   my ($self, $sep) = @_;
     unshift @{$self->{MBPP_separators}}, $sep;
@@ -129,16 +70,12 @@ sub pushSeparator($)
     $self;
 }
 
-#------------------------------------------
-
 sub popSeparator()
 {   my $self = shift;
     my $sep  = shift @{$self->{MBPP_separators}};
     $self->{MBPP_strip_gt}-- if $sep =~ m/^From /;
     $sep;
 }
-    
-#------------------------------------------
 
 sub filePosition(;$)
 {   my $self = shift;
@@ -146,8 +83,6 @@ sub filePosition(;$)
 }
 
 my $empty = qr/^[\015\012]*$/;
-
-#------------------------------------------
 
 sub readHeader($)
 {   my ($self, $wrap) = @_;
@@ -170,7 +105,7 @@ LINE:
         }
 
         # Do unfolding
-    
+
         my @body    = $line;
         while($line = $file->getline)
         {   last unless $line =~ m/^[ \t]/;
@@ -178,7 +113,7 @@ LINE:
             $body .= $line;
             push @body, $line;
         }
-    
+
         $body =~ s/\015?\012?$//;
 
         unless(length $body)
@@ -190,9 +125,9 @@ LINE:
         {   for($body) {s/\s+/ /gs; s/ $//s};
 
             $self->log(NOTICE =>
-                "Blanks stripped after header fieldname: $name.")
+                "Blanks stripped after header field name: $name.")
                     if $name =~ s/\s+$//;
-    
+
             $self->log(NOTICE => "Field $name is empty.")
                 unless length $body;
         }
@@ -212,8 +147,6 @@ LINE:
     $ret[1]  = $file->tell;
     @ret;
 }
-
-#------------------------------------------
 
 sub foldHeaderLine($$)
 {   my ($self, $original, $wrap) = (shift, shift, shift);
@@ -263,8 +196,6 @@ sub foldHeaderLine($$)
     \@lines;
 }
 
-#------------------------------------------
-
 sub _is_good_end($)
 {   my ($self, $where) = @_;
 
@@ -287,8 +218,6 @@ sub _is_good_end($)
     && ($sep !~ m/^From / || $line =~ m/ (19[789]|20[01])\d\b/ );
 }
 
-#------------------------------------------
-
 sub readSeparator()
 {   my $self = shift;
 
@@ -309,8 +238,6 @@ sub readSeparator()
     $file->seek($start, 0);
     ();
 }
-
-#------------------------------------------
 
 sub _read_stripped_lines(;$$)
 {   my ($self, $exp_chars, $exp_lines) = @_;
@@ -336,7 +263,7 @@ sub _read_stripped_lines(;$$)
         }
     }
     elsif(@seps)
-    {   
+    {
 
   LINE: while(my $line = $file->getline)
         {
@@ -367,8 +294,6 @@ sub _read_stripped_lines(;$$)
     \@lines;
 }
 
-#------------------------------------------
-
 sub _take_scalar($$)
 {   my ($self, $begin, $end) = @_;
     my $file = $self->{MBPP_file};
@@ -379,8 +304,6 @@ sub _take_scalar($$)
     $return =~ s/\015?//g;
     $return;
 }
-
-#------------------------------------------
 
 sub bodyAsString(;$$)
 {   my ($self, $exp_chars, $exp_lines) = @_;
@@ -402,9 +325,6 @@ sub bodyAsString(;$$)
     return ($begin, $file->tell, join('', @$lines));
 }
 
-
-#------------------------------------------
-
 sub bodyAsList(;$$)
 {   my ($self, $exp_chars, $exp_lines) = @_;
     my $file  = $self->{MBPP_file};
@@ -413,8 +333,6 @@ sub bodyAsList(;$$)
     my $lines = $self->_read_stripped_lines($exp_chars, $exp_lines);
     ($begin, $file->tell, @$lines);
 }
-
-#------------------------------------------
 
 sub bodyAsFile($;$$)
 {   my ($self, $out, $exp_chars, $exp_lines) = @_;
@@ -426,8 +344,6 @@ sub bodyAsFile($;$$)
     $out->print($_) foreach @$lines;
     ($begin, $file->tell, scalar @$lines);
 }
-
-#------------------------------------------
 
 sub bodyDelayed(;$$)
 {   my ($self, $exp_chars, $exp_lines) = @_;
@@ -447,29 +363,5 @@ sub bodyDelayed(;$$)
     my $chars = sum(map {length} @$lines);
     ($begin, $file->tell, $chars, scalar @$lines);
 }
-
-#------------------------------------------
-
-=head1 SEE ALSO
-
-L<Mail::Box-Overview>
-
-For support and additional documentation, see http://perl.overmeer.net/mailbox/
-
-=head1 AUTHOR
-
-Mark Overmeer (F<mailbox@overmeer.net>).
-All rights reserved.  This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-=head1 VERSION
-
-This code is beta, version 2.018.
-
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=cut
 
 1;

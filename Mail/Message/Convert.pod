@@ -1,0 +1,197 @@
+
+=head1 NAME
+
+
+Mail::Message::Convert - conversions between message types
+
+=head1 CLASS INHERITANCE
+
+Mail::Message::Convert
+   is a Mail::Reporter
+
+Mail::Message::Convert is extended by
+   Mail::Message::Convert::Html
+   Mail::Message::Convert::HtmlFormatPS
+   Mail::Message::Convert::HtmlFormatText
+   Mail::Message::Convert::MailInternet
+   Mail::Message::Convert::MimeEntity
+   Mail::Message::Convert::TextAutoformat
+
+=head1 SYNOPSIS
+
+
+Available methods are very converter-specific.
+
+=head1 DESCRIPTION
+
+
+This class is the base for various message (and message parts) converters.
+When the conversion does not change the contents of the body, most of
+the converters will return the source object.  In any case, an
+Mail::Message::Body is returned with the conversion applied but as
+much of the other meta data stored in the source body unchanged.
+
+In most cases, converters are created by Mail::Message when they are
+needed; have a look at the C<encode> and C<decoded> methods on message
+objects.
+
+The following converters are currently available:
+
+=over 4
+
+=item * Mail::Message::Convert::Html
+
+Plays tricks with HTML/XMHTML without help of external modules.
+
+=item * Mail::Message::Convert::HtmlFormatText
+
+Converts HTML body objects to plain text objects using the
+L<HTML::FormatText> module.
+
+=item * Mail::Message::Convert::HtmlFormatPS
+
+Converts HTML body objects to Postscript objects using the
+L<HTML::FormatPS> module.
+
+=item * Mail::Message::Convert::MailInternet
+
+Converts the simple Mail::Internet messages into Mail::Message
+objects.
+
+=item * Mail::Message::Convert::MimeEntity
+
+Converts the more complicated MIME::Entity messages into
+C<Mail::Message> objects.
+
+=item * Mail::Message::Convert::TextAutoformat
+
+Converts a text message into text using Text::Autoformat.
+
+=back
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS X<new>
+
+ OPTION               DEFAULT
+ fields               <see description>
+ log                  'WARNINGS'
+ trace                'WARNINGS'
+
+=over 4
+
+=item B<fields> =E<gt> NAMES|ARRAY-OF-NAMES|REGEXS X<new(fields)>
+
+Select the fields of a header which are to be handled.  Other fields will not
+be used.  The value of this option is passed to Mail::Message::Head::grepNames()
+whenever converters feel a need for header line selection.
+By default, the C<To>, C<From>, C<Cc>, C<Bcc>, C<Date>, C<Subject>, and their
+C<Resent-> counterparts will be selected.  Specify an empty list to get all
+fields.
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=back
+
+=back
+
+=head2 Converting
+
+=over 4
+
+=item B<selectedFields> HEAD X<selectedFields>
+
+Returns a list of fields to be included in the format.  The list is
+an ordered selection of the fields in the actual header, and filtered
+through the information as specified with the C<fields> option for
+new().
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

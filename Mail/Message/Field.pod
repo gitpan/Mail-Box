@@ -1,0 +1,309 @@
+
+=head1 NAME
+
+
+Mail::Message::Field - one line of a message header
+
+=head1 CLASS INHERITANCE
+
+Mail::Message::Field
+
+Mail::Message::Field is extended by
+   Mail::Message::Field::Fast
+   Mail::Message::Field::Flex
+
+=head1 SYNOPSIS
+
+
+ my $field = Mail::Message::Field->new(From => 'me@example.com');
+ print $field->name;
+ print $field->body;
+ print $field->comment;
+ print $field->content;  # body & comment
+ $field->print(\*OUT);
+ print $field->toString;
+ print "$field\n";
+ print $field->attribute('charset') || 'us-ascii';
+
+=head1 DESCRIPTION
+
+
+These objects each store one header line, and facilitates access routines to
+the information hidden in it.  Also, you may want to have a look at the
+added methods of a message:
+
+ my $from    = $message->from;
+ my $subject = $message->subject;
+ my $msgid   = $message->messageId;
+
+ my @to      = $message->to;
+ my @cc      = $message->cc;
+ my @bcc     = $message->bcc;
+ my @dest    = $message->destinations;
+
+ my $other   = $message->get('Reply-To');
+
+=head2 consideration
+
+Mail::Message::Field is the only object in the Mail::Box suite
+which is not derived from a Mail::Reporter.  The consideration is
+that fields are so often created, and such a small objects at the
+same time, that setting-up a logging for each of the objects is relatively
+expensive and not really useful.
+
+For the same reason, the are two types of fields: the flexible and
+the fast:
+
+=over 4
+
+=item * Mail::Message::Field::Flex
+
+The flexible implementation uses a has to store the data.  The new()
+and C<init> are split, so this object is extensible.
+
+=item * Mail::Message::Field::Fast
+
+The fast implementation uses an array to store the same data.  That
+will be faster.  Furthermore, it is less extensible because the object
+creation and initiation is merged into one method.
+
+=back
+
+As user of the object, there is not visible difference.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> DATA X<new>
+
+The constructor of this object does not follow the usual practise within
+the Mail::Box suite. The method can be used in one of the following ways:
+
+=over 4
+
+=item * B<new> LINE [,ARRAY-OF-OPTIONS]
+
+=item * B<new> NAME, BODY [,COMMENT [, OPTIONS]]
+
+=item * B<new> NAME, OBJECT|ARRAY-OF-OBJECTS [,COMMENT [, OPTIONS]]
+
+=back
+
+Create a new header-object.  Specify the whole header-LINE at once, and
+it will be split-up for you.  I case you already have the parts of the
+header-line, you may specify them.
+
+In structured fields (a list of pre-defined fields are considered
+to have a well-described format, checked with the isStructured() method)
+everything behind a semi-color is officially a COMMENT.  The comment is
+often (ab)used to supply extra information about the body information.
+When the field you specify is structured, and you do not specify a comment
+yourself, it will be stripped from the LINE or BODY for you.
+
+To keep the communication overhead low (there are too many of these
+field-objects to be created), the OPTIONS may be specified as last
+argument to new(), but as reference to an array.  There are no
+options defined yet, but they may appear in the future.
+
+In case you specify a single OBJECT, or a reference to an array of OBJECTS,
+these objects are processed to become suitable to fill a field.  When
+you specify one or more Mail::Address objects, these are transformed
+into a string using their C<format> method.
+
+You may also add one Mail::Message::Field, which body is taken.  For other
+objects, stringification is tried.  In case of an array, the elements are
+joined with a comma.
+
+Examples:
+
+ my @options = (log => 'NOTICE', trace => 'NONE');
+ my $mime = Mail::Message::Field->new(
+     'Content-Type: text/plain; charset=US-ASCII', \@options);
+
+ my $mime = Mail::Message::Field->new(
+     'Content-Type' => 'text/plain; charset=US-ASCII');
+
+ my $mime = Mail::Message::Field->new(
+     'Content-Type' => 'text/plain', 'charset=US-ASCII');
+
+ my $mime = Mail::Message::Field->new(
+     To => Mail::Address->new('my name', 'me@example.com');
+
+ my $mime = Mail::Message::Field->new(
+     Cc => [ Mail::Address->new('your name', 'you@example.com')
+           , Mail::Address->new('his name', 'he@example.com')
+           ]);
+
+But, more often, you would call
+
+ my $head = Mail::Message::Head->new;
+ $head->add('Content-Type' => 'text/plain; charset=US-ASCII');
+
+which implicitly calls this constructor (when needed).  You can specify
+the same things for add() as this C<new> accepts.
+
+=back
+
+=head2 The Field
+
+=over 4
+
+=item B<clone>  X<clone>
+
+Create a copy of this field object.
+
+=item B<isStructured>  X<isStructured>
+
+(object method or class method)
+
+Examples:
+
+ my $field = Mail::Message::Field->new(From => 'me');
+ if($field->isStructured)
+
+ Mail::Message::Field->isStructured('From');
+
+=back
+
+=head2 Access to the Field
+
+=over 4
+
+=item B<addresses>  X<addresses>
+
+Returns a list of Mail::Address objects, which represent the
+e-mail addresses found in this header line.
+
+Examples:
+
+ my @addr = $message->head->get('to')->addresses;
+ my @addr = $message->to;
+
+=item B<attribute> NAME [, VALUE] X<attribute>
+
+Get the value of an attribute, optionally after setting it to a new value.
+Attributes are part of some header lines, and hide themselves in the
+comment field.  If the attribute does not exist, then C<undef> is
+returned.  For instance
+
+ my $field = Mail::Message::Field->new(
+    'Content-Type: text/plain; charset="us-ascii"');
+ print $field->attribute('charset');        # --> us-ascii
+ print $field->attribute('bitmap') || 'no'  # --> no
+
+=item B<body>  X<body>
+
+Returns the body of the field, unmodified but stripped from comment
+and CR LF characters (as far as were present at creation).
+
+=item B<comment> [STRING] X<comment>
+
+Returns the comment (part after a semi-colon) in the header-line,
+optionally after setting it to a new value first.
+
+=item B<content>  X<content>
+
+Returns the body and comment part of the field, separated by
+a semi-colon.
+
+=item B<folded> [ARRAY-OF-LINES] X<folded>
+
+Returns the folded version of the header.  When the header is shorter
+than the wrap length, a list of one line is returned.  Otherwise more
+lines will be returned, all but the first starting with a blank.
+
+=item B<name>  X<name>
+
+Returns the name of this field, with all characters lower-cased for
+ease of comparison.
+
+=item B<nrLines>  X<nrLines>
+
+Returns the number of lines needed to display this header-line.
+
+=item B<print> [FILEHANDLE] X<print>
+
+Print the whole header-line to the specified file-handle. One line may
+result in more than one printed line, because of the folding of long
+lines.  The FILEHANDLE defaults to the selected handle.
+
+=item B<size>  X<size>
+
+Returns the number of bytes needed to display this header-line.
+
+=item B<toDate> TIME X<toDate>
+
+(Class method) Convert a timestamp into a MIME-acceptable date format.
+
+Examples:
+
+ Mail::Message::Field->toDate(localtime);
+
+=item B<toInt>  X<toInt>
+
+Returns the value which is related to this field as integer.  A check is
+performed whether this is right.
+
+=item B<toString>  X<toString>
+
+Returns the whole header-line.
+
+Example:
+
+    my @lines = $field->toString;
+    print $field->toString;
+    print "$field";
+
+=item B<wellformedName> [STRING] X<wellformedName>
+
+(Instance method class method)
+As instance method, the current field's name is correctly formatted
+and returned.  When a STRING is used, that one is formatted.
+
+Examples:
+
+ print Mail::Message::Field->Name('content-type') # Content-Type
+
+ my $field = $head->get('date');
+ print $field->Name;                              # Date
+
+=back
+
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<newNoCheck> NAME, BODY, COMMENT, [FOLDED] X<newNoCheck>
+
+(Class method)
+Do not use this yourself.  This creates an object without checking, which
+is ok when the parser is doing that already.  However, if you add unchecked
+fields you may get into big trouble!
+
+=item B<setWrapLength> CHARS X<setWrapLength>
+
+Make the header fold before the specified number of CHARS on a line.  This
+will be ignored for un-structured headers.
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

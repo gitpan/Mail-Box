@@ -124,7 +124,7 @@ For instance, use C<timestamp> to find old messages:
 
 =head2 Create a reply
 
-The complex message treatment is implemented in C<Mail::Message::Construct>
+The complex message treatment is implemented in Mail::Message::Construct
 and automatically loaded when needed.  It is sufficient to simply call
 C<reply> on any message:
 
@@ -176,22 +176,22 @@ There are three ways to create a message which is not a reply:
 
 =over 4
 
-=item * C<Mail::Message-E<gt>buildFromBody>
+=item * Mail::Message::buildFromBody()
 
 Start with creating a body, and transform that into a message.
 
-=item * C<Mail::Message-E<gt>build>
+=item * Mail::Message::build()
 
 create the whole message at once.
 
-=item * C<Mail::Message-E<gt>read>
+=item * Mail::Message::read()
 
 read a message from a file-handle, scalar, or array of lines.
 
 =back
 
-All three methods are implemented in L<Mail::Message::Construct>.  Please,
-do yourself a favour, and give preference to the C<build*> methods, over
+All three methods are implemented in Mail::Message::Construct.  Please,
+do yourself a favor, and give preference to the C<build*> methods, over
 the C<read>, because they are much more powerful.  Use the C<read> only
 when you have the message on STDIN or an array of lines which is supplied
 by an external program.
@@ -200,7 +200,7 @@ Very important to remember from now on: information about the content of
 the body (the C<Content-> lines in the header) is stored within the body
 object, for as long as the body is not contained with a message object.
 
-For instance, C<$message->decoded> returns the decoded body of the
+For instance, C<< $message->decoded >> returns the decoded body of the
 C<$message>.  It is a body object by itself, however outside a real
 message.  Then you may want to play around with it, by concatenating
 some texts: again resulting in a new body.  Each body contains the
@@ -219,7 +219,7 @@ mail folders and transmission programs.
 Above example creates a body, with explicitly stating what kind of data
 is stored in it.  The default mime type is C<text/plain>.  The transfer
 encoding defaults to C<none>.  Each message will get encoded on the moment
-it is added to a message.  The default encoding dependends on the mime type.
+it is added to a message.  The default encoding depends on the mime type.
 
 To start with the first way to create a message.  This solution provides
 maximum control over the message creation.  Quite some work is hidden for
@@ -233,7 +233,7 @@ you when executing the next line.
    );
 
 For header lines, you may specify a string, an address object
-(C<Mail::Address>), or an array of such addresses.  If you want to create
+(Mail::Address), or an array of such addresses.  If you want to create
 multi-part messages, you need to create a multi-part body yourself first.
 
 The second way of constructing a message uses the C<build> method.  A
@@ -259,18 +259,14 @@ multi-part message is produced.
 
 =head1 SEE ALSO
 
-The scripts in the C<examples/> directory, included in the distribution
-and L<Mail::Box-Overview>.
+The scripts in the C<examples/> and C<scripts/> directories, included in the
+distribution and Mail::Box-Overview.
 
 =head1 AUTHOR
 
 Mark Overmeer (F<mailbox@overmeer.net>).
 All rights reserved.  This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.
-
-=head1 VERSION
-
-This code is beta, version $version.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

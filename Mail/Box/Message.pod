@@ -1,0 +1,461 @@
+
+=head1 NAME
+
+
+Mail::Box::Message - manage one message within a mail-folder
+
+=head1 CLASS INHERITANCE
+
+Mail::Box::Message
+   is a Mail::Message
+   is a Mail::Reporter
+
+Mail::Box::Message is extended by
+   Mail::Box::Dir::Message
+   Mail::Box::Mbox::Message
+   Mail::Box::Net::Message
+
+=head1 SYNOPSIS
+
+
+ # Usually these message objects are created indirectly
+ use Mail::Box::Manager;
+ my $manager = Mail::Box::Manager->new;
+ my $folder  = $manager->open(folder => 'Mail/Drafts');
+ my $msg     = $folder->message(1);
+ $msg->delete;
+ $msg->size;   # and much more
+
+=head1 DESCRIPTION
+
+
+These pages do only describe methods which relate to folders.  If you
+access the knowledge of a message, then read Mail::Message.
+
+During its life, a message will pass through certain stages.  These
+stages were introduced to reduce the access-time to the folder.  Changing
+from stage, the message's body and head objects may change.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS X<new>
+
+ OPTION               DEFAULT
+ body                 undef
+ body_type            <from folder>
+ deleted              <false>
+ field_type           undef
+ folder               <required>
+ head                 undef
+ head_type            'Mail::Message::Head::Complete'
+ head_wrap            72
+ log                  'WARNINGS'
+ messageId            undef
+ modified             <false>
+ size                 undef
+ trace                'WARNINGS'
+ trusted              <false>
+
+=over 4
+
+=item B<body> =E<gt> OBJECT
+
+See Mail::Message::new(body)
+
+=item B<body_type> =E<gt> CODE|CLASS X<new(body_type)>
+
+If the body of a message is used delay-loaded, the message must what type
+of message to become when it finally gets parsed.  The folder which is
+delaying the load must specify the algorithm to determine that type.
+
+=item B<deleted> =E<gt> BOOLEAN X<new(deleted)>
+
+Is the file deleted from the start?
+
+=item B<field_type> =E<gt> CLASS
+
+See Mail::Message::new(field_type)
+
+=item B<folder> =E<gt> FOLDER X<new(folder)>
+
+(obligatory) The folder where this message appeared in.  The argument is
+an instance of (a sub-class of) a Mail::Box.
+
+=item B<head> =E<gt> OBJECT
+
+See Mail::Message::new(head)
+
+=item B<head_type> =E<gt> CLASS
+
+See Mail::Message::new(head_type)
+
+=item B<head_wrap> =E<gt> INTEGER
+
+See Mail::Message::new(head_wrap)
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<messageId> =E<gt> STRING
+
+See Mail::Message::new(messageId)
+
+=item B<modified> =E<gt> BOOLEAN
+
+See Mail::Message::new(modified)
+
+=item B<size> =E<gt> INTEGER X<new(size)>
+
+The size of the message, which includes head and body, but without the
+message separators which may be used by the folder type.
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=item B<trusted> =E<gt> BOOLEAN
+
+See Mail::Message::new(trusted)
+
+=back
+
+=back
+
+=head2 Constructing a Message
+
+=over 4
+
+=item B<coerce> MESSAGE X<coerce>
+
+Coerce a message to be included in a folder.  The folder itself
+is not specified, but the type of the message is transformed correctly.
+The coerced version of the message is returned.  When no changes had
+to be made, the original message is returned.
+
+=back
+
+=head2 The Message
+
+=over 4
+
+=item B<clone> 
+
+See Mail::Message::clone()
+
+=item B<copyTo> FOLDER X<copyTo>
+
+Copy the message to the indicated opened FOLDER, without deleting the
+original.  The coerced message (the copy) is returned.
+
+Examples:
+
+ my $draft = $mgr->open(folder => 'Draft');
+ $message->copyTo($draft);
+
+=item B<folder> [FOLDER] X<folder>
+
+In with folder did we detect this message/dummy?  This is a reference
+to the folder-object.
+
+=item B<isDummy> 
+
+See Mail::Message::isDummy()
+
+=item B<isPart> 
+
+See Mail::Message::isPart()
+
+=item B<messageId> 
+
+See Mail::Message::messageId()
+
+=item B<modified> [BOOLEAN]
+
+See Mail::Message::modified()
+
+=item B<parent> 
+
+See Mail::Message::parent()
+
+=item B<print> [FILEHANDLE]
+
+See Mail::Message::print()
+
+=item B<send> [MAILER], OPTIONS
+
+See Mail::Message::send()
+
+=item B<seqnr> [INTEGER] X<seqnr>
+
+Get the number of this message is the current folder.  It starts counting
+from zero.  Do not change the number.
+
+=item B<size> 
+
+See Mail::Message::size()
+
+=item B<toplevel> 
+
+See Mail::Message::toplevel()
+
+=back
+
+=head2 The Header
+
+=over 4
+
+=item B<get> FIELD
+
+See Mail::Message::get()
+
+=item B<head> [HEAD]
+
+See Mail::Message::head()
+
+=back
+
+=head2 Header Shortcuts
+
+=over 4
+
+=item B<bcc> 
+
+See Mail::Message::bcc()
+
+=item B<cc> 
+
+See Mail::Message::cc()
+
+=item B<date> 
+
+See Mail::Message::date()
+
+=item B<destinations> 
+
+See Mail::Message::destinations()
+
+=item B<from> 
+
+See Mail::Message::from()
+
+=item B<guessTimestamp> 
+
+See Mail::Message::guessTimestamp()
+
+=item B<nrLines> 
+
+See Mail::Message::nrLines()
+
+=item B<subject> 
+
+See Mail::Message::subject()
+
+=item B<timestamp> 
+
+See Mail::Message::timestamp()
+
+=item B<to> 
+
+See Mail::Message::to()
+
+=back
+
+=head2 The Body
+
+=over 4
+
+=item B<body> [BODY]
+
+See Mail::Message::body()
+
+=item B<decoded> OPTIONS
+
+See Mail::Message::decoded()
+
+=item B<encode> OPTIONS
+
+See Mail::Message::encode()
+
+=item B<isMultipart> 
+
+See Mail::Message::isMultipart()
+
+=item B<parts> ['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER]
+
+See Mail::Message::parts()
+
+=back
+
+=head2 Labels
+
+=over 4
+
+=item B<delete>  X<delete>
+
+Flag the message to be deleted.  The real deletion only takes place on
+a synchronization of the folder.
+
+Examples:
+
+ $message->delete;
+ delete $message;
+
+=item B<deleted> [BOOLEAN] X<deleted>
+
+Check or set the deleted flag for this message.  This method returns
+undef (not deleted, false) or the time of deletion (true).  With a
+BOOL argument, the status is changed first.
+
+Examples:
+
+ if($message->deleted) {...}
+ $message->deleted(0);        # undelete
+
+=item B<label> LABEL [,VALUE [LABEL, VALUE] ]
+
+See Mail::Message::label()
+
+=item B<labels> 
+
+See Mail::Message::labels()
+
+=back
+
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<DESTROY> 
+
+See Mail::Message::DESTROY()
+
+=item B<isDelayed> 
+
+See Mail::Message::isDelayed()
+
+=item B<labelsToStatus> 
+
+See Mail::Message::labelsToStatus()
+
+=item B<readFromParser> PARSER, [BODYTYPE]
+
+See Mail::Message::readFromParser()
+
+=item B<readHead> PARSER [,CLASS]
+
+See Mail::Message::readHead()
+
+=item B<statusToLabels> 
+
+See Mail::Message::statusToLabels()
+
+=item B<storeBody> BODY
+
+See Mail::Message::storeBody()
+
+=item B<takeMessageId> [STRING]
+
+See Mail::Message::takeMessageId()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<diskDelete>  X<diskDelete>
+
+Remove a message from disk.  This is not from the folder, but everything
+else, like parts of the message which are stored externally from the
+folder.
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<readBody> PARSER, HEAD [, BODYTYPE] X<readBody>
+
+Read the body of one message.  The PARSER gives access to the folder file.
+The HEAD has been read with C<readHead>.  The optional BODYTYPE supplies
+the class name of the body to be created, or a code reference to a
+routine which can produce a body type based on the head (passed as
+first argument).
+
+By default, the BODYTYPE will call C<determineBodyType> method of the
+folder where the message will be added to.
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<shortString>  X<shortString>
+
+Convert the message header to a short string, representing the most
+important facts (for debugging purposes only).
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

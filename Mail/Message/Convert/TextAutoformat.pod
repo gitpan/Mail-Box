@@ -1,0 +1,156 @@
+
+=head1 NAME
+
+
+Mail::Message::Convert::TextAutoformat - Reformat plain text messages
+
+=head1 CLASS INHERITANCE
+
+Mail::Message::Convert::TextAutoformat
+   is a Mail::Message::Convert
+   is a Mail::Reporter
+
+=head1 SYNOPSIS
+
+
+ use Mail::Message::Convert::TextAutoformat;
+ my $af = Mail::Message::Convert::TextAutoformat->new;
+
+ my $beautified_body = $af->autoformatBody($body);
+
+=head1 DESCRIPTION
+
+
+Play trics with plain text, for instance bodies with type C<text/plain>
+using Damian Conways Text::Autoformat.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS X<new>
+
+ OPTION               DEFAULT
+ fields               <see description>
+ log                  'WARNINGS'
+ options              { all => 1 }
+ trace                'WARNINGS'
+
+=over 4
+
+=item B<fields> =E<gt> NAMES|ARRAY-OF-NAMES|REGEXS
+
+See Mail::Message::Convert::new(fields)
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<options> =E<gt> HASH-REF X<new(options)>
+
+Options to pass to Text::Autoformat, when its C<autoformat> method
+is called.
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=back
+
+=back
+
+=head2 Converting
+
+=over 4
+
+=item B<autoformatBody> BODY X<autoformatBody>
+
+Formats a single message body (a Mail::Message::Body object)
+into a new body object using Text::Autoformat.  If the
+Text::Autoformat is not installed, C<undef> is returned.
+
+=item B<selectedFields> HEAD
+
+See Mail::Message::Convert::selectedFields()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

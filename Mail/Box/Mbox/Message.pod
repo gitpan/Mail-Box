@@ -1,0 +1,450 @@
+
+=head1 NAME
+
+
+Mail::Box::Mbox::Message - one message in a Mbox folder
+
+=head1 CLASS INHERITANCE
+
+Mail::Box::Mbox::Message
+   is a Mail::Box::Message
+   is a Mail::Message
+   is a Mail::Reporter
+
+=head1 SYNOPSIS
+
+
+ my $folder  = new Mail::Box::Mbox folder => $ENV{MAIL}, ...;
+ my $message = $folder->message(0);
+
+=head1 DESCRIPTION
+
+
+Maintain one message in an Mbox folder.  See the Mail::Message
+documentation for exceptions and extensions to messages which are
+Mbox-specific on this page.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS X<new>
+
+Messages in file-based folders use the following options for creation:
+
+ OPTION               DEFAULT
+ body                 undef
+ body_type            <from folder>
+ deleted              <false>
+ field_type           undef
+ folder               <required>
+ from_line            undef
+ head                 undef
+ head_type            'Mail::Message::Head::Complete'
+ head_wrap            72
+ log                  'WARNINGS'
+ messageId            undef
+ modified             <false>
+ size                 undef
+ trace                'WARNINGS'
+ trusted              <false>
+
+=over 4
+
+=item B<body> =E<gt> OBJECT
+
+See Mail::Message::new(body)
+
+=item B<body_type> =E<gt> CODE|CLASS
+
+See Mail::Box::Message::new(body_type)
+
+=item B<deleted> =E<gt> BOOLEAN
+
+See Mail::Box::Message::new(deleted)
+
+=item B<field_type> =E<gt> CLASS
+
+See Mail::Message::new(field_type)
+
+=item B<folder> =E<gt> FOLDER
+
+See Mail::Box::Message::new(folder)
+
+=item B<from_line> =E<gt> STRING X<new(from_line)>
+
+The line which begins each message in the file. Some people detest
+this line, but this is just how things were invented...
+
+=item B<head> =E<gt> OBJECT
+
+See Mail::Message::new(head)
+
+=item B<head_type> =E<gt> CLASS
+
+See Mail::Message::new(head_type)
+
+=item B<head_wrap> =E<gt> INTEGER
+
+See Mail::Message::new(head_wrap)
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<messageId> =E<gt> STRING
+
+See Mail::Message::new(messageId)
+
+=item B<modified> =E<gt> BOOLEAN
+
+See Mail::Message::new(modified)
+
+=item B<size> =E<gt> INTEGER
+
+See Mail::Box::Message::new(size)
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=item B<trusted> =E<gt> BOOLEAN
+
+See Mail::Message::new(trusted)
+
+=back
+
+=back
+
+=head2 Constructing a Message
+
+=over 4
+
+=item B<coerce> MESSAGE
+
+See Mail::Box::Message::coerce()
+
+=back
+
+=head2 The Message
+
+=over 4
+
+=item B<clone> 
+
+See Mail::Message::clone()
+
+=item B<copyTo> FOLDER
+
+See Mail::Box::Message::copyTo()
+
+=item B<folder> [FOLDER]
+
+See Mail::Box::Message::folder()
+
+=item B<isDummy> 
+
+See Mail::Message::isDummy()
+
+=item B<isPart> 
+
+See Mail::Message::isPart()
+
+=item B<messageId> 
+
+See Mail::Message::messageId()
+
+=item B<modified> [BOOLEAN]
+
+See Mail::Message::modified()
+
+=item B<parent> 
+
+See Mail::Message::parent()
+
+=item B<print> [FILEHANDLE] X<print>
+
+Write one message to a file handle.  Unmodified messages are taken
+from the folder-file where they were stored.  Modified messages
+are written to memory.  Specify a FILEHANDLE to write to
+(defaults to the selected handle).
+
+=item B<send> [MAILER], OPTIONS
+
+See Mail::Message::send()
+
+=item B<seqnr> [INTEGER]
+
+See Mail::Box::Message::seqnr()
+
+=item B<size> 
+
+See Mail::Message::size()
+
+=item B<toplevel> 
+
+See Mail::Message::toplevel()
+
+=back
+
+=head2 The Header
+
+=over 4
+
+=item B<get> FIELD
+
+See Mail::Message::get()
+
+=item B<head> [HEAD]
+
+See Mail::Message::head()
+
+=back
+
+=head2 Header Shortcuts
+
+=over 4
+
+=item B<bcc> 
+
+See Mail::Message::bcc()
+
+=item B<cc> 
+
+See Mail::Message::cc()
+
+=item B<date> 
+
+See Mail::Message::date()
+
+=item B<destinations> 
+
+See Mail::Message::destinations()
+
+=item B<from> 
+
+See Mail::Message::from()
+
+=item B<guessTimestamp> 
+
+See Mail::Message::guessTimestamp()
+
+=item B<nrLines> 
+
+See Mail::Message::nrLines()
+
+=item B<subject> 
+
+See Mail::Message::subject()
+
+=item B<timestamp> 
+
+See Mail::Message::timestamp()
+
+=item B<to> 
+
+See Mail::Message::to()
+
+=back
+
+=head2 The Body
+
+=over 4
+
+=item B<body> [BODY]
+
+See Mail::Message::body()
+
+=item B<decoded> OPTIONS
+
+See Mail::Message::decoded()
+
+=item B<encode> OPTIONS
+
+See Mail::Message::encode()
+
+=item B<isMultipart> 
+
+See Mail::Message::isMultipart()
+
+=item B<parts> ['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER]
+
+See Mail::Message::parts()
+
+=back
+
+=head2 Labels
+
+=over 4
+
+=item B<delete> 
+
+See Mail::Box::Message::delete()
+
+=item B<deleted> [BOOLEAN]
+
+See Mail::Box::Message::deleted()
+
+=item B<label> LABEL [,VALUE [LABEL, VALUE] ]
+
+See Mail::Message::label()
+
+=item B<labels> 
+
+See Mail::Message::labels()
+
+=back
+
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<DESTROY> 
+
+See Mail::Message::DESTROY()
+
+=item B<fileLocation>  X<fileLocation>
+
+Returns the location of the whole message including the from-line.  In
+LIST context, both begin and end are returned.  In SCALAR context, only
+the begin is passed back.
+
+=item B<fromLine> [LINE] X<fromLine>
+
+Many people detest file-style folders because they store messages all in
+one file, where a line starting with C<From > leads the header.  If we
+receive a message from a file-based folder, we store that line.  If we write
+to such a file, but there is no such line stored, then we try to generate
+one.
+
+If LINE is provided, then the starting line is set to this value.
+
+=item B<isDelayed> 
+
+See Mail::Message::isDelayed()
+
+=item B<labelsToStatus> 
+
+See Mail::Message::labelsToStatus()
+
+=item B<loadBody>  X<loadBody>
+
+=item B<moveLocation> DISTANCE X<moveLocation>
+
+The message is relocated in the file, being moved over DISTANCE bytes.
+Setting a new location will update the according information in the header
+and body.
+
+=item B<read> PARSER X<read>
+
+Read one message from a Mbox folder, including the message separator.
+
+=item B<readFromParser> PARSER, [BODYTYPE]
+
+See Mail::Message::readFromParser()
+
+=item B<readHead> PARSER [,CLASS]
+
+See Mail::Message::readHead()
+
+=item B<statusToLabels> 
+
+See Mail::Message::statusToLabels()
+
+=item B<storeBody> BODY
+
+See Mail::Message::storeBody()
+
+=item B<takeMessageId> [STRING]
+
+See Mail::Message::takeMessageId()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<diskDelete> 
+
+See Mail::Box::Message::diskDelete()
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<readBody> PARSER, HEAD [, BODYTYPE]
+
+See Mail::Box::Message::readBody()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<shortString> 
+
+See Mail::Box::Message::shortString()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

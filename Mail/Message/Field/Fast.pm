@@ -2,61 +2,11 @@ use strict;
 use warnings;
 
 package Mail::Message::Field::Fast;
+our $VERSION = 2.019;  # Part of Mail::Box
 use base 'Mail::Message::Field';
 
 use Carp;
 
-our $VERSION = 2.018;
-
-=head1 NAME
-
-Mail::Message::Field::Fast - one line of a message header
-
-=head1 CLASS HIERARCHY
-
- Mail::Message::Field::Fast
- is a Mail::Message::Field
-
-=head1 SYNOPSIS
-
- See L<Mail::Message::Field>
-
-=head1 DESCRIPTION
-
-See C<Mail::Message::Field>.  This is the faster, but less flexible
-implementation of a header field.  The data is stored in an array,
-and some hacks are made to speeds things up.  Be gentle with me, and
-consider that each message contains many of these lines, so speed
-is very important here.
-
-=head1 METHOD INDEX
-
-Methods prefixed with an abbreviation are described in
-L<Mail::Message::Field> (MMF).
-
-The general methods for C<Mail::Message::Field::Fast> objects:
-
-  MMF addresses                        MMF new ...
-  MMF attribute NAME [, VALUE]         MMF print [FILEHANDLE]
-  MMF body                             MMF toDate TIME
-  MMF comment [STRING]                 MMF toInt
-  MMF content                          MMF toString
-  MMF folded [ARRAY-OF-LINES]          MMF wellformedName ...
-  MMF name
-
-The extra methods for extension writers:
-
-  MMF clone                            MMF nrLines
-  MMF isStructured                     MMF setWrapLength CHARS
-  MMF newNoCheck NAME, BODY, COMM...   MMF size
-
-=head1 METHODS
-
-=over 4
-
-=cut
-
-#------------------------------------------
 #
 # The array is defined as:
 #   [ $name, $body, $comment, $folded ]
@@ -98,7 +48,7 @@ sub new($;$$@)
             map {$_->isa('Mail::Address') ? $_->format : "$_"}
                 (ref $body eq 'ARRAY' ? @$body : $body);
     }
-    
+
     warn "Header-field name contains illegal character: $name\n"
         if $name =~ m/[^\041-\176]/;
 
@@ -125,27 +75,25 @@ sub new($;$$@)
     bless [$name, $body, $comment], $class;
 }
 
-#------------------------------------------
+sub clone()
+{   my $self = shift;
+    bless [ @$self ], ref $self;
+}
 
 sub name() { lc shift->[0] }
-sub body() {    shift->[1] }
 
-#------------------------------------------
+sub body() {    shift->[1] }
 
 sub comment(;$)
 {   my $self = shift;
     @_ ? $self->[2] = shift : $self->[2];
 }
 
-#------------------------------------------
-
 sub content()
 {   my $self = shift;
     return $self->[1] unless defined $self->[2];
     "$self->[1]; $self->[2]";
 }
-
-#------------------------------------------
 
 sub folded(;$)
 {   my $self = shift;
@@ -160,54 +108,9 @@ sub folded(;$)
     : "$self->[0]: $self->[1]\n";
 }
 
-#------------------------------------------
-
-=back
-
-=head1 METHODS for extension writers
-
-=over 4
-
-=cut
-
-#------------------------------------------
-
-sub clone()
-{   my $self = shift;
-    bless [ @$self ], ref $self;
-}
-
-#------------------------------------------
-
 sub newNoCheck($$$;$)
 {   my $class = shift;
     bless [ @_ ], $class;
 }
-
-#------------------------------------------
-
-=back
-
-=head1 SEE ALSO
-
-L<Mail::Box-Overview>
-
-For support and additional documentation, see http://perl.overmeer.net/mailbox/
-
-=head1 AUTHOR
-
-Mark Overmeer (F<mailbox@overmeer.net>).
-All rights reserved.  This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-=head1 VERSION
-
-This code is beta, version 2.018.
-
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=cut
 
 1;

@@ -1,0 +1,397 @@
+
+=head1 NAME
+
+
+Mail::Message::Head::Complete - the header of one message
+
+=head1 CLASS INHERITANCE
+
+Mail::Message::Head::Complete
+   is a Mail::Message::Head
+   is a Mail::Reporter
+
+Mail::Message::Head::Complete is realized by
+   Mail::Message::Head::Delayed
+   Mail::Message::Head::Subset
+
+=head1 SYNOPSIS
+
+
+ my $head = Mail::Message::Head::Complete->new;
+ See Mail::Message::Head
+
+=head1 DESCRIPTION
+
+
+A mail's message can be in various states: unread, partially read, and
+fully read.  The class stores a message of which all header lines are
+known for sure.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<build> FIELDS
+
+See Mail::Message::Head::build()
+
+=item B<new> OPTIONS X<new>
+
+ OPTION               DEFAULT
+ field_type           'Mail::Message::Field::Fast'
+ log                  'WARNINGS'
+ message              undef
+ modified             <false>
+ trace                'WARNINGS'
+ wrap_length          72
+
+=over 4
+
+=item B<field_type> =E<gt> CLASS
+
+See Mail::Message::Head::new(field_type)
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<message> =E<gt> MESSAGE
+
+See Mail::Message::Head::new(message)
+
+=item B<modified> =E<gt> BOOLEAN
+
+See Mail::Message::Head::new(modified)
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=item B<wrap_length> =E<gt> INTEGER
+
+See Mail::Message::Head::new(wrap_length)
+
+=back
+
+=back
+
+=head2 The Header
+
+=over 4
+
+=item B<clone> [FIELDS] X<clone>
+
+Make a copy of the header, optionally limited only to the header lines
+specified by FIELDS.  The lines which are taken must start with one of the
+list.  If no list is specified, all will be taken.
+
+Examples:
+
+ my $newhead = $head->clone('Subject', 'Received');
+
+=item B<isDelayed> 
+
+See Mail::Message::Head::isDelayed()
+
+=item B<isEmpty> 
+
+See Mail::Message::Head::isEmpty()
+
+=item B<isMultipart> 
+
+See Mail::Message::Head::isMultipart()
+
+=item B<isResent> 
+
+See Mail::Message::Head::isResent()
+
+=item B<message> [MESSAGE]
+
+See Mail::Message::Head::message()
+
+=item B<modified> [BOOLEAN]
+
+See Mail::Message::Head::modified()
+
+=back
+
+=head2 Constructing a Header
+
+=over 4
+
+=item B<add> FIELD | LINE | NAME, BODY [,COMMENT] X<add>
+
+Add a field to the header.  If a field is added more than once, all values
+are stored in the header, in the order they are added.
+
+The return value of this method is the Mail::Message::Field object
+which is created (or was specified).  Triggers Completion.
+
+Examples:
+
+ my $head  = Mail::Message::Head->new;
+ $head->add('Subject: hi!');
+ $head->add(From => 'me@home');
+ my $field = Mail::Message::Field->new('To: you@there');
+ $head->add($field);
+ my Mail::Message::Field $s = $head->add(Sender => 'I');
+
+=item B<delete> NAME X<delete>
+
+Remove the field with the specified name.  If the header contained
+multiple lines with the same name, they will be replaced all together.
+This method simply calls reset().
+
+=item B<reset> NAME, FIELDS X<reset>
+
+Replace the values in the header fields named by NAME with the values
+specified in the list of FIELDS. A single name can correspond to multiple
+repeated fields.
+
+If FIELDS is empty, the corresponding NAME fields will
+be removed. The location of removed fields in the header order will be
+remembered. Fields with the same name which are added later will appear at
+the remembered position.  This is equivalent to the delete() method.
+
+Examples:
+
+ # reduce number of 'Received' lines to last 5)
+ my @received = $head->get('Received');
+ $head->reset('Received', @received[-5..-1]) if @received > 5;
+
+=item B<set> FIELD | LINE | NAME, BODY [,COMMENT] X<set>
+
+The C<set> method is similar to the add() method, and takes the same
+options. However, existing values for fields will be removed before a new
+value is added.
+
+=back
+
+=head2 Access to the Header
+
+=over 4
+
+=item B<count> NAME X<count>
+
+Count the number of fields with this NAME.  Most fields will return 1: only one
+occurance in the header.  As example, the C<Received> fields are usually present
+more than once.
+
+=item B<get> NAME [,INDEX]
+
+See Mail::Message::Head::get()
+
+=item B<grepNames> [NAMES|ARRAY-OF-NAMES|REGEXS] X<grepNames>
+
+Filter from all header names the names which start will any of the
+specified list.  When no names are specified, all names will be returned.
+The list is ordered as they where read from file, or added later.
+
+The NAMES are regular expressions, and will all be matched case insensitive
+and attached to the front of the string only.  You may also specify
+one or more prepared regexes.
+
+Examples:
+
+ print $head->grepNames();         # same as $head->names
+ print $head->grepNames('X-', 'Subject', ');
+ print $head->grepNames('To\b');   # will only select To
+
+=item B<guessBodySize>  X<guessBodySize>
+
+Try to estimate the size of the body of this message, but without parsing
+the header or body.  The result might be C<undef> or a few percent of
+the real size.  It may even be very far of the real value, that's why
+this is a guess.
+
+=item B<guessTimeStamp>  X<guessTimeStamp>
+
+Make a guess about when the message was origanally posted, based on the
+information found in the header.
+
+For some kinds of folders, Mail::Box::guessTimestamp() may produce a better
+result, for instance by looking at the modification time of the file in
+which the message is stored.  Also some protocols, like POP can supply that
+information.
+
+=item B<knownNames> 
+
+See Mail::Message::Head::knownNames()
+
+=item B<names>  X<names>
+
+Returns a full ordered list of known field names, as defined in the
+header.  Fields which were reset() to be empty will still be
+listed here.
+
+=item B<nrLines>  X<nrLines>
+
+Return the number of lines needed to display this header (including
+the trailing newline)
+
+=item B<print> [FILEHANDLE] X<print>
+
+Print all headers to the specified FILEHANDLE, by default the selected
+filehandle.  See printUndisclosed() to limit the headers to include
+only the public headers.
+
+Examples:
+
+ $head->print(\*OUT);
+ $head->print;
+
+ my $fh = FileHandle->new(...);
+ $head->print($fh);
+
+=item B<printUndisclosed> [FILEHANDLE] X<printUndisclosed>
+
+Like the usual print(), the header lines are printed to the specified
+FILEHANDLE, by default the selected filehandle.  In this case, however,
+C<Bcc> and C<Resent-Bcc> lines are included.
+
+=item B<size>  X<size>
+
+Return the number of bytes needed to display this header (including
+the trailing newline).
+
+=item B<timestamp>  X<timestamp>
+
+Will return a good indication of about when the message was send, with as
+little guessing as possible.  The timestamp is encoded as C<time> is
+on your system (see perldoc -f time), and as such usable for the C<gmtime>
+and C<localtime> methods.
+
+=item B<toString>  X<toString>
+
+Returns the whole header as one scalar (in scalar context) or list
+of lines (list context).  Triggers completion.
+
+=back
+
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<addNoRealize> FIELD
+
+See Mail::Message::Head::addNoRealize()
+
+=item B<createFromLine>  X<createFromLine>
+
+For some mail-folder types separate messages by a line starting with
+'C<From >'.  If a message is moved to such folder from a folder-type
+which does not support these separators, this method is called to produce
+one.
+
+=item B<createMessageId>  X<createMessageId>
+
+Creates a message-id for this message.  This method will be run when
+a new message is created, or a message is discovered without the
+message-id header field.  Message-ids are required for detection of
+message-threads.
+
+=item B<fileLocation> 
+
+See Mail::Message::Head::fileLocation()
+
+=item B<load> 
+
+See Mail::Message::Head::load()
+
+=item B<moveLocation> DISTANCE
+
+See Mail::Message::Head::moveLocation()
+
+=item B<read> PARSER
+
+See Mail::Message::Head::read()
+
+=item B<setNoRealize> FIELD
+
+See Mail::Message::Head::setNoRealize()
+
+=item B<wrapLength> [CHARS]
+
+See Mail::Message::Head::wrapLength()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

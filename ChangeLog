@@ -7,7 +7,59 @@ NOTE: The number of changes and fixes for each release seem large, but
       usually limited to areas which are under development.  Mail::Box
       is a huge module, so there is always a lot of activity.
 
-version 2.018:
+version 2.019:
+
+	Fixes:
+
+	- Parsing messages could destroy $_ and IN/OUT file-handles from
+	  the user's program.  Found a few places in Mail/Message/Body/*.pm
+	  Problem spotted by [Jerrad Pierce]
+
+	- Mail::Message::Head::Delayed extends a Mail::Message::Head, not
+	  a Mail::Reporter.
+
+	- Using an Index with MH folders caused each message header to be
+	  triggered: a considerable slowdown.
+
+	Improvements:
+
+	- [Blair Zajac] donated a large set of documentation fixes.
+	  Even some hidden bugs got fixed this way.
+
+	- Implemented Mail::Message::Body::Multipart::file(), because
+	  it is required for Mail::Transport::SMTP.  Spotted by
+	  [Marty J. Riley]
+
+	- Mail::Box::Tie::ARRAY and ::HASH simulate real arrays and hashes
+	  better with respect to deleted items.
+
+	- Mail::Box::Message::Dummy is renamed into Mail::Message::Dummy,
+	  which inherit from Mail::Message, not Mail::Box::Message.
+
+	- Mail::Message::Dummy's now follow the standard pattern of
+	  Mail::Message.
+
+	- The Mail::Box::Thread::Manager is now also an extension of a
+	  Mail::Reporter.
+
+	- The Mail::Box::Thread::Node is now also extends Mail::Reporter.
+
+	- Added extra doc to MH::Message to avoid confusion between seqnr
+	  and filename (which is a number as well).  Needed by
+	  [Jerrad Pierce]
+
+	- Mail::Message::Part::clone is not a special case of clone at all.
+	  Removed.
+
+	- Mail::Message::Part::coerce() was much too complicated: most work
+	  is already done in Mail::Message::coerce()
+
+	- The documentation and sometimes also the location of code in
+	  Mail::Message::Head* packages has been improved.
+
+	- Improvements in text of Mail::Box-Overview.
+
+version 2.018: Wed Jul 10 23:03:08 CEST 2002
 
 	Fixes:
 

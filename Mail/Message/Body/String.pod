@@ -1,0 +1,307 @@
+
+=head1 NAME
+
+
+Mail::Message::Body::String - body of a Mail::Message stored as single string
+
+=head1 CLASS INHERITANCE
+
+Mail::Message::Body::String
+   is a Mail::Message::Body
+   is a Mail::Reporter
+
+=head1 SYNOPSIS
+
+
+ See Mail::Message::Body
+
+=head1 DESCRIPTION
+
+
+The body (content) of a message can be stored in various ways.  In this
+documentation you will find the description of extra functionality you have
+when a message is stored as a single scalar.  
+
+Storing a whole message in one string is only a smart choice when the content
+is small or encoded. Even when stored as a scalar, you can still treat the
+body as if the data is stored in lines or an external file, but this will be
+slower.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS X<new>
+
+ OPTION               DEFAULT
+ based_on             undef
+ charset              'us-ascii'
+ checked              <false>
+ data                 undef
+ disposition          undef
+ eol                  'NATIVE'
+ file                 undef
+ log                  'WARNINGS'
+ message              undef
+ mime_type            'text/plain'
+ modified             <false>
+ trace                'WARNINGS'
+ transfer_encoding    'NONE'
+
+=over 4
+
+=item B<based_on> =E<gt> BODY
+
+See Mail::Message::Body::new(based_on)
+
+=item B<charset> =E<gt> STRING
+
+See Mail::Message::Body::new(charset)
+
+=item B<checked> =E<gt> BOOLEAN
+
+See Mail::Message::Body::new(checked)
+
+=item B<data> =E<gt> ARRAY-OF-LINES | STRING
+
+See Mail::Message::Body::new(data)
+
+=item B<disposition> =E<gt> STRING|FIELD
+
+See Mail::Message::Body::new(disposition)
+
+=item B<eol> =E<gt> 'CR'|'LF'|'CRLF'|'NATIVE'
+
+See Mail::Message::Body::new(eol)
+
+=item B<file> =E<gt> FILENAME|FILEHANDLE|IOHANDLE
+
+See Mail::Message::Body::new(file)
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<message> =E<gt> MESSAGE
+
+See Mail::Message::Body::new(message)
+
+=item B<mime_type> =E<gt> STRING|FIELD|MIME
+
+See Mail::Message::Body::new(mime_type)
+
+=item B<modified> =E<gt> BOOLEAN
+
+See Mail::Message::Body::new(modified)
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=item B<transfer_encoding> =E<gt> STRING|FIELD
+
+See Mail::Message::Body::new(transfer_encoding)
+
+=back
+
+=back
+
+=head2 The Body
+
+=over 4
+
+=item B<clone> 
+
+See Mail::Message::Body::clone()
+
+=item B<decoded> OPTIONS
+
+See Mail::Message::Body::decoded()
+
+=item B<isDelayed> 
+
+See Mail::Message::Body::isDelayed()
+
+=item B<isMultipart> 
+
+See Mail::Message::Body::isMultipart()
+
+=item B<isNested> 
+
+See Mail::Message::Body::isNested()
+
+=item B<message> [MESSAGE]
+
+See Mail::Message::Body::message()
+
+=item B<modified> [BOOL]
+
+See Mail::Message::Body::modified()
+
+=item B<print> [FILE]
+
+See Mail::Message::Body::print()
+
+=back
+
+=head2 About the Payload
+
+=over 4
+
+=item B<charset> 
+
+See Mail::Message::Body::charset()
+
+=item B<checked> [BOOLEAN]
+
+See Mail::Message::Body::checked()
+
+=item B<disposition> [STRING|FIELD]
+
+See Mail::Message::Body::disposition()
+
+=item B<eol> ['CR'|'LF'|'CRLF'|'NATIVE']
+
+See Mail::Message::Body::eol()
+
+=item B<mimeType> 
+
+See Mail::Message::Body::mimeType()
+
+=item B<nrLines> 
+
+See Mail::Message::Body::nrLines()
+
+=item B<size> 
+
+See Mail::Message::Body::size()
+
+=item B<transferEncoding> [STRING|FIELD]
+
+See Mail::Message::Body::transferEncoding()
+
+=item B<type> 
+
+See Mail::Message::Body::type()
+
+=back
+
+=head2 Access to the Payload
+
+=over 4
+
+=item B<file> 
+
+See Mail::Message::Body::file()
+
+=item B<lines> 
+
+See Mail::Message::Body::lines()
+
+=item B<string> 
+
+See Mail::Message::Body::string()
+
+=back
+
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Message::Body::AUTOLOAD()
+
+=item B<fileLocation> [BEGIN,END]
+
+See Mail::Message::Body::fileLocation()
+
+=item B<load> 
+
+See Mail::Message::Body::load()
+
+=item B<moveLocation> [DISTANCE]
+
+See Mail::Message::Body::moveLocation()
+
+=item B<read> PARSER, HEAD, BODYTYPE [,CHARS [,LINES]]
+
+See Mail::Message::Body::read()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

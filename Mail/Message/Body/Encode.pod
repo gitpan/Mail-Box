@@ -1,0 +1,393 @@
+
+=head1 NAME
+
+
+Mail::Message::Body::Encode - organize general message encodings
+
+=head1 CLASS INHERITANCE
+
+Mail::Message::Body
+  has extra code in Mail::Message::Body::Construct
+  has extra code in Mail::Message::Body::Encode
+
+Mail::Message::Body
+   is a Mail::Reporter
+
+Mail::Message::Body is extended by
+   Mail::Message::Body::File
+   Mail::Message::Body::Lines
+   Mail::Message::Body::Multipart
+   Mail::Message::Body::Nested
+   Mail::Message::Body::String
+
+Mail::Message::Body is realized by
+   Mail::Message::Body::Delayed
+
+=head1 SYNOPSIS
+
+
+ my Mail::Message $msg = ...;
+ my $decoded = $msg->decoded;
+ my $encoded = $msg->encode(mime_type => 'image/gif',
+     transfer_encoding => 'base64');
+
+ my $body = $msg->body;
+ my $decoded = $body->decoded;
+ my $encoded = $body->encode(transfer_encoding => '7bit');
+
+=head1 DESCRIPTION
+
+
+Manages the message's body encodings and decodings on request of the
+main program.  This package adds functionality to the Mail::Message::Body
+class when the C<decoded> or C<encode> method is called.
+
+Four types of encodings are handled (in the right order)
+
+=over 4
+
+=item * eol encoding
+
+Various operating systems have different ideas about how to encode the
+line termination.  UNIX uses a LF character, MacOS uses a CR, and
+Windows uses a CR/LF combination.  Messages which are transported over
+Internet will always use the CRLF separator.
+
+=item * transfer encoding
+
+Messages transmitted over Internet have to be plain ASCII.  Complicated
+characters and binary files (like images and archives) must be encoded
+during transmission to an ASCII representation.
+
+The implementation of the required encoders and decoders is found in
+the C<Mail::Message::TransferEnc> set of packages.  The related
+manual page lists the transfer encodings which are supported.
+
+=item * mime-type translation
+
+=item * charset conversion
+
+=back
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS
+
+See Mail::Message::Body::new()
+
+=back
+
+=head2 The Body
+
+=over 4
+
+=item B<clone> 
+
+See Mail::Message::Body::clone()
+
+=item B<decoded> OPTIONS
+
+See Mail::Message::Body::decoded()
+
+=item B<isDelayed> 
+
+See Mail::Message::Body::isDelayed()
+
+=item B<isMultipart> 
+
+See Mail::Message::Body::isMultipart()
+
+=item B<isNested> 
+
+See Mail::Message::Body::isNested()
+
+=item B<message> [MESSAGE]
+
+See Mail::Message::Body::message()
+
+=item B<modified> [BOOL]
+
+See Mail::Message::Body::modified()
+
+=item B<print> [FILE]
+
+See Mail::Message::Body::print()
+
+=back
+
+=head2 About the Payload
+
+=over 4
+
+=item B<charset> 
+
+See Mail::Message::Body::charset()
+
+=item B<checked> [BOOLEAN]
+
+See Mail::Message::Body::checked()
+
+=item B<disposition> [STRING|FIELD]
+
+See Mail::Message::Body::disposition()
+
+=item B<eol> ['CR'|'LF'|'CRLF'|'NATIVE']
+
+See Mail::Message::Body::eol()
+
+=item B<isBinary>  X<isBinary>
+
+Returns true when the un-encoded message is binary data.  This information
+is retrieved from knowledge provided by L<MIME::Types>.
+
+=item B<isText>  X<isText>
+
+Returns true when the un-encoded message contains printable
+text.
+
+=item B<mimeType> 
+
+See Mail::Message::Body::mimeType()
+
+=item B<nrLines> 
+
+See Mail::Message::Body::nrLines()
+
+=item B<size> 
+
+See Mail::Message::Body::size()
+
+=item B<transferEncoding> [STRING|FIELD]
+
+See Mail::Message::Body::transferEncoding()
+
+=item B<type> 
+
+See Mail::Message::Body::type()
+
+=back
+
+=head2 Access to the Payload
+
+=over 4
+
+=item B<file> 
+
+See Mail::Message::Body::file()
+
+=item B<lines> 
+
+See Mail::Message::Body::lines()
+
+=item B<string> 
+
+See Mail::Message::Body::string()
+
+=back
+
+=head2 Constructing a Body
+
+=over 4
+
+=item B<addTransferEncHandler> NAME, CLASS|OBJECT X<addTransferEncHandler>
+
+(Class or instance method)
+Relate the NAMEd transfer encoding to an OBJECTs or object of the specified
+CLASS.  In the latter case, an object of that CLASS will be created on the
+moment that one is needed to do encoding or decoding.
+
+The CLASS or OBJECT must extend Mail::Message::TransferEnc.  It will
+replace existing class and object for this NAME.
+
+Why aren't you contributing this class to MailBox?
+
+=item B<attach> MESSAGES, OPTIONS
+
+See Mail::Message::Body::Construct::attach()
+
+=item B<check>  X<check>
+
+Check the content of the body not to include illegal characters.  Which
+characters are considered illegal depends on the encoding of this body.
+
+A body is returned which is checked.  This may be the body where this
+method is called upon, but also a new object, when serious changes had
+to be made.  If the check could not be made, because the decoder is not
+defined, then C<undef> is returned.
+
+=item B<concatenate> COMPONENTS
+
+See Mail::Message::Body::Construct::concatenate()
+
+=item B<encode> OPTIONS X<encode>
+
+Encode (translate) a Mail::Message::Body object into a different format.
+See the DESCRIPTION above.  Options which are not specified will not trigger
+conversions.
+
+ OPTION               DEFAULT
+ charset              undef
+ mime_type            undef
+ result_type          <same as source>
+ transfer_encoding    undef
+
+=over 4
+
+=item B<charset> =E<gt> STRING X<encode(charset)>
+
+=item B<mime_type> =E<gt> STRING|FIELD X<encode(mime_type)>
+
+Convert into the specified mime type, which can be specified as STRING
+or FIELD.  The FIELD is a Mail::Message::Field, and the STRING is
+converted in such object before use.
+
+=item B<result_type> =E<gt> CLASS X<encode(result_type)>
+
+The type of body to be created when the body is changed to fulfill the request
+on re-coding.  Also the intermediate stages in the translation process (if
+needed) will use this type. CLASS must extend Mail::Message::Body.
+
+=item B<transfer_encoding> =E<gt> STRING|FIELD X<encode(transfer_encoding)>
+
+=back
+
+=item B<encoded>  X<encoded>
+
+Encode the body to a format what is acceptable to transmit or write to
+a folder file.  This returns the body where this method was called
+upon when everything was already prepared, or a new encoded body
+otherwise.  In either case, the body is checked.
+
+=item B<foreachLine> CODE
+
+See Mail::Message::Body::Construct::foreachLine()
+
+=item B<getTransferEncHandler> TYPE X<getTransferEncHandler>
+
+Get the transfer encoder/decoder which is able to handle TYPE, or return
+undef if there is no such handler.
+
+=item B<stripSignature> OPTIONS
+
+See Mail::Message::Body::Construct::stripSignature()
+
+=item B<unify> BODY X<unify>
+
+Unify the type of the given BODY objects with the type of the called
+body.  C<undef> is returned when unification is impossible.  If the
+bodies have the same settings, the BODY object is returned unchanged.
+
+Examples:
+
+ my $bodytype = Mail::Message::Body::Lines;
+ my $html  = $bodytype->new(mime_type=>'text/html', data => []);
+ my $plain = $bodytype->new(mime_type=>'text/plain', ...);
+
+ my $unified = $html->unify($plain);
+ # $unified is the data of plain translated to html (if possible).
+
+=back
+
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Message::Body::AUTOLOAD()
+
+=item B<fileLocation> [BEGIN,END]
+
+See Mail::Message::Body::fileLocation()
+
+=item B<load> 
+
+See Mail::Message::Body::load()
+
+=item B<moveLocation> [DISTANCE]
+
+See Mail::Message::Body::moveLocation()
+
+=item B<read> PARSER, HEAD, BODYTYPE [,CHARS [,LINES]]
+
+See Mail::Message::Body::read()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

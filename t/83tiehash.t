@@ -14,7 +14,7 @@ use Mail::Box::Tie::HASH;
 use Mail::Message::Construct;
 use Tools;
 
-BEGIN {plan tests => 100}
+BEGIN {plan tests => 101}
 
 #
 # The folder is read.
@@ -47,19 +47,20 @@ ok($msg eq $folder{$msgid});
 
 # delete $folder[2];    works for 5.6, but not for 5.5
 ok(!$folder->message(4)->deleted);
+ok(keys %folder == 45);
 $folder{$msgid}->delete;
 ok($folder->message(4)->deleted);
-ok(keys %folder == 45);
+ok(keys %folder == 44);
 
 # Double messages will not be added.
 $folder{ (undef) } = $folder{$msgid}->clone;
-ok(keys %folder == 45);
+ok(keys %folder == 44);
 
 # Different message, however, will be added.
 my $newmsg = Mail::Message->build(data => [ 'empty' ]);
 $folder{undef} = $newmsg;
 ok($folder->messages == 46);
-ok(keys %folder == 46);
+ok(keys %folder == 45);
 
 $folder->close(write => 'NEVER');
 exit 0;

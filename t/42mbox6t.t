@@ -14,7 +14,7 @@ use Tools;
 
 use File::Copy;
 
-BEGIN {plan tests => 20}
+BEGIN {plan tests => 23}
 
 #
 # We will work with a copy of the original to avoid that we write
@@ -70,9 +70,13 @@ ok($this->threadToString, <<'MIDDLE');
 MIDDLE
 
 $start = $threads->threadStart($message);
-ok($start);
-ok($start->message->isa('Mail::Box::Message'));
-ok($start->message->messageID ne $message->messageID);
+ok(defined $start);
+my $startmsg = $start->message;
+ok(defined $startmsg);
+ok($startmsg->isa('Mail::Message::Dummy'));
+ok($startmsg->isa('Mail::Message'));
+ok($startmsg->isDummy);
+ok($startmsg->messageID ne $message->messageID);
 ok($start->threadToString, <<'START');
 1.2K *- Problem resizing images through perl script
 820  |  `- Re: Problem resizing images through perl script

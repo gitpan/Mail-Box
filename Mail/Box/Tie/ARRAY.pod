@@ -1,0 +1,152 @@
+
+=head1 NAME
+
+
+Mail::Box::Tie::ARRAY - access an existing message folder as array
+
+=head1 SYNOPSIS
+
+
+ use Mail::Box::Manager;
+ my $mgr    = Mail::Box::Manager->new;
+ my $folder = $mgr->open(folder => 'inbox');
+
+ use Mail::Box::Tie::ARRAY;
+ tie my(@inbox), 'Mail::Box::Tie::ARRAY', $folder;
+
+ # deprecated, but works too
+ use Mail::Box::Tie;
+ tie my(@inbox), 'Mail::Box::Tie', $folder;
+
+ foreach (@inbox) {print $_->short}
+ print $_->print foreach @inbox;
+ my $emails = @inbox;
+
+ print $inbox[3];
+ print scalar @inbox;
+ push @inbox, Mail::Box::Message->new(...);
+ delete $inbox[6];
+ print $inbox[0]->head->get('status');
+
+ my $folder = tied @inbox;
+ untie @inbox;
+
+=head1 DESCRIPTION
+
+
+Certainly when you look at a folder as a list of messages, it is logical to
+access the folder through an array.
+
+Not all operations on arrays are supported.  Actually, most functions which
+would reduce the size of the array are modified instead to mark messages for
+deletion.
+
+Examples what you I<cannot> do:
+
+ shift/unshift/pop/splice @inbox;
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<tie> ARRAY, 'Mail::Box::Tie::ARRAY', FOLDER X<tie>
+
+Create the tie on an existing folder.
+
+Examples:
+
+ my $mgr   = Mail::Box::Manager->new;
+ my $inbox = $mgr->new(folder => $ENV{MAIL});
+ tie my(@inbox), ref $inbox, $inbox;
+
+=back
+
+=head2 Tied Interface
+
+=over 4
+
+=item B<DELETE>  X<DELETE>
+
+Flag a message to be removed.  Be warned that the message stays in
+the folder, and is not removed before the folder is written.
+
+Examples:
+
+ delete $inbox[5];
+ $inbox[5]->delete;   #same
+
+=item B<FETCH> INDEX X<FETCH>
+
+Get the message which is at the indicated location in the list of
+messages contained in this folder.  Deleted messages will be returned
+as C<undef>
+
+Examples:
+
+ print $inbox[3];
+
+=item B<FETCHSIZE>  X<FETCHSIZE>
+
+Return the total number of messages in a folder.  This is called when
+the folder-array is used in scalar context, for instance.
+
+Examples:
+
+ if(@inbox > 10)    # contains more than 10 messages?
+ my $nrmsgs = @inbox;
+
+=item B<PUSH> MESSAGES X<PUSH>
+
+Add MESSAGES to the end of the folder.
+
+Examples:
+
+    push @inbox, $newmsg;
+
+=item B<STORE> INDEX, MESSAGE X<STORE>
+
+Random message replacement is is not permitted--doing so would disturb threads
+etc.  An error occurs if you try to do this. The only thing which is allowed
+is to store a message at the first free index at the end of the folder (which
+is also achievable with PUSH--see below).
+
+Examples:
+
+ $inbox[$#inbox] = $add;
+ push @inbox, $add;
+
+=item B<STORESIZE> LENGTH X<STORESIZE>
+
+Sets all messages behind from LENGTH to the end of folder to be deleted.
+
+=back
+
+=head1 IMPLEMENTATION
+
+
+This module implements C<TIEARRAY>, C<FETCH>, C<STORE>, C<FETCHSIZE>,
+C<STORESIZE>, C<DELETE>, C<PUSH>, and C<DESTROY>.
+
+This module does not implement all other methods as described in
+the L<Tie::Array> documentation, because the real array of messages
+is not permitted to shrink or be mutilated.
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

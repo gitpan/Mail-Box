@@ -14,7 +14,7 @@ use Test;
 use File::Compare;
 use File::Copy;
 
-BEGIN {plan tests => 54}
+BEGIN {plan tests => 56}
 
 my $mhsrc = File::Spec->catfile('t', 'mh.src');
 
@@ -41,17 +41,20 @@ $folder->modified(1);
 $folder->write(renumber => 0);
 
 ok(cmplists [sort {$a cmp $b} listdir $mhsrc],
-            [sort {$a cmp $b} '.index', '.mh_sequences', 1..12, 14..46]
+            [sort {$a cmp $b} '.mh_sequences', 1..12, 14..46]
   );
 
 $folder->modified(1);
 $folder->write(renumber => 1);
 
 ok(cmplists [sort {$a cmp $b} listdir $mhsrc],
-            [sort {$a cmp $b} '.index', '.mh_sequences', 1..45]
+            [sort {$a cmp $b} '.mh_sequences', 1..45]
   );
 
 $folder->message(2)->delete;
+ok($folder->message(2)->isDelayed);
+ok(defined $folder->message(3)->get('subject')); # load, creates index
+
 $folder->write;
 ok(cmplists [sort {$a cmp $b} listdir $mhsrc],
             [sort {$a cmp $b} '.index', '.mh_sequences', 1..44]

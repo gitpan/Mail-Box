@@ -1,97 +1,16 @@
-
 use strict;
 use warnings;
 
 package Mail::Message::TransferEnc::QuotedPrint;
+our $VERSION = 2.019;  # Part of Mail::Box
 use base 'Mail::Message::TransferEnc';
 
-our $VERSION = 2.018;
-
-=head1 NAME
-
-Mail::Message::TransferEnc::QuotedPrint - handle quoted-printable message bodies
-
-=head1 CLASS HIERARCHY
-
- Mail::Message::TransferEnc::QuotedPrint
- is a Mail::Message::TransferEnc
- is a Mail::Reporter
-
-=head1 SYNOPSIS
-
- my Mail::Message $msg = ...;
- my $decoded = $msg->decoded;
- my $encoded = $msg->encode(transfer => 'quoted-printable');
-
-=head1 DESCRIPTION
-
-Encode and decode message bodies for quoted-printable transfer encoding.
-The Quoted-Printable encoding is intended
-to represent data that largely consists of bytes that correspond to
-printable characters in the ASCII character set.  Non-printable
-characters (as defined by english americans) are represented by a
-triplet consisting of the character "=" followed by two hexadecimal
-digits.
-
-=head1 METHOD INDEX
-
-Methods prefixed with an abbreviation are described in
-L<Mail::Reporter> (MR), L<Mail::Message::TransferEnc> (MMT).
-
-The general methods for C<Mail::Message::TransferEnc::QuotedPrint> objects:
-
-  MMT check BODY [, OPTIONS]           MMT name
-  MMT create TYPE, OPTIONS                 new OPTIONS
-      decode BODY                       MR report [LEVEL]
-      encode                            MR reportAll [LEVEL]
-   MR errors                            MR trace [LEVEL]
-   MR log [LEVEL [,STRINGS]]            MR warnings
-
-The extra methods for extension writers:
-
-   MR AUTOLOAD                          MR logPriority LEVEL
-   MR DESTROY                           MR logSettings
-  MMT addTransferEncoder TYPE, CLASS    MR notImplemented
-   MR inGlobalDestruction
-
-=head1 METHODS
-
-=over 4
-
-=cut
-
-#------------------------------------------
-
-=item new OPTIONS
-
- OPTION            DESCRIBED IN          DEFAULT
- log               Mail::Reporter        'WARNINGS'
- trace             Mail::Reporter        'WARNINGS'
-
-=cut
-
-#------------------------------------------
-
 sub name() { 'quoted-printable' }
-
-#------------------------------------------
 
 sub check($@)
 {   my ($self, $body, %args) = @_;
     $body;
 }
-
-#------------------------------------------
-
-=item decode BODY
-
-Decoding is tricky, and not without loss of information.  Lines will
-stay seperate lines, although they might have been joined before the
-encoding split them up.  Characters which are not printable will be
-replaced by their octal value, and carriage returns (C<'=0D'>) at
-end of line are removed.
-
-=cut
 
 sub decode($@)
 {   my ($self, $body, %args) = @_;
@@ -117,21 +36,6 @@ sub decode($@)
      , data              => \@lines
      );
 }
-
-#------------------------------------------
-
-=item encode
-
-Encoding is to quoted-printable is a careful process: All characters
-outside the normal printing range, and including C<'='> are encoded.
-They are translated into a C<'='> followed by a two digit hex of the
-ascii value of the character.  The same treatment is for white-spaces
-at the end of a line.
-
-The lines which are constructed which must be 76 characters max, not
-broken on encoded characters.
-
-=cut
 
 sub encode($@)
 {   my ($self, $body, %args) = @_;
@@ -178,41 +82,5 @@ sub encode($@)
      , data              => \@lines
      );
 }
-
-#------------------------------------------
-
-=back
-
-=head1 METHODS for extension writers
-
-=over 4
-
-=cut
-
-#------------------------------------------
-
-=back
-
-=head1 SEE ALSO
-
-L<Mail::Box-Overview>
-
-For support and additional documentation, see http://perl.overmeer.net/mailbox/
-
-=head1 AUTHOR
-
-Mark Overmeer (F<mailbox@overmeer.net>).
-All rights reserved.  This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-=head1 VERSION
-
-This code is beta, version 2.018.
-
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=cut
 
 1;

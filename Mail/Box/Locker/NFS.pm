@@ -1,64 +1,15 @@
-
 use strict;
 
 package Mail::Box::Locker::NFS;
+our $VERSION = 2.019;  # Part of Mail::Box
 use base 'Mail::Box::Locker';
 
 use IO::File;
 use Sys::Hostname;
 use Carp;
 
-=head1 NAME
-
-Mail::Box::Locker::NFS - lock a folder with a seperate file, NFS-safe
-
-=head1 CLASS HIERARCHY
-
- Mail::Box::Locker::NFS
- is a Mail::Box::Locker
- is a Mail::Reporter
-
-=head1 SYNOPSIS
-
- See Mail::Box::Locker
-
-=head1 DESCRIPTION
-
-Like the C<::DotLock> locker, but then in an NFS-safe fashion.  Over NFS,
-the creation of a file is not atomic.  The C<::DotLock> locker depends
-on an atomic C<open()> hence in not usable.  The C<::NFS> locker is more
-complicated (so slower), but will work for NFS -and for local disks too.
-
-=head1 METHOD INDEX
-
-Methods prefixed with an abbreviation are described in
-L<Mail::Reporter> (MR), L<Mail::Box::Locker> (MBL).
-
-The general methods for C<Mail::Box::Locker::NFS> objects:
-
-  MBL DESTROY                          MBL name
-   MR errors                           MBL new OPTIONS
-  MBL filename                          MR report [LEVEL]
-  MBL hasLock                           MR reportAll [LEVEL]
-  MBL isLocked                          MR trace [LEVEL]
-  MBL lock FOLDER                      MBL unlock
-   MR log [LEVEL [,STRINGS]]            MR warnings
-
-The extra methods for extension writers:
-
-   MR AUTOLOAD                          MR logPriority LEVEL
-   MR DESTROY                           MR logSettings
-   MR inGlobalDestruction               MR notImplemented
-
-=head1 METHODS
-
-=cut
-
-#-------------------------------------------
-
 sub name() {'NFS'}
 
-#-------------------------------------------
 # METHOD nfs
 # This hack is copied from the Mail::Folder packages, as written
 # by Kevin Jones.  Cited from his code:
@@ -169,27 +120,5 @@ sub unlock($)
     delete $self->{MBL_has_lock};
     $self;
 }
-
-=head1 SEE ALSO
-
-L<Mail::Box-Overview>
-
-For support and additional documentation, see http://perl.overmeer.net/mailbox/
-
-=head1 AUTHOR
-
-Mark Overmeer (F<mailbox@overmeer.net>).
-All rights reserved.  This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-=head1 VERSION
-
-This code is beta, version 2.018.
-
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=cut
 
 1;

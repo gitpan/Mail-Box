@@ -1,0 +1,379 @@
+
+=head1 NAME
+
+
+Mail::Message::Dummy - a placeholder for a missing messages
+
+=head1 CLASS INHERITANCE
+
+Mail::Message::Dummy
+   is a Mail::Message
+   is a Mail::Reporter
+
+=head1 SYNOPSIS
+
+
+=head1 DESCRIPTION
+
+
+Dummy messages are used by modules which maintain ordered lists of
+messages, usually based on message-id.  A good example is
+Mail::Box::Thread::Manager, which detects related messages by scanning the
+known message headers for references to other messages.  As long as the
+referenced messages are not found inside the mailbox, their place is
+occupied by a dummy.
+
+Be careful when using modules which may create dummies.  Before trying to
+access the header or body use isDummy() to check if the message is a
+dummy message.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> MESSAGE-ID, OPTIONS X<new>
+
+(Class method) Create a new dummy message to occupy the space for
+a real message with the specified MESSAGE-ID.
+
+ OPTION               DEFAULT
+ body                 <not used>
+ body_type            'Mail::Message::Body::Lines'
+ field_type           <not used>
+ head                 <not used>
+ head_type            <not used>
+ head_wrap            <not used>
+ log                  'WARNINGS'
+ messageId            <required>
+ modified             <always false>
+ trace                'WARNINGS'
+ trusted              <always true>
+
+=over 4
+
+=item B<body> =E<gt> OBJECT
+
+See Mail::Message::new(body)
+
+=item B<body_type> =E<gt> CLASS
+
+See Mail::Message::new(body_type)
+
+=item B<field_type> =E<gt> CLASS
+
+See Mail::Message::new(field_type)
+
+=item B<head> =E<gt> OBJECT
+
+See Mail::Message::new(head)
+
+=item B<head_type> =E<gt> CLASS
+
+See Mail::Message::new(head_type)
+
+=item B<head_wrap> =E<gt> INTEGER
+
+See Mail::Message::new(head_wrap)
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<messageId> =E<gt> STRING
+
+See Mail::Message::new(messageId)
+
+=item B<modified> =E<gt> BOOLEAN
+
+See Mail::Message::new(modified)
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=item B<trusted> =E<gt> BOOLEAN
+
+See Mail::Message::new(trusted)
+
+=back
+
+Examples:
+
+ my $message = Mail::Message::Dummy->new($msgid);
+ if($message->isDummy) {...}
+
+=back
+
+=head2 Constructing a Message
+
+=over 4
+
+=item B<coerce> MESSAGE
+
+See Mail::Message::coerce()
+
+=back
+
+=head2 The Message
+
+=over 4
+
+=item B<clone> 
+
+See Mail::Message::clone()
+
+=item B<isDummy> 
+
+See Mail::Message::isDummy()
+
+=item B<isPart> 
+
+See Mail::Message::isPart()
+
+=item B<messageId> 
+
+See Mail::Message::messageId()
+
+=item B<modified> [BOOLEAN]
+
+See Mail::Message::modified()
+
+=item B<parent> 
+
+See Mail::Message::parent()
+
+=item B<print> [FILEHANDLE]
+
+See Mail::Message::print()
+
+=item B<send> [MAILER], OPTIONS
+
+See Mail::Message::send()
+
+=item B<size> 
+
+See Mail::Message::size()
+
+=item B<toplevel> 
+
+See Mail::Message::toplevel()
+
+=back
+
+=head2 The Header
+
+=over 4
+
+=item B<get> FIELD
+
+See Mail::Message::get()
+
+=item B<head> [HEAD]
+
+See Mail::Message::head()
+
+=back
+
+=head2 Header Shortcuts
+
+=over 4
+
+=item B<bcc> 
+
+See Mail::Message::bcc()
+
+=item B<cc> 
+
+See Mail::Message::cc()
+
+=item B<date> 
+
+See Mail::Message::date()
+
+=item B<destinations> 
+
+See Mail::Message::destinations()
+
+=item B<from> 
+
+See Mail::Message::from()
+
+=item B<guessTimestamp> 
+
+See Mail::Message::guessTimestamp()
+
+=item B<nrLines> 
+
+See Mail::Message::nrLines()
+
+=item B<subject> 
+
+See Mail::Message::subject()
+
+=item B<timestamp> 
+
+See Mail::Message::timestamp()
+
+=item B<to> 
+
+See Mail::Message::to()
+
+=back
+
+=head2 The Body
+
+=over 4
+
+=item B<body> [BODY]
+
+See Mail::Message::body()
+
+=item B<decoded> OPTIONS
+
+See Mail::Message::decoded()
+
+=item B<encode> OPTIONS
+
+See Mail::Message::encode()
+
+=item B<isMultipart> 
+
+See Mail::Message::isMultipart()
+
+=item B<parts> ['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER]
+
+See Mail::Message::parts()
+
+=back
+
+=head2 Labels
+
+=over 4
+
+=item B<label> LABEL [,VALUE [LABEL, VALUE] ]
+
+See Mail::Message::label()
+
+=item B<labels> 
+
+See Mail::Message::labels()
+
+=back
+
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<DESTROY> 
+
+See Mail::Message::DESTROY()
+
+=item B<isDelayed> 
+
+See Mail::Message::isDelayed()
+
+=item B<labelsToStatus> 
+
+See Mail::Message::labelsToStatus()
+
+=item B<readBody> PARSER, HEAD [, BODYTYPE]
+
+See Mail::Message::readBody()
+
+=item B<readFromParser> PARSER, [BODYTYPE]
+
+See Mail::Message::readFromParser()
+
+=item B<readHead> PARSER [,CLASS]
+
+See Mail::Message::readHead()
+
+=item B<statusToLabels> 
+
+See Mail::Message::statusToLabels()
+
+=item B<storeBody> BODY
+
+See Mail::Message::storeBody()
+
+=item B<takeMessageId> [STRING]
+
+See Mail::Message::takeMessageId()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

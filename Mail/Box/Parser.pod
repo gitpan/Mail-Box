@@ -1,0 +1,336 @@
+
+=head1 NAME
+
+
+Mail::Box::Parser - reading and writing messages
+
+=head1 CLASS INHERITANCE
+
+Mail::Box::Parser
+   is a Mail::Reporter
+
+Mail::Box::Parser is extended by
+   Mail::Box::Parser::Perl
+
+=head1 SYNOPSIS
+
+
+=head1 DESCRIPTION
+
+
+The Mail::Box::Parser manages the parsing of folders.  Usually, you won't
+need to know anything about this module, except the options which are
+involved with this code.
+
+There are two implementations of this module planned:
+
+=over 4
+
+=item * Mail::Box::Parser::Perl
+
+A slower parser which only uses plain Perl.  This module is a bit slower,
+and does less checking and less recovery.
+
+=item * Mail::Box::Parser::C
+
+A fast parser written in C<C>.  However, this parser is still under
+development.
+
+=back
+
+On the moment the C parser comes available, and a C compiler is available
+on your system, it will be used automatically.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS X<new>
+
+(Class method)  Create a parser object which can handle one file.  For
+mbox-like mailboxes, this object can be used to read a whole folder.  In
+case of MH-like mailboxes, each message is contained in a single file,
+so each message has its own parser object.
+
+ OPTION               DEFAULT
+ file                 undef
+ filename             <required>
+ log                  'WARNINGS'
+ mode                 'r'
+ trace                'WARNINGS'
+
+=over 4
+
+=item B<file> =E<gt> FILE-HANDLE X<new(file)>
+
+Any C<IO::File> or C<GLOB> which can be used to read the data from.  In
+case this option is specified, the C<filename> is informational only.
+
+=item B<filename> =E<gt> FILENAME X<new(filename)>
+
+(Required) The name of the file to be read.
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<mode> =E<gt> OPENMODE X<new(mode)>
+
+File-open mode, which defaults to C<'r'>, which means `read-only'.
+See C<perldoc -f open> for possible modes.  Only applicable 
+when no C<file> is specified.
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=back
+
+=back
+
+=head2 The Parser
+
+=over 4
+
+=item B<defaultParserType> [CLASS] X<defaultParserType>
+
+(Class or instance method) Returns the parser to be used to parse all subsequent
+messages, possibly first setting the parser using the optional argument.
+Usually, the parser is autodetected; the C<C>-based parser will be used
+when it can be, and the Perl-based parser will be used otherwise.
+
+The CLASS argument allows you to specify a package name to force a
+particular parser to be used (such as your own custom parser). You have
+to C<use> or C<require> the package yourself before calling this method
+with an argument. The parser must be a sub-class of Mail::Box::Parser.
+
+=item B<fileChanged>  X<fileChanged>
+
+Returns whether the file which is parsed has changed after the last
+time takeFileInfo() was called.
+
+=item B<filename>  X<filename>
+
+Returns the name of the file this parser is working on.
+
+=item B<start> OPTIONS X<start>
+
+Start the parser.  The parser is automatically started when the parser is
+created, however can be stopped (see stop()).  During the start,
+the file to be parsed will be opened.
+
+ OPTION               DEFAULT
+ trust_file           <false>
+
+=over 4
+
+=item B<trust_file> =E<gt> BOOLEAN X<start(trust_file)>
+
+When we continue with the parsing of the folder, and the modification-time
+(on operating-systems which support that) or size changed, the parser
+will refuse to start, unless this option is true.
+
+=back
+
+=item B<stop>  X<stop>
+
+Stop the parser, which will include a close of the file.  The lock on the
+folder will not be removed (is not the responsibility of the parser).
+
+=item B<takeFileInfo>  X<takeFileInfo>
+
+Capture some data about the file being parsed, to be compared later.
+
+=back
+
+=head2 Parsing
+
+=over 4
+
+=item B<bodyAsFile> FILEHANDLE [,CHARS [,LINES]] X<bodyAsFile>
+
+Try to read one message-body from the file, and immediately write
+it to the specified file-handle.  Optionally, the predicted number
+of CHARacterS and/or LINES to be read can be supplied.  These values may be
+C<undef> and may be wrong.
+
+The return is a list of three scalars: the location of the body (begin
+and end) and the number of lines in the body.
+
+=item B<bodyAsList> [,CHARS [,LINES]] X<bodyAsList>
+
+Try to read one message-body from the file.  Optionally, the predicted number
+of CHARacterS and/or LINES to be read can be supplied.  These values may be
+C<undef> and may be wrong.
+
+The return is a list of scalars, each containing one line (including
+line terminator), preceded by two integers representing the location
+in the file where this body started and ended.
+
+=item B<bodyAsString> [,CHARS [,LINES]] X<bodyAsString>
+
+Try to read one message-body from the file.  Optionally, the predicted number
+of CHARacterS and/or LINES to be read can be supplied.  These values may be
+C<undef> and may be wrong.
+
+The return is a list of three scalars, the location in the file
+where the body starts, where the body ends, and the string containing the
+whole body.
+
+=item B<bodyDelayed> [,CHARS [,LINES]] X<bodyDelayed>
+
+Try to read one message-body from the file, but the data is skipped.
+Optionally, the predicted number of CHARacterS and/or LINES to be skipped
+can be supplied.  These values may be C<undef> and may be wrong.
+
+The return is a list of four scalars: the location of the body (begin and
+end), the size of the body, and the number of lines in the body.  The
+number of lines may be C<undef>.
+
+=item B<filePosition> [POSITION] X<filePosition>
+
+Returns the location of the next byte to be used in the file which is
+parsed.  When a POSITION is specified, the location in the file is
+moved to the indicated spot first.
+
+=item B<foldHeaderLine> LINE, LENGTH X<foldHeaderLine>
+
+(Class method) Fold the specified line (which is a header-line with a
+structured format) into multiple lines.  Each line is terminated by a
+newline.
+
+This method is called by Mail::Message::Field::toString() to
+format headers before writing them to a file.
+
+Examples:
+
+ my $string = 'From: me; very long comment';
+ print Mail::Box::Parser::C->foldHeaderLine($string, 40);
+
+=item B<lineSeparator>  X<lineSeparator>
+
+Returns the character or characters which are used to separate lines
+in the folder file.  This is based on the first line of the file.
+UNIX systems use a single LF to separate lines.  Windows uses a CR and
+a LF.  Mac uses CR.
+
+=item B<popSeparator>  X<popSeparator>
+
+Remove the last-pushed separator from the list which is maintained by the
+parser.  This will return C<undef> when there is none left.
+
+=item B<pushSeparator> STRING|REGEXP X<pushSeparator>
+
+Add a boundary line.  Separators tell the parser where to stop reading.
+A famous separator is the C<From>-line, which is used in Mbox-like
+folders to separate messages.  But also parts (I<attachments>) is a
+message are divided by separators.
+
+The specified STRING describes the start of the separator-line.  The
+REGEXP can specify a more complicated format.
+
+=item B<readHeader> WRAP X<readHeader>
+
+Read the whole message-header and return it as list
+C<< field => value, field => value >>.  Mind that some fields will
+appear more than once.  The WRAP is the expected length of lines,
+but is not yet used.
+
+The first element will represent the position in the file where the
+header starts.  The follows the list of header field names and bodies.
+
+Examples:
+
+ my ($where, @header) = $parser->readHeader(72);
+
+=item B<readSeparator> OPTIONS X<readSeparator>
+
+Read the currently active separator (the last one which was pushed).  The
+line (or C<undef>) is returned.  Blank-lines before the separator lines
+are ignored.
+
+The return are two scalars, where the first gives the location of the
+separator in the file, and the second the line which is found as
+separator.  A new separator is activated using the pushSeparator() method.
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

@@ -1,106 +1,11 @@
-
 use strict;
 
 package Mail::Box::MH::Index;
+our $VERSION = 2.019;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
-our $VERSION = '2.018';
 use Mail::Message::Head::Subset;
 use Carp;
-
-=head1 NAME
-
-Mail::Box::MH::Index - keep index files for messages.
-
-=head1 CLASS HIERARCHY
-
- Mail::Box::MH::Index
- is a Mail::Reporter
-
-=head1 SYNOPSIS
-
- my $index = Mail::Box::MH::Index->new;
- $index->read(...)
- $index->write(...)
-
-=head1 DESCRIPTION
-
-Message folders which store their data in one single file per message are
-very inefficient for producing subject overviews and for computing message
-threads.  The C<Mail::Box::MH::Index> module is able to store and read a the
-headers of all messages in one file.
-
-When C<Mail::Box::MH::Index> functionality is enabled by specifying
-C<keep_index> when opening a folder, the index file is automatically read.
-When the folder is closed, a new index file is created.
-
-Special care is taken to avoid problems which occur when the user changes
-or removes message files without updating the index. If the index is not
-trustworthy it will not be used (costing some performance for the reader
-of the folder).
-
-=head1 METHOD INDEX
-
-Methods prefixed with an abbreviation are described in
-L<Mail::Reporter> (MR).
-
-The general methods for C<Mail::Box::MH::Index> objects:
-
-   MR errors                            MR report [LEVEL]
-      get MSGFILE                       MR reportAll [LEVEL]
-   MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
-      new OPTIONS                       MR warnings
-      read                                 write MESSAGES
-
-The extra methods for extension writers:
-
-   MR AUTOLOAD                          MR logPriority LEVEL
-   MR DESTROY                           MR logSettings
-      filename                          MR notImplemented
-   MR inGlobalDestruction
-
-=head1 METHODS
-
-=over 4
-
-=cut
-
-#-------------------------------------------
-
-=item new OPTIONS
-
-This method is called by folder classes, and should not be called by
-client programs, unless you really know what you are doing.
-
- OPTION      DEFINED BY             DEFAULT
- filename    Mail::Box::MH::Index   <obligatory>
- log         Mail::Reporter         'WARNINGS'
- trace       Mail::Reporter         'WARNINGS'
- head_wrap   Mail::Box::MH::Index   72
- head_type   Mail::Box::MH::Index   'Mail::Message::Head::Subset'
-
-=over 4
-
-=item * filename =E<gt> FILENAME
-
-The FILENAME which is used to store the headers of all the e-mails for
-one folder. This must be an absolute pathname.
-
-=item * head_type =E<gt> CLASS
-
-The type of headers which will be used to store header information when
-it is read from the index file.  You can not be sure the index contains
-all header line (the mailbox may have been updated without updating
-the index) so this will usually be (an sub-class of)
-C<Mail::Message::Head::Subset>.
-
-=item * head_wrap =E<gt> INTEGER
-
-The preferred number of character in each header line.
-
-=back
-
-=cut
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -116,15 +21,6 @@ sub init($)
     $self;
 }
 
-#-------------------------------------------
-
-=item write MESSAGES
-
-Write an index file containing the headers specified MESSAGES
-(C<Mail::Message> objects).
-
-=cut
-
 sub write(@)
 {   my $self      = shift;
     my $index     = $self->filename or return $self;
@@ -136,29 +32,28 @@ sub write(@)
         return $self;
     }
 
+    my $written    = 0;
+
     local *INDEX;
     open INDEX, '>', $index or return;
 
     foreach my $msg (@_)
     {   my $head     = $msg->head;
+        next if $head->isDelayed;
+
         my $filename = $msg->filename;
         $head->setNoRealize($fieldtype->new('X-MailBox-Filename' => $filename));
         $head->setNoRealize($fieldtype->new('X-MailBox-Size'  => -s $filename));
         $head->print(\*INDEX);
+        $written++;
     }
 
     close INDEX;
+
+    unlink $index unless $written;
+
     $self;
 }
-
-#-------------------------------------------
-
-=item read
-
-Read the index file.  The header objects can after this be requested
-with the C<get()> method.
-
-=cut
 
 sub read(;$)
 {   my $self     = shift;
@@ -189,67 +84,11 @@ sub read(;$)
     $self;
 }
 
-#-------------------------------------------
-
-=item get MSGFILE
-
-Look if there is header info for the specified MSGFILE.  The filename
-represents one message in folder type which are organized as directory.
-This method will return an object of the C<head_type> as specified
-during creation of the index object, or C<undef> if the information
-is not known or not trustworthy -i.e. the filesize changed.
-
-=cut
-
 sub get($)
 {   my ($self, $msgfile) = @_;
     $self->{MBMI_index}{$msgfile};
 }
 
-#-------------------------------------------
-
-=back
-
-=head1 METHODS for extension writers
-
-=over 4
-
-=cut
-
-#-------------------------------------------
-
-=item filename
-
-Returns the name of the index file.
-
-=cut
-
 sub filename() {shift->{MBMI_filename}}
-
-#-------------------------------------------
-
-=back
-
-=head1 SEE ALSO
-
-L<Mail::Box-Overview>
-
-For support and additional documentation, see http://perl.overmeer.net/mailbox/
-
-=head1 AUTHOR
-
-Mark Overmeer (F<mailbox@overmeer.net>).
-All rights reserved.  This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-=head1 VERSION
-
-This code is beta, version 2.018.
-
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=cut
 
 1;

@@ -10,7 +10,7 @@ use warnings;
 use lib qw(. t);
 
 use Mail::Message::Body::Construct;
-use Mail::Message::Body::Lines;
+use Mail::Message::Body;
 use Tools;
 
 BEGIN {plan tests => 37}

@@ -1,0 +1,471 @@
+
+=head1 NAME
+
+
+Mail::Box::Net - handle folders which are stored remote.
+
+=head1 CLASS INHERITANCE
+
+Mail::Box::Net
+   is a Mail::Box
+   is a Mail::Reporter
+
+Mail::Box::Net is extended by
+   Mail::Box::POP3
+
+=head1 SYNOPSIS
+
+
+ # Do not instantiate this object yourself
+
+=head1 DESCRIPTION
+
+
+This documentation describes how directory organized mailboxes work.
+Please read C<Mail::Box-Overview> first.
+
+At the moment, this object is extended by
+
+=over 4
+
+=item * POP3
+
+=back
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS X<new>
+
+ OPTION               DEFAULT
+ access               'r'
+ body_delayed_type    'Mail::Message::Body::Delayed'
+ body_type            'Mail::Message::Body::Lines'
+ coerce_options       []
+ create               <false>
+ extract              10240
+ field_type           undef
+ folder               $ENV{MAIL}
+ folderdir            undef
+ head_delayed_type    'Mail::Message::Head::Delayed'
+ head_type            'Mail::Message::Head::Complete'
+ head_wrap            72
+ keep_dups            <false>
+ lock_file            <not used>
+ lock_timeout         <not used>
+ lock_type            <not used>
+ lock_wait            <not used>
+ locker               undef
+ log                  'WARNINGS'
+ manager              undef
+ message_type         'Mail::Box::Message'
+ multipart_type       'Mail::Message::Body::Multipart'
+ password             undef
+ remove_when_empty    <false>
+ save_on_exit         <true>
+ server_name          undef
+ server_port          undef
+ trace                'WARNINGS'
+ trusted              <depends on folder location>
+ username             undef
+
+=over 4
+
+=item B<access> =E<gt> MODE
+
+See Mail::Box::new(access)
+
+=item B<body_delayed_type> =E<gt> CLASS
+
+See Mail::Box::new(body_delayed_type)
+
+=item B<body_type> =E<gt> CLASS|CODE
+
+See Mail::Box::new(body_type)
+
+=item B<coerce_options> =E<gt> ARRAY
+
+See Mail::Box::new(coerce_options)
+
+=item B<create> =E<gt> BOOLEAN
+
+See Mail::Box::new(create)
+
+=item B<extract> =E<gt> INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
+
+See Mail::Box::new(extract)
+
+=item B<field_type> =E<gt> CLASS
+
+See Mail::Box::new(field_type)
+
+=item B<folder> =E<gt> FOLDERNAME
+
+See Mail::Box::new(folder)
+
+=item B<folderdir> =E<gt> DIRECTORY
+
+See Mail::Box::new(folderdir)
+
+=item B<head_delayed_type> =E<gt> CLASS
+
+See Mail::Box::new(head_delayed_type)
+
+=item B<head_type> =E<gt> CLASS
+
+See Mail::Box::new(head_type)
+
+=item B<head_wrap> =E<gt> INTEGER
+
+See Mail::Box::new(head_wrap)
+
+=item B<keep_dups> =E<gt> BOOLEAN
+
+See Mail::Box::new(keep_dups)
+
+=item B<lock_file> =E<gt> FILENAME
+
+See Mail::Box::new(lock_file)
+
+=item B<lock_timeout> =E<gt> SECONDS
+
+See Mail::Box::new(lock_timeout)
+
+=item B<lock_type> =E<gt> CLASS|STRING
+
+See Mail::Box::new(lock_type)
+
+=item B<lock_wait> =E<gt> SECONDS
+
+See Mail::Box::new(lock_wait)
+
+=item B<locker> =E<gt> OBJECT
+
+See Mail::Box::new(locker)
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<manager> =E<gt> MANAGER
+
+See Mail::Box::new(manager)
+
+=item B<message_type> =E<gt> CLASS
+
+See Mail::Box::new(message_type)
+
+=item B<multipart_type> =E<gt> CLASS
+
+See Mail::Box::new(multipart_type)
+
+=item B<password> =E<gt> STRING X<new(password)>
+
+The password which is required to contact the remote server.
+
+=item B<remove_when_empty> =E<gt> BOOLEAN
+
+See Mail::Box::new(remove_when_empty)
+
+=item B<save_on_exit> =E<gt> BOOLEAN
+
+See Mail::Box::new(save_on_exit)
+
+=item B<server_name> =E<gt> HOSTNAME X<new(server_name)>
+
+The name of the host which contains the remote mail server.
+
+=item B<server_port> =E<gt> INTEGER X<new(server_port)>
+
+Port number in use by the server application.
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=item B<trusted> =E<gt> BOOLEAN
+
+See Mail::Box::new(trusted)
+
+=item B<username> =E<gt> STRING X<new(username)>
+
+The username which is to be used for the remote server.
+
+=back
+
+=back
+
+=head2 Opening folders
+
+=over 4
+
+=item B<clone> OPTIONS
+
+See Mail::Box::clone()
+
+=item B<create> FOLDERNAME, OPTIONS
+
+See Mail::Box::create()
+
+=item B<folderdir> [DIRECTORY]
+
+See Mail::Box::folderdir()
+
+=item B<foundIn> [FOLDERNAME], OPTIONS
+
+See Mail::Box::foundIn()
+
+=back
+
+=head2 On open folders
+
+=over 4
+
+=item B<addMessage> MESSAGE
+
+See Mail::Box::addMessage()
+
+=item B<addMessages> MESSAGE [, MESSAGE, ...]
+
+See Mail::Box::addMessages()
+
+=item B<copyTo> FOLDER, OPTIONS
+
+See Mail::Box::copyTo()
+
+=item B<modified> [BOOLEAN]
+
+See Mail::Box::modified()
+
+=item B<name> 
+
+See Mail::Box::name()
+
+=item B<organization> 
+
+See Mail::Box::organization()
+
+=item B<update> OPTIONS
+
+See Mail::Box::update()
+
+=item B<writable> 
+
+See Mail::Box::writable()
+
+=back
+
+=head2 Closing the folder
+
+=over 4
+
+=item B<DESTROY> 
+
+See Mail::Box::DESTROY()
+
+=item B<close> OPTIONS
+
+See Mail::Box::close()
+
+=item B<delete> 
+
+See Mail::Box::delete()
+
+=back
+
+=head2 The messages
+
+=over 4
+
+=item B<current> [NUMBER|MESSAGE|MESSAGE-ID]
+
+See Mail::Box::current()
+
+=item B<find> MESSAGE-ID
+
+See Mail::Box::find()
+
+=item B<message> INDEX [,MESSAGE]
+
+See Mail::Box::message()
+
+=item B<messageId> MESSAGE-ID [,MESSAGE]
+
+See Mail::Box::messageId()
+
+=item B<messageIds> 
+
+See Mail::Box::messageIds()
+
+=item B<messages> ['ALL',RANGE,'ACTIVE','DELETED',LABEL,!LABEL,FILTER]
+
+See Mail::Box::messages()
+
+=item B<scanForMessages> MESSAGE, MESSAGE-IDS, TIMESTAMP, WINDOW
+
+See Mail::Box::scanForMessages()
+
+=back
+
+=head2 Sub-folders
+
+=over 4
+
+=item B<listSubFolders> OPTIONS
+
+See Mail::Box::listSubFolders()
+
+=item B<openRelatedFolder> OPTIONS
+
+See Mail::Box::openRelatedFolder()
+
+=item B<openSubFolder> NAME, OPTIONS
+
+See Mail::Box::openSubFolder()
+
+=back
+
+=head2 Message threads [internals]
+
+=over 4
+
+=item B<toBeThreaded> MESSAGES
+
+See Mail::Box::toBeThreaded()
+
+=item B<toBeUnthreaded> MESSAGES
+
+See Mail::Box::toBeUnthreaded()
+
+=back
+
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<appendMessages> OPTIONS
+
+See Mail::Box::appendMessages()
+
+=item B<coerce> MESSAGE
+
+See Mail::Box::coerce()
+
+=item B<determineBodyType> MESSAGE, HEAD
+
+See Mail::Box::determineBodyType()
+
+=item B<lineSeparator> [STRING|'CR'|'LF'|'CRLF']
+
+See Mail::Box::lineSeparator()
+
+=item B<locker> 
+
+See Mail::Box::locker()
+
+=item B<read> OPTIONS
+
+See Mail::Box::read()
+
+=item B<readMessages> OPTIONS
+
+See Mail::Box::readMessages()
+
+=item B<storeMessage> MESSAGE
+
+See Mail::Box::storeMessage()
+
+=item B<updateMessages> OPTIONS
+
+See Mail::Box::updateMessages()
+
+=item B<write> OPTIONS
+
+See Mail::Box::write()
+
+=item B<writeMessages> 
+
+See Mail::Box::writeMessages()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=item B<timespan2seconds> TIME
+
+See Mail::Box::timespan2seconds()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

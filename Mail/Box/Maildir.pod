@@ -1,0 +1,533 @@
+
+=head1 NAME
+
+
+Mail::Box::Maildir - handle Maildir folders
+
+=head1 CLASS INHERITANCE
+
+Mail::Box::Maildir
+   is a Mail::Box::Dir
+   is a Mail::Box
+   is a Mail::Reporter
+
+=head1 SYNOPSIS
+
+
+ use Mail::Box::Maildir;
+ my $folder = new Mail::Box::Maildir folder => $ENV{MAIL}, ...;
+
+=head1 DESCRIPTION
+
+
+This documentation describes how Maildir mailboxes work, and what you
+can do with the Maildir folder object C<Mail::Box::Maildir>.
+Please read C<Mail::Box-Overview> and C<Mail::Box::Dir> first.
+
+Maildir is not supported for Windows, because it create filenames
+which are not accepted by the Windows system.
+L<The internal organization and details|/"IMPLEMENTATION"> are found
+at the bottom of this manual-page.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS X<new>
+
+ OPTION               DEFAULT
+ access               'r'
+ body_delayed_type    'Mail::Message::Body::Delayed'
+ body_type            'Mail::Message::Body::Lines'
+ coerce_options       []
+ create               <false>
+ extract              10240
+ field_type           undef
+ folder               $ENV{MAIL}
+ folderdir            $ENV{HOME}/.maildir
+ head_delayed_type    'Mail::Message::Head::Delayed'
+ head_type            'Mail::Message::Head::Complete'
+ head_wrap            72
+ keep_dups            <false>
+ lock_file            <not used>
+ lock_timeout         <not used>
+ lock_type            'NONE' (constant)
+ lock_wait            <not used>
+ locker               undef
+ log                  'WARNINGS'
+ manager              undef
+ message_type         'Mail::Box::Message'
+ multipart_type       'Mail::Message::Body::Multipart'
+ remove_when_empty    <true>
+ save_on_exit         <true>
+ trace                'WARNINGS'
+ trusted              <depends on folder location>
+
+=over 4
+
+=item B<access> =E<gt> MODE
+
+See Mail::Box::new(access)
+
+=item B<body_delayed_type> =E<gt> CLASS
+
+See Mail::Box::new(body_delayed_type)
+
+=item B<body_type> =E<gt> CLASS|CODE
+
+See Mail::Box::new(body_type)
+
+=item B<coerce_options> =E<gt> ARRAY
+
+See Mail::Box::new(coerce_options)
+
+=item B<create> =E<gt> BOOLEAN
+
+See Mail::Box::new(create)
+
+=item B<extract> =E<gt> INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
+
+See Mail::Box::new(extract)
+
+=item B<field_type> =E<gt> CLASS
+
+See Mail::Box::new(field_type)
+
+=item B<folder> =E<gt> FOLDERNAME
+
+See Mail::Box::new(folder)
+
+=item B<folderdir> =E<gt> DIRECTORY
+
+See Mail::Box::new(folderdir)
+
+=item B<head_delayed_type> =E<gt> CLASS
+
+See Mail::Box::new(head_delayed_type)
+
+=item B<head_type> =E<gt> CLASS
+
+See Mail::Box::new(head_type)
+
+=item B<head_wrap> =E<gt> INTEGER
+
+See Mail::Box::new(head_wrap)
+
+=item B<keep_dups> =E<gt> BOOLEAN
+
+See Mail::Box::new(keep_dups)
+
+=item B<lock_file> =E<gt> FILENAME
+
+See Mail::Box::new(lock_file)
+
+=item B<lock_timeout> =E<gt> SECONDS
+
+See Mail::Box::new(lock_timeout)
+
+=item B<lock_type> =E<gt> CLASS|STRING
+
+See Mail::Box::new(lock_type)
+
+=item B<lock_wait> =E<gt> SECONDS
+
+See Mail::Box::new(lock_wait)
+
+=item B<locker> =E<gt> OBJECT
+
+See Mail::Box::new(locker)
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<manager> =E<gt> MANAGER
+
+See Mail::Box::new(manager)
+
+=item B<message_type> =E<gt> CLASS
+
+See Mail::Box::new(message_type)
+
+=item B<multipart_type> =E<gt> CLASS
+
+See Mail::Box::new(multipart_type)
+
+=item B<remove_when_empty> =E<gt> BOOLEAN
+
+See Mail::Box::new(remove_when_empty)
+
+=item B<save_on_exit> =E<gt> BOOLEAN
+
+See Mail::Box::new(save_on_exit)
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=item B<trusted> =E<gt> BOOLEAN
+
+See Mail::Box::new(trusted)
+
+=back
+
+=back
+
+=head2 Opening folders
+
+=over 4
+
+=item B<clone> OPTIONS
+
+See Mail::Box::clone()
+
+=item B<create> FOLDERNAME, OPTIONS
+
+See Mail::Box::create()
+
+=item B<folderdir> [DIRECTORY]
+
+See Mail::Box::folderdir()
+
+=item B<foundIn> [FOLDERNAME], OPTIONS
+
+See Mail::Box::foundIn()
+
+=back
+
+=head2 On open folders
+
+=over 4
+
+=item B<addMessage> MESSAGE
+
+See Mail::Box::addMessage()
+
+=item B<addMessages> MESSAGE [, MESSAGE, ...]
+
+See Mail::Box::addMessages()
+
+=item B<copyTo> FOLDER, OPTIONS
+
+See Mail::Box::copyTo()
+
+=item B<modified> [BOOLEAN]
+
+See Mail::Box::modified()
+
+=item B<name> 
+
+See Mail::Box::name()
+
+=item B<organization> 
+
+See Mail::Box::organization()
+
+=item B<update> OPTIONS
+
+See Mail::Box::update()
+
+=item B<writable> 
+
+See Mail::Box::writable()
+
+=back
+
+=head2 Closing the folder
+
+=over 4
+
+=item B<DESTROY> 
+
+See Mail::Box::DESTROY()
+
+=item B<close> OPTIONS
+
+See Mail::Box::close()
+
+=item B<delete> 
+
+See Mail::Box::delete()
+
+=back
+
+=head2 The messages
+
+=over 4
+
+=item B<current> [NUMBER|MESSAGE|MESSAGE-ID]
+
+See Mail::Box::current()
+
+=item B<find> MESSAGE-ID
+
+See Mail::Box::find()
+
+=item B<message> INDEX [,MESSAGE]
+
+See Mail::Box::message()
+
+=item B<messageId> MESSAGE-ID [,MESSAGE]
+
+See Mail::Box::messageId()
+
+=item B<messageIds> 
+
+See Mail::Box::messageIds()
+
+=item B<messages> ['ALL',RANGE,'ACTIVE','DELETED',LABEL,!LABEL,FILTER]
+
+See Mail::Box::messages()
+
+=item B<scanForMessages> MESSAGE, MESSAGE-IDS, TIMESTAMP, WINDOW
+
+See Mail::Box::scanForMessages()
+
+=back
+
+=head2 Sub-folders
+
+=over 4
+
+=item B<listSubFolders> OPTIONS
+
+See Mail::Box::listSubFolders()
+
+=item B<openRelatedFolder> OPTIONS
+
+See Mail::Box::openRelatedFolder()
+
+=item B<openSubFolder> NAME, OPTIONS
+
+See Mail::Box::openSubFolder()
+
+=back
+
+=head2 Message threads [internals]
+
+=over 4
+
+=item B<toBeThreaded> MESSAGES
+
+See Mail::Box::toBeThreaded()
+
+=item B<toBeUnthreaded> MESSAGES
+
+See Mail::Box::toBeUnthreaded()
+
+=back
+
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<appendMessages> OPTIONS
+
+See Mail::Box::appendMessages()
+
+=item B<coerce> MESSAGE
+
+See Mail::Box::coerce()
+
+=item B<createDirs> FOLDERDIR X<createDirs>
+
+(Instance or class method)
+The FOLDERDIR contains the absolute path of the location where the
+messages are kept.  Maildir folders contain a C<tmp>, C<new>, and
+C<cur> sub-directory within that folder directory as well.  This
+method will ensure that all directories exist.
+Returns false on failure.
+
+=item B<determineBodyType> MESSAGE, HEAD
+
+See Mail::Box::determineBodyType()
+
+=item B<directory> 
+
+See Mail::Box::Dir::directory()
+
+=item B<folderIsEmpty> FOLDERDIR X<folderIsEmpty>
+
+(Instance or class method)
+Checks whether the folder whose directory is specified as absolute FOLDERDIR
+is empty or not.  A folder is empty when the C<tmp>, C<new>, and C<cur>
+subdirectories are empty and some files which are left there by application
+programs.  The maildir spec explicitly states: C<.qmail>, C<bulletintime>,
+C<bulletinlock> and C<seriallock>.  If any other files are found, the
+directory is considered not-empty.
+
+=item B<folderToDirectory> FOLDERNAME, FOLDERDIR
+
+See Mail::Box::Dir::folderToDirectory()
+
+=item B<lineSeparator> [STRING|'CR'|'LF'|'CRLF']
+
+See Mail::Box::lineSeparator()
+
+=item B<locker> 
+
+See Mail::Box::locker()
+
+=item B<read> OPTIONS
+
+See Mail::Box::read()
+
+=item B<readMessageFilenames> DIRECTORY
+
+See Mail::Box::Dir::readMessageFilenames()
+
+=item B<readMessages> OPTIONS
+
+See Mail::Box::readMessages()
+
+=item B<storeMessage> MESSAGE
+
+See Mail::Box::storeMessage()
+
+=item B<updateMessages> OPTIONS
+
+See Mail::Box::updateMessages()
+
+=item B<write> OPTIONS
+
+See Mail::Box::write()
+
+=item B<writeMessages> 
+
+See Mail::Box::writeMessages()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=item B<timespan2seconds> TIME
+
+See Mail::Box::timespan2seconds()
+
+=back
+
+=head1 IMPLEMENTATION
+
+
+The explanation is complicated, but for normal use you should bother
+yourself with all details.
+
+=head2 How Maildir-folders work
+
+Maildir-type folders use a directory to store the messages of one folder.
+Each message is stored in a separate file.  This seems useful, because
+changes in a folder change only a few of these small files, in contrast with
+file-based folders where changes in a folder cause rewrites of huge
+folder-files.
+
+However, Maildir based folders perform very bad if you need header information
+of all messages.  For instance, if you want to have full knowledge about
+all message-threads (see C<Mail::Box::Thread::Manager>) in the folder, it
+requires to read all header lines in all message files.  And usually, reading
+your messages as threads is desired.  Maildir maintains a tiny amount
+of info visible in the filename, which may make it perform just a little
+bit faster than MH.
+
+The following information was found at F<http://cr.yp.to/proto/maildir.html>.
+Each message is written in a separate file.  The filename is
+constructed from the time-of-arrival, a unique component, hostname,
+a syntax marker, and flags. For example C<1014220791.meteor.42:2,DF>.
+The filename must match:
+
+ my ($time, $unique, $hostname, $info)
+    = $filename =~ m!^(\d+)\.(.*)\.(\w+)(\:.*)?$!;
+ my ($semantics, $flags)
+    = $info =~ m!([12])\,([RSTDF]+)$!;
+ my @flags = split //, $flags;
+
+The C<@flags> are sorted alphabetically, with the following meanings:
+
+ D = draft, to be sent later
+ F = flagged for user-defined purpose
+ R = has been replied
+ S = seen / (partially) read by the user
+ T = trashed, flagged to be deleted later
+
+=head2 Labels
+
+The filename contains flags, and those flags are translated into labels
+when the folder is opened.  Labels can be changed by the application using
+the C<labels> method. 
+
+Changes will directly reflect in a filename change.
+The C<Status> and C<X-Status> lines in the header, which are used by
+Mbox kind of folders, are ignored except when a new message is received
+in the C<new> directory.  In case a message has to be written to file
+for some reason, the status header lines are updated as well.
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

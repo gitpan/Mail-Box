@@ -1,9 +1,7 @@
-
 use strict;
 package Mail::Box::Mbox;
+our $VERSION = 2.019;  # Part of Mail::Box
 use base 'Mail::Box';
-
-our $VERSION = 2.018;
 
 use Mail::Box::Mbox::Message;
 
@@ -20,170 +18,6 @@ use File::Spec;
 use File::Basename;
 use POSIX ':unistd_h';
 use IO::File;
-
-=head1 NAME
-
-Mail::Box::Mbox - handle folders in Mbox format
-
-=head1 CLASS HIERARCHY
-
- Mail::Box::Mbox
- is a Mail::Box
- is a Mail::Reporter
-
-=head1 SYNOPSIS
-
- use Mail::Box::Mbox;
- my $folder = Mail::Box::Mbox->new(folder => $ENV{MAIL}, ...);
-
-=head1 DESCRIPTION
-
-This documentation describes how Mbox mailboxes work, and also describes
-what you can do with the Mbox folder object C<Mail::Box::Mbox>.
-Please read C<Mail::Box-Overview> and C<Mail::Box> first.
-
-L<The internal organization and details|/"IMPLEMENTATION"> are found
-at the bottom of this manual-page.  The working of Mbox-messages are
-described in L<Mail::Box::Mbox::Message>.
-
-=head1 METHOD INDEX
-
-Methods prefixed with an abbreviation are described in
-L<Mail::Box> (MB), L<Mail::Reporter> (MR).
-
-The general methods for C<Mail::Box::Mbox> objects:
-
-   MB addMessage  MESSAGE               MB message INDEX [,MESSAGE]
-   MB addMessages MESSAGE [, MESS...    MB messageId MESSAGE-ID [,MESS...
-   MB close OPTIONS                     MB messageIds
-   MB copyTo FOLDER, OPTIONS            MB messages ['ALL',RANGE,'ACTI...
-      create FOLDERNAME, ARGS           MB modified [BOOLEAN]
-   MB current [NUMBER|MESSAGE|MES...    MB name
-   MB delete                               new OPTIONS
-   MR errors                            MB openSubFolder NAME [,OPTIONS]
-      filename                          MR report [LEVEL]
-   MB find MESSAGE-ID                   MR reportAll [LEVEL]
-      listSubFolders [OPTIONS]          MR trace [LEVEL]
-   MB locker                            MR warnings
-   MR log [LEVEL [,STRINGS]]            MB writable
-
-The extra methods for extension writers:
-
-   MR AUTOLOAD                          MB organization
-   MB DESTROY                              parser
-   MB appendMessages OPTIONS            MB read OPTIONS
-   MB clone OPTIONS                     MB readMessages OPTIONS
-   MB coerce MESSAGE                    MB scanForMessages MESSAGE, ME...
-   MB determineBodyType MESSAGE, ...    MB sort PREPARE, COMPARE, LIST
-      folderToFilename FOLDERNAME...    MB storeMessage MESSAGE
-   MB folderdir [DIR]                   MB timespan2seconds TIME
-      foundIn [FOLDERNAME] [,OPTI...    MB toBeThreaded MESSAGES
-   MR inGlobalDestruction               MB toBeUnthreaded MESSAGES
-   MB lineSeparator [STRING|'CR'|...    MB update OPTIONS
-   MR logPriority LEVEL                 MB updateMessages OPTIONS
-   MR logSettings                          write OPTIONS
-   MR notImplemented                    MB writeMessages
-   MB openRelatedFolder OPTIONS
-
-=head1 METHODS
-
-=over 4
-
-=cut
-
-#-------------------------------------------
-
-=item new OPTIONS
-
-Create a new folder.  Many options are taken from object-classes to which
-C<Mail::Box::Mbox> is an extension.  Read below for a detailed
-description of Mbox specific options.
-
- OPTION              DESCRIBED IN       DEFAULT
- access              Mail::Box          'r'
- create              Mail::Box          0
- folder              Mail::Box          $ENV{MAIL}
- folderdir           Mail::Box          $ENV{HOME}.'/Mail'
- head_wrap           Mail::Box          72
- extract             Mail::Box          10kb
- keep_dups           Mail::Box          0
- lock_file           Mail::Box          foldername.lock-extension
- lock_extension      Mail::Box::Mbox    '.lock'
- lock_timeout        Mail::Box          1 hour
- lock_wait           Mail::Box          10 seconds
- log                 Mail::Reporter     'WARNINGS'
- write_policy        Mail::Box::Mbox    undef
- remove_when_empty   Mail::Box          1
- save_on_exit        Mail::Box          1
- subfolder_extension Mail::Box::Mbox    '.d'
- trace               Mail::Reporter     'WARNINGS'
- trusted             Mail::Box          <depends on folder location>
-
-Only useful to write extension to C<Mail::Box::Mbox>.  Common users of
-folders you will not specify these:
-
- OPTION              DEFINED BY         DEFAULT
- body_type           Mail::Box::Mbox    <see below>
- body_delayed_type   Mail::Box          'Mail::Message::Body::Delayed'
- coerce_options      Mail::Box          []
- field_type          Mail::Box          undef
- head_type           Mail::Box          'Mail::Message::Head::Complete'
- head_delayed_type   Mail::Box          'Mail::Message::Head::Delayed'
- locker              Mail::Box          undef
- lock_type           Mail::Box          'DOTLOCK'
- multipart_type      Mail::Box          'Mail::Message::Body::Multipart'
- manager             Mail::Box          undef
- message_type        Mail::Box          'Mail::Box::Mbox::Message'
-
-Mbox specific options:
-
-=over 4
-
-=item * lock_extension =E<gt> FILENAME|STRING
-
-When the dotlock locking mechanism is used, the lock is created by
-the creation of a file.  For C<Mail::Box::Mbox> type of folders, this
-file is by default named the same as the folder-file itself, followed by
-C<.lock>.
-
-You may specify an absolute filename, a relative (to the folder's
-directory) filename, or an extension (preceeded by a dot).  So valid
-examples are:
-
-    .lock                  # append to filename
-    my_own_lockfile.test   # full filename, same dir
-    /etc/passwd            # somewhere else
-
-=item * subfolder_extension =E<gt> STRING
-
-Mail folders which store their messages in files usually do not
-support sub-folders, as do mail folders which store messages
-in a directory.
-
-However, this module can simulate sub-directories if the user wants it to.
-When a subfolder of folder C<xyz> is created, we create a directory which
-is called C<xyz.d> to contain them.  This extension C<.d> can be changed
-using this option.
-
-=item * write_policy =E<gt> 'REPLACE' || 'INPLACE'
-
-Sets the default write policy.  See the C<policy> option to the
-C<write()> method.
-
-=back
-
-The C<body_type> option for Mbox folders defaults to
-
-   sub determine_body_type($$)
-   {   my $head = shift;
-       my $size = shift || 0;
-       'Mail::Message::Body::' . ($size > 10000 ? 'File' : 'Lines');
-   }
-
-which will cause messages larger than 10kB to be stored in files, and
-smaller files in memory.
-
-=cut
 
 my $default_folder_dir = exists $ENV{HOME} ? $ENV{HOME} . '/Mail' : '.';
 my $default_extension  = '.d';
@@ -236,65 +70,7 @@ sub init($)
     $self->parser ? $self : undef;
 }
 
-#-------------------------------------------
-
-sub head(;$)
-{   my $self   = shift;
-    return $self->head unless @_;
-
-    my $head   = shift;
-    $self->SUPER::head($head);
-    $self->statusToLabels if $head;
-    $head;
-}
-
-#-------------------------------------------
-
 sub organization() { 'FILE' }
-
-#-------------------------------------------
-
-sub close(@)
-{   my $self = $_[0];            # be careful, we want to set the calling
-    undef $_[0];                 #    ref to undef, as the SUPER does.
-    shift;
-
-    $self->parserClose;
-    $self->SUPER::close(@_);
-}
-
-#-------------------------------------------
-
-=item filename
-
-Returns the filename for this folder.
-
-Example:
-
-    print $folder->filename;
-
-=cut
-
-sub filename() { shift->{MB_filename} }
-
-
-#-------------------------------------------
-
-=item create FOLDERNAME, ARGS
-
- OPTION              DEFINED BY         DEFAULT
- folderdir           Mail::Box          <from object>
- subfolder_extension Mail::Box::Mbox    <from object>
-
-Mbox specific options:
-
-=over 4
-
-=item * subfolder_extension =E<gt> STRING
-
-=back
-
-=cut
 
 sub create($@)
 {   my ($class, $name, %args) = @_;
@@ -325,26 +101,51 @@ sub create($@)
     $class;
 }
 
-#-------------------------------------------
+sub foundIn($@)
+{   my $class = shift;
+    my $name  = @_ % 2 ? shift : undef;
+    my %args  = @_;
+    $name   ||= $args{folder} or return;
 
-=item listSubFolders [OPTIONS]
+    my $folderdir = $args{folderdir} || $default_folder_dir;
+    my $extension = $args{subfolder_extension} || $default_extension;
+    my $filename  = $class->folderToFilename($name, $folderdir, $extension);
 
- OPTION              DEFINED BY         DEFAULT
- folder              Mail::Box          <obligatory>
- folderdir           Mail::Box          <from object>
- check               Mail::Box          <false>
- skip_empty          Mail::Box          <false>
- subfolder_extension Mail::Box::Mbox    <from object>
+    if(-d $filename)      # fake empty folder, with sub-folders
+    {   return 1 unless -f File::Spec->catfile($filename, '1')   # MH
+                     || -d File::Spec->catdir($filename, 'cur'); # Maildir
+    }
 
-Mbox specific options:
+    return 0 unless -f $filename;
+    return 1 if -z $filename;      # empty folder is ok
 
-=over 4
+    my $file = IO::File->new($filename, 'r') or return 0;
+    local $_;                      # Save external $_
+    while(<$file>)
+    {   next if /^\s*$/;
+        $file->close;
+        return m/^From /;
+    }
 
-=item * subfolder_extension =E<gt> STRING
+    return 1;
+}
 
-=back
+sub filename() { shift->{MB_filename} }
 
-=cut
+#head2 Closing folders
+
+sub close(@)
+{   my $self = $_[0];            # be careful, we want to set the calling
+    undef $_[0];                 #    ref to undef, as the SUPER does.
+    shift;
+
+    $self->parserClose;
+    $self->SUPER::close(@_);
+}
+
+#head2 The messages
+
+sub scanForMessages(@) {shift}
 
 sub listSubFolders(@)
 {   my ($thingy, %args)  = @_;
@@ -372,7 +173,7 @@ sub listSubFolders(@)
     my @entries = grep { ! m/\.lo?ck$/ && ! m/^\./ } readdir DIR;
     closedir DIR;
 
-    # Look for files in the folderdir.  They should be readible to
+    # Look for files in the folderdir.  They should be readable to
     # avoid warnings for usage later.  Furthermore, if we check on
     # the size too, we avoid a syscall especially to get the size
     # of the file by performing that check immediately.
@@ -404,31 +205,10 @@ sub listSubFolders(@)
     keys %folders;
 }
 
-#-------------------------------------------
-
 sub openSubFolder($@)
 {   my ($self, $name) = (shift, shift);
     $self->openRelatedFolder(@_, folder => "$self/$name");
 }
-
-#-------------------------------------------
-
-=back
-
-=head1 METHODS for extension writers
-
-=over 4
-
-=cut
-
-#-------------------------------------------
-
-=item parser
-
-Create a parser for this mailbox.  The parser stays alive as long as
-the folder is open.
-
-=cut
 
 sub parser()
 {   my $self = shift;
@@ -460,8 +240,6 @@ sub parser()
     $parser;
 }
 
-#-------------------------------------------
-
 sub parserClose()
 {   my $self   = shift;
     my $parser = delete $self->{MBM_parser} or return;
@@ -471,8 +249,6 @@ sub parserClose()
     $self->locker->unlock;
     $self;
 }
-
-#-------------------------------------------
 
 sub readMessages(@)
 {   my ($self, %args) = @_;
@@ -502,69 +278,6 @@ sub readMessages(@)
     # Release the folder.
     $self;
 }
- 
-#-------------------------------------------
-
-=item write OPTIONS
-
- OPTION            DEFINED BY         DEFAULT
- force             Mail::Box          <true>
- head_wrap         Mail::Box          72
- keep_deleted      Mail::Box          <false>
- save_deleted      Mail::Box          <false>
- policy            Mail::Box::Mbox    'REPLACE'|'INPLACE'
-
-=over 4
-
-=item policy =E<gt> 'REPLACE'|'INPLACE'|undef
-
-In what way will the mail folder be updated.  If not specified during the
-write, the value of the C<write_policy> at folder creation is taken.
-
-Valid values:
-
-=over 4
-
-=item * C<REPLACE>
-
-First a new folder is written in the same directory as the folder which has
-to be updated, and then a call to move will throw away the old immediately
-replacing it by the new.  The name of the folder's temporary file is
-produced in C<tmpNewFolder>.
-
-Writing in C<REPLACE> module is slightly optimized: messages which are not 
-modified are copied from file to file, byte by byte.  This is much
-faster than printing the data which is will be done for modified messages.
-
-=item * C<INPLACE>
-
-The original folder file will be opened read/write.  All message which where
-not changed will be left untouched, until the first deleted or modified
-message is detected.  All further messages are printed again.
-
-=item * C<undef>
-
-As default, or when C<undef> is explicitly specified, first C<REPLACE> mode
-is tried.  Only when that fails, an C<INPLACE> update is performed.
-
-=back
-
-C<INPLACE> will be much faster than C<REPLACE> when applied on large
-folders, however requires the C<truncate> function to be implemented on
-your operating system.  It is also dangerous: when the program is interrupted
-during the update process, the folder is corrupted.  Data may be lost.
-
-However, in some cases it is not possible to write the folder with
-C<REPLACE>.  For instance, the usual incoming mail folder on UNIX is
-stored in a directory where a user can not write.  Of course, the
-C<root> and C<mail> users can, but if you want to use this Perl module
-with permission of a normal user, you can only get it to work in C<INPLACE>
-mode.  Be warned that in this case folder locking via a lockfile is not
-possible as well.
-
-=back
-
-=cut
 
 sub writeMessages($)
 {   my ($self, $args) = @_;
@@ -600,7 +313,6 @@ sub writeMessages($)
 
     $self;
 }
-
 
 sub _write_new($)
 {   my ($self, $args) = @_;
@@ -736,8 +448,6 @@ sub _write_inplace($)
     1;
 }
 
-#-------------------------------------------
-
 sub appendMessages(@)
 {   my $class  = shift;
     my %args   = @_;
@@ -774,66 +484,6 @@ sub appendMessages(@)
     @coerced;
 }
 
-#-------------------------------------------
-
-=item foundIn [FOLDERNAME] [,OPTIONS]
-
- OPTION              DEFINED BY         DEFAULT
- folder              Mail::Box::Mbox    undef
- folderdir           Mail::Box          <from object>
- subfolder_extension Mail::Box::Mbox    <from object>
-
-If no FOLDERNAME is specified, then the C<folder> option is taken.
-
-Mbox specific options:
-
-=over 4
-
-=item * folder =E<gt> FOLDERNAME
-
-=item * subfolder_extension =E<gt> STRING
-
-=back
-
-=cut
-
-sub foundIn($@)
-{   my $class = shift;
-    my $name  = @_ % 2 ? shift : undef;
-    my %args  = @_;
-    $name   ||= $args{folder} or return;
-
-    my $folderdir = $args{folderdir} || $default_folder_dir;
-    my $extension = $args{subfolder_extension} || $default_extension;
-    my $filename  = $class->folderToFilename($name, $folderdir, $extension);
-
-    if(-d $filename)      # fake empty folder, with sub-folders
-    {   return 1 unless -f File::Spec->catfile($filename, '1')   # MH
-                     || -d File::Spec->catdir($filename, 'cur'); # Maildir
-    }
-
-    return 0 unless -f $filename;
-    return 1 if -z $filename;      # empty folder is ok
-
-    my $file = IO::File->new($filename, 'r') or return 0;
-    local $_;                      # Save external $_
-    while(<$file>)
-    {   next if /^\s*$/;
-        $file->close;
-        return m/^From /;
-    }
-
-    return 1;
-}
-#-------------------------------------------
-
-=item folderToFilename FOLDERNAME, FOLDERDIR, EXTENSION
-
-(Class method)  Translate a folder name into a filename, using the
-FOLDERDIR value to replace a leading C<=>.
-
-=cut
-
 sub folderToFilename($$$)
 {   my ($class, $name, $folderdir, $extension) = @_;
     return $name if File::Spec->file_name_is_absolute($name);
@@ -843,7 +493,7 @@ sub folderToFilename($$$)
     if(@parts)
     {   my $file  = pop @parts;
 
-        $real = File::Spec->catdir($real.(-d $real ? '' : $extension), $_) 
+        $real = File::Spec->catdir($real.(-d $real ? '' : $extension), $_)
            foreach @parts;
 
         $real = File::Spec->catfile($real.(-d $real ? '' : $extension), $file);
@@ -854,81 +504,5 @@ sub folderToFilename($$$)
 }
 
 sub tmpNewFolder($) { shift->filename . '.tmp' }
-
-#-------------------------------------------
-
-sub scanForMessages(@) {shift}
-
-#-------------------------------------------
-
-=back
-
-=head1 IMPLEMENTATION
-
-=head2 How Mbox folders work
-
-Mbox folders store many messages in one file (let's call this a
-`file-based' folder, in comparison to a `directory-based' folder types
-like MH and Maildir).
-
-In file-based folders, each message begins with a line which starts with
-the string C<From >.  Lines inside a message which accidentally start with
-C<From> are, in the file, preceeded by `E<gt>'. This character is stripped
-when the message is read.
-
-In this module, the name of a folder may be an absolute or relative path.
-You can also preceed the foldername by C<=>, which means that it is
-relative to the I<folderdir> option specified for the C<new> method.
-
-=head2 Labels
-
-Message labels (flags which tell about user-actions on the message) are
-stored in C<Status> and C<X-Status> fields.  Each time a label is changed
-(using the C<label()> method) these lines are updated immediately.
-
-=head2 Simulation of sub-folders
-
-File-based folders do not really have a sub-folder concept as directory-based
-folders do, but this module tries to simulate them.  In this implementation
-a directory like
-
-   Mail/subject1/
-
-is taken as an empty folder C<Mail/subject1>, with the folders in that
-directory as sub-folders for it.  You may also use
-
-   Mail/subject1
-   Mail/subject1.d/
-
-where C<Mail/subject1> is the folder, and the folders in the
-C<Mail/subject1.d> directory are used as sub-folders.  If your situation
-is similar to the first example and you want to put messages in that empty
-folder, the directory is automatically (and transparently) renamed, so
-that the second situation is reached.
-
-Because of these simulated sub-folders, the folder manager does not need to
-distinguish between file- and directory-based folders in this respect.
-
-=head1 SEE ALSO
-
-L<Mail::Box-Overview>
-
-For support and additional documentation, see http://perl.overmeer.net/mailbox/
-
-=head1 AUTHOR
-
-Mark Overmeer (F<mailbox@overmeer.net>).
-All rights reserved.  This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-=head1 VERSION
-
-This code is beta, version 2.018.
-
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=cut
 
 1;

@@ -1,0 +1,406 @@
+
+=head1 NAME
+
+
+Mail::Message::Body::Construct - adds functionality to Mail::Message::Body
+
+=head1 CLASS INHERITANCE
+
+Mail::Message::Body
+  has extra code in Mail::Message::Body::Construct
+  has extra code in Mail::Message::Body::Encode
+
+Mail::Message::Body
+   is a Mail::Reporter
+
+Mail::Message::Body is extended by
+   Mail::Message::Body::File
+   Mail::Message::Body::Lines
+   Mail::Message::Body::Multipart
+   Mail::Message::Body::Nested
+   Mail::Message::Body::String
+
+Mail::Message::Body is realized by
+   Mail::Message::Body::Delayed
+
+=head1 SYNOPSIS
+
+
+=head1 DESCRIPTION
+
+
+This package adds complex functionality to the Mail::Message::Body
+class.  This functions less often used, so many programs will not
+compile this package.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS
+
+See Mail::Message::Body::new()
+
+=back
+
+=head2 The Body
+
+=over 4
+
+=item B<clone> 
+
+See Mail::Message::Body::clone()
+
+=item B<decoded> OPTIONS
+
+See Mail::Message::Body::decoded()
+
+=item B<isDelayed> 
+
+See Mail::Message::Body::isDelayed()
+
+=item B<isMultipart> 
+
+See Mail::Message::Body::isMultipart()
+
+=item B<isNested> 
+
+See Mail::Message::Body::isNested()
+
+=item B<message> [MESSAGE]
+
+See Mail::Message::Body::message()
+
+=item B<modified> [BOOL]
+
+See Mail::Message::Body::modified()
+
+=item B<print> [FILE]
+
+See Mail::Message::Body::print()
+
+=back
+
+=head2 About the Payload
+
+=over 4
+
+=item B<charset> 
+
+See Mail::Message::Body::charset()
+
+=item B<checked> [BOOLEAN]
+
+See Mail::Message::Body::checked()
+
+=item B<disposition> [STRING|FIELD]
+
+See Mail::Message::Body::disposition()
+
+=item B<eol> ['CR'|'LF'|'CRLF'|'NATIVE']
+
+See Mail::Message::Body::eol()
+
+=item B<isBinary> 
+
+See Mail::Message::Body::Encode::isBinary()
+
+=item B<isText> 
+
+See Mail::Message::Body::Encode::isText()
+
+=item B<mimeType> 
+
+See Mail::Message::Body::mimeType()
+
+=item B<nrLines> 
+
+See Mail::Message::Body::nrLines()
+
+=item B<size> 
+
+See Mail::Message::Body::size()
+
+=item B<transferEncoding> [STRING|FIELD]
+
+See Mail::Message::Body::transferEncoding()
+
+=item B<type> 
+
+See Mail::Message::Body::type()
+
+=back
+
+=head2 Access to the Payload
+
+=over 4
+
+=item B<file> 
+
+See Mail::Message::Body::file()
+
+=item B<lines> 
+
+See Mail::Message::Body::lines()
+
+=item B<string> 
+
+See Mail::Message::Body::string()
+
+=back
+
+=head2 Constructing a Body
+
+=over 4
+
+=item B<addTransferEncHandler> NAME, CLASS|OBJECT
+
+See Mail::Message::Body::Encode::addTransferEncHandler()
+
+=item B<attach> MESSAGES, OPTIONS X<attach>
+
+Make a multipart containing this body and the specified MESSAGES. The
+options are passed to the constructor of the multi-part body.  If you
+need more control, create the multi-part body yourself.  At least
+take a look at Mail::Message::Body::Multipart.
+
+The message-parts will be coerced into a Mail::Message::Part, so you
+may attach C<Mail::Internet> or C<MIME::Entity> objects if you want --see
+Mail::Message::coerce().  A new body with attached messages is
+returned.
+
+Examples:
+
+ my $pgpkey = Mail::Message::Body::File->new(file => '.pgp');
+ my $msg    = Mail::Message->buildFromBody(
+    $message->decoded->attach($pgpkey));
+
+ my $entity  = MIME::Entity->new;
+ my $multi   = $msg->body->attach($entity);
+ # The last message of the $multi multiparted body is the coerced $entity.
+
+=item B<check> 
+
+See Mail::Message::Body::Encode::check()
+
+=item B<concatenate> COMPONENTS X<concatenate>
+
+Concatenate a list of elements into one new body.  The encoding is defined by
+the body where this method is called upon (and which does not need to be
+included in the result).
+
+Specify a list of COMPONENTS.  Each component can be
+
+=over 4
+
+=item a message (Mail::Message), the body of the message is used,
+
+=item a body (Mail::Message::Body),
+
+=item C<undef>, which will be skipped,
+
+=item a scalar, which is split on new-lines,
+
+=item an array of scalars, each providing one line.
+
+=back
+
+Examples:
+
+ # all arguments are Mail::Message::Body's.
+ my $sum = $body->concatenate($preamble, $body, $epilogue, "--\n" , $sig);
+
+=item B<encode> OPTIONS
+
+See Mail::Message::Body::Encode::encode()
+
+=item B<encoded> 
+
+See Mail::Message::Body::Encode::encoded()
+
+=item B<foreachLine> CODE X<foreachLine>
+
+Create a new body by performing an action on each of its lines.  If none
+of the lines change, the current body will be returned, otherwise a new
+body is created of the same type as the current.
+
+The CODE refers to a subroutine which is called, where C<$_> contains
+body's original line.  DO NOT CHANGE C<$_>!!!  The result of the routine
+is taken as new line.  When the routine returns C<undef>, the line will be
+skipped.
+
+Examples:
+
+ my $content  = $msg->decoded;
+ my $reply    = $content->foreachLine( sub { '> '.$_ } );
+ my $rev      = $content->foreachLine( sub {reverse} );
+
+ sub filled() { length $_ > 1 ? $_ : undef }
+ my $nonempty = $content->foreachLine( \&filled );
+
+ my $wrong    = $content->foreachLine( sub {s/a/A/} );  # WRONG!!!
+ my $right    = $content->foreachLine( sub {(my $x=$_) =~ s/a/A/} );
+
+=item B<getTransferEncHandler> TYPE
+
+See Mail::Message::Body::Encode::getTransferEncHandler()
+
+=item B<stripSignature> OPTIONS X<stripSignature>
+
+Strip the signature from the body.  The body must already be decoded
+otherwise the wrong lines may get stripped.
+
+The signature is added by the sender to tell about him-
+or herself.  It is superfluous in some situations, for instance if you
+want to create a reply to the person's message you do not need to include
+that signature.
+
+C<stripSignature> returns the stripped version body, and in list context
+also the signature, encapsulated in its own body object.  If the body had
+no signature, the original body object is returned, and C<undef> for
+the signature body.  The signature separator is the first line of the
+returned signature body.
+
+ OPTION               DEFAULT
+ max_lines            10
+ pattern              qr/^--\s?$/
+ result_type          <same as current>
+
+=over 4
+
+=item B<max_lines> =E<gt> INTEGER|undef X<stripSignature(max_lines)>
+
+The maximum number of lines which can be the length of a signature.
+Specify C<undef> to remove the limit.
+
+=item B<pattern> =E<gt> REGEX|STRING|CODE X<stripSignature(pattern)>
+
+Which pattern defines the line which indicates the separator between
+the message and the signature.  In case of a STRING, this is matched
+to the beginning of the line, and REGEX is a full regular expression.
+
+In case of CODE, each line (from last to front) is passed to the
+specified subroutine as first argument.  The subroutine must return
+TRUE when the separator is found.
+
+=item B<result_type> =E<gt> CLASS X<stripSignature(result_type)>
+
+The type of body to be created for the stripped body (and maybe also to
+contain the stripped signature)
+
+=back
+
+Examples:
+
+ my $stripped = $message->decoded;
+ my $stripped = $body->decoded;
+ my ($stripped, $signature) = $message->decoded
+    ->stripSignature(max_lines => 5, pattern => '-*-*-');
+
+=item B<unify> BODY
+
+See Mail::Message::Body::Encode::unify()
+
+=back
+
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Message::Body::AUTOLOAD()
+
+=item B<fileLocation> [BEGIN,END]
+
+See Mail::Message::Body::fileLocation()
+
+=item B<load> 
+
+See Mail::Message::Body::load()
+
+=item B<moveLocation> [DISTANCE]
+
+See Mail::Message::Body::moveLocation()
+
+=item B<read> PARSER, HEAD, BODYTYPE [,CHARS [,LINES]]
+
+See Mail::Message::Body::read()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

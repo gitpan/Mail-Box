@@ -1,0 +1,648 @@
+
+=head1 NAME
+
+
+Mail::Message::Body - the data of a body in a message
+
+=head1 CLASS INHERITANCE
+
+Mail::Message::Body
+  has extra code in Mail::Message::Body::Construct
+  has extra code in Mail::Message::Body::Encode
+
+Mail::Message::Body
+   is a Mail::Reporter
+
+Mail::Message::Body is extended by
+   Mail::Message::Body::File
+   Mail::Message::Body::Lines
+   Mail::Message::Body::Multipart
+   Mail::Message::Body::Nested
+   Mail::Message::Body::String
+
+Mail::Message::Body is realized by
+   Mail::Message::Body::Delayed
+
+=head1 SYNOPSIS
+
+
+ my Mail::Message $msg = ...;
+ my $body  = $msg->body;
+ my @text  = $body->lines;
+ my $text  = $body->string;
+ my FileHandle $file = $body->file;
+ $body->print(\*FILE);
+
+ my $content_type = $body->type;
+ my $transfer_encoding = $body->transferEncoding;
+ my $encoded  = $body->encode(mime_type => 'text/html',
+    charset => 'us-ascii', transfer_encoding => 'NONE');
+ my $decoded  = $body->decoded;
+
+=head1 DESCRIPTION
+
+
+The encoding and decoding functionality of a Mail::Message::Body is
+implemented in the Mail::Message::Body::Encode package.  That package is
+automatically loaded when encoding and decoding of messages needs to take
+place.
+
+The body of a message (a Mail::Message object) is stored in one of the
+body types.  The functionality of each body type is equivalent, but there
+are performance differences.  Each body type has its own documentation
+which contains details about its implementation.
+
+A body can be contained in a message, but may also live without a message.
+In both cases it stores data, and the same questions can be asked: what
+type of data it is, how many bytes and lines, what encoding is used.  Any
+body can be encoded and decoded, returning a new body object.  However, 
+bodies which are part of a message will always be in a shape that they can
+be written to a file or send to somewhere: they will be encoded if needed.
+
+For example:
+
+ my $body    = Mail::Message::Body::String->new(mime_type => 'image/gif');
+ $body->print(\*OUT);    # this is binary image data...
+
+ my $encoded = $message->body($body);
+ $encoded->print(\*OUT); # ascii data, encoded image
+
+Now encoded refers to the body of the C<$message> which is the content of
+C<$body> in a shape that it can be transmitted.  Usually C<base64> encoding
+is used.
+  
+=over 4
+
+=item * Mail::Message::Body::Lines
+
+Each line of the message body is stored as single scalar.  This is a
+useful representation for a detailed look in the message body, which is
+usually line-organized.
+
+=item * Mail::Message::Body::String
+
+The whole message body is stored in one scalar.  Small messages can be
+contained this way without performance penalties.
+
+=item * Mail::Message::Body::File
+
+The message body is stored in an external temporary file.  This type of
+storage is especially useful when the body is large, the total folder is
+large, or memory is limited.
+
+=item * Mail::Message::Body::Delayed
+
+The message-body is not yet read, but the exact location of the
+body is known so the message can be read when needed.
+
+=item * Mail::Message::Body::Multipart
+
+The message body contains a set of sub-messages (which can contain
+multipart bodies themselves).  Each sub-message is an instance
+of Mail::Message::Part, which is an extension of Mail::Message.
+
+=item * Mail::Message::Body::Nested
+
+Nested messages, like C<message/rfc822>: they contain a message in
+the body.  For most code, they simply behave like multiparts.
+
+=item * Mail::Message::Body::InFolder
+
+NOT IMPLEMENTED YET.
+The message is kept in the folder, and is only taken out when the
+content is changed.
+
+=item * Mail::Message::Body::External
+
+NOT IMPLEMENTED YET.
+The message is kept in a separate file, usually because the message body
+is large.  The difference with the C<::External> object is that this external
+storage stays this way between closing and opening of a folder. The
+C<::External> object only uses a file when the folder is open.
+
+=back
+
+Each body type has methods to produce the storage of the other types.
+As example, you can ask any body type for the message as a list of lines,
+but this call will be most efficient for the MM::Body::Lines type.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS X<new>
+
+BE WARNED that, what you specify here are encodings and such which are
+already in place.  The options will not trigger conversions.  When you
+need conversions, first create a body with options which tell what you've
+got, and then call encode() for what you need.
+
+ OPTION               DEFAULT
+ based_on             undef
+ charset              'us-ascii'
+ checked              <false>
+ data                 undef
+ disposition          undef
+ eol                  'NATIVE'
+ file                 undef
+ log                  'WARNINGS'
+ message              undef
+ mime_type            'text/plain'
+ modified             <false>
+ trace                'WARNINGS'
+ transfer_encoding    'NONE'
+
+=over 4
+
+=item B<based_on> =E<gt> BODY X<new(based_on)>
+
+The information about encodings must be taken from the specified BODY,
+unless specified differently.
+
+=item B<charset> =E<gt> STRING X<new(charset)>
+
+Defines the character-set which is used in the data.  Only useful in
+combination with a C<mime_type> which refers to C<text> in any shape.
+This field is case-insensitive.
+
+=item B<checked> =E<gt> BOOLEAN X<new(checked)>
+
+Whether the added information has been check not to contain illegal
+octets with respect to the transfer encoding and mime type.  If not
+checked, and then set as body for a message, it will be.
+
+=item B<data> =E<gt> ARRAY-OF-LINES | STRING X<new(data)>
+
+The content of the body.  The only way to set the content of a body
+is during the creation of the body.  So if you want to modify the content
+of a message, you need to create a new body with the new content and
+add that to the body.  The reason behind this, is that correct encodings
+and body information must be guaranteed.  It avoids your hassle in
+calculating the number of lines in the body, and checking whether bad
+characters are enclosed in text.
+
+Specify a reference to an ARRAY of lines, each terminated by a newline.
+Or one STRING which may contain multiple lines, separated and terminated
+by a newline.
+
+=item B<disposition> =E<gt> STRING|FIELD X<new(disposition)>
+
+How this message can be decomposed.  The data relates to the
+C<Content-Disposition> field.  Specify a STRING which will become the
+field content, or a real FIELD.
+
+The content of this field is specified in RFC 1806.  The body of the
+field can be C<inline>, to indicate that the body is intended to be
+displayed automatically upon display of the message. Use C<attachment>
+to indicate that they are separate from the main body of the mail
+message, and that their display should not be automatic, but contingent
+upon some further action of the user.
+
+The C<filename> attribute specifies a name to which is suggested to the
+reader of the message when it is extracted.
+
+=item B<eol> =E<gt> 'CR'|'LF'|'CRLF'|'NATIVE' X<new(eol)>
+
+Convert the message into having the specified string as line terminator
+for all lines in the body.  C<NATIVE> is used to represent the C<\n>
+on the current platform and will be translated in the applicable one.
+
+BE WARNED that folders with a non-native encoding may appear on your
+platform, for instance in Windows folders handled from a UNIX system.
+The eol encoding has effect on the size of the body!
+
+=item B<file> =E<gt> FILENAME|FILEHANDLE|IOHANDLE X<new(file)>
+
+Read the data from the specified file, file handle, or object of
+type C<IO::Handle>.
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<message> =E<gt> MESSAGE X<new(message)>
+
+The message where this body belongs to.
+
+=item B<mime_type> =E<gt> STRING|FIELD|MIME X<new(mime_type)>
+
+The type of data which is added.  You may specify a content of a header
+line as STRING, or a FIELD object.  You may also specify a C<MIME::Type>
+object.  In any case, it will be kept internally as
+a real field (a Mail::Message::Field object).  This relates to the
+C<Content-Type> header field.
+
+A mime-type specification consists of two parts: a general class (C<text>,
+C<image>, C<application>, etc) and a specific sub-class.  Examples for
+specific classes with C<text> are C<plain>, C<html>, and C<xml>.  This
+field is case-insensitive but case preserving.  The default mime-type
+is C<text/plain>,
+
+=item B<modified> =E<gt> BOOLEAN X<new(modified)>
+
+Whether the body is flagged modified, directly from its creation.
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=item B<transfer_encoding> =E<gt> STRING|FIELD X<new(transfer_encoding)>
+
+The encoding that the data has.  If the data is to be encoded, than you
+will have to call encode() after the body is created.  That will
+return a new encoded body.  This field is case-insensitive and relates
+to the C<Content-Transfer-Encoding> field in the header.
+
+=back
+
+Examples:
+
+ my $body = Mail::Message::Body::String->new(file => \*IN,
+    mime_type => 'text/html; charset="ISO-8859-1"');
+
+ my $body = Mail::Message::Body::Lines->new(data => ['first', $second],
+    charset => 'ISO-10646', transfer_encoding => 'NONE');
+
+ my $body = Mail::Message::Body::Lines->new(data => \@lines,
+    transfer_encoding => 'base64');
+
+ my $body = Mail::Message::Body::Lines->new(file => 'picture.gif',
+    mime_type => 'image/gif');
+
+=back
+
+=head2 The Body
+
+=over 4
+
+=item B<clone>  X<clone>
+
+Return a copy of this body, usually to be included in a cloned
+message (see Mail::Message::clone()).
+
+=item B<decoded> OPTIONS X<decoded>
+
+Returns a body (an object which is (a sub-)class of a Mail::Message::Body)
+which contains a simplified representation of textual data.  The returned
+object may be the object where this is called on, but may also be a new
+body of any type.
+
+ my $dec = $body->decoded;
+ 
+is equivalent with
+
+ my $dec = $body->encode(mime_type => 'text/plain', charset => 'us-ascii',
+    transfer_encoding => 'NONE');
+
+The C<$dec> which is returned is a body.  Ask with the mimeType() method
+what is produced.  This body is B<not related to a header>, so you can
+not ask C<< $dec->get('Content-Type') >>!
+
+ OPTION               DEFAULT
+ result_type          <same as current>
+
+=over 4
+
+=item B<result_type> =E<gt> CLASS X<decoded(result_type)>
+
+=back
+
+=item B<isDelayed>  X<isDelayed>
+
+Returns a true or false value, depending on whether the body of this
+message has been read from file.  This can only false for a
+Mail::Message::Body::Delayed.
+
+=item B<isMultipart>  X<isMultipart>
+
+Returns whether this message-body contains parts which are messages
+by themselves.
+
+=item B<isNested>  X<isNested>
+
+Only true for a message body which contains exactly one sub-message:
+the C<::Nested> body type.
+
+=item B<message> [MESSAGE] X<message>
+
+Returns the message where this body belongs to, optionally setting it
+to a new MESSAGE first.  If C<undef> is passed, the body will be
+disconnected from the message.
+
+=item B<modified> [BOOL] X<modified>
+
+Returns whether the body is flagged as being modified, optionally
+after setting it to BOOL.
+
+=item B<print> [FILE] X<print>
+
+Print the body to the specified file (defaults to the selected handle)
+
+=back
+
+=head2 About the Payload
+
+=over 4
+
+=item B<charset>  X<charset>
+
+Returns the character set which is used in the text body as string.  This
+is part of the result of what the C<type> method returns.
+
+=item B<checked> [BOOLEAN] X<checked>
+
+Returns whether the body encoding has been checked or not (optionally
+after setting the flag to a new value).
+
+=item B<disposition> [STRING|FIELD] X<disposition>
+
+Returns (optionally after setting) how the message can be disposed (unpacked).
+The argument can be a STRING (which is converted into a field), or a
+fully prepared header field.  The related header field is
+C<Content-Disposition>.
+
+=item B<eol> ['CR'|'LF'|'CRLF'|'NATIVE'] X<eol>
+
+Returns the character (or characters) which are used to separate lines
+within this body.
+
+=item B<isBinary> 
+
+See Mail::Message::Body::Encode::isBinary()
+
+=item B<isText> 
+
+See Mail::Message::Body::Encode::isText()
+
+=item B<mimeType>  X<mimeType>
+
+Returns a C<MIME::Type> object which is related to this body's type.  This
+differs from the C<type> method, which results in a Mail::Message::Field.
+
+=item B<nrLines>  X<nrLines>
+
+Returns the number of lines in the message body.  For multi-part messages,
+this includes the header lines and boundaries of all the parts.
+
+=item B<size>  X<size>
+
+The estimate total number of bytes in the message body.  Message bodies
+are always simple ASCII.  The decoded message, however, may contain UTF8
+characters.  See Mail::Message::decode().
+
+=item B<transferEncoding> [STRING|FIELD] X<transferEncoding>
+
+Returns the transfer-encoding of the data within this body.  If it
+needs to be changed, call the encode() or decoded() method.
+
+The optional STRING or FIELD enforces a new encoding to be set, without the
+actual required translations.
+
+Examples:
+
+ my $transfer = $msg->decoded->transferEncoding;
+ $transfer->print;
+    # --> Content-Encoding: base64
+
+=item B<type>  X<type>
+
+Returns the type of information the body contains.  The type is taken from
+the header field C<Content-Type>, but may have changed during encoding
+--or decoding-- of the body (see the C<encode> method).
+
+The returned is a reference to a Mail::Message::Field object, where
+you can ask for the C<body> (main content of the field) and the comment
+(after a semicolon).  A field stringifies as its body only.
+
+Examples:
+
+ my $msg     = $folder->message(6);
+ $msg->get('Content-Type')->print;
+    # --> Content-Type: text/plain; charset="us-ascii"
+
+ my $content = $msg->decoded;
+ my $type    = $content->type;
+
+ print "This is a $type message";
+    # --> This is a text/plain message
+
+ print "Comment: ", $content->comment;
+    # --> Comment: charset="us-ascii"
+
+=back
+
+=head2 Access to the Payload
+
+=over 4
+
+=item B<file>  X<file>
+
+Return the content of the body as a file handle.  The returned stream may
+be a real file, or a simulated file in any form that Perl supports.  While
+you may not be able to write to the file handle, you can read from it.
+
+WARNING: Even if the file handle supports writing, do not write to the
+file handle. If you do some of the internal values maintained by the
+Mail::Message::Body may not be updated.  Use only the data() method
+instead.
+
+=item B<lines>  X<lines>
+
+Return the content of the body as a list of lines (in LIST context) or a
+reference to an array of lines (in SCALAR context).  In scalar context the
+array of lines is cached to avoid needless copying and therefore provide
+much faster access for large messages.
+
+To just get the number of lines in the body, use the nrLines() method,
+which is usually much more efficient.
+
+BE WARNED: For some types of bodies the reference will refer to the
+original data. You must not change the referenced data! If you do some of
+the internal values maintained by the C<Mail::Message::Body> may not be
+updated.   Use the data() method instead.
+
+Examples:
+
+ my @lines    = $body->lines;     # copies lines
+ my $line3    = ($body->lines)[3] # only one copy
+ print $lines[0];
+
+ my $linesref = $body->lines;     # reference to originals
+ my $line3    = $body->lines->[3] # only one copy (faster)
+ print $linesref->[0];
+
+ print $body->[0];                # by overloading
+
+=item B<string>  X<string>
+
+Return the content of the body as a scalar (a single string).  This is
+a copy of the internally kept information.
+
+Examples:
+
+ my $text = $body->string;
+ print "Body: $body\n";     # by overloading
+
+=back
+
+=head2 Constructing a Body
+
+=over 4
+
+=item B<addTransferEncHandler> NAME, CLASS|OBJECT
+
+See Mail::Message::Body::Encode::addTransferEncHandler()
+
+=item B<attach> MESSAGES, OPTIONS
+
+See Mail::Message::Body::Construct::attach()
+
+=item B<check> 
+
+See Mail::Message::Body::Encode::check()
+
+=item B<concatenate> COMPONENTS
+
+See Mail::Message::Body::Construct::concatenate()
+
+=item B<encode> OPTIONS
+
+See Mail::Message::Body::Encode::encode()
+
+=item B<encoded> 
+
+See Mail::Message::Body::Encode::encoded()
+
+=item B<foreachLine> CODE
+
+See Mail::Message::Body::Construct::foreachLine()
+
+=item B<getTransferEncHandler> TYPE
+
+See Mail::Message::Body::Encode::getTransferEncHandler()
+
+=item B<stripSignature> OPTIONS
+
+See Mail::Message::Body::Construct::stripSignature()
+
+=item B<unify> BODY
+
+See Mail::Message::Body::Encode::unify()
+
+=back
+
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<AUTOLOAD>  X<AUTOLOAD>
+
+=item B<fileLocation> [BEGIN,END] X<fileLocation>
+
+The location of the body in the file.  Returned a list containing begin and
+end.  The begin is the offsets of the first byte if the folder used for
+this body.  The end is the offset of the first byte of the next message.
+
+=item B<load>  X<load>
+
+Be sure that the body is loaded.  This returns the loaded body.
+
+=item B<moveLocation> [DISTANCE] X<moveLocation>
+
+Move the registration of the message to a new location over DISTANCE.  This
+is called when the message is written to a new version of the same
+folder-file.
+
+=item B<read> PARSER, HEAD, BODYTYPE [,CHARS [,LINES]] X<read>
+
+Read the body with the PARSER from file. The implementation of this method
+will differ between types of bodies.  The BODYTYPE argument is a class name
+or a code reference of a routine which can produce a class name, and is
+used in multipart bodies to determine the type of the body for each part.
+
+The CHARS argument is the estimated number of bytes in the body, or
+C<undef> when this is not known.  This data can sometimes be derived from
+the header (the C<Content-Length> line) or file-size.
+
+The second argument is the estimated number of LINES of the body.  It is less
+useful than the CHARS but may be of help determining whether the message
+separator is trustworthy.  This value may be found in the C<Lines> field
+of the header.
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

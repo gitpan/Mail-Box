@@ -1,8 +1,8 @@
-
 use strict;
 use warnings;
 
-package Mail::Message::Body;   ###
+package Mail::Message::Body;
+our $VERSION = 2.019;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -10,115 +10,15 @@ use Carp;
 use MIME::Types;
 my MIME::Types $mime_types;
 
-our $VERSION = 2.018;
+sub isBinary()
+{   my $self = shift;
+    $mime_types ||= MIME::Types->new(only_complete => 1);
+    my $type = $self->type                    or return 1;
+    my $mime = $mime_types->type($type->body) or return 1;
+    $mime->isBinary;
+}
 
-=head1 NAME
-
-Mail::Message::Body::Encode - organize general message encodings
-
-=head1 CLASS HIERARCHY
-
- Mail::Message::TransferEnc
- is a Mail::Reporter
-
-=head1 SYNOPSIS
-
- my Mail::Message $msg = ...;
- my $decoded = $msg->decoded;
- my $encoded = $msg->encode(mime_type => 'image/gif',
-     transfer_encoding => 'base64');
-
- my $body = $msg->body;
- my $decoded = $body->decoded;
- my $encoded = $body->encode(transfer_encoding => '7bit');
-
-=head1 DESCRIPTION
-
-Manages the message's body encodings and decodings on request of the
-main program.  This package adds functionality to the C<Mail::Message::Body>
-class when the C<decoded> or C<encode> method is called.
-
-Four types of encodings are handled (in the right order)
-
-=over 4
-
-=item * eol encoding
-
-Various operating systems have different ideas about how to encode
-the line termination.  UNIX uses a LF character, MacOS a CR, and
-Windows a CR/LF combination.  Messages which are transported over
-Internet will always use the CRLF separator.
-
-=item * transfer encoding
-
-Messages transmitted over Internet have to be plain ASCII.  Complicated
-characters and binary files (like images and archives) must be encoded
-during transmission to an ASCII representation.
-
-The implementation of the required encoders and decoders is found in
-the C<Mail::Message::TransferEnc> set of packages.  The related
-manual page losts the transfer encodings which are supported.
-
-=item * mime-type translation
-
-=item * charset conversion
-
-=back
-
-=head1 METHOD INDEX
-
-The general methods for C<Mail::Message::Body::Encode> objects:
-
-      check                                isBinary
-      encode OPTIONS                       isText
-      encoded
-
-The extra methods for extension writers:
-
-      addTransferEncHandler NAME,...       unify BODY
-      getTransferEncHandler TYPE
-
-=head1 METHODS
-
-=over 4
-
-=cut
-
-#------------------------------------------
-
-=item encode OPTIONS
-
-Encode (translate) a C<Mail::Message::Body> object into a different format.
-See the DESCRIPTION above.  Options which are not specified will not trigger
-conversions.
-
- OPTION            DESCRIBED IN         DEFAULT
- charset           Mail::Message::Body  undef
- mime_type         Mail::Message::Body  undef
- result_type       Mail::Message::Body  <same as source>
- transfer_encoding Mail::Message::Body  undef
-
-=over 4
-
-=item * charset =E<gt> STRING
-
-=item * mime_type =E<gt> STRING|FIELD
-
-Convert into the specified mime type, which can be specified as STRING
-or FIELD.  The FIELD is a C<Mail::Message::Field>, and the STRING is
-converted in such object before use.
-
-=item * result_type =E<gt> CLASS
-
-The type of body to be created when the body is changed to fulfil the request
-on re-coding.  Also the intermediate stages in the translation process (if
-needed) will use this type. CLASS must extend C<Mail::Message::Body>.
-
-=item * transfer_encoding =E<gt> STRING|FIELD
-
-=back
-
-=cut
+sub isText() { not shift->isBinary }
 
 sub encode(@)
 {   my ($self, %args) = @_;
@@ -182,20 +82,6 @@ sub encode(@)
     return $encoded;
 }
 
-#------------------------------------------
-
-=item check
-
-Check the content of the body not to include illegal characters.  Which
-characters are considered illegal depends on the encoding of this body.
-
-A body is returned which is checked.  This may be the body where this
-method is called upon, but also a new object, when serious changes had
-to be made.  If the check could not be made, because the decoder is not
-defined, then C<undef> is returned.
-
-=cut
-
 sub check()
 {   my $self     = shift;
     return $self if $self->checked;
@@ -216,17 +102,6 @@ sub check()
     $checked;
 }
 
-#------------------------------------------
-
-=item encoded
-
-Encode the body to a format what is acceptable to transmit or write to
-a folder file.  This returns the body where this method was called
-upon when everything was already prepared, or a new encoded body
-otherwise.  In either case, the body is checked.
-
-=cut
-
 sub encoded()
 {   my $self = shift;
 
@@ -239,63 +114,6 @@ sub encoded()
     $self->encode(transfer_encoding =>
          defined $mime ? $mime->encoding : 'base64');
 }
-
-#------------------------------------------
-
-=item isBinary
-
-Returns true when the un-encoded message is binary data.  This information
-is retreived from knowledge provided by L<MIME::Types>.
-
-=cut
-
-sub isBinary()
-{   my $self = shift;
-    $mime_types ||= MIME::Types->new(only_complete => 1);
-    my $type = $self->type                    or return 1;
-    my $mime = $mime_types->type($type->body) or return 1;
-    $mime->isBinary;
-}
- 
-#------------------------------------------
-
-=item isText
-
-Returns true when the un-encoded message contains printable
-text.
-
-=cut
-
-sub isText() { not shift->isBinary }
-
-#------------------------------------------
-
-=back
-
-=head1 METHODS for extension writers
-
-=over 4
-
-=cut
-
-#------------------------------------------
-
-=item unify BODY
-
-Unify the type of the given BODY objects with the type of the called
-body.  C<undef> is returned when unification is impossible.  If the
-bodies have the same settings, the BODY object is returned unchanged.
-
-Examples:
-
- my $bodytype = Mail::Message::Body::Lines;
- my $html  = $bodytype->new(mime_type=>'text/html', data => []);
- my $plain = $bodytype->new(mime_type=>'text/plain', ...);
-
- my $unified = $html->unify($plain);
- # $unified is the data of plain translated to html (if possible).
-
-=cut
 
 sub unify($)
 {   my ($self, $body) = @_;
@@ -323,15 +141,6 @@ sub unify($)
     $encoded;
 }
 
-#------------------------------------------
-
-=item getTransferEncHandler TYPE
-
-Get the transfer encoder/decoder which is able to handle TYPE, or return
-undef if there is no such handler.
-
-=cut
-
 my %transfer_encoder_classes =
  ( base64  => 'Mail::Message::TransferEnc::Base64'
  , binary  => 'Mail::Message::TransferEnc::Binary'
@@ -357,22 +166,6 @@ sub getTransferEncHandler($)
     $transfer_encoders{$type} = $class->new;
 }
 
-#------------------------------------------
-
-=item addTransferEncHandler NAME, CLASS|OBJECT
-
-(Class or instance method)
-Relate the NAMEd transfer encoding to an OBJECTs or object of the specified
-CLASS.  In the latter case, an object of that CLASS will be created on the
-moment that one is needed to do encoding or decoding.
-
-The CLASS or OBJECT must extend C<Mail::Message:TransferEnc>.  It will
-replace existing class and object for this NAME.
-
-Why aren't you contributing this class to C<Mail::Box>?
-
-=cut
-
 sub addTransferEncHandler($$)
 {   my ($this, $name, $what) = @_;
 
@@ -389,31 +182,5 @@ sub addTransferEncHandler($$)
     $transfer_encoder_classes{$name} = $class;
     $this;
 }
-
-#------------------------------------------
-
-=back
-
-=head1 SEE ALSO
-
-L<Mail::Box-Overview>
-
-For support and additional documentation, see http://perl.overmeer.net/mailbox/
-
-=head1 AUTHOR
-
-Mark Overmeer (F<mailbox@overmeer.net>).
-All rights reserved.  This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-=head1 VERSION
-
-This code is beta, version 2.018.
-
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=cut
 
 1;

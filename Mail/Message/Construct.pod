@@ -1,0 +1,892 @@
+
+=head1 NAME
+
+
+Mail::Message::Construct - extends the functionality of a Mail::Message
+
+=head1 CLASS INHERITANCE
+
+Mail::Message
+  has extra code in Mail::Message::Construct
+
+Mail::Message
+   is a Mail::Reporter
+
+Mail::Message is extended by
+   Mail::Box::Message
+   Mail::Message::Dummy
+   Mail::Message::Part
+
+=head1 SYNOPSIS
+
+
+ my $msg1 = Mail::Message->read(\*STDIN);
+ my $msg2 = Mail::Message->read(\@lines);
+
+ my $msg3 = Mail::Message->build
+   (From => 'me', data => "only two\nlines\n");
+
+ my $msg4 = Mail::Message->buildFromBody($body);
+
+ my Mail::Message $reply = $message->reply;
+ my $quoted  = $message->replyPrelude($head->get('From'));
+
+=head1 DESCRIPTION
+
+
+Read C<Mail::Box-Overview> and C<Mail::Message> first.
+
+When complex methods are called on a C<Mail::Message>-object, this package
+is autoloaded to supply that functionality.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS
+
+See Mail::Message::new()
+
+=back
+
+=head2 Constructing a Message
+
+=over 4
+
+=item B<bounce> OPTIONS X<bounce>
+
+Bounce the message off to a difference destination, or multiple
+destinations.  Most OPTIONS specify header lines which are added
+to the original message.  Their name will therefor be prepended by
+C<Resent->.  These lines have preference over the lines which do
+not start with C<Resent->.
+
+ OPTION               DEFAULT
+ Bcc                  undef
+ Cc                   undef
+ Date                 <now>
+ From                 undef
+ Message-ID           <unique>
+ Reply-To             undef
+ To                   undef
+
+=over 4
+
+=item B<Bcc> =E<gt> ADDRESSES X<bounce(Bcc)>
+
+The receiver(s) of blind carbon-copies: the other receivers will not
+see these addresses.
+
+=item B<Cc> =E<gt> ADDRESSES X<bounce(Cc)>
+
+The receiver(s) of carbon-copies: not the main targets, but receiving
+an informational copy.
+
+=item B<Date> =E<gt> STRING X<bounce(Date)>
+
+A properly formatted STRING for the date.
+
+=item B<From> =E<gt> ADDRESS X<bounce(From)>
+
+Your address as string or C<Mail::Address> object.
+
+=item B<Message-ID> =E<gt> KEY X<bounce(Message-ID)>
+
+A unique KEY which identifies this message.  If you do not specify a key,
+one is chosen for you.  There is one C<Resent-Message-ID> which identifies
+all bounces for this message.  If one id is already present, than this
+option will be ignored.
+
+=item B<Reply-To> =E<gt> ADDRESS X<bounce(Reply-To)>
+
+The address where the receiver has to reply to.
+
+=item B<To> =E<gt> ADDRESSES X<bounce(To)>
+
+One or more destination addresses, as string, one C<Mail::Address> object or
+array of C<Mail::Address> objects.
+
+=back
+
+Examples:
+
+ my $bounce = $folder->message(3)->bounce(To => 'you', Bcc => 'everyone');
+ $bounce->send;
+ $outbox->addMessage($bounce);
+
+=item B<build> [MESSAGE|BODY], CONTENT X<build>
+
+(Class method) Simplified message object builder.  In case a MESSAGE is
+specified, a new message is created with the same body to start with, but
+new headers.  A BODY may be specified as well.  However, there are more
+ways to add data simply.
+
+The CONTENT is a list of key-value pairs.  The keys which start with a
+capital are used as header-lines.  Lowercased fields are used for other
+purposes as listed below.  Each field may be used more than once.
+If more than one C<data>, C<file>, and C<attach> is specified, a
+multi-parted message is created.
+
+When the CONTENT reflects a header field to be, the key is used as
+name of the field (be careful with the capitalization).  The value
+can be a string, an address (C<Mail::Address> object), or a reference
+to an array of addresses.
+
+ OPTION               DEFAULT
+ attach               undef
+ data                 undef
+ file                 undef
+
+=over 4
+
+=item B<attach> =E<gt> BODY|MESSAGE|ARRAY-OF-BODY X<build(attach)>
+
+One attachment to the message.  Each attachment can be full MESSAGE or a BODY.
+
+ attach => $folder->message(3)->decoded  # body
+ attach => $folder->message(3)           # message
+
+=item B<data> =E<gt> STRING|ARRAY-OF-LINES X<build(data)>
+
+The text for one part, specified as one STRING, or an ARRAY of lines.  Each
+line, including the last, must be terminated by a newline.  This argument
+is passed to the C<data> options of C<Mail::Message::Body::new()> to
+construct one.
+
+  data => [ "line 1\n", "line 2\n" ]     # array of lines
+  data => <<'TEXT'                       # string
+ line 1
+ line 2
+ TEXT
+
+=item B<file> =E<gt> FILENAME|FILEHANDLE|IOHANDLE X<build(file)>
+
+Create a body where the data is read from the specified FILENAME,
+FILEHANDLE, or object of type C<IO::Handle>.  Also this body is used
+to create a C<Mail::Message::Body>.
+
+ my $in = IO::File->new('/etc/passwd', 'r');
+
+ file => 'picture.jpg'                   # filename
+ file => \*MYINPUTFILE                   # file handle
+ file => $in                             # IO::Handle
+
+=back
+
+Examples:
+
+ my $msg = Mail::Message->build
+  ( From   => 'me@home.nl'
+  , To     => Mail::Address->new('your name', 'you@yourplace.aq')
+  , Cc     => 'everyone@example.com'
+
+  , data   => [ "This is\n", "the first part of\n", "the message\n" ]
+  , file   => 'myself.gif'
+  , file   => 'you.jpg'
+  , attach => $signature
+  );
+
+=item B<buildFromBody> BODY, HEADERS X<buildFromBody>
+
+(Class method)
+Shape a message around a BODY.  Bodies have information about their
+content in them, which is used to construct a header for the message.
+Next to that, more HEADERS can be specified.
+
+Header fields are added in order, and before the header lines as
+defined by the body are taken.  They may be supplied as key-value
+pairs or Mail::Message::Field objects.  In case of a key-value
+pair, the field's name is to be used as key and the value is a
+string, address (C<Mail::Address> object), or array of addresses.
+
+The C<To> and C<From> fields must be specified.  A C<Date> field is
+added unless supplied.
+
+Examples:
+
+ my $type = Mail::Message::Field->new('Content-Type', 'text/html'
+   , 'charset="us-ascii"');
+
+ my @to   = ( Mail::Address->new('Your name', 'you@example.com')
+            , 'world@example.info'
+            );
+
+ my $msg  = Mail::Message->buildFromBody
+   ( $body
+   , From => 'me@example.nl'
+   , To   => \@to
+   , $type
+   );
+
+=item B<coerce> MESSAGE
+
+See Mail::Message::coerce()
+
+=item B<forward> OPTIONS X<forward>
+
+Forward the content of this message.  The body of the message to be forwarded
+is encapsulated in some accompanying text (if you have no wish for that, than
+C<bounce> is your choice).
+
+You may forward a whole message, but also message parts.
+You may wish to overrule some of the default header settings for the
+reply immediately, or you may do that later with C<set> on the header.
+
+ OPTION               DEFAULT
+ Bcc                  undef
+ Cc                   undef
+ Date                 <now>
+ From                 <'to' in current>
+ Message-ID           <uniquely generated>
+ Subject              <see forwardSubject>
+ To                   <obligatory>
+ body                 undef
+ include              'INLINE'
+ max_signature        10
+ message_type         'Mail::Message'
+ postlude             undef
+ prelude              undef
+ quote                undef
+ signature            undef
+ strip_signature      qr/^--\s/
+
+=over 4
+
+=item B<Bcc> =E<gt> ADDRESSES X<forward(Bcc)>
+
+Receivers of blind carbon copies: their names will not be published to
+other message receivers.
+
+=item B<Cc> =E<gt> ADDRESSES X<forward(Cc)>
+
+The carbon-copy receivers, by default none.
+
+=item B<Date> =E<gt> DATE X<forward(Date)>
+
+The date to be used in the message sent.
+
+=item B<From> =E<gt> ADDRESSES X<forward(From)>
+
+Your identification, by default taken from the C<To> field of the
+source message.
+
+=item B<Message-ID> =E<gt> STRING X<forward(Message-ID)>
+
+Supply a STRING as specific message-id for the reply.  By default, one is
+generated for you.  If there are no angles around your id, they will be
+added.
+
+=item B<Subject> =E<gt> STRING|CODE X<forward(Subject)>
+
+Force the subject line to the specific STRING, or the result of the
+subroutine specified by CODE.  The subroutine will be called passing
+the subject of the original message as only argument.  By default,
+the forwardSubject() method is used.
+
+=item B<To> =E<gt> ADDRESSES X<forward(To)>
+
+The destination of your message. Obligatory.  The ADDRESSES may be
+specified as string, a C<Mail::Address> object, or as array of
+C<Mail::Address> objects.
+
+=item B<body> =E<gt> OBJECT X<forward(body)>
+
+If you specify a fully prepared body OBJECT, it will be used as forwarded
+message contents.  In this case, only the headers are constructed for you.
+
+=item B<include> =E<gt> 'INLINE'|'ATTACH' X<forward(include)>
+
+Must the message where this is a reply to be included in the message?
+With 'INLINE' a forward body is composed. 'ATTACH' will create a multi-part
+body, where the original message is added after the specified body.  It is
+only possible to inline textual messages, therefore binary or multi-part
+messages will always be enclosed as attachment.
+
+=item B<max_signature> =E<gt> INTEGER X<forward(max_signature)>
+
+Passed to C<stripSignature> on the body as parameter C<max_lines>.  Only
+effective for single-part messages.
+
+=item B<message_type> =E<gt> CLASS X<forward(message_type)>
+
+Create a message with the requested type.  By default, it will be a
+C<Mail::Message>.  This is correct, because it will be coerced into
+the correct folder message type when it is added to that folder.
+
+=item B<postlude> =E<gt> BODY X<forward(postlude)>
+
+The line(s) which to be added after the quoted reply lines.  Create a
+body for it first.  This should not include the signature, which has its
+own option.  The signature will be added after the postlude when the
+forwarded message is INLINEd.
+
+=item B<prelude> =E<gt> BODY X<forward(prelude)>
+
+The line(s) which will be added before the quoted forwarded lines.  If nothing
+is specified, the result of the C<forwardPrelude()> method (as described
+below) is used.  When C<undef> is specified, no prelude
+will be added.
+
+=item B<quote> =E<gt> CODE|STRING X<forward(quote)>
+
+Mangle the lines of an C<INLINE>d reply with CODE, or by prepending a
+STRING to each line.  The routine specified by CODE is called when the
+line is in C<$_>.
+
+By default, nothing is added before each line.  This option is processed
+after the body has been decoded.
+
+=item B<signature> =E<gt> BODY|MESSAGE X<forward(signature)>
+
+The signature to be added in case of a multi-part forward.  The mime-type
+of the signature body should indicate this is a used as such.  However,
+in INLINE mode, the body will be taken, a line containing C<'-- '> added
+before it, and added behind the epilogue.
+
+=item B<strip_signature> =E<gt> REGEXP|STRING|CODE X<forward(strip_signature)>
+
+Remove the signature of the sender.  The value of this parameter is passed
+to the body's C<stripSignature> method (see C<Mail::Message::Body>)
+as C<pattern> unless the source text is not included.  The signature is
+stripped from the message before quoting.
+
+When a multi-part body is encountered, and the message is included to
+ATTACH, the parts which look like signatures will be removed.  If only
+one message remains, it will be the added as single attachment, otherwise
+a nested multipart will be the result.  The value of this option does not
+matter, as long as it is present.  See C<Mail::Message::Body::Multipart>.
+
+=back
+
+=item B<forwardPostlude>  X<forwardPostlude>
+
+Added after the forwarded message.
+
+Examples:
+
+ ---- END forwarded message
+
+=item B<forwardPrelude>  X<forwardPrelude>
+
+Create a few lines to be included before the forwarded message
+content.  The return is an array of lines.
+
+Examples:
+
+ ---- BEGIN forwarded message
+ From: him@somewhere.else.nl (Original Sender)
+ To: me@example.com (Me the receiver)
+ Cc: the.rest@world.net
+ Date: Wed, 9 Feb 2000 15:44:05 -0500
+ <blank line>
+
+=item B<forwardSubject> STRING X<forwardSubject>
+
+Create a subject for a message which is a forward from this one.  This routine
+tries to count the level of reply in subject field, and transform it into
+a standard form.  Please contribute improvements.
+
+Examples:
+
+ subject                 --> Forw: subject
+ Re: subject             --> Forw: Re: subject
+ Re[X]: subject          --> Forw: Re[X]: subject
+ <blank>                 --> Forwarded
+
+=item B<read> FILEHANDLE|SCALAR|REF-SCALAR|ARRAY-OF-LINES, OPTIONS X<read>
+
+(Class method)
+Read a message from a FILEHANDLE, SCALAR, a reference to a SCALAR, or
+an array of LINES.  The OPTIONS are passed to the C<new()> of the message
+which is created.
+
+Please have a look at C<build> and C<buildFromBody> in
+C<Mail::Message::Construct> before thinking about this C<read> method.
+Use this C<read> only when you have a file-handle like STDIN to parse
+from, or some external source of message lines.  When you already have a
+separate set of head and body lines, then C<read> is certainly B<not>
+your best choice.
+
+Examples:
+
+ my $msg1 = Mail::Message->read(\*STDIN);
+ my $msg2 = Mail::Message->read(\@lines, log => 'PROGRESS');
+ $folder->addMessages($msg1, $msg2);
+
+ my $msg3 = Mail::Message->read(<<MSG);
+ Subject: hello world
+ To: you@example.com
+                      # warning: empty line required !!!
+ Hi, greetings!
+ MSG
+
+=item B<reply> OPTIONS X<reply>
+
+Start a reply to this message.  Some of the header-lines of the original
+message will be taken.  A message-id will be assigned.  Some header lines
+will be updated to facilitate message-thread detection
+(see Mail::Box::Thread::Manager).
+
+You may reply to a whole message or a message part.
+You may wish to overrule some of the default header settings for the
+reply immediately, or you may do that later with C<set> on the header.
+
+ OPTION               DEFAULT
+ Bcc                  undef
+ Cc                   <'cc' in current>
+ From                 <'to' in current>
+ Message-ID           <uniquely generated>
+ Subject              <see replySubject()>
+ To                   <'from' in current>
+ body                 undef
+ group_reply          <true>
+ include              'INLINE'
+ max_signature        10
+ message_type         'Mail::Message'
+ postlude             undef
+ prelude              undef
+ quote                '=E<gt> '
+ signature            undef
+ strip_signature      qr/^--\s/
+
+=over 4
+
+=item B<Bcc> =E<gt> ADDRESSES X<reply(Bcc)>
+
+Receivers of blind carbon copies: their names will not be published to
+other message receivers.
+
+=item B<Cc> =E<gt> ADDRESSES X<reply(Cc)>
+
+The carbon-copy receivers, by default a copy of the C<Cc> field of
+the source message.
+
+=item B<From> =E<gt> ADDRESSES X<reply(From)>
+
+Your identification, by default taken from the C<To> field of the
+source message.
+
+=item B<Message-ID> =E<gt> STRING X<reply(Message-ID)>
+
+Supply a STRING as specific message-id for the reply.  By default, one is
+generated for you.  If there are no angles around your id, they will be
+added.
+
+=item B<Subject> =E<gt> STRING|CODE X<reply(Subject)>
+
+Force the subject line to the specific STRING, or the result of the
+subroutine specified by CODE.  The subroutine will be called passing
+the subject of the original message as only argument.  By default,
+the C<replySubject> method (described below) is used.
+
+=item B<To> =E<gt> ADDRESSES X<reply(To)>
+
+The destination of your message, by default taken from the C<Reply-To>
+field in the source message.  If that field is not present, the C<From> field
+is taken.  The ADDRESSES may be specified as string, or
+a C<Mail::Address> object, or as array of C<Mail::Address> objects.
+
+=item B<body> =E<gt> BODY X<reply(body)>
+
+Usually, the reply method can create a nice, sufficient message from the
+source message's body.  In case you like more complicated reformatting,
+you may also create a body yourself first, and pass this on to this
+C<reply> method. Some of the other options to this method will be ingored
+in this case.
+
+=item B<group_reply> =E<gt> BOOLEAN X<reply(group_reply)>
+
+Will the people listed in the C<Cc> headers (those who received the
+message where you reply to now) also receive this message as carbon
+copy?
+
+=item B<include> =E<gt> 'NO'|'INLINE'|'ATTACH' X<reply(include)>
+
+Must the message where this is a reply to be included in the message?
+If 'NO' then not.  With 'INLINE' a reply body is composed. 'ATTACH'
+will create a multi-part body, where the original message is added
+after the specified body.  It is only possible to inline textual
+messages, therefore binary or multipart messages will always be
+enclosed as attachment.
+
+=item B<max_signature> =E<gt> INTEGER X<reply(max_signature)>
+
+Passed to C<stripSignature> on the body as parameter C<max_lines>.  Only
+effective for single-part messages.
+
+=item B<message_type> =E<gt> CLASS X<reply(message_type)>
+
+Create a message with the requested type.  By default, it will be a
+Mail::Message.  This is correct, because it will be coerced into
+the correct folder message type when it is added to that folder.
+
+=item B<postlude> =E<gt> BODY|LINES X<reply(postlude)>
+
+The line(s) which to be added after the quoted reply lines.  Create a
+body for it first.  This should not include the signature, which has its
+own option.  The signature will be added after the postlude when the
+reply is INLINEd.
+
+=item B<prelude> =E<gt> BODY|LINES X<reply(prelude)>
+
+The line(s) which will be added before the quoted reply lines.  If nothing
+is specified, the result of the replyPrelude() method
+is taken.  When C<undef> is specified, no prelude will be added.
+
+=item B<quote> =E<gt> CODE|STRING X<reply(quote)>
+
+Mangle the lines of an C<INLINE>d reply with CODE, or by prepending a
+STRING to each line.  The routine specified by CODE is called when the
+line is in C<$_>.
+
+By default, C<'E<gt> '> is added before each line.  Specify C<undef> to
+disable quoting.  This option is processed after the body has been decoded.
+
+=item B<signature> =E<gt> BODY|MESSAGE X<reply(signature)>
+
+The signature to be added in case of a multi-part reply.  The mime-type
+of the signature body should indicate this is a used as such.  However,
+in INLINE mode, the body will be taken, a line containing C<'-- '> added
+before it, and added behind the epilogue.
+
+=item B<strip_signature> =E<gt> REGEXP|STRING|CODE X<reply(strip_signature)>
+
+Remove the signature of the sender.  The value of this parameter is passed
+to the body's C<stripSignature> method (see C<Mail::Message::Body>)
+as C<pattern> unless the source text is not included.  The signature is
+stripped from the message before quoting.
+
+When a multipart body is encountered, and the message is included to
+ATTACH, the parts which look like signatures will be removed.  If only
+one message remains, it will be the added as single attachment, otherwise
+a nested multipart will be the result.  The value of this option does not
+matter, as long as it is present.  See C<Mail::Message::Body::Multipart>.
+
+=back
+
+Examples:
+
+  my $reply = $msg->reply
+   ( prelude         => "No spam, please!\n\n"
+   , postlude        => "\nGreetings\n"
+   , strip_signature => 1
+   , signature       => $my_pgp_key
+   , group_reply     => 1
+   );
+
+=item B<replyPrelude> [STRING|FIELD|ADDRESS] X<replyPrelude>
+
+Produces a list of lines (usually only one), which will preceded the
+quoted body of the message.  STRING must comply to the RFC822 email
+address specification, and is usually the content of a C<To> or C<From>
+header line.  If a FIELD is specified, the field's body must be
+compliant.  Without argument -or when the argument is C<undef>- a
+slightly different line is produced.
+
+An characteristic example of the output is
+
+ On Thu Oct 13 04:54:34 1995, him@example.com wrote:
+
+=item B<replySubject> STRING X<replySubject>
+
+(Class or Instance method)
+Create a subject for a message which is a reply for this one.  This routine
+tries to count the level of reply in subject field, and transform it into
+a standard form.  Please contribute improvements.
+
+Examples:
+
+ subject                 --> Re: subject
+ Re: subject             --> Re[2]: subject
+ Re[X]: subject          --> Re[X+1]: subject
+ subject (Re)            --> Re[2]: subject
+ subject (Forw)          --> Re[2]: subject
+ <blank>                 --> Re: your mail
+
+=back
+
+=head2 The Message
+
+=over 4
+
+=item B<clone> 
+
+See Mail::Message::clone()
+
+=item B<isDummy> 
+
+See Mail::Message::isDummy()
+
+=item B<isPart> 
+
+See Mail::Message::isPart()
+
+=item B<messageId> 
+
+See Mail::Message::messageId()
+
+=item B<modified> [BOOLEAN]
+
+See Mail::Message::modified()
+
+=item B<parent> 
+
+See Mail::Message::parent()
+
+=item B<print> [FILEHANDLE]
+
+See Mail::Message::print()
+
+=item B<send> [MAILER], OPTIONS
+
+See Mail::Message::send()
+
+=item B<size> 
+
+See Mail::Message::size()
+
+=item B<toplevel> 
+
+See Mail::Message::toplevel()
+
+=back
+
+=head2 The Header
+
+=over 4
+
+=item B<get> FIELD
+
+See Mail::Message::get()
+
+=item B<head> [HEAD]
+
+See Mail::Message::head()
+
+=back
+
+=head2 Header Shortcuts
+
+=over 4
+
+=item B<bcc> 
+
+See Mail::Message::bcc()
+
+=item B<cc> 
+
+See Mail::Message::cc()
+
+=item B<date> 
+
+See Mail::Message::date()
+
+=item B<destinations> 
+
+See Mail::Message::destinations()
+
+=item B<from> 
+
+See Mail::Message::from()
+
+=item B<guessTimestamp> 
+
+See Mail::Message::guessTimestamp()
+
+=item B<nrLines> 
+
+See Mail::Message::nrLines()
+
+=item B<subject> 
+
+See Mail::Message::subject()
+
+=item B<timestamp> 
+
+See Mail::Message::timestamp()
+
+=item B<to> 
+
+See Mail::Message::to()
+
+=back
+
+=head2 The Body
+
+=over 4
+
+=item B<body> [BODY]
+
+See Mail::Message::body()
+
+=item B<decoded> OPTIONS
+
+See Mail::Message::decoded()
+
+=item B<encode> OPTIONS
+
+See Mail::Message::encode()
+
+=item B<isMultipart> 
+
+See Mail::Message::isMultipart()
+
+=item B<parts> ['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER]
+
+See Mail::Message::parts()
+
+=back
+
+=head2 Access to the Message
+
+=over 4
+
+=item B<file>  X<file>
+
+Returns the message as file-handle.
+
+=item B<lines>  X<lines>
+
+Returns the whole message as set of lines.
+
+=item B<string>  X<string>
+
+Returns the whole message as string.
+
+=back
+
+=head2 Labels
+
+=over 4
+
+=item B<label> LABEL [,VALUE [LABEL, VALUE] ]
+
+See Mail::Message::label()
+
+=item B<labels> 
+
+See Mail::Message::labels()
+
+=back
+
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<DESTROY> 
+
+See Mail::Message::DESTROY()
+
+=item B<isDelayed> 
+
+See Mail::Message::isDelayed()
+
+=item B<labelsToStatus> 
+
+See Mail::Message::labelsToStatus()
+
+=item B<readBody> PARSER, HEAD [, BODYTYPE]
+
+See Mail::Message::readBody()
+
+=item B<readFromParser> PARSER, [BODYTYPE]
+
+See Mail::Message::readFromParser()
+
+=item B<readHead> PARSER [,CLASS]
+
+See Mail::Message::readHead()
+
+=item B<statusToLabels> 
+
+See Mail::Message::statusToLabels()
+
+=item B<storeBody> BODY
+
+See Mail::Message::storeBody()
+
+=item B<takeMessageId> [STRING]
+
+See Mail::Message::takeMessageId()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<printStructure> [INDENT] X<printStructure>
+
+Print the structure of a message.
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

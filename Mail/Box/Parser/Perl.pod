@@ -1,0 +1,222 @@
+
+=head1 NAME
+
+
+Mail::Box::Parser::Perl - reading messages from file using Perl
+
+=head1 CLASS INHERITANCE
+
+Mail::Box::Parser::Perl
+   is a Mail::Box::Parser
+   is a Mail::Reporter
+
+=head1 SYNOPSIS
+
+
+=head1 DESCRIPTION
+
+
+The Mail::Box::Parser::Perl implements parsing of messages in Perl.
+This may be a little slower than the C<C> based parser, but will also
+work on platforms where no C compiler is available.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS X<new>
+
+ OPTION               DEFAULT
+ file                 undef
+ filename             <required>
+ log                  'WARNINGS'
+ mode                 'r'
+ trace                'WARNINGS'
+
+=over 4
+
+=item B<file> =E<gt> FILE-HANDLE
+
+See Mail::Box::Parser::new(file)
+
+=item B<filename> =E<gt> FILENAME
+
+See Mail::Box::Parser::new(filename)
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<mode> =E<gt> OPENMODE
+
+See Mail::Box::Parser::new(mode)
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=back
+
+=back
+
+=head2 The Parser
+
+=over 4
+
+=item B<closeFile>  X<closeFile>
+
+=item B<defaultParserType> [CLASS]
+
+See Mail::Box::Parser::defaultParserType()
+
+=item B<fileChanged> 
+
+See Mail::Box::Parser::fileChanged()
+
+=item B<filename> 
+
+See Mail::Box::Parser::filename()
+
+=item B<start> OPTIONS
+
+See Mail::Box::Parser::start()
+
+=item B<stop> 
+
+See Mail::Box::Parser::stop()
+
+=item B<takeFileInfo> 
+
+See Mail::Box::Parser::takeFileInfo()
+
+=back
+
+=head2 Parsing
+
+=over 4
+
+=item B<bodyAsFile> FILEHANDLE [,CHARS [,LINES]]
+
+See Mail::Box::Parser::bodyAsFile()
+
+=item B<bodyAsList> [,CHARS [,LINES]]
+
+See Mail::Box::Parser::bodyAsList()
+
+=item B<bodyAsString> [,CHARS [,LINES]]
+
+See Mail::Box::Parser::bodyAsString()
+
+=item B<bodyDelayed> [,CHARS [,LINES]]
+
+See Mail::Box::Parser::bodyDelayed()
+
+=item B<filePosition> [POSITION]
+
+See Mail::Box::Parser::filePosition()
+
+=item B<foldHeaderLine> LINE, LENGTH
+
+See Mail::Box::Parser::foldHeaderLine()
+
+=item B<lineSeparator> 
+
+See Mail::Box::Parser::lineSeparator()
+
+=item B<popSeparator> 
+
+See Mail::Box::Parser::popSeparator()
+
+=item B<pushSeparator> STRING|REGEXP
+
+See Mail::Box::Parser::pushSeparator()
+
+=item B<readHeader> WRAP
+
+See Mail::Box::Parser::readHeader()
+
+=item B<readSeparator> OPTIONS
+
+See Mail::Box::Parser::readSeparator()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

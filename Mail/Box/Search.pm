@@ -1,175 +1,11 @@
-
 package Mail::Box::Search;
+our $VERSION = 2.019;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use strict;
 use warnings;
 
 use Carp;
-
-=head1 NAME
-
-Mail::Box::Search - select messages within a mail box
-
-=head1 CLASS HIERARCHY
-
- Mail::Box::Search
- is a Mail::Reporter
-
-=head1 SYNOPSIS
-
- use Mail::Box::Manager;
- my $mgr    = Mail::Box::Manager->new;
- my $folder = $mgr->open('Inbox');
-
- my $filter = Mail::Box::Search::Grep->new;
- my @msgs   = $filter->search($folder, ...);
- if($filter->search($message)) {...}
-
-=head1 DESCRIPTION
-
-Read L<Mail::Box-Overview> first.  This C<Mail::Box::Search> method
-is the base-class for various message-scan algorithms.  The selected
-messages can be labeled.  Boolean operations on messages are
-supported.
-
-Currently implemented searches:
-
-=over 4
-
-=item L<Mail::Box::Search::Grep>
-
-Match header or body against a regular expression in a C<grep> like
-fashion.
-
-=back
-
-A C<Mail::Box::Search::Spam> is on the wishlist.
-
-=head1 METHOD INDEX
-
-Methods prefixed with an abbreviation are described in
-L<Mail::Reporter> (MR).
-
-The general methods for C<Mail::Box::Search> objects:
-
-   MR errors                            MR reportAll [LEVEL]
-   MR log [LEVEL [,STRINGS]]               search FOLDER|THREAD|MESSAG...
-      new OPTIONS                       MR trace [LEVEL]
-      printMatch [FILEHANDLE], HASH     MR warnings
-   MR report [LEVEL]
-
-The extra methods for extension writers:
-
-   MR AUTOLOAD                          MR logPriority LEVEL
-   MR DESTROY                           MR logSettings
-      inBody PART, BODY                 MR notImplemented
-   MR inGlobalDestruction                  searchPart PART
-      inHead PART, HEAD
-
-=head1 METHODS
-
-=over 4
-
-=cut
-
-#-------------------------------------------
-
-=item new OPTIONS
-
-Create a filter.
-
- OPTION     DEFINED BY         DEFAULT
- binaries   Mail::Box::Search  0
- details    Mail::Box::Search  undef
- decode     Mail::Box::Search  1
- in         Mail::Box::Search  'BODY'
- delayed    Mail::Box::Search  1
- deleted    Mail::Box::Search  0
- label      Mail::Box::Search  undef
- limit      Mail::Box::Search  0
- log        Mail::Reporter     'WARNINGS'
- logical    Mail::Box::Search  'REPLACE'
- multiparts Mail::Box::Search  1
- trace      Mail::Reporter     'WARNINGS'
-
-=over 4
-
-=item * binaries =E<gt> BOOLEAN
-
-Whether to include binary bodies in the search.
-
-=item * decode =E<gt> BOOLEAN
-
-Decode the messages before the search takes place.  Even plain text messages
-can be encoded, for instance as C<quoted-printable>, which may disturb the
-results.  However, decoding will slow-down the search.
-
-=item * details =E<gt> undef|'PRINT'|'DELETE'|REF-ARRAY|CODE
-
-The exact functionality of this parameter differs per search method, so
-read the applicable man-page.  In any case C<undef> means that details
-are not collected for this search, which is the fastest search.
-
-C<PRINT> will cause a call to a standard printing routine per line
-found.  C<DELETE> will flag the message to be flagged for deletion.
-You may also specify your own CODE reference.  With an reference
-to an array, the information about the matches is collected as a list
-of hashes, one hash per match.
-
-=item * in =E<gt> 'HEAD'|'BODY'|'MESSAGE'
-
-Where to look for the match.
-
-=item * delayed =E<gt> BOOLEAN
-
-Include the delayed messages (which will be parsed) in the search.  If you
-set this to false, you may find fewer hits.
-
-=item * deleted =E<gt> BOOLEAN
-
-In most cases, you will not be interested in results which are
-found in messages flagged to be deleted.  However, with this option
-you can specify you want them to be searched too.
-
-=item * label =E<gt> STRING
-
-Mark all selected messages with the specified STRING.  If this field is
-not specified, the message will not get a label; C<search> also returns
-a list of selected messages.
-
-=item * limit =E<gt> NUMBER
-
-Limit the search to the specified number of messages.  When the NUMBER
-is positive, the search starts at the first message in the folder or
-thread.  A negative NUMBER starts at the end of the folder.  If the limit
-is set to zero, there is no limit.
-
-=item * logical =E<gt> 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT'
-
-Only applicable in combination with a C<label>.
-How to handle the existing labels.  In case of C<REPLACE>, messages
-which already are carrying the label are stripped from their
-selection (unless they match again).  With C<AND>, the message must
-be selected by this search and already carry the label, otherwise the
-label will not be set.  Specify C<OR> to have newly selected messages
-added to the set of already selected messages.
-
-C<NOT> is true for messages which do not fulfil the search.  The
-details output will still contain the places where the the match was
-found, however those messages will complementary set of messages will
-be labeled and returned.
-
-=item * multiparts =E<gt> BOOLEAN
-
-Are multiparts to be included in the search results?  Some MUA have
-problems handling details received from the search.  When this flag
-is turned off, the body of multiparts will be ignored.  The parts
-search will include the preamble and epilogue.
-
-=back
-
-=cut
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -204,36 +40,6 @@ sub init($)
 
     $self;
 }
-
-#-------------------------------------------
-
-=item search FOLDER|THREAD|MESSAGE|ARRAY-OF-MESSAGES
-
-Check which messages from the FOLDER (C<Mail::Box>) match the
-search parameters.  The matched messages are returned as list.  You
-can also specify a THREAD (C<Mail::Box::Thread::Node>), one single
-MESSAGE (C<Mail::Message>), or an array of messages.
-
-Sometimes we know how only one match is needed.  In this case, this
-searching will stop at the first match.  For instance, when C<limit> is C<-1>
-or C<1>, or when the search in done in scalar context.
-
-Example:
-
- my $grep = Mail::Box::Search::Grep->new
-  ( match   => 'My Name Is Nobody'
-  , details => 'PRINT'
-  );
-
- $grep->search($folder);
-
- my $message = $folder->message(3);
- $grep->search($message);
-
- my $thread  = $message->threadStart;
- $grep->search($thread);
-
-=cut
 
 sub search(@)
 {   my ($self, $object) = @_;
@@ -280,37 +86,6 @@ sub search(@)
     $limit < 0 ? reverse @selected : @selected;
 }
 
-#-------------------------------------------
-
-=item printMatch [FILEHANDLE], HASH
-
-Print the information about the match (see C<details> option in the
-C<search> method above) in some understandable way.  If no file handle
-is specified, the output will go to the selected filehandle (see
-C<perldoc -f select>).
-
-=cut
-
-sub printMatch($) {shift->notImplemented}
-
-#-------------------------------------------
-
-=back
-
-=head1 METHODS for extension writers
-
-=over 4
-
-=cut
-
-#-------------------------------------------
-
-=item searchPart PART
-
-Search this message PART for matches.
-
-=cut
-
 sub searchPart($)
 {  my ($self, $part) = @_;
 
@@ -356,52 +131,10 @@ sub searchPart($)
    $matched;
 }
 
-#-------------------------------------------
-
-=item inHead PART, HEAD
-
-Tests whether header contains the requesting information.  See the
-specific search module for its parameters.
-
-=cut
-
 sub inHead(@) {shift->notImplemented}
-
-#-------------------------------------------
-
-=item inBody PART, BODY
-
-Tests whether body contains the requesting information.  See the
-specific search module for its parameters.
-
-=cut
 
 sub inBody(@) {shift->notImplemented}
 
-#-------------------------------------------
-
-=back
-
-=head1 SEE ALSO
-
-L<Mail::Box-Overview>
-
-For support and additional documentation, see http://perl.overmeer.net/mailbox/
-
-=head1 AUTHOR
-
-Mark Overmeer (F<mailbox@overmeer.net>).
-All rights reserved.  This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-=head1 VERSION
-
-This code is beta, version 2.018.
-
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=cut
+sub printMatch($) {shift->notImplemented}
 
 1;

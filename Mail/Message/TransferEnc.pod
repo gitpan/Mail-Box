@@ -1,0 +1,231 @@
+
+=head1 NAME
+
+
+Mail::Message::TransferEnc - message transfer encoder/decoder
+
+=head1 CLASS INHERITANCE
+
+Mail::Message::TransferEnc
+   is a Mail::Reporter
+
+Mail::Message::TransferEnc is extended by
+   Mail::Message::TransferEnc::Base64
+   Mail::Message::TransferEnc::Binary
+   Mail::Message::TransferEnc::EightBit
+   Mail::Message::TransferEnc::QuotedPrint
+   Mail::Message::TransferEnc::SevenBit
+
+=head1 SYNOPSIS
+
+
+ my Mail::Message $msg = ...;
+ my $decoded = $msg->decoded;
+ my $encoded = $msg->encode(transfer => 'base64');
+
+=head1 DESCRIPTION
+
+
+This class is the base for various encoders and decoders, which are
+used during transport of the message.  This packages, and all which are
+derived, are invoked by the message's Mail::Message::decoded() and
+Mail::Message::encode() methods:
+
+ my $message = $folder->message(3);
+ my $decoded_body = $message->decoded;
+ my $encoded_body = $message->encode(transfer => 'base64');
+
+The following coders/decoders are currently available:
+
+=over 4
+
+=item * C<base64> via Mail::Message::TransferEnc::Base64
+
+=item * C<7bit> via Mail::Message::TransferEnc::SevenBit
+
+=item * C<8bit> via Mail::Message::TransferEnc::EightBit
+
+=item * C<quoted-printable> via Mail::Message::TransferEnc::QuotedPrint
+
+=back
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS X<new>
+
+ OPTION               DEFAULT
+ log                  'WARNINGS'
+ trace                'WARNINGS'
+
+=over 4
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=back
+
+=back
+
+=head2 The Encoder
+
+=over 4
+
+=item B<addTransferEncoder> TYPE, CLASS X<addTransferEncoder>
+
+(Class method)
+Adds one new encoder to the list known by the Mail::Box suite.  The
+TYPE is found in the message's header in the C<Content-Transfer-Encoding>
+field.
+
+=item B<create> TYPE, OPTIONS X<create>
+
+Create a new coder/decoder based on the required type.
+
+=item B<name>  X<name>
+
+The name of the encoder.  Case is not significant.
+
+=back
+
+=head2 Encoding
+
+=over 4
+
+=item B<check> BODY, OPTIONS X<check>
+
+Check whether the body is correctly encoded.  If so, the body reference is
+returned with the C<checked> flag set.  Otherwise, a new object is created
+and returned.
+
+ OPTION               DEFAULT
+ result_type          <type of source body>
+
+=over 4
+
+=item B<result_type> =E<gt> CLASS X<check(result_type)>
+
+The type of the body to be produced, when the checker decides to return
+modified data.
+
+=back
+
+=item B<decode> BODY [, OPTIONS] X<decode>
+
+Use the encoder to decode the content of BODY.  A new body is returned.
+
+ OPTION               DEFAULT
+ result_type          <type of source body>
+
+=over 4
+
+=item B<result_type> =E<gt> CLASS X<decode(result_type)>
+
+The type of the body to be produced, when the decoder decides to return
+modified data.
+
+=back
+
+=item B<encode> BODY, OPTIONS X<encode>
+
+Use the encoder to encode the content of BODY.
+
+ OPTION               DEFAULT
+ result_type          <type of source body>
+
+=over 4
+
+=item B<result_type> =E<gt> CLASS X<encode(result_type)>
+
+The type of the body to be produced, when the decoder decides to return
+modified data.
+
+=back
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

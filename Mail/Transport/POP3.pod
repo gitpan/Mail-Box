@@ -1,0 +1,262 @@
+
+=head1 NAME
+
+
+Mail::Transport::POP3 - receive messages via POP3
+
+=head1 CLASS INHERITANCE
+
+Mail::Transport::POP3
+   is a Mail::Transport::Receive
+   is a Mail::Transport
+   is a Mail::Reporter
+
+=head1 SYNOPSIS
+
+
+ my $receiver = Mail::Transport::POP3->new(...);
+ my $message = $receiver->receive($id);
+
+=head1 DESCRIPTION
+
+
+Receive messages via the POP3 protocol.  This object handles the contact
+with one POP3 server, and recovers broken connections automatically.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS X<new>
+
+ OPTION               DEFAULT
+ authenticate         'LOGIN'
+ hostname             'localhost'
+ interval             30
+ log                  'WARNINGS'
+ password             undef
+ port                 undef
+ proxy                undef
+ retry                <false>
+ timeout              120
+ trace                'WARNINGS'
+ username             undef
+ via                  'sendmail'
+
+=over 4
+
+=item B<authenticate> =E<gt> 'LOGIN'|'APOP' X<new(authenticate)>
+
+Use the old LOGIN authentication (unencrypted, default) or the newer APOP.
+
+=item B<hostname> =E<gt> HOSTNAME|ARRAY-OF-HOSTNAMES
+
+See Mail::Transport::new(hostname)
+
+=item B<interval> =E<gt> SECONDS
+
+See Mail::Transport::new(interval)
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<password> =E<gt> STRING
+
+See Mail::Transport::new(password)
+
+=item B<port> =E<gt> INTEGER
+
+See Mail::Transport::new(port)
+
+=item B<proxy> =E<gt> PATH
+
+See Mail::Transport::new(proxy)
+
+=item B<retry> =E<gt> NUMBER|undef
+
+See Mail::Transport::new(retry)
+
+=item B<timeout> =E<gt> SECONDS
+
+See Mail::Transport::new(timeout)
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=item B<username> =E<gt> STRING
+
+See Mail::Transport::new(username)
+
+=item B<via> =E<gt> CLASS|NAME
+
+See Mail::Transport::new(via)
+
+=back
+
+=back
+
+=head2 Server Connection
+
+=over 4
+
+=item B<findBinary> NAME [, DIRECTORIES]
+
+See Mail::Transport::findBinary()
+
+=item B<remoteHost> 
+
+See Mail::Transport::remoteHost()
+
+=item B<retry> 
+
+See Mail::Transport::retry()
+
+=back
+
+=head2 Receiving Mail
+
+=over 4
+
+=item B<contactServer>  X<contactServer>
+
+Contact the server if the connection was lost, or has not been made yet.
+When connecting fails, C<undef> is returned.  If the contact to the server
+was still present, or could be established, an IO::Socket::INET is returned.
+
+=item B<delete> UIDLS X<delete>
+
+Flag the specified message(s) to be deleted on the remote server.  The deletion
+will take place on the moment that the connection is lost, whether this
+is on purpose or not.
+
+=item B<disconnect>  X<disconnect>
+
+Break contact with the server, if that still exists.
+
+=item B<header> UIDL, [BODYLINES] X<header>
+
+Returns a reference to an array which contains the header of the message
+with the specified UIDL.  The optional integer BODYLINES specifies the
+number of lines from the body which are wanted: by default all.
+
+Examples:
+
+ my $ref_lines = $pop3->header($uidl);
+ print @$ref_lines;
+
+=item B<messages>  X<messages>
+
+Returns a list of all uidl's which are known by the server on this moment.
+
+=item B<receive> [UNIQUE-MESSAGE-ID]
+
+See Mail::Transport::Receive::receive()
+
+=item B<size> UIDL X<size>
+
+Returns the size of the message which is indicated by the UIDL, in octets.
+If the message is remotely deleted, this will return C<undef>.
+
+=item B<stat>  X<stat>
+
+Returns the I<maildrop> of the pop server; a list of two elements: the
+number of messages followed by the total folder size in octets.
+
+Examples:
+
+ my ($nr_messages, $total_size) = $pop3->stat;
+
+=item B<uidl2seqnr> UIDL X<uidl2seqnr>
+
+Translates the unique UIDL of a message into a sequence number which
+represents the message as long a this connection to the POP3 server
+exists.  When the message has been deleted for some reason, C<undef>
+is returned.
+
+=item B<url>  X<url>
+
+Represent this pop3 connection as URL.
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

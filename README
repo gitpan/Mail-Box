@@ -37,7 +37,7 @@ people have to mentioned in special:
   - massive corrections and additions in all documentation
   - many valid suggestions to the design and parts of the implementation
     -- and some invalid ones ;) --  you really must know what you are
-    talking about to convince stubern Mark.
+    talking about to convince stubborn Mark.
 * Tassilo von Parseval
   - scripts/takemail
   - contributions to the design
@@ -73,7 +73,7 @@ is just counting the messages: really fast.
 
 The implementation also avoids parsing and then unparsing mail messages.
 If you read from a folder, then use it and write to it to a different
-folder, unmodified messages are not reformated from memory. Instead they
+folder, unmodified messages are not reformatted from memory. Instead they
 are copied from the old folder into a new one byte-by-byte.  When you
 open a folder with 1000 messages, and modify two messages, only those
 two get parsed and recomposed.  All 998 other messages are simple
@@ -87,14 +87,14 @@ Currently supported:
   One file per folder, with many messages in each file.
 
 * MH folders, see Mail::Box::MH
-  One directory per folder, with each message in a seperate file.
+  One directory per folder, with each message in a separate file.
 
 See STATUS for my wishlist of supported folder types.
 
 = Support for message construction
 
 Create messages from data. Easily create replies, forwards, and bounces.
-Conversions between different message types (even forreign to Mail::Box)
+Conversions between different message types (even foreign to Mail::Box)
 Transfer encoding and decoding without hassle.
 
 = Support for message thread construction
@@ -139,7 +139,7 @@ accessing the folders.
 
 Another major difference is that the object structure of Mail::Folder
 is less clear than that of Mail::Box.  The supported mailbox types are
-seperately implemented and share less code than they could.  The
+separately implemented and share less code than they could.  The
 folders manage themselves instead of being managed by a separate
 folder manager object.
 

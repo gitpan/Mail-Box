@@ -2,89 +2,10 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::Html;
+our $VERSION = 2.019;  # Part of Mail::Box
 use base 'Mail::Message::Convert';
 
-our $VERSION = 2.018;
 use Carp;
-
-=head1 NAME
-
-Mail::Message::Convert::Html - Format messages from or to HTML
-
-=head1 CLASS HIERARCHY
-
- Mail::Message::Convert::Html
- is a Mail::Message::Convert
- is a Mail::Reporter
-
-=head1 SYNOPSIS
-
- use Mail::Message::Convert::Html;
- my $Html = Mail::Message::Convert::Html->new;
-
- print $html->fieldToHtml($head);
- print $html->headToHtmlHead($head);
- print $html->headToHtmlTable($head);
- print $html->textToHtml($text);
-
-=head1 DESCRIPTION
-
-The package contains various translators which handle HTML or XHTML
-without the help of external modules.  There are more HTML related modules,
-which do require extra packages to be installed.
-
-=head1 METHOD INDEX
-
-Methods prefixed with an abbreviation are described in
-L<Mail::Reporter> (MR), L<Mail::Message::Convert> (MMC).
-
-The general methods for C<Mail::Message::Convert::Html> objects:
-
-   MR errors                            MR report [LEVEL]
-      fieldToHtml FIELD, [SUBJECT]      MR reportAll [LEVEL]
-      headToHtmlHead HEAD, META            textToHtml LINES
-      headToHtmlTable HEAD, [TABL...    MR trace [LEVEL]
-   MR log [LEVEL [,STRINGS]]            MR warnings
-      new OPTIONS
-
-The extra methods for extension writers:
-
-   MR AUTOLOAD                          MR logPriority LEVEL
-   MR DESTROY                           MR logSettings
-      fieldContentsToHtml FIELD, ...    MR notImplemented
-   MR inGlobalDestruction              MMC selectedFields HEAD
-
-=head1 METHODS
-
-=over 4
-
-=cut
-
-#------------------------------------------
-
-=item new OPTIONS
-
- OPTION      DESCRIBED IN                   DEFAULT
- fields      Mail::Message::Convert         <some>
- head_mailto Mail::Message::Convert::Html   1
- log         Mail::Reporter                 'WARNINGS'
- produce     Mail::Message::Convert::Html   'HTML'
- trace       Mail::Reporter                 'WARNINGS'
-
-=over 4
-
-=item * head_mailto =E<gt> BOOLEAN
-
-Whether to replace e-mail addresses in some header lines with links.
-
-=item * produce =E<gt> 'HTML'|'XHTML'
-
-Produce HTML or XHTML output.  The output is slightly different, even
-html browsers will usually accept the xhtml data.
-
-=back
-
-=cut
 
 sub init($)
 {   my ($self, $args)  = @_;
@@ -105,17 +26,6 @@ sub init($)
     $self;
 }
 
-#------------------------------------------
-
-=item textToHtml LINES
-
-Translate one or more LINES from text into HTML.  Each line is taken one
-after the other, and only simple things are translated.  The C<plainToHtml>
-method is able to convert large plain texts in a descent fashion.  In scalar
-context, the resulting lines are returned as one.
-
-=cut
-
 sub textToHtml(@)
 {   my $self  = shift;
 
@@ -127,37 +37,11 @@ sub textToHtml(@)
     wantarray ? @lines : join('', @lines);
 }
 
-#------------------------------------------
-
-=item fieldToHtml FIELD, [SUBJECT]
-
-Reformat one header line field to HTML.  The FIELD's name
-is printed in bold, followed by the formatted field content,
-which is produced by the C<fieldContentsToHtml> method.
-
-=cut
-
 sub fieldToHtml($;$)
 {   my ($self, $field, $subject) = @_;
     '<strong>'. $self->textToHtml($field->wellformedName)
     .': </strong>' . $self->fieldContentsToHtml($field,$subject);
 }
-
-#------------------------------------------
-
-=item headToHtmlTable HEAD, [TABLE-PARAMS]
-
-Produce a display of the selected fields of the header (see the
-C<selectedFields> method) in a table shape.  The optional
-TABLE-PARAMS are added as parameters to the produced TABLE tag.
-In list context, the separate lines are returned.  In scalar
-context, everything is returned as one.
-
-Example:
-
- print $html->headToHtmlTable($head, 'width="50%"');
-
-=cut
 
 sub headToHtmlTable($;$)
 {   my ($self, $head) = (shift, shift);
@@ -185,43 +69,6 @@ sub headToHtmlTable($;$)
     push @lines, "</table>\n";
     wantarray ? @lines : join('',@lines);
 }
-
-#------------------------------------------
-
-=item headToHtmlHead HEAD, META
-
-Translate the selected header lines (fields) to an html page header.  Each
-selected field will get its own meta line with the same name as the line.
-Futhermore:
-
-=over 4
-
-=item * the C<Subject> field will become the C<title>,
-
-=item * C<From> is used for the C<Author>
-
-=back
-
-Besides, you can specify your own meta fields, which will overrule header
-fields.  Empty fields will not be included.  When a C<title> is specified,
-this will become the html title, otherwise the C<Subject> field is
-taken.  In list context, the lines are separately, where in scalar context
-the whole text is returned as one.
-
-If you need to add lines to the head (for instance, http-equiv lines), then
-splice them before the last element in the returned list.
-
-Example:
-
- my @head = $html->headToHtmlHead
-     ( $head
-     , description => 'This is a message'
-     , generator   => 'Mail::Box'
-     );
- splice @head, -1, 0, '<meta http-equiv=...>';
- print @head;
-
-=cut
 
 sub headToHtmlHead($@)
 {   my ($self, $head) = (shift,shift);
@@ -265,27 +112,6 @@ sub headToHtmlHead($@)
     push @lines, "</head>\n";
     wantarray ? @lines : join('',@lines);
 }
-    
-#------------------------------------------
-
-=back
-
-=head1 METHODS for extension writers
-
-=over 4
-
-=cut
-
-#------------------------------------------
-
-=item fieldContentsToHtml FIELD, [SUBJECT]
-
-Format one field from the header to HTML.  When the header line usually
-usually contains e-mail addresses, the line is scanned and valid addresses
-are linked with an C<mailto:> anchor.  The SUBJECT can be specified to
-be included in that link.
-
-=cut
 
 my $atom          = qr/[^()<>@,;:\\".\[\]\s[:cntrl:]]+/;
 my $email_address = qr/(($atom(?:\.$atom)*)\@($atom(?:\.$atom)+))/o;
@@ -301,31 +127,5 @@ sub fieldContentsToHtml($;$)
 
     $body . ($comment ? '; '.$self->textToHtml($comment) : '');
 }
-
-#------------------------------------------
-
-=back
-
-=head1 SEE ALSO
-
-L<Mail::Box-Overview>
-
-For support and additional documentation, see http://perl.overmeer.net/mailbox/
-
-=head1 AUTHOR
-
-Mark Overmeer (F<mailbox@overmeer.net>).
-All rights reserved.  This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-=head1 VERSION
-
-This code is beta, version 2.018.
-
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=cut
 
 1;

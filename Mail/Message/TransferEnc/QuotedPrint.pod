@@ -1,0 +1,155 @@
+
+=head1 NAME
+
+
+Mail::Message::TransferEnc::QuotedPrint - handle quoted-printable message bodies
+
+=head1 CLASS INHERITANCE
+
+Mail::Message::TransferEnc::QuotedPrint
+   is a Mail::Message::TransferEnc
+   is a Mail::Reporter
+
+=head1 SYNOPSIS
+
+
+ my Mail::Message $msg = ...;
+ my $decoded = $msg->decoded;
+ my $encoded = $msg->encode(transfer => 'quoted-printable');
+
+=head1 DESCRIPTION
+
+
+Encode and decode message bodies for quoted-printable transfer encoding.
+The Quoted-Printable encoding is intended
+to represent data that largely consists of bytes that correspond to
+printable characters in the ASCII character set.  Non-printable
+characters (as defined by English Americans) are represented by a
+triplet consisting of the character "=" followed by two hexadecimal
+digits.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS
+
+See Mail::Message::TransferEnc::new()
+
+=back
+
+=head2 The Encoder
+
+=over 4
+
+=item B<addTransferEncoder> TYPE, CLASS
+
+See Mail::Message::TransferEnc::addTransferEncoder()
+
+=item B<create> TYPE, OPTIONS
+
+See Mail::Message::TransferEnc::create()
+
+=item B<name> 
+
+See Mail::Message::TransferEnc::name()
+
+=back
+
+=head2 Encoding
+
+=over 4
+
+=item B<check> BODY, OPTIONS
+
+See Mail::Message::TransferEnc::check()
+
+=item B<decode> BODY [, OPTIONS]
+
+See Mail::Message::TransferEnc::decode()
+
+=item B<encode> BODY, OPTIONS
+
+See Mail::Message::TransferEnc::encode()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

@@ -19,8 +19,8 @@ Plans for the (near?) future:
 
   If a message does not contain the two mentioned fields, then look
   for a message which is at most a few days younger, whose sender is
-  in the reciepient-list of the current message, and where parts of
-  the message are qouted (preceeded by some symbols).
+  in the recipient-list of the current message, and where parts of
+  the message are quoted (preceded by some symbols).
 
 * Persistent external files
   Extracting large message-parts into persistent external files.
@@ -35,9 +35,9 @@ Plans for the (near?) future:
 
   - Exmh      (should be relatively simple, extends MH)
   - IMAP      (using Mail::IMAPClient, looks not that hard)
-  - Maildir   (comparible to MH, but different optimizations
+  - Maildir   (comparable to MH, but different optimizations
                possible/required)
-  - Emaul     (? for compatibily with Mail::Folder)
+  - Emaul     (? for compatibly with Mail::Folder)
   - NNTP
 
   Any more?
@@ -57,3 +57,5 @@ Plans for the (near?) future:
 * Mail::Box::Search::Spam
 
 * Use Text::Autoformat when constructing messages/replies/formats
+
+* Kill a message which is used to free-up memory in large folders.

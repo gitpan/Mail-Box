@@ -1,0 +1,396 @@
+
+=head1 NAME
+
+
+Mail::Message::Part - a part of a message, but a message by itself.
+
+=head1 CLASS INHERITANCE
+
+Mail::Message::Part
+   is a Mail::Message
+   is a Mail::Reporter
+
+=head1 SYNOPSIS
+
+
+ my Mail::Message $message = ...;
+ if($message->isMultipart) {
+     my Mail::Message::Part $part;
+
+     foreach $part ($message->body->parts) {
+         $part->print(\*OUT);
+         my $attachbody = $part->head;
+         my $attachhead = $part->body;
+     }
+ }
+
+=head1 DESCRIPTION
+
+
+A Mail::Message::Part object contains a message which is included in
+an other message.  For instance I<attachments> are I<parts>.
+
+READ Mail::Message FIRST.  A part is a special message: it has a
+reference to its parent message, and will usually not be sub-classed
+into mail-folder-specific variants.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS X<new>
+
+Create a message part.
+
+ OPTION               DEFAULT
+ body                 undef
+ body_type            'Mail::Message::Body::Lines'
+ field_type           undef
+ head                 undef
+ head_type            'Mail::Message::Head::Complete'
+ head_wrap            72
+ log                  'WARNINGS'
+ messageId            undef
+ modified             <false>
+ parent               <obligatory>
+ trace                'WARNINGS'
+ trusted              <false>
+
+=over 4
+
+=item B<body> =E<gt> OBJECT
+
+See Mail::Message::new(body)
+
+=item B<body_type> =E<gt> CLASS
+
+See Mail::Message::new(body_type)
+
+=item B<field_type> =E<gt> CLASS
+
+See Mail::Message::new(field_type)
+
+=item B<head> =E<gt> OBJECT
+
+See Mail::Message::new(head)
+
+=item B<head_type> =E<gt> CLASS
+
+See Mail::Message::new(head_type)
+
+=item B<head_wrap> =E<gt> INTEGER
+
+See Mail::Message::new(head_wrap)
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<messageId> =E<gt> STRING
+
+See Mail::Message::new(messageId)
+
+=item B<modified> =E<gt> BOOLEAN
+
+See Mail::Message::new(modified)
+
+=item B<parent> =E<gt> MESSAGE X<new(parent)>
+
+Reference to the parental Mail::Message object where this
+part is a member of.  That object may be a part itself.
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=item B<trusted> =E<gt> BOOLEAN
+
+See Mail::Message::new(trusted)
+
+=back
+
+=back
+
+=head2 Constructing a Message
+
+=over 4
+
+=item B<coerce> BODY|MESSAGE, PARENT-BODY X<coerce>
+
+Transforms a BODY or MESSAGE to a real message part.  The MULTIPART refers
+to the parental body.
+
+=back
+
+=head2 The Message
+
+=over 4
+
+=item B<clone> 
+
+See Mail::Message::clone()
+
+=item B<delete>  X<delete>
+
+Do not print or send this part of the message anymore.
+
+=item B<deleted> [BOOLEAN] X<deleted>
+
+Returns whether this part is still in the body or not, optionally
+after setting it to the BOOLEAN.
+
+=item B<isDummy> 
+
+See Mail::Message::isDummy()
+
+=item B<isPart> 
+
+See Mail::Message::isPart()
+
+=item B<messageId> 
+
+See Mail::Message::messageId()
+
+=item B<modified> [BOOLEAN]
+
+See Mail::Message::modified()
+
+=item B<parent> 
+
+See Mail::Message::parent()
+
+=item B<print> [FILEHANDLE]
+
+See Mail::Message::print()
+
+=item B<send> [MAILER], OPTIONS
+
+See Mail::Message::send()
+
+=item B<size> 
+
+See Mail::Message::size()
+
+=item B<toplevel> 
+
+See Mail::Message::toplevel()
+
+=back
+
+=head2 The Header
+
+=over 4
+
+=item B<get> FIELD
+
+See Mail::Message::get()
+
+=item B<head> [HEAD]
+
+See Mail::Message::head()
+
+=back
+
+=head2 Header Shortcuts
+
+=over 4
+
+=item B<bcc> 
+
+See Mail::Message::bcc()
+
+=item B<cc> 
+
+See Mail::Message::cc()
+
+=item B<date> 
+
+See Mail::Message::date()
+
+=item B<destinations> 
+
+See Mail::Message::destinations()
+
+=item B<from> 
+
+See Mail::Message::from()
+
+=item B<guessTimestamp> 
+
+See Mail::Message::guessTimestamp()
+
+=item B<nrLines> 
+
+See Mail::Message::nrLines()
+
+=item B<subject> 
+
+See Mail::Message::subject()
+
+=item B<timestamp> 
+
+See Mail::Message::timestamp()
+
+=item B<to> 
+
+See Mail::Message::to()
+
+=back
+
+=head2 The Body
+
+=over 4
+
+=item B<body> [BODY]
+
+See Mail::Message::body()
+
+=item B<decoded> OPTIONS
+
+See Mail::Message::decoded()
+
+=item B<encode> OPTIONS
+
+See Mail::Message::encode()
+
+=item B<isMultipart> 
+
+See Mail::Message::isMultipart()
+
+=item B<parts> ['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER]
+
+See Mail::Message::parts()
+
+=back
+
+=head2 Labels
+
+=over 4
+
+=item B<label> LABEL [,VALUE [LABEL, VALUE] ]
+
+See Mail::Message::label()
+
+=item B<labels> 
+
+See Mail::Message::labels()
+
+=back
+
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<DESTROY> 
+
+See Mail::Message::DESTROY()
+
+=item B<isDelayed> 
+
+See Mail::Message::isDelayed()
+
+=item B<labelsToStatus> 
+
+See Mail::Message::labelsToStatus()
+
+=item B<readBody> PARSER, HEAD [, BODYTYPE]
+
+See Mail::Message::readBody()
+
+=item B<readFromParser> PARSER, [BODYTYPE]
+
+See Mail::Message::readFromParser()
+
+=item B<readHead> PARSER [,CLASS]
+
+See Mail::Message::readHead()
+
+=item B<statusToLabels> 
+
+See Mail::Message::statusToLabels()
+
+=item B<storeBody> BODY
+
+See Mail::Message::storeBody()
+
+=item B<takeMessageId> [STRING]
+
+See Mail::Message::takeMessageId()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

@@ -1,0 +1,351 @@
+
+=head1 NAME
+
+
+Mail::Box::Thread::Node - one node in a message thread
+
+=head1 CLASS INHERITANCE
+
+Mail::Box::Thread::Node
+   is a Mail::Reporter
+
+=head1 SYNOPSIS
+
+
+ my $node = Mail::Box::Thread::Node->new;
+ $node->addMessage($message);
+ ...
+
+=head1 DESCRIPTION
+
+
+The Mail::Box::Thread::Node maintains one node in the linked list of threads.
+Each node contains one message, and a list of its follow-ups.  Next to
+that, it refers to its own ancestor and contains information about the
+trustworthiness of that relationship.
+
+To complicate things a little, because the thread-manager can maintain multiple
+folders, and merge there content, you may find the same message in more folders.
+All versions of the same message (based on message-id) are stored in the
+same node.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS
+
+See Mail::Reporter::new()
+
+=back
+
+=head2 The Thread Node
+
+=over 4
+
+=item B<addMessage> MESSAGE X<addMessage>
+
+Add one message to the thread node.  If the node contains a dummy, then
+the dummy is replaced. Otherwise, the messages is added to the end of the
+list.
+
+=item B<isDummy>  X<isDummy>
+
+Returns true if the message is a dummy. A dummy is a "hole" in a thread
+which has follow-ups but does not have a message.
+
+=item B<message>  X<message>
+
+Get the message which is stored in this thread node.  NOTE: the same
+message may be located in many folders at the same time, and these
+folders may be controlled by the same thread manager.
+
+In scalar context, this method returns the first instance of the
+message that is not deleted. If all instances are flagged for deletion,
+then you get the first deleted message. When the open folders only
+contain references to the message, but no instance, you get a dummy
+message (see Mail::Message::Dummy).
+
+In list context, all instances of the message which have been found are
+returned.
+
+Examples:
+
+ my $threads = $mgr->threads(folders => [$draft, $sent]);
+ my $node    = $draft->message(1)->thread;
+
+ foreach my $instance ($node->message) {
+    print "Found in ", $instance->folder, ".\n";
+ }
+
+ print "Subject is ", $node->message->subject, ".\n";
+
+=item B<messageId>  X<messageId>
+
+Return the message-id related to this thread node.  Each of the messages
+listed in this node will have the same ID.
+
+=back
+
+=head2 The Thread Order
+
+=over 4
+
+=item B<expand> [BOOLEAN] X<expand>
+
+Returns whether this (part of the) folder has to be shown expanded or not.
+This is simply done by a label, which means that most folder types can
+store this.
+
+=item B<followUps>  X<followUps>
+
+Returns the list of follow-ups to this thread node.  This list
+may contain parsed, not-parsed, and dummy messages.
+
+=item B<followedBy> THREADS X<followedBy>
+
+Register that the THREADS are follow-ups to this message. These
+follow-ups need not be related to each other in any way other than
+sharing the same parent.
+
+Defining the same relation more than once will not cause information to
+be duplicated.
+
+=item B<follows> THREAD, QUALITY X<follows>
+
+Register that the current thread is a reply to the specified THREAD. The
+QUALITY of the relation is specified by the second argument.  The THREAD
+may still have angles around it, and in that case maybe even blanks.
+
+The relation may be specified more than once, but only the most confident
+relation is used. For example, if a reply (QUALITY equals C<REPLY>) is
+specified, later calls to the follow method will have no effect. If
+C<follows> is called with a QUALITY that matches the current quality, the
+new thread overrides the previous.
+
+=item B<repliedTo>  X<repliedTo>
+
+Returns the message(s) to which the message in this node replies. In
+scalar context, this method will return the message to which the message
+in this node replies. This message object may be a dummy message.
+
+If the message seems to be the first message of a thread, the value C<undef>
+is returned.  (Remember that some MUA are not adding reference information
+to the message's header, so you can never be sure a message is the
+start of a thread)
+
+In list context, this method returns a second string value indicating the
+confidence that the messages are related.  When extended thread discovery
+is enabled, then some heuristics are applied to determine if messages are
+related. Values for the STRING may be:
+
+=over 4
+
+=item * 'REPLY'
+
+This relation was directly derived from an `in-reply-to' message header
+field. The relation has a high confidence.
+
+=item * 'REFERENCE'
+
+This relation is based on information found in a `Reference' message
+header field.  One message may reference a list of messages which
+precede it in the thread. The heuristic attempts to determine
+relationships between messages assuming that the references are in order.
+This relation has a lower confidence.
+
+=item * 'GUESS'
+
+The relation is a big guess, with low confidence.  It may be based on
+a subject which seems to be related, or commonalities in the message's
+body.
+
+=back
+
+More constants may be added later.
+
+Examples:
+
+ my $question = $answer->repliedTo;
+ my ($question, $quality) = $answer->repliedTo;
+ if($question && $quality eq 'REPLY') { ... };
+
+=item B<sortedFollowUps> [PREPARE [,COMPARE]] X<sortedFollowUps>
+
+Returns the list of followUps(), but sorted.  By default
+sorting is based on the estimated time of the reply. See
+startTimeEstimate().
+
+=back
+
+=head2 Whole Threads
+
+=over 4
+
+=item B<endTimeEstimate>  X<endTimeEstimate>
+
+Returns a guess as to when the thread has ended (although you never
+know for sure whether there fill follow messages in the future).
+
+=item B<ids>  X<ids>
+
+Returns all the ids in the thread starting at the current thread node.
+
+Examples:
+
+ $newfolder->addMessages($folder->ids($thread->ids));
+ $folder->delete($thread->ids);
+
+=item B<numberOfMessages>  X<numberOfMessages>
+
+Number of messages in the thread starting at the current thread node, but
+not counting the dummies.
+
+=item B<recurse> CODE-REF X<recurse>
+
+Execute a function for all sub-threads.  If the subroutine returns true,
+sub-threads are visited recursively. Otherwise, the current branch
+traversal is aborted. The routine is called with the thread-node as the
+only argument.
+
+=item B<startTimeEstimate>  X<startTimeEstimate>
+
+Returns a guess as to when the thread was started.  Each message contains
+various date specifications (each with various uncertainties resulting
+from timezones and out-of-sync clocks). One of these date specifications
+is used as the timestamp for the message. If the node contains a dummy
+message the lowest timestamp of the replies is returned. Otherwise the
+estimated timestamp of the node's message is returned.
+
+=item B<threadMessages>  X<threadMessages>
+
+Returns all the messages in the thread starting at the current thread
+node.  This list will not include dummies.
+
+Examples:
+
+ my @t = $folder->message(3)->threadStart->threadMessages;
+
+=item B<threadToString> [CODE] X<threadToString>
+
+Translate a thread into a string. The string will contain at least one
+line for each message which was found, but tries to fold dummies.  This
+is useful for debugging, but most message readers will prefer to
+implement their own thread printer.
+
+
+The optional CODE argument is a reference to a routine which will be called
+for each message in the thread.  The routine will be called with the
+message as the first argument.  The default shows the subject of the message.
+In the first example below, this routine is called seven times.
+
+Examples:
+
+ print $message->threadToString;
+
+may result in
+
+   Subject of this message
+   |- Re: Subject of this message
+   |-*- Re: Re: Subject of this message
+   | |- Re(2) Subject of this message
+   | |- [3] Re(2) Subject of this message
+   | `- Re: Subject of this message (reply)
+   `- Re: Subject of this message
+
+The `*' represents a missing message (a "dummy" message).  The `[3]'
+presents a folded thread with three messages.
+
+   print $message->threadToString(\&show);
+
+   sub show($) {
+      my $message = shift;
+      my $subject = $message->head->get('subject');
+      length $subject ? $subject : '<no subject>';
+   }
+
+=item B<totalSize>  X<totalSize>
+
+Returns the sum of the size of all the messages in the thread.
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.019.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
