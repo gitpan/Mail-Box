@@ -14,7 +14,7 @@ use Mail::Message::TransferEnc::Base64;
 use Tools;
 use IO::Scalar;
 
-BEGIN { plan tests => 12 }
+BEGIN { plan tests => 13 }
 
 my $decoded = <<DECODED;
 This text is used to test base64 encoding and decoding.  Let
@@ -28,7 +28,6 @@ ENCODED
 
 my $body   = Mail::Message::Body::Lines->new
   ( mime_type => 'text/html'
-  , checked   => 1
   , transfer_encoding => 'base64'
   , data      => $encoded
   );
@@ -45,12 +44,13 @@ ok($dec->transferEncoding eq 'none');
 my $enc = $dec->encode(transfer_encoding => '7bit');
 ok(defined $enc);
 ok($enc->isa('Mail::Message::Body'));
-ok($enc->checked);
+ok(!$enc->checked);
 ok($enc->string eq $decoded);
 
 my $msg = Mail::Message->buildFromBody($enc, From => 'me', To => 'you',
    Date => 'now');
 ok($msg);
+ok($msg->body->checked);
 
 my $fakeout;
 my $g = IO::Scalar->new(\$fakeout);

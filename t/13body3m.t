@@ -31,6 +31,7 @@ my $h1 = Mail::Message::Head::Complete->new;
 
 my $b1 = Mail::Message::Body::Lines->new
  ( data              => ["p1 l1\n", "p1 l2\n" ]
+ , checked           => 1
  , mime_type         => 'text/html'
  , transfer_encoding => '8bit'
  );
@@ -51,6 +52,7 @@ my $h2 = Mail::Message::Head::Complete->new;
 my $b2 = Mail::Message::Body::Lines->new
  ( data              => ["p2 l1\n", "p2 l2\n", "p2 l3\n", "p2 l4\n" ]
  , mime_type         => 'text/plain'
+ , checked           => 1
  , transfer_encoding => '8bit'
  );
 

@@ -17,7 +17,7 @@ use overload '""'    => sub {shift->load->string}
 use Carp;
 use Scalar::Util 'weaken';
 
-our $VERSION = 2.006;
+our $VERSION = 2.007;
 
 =head1 NAME
 
@@ -43,14 +43,15 @@ how a message body gets delay loaded.
 
 The general methods for C<Mail::Message::Body::Delayed> objects:
 
- MMBC attach MESSAGES, OPTIONS         MMB message [MESSAGE]
- MMBE check                            MMB mimeType
-  MMB checked [BOOLEAN]                MMB modified [BOOL]
- MMBC concatenate COMPONENTS               new OPTIONS
-  MMB decoded OPTIONS                  MMB nrLines
-  MMB disposition [STRING|FIELD]       MMB print [FILE]
- MMBE encode OPTIONS                   MMB reply OPTIONS
- MMBE encoded                           MR report [LEVEL]
+ MMBC attach MESSAGES, OPTIONS          MR log [LEVEL [,STRINGS]]
+ MMBE check                            MMB message [MESSAGE]
+  MMB checked [BOOLEAN]                MMB mimeType
+ MMBC concatenate COMPONENTS           MMB modified [BOOL]
+  MMB decoded OPTIONS                      new OPTIONS
+  MMB disposition [STRING|FIELD]       MMB nrLines
+ MMBE encode OPTIONS                   MMB print [FILE]
+ MMBE encoded                          MMB reply OPTIONS
+ MMBE eol ['CR'|'LF'|'CRLF'|'NATI...    MR report [LEVEL]
    MR errors                            MR reportAll [LEVEL]
   MMB file                             MMB size
  MMBC foreachLine CODE                 MMB string
@@ -58,7 +59,6 @@ The general methods for C<Mail::Message::Body::Delayed> objects:
   MMB isDelayed                         MR trace [LEVEL]
   MMB isMultipart                      MMB transferEncoding [STRING|FI...
   MMB lines                            MMB type
-   MR log [LEVEL [,STRINGS]]            MR warnings
 
 The extra methods for extension writers:
 
@@ -204,7 +204,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.006.
+This code is beta, version 2.007.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

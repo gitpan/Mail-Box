@@ -48,6 +48,7 @@ SIG
 my @lines = split /(?<=\n)/, $text.$sig;
 my $body = Mail::Message::Body::Lines->new
   ( mime_type => 'text/plain'
+  , checked   => 1
   , data      => \@lines
   );
 

@@ -8,7 +8,7 @@ use base 'Mail::Reporter';
 use Mail::Box::Message;
 use Mail::Box::Locker;
 
-our $VERSION = 2.006;
+our $VERSION = 2.007;
 
 use Carp;
 use Scalar::Util 'weaken';
@@ -139,6 +139,7 @@ sub-class.
  folderdir         Mail::Box          undef
  head_wrap         Mail::Box          72
  extract           Mail::Box          10kb
+ keep_dups         Mail::Box          0
  log               Mail::Reporter     'WARNINGS'
  remove_when_empty Mail::Box          1
  save_on_exit      Mail::Box          1
@@ -199,6 +200,14 @@ C<folder =E<gt> '=abc'>, then the name of the folder-file is C<'/tmp/abc'>.
 
 Fold the structured headers to the specified length (defaults to C<72>).
 Folding is disabled when C<0> is specified.
+
+=item * keep_dups =E<gt> BOOL                                                 
+                                                                               
+Indicates whether or not duplicate messages within the folder should          
+be retained.  A message is considered to be a duplicate if its message-id      
+is the same as a previously parsed message within the folder. If this         
+option is false (the default) such messages are automatically deleted,
+because it is useless to store the same message twice.
 
 =item * save_on_exit =E<gt> BOOL
 
@@ -347,7 +356,7 @@ C<Mail::Message::Head::Complete>.
 
 The type of the locker object.  This may be the full name of a CLASS
 which extends C<Mail::Box::Locker>, or one of the known locker types
-C<'DotLock'>, C<'File'>, C<'NFS'>, or C<'NONE'>.
+C<'DotLock'>, C<'File'>, C<'MULTI'>, C<'NFS'>, C<'POSIX'>, or C<'NONE'>.
 
 =item * locker =E<gt> OBJECT
 
@@ -419,6 +428,7 @@ sub init($)
     $self->{MB_organization} = $args->{organization}      || 'FILE';
     $self->{MB_head_wrap}    = $args->{head_wrap} if defined $args->{head_wrap};
     $self->{MB_linesep}      = "\n";
+    $self->{MB_keep_dups}    = $args->{keep_dups};
 
     my $folderdir = $self->folderdir($args->{folderdir});
     $self->{MB_trusted}      = exists $args->{trusted} ? $args->{trusted}
@@ -738,10 +748,21 @@ sub messageId($;$)
         return;
     }
 
-    # Auto-delete doubles.
     if(my $double = $self->{MB_msgid}{$msgid})
-    {   $message->delete unless $double->isa('Mail::Box::Message::Dummy');
-        return $message;
+    {   my $head1 = $message->head;
+        my $head2 = $double->head;
+
+confess unless $head1;
+        if(   $head1->get('subject') eq $head2->get('subject')
+           && $head1->get('to')      eq $head2->get('to')
+          )
+        {   # Auto-delete doubles.
+            return $message->delete unless $self->{MB_keep_dups};
+        }
+        else
+        {   $self->log(WARNING => "Different message with id $msgid.");
+            $msgid = $message->takeMessageId(undef);
+        }
     }
 
     $self->{MB_msgid}{$msgid} = $message;
@@ -850,9 +871,9 @@ ERROR
     $coerced->folder($self);
 
     unless($message->head->isDelayed)
-    {   # Do not add the same message twice.
+    {   # Do not add the same message twice, unless keep_dups.
         my $msgid = $message->messageId;
-        if(my $found = $self->messageId($msgid))
+        if(!$self->{MB_keep_dups} && (my $found = $self->messageId($msgid)))
         {   $message->delete;
             return $found;
         }
@@ -1545,6 +1566,7 @@ sub DESTROY
 # MB_init_options: A copy of all the arguments given to the constructor
 # MB_is_closed: Whether or not the mailbox is closed
 # MB_extract: When to extract the body on the moment the header is read
+# MB_keep_dups: new(keep_dups)
 # MB_locker: A reference to the mail box locker.
 # MB_manager: new(manager)
 # MB_messages: A list of all the messages in the folder
@@ -1570,7 +1592,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.006.
+This code is beta, version 2.007.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

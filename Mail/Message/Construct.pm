@@ -5,7 +5,7 @@ use strict;
 
 package Mail::Message;
 
-our $VERSION = 2.006;
+our $VERSION = 2.007;
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -859,7 +859,7 @@ One ATTACHMENT to the message.  Each ATTACHMENT can be full message or a body.
 
 =back
 
-If more than one C<data>, C<file>, and C<attachment> is specified, a
+If more than one C<data>, C<file>, and C<attach> is specified, a
 multi-parted message is created.
 
 Example:
@@ -901,7 +901,7 @@ sub build(@)
     my $body    = @parts==1 ? $parts[0]
        : Mail::Message::Body::Multipart->new(parts => \@parts);
 
-    $message->body($body);
+    $message->body($body->check);
     $message;
 }
 
@@ -958,7 +958,7 @@ sub buildFromBody(@)
      , @log
      );
 
-    $message->body($body);
+    $message->body($body->check);
     $message;
 }
 
@@ -1061,7 +1061,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.006.
+This code is beta, version 2.007.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

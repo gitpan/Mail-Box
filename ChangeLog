@@ -3,11 +3,42 @@ CHANGELOG of Mail::Box version 2
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
+version 2.007: Mon Jan 14 10:07:09 CET 2002
+
+	Fixes:
+
+        - [Alan Kelm] found a mistake in Mail::Box::Locker::DotLock::_try_lock
+
+	- [Alan Kelm] updated some docs about locking.
+
+	- [Alan Kelm] folder->new keep_dups option.
+
+	- [Alan Kelm] fixed a stupid bug: messages printed to MBOX folders
+	  did not get an empty line after them (before the from-line).
+	  changed  print('') into print("\n") in Mail::Box::Mbox::Messages.pm
+	  Mail::Box doesn't need that line, but other mail-agents might.
+
+	Improvements:
+
+	- Avoid colissions between two messages which falsily share
+	  messageID.  One will get a new number.
+
+	- Start implementing understanding of CRLF / CR and foreign
+          line-endings
+
+	- Implemented stricter checks.  When a body is created, it is
+	  not trusted until the data is checked.  This is lazy again ;)
+	  Specify the checked option for the body is you are sure the
+	  data is correct.  Also for the folders: when they are `trusted',
+	  all bodies will be created `checked', which boosts performance
+	  when used with the Perl parser.
+
 version 2.006: Wed Jan  2 08:27:21 CET 2002
 
 	Fixes:
 
-	- Accidentally typed   (@_)  as prototype of some methods.
+	- Accidentally typed   (@_)  as prototype of some methods.  Found
+	  by [Jeffrey Friedl]
 
 version 2.005: Sun Dec 30 14:25:22 CET 2001
 

@@ -4,7 +4,7 @@ use warnings;
 package Mail::Box::Manager;
 use base 'Mail::Reporter';
 
-our $VERSION = 2.006;
+our $VERSION = 2.007;
 use Mail::Box;
 
 use Carp;
@@ -659,6 +659,7 @@ sub delete($@)
 
 Create a new object which keeps track of message threads.  You can read
 about the possible options in the C<Mail::Box::Thread::Manager> documentation.
+As OPTIONS specify one C<folder> or an array of C<folders>.
 
 Example:
 
@@ -739,7 +740,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.006.
+This code is beta, version 2.007.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

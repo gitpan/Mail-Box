@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox::Message;
 use base 'Mail::Box::Message';
 
-our $VERSION = 2.006;
+our $VERSION = 2.007;
 
 use POSIX 'SEEK_SET';
 use IO::InnerFile;
@@ -166,7 +166,7 @@ sub print(;$)
 
     $out->print($self->fromLine);
     $self->SUPER::print($out);
-    $out->print('');
+    $out->print("\n");
     $self;
 }
 
@@ -302,7 +302,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.006.
+This code is beta, version 2.007.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

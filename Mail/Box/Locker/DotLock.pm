@@ -62,6 +62,8 @@ sub name() {'DOTLOCK'}
 
 sub _try_lock($)
 {   my ($self, $lockfile) = @_;
+    return if -e $lockfile;
+
     my $flags    = $^O eq 'MSWin32'
                  ?  O_CREAT|O_EXCL|O_WRONLY
                  :  O_CREAT|O_EXCL|O_WRONLY|O_NONBLOCK;
@@ -119,12 +121,7 @@ sub lock()
 
 #-------------------------------------------
 
-sub isLocked()
-{   my $self     = shift;
-    $self->_try_lock($self->filename) or return 0;
-    $self->unlock;
-    1;
-}
+sub isLocked() { -e shift->filename }
 
 #-------------------------------------------
 
@@ -140,7 +137,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.006.
+This code is beta, version 2.007.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

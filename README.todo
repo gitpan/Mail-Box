@@ -35,9 +35,10 @@ Plans for the (near?) future:
 
   - Exmh      (should be relatively simple, extends MH)
   - IMAP      (using Mail::IMAPClient, looks not that hard)
-  - Emaul     (for compatibily with Mail::Folder)
   - Maildir   (comparible to MH, but different optimizations
                possible/required)
+  - Emaul     (? for compatibily with Mail::Folder)
+  - NNTP
 
   Any more?
   One of the main reasons that these are not implemented, is that my
@@ -51,3 +52,9 @@ Plans for the (near?) future:
   For the message-folders, only foundIn() should be kept outside the
   loading mechanism.
 
+* Convert text to html vv
+  Mail/HTML/Box
+  Mail/HTML/Message
+  Mail/HTML/Thread
+  Mail/HTML/Body
+  Mail/HTML/Head

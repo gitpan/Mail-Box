@@ -9,7 +9,7 @@ use Mail::Message::Head::Complete;
 
 use Carp;
 
-our $VERSION = 2.006;
+our $VERSION = 2.007;
 
 =head1 NAME
 
@@ -967,6 +967,7 @@ sub body(;$@)
     # Update the header fields to the data of the body message.
 
     my $head = $self->head;
+confess unless defined $head;
     $head->set($body->type);
     $head->set('Content-Length' => $body->size);
     $head->set('Lines'          => $body->nrLines);
@@ -1010,7 +1011,7 @@ LABALS hash.  They are added later.
 
 Example:
 
-    my $head = $msg->head(new Mail::Message::Head);
+ my $head = $msg->head(new Mail::Message::Head);
 
 =cut
 
@@ -1019,7 +1020,10 @@ sub head(;$$)
     return $self->{MM_head} unless @_;
 
     my $head = shift;
-    return delete $self->{MM_head} unless defined $head;
+    unless(defined $head)
+    {   delete $self->{MM_head};
+        return undef;
+    }
 
     my $labels = shift;
 
@@ -1229,7 +1233,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.006.
+This code is beta, version 2.007.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

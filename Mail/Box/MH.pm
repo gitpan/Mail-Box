@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::MH;
 
 use base 'Mail::Box';
-our $VERSION = 2.006;
+our $VERSION = 2.007;
 
 use Mail::Box::MH::Index;
 use Mail::Box::MH::Message;
@@ -110,6 +110,7 @@ see below, but first the full list.
  folderdir         Mail::Box          <no default>
  head_wrap         Mail::Box          72
  index_filename    Mail::Box::MH      foldername.'/.index'
+ keep_dups         Mail::Box          0
  keep_index        Mail::Box::MH      0
  labels_filename   Mail::Box::MH      foldername.'/.mh_sequence'
  extract           Mail::Box          10kB
@@ -855,7 +856,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.006.
+This code is beta, version 2.007.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

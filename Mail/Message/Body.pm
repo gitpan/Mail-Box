@@ -8,7 +8,7 @@ use Mail::Message::Field;
 use Mail::Message::Body::Lines;
 use Mail::Message::Body::File;
 
-our $VERSION = 2.006;
+our $VERSION = 2.007;
 
 use overload bool  => sub {1}   # $body->print if $body
            , '""'  => 'string'
@@ -132,14 +132,15 @@ but this call will be most efficient for the C<::Body::Lines> type.
 
 The general methods for C<Mail::Message::Body> objects:
 
- MMBC attach MESSAGES, OPTIONS             message [MESSAGE]
- MMBE check                                mimeType
-      checked [BOOLEAN]                    modified [BOOL]
- MMBC concatenate COMPONENTS               new OPTIONS
-      decoded OPTIONS                      nrLines
-      disposition [STRING|FIELD]           print [FILE]
- MMBE encode OPTIONS                       reply OPTIONS
- MMBE encoded                           MR report [LEVEL]
+ MMBC attach MESSAGES, OPTIONS          MR log [LEVEL [,STRINGS]]
+ MMBE check                                message [MESSAGE]
+      checked [BOOLEAN]                    mimeType
+ MMBC concatenate COMPONENTS               modified [BOOL]
+      decoded OPTIONS                      new OPTIONS
+      disposition [STRING|FIELD]           nrLines
+ MMBE encode OPTIONS                       print [FILE]
+ MMBE encoded                              reply OPTIONS
+ MMBE eol ['CR'|'LF'|'CRLF'|'NATI...    MR report [LEVEL]
    MR errors                            MR reportAll [LEVEL]
       file                                 size
  MMBC foreachLine CODE                     string
@@ -147,7 +148,6 @@ The general methods for C<Mail::Message::Body> objects:
       isDelayed                         MR trace [LEVEL]
       isMultipart                          transferEncoding [STRING|FI...
       lines                                type
-   MR log [LEVEL [,STRINGS]]            MR warnings
 
 The extra methods for extension writers:
 
@@ -180,6 +180,7 @@ manual-pages:
  based_on          Mail::Message::Body   undef
  charset           Mail::Message::Body   'us-ascii'
  checked           Mail::Message::Body   0
+ eol               Mail::Message::Body   'NATIVE'
  data              Mail::Message::Body   undef
  disposition       Mail::Message::Body   undef
  filename          Mail::Message::Body   undef
@@ -238,6 +239,12 @@ upon some further action of the user.
 
 The C<filename> attribute specifies a name to which is suggested to the
 reader of the message when it is extacted.
+
+=item * eol =E<gt> 'CR'|'LF'|'CRLF'|'NATIVE'
+
+The one or two character string which is used as line-ending.  When C<checked>
+is set, all lines are expected to comply.  Otherwise, a call to C<check()>
+will check it.
 
 =item * file =E<gt> FILENAME|FILEHANDLE|IOHANDLE
 
@@ -390,6 +397,7 @@ sub init($)
 
     @$self{ qw/MMB_type MMB_transfer MMB_disposition/ }
         = ($mime, $transfer, $disp);
+    $self->{MMB_eol}   = $args->{eol} || 'NATIVE';
 
     # Set message where the body belongs to.
 
@@ -723,7 +731,7 @@ sub decoded(@)
 
 #------------------------------------------
 
-my @in_encode = qw/check encode encoded isBinary unify/;
+my @in_encode = qw/check encode encoded eol isBinary unify/;
 my %in_module = map { ($_ => 'encode') } @in_encode;
 
 sub AUTOLOAD(@)
@@ -840,7 +848,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.006.
+This code is beta, version 2.007.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox;
 use base 'Mail::Box';
 
-our $VERSION = 2.006;
+our $VERSION = 2.007;
 
 use Mail::Box::Mbox::Message;
 
@@ -105,6 +105,7 @@ description of Mbox specific options.
  folderdir           Mail::Box          $ENV{HOME}.'/Mail'
  head_wrap           Mail::Box          72
  extract             Mail::Box          10kb
+ keep_dups           Mail::Box          0
  lock_file           Mail::Box          foldername.lock-extension
  lock_extension      Mail::Box::Mbox    '.lock'
  lock_timeout        Mail::Box          1 hour
@@ -897,7 +898,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.006.
+This code is beta, version 2.007.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

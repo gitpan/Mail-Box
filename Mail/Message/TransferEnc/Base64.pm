@@ -5,7 +5,7 @@ use warnings;
 package Mail::Message::TransferEnc::Base64;
 use base 'Mail::Message::TransferEnc';
 
-our $VERSION = 2.006;
+our $VERSION = 2.007;
 
 =head1 NAME
 
@@ -84,7 +84,6 @@ sub name() { 'base64' }
 
 sub check($@)
 {   my ($self, $body, %args) = @_;
-    $body->checked(1);
     $body;
 }
 
@@ -110,7 +109,6 @@ sub decode($@)
 
     $bodytype->new
      ( based_on          => $body
-     , checked           => 0
      , transfer_encoding => 'none'
      , data              => $lines
      );
@@ -224,7 +222,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.006.
+This code is beta, version 2.007.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -36,3 +36,5 @@ Optional:
   guessBodySize in MH can be implemented without trigger
 
   Mail::Message::Body::Scalar can get nrlines from read()
+
+  fromBody with nested multiparts at once.

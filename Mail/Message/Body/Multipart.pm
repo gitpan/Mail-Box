@@ -7,7 +7,7 @@ use base 'Mail::Message::Body';
 use Mail::Message::Body::Lines;
 use Mail::Message::Part;
 
-our $VERSION = 2.006;
+our $VERSION = 2.007;
 
 use Carp;
 
@@ -46,24 +46,25 @@ when a message contains attachments (parts).
 
 The general methods for C<Mail::Message::Body::Multipart> objects:
 
-      attach MESSAGES|BODIES           MMB message [MESSAGE]
-      boundary [STRING]                MMB mimeType
- MMBE check                            MMB modified [BOOL]
-  MMB checked [BOOLEAN]                    new OPTIONS
- MMBC concatenate COMPONENTS           MMB nrLines
-  MMB decoded OPTIONS                      part INDEX
-  MMB disposition [STRING|FIELD]           parts
-      encode OPTIONS                       preamble
- MMBE encoded                          MMB print [FILE]
+      attach MESSAGES|BODIES            MR log [LEVEL [,STRINGS]]
+      boundary [STRING]                MMB message [MESSAGE]
+ MMBE check                            MMB mimeType
+  MMB checked [BOOLEAN]                MMB modified [BOOL]
+ MMBC concatenate COMPONENTS               new OPTIONS
+  MMB decoded OPTIONS                  MMB nrLines
+  MMB disposition [STRING|FIELD]           part INDEX
+ MMBE encode OPTIONS                       parts
+ MMBE encoded                              preamble
+ MMBE eol ['CR'|'LF'|'CRLF'|'NATI...   MMB print [FILE]
       epilogue                         MMB reply OPTIONS
    MR errors                            MR report [LEVEL]
   MMB file                              MR reportAll [LEVEL]
- MMBC foreachLine CODE                 MMB size
- MMBE isBinary                         MMB string
-  MMB isDelayed                            stripSignature OPTIONS
-  MMB isMultipart                       MR trace [LEVEL]
-  MMB lines                            MMB transferEncoding [STRING|FI...
-   MR log [LEVEL [,STRINGS]]           MMB type
+      foreachComponent CODE            MMB size
+ MMBC foreachLine CODE                 MMB string
+ MMBE isBinary                             stripSignature OPTIONS
+  MMB isDelayed                         MR trace [LEVEL]
+  MMB isMultipart                      MMB transferEncoding [STRING|FI...
+  MMB lines                            MMB type
 
 The extra methods for extension writers:
 
@@ -202,106 +203,88 @@ sub isMultipart() {1}
 # A multipart body is never binary itself.  The parts me be.
 sub isBinary() {0}
 
-
 #------------------------------------------
 
-=item encode OPTIONS
+=item foreachComponent CODE
 
-Encode the body.  An encode on a multipart body is recursive into each
-part.  New bodies will be created if any of the parts is encoded.
+Execute the CODE for each component of the message: the preamble, the
+epilogue, and each of the parts.
 
- OPTION            DESCRIBED IN         DEFAULT
- charset           Mail::Message::Body  undef
- mime_type         Mail::Message::Body  undef
- transfer_encoding Mail::Message::Body  undef
+Each component is a body and is passed as second argument to the CODE.
+The first argument is a reference to this multi-parted body.  The CODE
+returns a body object.  When any of the returned bodies differs from
+the body which was passed, then a new multi-part body will be returned.
+Reference to the not-changed bodies and the changed bodies will be
+included in that new multi-part.
+
+Example:
+
+ my $checked = $multi->foreachComponent(sub {$_[1]->check});
 
 =cut
 
-sub encode(@)
-{   my ($self, %args) = @_;
-
+sub foreachComponent($)
+{   my ($self, $code) = @_;
     my $changes  = 0;
 
-    my $encoded_preamble;
+    my $new_preamble;
     if(my $preamble = $self->preamble)
-    {   $encoded_preamble = $preamble->encode(%args);
-        $changes++ unless $preamble == $encoded_preamble;
+    {   $new_preamble = $code->($self, $preamble);
+        $changes++ unless $preamble == $new_preamble;
     }
 
-    my $encoded_epilogue;
+    my $new_epilogue;
     if(my $epilogue = $self->epilogue)
-    {   $encoded_epilogue = $epilogue->encode(%args);
-        $changes++ unless $epilogue == $encoded_epilogue;
+    {   $new_epilogue = $code->($self, $epilogue);
+        $changes++ unless $epilogue == $new_epilogue;
     }
 
-    my @encoded_bodies;
+    my @new_bodies;
     foreach my $part ($self->parts)
-    {   my $part_body    = $part->body;
-        my $encoded_body = $part_body->encode(%args);
+    {   my $part_body = $part->body;
+        my $new_body  = $code->($self, $part_body);
 
-        $changes++ if $encoded_body != $part_body;
-        push @encoded_bodies, [$part, $encoded_body];
+        $changes++ if $new_body != $part_body;
+        push @new_bodies, [$part, $new_body];
     }
 
     return $self unless $changes;
 
-    my @encoded_parts;
-    foreach (@encoded_bodies)
+    my @new_parts;
+    foreach (@new_bodies)
     {   my ($part, $body) = @$_;
-        my $encoded_part  = Mail::Message->new(head => $part->head->clone);
-        $encoded_part->body($body);
-        push @encoded_parts, $encoded_part;
+        my $new_part  = Mail::Message->new(head => $part->head->clone);
+        $new_part->body($body);
+        push @new_parts, $new_part;
     }
 
     (ref $self)->new
-      ( preamble => $encoded_preamble
-      , parts    => \@encoded_parts
-      , epilogue => $encoded_epilogue
-      , base_on  => $self
+      ( preamble => $new_preamble
+      , parts    => \@new_parts
+      , epilogue => $new_epilogue
+      , based_on => $self
       );
+}
+
+#------------------------------------------
+
+sub check()
+{   my $self = shift;
+    $self->foreachComponent( sub {$_[1]->check} );
+}
+
+#------------------------------------------
+
+sub encode(@)
+{   my ($self, %args) = @_;
+    $self->foreachComponent( sub {$_[1]->encode(%args)} );
 }
 
 #------------------------------------------
 
 sub encoded()
 {   my $self = shift;
-    my $changes = 0;
-
-    my $encoded_preamble;
-    if(my $preamble = $self->preamble)
-    {   $encoded_preamble = $preamble->encoded;
-        $changes++ unless $preamble == $encoded_preamble;
-    }
-
-    my $encoded_epilogue;
-    if(my $epilogue = $self->epilogue)
-    {   $encoded_epilogue = $epilogue->encoded;
-        $changes++ unless $epilogue == $encoded_epilogue;
-    }
-
-    my @encoded_bodies;
-    foreach my $part ($self->parts)
-    {   my $part_body    = $part->body;
-        my $encoded_body = $part_body->encoded;
-        $changes++ if $encoded_body != $part_body;
-    }
-
-    return $self unless $changes;
-
-    my @encoded_parts;
-    foreach (@encoded_bodies)
-    {   my ($part, $body) = @$_;
-        my $encoded_part  = ref($part)->new(head => $part->head->clone);
-        $encoded_part->body($body);
-        push @encoded_parts, $encoded_part;
-    }
-
-    ref($self)->new
-      ( preamble => $encoded_preamble
-      , parts    => \@encoded_parts
-      , epilogue => $encoded_epilogue
-      , based_on => $self
-      );
+    $self->foreachComponent( sub {$_[1]->encoded} );
 }
 
 #------------------------------------------
@@ -463,14 +446,13 @@ my $unique_boundary = time;
 sub boundary(;$)
 {   my $self      = shift;
     my $mime      = $self->type;
-    my $boundary  = $mime->attribute('boundary');
 
-    if(@_ || !defined $boundary)
-    {   $boundary = shift || "boundary-" . $unique_boundary++;
-        $self->type->attribute(boundary => $boundary);
-    }
+    return $self->type->attribute(boundary => shift) if @_;
 
-    $boundary;
+    my $boundary = $mime->attribute('boundary');
+    return $boundary if defined $boundary;
+
+    $self->type->attribute(boundary => "boundary-".$unique_boundary++);
 }
 
 #-------------------------------------------
@@ -611,7 +593,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.006.
+This code is beta, version 2.007.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

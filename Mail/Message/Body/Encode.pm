@@ -10,7 +10,7 @@ use Carp;
 use MIME::Types;
 my MIME::Types $mime_types;
 
-our $VERSION = 2.006;
+our $VERSION = 2.007;
 
 =head1 NAME
 
@@ -37,9 +37,16 @@ Manages the message's body encodings and decodings on request of the
 main program.  This package adds functionality to the C<Mail::Message::Body>
 class when the C<decoded> or C<encode> method is called.
 
-Three types of encodings are handled (in the right order)
+Four types of encodings are handled (in the right order)
 
 =over 4
+
+=item * eol encoding
+
+Various operating systems have different ideas about how to encode
+the line termination.  UNIX uses a LF character, MacOS a CR, and
+Windows a CR/LF combination.  Messages which are transported over
+Internet will always use the CRLF separator.
 
 =item * transfer encoding
 
@@ -62,7 +69,7 @@ manual page losts the transfer encodings which are supported.
 The general methods for C<Mail::Message::Body::Encode> objects:
 
       check                                encoded
-      encode OPTIONS                       isBinary
+      encode OPTIONS                       eol ['CR'|'LF'|'CRLF'|'NATI...
 
 The extra methods for extension writers:
 
@@ -84,19 +91,30 @@ conversions.
 
  OPTION            DESCRIBED IN         DEFAULT
  charset           Mail::Message::Body  undef
+ eol               Mail::Message::Body  <native>
  mime_type         Mail::Message::Body  undef
  result_type       Mail::Message::Body  <same as source>
  transfer_encoding Mail::Message::Body  undef
 
 =over 4
 
+=item * charset =E<gt> STRING
+
+=item * eol =E<gt> 'CR'|'LF'|'CRLF'|'NATIVE'
+
+Convert the message into having the specified string as line terminator
+for all lines in the body.  C<NATIVE> is used to represent the C<\n>
+on the current platform.
+
+BE WARNED that folders with a non-native encoding may appear on your
+platform, for instance in Windows folders handled from a UNIX system.
+The eol encoding has effect on the size of the body!
+
 =item * mime_type =E<gt> STRING|FIELD
 
 Convert into the specified mime type, which can be specified as STRING
 or FIELD.  The FIELD is a C<Mail::Message::Field>, and the STRING is
 converted in such object before use.
-
-=item * charset =E<gt> STRING
 
 =item * result_type =E<gt> CLASS
 
@@ -121,7 +139,8 @@ sub encode(@)
         unless ref $type_to;
 
     if(my $charset = delete $args{charset})
-    {   $type_to->attribute(charset => $charset);
+    {   # Charset conversions are ignored for now.
+        $type_to->attribute(charset => $charset);
     }
 
     my $transfer = $args{transfer_encoding} || $self->transferEncoding->clone;
@@ -188,12 +207,55 @@ defined, then C<undef> is returned.
 sub check()
 {   my $self     = shift;
     return $self if $self->checked;
+    my $eol      = $self->eol;
 
     my $encoding = $self->transferEncoding->body;
-    return $self if $encoding eq 'none';
+    return $self->eol($eol)
+       if $encoding eq 'none';
 
     my $encoder  = $self->getTransferEncHandler($encoding);
-    $encoder->check($self);
+
+    my $checked
+      = $encoder
+      ? $encoder->check($self)->eol($eol)
+      : $self->eol($eol);
+
+    $checked->checked(1);
+    $checked;
+}
+
+#------------------------------------------
+
+=item eol ['CR'|'LF'|'CRLF'|'NATIVE']
+
+Returns the character (or characters) which are used to separate lines
+within this body.
+
+=cut
+
+sub eol(;$)
+{   my $self = shift;
+    return $self->{MMB_eol} unless @_;
+
+    my $eol  = shift;
+    return $eol if $eol eq $self->{MMB_eol} && $self->checked;
+
+    my $lines = $self->lines;
+
+       if($eol eq 'NATIVE'){s/[\015\012]+$/\n/       foreach @$lines}
+    elsif($eol eq 'CR')    {s/[\015\012]+$/\015/     foreach @$lines}
+    elsif($eol eq 'LF')    {s/[\015\012]+$/\012/     foreach @$lines}
+    elsif($eol eq 'CRLF')  {s/[\015\012]+$/\015\012/ foreach @$lines}
+    else
+    {   carp "Unknown line terminator $eol ignored.";
+        return $self->eol('NATIVE');
+    }
+
+    (ref $self)->new
+      ( based_on => $self
+      , eol      => $eol
+      , data     => $lines
+      );
 }
 
 #------------------------------------------
@@ -374,7 +436,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.006.
+This code is beta, version 2.007.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

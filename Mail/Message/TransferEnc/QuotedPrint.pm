@@ -5,7 +5,7 @@ use warnings;
 package Mail::Message::TransferEnc::QuotedPrint;
 use base 'Mail::Message::TransferEnc';
 
-our $VERSION = 2.006;
+our $VERSION = 2.007;
 
 =head1 NAME
 
@@ -80,7 +80,6 @@ sub name() { 'quoted-printable' }
 
 sub check($@)
 {   my ($self, $body, %args) = @_;
-    $body->checked(1);
     $body;
 }
 
@@ -115,7 +114,6 @@ sub decode($@)
 
     $bodytype->new
      ( based_on          => $body
-     , checked           => 1
      , transfer_encoding => 'none'
      , data              => \@lines
      );
@@ -176,7 +174,6 @@ sub encode($@)
 
     $bodytype->new
      ( based_on          => $body
-     , checked           => 1
      , transfer_encoding => 'quoted-printable'
      , data              => \@lines
      );
@@ -208,7 +205,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.006.
+This code is beta, version 2.007.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
