@@ -349,7 +349,13 @@ is short (but little less flexibile) for
 
 =item B<size>  X<size>
 
-Returns the size of the whole message in bytes.
+Returns the size of the whole message in bytes.  This does assume that each
+line ending is represented by one character (like UNIX, MacOS, and sometimes
+Cygwin), and not two characters (like Windows and sometimes Cygwin).
+
+If you write the message to file on a system which uses CR and LF to end a
+single line (all Windows versions), the result in file will be nrLines() larger
+than this method returns.
 
 =item B<toplevel>  X<toplevel>
 
@@ -812,7 +818,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.029.
+This code is beta, version 2.031.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

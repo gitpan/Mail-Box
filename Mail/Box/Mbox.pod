@@ -45,7 +45,7 @@ what you can do with the Mbox folder object Mail::Box::Mbox.
  head_type            'Mail::Message::Head::Complete'
  keep_dups            <false>
  lock_extension       '.lock'
- lock_file            foldername.lock-extension
+ lock_file            <foldername>.<lock-extension>
  lock_timeout         1 hour
  lock_type            'Mail::Box::Locker::DotLock'
  lock_wait            10 seconds
@@ -159,9 +159,12 @@ See Mail::Box::new(remove_when_empty)
 
 See Mail::Box::new(save_on_exit)
 
-=item B<subfolder_extension> =E<gt> STRING
+=item B<subfolder_extension> =E<gt> STRING X<new(subfolder_extension)>
 
-See Mail::Box::File::new(subfolder_extension)
+Mbox folders do not support sub-folders.  However, this module can
+simulate sub-directories if the user wants it to.  When a subfolder of
+folder C<xyz> is created, we create a directory which is called C<xyz.d>
+to contain them.  This extension C<.d> can be changed using this option.
 
 =item B<trace> =E<gt> LEVEL
 
@@ -187,17 +190,51 @@ See Mail::Box::File::new(write_policy)
 
 See Mail::Box::clone()
 
-=item B<create> FOLDERNAME, OPTIONS
+=item B<create> FOLDERNAME, OPTIONS X<create>
 
-See Mail::Box::File::create()
+ OPTION               DEFAULT
+ folderdir            undef
+ subfolder_extension  undef
+
+=over 4
+
+=item B<folderdir> =E<gt> DIRECTORY
+
+See Mail::Box::create(folderdir)
+
+=item B<subfolder_extension> =E<gt> STRING X<create(subfolder_extension)>
+
+If a directory is found on the location of the folder to be created, this
+STRING is used to extend that directory name with.  This will cause the
+directory to be seen as sub-folder for the created folder.  This argument
+is passed to dirToSubfolder().
+
+=back
 
 =item B<folderdir> [DIRECTORY]
 
 See Mail::Box::folderdir()
 
-=item B<foundIn> [FOLDERNAME] [,OPTIONS]
+=item B<foundIn> [FOLDERNAME], [OPTIONS] X<foundIn>
 
-See Mail::Box::File::foundIn()
+If no FOLDERNAME is specified, then the C<folder> option is taken.
+
+ OPTION               DEFAULT
+ folder               undef
+ folderdir            undef
+ subfolder_extension  <from object>
+
+=over 4
+
+=item B<folder> =E<gt> FOLDERNAME X<foundIn(folder)>
+
+=item B<folderdir> =E<gt> DIRECTORY
+
+See Mail::Box::foundIn(folderdir)
+
+=item B<subfolder_extension> =E<gt> STRING X<foundIn(subfolder_extension)>
+
+=back
 
 =back
 
@@ -307,9 +344,43 @@ See Mail::Box::scanForMessages()
 
 =over 4
 
-=item B<listSubFolders> OPTIONS
+=item B<listSubFolders> OPTIONS X<listSubFolders>
 
-See Mail::Box::File::listSubFolders()
+ OPTION               DEFAULT
+ check                <false>
+ folder               <obligatory>
+ folderdir            <from folder>
+ skip_empty           <false>
+ subfolder_extension  <from object>
+
+=over 4
+
+=item B<check> =E<gt> BOOLEAN
+
+See Mail::Box::listSubFolders(check)
+
+=item B<folder> =E<gt> FOLDERNAME
+
+See Mail::Box::listSubFolders(folder)
+
+=item B<folderdir> =E<gt> DIRECTORY
+
+See Mail::Box::listSubFolders(folderdir)
+
+=item B<skip_empty> =E<gt> BOOL
+
+See Mail::Box::listSubFolders(skip_empty)
+
+=item B<subfolder_extension> =E<gt> STRING X<listSubFolders(subfolder_extension)>
+
+When the method is called on an open folder, the extension defined by it is
+used to detect sub-folders by default.  Otherwise, C<'.d'> is taken.
+
+=back
+
+=item B<nameOfSubfolder> NAME
+
+See Mail::Box::nameOfSubfolder()
 
 =item B<openRelatedFolder> OPTIONS
 
@@ -351,9 +422,18 @@ See Mail::Box::coerce()
 
 See Mail::Box::determineBodyType()
 
-=item B<folderToFilename> FOLDERNAME, FOLDERDIR, EXTENSION
+=item B<dirToSubfolder> DIRECTORY, EXTENSION X<dirToSubfolder>
 
-See Mail::Box::File::folderToFilename()
+The DIRECTORY is renamed by appending the EXTENSION, which defaults to C<".d">,
+to make place for a folder file on that specific location.  C<false> is
+returned if this failed.
+
+=item B<folderToFilename> FOLDERNAME, FOLDERDIR, [EXTENSION] X<folderToFilename>
+
+(Class or instance method)  Translate a folder name into a filename, using the
+FOLDERDIR value to replace a leading C<=>.  If no EXTENSION is specified and
+this method is called as instance method, new(subfolder_extension) is used.
+Otherwise, the extension default to C<'.d'>.
 
 =item B<lineSeparator> [STRING|'CR'|'LF'|'CRLF']
 
@@ -366,10 +446,6 @@ See Mail::Box::locker()
 =item B<parser> 
 
 See Mail::Box::File::parser()
-
-=item B<parserClose> 
-
-See Mail::Box::File::parserClose()
 
 =item B<read> OPTIONS
 
@@ -391,7 +467,7 @@ See Mail::Box::updateMessages()
 
 See Mail::Box::File::write()
 
-=item B<writeMessages> 
+=item B<writeMessages> OPTIONS
 
 See Mail::Box::writeMessages()
 
@@ -461,6 +537,41 @@ See Mail::Box::timespan2seconds()
 
 =back
 
+=head1 IMPLEMENTATION
+
+
+=head2 How MBOX folders work
+
+MBOX folders store many messages in one file.  Each message begins with a
+line which starts with the string C<From >.  Lines inside a message which
+accidentally start with C<From> are, in the file, preceded by `E<gt>'. This
+character is stripped when the message is read.
+
+In this respect must be noted that the format of the MBOX files is not
+strictly defined.  The exact content of the separator lines differ between
+Mail User Agents (MUA's).  Besides, some MUAs (like mutt) forget to encode
+the C<From > lines within message bodies, breaking other parsers....
+
+=head2 Simulation of sub-folders
+
+MBOX folders do not have a sub-folder concept as directory based folders
+do, but this MBOX module tries to simulate them.  In this implementation
+a directory like
+
+ Mail/subject1/
+
+is taken as an empty folder C<Mail/subject1>, with the folders in that
+directory as sub-folders for it.  You may also use
+
+ Mail/subject1
+ Mail/subject1.d/
+
+where C<Mail/subject1> is the folder, and the folders in the
+C<Mail/subject1.d> directory are used as sub-folders.  If your situation
+is similar to the first example and you want to put messages in that empty
+folder, the directory is automatically (and transparently) renamed, so
+that the second situation is reached.
+
 =head1 SEE ALSO
 
 A good start to read is Mail::Box-Overview.
@@ -474,7 +585,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.029.
+This code is beta, version 2.031.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

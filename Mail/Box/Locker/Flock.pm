@@ -1,13 +1,12 @@
 use strict;
 
 package Mail::Box::Locker::Flock;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Box::Locker';
 
-use Fcntl         qw/:DEFAULT :flock/;
 use IO::File;
+use Fcntl         qw/:DEFAULT :flock/;
 use Errno         qw/EAGAIN/;
-use FileHandle;
 
 sub name() {'FLOCK'}
 
@@ -32,9 +31,9 @@ sub lock()
 
     my $filename = $self->filename;
 
-    my $file   = FileHandle->new($filename, $lockfile_access_mode);
+    my $file   = IO::File->new($filename, $lockfile_access_mode);
     unless($file)
-    {   $self->log(ERROR => "Unable to open lockfile $filename");
+    {   $self->log(ERROR => "Unable to open lockfile $filename: $!");
         return 0;
     }
 
@@ -64,9 +63,9 @@ sub isLocked()
 {   my $self     = shift;
     my $filename = $self->filename;
 
-    my $file     = FileHandle->new($filename, $lockfile_access_mode);
+    my $file     = IO::File->new($filename, $lockfile_access_mode);
     unless($file)
-    {   $self->log(ERROR => "Unable to open lockfile $filename");
+    {   $self->log(ERROR => "Unable to open lockfile $filename: $!");
         return 0;
     }
 

@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::File::Message;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Box::Message';
 
 use POSIX 'SEEK_SET';
@@ -73,10 +73,6 @@ sub readFromParser($)
     $self->{MBMM_begin}     = $start;
 
     $self->SUPER::readFromParser($parser) or return;
-
-    $self->{MBMM_parser}    = $parser
-        if $self->isDelayed;
-
     $self;
 }
 
@@ -88,8 +84,9 @@ sub loadBody()
     my $body     = $self->body;
     return $body unless $body->isDelayed;
 
-    my $parser   = delete $self->{MBMM_parser};
     my ($begin, $end) = $body->fileLocation;
+
+    my $parser   = $self->folder->parser;
     $parser->filePosition($begin);
 
     my $newbody  = $self->readBody($parser, $self->head);

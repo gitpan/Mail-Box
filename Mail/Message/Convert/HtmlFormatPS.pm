@@ -2,12 +2,12 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::HtmlFormatPS;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Message::Convert';
 
 use Mail::Message::Body::String;
 
-use HTML::TreeBuilder 3.13;
+use HTML::TreeBuilder;
 use HTML::FormatText;
 
 sub init($)

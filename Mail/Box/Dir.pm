@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Dir;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 
 use base 'Mail::Box';
 
@@ -15,7 +15,6 @@ use Mail::Message::Head;
 use Mail::Message::Head::Delayed;
 
 use Carp;
-use FileHandle;
 use File::Copy;
 use File::Spec;
 use File::Basename;

@@ -2,64 +2,19 @@ use strict;
 use warnings;
 
 package Mail::Box::Parser::Perl;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Box::Parser';
 
 use Mail::Message::Field;
 use List::Util 'sum';
-use FileHandle;
+use IO::File;
 
 sub init(@)
 {   my ($self, $args) = @_;
-    $self->SUPER::init($args);
 
-    my $filename = $args->{filename};
-    my $file     = $args->{file};
-    $file        = FileHandle->new($filename, $self->{MBP_mode})
-        unless defined $file;
+    $self->SUPER::init($args) or return;
 
-    return unless $file;
-    eval { binmode $file, ':raw' };
-
-    $self->{MBPP_file}       = $file;
-    $self->{MBPP_filename}   = $filename          || ref $file;
-    $self->{MBPP_separator}  = $args->{separator} || undef;
-    $self->{MBPP_separators} = [];
-    $self->{MBPP_trusted}    = $args->{trusted};
-
-    # Prepare the first line.
-    $self->{MBPP_start_line} = 0;
-
-    my $line  = $file->getline || return $self;
-    $line     =~ s/[\012\015]+$/\n/;
-    $self->{MBP_linesep}     = $1;
-    $file->seek(0, 0);
-
-#   binmode $file, ':crlf' if $] < 5.007;  # problem with perlIO
-
-    $self->log(PROGRESS => "Opened folder from file $filename.");
-
-    $self;
-}
-
-sub start(@)
-{   my $self = shift;
-    $self->SUPER::start(trust_file => $self->{MBPP_trusted}, @_);
-}
-
-sub stop(@)
-{   my $self = shift;
-    $self->closeFile;
-    $self->SUPER::stop(@_);
-}
-
-sub closeFile()
-{   my $self = shift;
-    my $file = delete $self->{MBPP_file} or return;
-    $file->close;
-
-    delete $self->{MBPP_separators};
-    delete $self->{MBPP_strip_gt};
+    $self->{MBPP_trusted} = $args->{trusted};
     $self;
 }
 
@@ -99,7 +54,7 @@ LINE:
 
         unless(defined $body)
         {   $self->log(WARNING =>
-                "Unexpected end of header in $self->{MBPP_filename}:\n $line");
+                "Unexpected end of header in :".$self->filename.":\n $line");
 
             $file->seek(-length $line, 1);
             last LINE;
@@ -309,6 +264,40 @@ sub bodyDelayed(;$$)
     my ($end, $lines) = $self->_read_stripped_lines($exp_chars, $exp_lines);
     my $chars = sum(map {length} @$lines);
     ($begin, $end, $chars, scalar @$lines);
+}
+
+sub openFile($)
+{   my ($self, $args) = @_;
+    my $fh = $args->{file} || IO::File->new($args->{filename}, $args->{mode});
+
+    return unless $fh;
+    $self->{MBPP_file}       = $fh;
+
+    eval { binmode $fh, ':raw' };
+    $self->{MBPP_separators} = [];
+
+    # Prepare the first line.
+    $self->{MBPP_start_line} = 0;
+
+    my $line  = $fh->getline || return $self;
+
+    $line     =~ s/[\012\015]+$/\n/;
+    $self->{MBP_linesep}     = $1;
+    $fh->seek(0, 0);
+
+#   binmode $fh, ':crlf' if $] < 5.007;  # problem with perlIO
+    $self;
+}
+
+sub closeFile()
+{   my $self = shift;
+
+    delete $self->{MBPP_separators};
+    delete $self->{MBPP_strip_gt};
+
+    my $file = delete $self->{MBPP_file} or return;
+    $file->close;
+    $self;
 }
 
 1;

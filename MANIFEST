@@ -14,6 +14,10 @@ Mail/Box/File.pm
 Mail/Box/File.pod
 Mail/Box/File/Message.pm
 Mail/Box/File/Message.pod
+Mail/Box/IMAP4.pm
+Mail/Box/IMAP4.pod
+Mail/Box/IMAP4/Message.pm
+Mail/Box/IMAP4/Message.pod
 Mail/Box/Locker.pm
 Mail/Box/Locker.pod
 Mail/Box/Locker/DotLock.pm
@@ -62,6 +66,8 @@ Mail/Box/Search.pm
 Mail/Box/Search.pod
 Mail/Box/Search/Grep.pm
 Mail/Box/Search/Grep.pod
+Mail/Box/Search/IMAP.pm
+Mail/Box/Search/IMAP.pod
 Mail/Box/Search/SpamAssassin.pm
 Mail/Box/Search/SpamAssassin.pod
 Mail/Box/Thread/Manager.pm
@@ -149,6 +155,8 @@ Mail/Reporter.pm
 Mail/Reporter.pod
 Mail/Transport.pm
 Mail/Transport.pod
+Mail/Transport/IMAP4.pm
+Mail/Transport/IMAP4.pod
 Mail/Transport/Mailx.pm
 Mail/Transport/Mailx.pod
 Mail/Transport/POP3.pm

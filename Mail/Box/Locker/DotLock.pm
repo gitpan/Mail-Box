@@ -1,11 +1,28 @@
 use strict;
 
 package Mail::Box::Locker::DotLock;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Box::Locker';
 
 use IO::File;
 use Carp;
+use File::Spec;
+
+sub init($)
+{   my ($self, $args) = @_;
+
+    unless($args->{file})
+    {   my $folder = $self->folder;
+        my $org    = $folder->organization;
+
+        $args->{file}
+          = $org eq 'FILE'      ? $folder->filename . '.lock'
+          : $org eq 'DIRECTORY' ? File::Spec->catfile($folder->directory, '.lock')
+          : croak "Need lock file name for DotLock.";
+    }
+
+    $self->SUPER::init($args);
+}
 
 sub name() {'DOTLOCK'}
 
@@ -73,3 +90,4 @@ sub lock()
 sub isLocked() { -e shift->filename }
 
 1;
+

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -155,6 +155,43 @@ sub writable()  {shift->{MB_access} =~ /w|a/ }
 sub writeable() {shift->writable}  # compatibility [typo]
 sub readable()  {1}  # compatibility
 
+sub write(@)
+{   my ($self, %args) = @_;
+
+    unless($args{force} || $self->writable)
+    {   $self->log(ERROR => "Folder $self is opened read-only.\n");
+        return;
+    }
+
+    my (@keep, @destroy);
+    if($args{save_deleted}) {@keep = $self->messages }
+    else
+    {   foreach ($self->messages)
+        {   if($_->deleted)
+            {   push @destroy, $_;
+                $_->diskDelete;
+            }
+            else {push @keep, $_}
+        }
+    }
+
+    unless(@destroy || $self->modified)
+    {   $self->log(PROGRESS => "Folder $self not changed, so not updated.");
+        return $self;
+    }
+
+    $args{messages} = \@keep;
+    unless($self->writeMessages(\%args))
+    {   $self->log(WARNING => "Writing folder $self failed.");
+        return undef;
+    }
+
+    $self->modified(0);
+    $self->{MB_messages} = \@keep;
+
+    $self;
+}
+
 sub update(@)
 {   my $self = shift;
 
@@ -230,8 +267,7 @@ sub copyTo($@)
 
     my $select      = $args{select} || 'ACTIVE';
     my $subfolders  = exists $args{subfolders} ? $args{subfolders} : 1;
-    my $can_recurse
-       = $to->can('openSubFolder') ne Mail::Box->can('openSubFolder');
+    my $can_recurse = not $self->isa('Mail::Box::POP3');
 
     my ($flatten, $recurse)
        = $subfolders eq 'FLATTEN' ? (1, 0)
@@ -264,6 +300,7 @@ sub _copy_to($@)
     return $self unless $flatten || $recurse;
 
     # Take subfolders
+  SUBFOLDER:
     foreach ($self->listSubFolders)
     {   my $subfolder = $self->openSubFolder($_);
         $self->log(ERROR => "Unable to open subfolder $_"), return
@@ -278,9 +315,8 @@ sub _copy_to($@)
         else           # recurse
         {    my $subto = $to->openSubFolder($_, create => 1, access => 'rw');
              unless($subto)
-             {   $self->log(ERROR => "Unable to create subfolder $_ to $to");
-                 $subfolder->close;
-                 return;
+             {   $self->log(ERROR => "Unable to create subfolder $_ of $to");
+                 next SUBFOLDER;
              }
 
              unless($subfolder->_copy_to($subto, @options))
@@ -316,7 +352,7 @@ sub close(@)
     {   $write = $_ eq 'MODIFIED' ? $self->modified
                : $_ eq 'ALWAYS'   ? 1
                : $_ eq 'NEVER'    ? 0
-               : croak "Unknown value to write options: $_.";
+               : croak "Unknown value to folder->close(write => $_).";
     }
 
     if($write && !$force && !$self->writable)
@@ -326,11 +362,13 @@ Suggestion: \$folder->close(write => 'NEVER')");
         return 0;
     }
 
-    my $rc = 1;
-    if($write) { $rc = $self->write(force => $force) }
-    else       { $self->{MB_messages} = [] }
+    my $rc = !$write
+          || $self->write
+               ( force => $force
+               , save_deleted => $args{save_deleted} || 0
+               );
 
-    $self->{MB_locker}->unlock;
+    $self->{MB_messages} = [];   # Boom!
     $rc;
 }
 
@@ -516,9 +554,7 @@ sub scanForMessages($$$$)
     keys %search;
 }
 
-sub openSubFolder(@) {shift->notImplemented}
-
-sub listSubFolders(@) { () }
+sub listSubFolders(@) { () }   # by default no sub-folders
 
 sub openRelatedFolder(@)
 {   my $self    = shift;
@@ -527,6 +563,16 @@ sub openRelatedFolder(@)
     $self->{MB_manager}
     ?  $self->{MB_manager}->open(@options)
     :  (ref $self)->new(@options);
+}
+
+sub openSubFolder($@)
+{   my ($self, $name) = (shift, shift);
+    $self->openRelatedFolder(@_, folder => "$self/$name");
+}
+
+sub nameOfSubfolder($)
+{   my ($self, $name)= @_;
+    "$self/$name";
 }
 
 sub read(@)
@@ -604,50 +650,6 @@ sub lineSeparator(;$)
    $self->{MB_linesep} = $sep;
    $_->lineSeparator($sep) foreach $self->messages;
    $sep;
-}
-
-sub write(@)
-{   my ($self, %args) = @_;
-
-    unless($args{force} || $self->writable)
-    {   $self->log(ERROR => "Folder $self is opened read-only.\n");
-        return;
-    }
-
-    $args{save_deleted} = 1 if $args{keep_deleted};
-
-    my @messages = $self->messages;
-    my @keep;
-
-    foreach my $message (@messages)
-    {
-        unless($message->deleted)
-        {   push @keep, $message;
-            next;
-        }
-
-        $message->diskDelete
-            unless $args{save_deleted};
-
-        if($args{keep_deleted}) {push @keep, $message}
-        else
-        {   $message->head(undef);
-            $message->body(undef);
-        }
-    }
-
-    $self->{MB_messages} = \@keep;
-
-    if(@keep!=@messages || $self->modified)
-    {   $args{messages} = \@keep;
-        $self->writeMessages(\%args);
-        $self->modified(0);
-    }
-    else
-    {   $self->log(PROGRESS => "Folder $self not changed, so not updated.");
-    }
-
-    $self;
 }
 
 sub coerce($)

@@ -115,22 +115,24 @@ time takeFileInfo() was called.
 
 Returns the name of the file this parser is working on.
 
+=item B<restart>  X<restart>
+
+Restart the parser on a certain file, usually because the content has
+changed.
+
 =item B<start> OPTIONS X<start>
 
-Start the parser.  The parser is automatically started when the parser is
-created, however can be stopped (see stop()).  During the start,
-the file to be parsed will be opened.
+Start the parser by opening a file.
 
  OPTION               DEFAULT
- trust_file           <false>
+ file                 undef
 
 =over 4
 
-=item B<trust_file> =E<gt> BOOLEAN X<start(trust_file)>
+=item B<file> =E<gt> FILEHANDLE|undef X<start(file)>
 
-When we continue with the parsing of the folder, and the modification-time
-(on operating-systems which support that) or size changed, the parser
-will refuse to start, unless this option is true.
+The file is already open, for instance because the data must be read
+from STDIN.
 
 =back
 
@@ -242,6 +244,32 @@ separator.  A new separator is activated using the pushSeparator() method.
 
 =back
 
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<closeFile>  X<closeFile>
+
+Close the file which was being parsed.
+
+=item B<openFile> ARGS X<openFile>
+
+Open the file to be parsed.  ARGS is a ref-hash of options.
+
+ OPTION               DEFAULT
+ filename             <required>
+ mode                 <required>
+
+=over 4
+
+=item B<filename> =E<gt> FILENAME X<openFile(filename)>
+
+=item B<mode> =E<gt> STRING X<openFile(mode)>
+
+=back
+
+=back
+
 =head2 Logging and Tracing
 
 =over 4
@@ -319,7 +347,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.029.
+This code is beta, version 2.031.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Net;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 
 use base 'Mail::Box';
 
@@ -15,7 +15,6 @@ use Mail::Message::Head;
 use Mail::Message::Head::Delayed;
 
 use Carp;
-use FileHandle;
 use File::Copy;
 use File::Spec;
 use File::Basename;
@@ -26,6 +25,7 @@ sub init($)
     $args->{lock_type}  ||= 'NONE';
     $args->{body_type}  ||= 'Mail::Message::Body::Lines';
     $args->{folder}     ||= '/';
+    $args->{trusted}    ||= 0;
 
     $self->SUPER::init($args);
 
@@ -36,6 +36,10 @@ sub init($)
 
     $self;
 }
+
+sub create(@) {shift->notImplemented}
+
+sub folderdir(;$) { undef }
 
 sub organization() { 'REMOTE' }
 

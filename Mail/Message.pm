@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -14,6 +14,9 @@ use Mail::Message::Body::Nested;
 
 use Carp;
 use IO::ScalarArray;
+
+our $crlf_platform;
+BEGIN { $crlf_platform = $^O =~ m/win32|cygwin/i }
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -294,10 +297,14 @@ sub body(;$@)
     confess unless defined $head;
 
     $head->set($body->type);
-    $head->set('Content-Length' => $body->size)
-       unless $body->isMultipart;  # too slow
 
-    $head->set(Lines => $body->nrLines);
+    my $body_lines = $body->nrLines;
+    my $body_size  = $body->size;
+    $body_size    += $body_lines if $crlf_platform;
+
+    $head->set('Content-Length' => $body_size);
+    $head->set(Lines            => $body_lines);
+
     $head->set($body->transferEncoding);
     $head->set($body->disposition);
 

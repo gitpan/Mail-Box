@@ -34,6 +34,7 @@ work on platforms where no C compiler is available.
  log                  'WARNINGS'
  mode                 'r'
  trace                'WARNINGS'
+ trusted              <false>
 
 =over 4
 
@@ -57,6 +58,11 @@ See Mail::Box::Parser::new(mode)
 
 See Mail::Reporter::new(trace)
 
+=item B<trusted> =E<gt> BOOLEAN X<new(trusted)>
+
+Is the input from the file to be trusted, or does it require extra
+tests.  Related to Mail::Box::new(trusted).
+
 =back
 
 =back
@@ -64,8 +70,6 @@ See Mail::Reporter::new(trace)
 =head2 The Parser
 
 =over 4
-
-=item B<closeFile>  X<closeFile>
 
 =item B<defaultParserType> [CLASS]
 
@@ -78,6 +82,10 @@ See Mail::Box::Parser::fileChanged()
 =item B<filename> 
 
 See Mail::Box::Parser::filename()
+
+=item B<restart> 
+
+See Mail::Box::Parser::restart()
 
 =item B<start> OPTIONS
 
@@ -136,6 +144,20 @@ See Mail::Box::Parser::readHeader()
 =item B<readSeparator> OPTIONS
 
 See Mail::Box::Parser::readSeparator()
+
+=back
+
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<closeFile> 
+
+See Mail::Box::Parser::closeFile()
+
+=item B<openFile> ARGS
+
+See Mail::Box::Parser::openFile()
 
 =back
 
@@ -216,7 +238,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.029.
+This code is beta, version 2.031.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

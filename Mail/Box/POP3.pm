@@ -1,5 +1,5 @@
 package Mail::Box::POP3;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Box::Net';
 
 use strict;
@@ -16,7 +16,6 @@ use Carp;
 sub init($)
 {   my ($self, $args) = @_;
 
-    $args->{trusted}     ||= 0;
     $args->{server_port} ||= 110;
 
     $self->SUPER::init($args);
@@ -38,11 +37,25 @@ sub foundIn(@)
     || (exists $options{folder} && $options{folder} =~ m/^pop/);
 }
 
+sub addMessage($)
+{   my ($self, $message) = @_;
+
+    $self->log(ERROR => "You cannot write a message to a pop server (yet)")
+       if defined $message;
+
+    undef;
+}
+
+sub addMessages(@)
+{   my $self = shift;
+
+    $self->log(ERROR => "You cannot write messages to a pop server")
+        if @_;
+
+    ();
+}
+
 sub type() {'pop3'}
-
-sub listSubFolders(@) { () }     # no
-
-sub openSubFolder($@) { undef }  # fails
 
 sub close()
 {   my $self = shift;
@@ -52,6 +65,20 @@ sub close()
 
     $self->SUPER::close;
 }
+
+sub delete()
+{   my $self = shift;
+    $self->log(NOTICE => "You cannot delete a POP3 folder remotely.");
+
+    $_->deleted(1) foreach $self->messages;
+    $self;
+}
+
+sub listSubFolders(@) { () }     # no
+
+sub openSubFolder($@) { undef }  # fails
+
+sub update() {shift->notImplemented}
 
 sub popClient()
 {   my $self = shift;

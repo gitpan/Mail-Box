@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Tie::HASH;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 
 use Carp;
 

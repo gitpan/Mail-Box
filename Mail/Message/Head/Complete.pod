@@ -272,7 +272,7 @@ Examples:
  $head->print(\*OUT);
  $head->print;
 
- my $fh = FileHandle->new(...);
+ my $fh = IO::File->new(...);
  $head->print($fh);
 
 =item B<printUndisclosed> [FILEHANDLE] X<printUndisclosed>
@@ -295,7 +295,9 @@ C<Received> field.
 =item B<size>  X<size>
 
 Return the number of bytes needed to display this header (including
-the trailing newline).
+the trailing newline).  On systems which use CRLF as line separator,
+the number of lines in the header (see nlLines()) must be added to
+find the actual size in the file.
 
 =item B<timestamp>  X<timestamp>
 
@@ -445,7 +447,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.029.
+This code is beta, version 2.031.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

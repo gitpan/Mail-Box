@@ -1,0 +1,222 @@
+
+=head1 NAME
+
+
+Mail::Box::Search::IMAP - select messages within a IMAP folder
+
+=head1 CLASS INHERITANCE
+
+Mail::Box::Search::IMAP
+   is a Mail::Box::Search
+   is a Mail::Reporter
+
+=head1 SYNOPSIS
+
+
+ use Mail::Box::Manager;
+ my $mgr    = Mail::Box::Manager->new;
+ my $folder = $mgr->open('imap4:Inbox');
+
+ my $filter = Mail::Box::Search::IMAP->new
+    (  ...to be defined...
+    );
+
+ my @msgs   = $filter->search($folder);
+ if($filter->search($message)) {...}
+
+=head1 DESCRIPTION
+
+
+THIS PACKAGES IS NOT IMPLEMENTED YET: it waits for Mail::Transport::IMAP4
+to be available.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> OPTIONS X<new>
+
+ OPTION               DEFAULT
+ binaries             <false>
+ decode               <true>
+ delayed              <true>
+ deleted              <false>
+ deliver              undef
+ in                   'BODY;
+ label                undef
+ limit                0
+ log                  'WARNINGS'
+ logical              'REPLACE'
+ multiparts           <true>
+ trace                'WARNINGS'
+
+=over 4
+
+=item B<binaries> =E<gt> BOOLEAN
+
+See Mail::Box::Search::new(binaries)
+
+=item B<decode> =E<gt> BOOLEAN
+
+See Mail::Box::Search::new(decode)
+
+=item B<delayed> =E<gt> BOOLEAN
+
+See Mail::Box::Search::new(delayed)
+
+=item B<deleted> =E<gt> BOOLEAN
+
+See Mail::Box::Search::new(deleted)
+
+=item B<deliver> =E<gt> undef|CODE|'DELETE'
+
+See Mail::Box::Search::new(deliver)
+
+=item B<in> =E<gt> 'HEAD'|'BODY'|'MESSAGE'
+
+See Mail::Box::Search::new(in)
+
+=item B<label> =E<gt> STRING
+
+See Mail::Box::Search::new(label)
+
+=item B<limit> =E<gt> NUMBER
+
+See Mail::Box::Search::new(limit)
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<logical> =E<gt> 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT'
+
+See Mail::Box::Search::new(logical)
+
+=item B<multiparts> =E<gt> BOOLEAN
+
+See Mail::Box::Search::new(multiparts)
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=back
+
+=back
+
+=head2 Searching
+
+=over 4
+
+=item B<inBody> PART, BODY
+
+See Mail::Box::Search::inBody()
+
+=item B<inHead> PART, HEAD
+
+See Mail::Box::Search::inHead()
+
+=item B<search> FOLDER|THREAD|MESSAGE|ARRAY-OF-MESSAGES
+
+See Mail::Box::Search::search()
+
+=item B<searchPart> PART
+
+See Mail::Box::Search::searchPart()
+
+=back
+
+=head2 The Results
+
+=over 4
+
+=item B<printMatch> [FILEHANDLE], HASH
+
+See Mail::Box::Search::printMatch()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<defaultTrace> [LEVEL, [LEVEL]
+
+See Mail::Reporter::defaultTrace()
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
+with the help of many.  See the ChangeLog for details.
+
+=head1 VERSION
+
+This code is beta, version 2.031.
+
+Copyright (c) 2001-2002 by the authors. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

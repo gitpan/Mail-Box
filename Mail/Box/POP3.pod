@@ -48,15 +48,15 @@ pop-server and server-port.
  create               <false>
  extract              10240
  field_type           undef
- folder               <username@server_name>
- folderdir            undef
+ folder               '/'
+ folderdir            <not used>
  head_delayed_type    'Mail::Message::Head::Delayed'
  head_type            'Mail::Message::Head::Complete'
  keep_dups            <false>
- lock_file            <not used>
- lock_timeout         <not used>
+ lock_file            undef
+ lock_timeout         1 hour
  lock_type            'NONE'
- lock_wait            <not used>
+ lock_wait            10 seconds
  locker               undef
  log                  'WARNINGS'
  manager              undef
@@ -69,7 +69,7 @@ pop-server and server-port.
  server_name          undef
  server_port          110
  trace                'WARNINGS'
- trusted              <depends on folder location>
+ trusted              <false>
  username             undef
 
 =over 4
@@ -222,13 +222,25 @@ Examples:
 
 See Mail::Box::clone()
 
-=item B<create> FOLDERNAME, OPTIONS
+=item B<create> FOLDER, OPTIONS X<create>
 
-See Mail::Box::create()
+It is not possible to create a new folder on a POP3 server.  This method
+will always return C<false>.
+
+ OPTION               DEFAULT
+ folderdir            <not used>
+
+=over 4
+
+=item B<folderdir> =E<gt> DIRECTORY
+
+See Mail::Box::create(folderdir)
+
+=back
 
 =item B<folderdir> [DIRECTORY]
 
-See Mail::Box::folderdir()
+See Mail::Box::Net::folderdir()
 
 =item B<foundIn> [FOLDERNAME], OPTIONS
 
@@ -240,13 +252,19 @@ See Mail::Box::foundIn()
 
 =over 4
 
-=item B<addMessage> MESSAGE
+=item B<addMessage> MESSAGE X<addMessage>
 
-See Mail::Box::addMessage()
+It is impossible to write messages to the average POP3 server.  There are
+extensions to the protocol which do permit it, however these are not
+implemented (yet, patches welcome).
 
-=item B<addMessages> MESSAGE [, MESSAGE, ...]
+C<undef> is returned, and an error displayed.  However, no complaint is
+given when the MESSAGE is C<undef> itself.
 
-See Mail::Box::addMessages()
+=item B<addMessages> MESSAGES X<addMessages>
+
+As useless as addMessage().  The only acceptable call to this method
+is without any message.
 
 =item B<copyTo> FOLDER, OPTIONS
 
@@ -268,10 +286,6 @@ See Mail::Box::organization()
 
 See Mail::Box::type()
 
-=item B<update> OPTIONS
-
-See Mail::Box::update()
-
 =item B<url> 
 
 See Mail::Box::url()
@@ -279,6 +293,10 @@ See Mail::Box::url()
 =item B<writable> 
 
 See Mail::Box::writable()
+
+=item B<write> OPTIONS
+
+See Mail::Box::write()
 
 =back
 
@@ -294,9 +312,11 @@ See Mail::Box::DESTROY()
 
 See Mail::Box::close()
 
-=item B<delete> 
+=item B<delete>  X<delete>
 
-See Mail::Box::delete()
+It is not possible to delete a POP3 folder remotely: the best we can do
+is remove all the messages in it... which is the action implemented here.
+A notice is logged about this.
 
 =back
 
@@ -342,6 +362,10 @@ See Mail::Box::scanForMessages()
 
 See Mail::Box::listSubFolders()
 
+=item B<nameOfSubfolder> NAME
+
+See Mail::Box::nameOfSubfolder()
+
 =item B<openRelatedFolder> OPTIONS
 
 See Mail::Box::openRelatedFolder()
@@ -349,6 +373,10 @@ See Mail::Box::openRelatedFolder()
 =item B<openSubFolder> NAME, OPTIONS
 
 See Mail::Box::openSubFolder()
+
+=item B<update>  X<update>
+
+NOT IMPLEMENTED YET
 
 =back
 
@@ -418,11 +446,7 @@ See Mail::Box::storeMessage()
 
 See Mail::Box::updateMessages()
 
-=item B<write> OPTIONS
-
-See Mail::Box::write()
-
-=item B<writeMessages> 
+=item B<writeMessages> OPTIONS
 
 See Mail::Box::writeMessages()
 
@@ -492,13 +516,6 @@ See Mail::Box::timespan2seconds()
 
 =back
 
-=head1 IMPLEMENTATION
-
-
-=head2 How POP3-folders work
-
-=head2 This implementation
-
 =head1 SEE ALSO
 
 A good start to read is Mail::Box-Overview.
@@ -512,7 +529,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.029.
+This code is beta, version 2.031.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

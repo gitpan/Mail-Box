@@ -1,12 +1,12 @@
 use strict;
 
 package Mail::Box::MH::Labels;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Subset;
 
-use FileHandle;
+use IO::File;
 use File::Copy;
 use Carp;
 
@@ -73,7 +73,7 @@ sub write(@)
         return $self;
     }
 
-    my $out      = FileHandle->new($filename, 'w') or return;
+    my $out = IO::File->new($filename, 'w') or return;
     $self->print($out, @_);
     $out->close;
     $self;
@@ -83,7 +83,7 @@ sub append(@)
 {   my $self     = shift;
     my $filename = $self->filename;
 
-    my $out      = FileHandle->new($filename, 'a') or return;
+    my $out      = IO::File->new($filename, 'a') or return;
     $self->print($out, @_);
     $out->close;
     $self;

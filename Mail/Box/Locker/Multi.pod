@@ -94,10 +94,6 @@ not be excluded from the default list (NFS POSIX Flock).
 
 See Mail::Box::Locker::DESTROY()
 
-=item B<filename> 
-
-See Mail::Box::Locker::filename()
-
 =item B<lockers>  X<lockers>
 
 Returns a list with all locker objects used by this object.
@@ -111,6 +107,14 @@ See Mail::Box::Locker::name()
 =head2 Locking
 
 =over 4
+
+=item B<filename> 
+
+See Mail::Box::Locker::filename()
+
+=item B<folder> 
+
+See Mail::Box::Locker::folder()
 
 =item B<hasLock> 
 
@@ -203,7 +207,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.029.
+This code is beta, version 2.031.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

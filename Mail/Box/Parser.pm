@@ -2,38 +2,33 @@ use strict;
 use warnings;
 
 package Mail::Box::Parser;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Reporter';
 use Carp;
 
 sub new(@)
-{   my $class       = shift;
+{   my $class = shift;
 
-    return $class->defaultParserType->new(@_)   # bootstrap right parser
-        if $class eq __PACKAGE__;
-
-    my $self = $class->SUPER::new(@_) or return;
-    $self->start;     # new includes init.
+    $class eq __PACKAGE__
+    ? $class->defaultParserType->new(@_)   # bootstrap right parser
+    : $class->SUPER::new(@_);
 }
 
 sub init(@)
 {   my ($self, $args) = @_;
 
-    $args->{trace} ||= 'WARNING';
+    $args->{trace}  ||= 'WARNING';
 
     $self->SUPER::init($args);
 
-    $self->{MBP_separator} = $args->{separator} || '';
-    $self->{MBP_mode}      = $args->{mode}      || 'r';
+    $self->{MBP_mode} = $args->{mode} || 'r';
 
-    my $filename =
-    $self->{MBP_filename}  = $args->{filename}
-        or confess "Filename obligatory to create a parser.";
+    unless($self->{MBP_filename} = $args->{filename} || ref $args->{file})
+    {    $self->log(ERROR => "Filename or handle required to create a parser.");
+         return;
+    }
 
-    $self->takeFileInfo;
-    $self->log(NOTICE => "Created parser for $filename");
-
-    $self;
+    $self->start(file => $args->{file});
 }
 
 my $parser_type;
@@ -65,42 +60,52 @@ sub defaultParserType(;$)
 }
 
 sub start(@)
-{   my ($self, %args) = @_;
+{   my $self = shift;
+    my %args = (@_, filename => $self->filename, mode => $self->{MBP_mode});
 
-    my $filename = $self->filename;
+    $self->openFile(\%args)
+        or return;
 
-    unless($args{trust_file})
-    {   if($self->fileChanged)
-        {   $self->log(ERROR => "File $filename changed, refuse to continue.");
-            return;
-        }
-    }
+    $self->takeFileInfo;
 
-    $self->log(NOTICE => "Open file $filename to be parsed");
+    $self->log(PROGRESS => "Opened folder $args{filename} to be parsed");
     $self;
 }
 
 sub stop()
 {   my $self     = shift;
+
     my $filename = $self->filename;
 
     $self->log(WARNING => "File $filename changed during access.")
        if $self->fileChanged;
 
-    $self->log(NOTICE => "Close parser for file $filename");
+    $self->log(NOTICE  => "Close parser for file $filename");
+    $self->closeFile;
+}
+
+sub restart()
+{   my $self     = shift;
+    my $filename = $self->filename;
+
+    $self->closeFile or return;
+
+    $self->openFile( {filename => $filename, mode => $self->{MBP_mode}} )
+        or return;
+
+    $self->takeFileInfo;
+    $self->log(NOTICE  => "Restarted parser for file $filename");
     $self;
 }
 
 sub takeFileInfo()
 {   my $self     = shift;
-    my $filename = $self->filename;
-    @$self{ qw/MBP_size MBP_mtime/ } = (stat $filename)[7,9];
+    @$self{ qw/MBP_size MBP_mtime/ } = (stat $self->filename)[7,9];
 }
 
 sub fileChanged()
 {   my $self = shift;
-    my $filename       = $self->filename;
-    my ($size, $mtime) = (stat $filename)[7,9];
+    my ($size, $mtime) = (stat $self->filename)[7,9];
     return 0 unless $size;
 
       $size != $self->{MBP_size} ? 0
@@ -129,6 +134,10 @@ sub bodyAsFile() {shift->notImplemented}
 sub bodyDelayed() {shift->notImplemented}
 
 sub lineSeparator() {shift->{MBP_linesep}}
+
+sub openFile(@) {shift->notImplemented}
+
+sub closeFile(@) {shift->notImplemented}
 
 sub DESTROY
 {   my $self = shift;

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Delayed;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Object::Realize::Later

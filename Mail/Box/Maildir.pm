@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Maildir;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
@@ -93,9 +93,8 @@ sub listSubFolders(@)
 
 sub openSubFolder($@)
 {   my ($self, $name) = (shift, shift);
-    my $dir = $self->directory . '/' . $name;
     $self->createDirs(File::Spec->catfile($self->directory, $name));
-    $self->openRelatedFolder(@_, folder => $dir);
+    $self->SUPER::openSubFolder($name, @_);
 }
 
 my $uniq = rand 1000;
@@ -291,7 +290,7 @@ sub writeMessages($)
         my $basename = (File::Spec->splitpath($filename))[2];
 
         my $newtmp   = File::Spec->catfile($directory, 'tmp', $basename);
-        my $new      = FileHandle->new($newtmp, 'w')
+        my $new      = IO::File->new($newtmp, 'w')
            or croak "Cannot create file $newtmp: $!";
 
         $message->labelsToStatus;  # just for fun

@@ -44,6 +44,10 @@ the useful Mail::SpamAssassin module (which must be installed separately).
 Each message which is searched is wrapped in a
 Mail::Message::Wrapper::SpamAssassin object.
 
+The spam-assassin module version 2 is not really well adapted for
+Mail::Message objects, which will make this search even slower than
+spam-detection already is.
+
 =head1 METHODS
 
 =head2 Initiation
@@ -268,7 +272,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.029.
+This code is beta, version 2.031.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

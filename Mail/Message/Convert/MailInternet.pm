@@ -2,11 +2,12 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::MailInternet;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Message::Convert';
 
 use Mail::Internet;
 use Mail::Header;
+use Mail::Message;
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
 

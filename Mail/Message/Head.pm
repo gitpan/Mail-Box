@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Head;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Complete;
@@ -10,7 +10,6 @@ use Mail::Message::Field::Fast;
 
 use Carp;
 use Scalar::Util 'weaken';
-use FileHandle;
 
 use overload qq("") => 'string_unless_carp'
            , bool   => 'isEmpty';

@@ -578,6 +578,40 @@ Examples:
 
  $folder->addMessage($msg) if $folder->writable;
 
+=item B<write> OPTIONS X<write>
+
+Write the data to disk.  The folder (a C<true> value) is returned if
+successful.  Deleted messages are transformed into destroyed messages:
+their memory is freed.
+
+WARNING: When moving messages from one folder to another, be sure to write
+(or close()) the destination folder before writing (or closing) the source
+folder: otherwise you may lose data if the system crashes or if there are
+software problems.
+
+To write a folder to a different file, you must first create
+a new folder, then move all the messages, and then write or close() that
+new folder.
+
+ OPTION               DEFAULT
+ force                <false>
+ save_deleted         <false>
+
+=over 4
+
+=item B<force> =E<gt> BOOLEAN X<write(force)>
+
+Override write-protection by the C<access> option while opening the folder
+(whenever possible, it may still be blocked by the operating system).
+
+=item B<save_deleted> =E<gt> BOOLEAN X<write(save_deleted)>
+
+Do also write messages which where flagged to be deleted to their folder.  The
+flag for deletion is conserved (when possible), which means that a re-open of
+the folder may remove the messages for real.  See close(save_deleted).
+
+=back
+
 =back
 
 =head2 Closing the folder
@@ -591,8 +625,9 @@ by the rest of the program.
 
 =item B<close> OPTIONS X<close>
 
-lose the folder, optionally writing it. C<close> takes the same options as
-write(), as well as a few others:
+Close the folder, which usually implies writing the changes.  This will
+return C<false> when writing is required but fails.  Please do check this
+result.
 
 WARNING: When moving messages from one folder to another, be sure to write the
 destination folder before writing and closing the source folder.  Otherwise
@@ -600,6 +635,7 @@ you may lose data if the system crashes or if there are software problems.
 
  OPTION               DEFAULT
  force                <false>
+ save_deleted         C<false>
  write                'MODIFIED'
 
 =over 4
@@ -611,6 +647,12 @@ option only has an effect if its value is TRUE. NOTE: Writing to the folder
 may not be permitted by the operating system, in which case even C<force> will
 not help.
 
+=item B<save_deleted> =E<gt> BOOLEAN X<close(save_deleted)>
+
+Do also write messages which where flagged to be deleted to their folder.  The
+flag for deletion is conserved (when possible), which means that a re-open of
+the folder may remove the messages for real.  See write(save_deleted).
+
 =item B<write> =E<gt> 'ALWAYS'|'NEVER'|'MODIFIED' X<close(write)>
 
 Specifies whether the folder should be written.  As could be expected,
@@ -619,6 +661,17 @@ changes to the folder will be lost, and C<'MODIFIED'>
 only saves the folder if there are any changes.
 
 =back
+
+Examples:
+
+ my $f = $mgr->open('spam', access => 'rw')
+     or die "Cannot open spam: $!\n";
+
+ $f->message(0)->delete
+     if $f->messages;
+
+ $f->close
+     or die "Couldn't write $f: $!\n";
 
 =item B<delete>  X<delete>
 
@@ -771,9 +824,11 @@ not found: check that first.
 =item B<listSubFolders> OPTIONS X<listSubFolders>
 
 (Class and Instance method)
-List the names of all sub-folders to this folder.  Use these names
-in openSubFolder(), to open these folders on a mailbox type way.
-For Mbox-folders, sub-folders are simulated.
+List the names of all sub-folders to this folder, not recursively
+decending.  Use these names as argument to openSubFolder(), to get
+access to that folder.
+
+For MBOX folders, sub-folders are simulated.
 
  OPTION               DEFAULT
  check                <false>
@@ -785,9 +840,9 @@ For Mbox-folders, sub-folders are simulated.
 
 =item B<check> =E<gt> BOOLEAN X<listSubFolders(check)>
 
-Specifies whether empty folders (folders which currently do not contain any
-messages) should be included. It may not be useful to open empty folders, but 
-saving to them is useful.
+Should all returned foldernames be checked to be sure that they are of
+the right type?  Each sub-folder may need to be opened to check this,
+with a folder type dependent penalty (in some cases very expensive).
 
 =item B<folder> =E<gt> FOLDERNAME X<listSubFolders(folder)>
 
@@ -810,6 +865,11 @@ Examples:
 
  my @subs = Mail::Box::Mbox->listSubFolders(folder => '=in/new');
  my @subs = Mail::Box::Mbox->listSubFolders; # toplevel folders.
+
+=item B<nameOfSubfolder> NAME X<nameOfSubfolder>
+
+Returns the constructed name of the folder with NAME, which is a sub-folder
+of this current one.
 
 =item B<openRelatedFolder> OPTIONS X<openRelatedFolder>
 
@@ -969,45 +1029,24 @@ new messages arrive.  These collisions are sparse.
 
 The options are the same as for readMessages().
 
-=item B<write> OPTIONS X<write>
+=item B<writeMessages> OPTIONS X<writeMessages>
 
-Write the data to disk.  The folder is returned if successful. To write to a
-different file, you must first create a new folder, then move the messages,
-and then write the folder.
-
-WARNING: When moving messages from one folder to another, be sure to write the
-destination folder before writing and closing the source folder.  Otherwise
-you may lose data if the system crashes or if there are software problems.
+Called by write() to actually write the messages from one specific
+folder type.  The C<write> organizes the general activities.  All options
+to C<write> are passed to writeMessages as well.  Besides, a few extra
+are added by C<write>.
 
  OPTION               DEFAULT
- force                <false>
- keep_deleted         <false>
- save_deleted         <false>
+ messages             <required>
 
 =over 4
 
-=item B<force> =E<gt> BOOLEAN X<write(force)>
+=item B<messages> =E<gt> ARRAY X<writeMessages(messages)>
 
-Override write-protection by the C<access> option while opening the folder
-(whenever possible, it may still be blocked by the operating system).
-
-=item B<keep_deleted> =E<gt> BOOLEAN X<write(keep_deleted)>
-
-Do not remove messages which were flagged to be deleted from the folder
-from memory, but do remove them from disk.
-
-=item B<save_deleted> =E<gt> BOOLEAN X<write(save_deleted)>
-
-Do also write messages which where flagged to be deleted to their folder.  The
-flag is conserved (when possible), which means that the next write may
-remove them for real.
+The messages to be written, which is a sub-set of all messages in the
+current folder.
 
 =back
-
-=item B<writeMessages>  X<writeMessages>
-
-Called by write() to actually write the messages from one specific
-folder type.  The C<write> organizes the general activities.
 
 =back
 
@@ -1090,7 +1129,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.029.
+This code is beta, version 2.031.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

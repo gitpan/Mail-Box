@@ -11,6 +11,7 @@ Mail::Box::Net
    is a Mail::Reporter
 
 Mail::Box::Net is extended by
+   Mail::Box::IMAP4
    Mail::Box::POP3
 
 =head1 SYNOPSIS
@@ -21,14 +22,15 @@ Mail::Box::Net is extended by
 =head1 DESCRIPTION
 
 
-This documentation describes how directory organized mailboxes work.
-Please read C<Mail::Box-Overview> first.
-
 At the moment, this object is extended by
 
 =over 4
 
-=item * POP3
+=item * Mail::Box::POP3
+
+=item * Mail::Box::IMAP4
+
+UNDER DEVELOPMENT
 
 =back
 
@@ -48,15 +50,15 @@ At the moment, this object is extended by
  create               <false>
  extract              10240
  field_type           undef
- folder               <username@server_name>
- folderdir            undef
+ folder               '/'
+ folderdir            <not used>
  head_delayed_type    'Mail::Message::Head::Delayed'
  head_type            'Mail::Message::Head::Complete'
  keep_dups            <false>
- lock_file            <not used>
- lock_timeout         <not used>
+ lock_file            undef
+ lock_timeout         1 hour
  lock_type            'NONE'
- lock_wait            <not used>
+ lock_wait            10 seconds
  locker               undef
  log                  'WARNINGS'
  manager              undef
@@ -68,7 +70,7 @@ At the moment, this object is extended by
  server_name          undef
  server_port          undef
  trace                'WARNINGS'
- trusted              <depends on folder location>
+ trusted              <false>
  username             undef
 
 =over 4
@@ -201,13 +203,25 @@ The username which is to be used for the remote server.
 
 See Mail::Box::clone()
 
-=item B<create> FOLDERNAME, OPTIONS
+=item B<create> FOLDER, OPTIONS X<create>
 
-See Mail::Box::create()
+Create a new folder on the remote server.
 
-=item B<folderdir> [DIRECTORY]
+ OPTION               DEFAULT
+ folderdir            <not used>
 
-See Mail::Box::folderdir()
+=over 4
+
+=item B<folderdir> =E<gt> DIRECTORY
+
+See Mail::Box::create(folderdir)
+
+=back
+
+=item B<folderdir> [DIRECTORY] X<folderdir>
+
+Not applicatable for folders on a remote server, so will always return
+the C<undef>.
 
 =item B<foundIn> [FOLDERNAME], OPTIONS
 
@@ -258,6 +272,10 @@ See Mail::Box::url()
 =item B<writable> 
 
 See Mail::Box::writable()
+
+=item B<write> OPTIONS
+
+See Mail::Box::write()
 
 =back
 
@@ -320,6 +338,10 @@ See Mail::Box::scanForMessages()
 =item B<listSubFolders> OPTIONS
 
 See Mail::Box::listSubFolders()
+
+=item B<nameOfSubfolder> NAME
+
+See Mail::Box::nameOfSubfolder()
 
 =item B<openRelatedFolder> OPTIONS
 
@@ -385,11 +407,7 @@ See Mail::Box::storeMessage()
 
 See Mail::Box::updateMessages()
 
-=item B<write> OPTIONS
-
-See Mail::Box::write()
-
-=item B<writeMessages> 
+=item B<writeMessages> OPTIONS
 
 See Mail::Box::writeMessages()
 
@@ -472,7 +490,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.029.
+This code is beta, version 2.031.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

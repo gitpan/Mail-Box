@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Box::Locker;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -50,7 +50,7 @@ sub init($)
 
     $self->{MBL_expires}  = $args->{expires}   || 3600;  # one hour
     $self->{MBL_timeout}  = $args->{timeout}   || 10;    # ten secs
-    $self->{MBL_filename} = $args->{file};
+    $self->{MBL_filename} = $args->{file}      || $args->{folder}->name;
     $self->{MBL_has_lock} = 0;
 
     $self;
@@ -60,18 +60,6 @@ sub name {shift->notImplemented}
 
 sub lockMethod($$$$)
 {   confess "Method removed: use inheritance to implement own method."
-}
-
-sub filename($)
-{   my $self   = shift;
-    return $self->{MBL_filename} if defined $self->{MBL_filename};
-
-    my $folder = $self->{MBL_folder};
-    my $org    = $folder->organization;
-    $self->{MBL_filename}
-        = $org eq 'FILE'      ? $folder->filename . '.lock'
-        : $org eq 'DIRECTORY' ? File::Spec->catfile($folder->directory, '.lock')
-        : croak "Need lock-file name.";
 }
 
 sub DESTROY()
@@ -92,5 +80,9 @@ sub hasLock() {shift->{MBL_has_lock} }
 # after the folder has been removed.
 
 sub unlock() { shift->{MBL_has_lock} = 0 }
+
+sub folder() {shift->{MBL_folder}}
+
+sub filename() { shift->{MBL_filename} }
 
 1;

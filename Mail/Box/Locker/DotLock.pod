@@ -31,7 +31,7 @@ same name as the folder, extended by C<.lock>.
 
  OPTION               DEFAULT
  expires              1 hour
- file                 undef
+ file                 <folderfile>.lock
  folder               <obligatory>
  log                  'WARNINGS'
  method               'DOTLOCK'
@@ -44,9 +44,10 @@ same name as the folder, extended by C<.lock>.
 
 See Mail::Box::Locker::new(expires)
 
-=item B<file> =E<gt> FILENAME
+=item B<file> =E<gt> FILENAME X<new(file)>
 
-See Mail::Box::Locker::new(file)
+Name of the file to lock.  By default, the folder's name is extended with
+C<.lock>.
 
 =item B<folder> =E<gt> FOLDER
 
@@ -80,10 +81,6 @@ See Mail::Reporter::new(trace)
 
 See Mail::Box::Locker::DESTROY()
 
-=item B<filename> 
-
-See Mail::Box::Locker::filename()
-
 =item B<name> 
 
 See Mail::Box::Locker::name()
@@ -93,6 +90,14 @@ See Mail::Box::Locker::name()
 =head2 Locking
 
 =over 4
+
+=item B<filename> 
+
+See Mail::Box::Locker::filename()
+
+=item B<folder> 
+
+See Mail::Box::Locker::folder()
 
 =item B<hasLock> 
 
@@ -185,7 +190,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.029.
+This code is beta, version 2.031.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

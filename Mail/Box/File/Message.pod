@@ -208,7 +208,7 @@ See Mail::Message::parent()
 
 Write one message to a file handle.  Unmodified messages are taken
 from the folder-file where they were stored.  Modified messages
-are written to memory.  Specify a FILEHANDLE to write to
+are written from memory.  Specify a FILEHANDLE to write to
 (defaults to the selected handle).
 
 =item B<send> [MAILER], OPTIONS
@@ -514,7 +514,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.029.
+This code is beta, version 2.031.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -1,13 +1,12 @@
 use strict;
 
 package Mail::Box::Locker::POSIX;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Box::Locker';
 
 use POSIX;
 use Fcntl;
 use IO::File;
-use FileHandle;
 
 sub name() {'POSIX'}
 
@@ -30,9 +29,9 @@ sub lock()
 
     my $filename = $self->filename;
 
-    my $file   = FileHandle->new($filename, 'r+');
+    my $file   = IO::File->new($filename, 'r+');
     unless(defined $file)
-    {   $self->log(ERROR => "Unable to open lockfile $filename");
+    {   $self->log(ERROR => "Unable to open lockfile $filename: $!");
         return 0;
     }
 
@@ -62,9 +61,9 @@ sub isLocked()
 {   my $self     = shift;
     my $filename = $self->filename;
 
-    my $file     = FileHandle->new($filename, "r");
+    my $file     = IO::File->new($filename, "r");
     unless($file)
-    {   $self->log(ERROR => "Unable to open lockfile $filename");
+    {   $self->log(ERROR => "Unable to open lockfile $filename: $!");
         return 0;
     }
 

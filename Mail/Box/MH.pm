@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::MH;
-our $VERSION = 2.029;  # Part of Mail::Box
+our $VERSION = 2.031;  # Part of Mail::Box
 use base 'Mail::Box::Dir';
 
 use Mail::Box::MH::Index;
@@ -167,7 +167,7 @@ sub openSubFolder($@)
         return;
     }
 
-    $self->openRelatedFolder(@_, folder => "$self/$name");
+    $self->SUPER::openSubFolder($name, @_);
 }
 
 sub highestMessageNumber()

@@ -72,8 +72,7 @@ number of seconds.
 
 =item B<file> =E<gt> FILENAME X<new(file)>
 
-Name of the file to lock, or the name of the lockfile (depends on the
-kind of lock used).
+Name of the file to lock.  By default, the name of the folder is taken.
 
 =item B<folder> =E<gt> FOLDER X<new(folder)>
 
@@ -164,16 +163,6 @@ See Mail::Reporter::new(trace)
 When the locker is destroyed, for instance when the folder is closed
 or the program ends, the lock will be automatically removed.
 
-=item B<filename>  X<filename>
-
-Returns the filename which is used to lock the folder.  How this file is
-used depends on the locking method.
-
-Examples:
-
-   print $locker->filename;
-   print $folder->lockFilename;
-
 =item B<name>  X<name>
 
 Returns the method used to lock the folder. See the new() method for
@@ -189,6 +178,18 @@ Examples:
 =head2 Locking
 
 =over 4
+
+=item B<filename>  X<filename>
+
+Returns the filename which is used to lock the folder.
+
+Examples:
+
+ print $locker->filename;
+
+=item B<folder>  X<folder>
+
+Returns the folder object which is locker.
 
 =item B<hasLock>  X<hasLock>
 
@@ -206,7 +207,7 @@ Test if the folder is locked by this or a different application.
 Examples:
 
  if($locker->isLocked) {...}
- if($folder->isLocked) {...}
+ if($folder->locker->isLocked) {...}
 
 =item B<lock> FOLDER X<lock>
 
@@ -215,7 +216,7 @@ Get a lock on a folder.  This will return false if the lock fails.
 Examples:
 
  die unless $locker->lock;
- if($folder->lock) {...}
+ if($folder->locker->lock) {...}
 
 =item B<unlock>  X<unlock>
 
@@ -224,7 +225,7 @@ Undo the lock on a folder.
 Examples:
 
  $locker->unlock;
- $folder->unlock;
+ $folder->locker->unlock;
 
 =back
 
@@ -301,7 +302,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.029.
+This code is beta, version 2.031.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
