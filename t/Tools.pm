@@ -1,12 +1,13 @@
 
+use strict;
 package Tools;
 
-use Exporter;
-@ISA    = 'Exporter';
-@EXPORT = qw/clean_dir unpack_mbox cmplists listdir/;
-use strict;
+use base 'Exporter';
+our @EXPORT = qw/clean_dir unpack_mbox cmplists listdir/;
 
+use File::Spec;
 
+#
 # CLEAN_DIR
 # Clean a directory structure, typically created by unpack_mbox()
 #
