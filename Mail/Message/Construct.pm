@@ -3,7 +3,7 @@ use strict;
 # file Mail::Message::Construct extends functionalities from Mail::Message
 
 package Mail::Message;
-our $VERSION = 2.024;  # Part of Mail::Box
+our $VERSION = 2.025;  # Part of Mail::Box
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -510,6 +510,9 @@ sub buildFromBody(@)
 
     $head->add(Date => Mail::Message::Field->toDate)
         unless defined $head->get('Date');
+
+    $head->add('MIME-Version' => '1.0')  # required by rfc2045
+        unless defined $head->get('MIME-Version');
 
     $message;
 }

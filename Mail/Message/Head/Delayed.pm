@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Message::Head::Delayed;
-our $VERSION = 2.024;  # Part of Mail::Box
+our $VERSION = 2.025;  # Part of Mail::Box
 use base 'Mail::Message::Head';
 
 use Object::Realize::Later

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::SMTP;
-our $VERSION = 2.024;  # Part of Mail::Box
+our $VERSION = 2.025;  # Part of Mail::Box
 use base 'Mail::Transport::Send';
 
 use Net::SMTP;
@@ -37,12 +37,10 @@ sub init($)
 sub trySend($@)
 {   my ($self, $message, %args) = @_;
 
-warn "#1\n";
     # From whom is this message.
-    my $from = $args{from} || $message->from;
-    $from = $from->address if ref $from;
+    my $from = $args{from} || $message->sender;
+    $from = ($from->address)[0] if ref $from;
 
-warn "#2\n";
     # Who are the destinations.
     my $to   = $args{to}   || [$message->destinations];
     my @to   = ref $to eq 'ARRAY' ? @$to : ($to);
@@ -50,14 +48,11 @@ warn "#2\n";
     {   $_ = $_->address if ref $_ && $_->isa('Mail::Address');
     }
 
-warn "#3\n";
     # Prepare the header
     my @header;
     require IO::Lines;
     my $lines = IO::Lines->new(\@header);
     $message->head->printUndisclosed($lines);
-warn '#'; $message->head->print(\*STDERR);
-warn '#'; $message->head->printUndisclosed(\*STDERR);
 
     #
     # Send
@@ -75,7 +70,7 @@ warn '#'; $message->head->printUndisclosed(\*STDERR);
         foreach (@to)
         {     next if $server->to($_);
 # must we be able to disable this?
-# next if $args{ignore_erroneous_desinations}
+# next if $args{ignore_erroneous_destinations}
               return (0, $server->code, $server->message,"To $_",$server->quit);
         }
 
@@ -91,17 +86,20 @@ warn '#'; $message->head->printUndisclosed(\*STDERR);
                 $server->code);
     }
 
+warn "#1\n";
     # in SCALAR context
     my $server;
     return 0 unless $server = $self->contactAnyServer;
 
+warn "#2 $server\n";
     $server->quit, return 0
         unless $server->mail($from);
+warn "#3\n";
 
     foreach (@to)
     {     next if $server->to($_);
 # must we be able to disable this?
-# next if $args{ignore_erroneous_desinations}
+# next if $args{ignore_erroneous_destinations}
           $server->quit;
           return 0;
     }
