@@ -58,6 +58,7 @@ Mail/Transport.pm
 Mail/Transport/Mailx.pm
 Mail/Transport/Sendmail.pm
 Mail/Transport/Qmail.pm
+Mail/Transport/SMTP.pm
 Makefile.PL
 MANIFEST
 README

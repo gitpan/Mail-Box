@@ -3,7 +3,46 @@ CHANGELOG of Mail::Box
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
-version 2.00_18: Mon Dec 10 20:33:18 CET 2001
+version 2.00_19: Wed Dec 12 22:13:56 CET 2001
+
+	Most work about sending messages.  Slight extension of the
+	interface for some other packages.
+
+	Fixes:
+
+	- Removed Tassilo's header parser optimization in favor of
+	  split again, because it breaks on empty fields.
+
+	- [Tassilo v Parsival] added some 'binmode OUT' lines to
+	  make 98% of the tests succeed on Windows!!  But I am not
+	  sure that is the right answer.  More on that later.
+
+	New:
+
+	- Added to/from/cc/bcc/subject methods to Mail::Message, to
+	  hide Resent- header lines which overrule these fields in the
+	  header.  Required for correct rfc822 support.
+
+	- Added destinations() to Mail::Message.
+
+	- Added isResent() to Mail::Message::Field.
+
+	- Added addresses() to Mail::Message::Field, which returns a list
+	  of addresses as specified by the header line.
+
+	- Added pod reference to Mail::Message's service methods on header
+	  lines.
+
+	- Added Mail::Message::Head::Complete::printUndisclosed() and
+	  Mail::Message::printUndisclosed() which is the same as print()
+	  but leaving the Cc and Bcc headers out.
+
+	- Added Mail::Transport::putContent($message)
+
+	- Added Mail::Transport::SMTP shaped after Net/SMTP, but much more
+	  facilities and real Perl 5 code!  Not ready yet.
+
+version 2.00_18: Mon Dec 10 22:19:44 CET 2001
 
 	- Added some requires for package FileHandle.
 

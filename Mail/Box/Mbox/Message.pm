@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox::Message;
 use base 'Mail::Box::Message';
 
-our $VERSION = 2.00_18;
+our $VERSION = 2.00_19;
 
 use POSIX 'SEEK_SET';
 use IO::InnerFile;
@@ -43,16 +43,18 @@ The general methods for C<Mail::Box::Mbox::Message> objects:
   MBM copyTo FOLDER                     MM parent
    MM decoded OPTIONS                   MM parts
   MBM delete                               print [FILEHANDLE]
-  MBM deleted [BOOL]                   MMC quotePrelude [STRING|FIELD]
+  MBM deleted [BOOL]                    MM printUndisclosed [FILEHANDLE]
+   MM destinations                     MMC quotePrelude [STRING|FIELD]
    MM encode OPTIONS                   MMC reply OPTIONS
    MR errors                           MMC replySubject STRING
   MBM folder [FOLDER]                   MR report [LEVEL]
-      fromLine [LINE]                   MR reportAll [LEVEL]
-   MM get FIELD                         MM send [MAILER], OPTIONS
-   MM guessTimestamp                   MBM seqnr [INTEGER]
-   MM isDummy                          MBM setLabel LIST
-   MM isMultipart                      MBM shortString
-   MM isPart                            MM size
+   MM from|to|cc|bcc|date               MR reportAll [LEVEL]
+      fromLine [LINE]                   MM send [MAILER], OPTIONS
+   MM get FIELD                        MBM seqnr [INTEGER]
+   MM guessTimestamp                   MBM setLabel LIST
+   MM isDummy                          MBM shortString
+   MM isMultipart                       MM size
+   MM isPart                            MM subject
   MBM label STRING [ ,STRING ,...]      MM timestamp
   MBM labels                            MM toplevel
    MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
@@ -300,7 +302,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_18.
+This code is beta, version 2.00_19.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

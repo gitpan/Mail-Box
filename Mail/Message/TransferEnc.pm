@@ -5,11 +5,11 @@ use warnings;
 package Mail::Message::TransferEnc;
 use base 'Mail::Reporter';
 
-our $VERSION = 2.00_18;
+our $VERSION = 2.00_19;
 
 =head1 NAME
 
-Mail::Message::TransferEnc - Message transfer encoder/decoder
+Mail::Message::TransferEnc - message transfer encoder/decoder
 
 =head1 CLASS HIERARCHY
 
@@ -205,7 +205,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_18.
+This code is beta, version 2.00_19.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

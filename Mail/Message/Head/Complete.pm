@@ -9,13 +9,13 @@ use Mail::Box::Parser;
 use Carp;
 use Date::Parse;
 
-our $VERSION = 2.00_18;
+our $VERSION = 2.00_19;
 
 use overload qq("") => 'toString';
 
 =head1 NAME
 
-Mail::Message::Head::Complete - the header of one Mail::Message
+Mail::Message::Head::Complete - the header of one message
 
 =head1 CLASS HIERARCHY
 
@@ -41,10 +41,11 @@ The general methods for C<Mail::Message::Head::Complete> objects:
   MMH add ...                              new OPTIONS
   MMH build FIELDS                     MMH nrLines
   MMH count NAME                       MMH print FILEHANDLE
-   MR errors                            MR report [LEVEL]
-  MMH get NAME [,INDEX]                 MR reportAll [LEVEL]
-  MMH isDelayed                        MMH reset NAME, FIELDS
-  MMH isMultipart                      MMH set ...
+   MR errors                           MMH printUndisclosed FILEHANDLE
+  MMH get NAME [,INDEX]                 MR report [LEVEL]
+  MMH isDelayed                         MR reportAll [LEVEL]
+  MMH isMultipart                      MMH reset NAME, FIELDS
+  MMH isResent                         MMH set ...
   MMH knownNames                       MMH size
    MR log [LEVEL [,STRINGS]]           MMH timestamp
   MMH modified [BOOL]                  MMH toString
@@ -226,6 +227,21 @@ sub print($)
     $self;
 }
 
+sub printUndisclosed($)
+{   my ($self, $fh) = @_;
+
+    my $known = $self->{MMH_fields};
+    foreach my $name (@{$self->{MMH_order}})
+    {   next if $name eq 'Resent-Bcc' || $name eq 'Bcc';
+        my $this = $known->{$name} or next;
+        my @this = ref $this eq 'ARRAY' ? @$this : $this;
+        $_->print($fh) foreach @this;
+    }
+
+    $fh->print("\n");
+    $self;
+}
+
 #------------------------------------------
 
 sub toString()
@@ -359,7 +375,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_18.
+This code is beta, version 2.00_19.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -17,6 +17,8 @@ BEGIN
 ** Inline::C.  More testing is required.
 DISABLED
 
+# To perform tests, the next two code lines must be commented out, and
+# one line in Mail/Box/Parser/C.pm must be added to break the module.
     plan tests => 0;
     exit 0;
 }

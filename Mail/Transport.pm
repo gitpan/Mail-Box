@@ -8,7 +8,7 @@ use Carp;
 use File::Spec;
 use Errno 'EAGAIN';
 
-our $VERSION = 2.00_18;
+our $VERSION = 2.00_19;
 
 =head1 NAME
 
@@ -36,15 +36,25 @@ autodetect which of the following modules work on your system:
 
 =over 4
 
-=item * C<Mail::Transport::SMTP>
-
-In this case, Perl is handling mail transport on its own.
-Under construction.
-
 =item * C<Mail::Transport::Sendmail>
 
 Use sendmail to process and deliver the mail.  This requires the
 C<sendmail> program to be installed on your system.
+
+=item * C<Mail::Transport::Qmail>
+
+Use C<qmail-inject> to distribute the message.
+
+=item * C<Mail::Transport::SMTP>
+
+In this case, Perl is handling mail transport on its own.  This is less
+desired but more portable than sending with sendmail or qmail.
+
+The advantage is that this sender is environment independent, and easier to
+configure.  However, there is no daemon involved which means that your
+program will wait until the message is delivered, and the message is
+lost when your program is interrupted during delivery (which may
+take hours to complete).
 
 =item * C<Mail::Transport::Mailx>
 
@@ -65,9 +75,10 @@ The general methods for C<Mail::Transport> objects:
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MR inGlobalDestruction
-   MR DESTROY                           MR logPriority LEVEL
-      findBinary NAME [, DIRECTOR...    MR logSettings
+   MR AUTOLOAD                          MR logPriority LEVEL
+   MR DESTROY                           MR logSettings
+      findBinary NAME [, DIRECTOR...    MR notImplemented
+   MR inGlobalDestruction                  putContent MESSAGE, FILEHAN...
 
 Prefixed methods are described in   MR = L<Mail::Reporter>.
 
@@ -139,9 +150,12 @@ sub init($)
 
 =item send MESSAGE, OPTIONS
 
-Transmit the MESSAGE.  It returns true when the transmission was succesfully
-completed.  Some extensions to C<Mail::Transport> may offer OPTIONS, but at
-least the following are supported:
+Transmit the MESSAGE, which may be anything what can be coerced into a
+C<Mail::Message>, so including C<Mail::Internet> and C<MIME::Entity>
+messages.  It returns true when the transmission was succesfully completed.
+
+Some extensions to C<Mail::Transport> may offer OPTIONS, but at least the
+following are supported:
 
  OPTIONS      DESCRIBED IN              DEFAULT
  interval     Mail::Transport           30
@@ -166,6 +180,12 @@ number of retries is unlimited.
 
 sub send($@)
 {   my ($self, $message) = (shift, shift);
+
+    unless($message->isa('Mail::Message'))  # avoid rebless.
+    {   $message = Mail::Message->coerce($message);
+        confess "Unable to coerce object into Mail::Message."
+            unless defined $message;
+    }
 
     return 1 if $self->trySend($message);
     return 0 unless $?==EAGAIN;
@@ -210,6 +230,41 @@ sub trySend($@)
 
 #------------------------------------------
 
+=item putContent MESSAGE, FILEHANDLE, OPTIONS
+
+Print the content of the MESSAGE to the FILEHANDLE.
+
+ OPTIONS           DESCRIBED IN         DEFAULT
+ body_only         Mail::Transport      <false>
+ undisclosed       Mail::Transport      <false>
+
+=over 4
+
+=item * body_only =E<gt> BOOLEAN
+
+Print only the body of the message, not the whole.
+
+=item * undisclosed =E<gt> BOOLEAN
+
+Do not print the C<Bcc> and C<Resent-Bcc> lines.  Default false, which
+means that they are printed.
+
+=back
+
+=cut
+
+sub putContent($$@)
+{   my ($self, $message, $fh, %args) = @_;
+
+       if($args{body_only})   { $message->body->print($fh) }
+    elsif($args{undisclosed}) { $message->printUndisclosed($fh) }
+    else                      { $message->Mail::Message::print($fh) }
+
+    $self;
+}
+
+#------------------------------------------
+
 =item findBinary NAME [, DIRECTORIES]
 
 Look for a binary with the specified NAME in the directories which
@@ -250,7 +305,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_18.
+This code is beta, version 2.00_19.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

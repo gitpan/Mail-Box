@@ -7,11 +7,11 @@ use base 'Mail::Box::Parser';
 use List::Util 'sum';
 use FileHandle;
 
-our $VERSION = 2.00_18;
+our $VERSION = 2.00_19;
 
 =head1 NAME
 
-Mail::Box::Parser::Perl - Reading messages from file using Perl
+Mail::Box::Parser::Perl - reading messages from file using Perl
 
 =head1 CLASS HIERARCHY
 
@@ -65,8 +65,9 @@ sub init(@)
     $self->SUPER::init($args);
 
     my $filename = $args->{filename};
-    my $file     = new FileHandle $filename, $self->{MBP_mode};
+    my $file     = FileHandle->new($filename, $self->{MBP_mode});
     return unless $file;
+    binmode $file;
 
     $self->{MBPP_file}       = $file;
     $self->{MBPP_filename}   = $filename;
@@ -166,18 +167,14 @@ sub _read_header_line()
 
     return () if !defined $line || $line eq "\n";
 
-    # Tassilo proved that this is farmost the fastest way to
-    # take a header line appart.
-    my $name = substr $line, 0, index($line, ': ');
-    my $body = substr $line, index($line, ': ')+2;
-
+    my ($name, $body) = split /\:\s+/, $line, 2;
     unless(defined $body)
     {   $self->log(WARNING => "Unexpected end of header:\n  $line");
 
         until(index $line, ': ')
         {   $line = $self->_get_one_line;
             return () unless defined $line;
-            ($name, $body) = split /\:\s*/, $line, 2;
+            ($name, $body) = split /\:\s+/, $line, 2;
             last if defined $body;
         }
     }
@@ -449,7 +446,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_18.
+This code is beta, version 2.00_19.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -6,7 +6,7 @@ use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
 
-our $VERSION = 2.00_18;
+our $VERSION = 2.00_19;
 
 use Carp;
 use IO::File;
@@ -14,7 +14,7 @@ use POSIX 'tmpnam';
 
 =head1 NAME
 
-Mail::Message::Body::File - Mail::Message::Body temporarily stored in a file
+Mail::Message::Body::File - body of a message temporarily stored in a file
 
 =head1 CLASS HIERARCHY
 
@@ -225,6 +225,7 @@ sub _data_from_filehandle(@_)
     {   $self->log(ERROR => "Cannot write to $file: $!\n");
         return;
     }
+    binmode OUT;
 
     while(my $l = $fh->getline)
     {   print OUT $l;
@@ -262,6 +263,7 @@ sub _data_from_lines(@_)
 
     open OUT, '>', $file
         or die "Cannot write to $file: $!\n";
+    binmode OUT;
 
     print OUT @$lines;
     close OUT;
@@ -278,6 +280,7 @@ sub read($$;$@)
 
     open OUT, '>', $file
         or die "Cannot write to $file: $!.\n";
+    binmode OUT;
 
     @$self{ qw/MMB_begin MMB_end MMBF_nrlines/ }
         = $parser->bodyAsFile(\*OUT, @_);
@@ -344,7 +347,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_18.
+This code is beta, version 2.00_19.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

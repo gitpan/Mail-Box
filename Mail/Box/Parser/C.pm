@@ -7,7 +7,7 @@ use base 'Mail::Box::Parser';
 $break_the_compiler_which_has_bug_Now_the_Perl_version_is_used;
 BEGIN {warn "C Parser loaded.\n"}
 
-our $VERSION = 2.00_18;
+our $VERSION = 2.00_19;
 
 =head1 NAME
 
@@ -960,7 +960,7 @@ void MBPC_body_as_string(SV *obj, int expect_chars, int expect_lines)
 
         if(is_good_end(box, end))
         {   Inline_Stack_Push(sv_2mortal(newSViv(begin)));
-            Inline_Stack_Push(sv_2mortal(newSViv(fileposition(box))));
+            Inline_Stack_Push(sv_2mortal(newSViv(filePosition(box))));
             Inline_Stack_Push(sv_2mortal(take_scalar(box, begin, end)));
             Inline_Stack_Return(3);
         }
@@ -984,7 +984,7 @@ void MBPC_body_as_string(SV *obj, int expect_chars, int expect_lines)
     Safefree(lines);
 
     Inline_Stack_Push(sv_2mortal(newSViv(begin)));
-    Inline_Stack_Push(sv_2mortal(newSViv(fileposition(box))));
+    Inline_Stack_Push(sv_2mortal(newSViv(filePosition(box))));
     Inline_Stack_Push(sv_2mortal(result));
     Inline_Stack_Return(3);
 }

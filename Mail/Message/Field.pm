@@ -10,7 +10,7 @@ use Mail::Box::Parser;
 use Carp;
 use List::Util 'sum';
 
-our $VERSION = 2.00_18;
+our $VERSION = 2.00_19;
 our %_structured;
 
 use overload qq("") => sub { $_[0]->body }
@@ -28,7 +28,7 @@ my $crlf = "\015\012";
 
 =head1 NAME
 
-Mail::Message::Field - one line of a Mail::Message header
+Mail::Message::Field - one line of a message header
 
 =head1 CLASS HIERARCHY
 
@@ -48,8 +48,20 @@ Mail::Message::Field - one line of a Mail::Message header
 
 =head1 DESCRIPTION
 
-The object stores one header-line, and facilitates access routines to
-that line.
+These objects each store one header line, and facilitates access routines to
+the information hidden in it.  Also, you may want to have a look at the
+added methods of a message:
+
+ my $from    = $message->from;
+ my $subject = $message->subject;
+ my $msgid   = $message->messageId;
+
+ my @to      = $message->to;
+ my @cc      = $message->cc;
+ my @bcc     = $message->bcc;
+ my @dest    = $message->destinations;
+
+ my $other   = $message->get('Reply-To');
 
 C<Mail::Message::Field> is the only object in the C<Mail::Box> suite
 which is not derived from a C<Mail::Reporter>.  The consideration is
@@ -63,13 +75,16 @@ want to create extensions to this object.
 
 The general methods for C<Mail::Message::Field> objects:
 
-      attribute NAME [, VALUE]             nrLines
+      addresses                            name
+      attribute NAME [, VALUE]             new ...
       body                                 print [FILEHANDLE]
-      clone                                setWrapLength CHARS
-      comment                              size
-      isStructured                         toDate TIME
-      name                                 toInt
-      new ...                              toString
+      clone                                toDate TIME
+      comment                              toInt
+
+The extra methods for extension writers:
+
+      isResent                             nrLines
+      isStructured                         setWrapLength CHARS
 
 =head1 METHODS
 
@@ -354,6 +369,49 @@ sub toInt()
 
 #------------------------------------------
 
+=item toDate TIME
+
+(Class method) Convert a timestamp into a MIME-acceptable date format.
+
+Example:
+
+ Mail::Message::Field->toDate(localtime);
+
+=cut
+
+sub toDate($)
+{   my ($class, @time) = @_;
+    use POSIX 'strftime';
+    strftime "%a, %d %b %Y %H:%M:%S %z", @time;
+}
+
+#------------------------------------------
+
+=item addresses
+
+Returns a list of C<Mail::Address> objects, which represent the
+e-mail addresses found in this header line.
+
+Example:
+
+ my @addr = $message->head->get('to')->addresses
+
+=cut
+
+sub addresses() { Mail::Address->parse(shift->{MMF_body}) }
+
+#------------------------------------------
+
+=back
+
+=head1 METHODS for extension writers
+
+=over 4
+
+=cut
+
+#------------------------------------------
+
 =item isStructured
 
 (object method or class method)
@@ -385,6 +443,22 @@ sub isStructured(;$)
 {   my $name  = ref $_[0] ? shift->{MMF_name} : $_[1];
     exists $_structured{lc $name};
 }
+
+#------------------------------------------
+
+=item isResent
+
+Returns whether the message has bounced during the preparation.  When
+this returns true, the C<Resent-> headers take preference over their
+counterparts.  For instance, if present the last C<Resent-To> is your real
+name, not C<To>.
+
+To simply this complication with resending, the message object implements
+methods for all lines which are inflicted.
+
+=cut
+
+sub isResent() {defined shift->{'resent-message-id'}}
 
 #------------------------------------------
 
@@ -435,24 +509,6 @@ sub setWrapLength($)
 
 #------------------------------------------
 
-=item toDate TIME
-
-(Class method) Convert a timestamp into a MIME-acceptable date format.
-
-Example:
-
- Mail::Message::Field->toDate(localtime);
-
-=cut
-
-sub toDate($)
-{   my ($class, @time) = @_;
-    use POSIX 'strftime';
-    strftime "%a, %d %b %Y %H:%M:%S %z", @time;
-}
-
-#------------------------------------------
-
 =back
 
 =head1 SEE ALSO
@@ -467,7 +523,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_18.
+This code is beta, version 2.00_19.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -4,13 +4,13 @@ use warnings;
 package Mail::Message::Part;
 use base 'Mail::Message';
 
-our $VERSION = 2.00_18;
+our $VERSION = 2.00_19;
 
 use Carp;
 
 =head1 NAME
 
-Mail::Message::Part - a part of a Mail::Message, but a message by itself.
+Mail::Message::Part - a part of a message, but a message by itself.
 
 =head1 CLASS HIERARCHY
 
@@ -48,13 +48,15 @@ The general methods for C<Mail::Message::Part> objects:
   MMC build [MESSAGE|BODY], CONTENT     MM parent
       buildFromBody BODY, MULTIPA...    MM parts
    MM decoded OPTIONS                   MM print [FILEHANDLE]
+   MM destinations                      MM printUndisclosed [FILEHANDLE]
    MM encode OPTIONS                   MMC quotePrelude [STRING|FIELD]
    MR errors                           MMC reply OPTIONS
-   MM get FIELD                        MMC replySubject STRING
-   MM guessTimestamp                    MR report [LEVEL]
-   MM isDummy                           MR reportAll [LEVEL]
-   MM isMultipart                       MM send [MAILER], OPTIONS
-   MM isPart                            MM size
+   MM from|to|cc|bcc|date              MMC replySubject STRING
+   MM get FIELD                         MR report [LEVEL]
+   MM guessTimestamp                    MR reportAll [LEVEL]
+   MM isDummy                           MM send [MAILER], OPTIONS
+   MM isMultipart                       MM size
+   MM isPart                            MM subject
    MR log [LEVEL [,STRINGS]]            MM timestamp
    MM messageId                         MM toplevel
    MM modified [BOOL]                   MR trace [LEVEL]
@@ -209,7 +211,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_18.
+This code is beta, version 2.00_19.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

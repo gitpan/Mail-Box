@@ -10,14 +10,14 @@ use Object::Realize::Later
     realize        => 'load',
     believe_caller => 1;
 
-our $VERSION = 2.00_18;
+our $VERSION = 2.00_19;
 
 use Carp;
 use Date::Parse;
 
 =head1 NAME
 
-Mail::Message::Head::Subset - subset of header information of a Mail::Message
+Mail::Message::Head::Subset - subset of header information of a message
 
 =head1 CLASS HIERARCHY
 
@@ -54,10 +54,11 @@ The general methods for C<Mail::Message::Head::Subset> objects:
   MMH add ...                              new OPTIONS
   MMH build FIELDS                     MMH nrLines
       count NAME                       MMH print FILEHANDLE
-   MR errors                            MR report [LEVEL]
-      get NAME [,INDEX]                 MR reportAll [LEVEL]
-  MMH isDelayed                        MMH reset NAME, FIELDS
-  MMH isMultipart                      MMH set ...
+   MR errors                           MMH printUndisclosed FILEHANDLE
+      get NAME [,INDEX]                 MR report [LEVEL]
+  MMH isDelayed                         MR reportAll [LEVEL]
+  MMH isMultipart                      MMH reset NAME, FIELDS
+  MMH isResent                         MMH set ...
   MMH knownNames                       MMH size
    MR log [LEVEL [,STRINGS]]           MMH timestamp
   MMH modified [BOOL]                  MMH toString
@@ -242,7 +243,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_18.
+This code is beta, version 2.00_19.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

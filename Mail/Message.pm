@@ -9,7 +9,7 @@ use Mail::Message::Head::Complete;
 
 use Carp;
 
-our $VERSION = 2.00_18;
+our $VERSION = 2.00_19;
 
 =head1 NAME
 
@@ -55,13 +55,15 @@ The general methods for C<Mail::Message> objects:
   MMC build [MESSAGE|BODY], CONTENT        parent
   MMC buildFromBody BODY, HEADERS          parts
       decoded OPTIONS                      print [FILEHANDLE]
+      destinations                         printUndisclosed [FILEHANDLE]
       encode OPTIONS                   MMC quotePrelude [STRING|FIELD]
    MR errors                           MMC reply OPTIONS
-      get FIELD                        MMC replySubject STRING
-      guessTimestamp                    MR report [LEVEL]
-      isDummy                           MR reportAll [LEVEL]
-      isMultipart                          send [MAILER], OPTIONS
-      isPart                               size
+      from|to|cc|bcc|date              MMC replySubject STRING
+      get FIELD                         MR report [LEVEL]
+      guessTimestamp                    MR reportAll [LEVEL]
+      isDummy                              send [MAILER], OPTIONS
+      isMultipart                          size
+      isPart                               subject
    MR log [LEVEL [,STRINGS]]               timestamp
       messageId                            toplevel
       modified [BOOL]                   MR trace [LEVEL]
@@ -191,6 +193,16 @@ sub init($)
 
 #------------------------------------------
 
+=back
+
+=head2 Message HEAD related
+
+=over 4
+
+=cut
+
+#------------------------------------------
+
 =item get FIELD
 
 Returns the value which is stored in the header FIELD with the specified
@@ -217,6 +229,146 @@ sub get($)
     my $field = $head->get(shift) || return;
     $field->body;
 }
+
+#-------------------------------------------
+
+=item from|to|cc|bcc|date
+
+Returns the addresses which are defined for the indicated header-lines.
+Most methods return a list of C<Mail::Message> objects, except
+C<from> which returns one address only, and C<date> returns the last
+date as string.
+
+These methods are a little more complicated than just fetching these header
+lines by the existence of C<Resent-> header lines.  These C<Resent-> lines
+are added when messages get bounced, and take preference over their
+counterparts.  Only the last C<Resent-> line can be used.
+
+Examples:
+
+ my $from = $message->from;
+ my @to   = $message->to;
+
+=cut
+
+sub from()
+{   my $head = shift->head;
+    my $from = $head->isResent ? $head->get('Resent-From') : $head->get('From');
+    defined $from ? ($from->addresses)[0] : undef;
+}
+
+sub to()
+{   my $head = shift->head;
+    my @to;
+    if($head->isResent) { @to = $head->get('Resent-To'); @to = $to[-1] if @to }
+    else                { @to = $head->get('To')}
+    map {$_->addresses} @to;
+}
+
+sub cc()
+{   my $head = shift->head;
+    my @cc;
+    if($head->isResent) { @cc = $head->get('Resent-Cc'); @cc = $cc[-1] if @cc }
+    else                { @cc = $head->get('Cc')}
+    map {$_->addresses} @cc;
+}
+
+sub bcc()
+{   my $head = shift->head;
+    my @bcc;
+    if($head->isResent)
+    {      @bcc = $head->get('Resent-Bcc'); @bcc = $bcc[-1] if @bcc }
+    else { @bcc = $head->get('Bcc')}
+    map {$_->addresses} @bcc;
+}
+
+sub date()
+{   my $head = shift->head;
+    return $head->get('date') unless $head->isResent;
+    my @date = $head->get('Resent-Date');
+    @date ? $date[-1] : ();
+}
+
+#-------------------------------------------
+
+=item destinations
+
+Returns a list of C<Mail::Address> objects which contains the combined info
+of active C<To>, C<Cc>, and C<Bcc> addresses.  Doubles are removed.
+
+=cut
+
+sub destinations()
+{   my $self = shift;
+    my %to = map { ($_->address => $_) } $self->to, $self->cc, $self->bcc;
+    values %to;
+}
+
+#-------------------------------------------
+
+=item subject
+
+Returns the message's subject, just as short-cut for writing
+
+ $message->get('subject') || 'no subject'
+
+=cut
+
+sub subject() {shift->get('subject') || 'no subject'}
+
+#-------------------------------------------
+
+=item messageId
+
+Retrieve the message's id.  Every message has a unique message-id.  This id
+is used mainly for recognizing discussion threads.
+
+=cut
+
+sub messageId() { $_[0]->{MM_message_id} || $_[0]->takeMessageId}
+sub messageID() {shift->messageId}   # compatibility
+
+#-------------------------------------------
+
+=item guessTimestamp
+
+Return an estimate on the time this message was sent.  The data is
+derived from the header, where it can be derived from the C<date> and
+C<received> lines.  For MBox-like folders you may get the date from
+the from-line as well.
+
+This method may return C<undef> if the header is not parsed or only
+partially known.  If you require a time, then use the C<timestamp()>
+method, described below.
+
+Examples:
+
+    print "Receipt ", ($message->timestamp || 'unknown'), "\n";
+
+=cut
+
+sub guessTimestamp() {shift->head->guessTimestamp}
+
+#-------------------------------------------
+
+=item timestamp
+
+Get a timestamp, doesn't matter how much work it is.  If it is impossible
+to get a time from the header-lines, the current time-of-living is taken.
+
+=cut
+
+sub timestamp() {shift->head->timestamp}
+
+#------------------------------------------
+
+=back
+
+=head2 Message BODY related
+
+=over 4
+
+=cut
 
 #------------------------------------------
 
@@ -282,6 +434,16 @@ sub encode(@)
 {   my $body = shift->body->load;
     $body ? $body->encode(@_) : undef;
 }
+
+#-------------------------------------------
+
+=back
+
+=head2 Other methods
+
+=over 4
+
+=cut
 
 #-------------------------------------------
 
@@ -361,50 +523,6 @@ sub parent()     { undef }   # overridden by Mail::Message::Part
 sub toplevel()   { shift }   # idem
 sub isPart()     { 0 }       # idem
 
-#-------------------------------------------
-
-=item messageId
-
-Retrieve the message's id.  Every message has a unique message-id.  This id
-is used mainly for recognizing discussion threads.
-
-=cut
-
-sub messageId() { $_[0]->{MM_message_id} || $_[0]->takeMessageId}
-sub messageID() {shift->messageId}   # compatibility
-
-#-------------------------------------------
-
-=item guessTimestamp
-
-Return an estimate on the time this message was sent.  The data is
-derived from the header, where it can be derived from the C<date> and
-C<received> lines.  For MBox-like folders you may get the date from
-the from-line as well.
-
-This method may return C<undef> if the header is not parsed or only
-partially known.  If you require a time, then use the C<timestamp()>
-method, described below.
-
-Examples:
-
-    print "Receipt ", ($message->timestamp || 'unknown'), "\n";
-
-=cut
-
-sub guessTimestamp() {shift->head->guessTimestamp}
-
-#-------------------------------------------
-
-=item timestamp
-
-Get a timestamp, doesn't matter how much work it is.  If it is impossible
-to get a time from the header-lines, the current time-of-living is taken.
-
-=cut
-
-sub timestamp() {shift->head->timestamp}
-
 #------------------------------------------
 
 =item isDummy
@@ -457,11 +575,11 @@ sub headIsRead() { not shift->head->isa('Mail::Message::Delayed') }
 
 =item print [FILEHANDLE]
 
-Print the message to the FILE-HANDLE, which defaults to STDOUT.
-If the message was modified, it comes from the modified structures in
-memory.  Preferably, however, a folder-to-folder copy of bytes is
-tried: it is much faster.  I this case, printing will not trigger the
-loading of the message to memory.
+=item printUndisclosed [FILEHANDLE]
+
+Print the message to the FILE-HANDLE, which defaults to STDOUT.  In
+the former case of C<print> including the C<Bcc> and C<Resent-Bcc>
+lines, in the latter case without them.
 
 Examples:
 
@@ -478,6 +596,15 @@ sub print(;$)
     my $out  = shift || \*STDOUT;
 
     $self->head->print($out);
+    $self->body->print($out);
+    $self;
+}
+
+sub printUndisclosed(;$)
+{   my $self = shift;
+    my $out  = shift || \*STDOUT;
+
+    $self->head->printUndisclosed($out);
     $self->body->print($out);
     $self;
 }
@@ -988,7 +1115,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_18.
+This code is beta, version 2.00_19.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -12,13 +12,13 @@ use Carp;
 use Scalar::Util 'weaken';
 use FileHandle;
 
-our $VERSION = 2.00_18;
+our $VERSION = 2.00_19;
 
 use overload bool => sub {1};
 
 =head1 NAME
 
-Mail::Message::Head - the header of one Mail::Message
+Mail::Message::Head - the header of one message
 
 =head1 CLASS HIERARCHY
 
@@ -79,10 +79,11 @@ The general methods for C<Mail::Message::Head> objects:
       add ...                              new OPTIONS
       build FIELDS                         nrLines
       count NAME                           print FILEHANDLE
-   MR errors                            MR report [LEVEL]
-      get NAME [,INDEX]                 MR reportAll [LEVEL]
-      isDelayed                            reset NAME, FIELDS
-      isMultipart                          set ...
+   MR errors                               printUndisclosed FILEHANDLE
+      get NAME [,INDEX]                 MR report [LEVEL]
+      isDelayed                         MR reportAll [LEVEL]
+      isMultipart                          reset NAME, FIELDS
+      isResent                             set ...
       knownNames                           size
    MR log [LEVEL [,STRINGS]]               timestamp
       modified [BOOL]                      toString
@@ -396,9 +397,12 @@ sub isMultipart()
 
 =item print FILEHANDLE
 
-Print the header to the specified FILEHANDLE.
+=item printUndisclosed FILEHANDLE
 
-Example:
+Print the header to the specified FILEHANDLE.  In the former case,
+C<Bcc> and C<Resent-Bcc> lines are included, in the latter case not.
+
+Examples:
 
     $head->print(\*STDOUT);
 
@@ -472,6 +476,18 @@ sub modified(;$)
 {   my $self = shift;
     @_ ? $self->{MMH_modified} = shift : $self->{MMH_modified};
 }
+
+#------------------------------------------
+
+=item isResent
+
+Return whether this message is the result of a bounce.  The bounce
+will produced lines which start with C<Resent->, line C<Resent-To>
+which has preference over C<To> as destination for the message.
+
+=cut
+
+sub isResent() { shift->get('resent-message-id') }
 
 #------------------------------------------
 
@@ -780,7 +796,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_18.
+This code is beta, version 2.00_19.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

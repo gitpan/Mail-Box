@@ -6,7 +6,7 @@ use base 'Mail::Transport';
 
 use Carp;
 
-our $VERSION = 2.00_18;
+our $VERSION = 2.00_19;
 
 =head1 NAME
 
@@ -46,9 +46,10 @@ The general methods for C<Mail::Transport::Mailx> objects:
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MR inGlobalDestruction
-   MR DESTROY                           MR logPriority LEVEL
-   MT findBinary NAME [, DIRECTOR...    MR logSettings
+   MR AUTOLOAD                          MR logPriority LEVEL
+   MR DESTROY                           MR logSettings
+   MT findBinary NAME [, DIRECTOR...    MR notImplemented
+   MR inGlobalDestruction               MT putContent MESSAGE, FILEHAN...
 
 Methods prefixed with an abbreviation are described in the following
 manual-pages:
@@ -94,44 +95,34 @@ sub init($)
 sub _try_send_bsdish($$)
 {   my ($self, $message, $args) = @_;
 
-    my ($to, $cc, $bcc);
-    if(defined $message->get('Resent-Message-ID'))
-    {   $to      = $message->get('Resent-To');
-        $cc      = $message->get('Resent-Cc');
-        $bcc     = $message->get('Resent-Bcc');
-    }
-    else
-    {   $to      = $message->get('To');
-        $cc      = $message->get('Cc');
-        $bcc     = $message->get('Bcc');
-    }
-
-    my $subject = $message->get('Subject') || 'no subject';
-
-    my (@to, @cc, @bcc);
-    @to  = map {$_->address} Mail::Address->parse($to);
-    @cc  = map {$_->address} Mail::Address->parse($cc)  if $cc;
-    @bcc = map {$_->address} Mail::Address->parse($bcc) if $bcc;
-
-    my @options = ('-s' => $subject);
+    my @options = ('-s' => $message->subject);
 
     {   local $" = ',';
+        my @cc  = map {$_->format} $message->cc;
         push @options, ('-c' => "@cc")  if @cc;
+
+        my @bcc = map {$_->format} $message->bcc;
         push @options, ('-b' => "@bcc") if @bcc;
     }
 
+    my @to      = map {$_->format} $message->to;
     my $program = $self->{MTM_program};
+
     if((open MAILER, '|-')==0)
     {   close STDOUT;
-        { exec $program, @options, @to; }
+        { exec $program, @options, @to }
         $self->log(NOTICE => "Cannot start contact to $program: $!");
         return 0;
     }
  
-    $message->body->print(\*MAILER);
+    $self->putContent($message, \*MAILER, body_only => 1);
 
-    unless(close MAILER)
-    {   $self->log(NOTICE => "Sending via $program failed: $! ($?)");
+    my $msgid = $message->messageId;
+
+    if(close MAILER) { $self->log(PROGRESS => "Message $msgid send.") }
+    else
+    {   $self->log(NOTICE =>
+            "Sending message $msgid via $program failed: $! ($?)");
         return 0;
     }
 
@@ -151,7 +142,7 @@ sub trySend($@)
         return 0;
     }
  
-    $message->print(\*MAILER);
+    $self->putContent($message, \*MAILER);
 
     unless(close MAILER)
     {   $self->log(NOTICE => "Sending via $program failed: $! ($?)");
@@ -187,7 +178,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_18.
+This code is beta, version 2.00_19.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

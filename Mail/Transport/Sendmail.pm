@@ -6,7 +6,7 @@ use base 'Mail::Transport';
 
 use Carp;
 
-our $VERSION = 2.00_18;
+our $VERSION = 2.00_19;
 
 =head1 NAME
 
@@ -40,9 +40,10 @@ The general methods for C<Mail::Transport::Sendmail> objects:
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MR inGlobalDestruction
-   MR DESTROY                           MR logPriority LEVEL
-   MT findBinary NAME [, DIRECTOR...    MR logSettings
+   MR AUTOLOAD                          MR logPriority LEVEL
+   MR DESTROY                           MR logSettings
+   MT findBinary NAME [, DIRECTOR...    MR notImplemented
+   MR inGlobalDestruction               MT putContent MESSAGE, FILEHAN...
 
 Methods prefixed with an abbreviation are described in the following
 manual-pages:
@@ -93,7 +94,7 @@ sub trySend($@)
         return 0;
     }
  
-    $message->print(\*MAILER);
+    $self->putContent($message, \*MAILER);
 
     unless(close MAILER)
     {   $self->log(NOTICE => "Errors when closing $program: $!");
@@ -130,7 +131,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_18.
+This code is beta, version 2.00_19.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

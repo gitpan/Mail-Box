@@ -42,16 +42,18 @@ The general methods for C<Mail::Box::MH::Message> objects:
   MBM copyTo FOLDER                     MM parent
    MM decoded OPTIONS                   MM parts
   MBM delete                            MM print [FILEHANDLE]
-  MBM deleted [BOOL]                   MMC quotePrelude [STRING|FIELD]
+  MBM deleted [BOOL]                    MM printUndisclosed [FILEHANDLE]
+   MM destinations                     MMC quotePrelude [STRING|FIELD]
    MM encode OPTIONS                   MMC reply OPTIONS
    MR errors                           MMC replySubject STRING
       filename [FILENAME]               MR report [LEVEL]
   MBM folder [FOLDER]                   MR reportAll [LEVEL]
-   MM get FIELD                         MM send [MAILER], OPTIONS
-   MM guessTimestamp                   MBM seqnr [INTEGER]
-   MM isDummy                          MBM setLabel LIST
-   MM isMultipart                      MBM shortString
-   MM isPart                            MM size
+   MM from|to|cc|bcc|date               MM send [MAILER], OPTIONS
+   MM get FIELD                        MBM seqnr [INTEGER]
+   MM guessTimestamp                   MBM setLabel LIST
+   MM isDummy                          MBM shortString
+   MM isMultipart                       MM size
+   MM isPart                            MM subject
   MBM label STRING [ ,STRING ,...]      MM timestamp
   MBM labels                            MM toplevel
    MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
@@ -285,7 +287,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_18.
+This code is beta, version 2.00_19.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

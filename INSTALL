@@ -21,20 +21,21 @@ Then
 Some modules are not obligatory to Mail::Box, but can improve the
 functionality.  Obligatory are
 
-  Date::Parse      used to parse date info in the header
-  File::Spec       to copy files and construct paths
-  IO::Scalar       only required to run the tests
-  Errno            Mail/Box/Locker/File
-  Scalar::Util     to weaken references
+  Date::Parse         used to parse date info in the header
+  File::Spec          to copy files and construct paths
+  IO::Scalar          only required to run the tests
+  Errno               Mail/Box/Locker/File
+  Scalar::Util        to weaken references
   Object::Realize::Later implements delay loading
-  Mail::Address    mail address parsing.  Will be replaced later
-  MIME::Types      to find required encoding on data-types.
+  Mail::Address       mail address parsing.  Will be replaced later
+  MIME::Types         to find required encoding on data-types.
 
 Optionally, you may want to install
 
-  Mail::Internet   when you want to link to packages which require it.
-  MIME::Entity
-  Inline::C        will enble the C-based parser
+  Mail::Internet      when you want to link to packages which require it.
+  MIME::Entity         "
+  Inline::C           will enble the C-based parser
+  IO::Socket::INET    to use Mail::Transport::SMTP
 
 === Support
 

@@ -7,11 +7,11 @@ use base 'Mail::Message';
 use Date::Parse;
 use Scalar::Util 'weaken';
 
-our $VERSION = 2.00_18;
+our $VERSION = 2.00_19;
 
 =head1 NAME
 
-Mail::Box::Message - Manage one message within a mail-folder
+Mail::Box::Message - manage one message within a mail-folder
 
 =head1 CLASS HIERARCHY
 
@@ -51,16 +51,18 @@ The general methods for C<Mail::Box::Message> objects:
       copyTo FOLDER                     MM parent
    MM decoded OPTIONS                   MM parts
       delete                            MM print [FILEHANDLE]
-      deleted [BOOL]                   MMC quotePrelude [STRING|FIELD]
+      deleted [BOOL]                    MM printUndisclosed [FILEHANDLE]
+   MM destinations                     MMC quotePrelude [STRING|FIELD]
    MM encode OPTIONS                   MMC reply OPTIONS
    MR errors                           MMC replySubject STRING
       folder [FOLDER]                   MR report [LEVEL]
-   MM get FIELD                         MR reportAll [LEVEL]
-   MM guessTimestamp                    MM send [MAILER], OPTIONS
-   MM isDummy                              seqnr [INTEGER]
-   MM isMultipart                          setLabel LIST
-   MM isPart                               shortString
-      label STRING [ ,STRING ,...]      MM size
+   MM from|to|cc|bcc|date               MR reportAll [LEVEL]
+   MM get FIELD                         MM send [MAILER], OPTIONS
+   MM guessTimestamp                       seqnr [INTEGER]
+   MM isDummy                              setLabel LIST
+   MM isMultipart                          shortString
+   MM isPart                            MM size
+      label STRING [ ,STRING ,...]      MM subject
       labels                            MM timestamp
    MR log [LEVEL [,STRINGS]]            MM toplevel
    MM messageId                         MR trace [LEVEL]
@@ -511,7 +513,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_18.
+This code is beta, version 2.00_19.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -4,13 +4,13 @@ use strict;
 package Mail::Box::Message::Dummy;
 use base 'Mail::Box::Message';
 
-our $VERSION = 2.00_18;
+our $VERSION = 2.00_19;
 
 use Carp;
 
 =head1 NAME
 
-Mail::Box::Message::Dummy - A placeholder for a missing message in a list.
+Mail::Box::Message::Dummy - a placeholder for a missing message in a list.
 
 =head1 CLASS HIERARCHY
 
@@ -46,16 +46,18 @@ The general methods for C<Mail::Box::Message::Dummy> objects:
   MBM copyTo FOLDER                     MM parent
    MM decoded OPTIONS                   MM parts
   MBM delete                            MM print [FILEHANDLE]
-  MBM deleted [BOOL]                   MMC quotePrelude [STRING|FIELD]
+  MBM deleted [BOOL]                    MM printUndisclosed [FILEHANDLE]
+   MM destinations                     MMC quotePrelude [STRING|FIELD]
    MM encode OPTIONS                   MMC reply OPTIONS
    MR errors                           MMC replySubject STRING
   MBM folder [FOLDER]                   MR report [LEVEL]
-   MM get FIELD                         MR reportAll [LEVEL]
-   MM guessTimestamp                    MM send [MAILER], OPTIONS
-   MM isDummy                          MBM seqnr [INTEGER]
-   MM isMultipart                      MBM setLabel LIST
-   MM isPart                           MBM shortString
-  MBM label STRING [ ,STRING ,...]      MM size
+   MM from|to|cc|bcc|date               MR reportAll [LEVEL]
+   MM get FIELD                         MM send [MAILER], OPTIONS
+   MM guessTimestamp                   MBM seqnr [INTEGER]
+   MM isDummy                          MBM setLabel LIST
+   MM isMultipart                      MBM shortString
+   MM isPart                            MM size
+  MBM label STRING [ ,STRING ,...]      MM subject
   MBM labels                            MM timestamp
    MR log [LEVEL [,STRINGS]]            MM toplevel
    MM messageId                         MR trace [LEVEL]
@@ -132,7 +134,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_18.
+This code is beta, version 2.00_19.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

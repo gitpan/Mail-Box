@@ -41,5 +41,5 @@ TEXT
 # Mail::Transmit package.
 #
 
-$message->send(via => 'mail');
+$message->send(via => 'mail', trace => 'NOTICE');
 #$message->send(via => 'sendmail');
