@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Dir;
-our $VERSION = 2.028;  # Part of Mail::Box
+our $VERSION = 2.029;  # Part of Mail::Box
 
 use base 'Mail::Box';
 

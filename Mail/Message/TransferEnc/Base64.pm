@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::TransferEnc::Base64;
-our $VERSION = 2.028;  # Part of Mail::Box
+our $VERSION = 2.029;  # Part of Mail::Box
 use base 'Mail::Message::TransferEnc';
 
 sub name() { 'base64' }

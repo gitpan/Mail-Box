@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Parser::Perl;
-our $VERSION = 2.028;  # Part of Mail::Box
+our $VERSION = 2.029;  # Part of Mail::Box
 use base 'Mail::Box::Parser';
 
 use Mail::Message::Field;
@@ -104,6 +104,8 @@ LINE:
             $file->seek(-length $line, 1);
             last LINE;
         }
+
+        $body = "\n" unless length $body;
 
         # Collect folded lines
         while($line = $file->getline)
