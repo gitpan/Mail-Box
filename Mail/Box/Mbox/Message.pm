@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox::Message;
 use base 'Mail::Box::Message';
 
-our $VERSION = 2.010;
+our $VERSION = 2.011;
 
 use POSIX 'SEEK_SET';
 use Carp;
@@ -205,7 +205,7 @@ See C<Mail::Message::read()> for more details.
 
 =cut
 
-sub read($)
+sub readFromParser($)
 {   my ($self, $parser) = @_;
     my ($start, $fromline)  = $parser->readSeparator;
     return unless $fromline;
@@ -213,7 +213,7 @@ sub read($)
     $self->{MBMM_from_line} = $fromline;
     $self->{MBMM_begin}     = $start;
 
-    $self->SUPER::read($parser);
+    $self->SUPER::readFromParser($parser);
 
     $self->{MBMM_parser}    = $parser
         if $self->isDelayed;
@@ -326,7 +326,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.010.
+This code is beta, version 2.011.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

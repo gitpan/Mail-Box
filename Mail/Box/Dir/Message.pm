@@ -232,12 +232,10 @@ sub loadHead()
     return $head unless $head->isDelayed;
 
     my $folder   = $self->folder;
-confess unless $folder;
     $folder->lazyPermitted(1);
 
     my $parser   = $self->parser or return;
-    $self->read($parser);
-#warn join ';', $self->filename, $self->head->fileLocation, $self->body->fileLocation, "\n";
+    $self->readFromParser($parser);
 
     $folder->lazyPermitted(0);
 
@@ -298,7 +296,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.010.
+This code is beta, version 2.011.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

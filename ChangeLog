@@ -6,8 +6,23 @@ specified differently.
 Soon to be implemented
  updateMessages for Mail::Box::Mbox
  updateMessages for Mail::Box::MH
- writeMessages  for Mail::Box::Maildir
- appendMessages for Mail::Box::Maildir
+
+version 2.011: Sun Mar  3 23:51:41 CET 2002
+
+	Improvements:    -- one day of rapid development ;)
+
+	- Mail::Message::read was confusing many users.  Therefore, it
+	  has been renamed to readFromParser.
+
+	- Now read() became unused, it is used to implement
+	  my $msg = Mail::Message->read(\*STDIN);
+	  Please use it sparsely.
+
+	- Implemented Mail::Box::Maildir->writeMessages and
+	  Mail::Box::Maildir->appendMessages.  Tests in t/44mdir*.t
+	  Still small things to fix.
+
+	- Mail::Message::clone() includes labels now.
 
 version 2.010: Sun Mar  3 16:05:16 CET 2002
 

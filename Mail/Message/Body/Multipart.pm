@@ -7,7 +7,7 @@ use base 'Mail::Message::Body';
 use Mail::Message::Body::Lines;
 use Mail::Message::Part;
 
-our $VERSION = 2.010;
+our $VERSION = 2.011;
 
 use Carp;
 
@@ -505,7 +505,7 @@ sub stripSignature(@)
 
 #------------------------------------------
 
-sub read($$)
+sub read($$$$)
 {   my ($self, $parser, $head, $bodytype) = @_;
 
     my $boundary = $self->boundary;
@@ -540,7 +540,7 @@ sub read($$)
          , parent => $self->message
          );
 
-        last unless $part->read($parser, $bodytype);
+        last unless $part->readFromParser($parser, $bodytype);
         push @{$self->{MMBM_parts}}, $part;
     }
 
@@ -589,7 +589,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.010.
+This code is beta, version 2.011.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

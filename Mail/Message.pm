@@ -6,10 +6,12 @@ use base 'Mail::Reporter';
 
 use Mail::Message::Part;
 use Mail::Message::Head::Complete;
+use Mail::Message::Body::Lines;
 
 use Carp;
+use IO::ScalarArray;
 
-our $VERSION = 2.010;
+our $VERSION = 2.011;
 
 =head1 NAME
 
@@ -34,6 +36,8 @@ Mail::Message - general message object
  my Mail::Message::Head $head = $msg->head;
  my Mail::Message::Body $body = $msg->decoded;
  my $subject = $msg->get('subject');
+
+See also L<Mail::Message::Construct>.
 
 =head1 DESCRIPTION
 
@@ -235,7 +239,7 @@ Is equivalent to:
 
 sub get($)
 {
-confess "BAD: ",$_[0]->seqnr if $_[0]->isa('Mail::Box::Message') && ! defined $_[0]->head;
+confess "Mail::Box BAD: ",$_[0]->seqnr if $_[0]->isa('Mail::Box::Message') && ! defined $_[0]->head;
     my $field = shift->head->get(shift) || return;
     $field->body;
 }
@@ -756,7 +760,7 @@ Examples:
 sub label($;$)
 {   my $self   = shift;
     return $self->{MM_labels}{$_[0]} unless @_ > 1;
-    my $return = $_[0];
+    my $return = $_[1];
 
     my %labels = @_;
     @{$self->{MM_labels}}{keys %labels} = values %labels;
@@ -797,16 +801,20 @@ sub clone()
     # triggered first, then it may be decided to be lazy on the body at
     # moment.  And then the body would be triggered.
 
-    $class->new
+    my $clone = $class->new
      ( body  => $self->body->clone
      , head  => $self->head->clone
      , $self->logSettings
      );
+
+    my %labels = %{$self->{MM_labels}};
+    $clone->{MM_labels} = \%labels;
+    $clone;
 }
 
 #------------------------------------------
 
-=item read PARSER, [BODYTYPE]
+=item readFromParser PARSER, [BODYTYPE]
 
 Read one message from file.  The PARSER is opened on the file.  First
 C<readHeader> is called, and the head is stored in the message.  Then
@@ -818,7 +826,7 @@ which returns a body-class based on the header.
 
 =cut
 
-sub read($;$)
+sub readFromParser($;$)
 {   my ($self, $parser, $bodytype) = @_;
 
     my $head = $self->readHead($parser)
@@ -1283,7 +1291,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.010.
+This code is beta, version 2.011.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

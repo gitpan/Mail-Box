@@ -7,7 +7,7 @@ use base 'Mail::Box::Parser';
 $break_the_compiler_which_has_bug_Now_the_Perl_version_is_used;
 BEGIN {warn "C Parser loaded.\n"}
 
-our $VERSION = 2.010;
+our $VERSION = 2.011;
 
 =head1 NAME
 

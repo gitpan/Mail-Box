@@ -203,6 +203,32 @@ sub label(@)
 
 #-------------------------------------------
 
+sub clone()
+{   my $self     = shift;
+    my $clone    = $self->SUPER::clone();
+    my $filename = $self->SUPER::filename;
+    my $clonename;
+
+    if(my ($b,$nr, $f) = $filename =~ m/(.*?)(\d*)(\:[^:]*)$/)
+         {$clonename = $b.++$nr.$f }
+    else {$clonename = ++$filename}
+
+    $clone->SUPER::filename($clonename);
+    $clone->labelsToFilename;
+
+    my $clonefn = $clone->filename;
+    unless(open OUT, '>', $clonefn)
+    {   carp "Cannot create $clonefn: $!";
+        return undef;
+    }
+    $clone->print(\*OUT);
+    close OUT;
+
+    $clone;
+}
+
+#-------------------------------------------
+
 =item labelsToFilename
 
 When the labels on a message change, this may implicate a change in
@@ -214,6 +240,7 @@ sub labelsToFilename()
 {   my $self   = shift;
     my $labels = $self->labels;
     my $old    = $self->filename;
+confess unless $old;
 
     my ($folderdir, $oldname) = $old =~ m!(.*)/(?:new|cur)/([^:]*)(\:[^:]*)?$!;
     my $newflags
@@ -272,7 +299,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.010.
+This code is beta, version 2.011.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

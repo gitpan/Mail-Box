@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox;
 use base 'Mail::Box';
 
-our $VERSION = 2.010;
+our $VERSION = 2.011;
 
 use Mail::Box::Mbox::Message;
 
@@ -495,7 +495,7 @@ sub readMessages(@)
 
     while(1)
     {   my $message = $args{message_type}->new(@msgopts);
-        last unless $message->read($parser);
+        last unless $message->readFromParser($parser);
         $delayed++ if !$delayed && $message->isDelayed;
         $self->storeMessage($message);
     }
@@ -805,7 +805,8 @@ sub foundIn($@)
     my $filename  = $class->folderToFilename($name, $folderdir, $extension);
 
     if(-d $filename)      # fake empty folder, with sub-folders
-    {   return 1 unless -f "$filename/1";
+    {   return 1 unless -f File::Spec->catfile($filename, '1')   # MH
+                     || -d File::Spec->catdir($filename, 'cur'); # Maildir
     }
 
     return 0 unless -f $filename;
@@ -917,7 +918,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.010.
+This code is beta, version 2.011.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

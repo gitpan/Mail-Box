@@ -16,7 +16,7 @@ use Tools;
 use File::Compare;
 use File::Copy;
 
-BEGIN {plan tests => 27}
+BEGIN {plan tests => 28}
 
 my $mdsrc = File::Spec->catfile('t', 'maildir.src');
 
@@ -37,6 +37,14 @@ ok(defined $folder);
 
 ok($folder->messages==45);
 ok($folder->organization eq 'DIRECTORY');
+
+#
+# Count drafts (from Tools.pm flags)
+#
+
+my $drafts = 0;
+$_->label('draft') && $drafts++ foreach $folder->messages;
+ok($drafts==8);
 
 #
 # No single head should be read now, because extract == LAZY
@@ -169,9 +177,8 @@ ok(not $mistake);
 ok(not $parsed);
 ok(not $heads);
 
-foreach (5..13)
-{   $folder->message($_)->head->get('subject');
-}
+$folder->message($_)->head->get('subject')
+    foreach 5..13;
 
 $parsed  = 0;
 $heads   = 0;

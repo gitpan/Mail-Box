@@ -172,11 +172,29 @@ A multipart body will be
 
 =head2 Build a message
 
-There are two ways to create a message which is not a reply.  You may start
-with creating a body, and transform that into a message using
-C<Mail::Message::buildFromBody>, or by creating the whole message at once
-with C<Mail::Message::build>.  Both are described in
-L<Mail::Message::Construct>.
+There are three ways to create a message which is not a reply:
+
+=over 4
+
+=item * C<Mail::Message-E<gt>buildFromBody>
+
+Start with creating a body, and transform that into a message.
+
+=item * C<Mail::Message-E<gt>build>
+
+create the whole message at once.
+
+=item * C<Mail::Message-E<gt>read>
+
+read a message from a file-handle, scalar, or array of lines.
+
+=back
+
+All three methods are implemented in L<Mail::Message::Construct>.  Please,
+do yourself a favour, and give preference to the C<build*> methods, over
+the C<read>, because they are much more powerful.  Use the C<read> only
+when you have the message on STDIN or an array of lines which is supplied
+by an external program.
 
 Very important to remember from now on: information about the content of
 the body (the C<Content-> lines in the header) is stored within the body

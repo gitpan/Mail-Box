@@ -5,7 +5,7 @@ use strict;
 
 package Mail::Message;
 
-our $VERSION = 2.010;
+our $VERSION = 2.011;
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -21,10 +21,13 @@ Mail::Message::Construct - extends the functionality of a Mail::Message
 
 =head1 SYNOPSIS
 
- my $message = Mail::Message->build
+ my $msg1 = Mail::Message->read(\*STDIN);
+ my $msg2 = Mail::Message->read(\@lines);
+
+ my $msg3 = Mail::Message->build
    (From => 'me', data => "only two\nlines\n");
 
- my $message = Mail::Message->buildFromBody($body);
+ my $msg4 = Mail::Message->buildFromBody($body);
 
  my Mail::Message $reply = $message->reply;
  my $quoted  = $message->replyPrelude($head->get('From'));
@@ -51,6 +54,86 @@ The general methods for C<Mail::Message::Construct> objects:
 =over 4
 
 =cut
+
+#------------------------------------------
+
+=item read FILEHANDLE|SCALAR|REF-SCALAR|ARRAY-OF-LINES, OPTIONS
+
+(Class method)
+Read a message from a FILEHANDLE, SCALAR, a reference to a SCALAR, or
+an array of LINES.  The OPTIONS are passed to the C<new()> of the message
+which is created.
+
+Please have a look at C<build> and C<buildFromBody> in
+C<Mail::Message::Construct> before thinking about this C<read> method.
+Use this C<read> only when you have a file-handle like STDIN to parse
+from, or some external source of message lines.  When you already have a
+separate set of head and body lines, then C<read> is certainly B<not>
+your best choice.
+
+Examples:
+
+ my $msg1 = Mail::Message->read(\*STDIN);
+ my $msg2 = Mail::Message->read(\@lines, log => 'PROGRESS');
+ $folder->addMessages($msg1, $msg2);
+
+ my $msg3 = Mail::Message->read(<<MSG);
+ Subject: hello world
+ To: you@example.com
+                      # warning: empty line required !!!
+ Hi, greatings!
+ MSG
+
+=cut
+
+sub read($@)
+{   my ($class, $from) = (shift, shift);
+    my ($filename, $file);
+    my $ref       = ref $from;
+
+    require IO::Scalar;
+    require IO::ScalarArray;
+
+    if(!$ref)
+    {   $filename = 'scalar';
+        $file     = IO::Scalar->new(\$from);
+    }
+    elsif($ref eq 'SCALAR')
+    {   $filename = 'ref scalar';
+        $file     = IO::Scalar->new($from);
+    }
+    elsif($ref eq 'ARRAY')
+    {   $filename = 'array of lines';
+        $file     = IO::ScalarArray->new($from);
+    }
+    elsif($ref eq 'GLOB')
+    {   $filename = 'file (GLOB)';
+        $file     = IO::ScalarArray->new( [ <$from> ] );
+    }
+    elsif($ref && $from->isa('IO::Handle'))
+    {   $filename = 'file ('.ref($from).')';
+        $file     = IO::ScalarArray->new( [ $from->getlines ] );
+    }
+    else
+    {   croak "Cannot read from $from";
+    }
+
+    require Mail::Box::Parser::Perl;  # not parseable by C parser
+    my $parser = Mail::Box::Parser::Perl->new
+     ( filename  => $filename
+     , file      => $file
+     , trusted   => 1
+     );
+
+    my $self = $class->new(@_);
+    $self->readFromParser($parser);
+
+    my $head = $self->head;
+    $head->set('Message-ID' => $self->messageId)
+        unless $head->get('Message-ID');
+
+    $self;
+}
 
 #------------------------------------------
 
@@ -1064,7 +1147,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.010.
+This code is beta, version 2.011.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

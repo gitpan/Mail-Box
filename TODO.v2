@@ -13,6 +13,8 @@ Obligatory:
   Mail::Message->lineSeparator("\015\012");
   Mail::Transport::SMTP
 
+  appendMessage opens folder, but not needed.
+
 Optional:
 
   Many calls for tell() can be removed from the parsers, which will

@@ -8,7 +8,7 @@ use Mail::Message::Field;
 use List::Util 'sum';
 use FileHandle;
 
-our $VERSION = 2.010;
+our $VERSION = 2.011;
 
 =head1 NAME
 
@@ -63,9 +63,12 @@ sub init(@)
     $self->SUPER::init($args);
 
     my $filename = $args->{filename};
-    my $file     = FileHandle->new($filename, $self->{MBP_mode});
+    my $file     = $args->{file};
+    $file        = FileHandle->new($filename, $self->{MBP_mode})
+        unless defined $file;
+
     return unless $file;
-    binmode $file, ':raw';
+#   binmode $file, ':raw';
 
     $self->{MBPP_file}       = $file;
     $self->{MBPP_filename}   = $filename;
@@ -81,11 +84,18 @@ sub init(@)
     $self->{MBP_linesep}     = $1;
     $file->seek(0, 0);
 
-    binmode $file, ':crlf' if $] < 5.007;  # problem with perlIO
+#   binmode $file, ':crlf' if $] < 5.007;  # problem with perlIO
 
     $self->log(PROGRESS => "Opened folder from file $filename.");
 
     $self;
+}
+
+#------------------------------------------
+
+sub start(@)
+{   my $self = shift;
+    $self->SUPER::start(trust_file => $self->{MBPP_trusted}, @_);
 }
 
 #------------------------------------------
@@ -442,7 +452,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.010.
+This code is beta, version 2.011.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

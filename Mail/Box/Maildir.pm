@@ -5,11 +5,12 @@ use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
 
-our $VERSION = 2.010;
+our $VERSION = 2.011;
 
 use Carp;
 use File::Copy;
 use File::Spec;
+use Sys::Hostname;
 
 =head1 NAME
 
@@ -429,41 +430,30 @@ sub writeMessages($)
     my $directory = $self->directory;
     my @messages  = @{$args->{messages}};
 
+    my $tmpdir    = File::Spec->catfile($directory, 'tmp');
+    croak "Cannot create directory $tmpdir: $!"
+        unless -d $tmpdir || mkdir $tmpdir;
+
     foreach my $message (@messages)
-    {
+    {   next unless $message->modified;
+
         my $filename = $message->filename;
+warn ref $message;
+warn $filename;
+        my $basename = (File::Spec->splitpath($filename))[2];
+warn join("#",File::Spec->splitpath($filename)), "\n";
 
-        my $newfile = $filename;
+        my $newtmp   = File::Spec->catfile($directory, 'tmp', $basename);
+        my $new      = FileHandle->new($newtmp, 'w')
+           or croak "Cannot create file $newtmp: $!";
 
-        if(!$filename)
-        {   # New message for this folder.  Messages are only
-            # added to the back, so shouldn't cause a problem.
+        $message->labelsToStatus;  # just for fun
+        $message->print($new);
+        $new->close;
 
-            my $new = FileHandle->new($newfile, 'w') or die;
-            $message->print($new);
-            $new->close;
-            $message->filename($newfile);
-        }
-        elsif($message->modified)
-        {   # Write modified messages.
-            my $oldtmp   = $filename . '.old';
-            move $filename, $oldtmp;
-
-            my $new = FileHandle->new($newfile, 'w') or die;
-            $message->print($new);
-            $new->close;
-
-            unlink $oldtmp;
-            $message->filename($newfile);
-        }
-        elsif($filename eq $newfile)
-        {   # Nothing changed: content nor message-number.
-        }
-        else
-        {   # Unmodified messages, but name changed.
-            move $filename, $newfile;
-            $message->filename($newfile);
-        }
+        unlink $filename;
+        move $newtmp, $filename
+            or warn "Cannot move $newtmp to $filename: $!\n";
     }
 
     # Remove an empty folder.  This is done last, because the code before
@@ -472,13 +462,18 @@ sub writeMessages($)
     if(!@messages && $self->{MB_remove_empty})
     {   # If something is still in the directory, this will fail, but I
         # don't mind.
-        rmdir $directory;
+        rmdir File::Spec->catfile($directory, 'cur');
+        rmdir File::Spec->catfile($directory, 'tmp');
+        rmdir File::Spec->catfile($directory, 'new');
+        rmdir File::Spec->catfile($directory);
     }
 
     $self;
 }
 
 #-------------------------------------------
+
+my $uniq = rand 1000;
 
 sub appendMessages(@)
 {   my $class  = shift;
@@ -492,22 +487,31 @@ sub appendMessages(@)
     my $directory= $self->directory;
     return unless -d $directory;
 
-    my $msgnr;
+    my $tmpdir   = File::Spec->catfile($directory, 'tmp');
+    croak "Cannot create directory $tmpdir: $!", return
+        unless -d $tmpdir || mkdir $tmpdir;
+
     foreach my $message (@messages)
-    {
-        my $filename = File::Spec->catfile($directory,$msgnr);
-
-        if(my $new = FileHandle->new($filename, 'w'))
-        {   $message->print($new);
-            $message->filename($filename);
-            $new->close;
+    {   my $basename = $message->timestamp . "." .hostname. "." .$uniq++;
+        my $tmpname  = File::Spec->catfile($directory, 'tmp', $basename);
+        my $tmp      = FileHandle->new($tmpname, 'w');
+warn "appending message in $tmpname";
+        unless($tmp)
+        {   $self->log(ERROR => "Unable to write message to $tmpname: $!\n");
+            next;
         }
-        else
+
+        $message->print($tmp);
+        $tmp->close;
+
+        my $newname = File::Spec->catfile($directory, 'new', $basename);
+        unless(move $tmpname, $newname)
         {   $self->log(ERROR =>
-                "Unable to write message $msgnr to $filename: $!\n");
+                "Unable to move message from $tmpname to $newname: $!\n");
+            next;
         }
 
-        $msgnr++;
+        $message->filename($newname);
     }
  
     $self->close;
@@ -584,7 +588,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.010.
+This code is beta, version 2.011.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

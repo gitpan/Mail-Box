@@ -109,6 +109,7 @@ t/21p4bodyl.t
 t/21p5bodyd.t
 t/21p6bodyf.t
 t/21p7bodym.t
+t/21p8read.t
 t/30base64.t
 t/30eight.t
 t/30quoted.t
@@ -127,7 +128,8 @@ t/43mh3a.t
 t/43mh5c.t
 t/43mh6t.t
 t/43mh7s.t
-t/44maildir1.t
+t/44mdir1r.t
+t/44mdir2w.t
 t/51stripsig.t
 t/55reply0s.t
 t/55reply1r.t

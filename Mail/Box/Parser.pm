@@ -5,7 +5,7 @@ package Mail::Box::Parser;
 use base 'Mail::Reporter';
 use Carp;
 
-our $VERSION = 2.010;
+our $VERSION = 2.011;
 
 =head1 NAME
 
@@ -88,6 +88,7 @@ The OPTIONS can be
 
  OPTIONS           DESCRIBED IN          DEFAULT
  filename          Mail::Box::Parser     <required>
+ file              Mail::Box::Parser     undef
  log               Mail::Reporter        'WARNINGS'
  mode              Mail::Box::Parser     'r'
  trace             Mail::Reporter        'WARNINGS'
@@ -100,10 +101,16 @@ The options specific to C<Mail::Box::Parser> are:
 
 (Required) The name of the file to be read.
 
+=item * file =E<gt> HANDLE
+
+Any C<IO::File> or C<GLOB> which can be used to read the data from.  In
+case this option is specified, the C<filename> is informational only.
+
 =item * mode =E<gt> OPENMODE
 
 File-open mode, which defaults to C<'r'>, which means `read-only'.
-See C<perldoc -f open> for possible modes.
+See C<perldoc -f open> for possible modes.  Only applicable 
+when no C<file> is specified.
 
 =back
 
@@ -445,7 +452,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.010.
+This code is beta, version 2.011.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
