@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -276,12 +276,13 @@ sub _copy_to($@)
 {   my ($self, $to, @options) = @_;
     my ($select, $flatten, $recurse, $delete) = @options;
 
-    $self->log(ERROR => "Destination folder $to is not writable."), return
-        unless $to->writable;
+    $self->log(ERROR => "Destination folder $to is not writable."),
+        return unless $to->writable;
 
     # Take messages from this folder.
     my @select = $self->messages($select);
-    $self->log(PROGRESS => "Copying ".@select." messages from $self to $to.");
+    $self->log(PROGRESS =>
+        "Copying ".@select." messages from $self to $to.");
 
     foreach my $msg (@select)
     {   if($msg->copyTo($to)) { $msg->delete if $delete }
@@ -333,14 +334,12 @@ sub close(@)
 {   my ($self, %args) = @_;
     my $force = $args{force} || 0;
 
-    return if $self->{MB_is_closed};
-    $self->{MB_is_closed} = 1;
+    return 1 if $self->{MB_is_closed};
+    $self->{MB_is_closed}++;
 
     # Inform manager that the folder is closed.
-    $self->{MB_manager}->close($self)
-        if defined $self->{MB_manager} && !$args{close_by_manager};
-
-    delete $self->{MB_manager};
+    my $manager = delete $self->{MB_manager};
+    $manager->close($self) if defined $manager && !$args{close_by_manager};
 
     my $write;
     for($args{write} || 'MODIFIED')
@@ -353,7 +352,8 @@ sub close(@)
     if($write && !$force && !$self->writable)
     {   $self->log(WARNING => "Changes not written to read-only folder $self.
 Suggestion: \$folder->close(write => 'NEVER')");
-
+        $self->locker->unlock;
+        $self->{MB_messages} = [];    # Boom!
         return 0;
     }
 
@@ -363,7 +363,8 @@ Suggestion: \$folder->close(write => 'NEVER')");
                , save_deleted => $args{save_deleted} || 0
                );
 
-    $self->{MB_messages} = [];   # Boom!
+    $self->locker->unlock;
+    $self->{MB_messages} = [];    # Boom!
     $rc;
 }
 
@@ -627,8 +628,8 @@ sub openRelatedFolder(@)
     my @options = (%{$self->{MB_init_options}}, @_);
 
     $self->{MB_manager}
-    ?  $self->{MB_manager}->open(@options)
-    :  (ref $self)->new(@options);
+    ? $self->{MB_manager}->open(@options)
+    : (ref $self)->new(@options);
 }
 
 #-------------------------------------------
@@ -804,7 +805,7 @@ sub writeMessages(@) {shift->notImplemented}
 #-------------------------------------------
 
 
-sub locker() { shift->{MB_locker}}
+sub locker() { shift->{MB_locker} }
 
 #-------------------------------------------
 

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport::Exim;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 use base 'Mail::Transport::Send';
 
 use Carp;
@@ -41,7 +41,7 @@ sub trySend($@)
         return 0;
     }
 
-    $self->putContent($message, \*MAILER);
+    $self->putContent($message, \*MAILER, undisclosed => 1);
 
     unless(close MAILER)
     {   $self->log(ERROR => "Errors when closing Exim mailer $program: $!");

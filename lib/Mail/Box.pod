@@ -623,9 +623,10 @@ Close the folder, which usually implies writing the changes.  This will
 return C<false> when writing is required but fails.  Please do check this
 result.
 
-WARNING: When moving messages from one folder to another, be sure to write the
-destination folder before writing and closing the source folder.  Otherwise
-you may lose data if the system crashes or if there are software problems.
+WARNING: When moving messages from one folder to another, be sure to
+write the destination folder before writing and closing the source
+folder.  Otherwise you may lose data if the system crashes or if there
+are software problems.
 
  Option        Defined in       Default    
  force                          <false>    
@@ -658,9 +659,9 @@ the folder may remove the messages for real.  See L<write(save_deleted)|Mail::Bo
 =over 4
 
 Specifies whether the folder should be written.  As could be expected,
-C<ALWAYS> means always (even if there are no changes), C<NEVER> means that
-changes to the folder will be lost, and C<MODIFIED>
-only saves the folder if there are any changes.
+C<ALWAYS> means always (even if there are no changes), C<NEVER> means
+that changes to the folder will be lost, and C<MODIFIED> only saves the
+folder if there are any changes.
 
 =back
 
@@ -1166,8 +1167,8 @@ $obj-E<gt>B<nameOfSubFolder>(NAME)
 
 =over 4
 
-Returns the constructed name of the folder with NAME, which is a sub-folder
-of this current one.
+Returns the constructed name of the folder with NAME, which is a
+sub-folder of this current one.
 
 =back
 
@@ -1175,10 +1176,10 @@ $obj-E<gt>B<openRelatedFolder>(OPTIONS)
 
 =over 4
 
-Open a folder (usually a sub-folder) with the same options as this one.  If
-there is a folder manager in use, it will be informed about this new folder.
-OPTIONS overrule the options which where used for the folder this method
-is called upon.
+Open a folder (usually a sub-folder) with the same options as this one.
+If there is a folder manager in use, it will be informed about this new
+folder.  OPTIONS overrule the options which where used for the folder
+this method is called upon.
 
 =back
 
@@ -1756,7 +1757,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.048.
+Distribution version 2.049.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

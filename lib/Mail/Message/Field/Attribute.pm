@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field::Attribute;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 
 use Mail::Reporter;
 use 5.007003;

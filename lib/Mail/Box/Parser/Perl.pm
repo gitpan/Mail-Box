@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Box::Parser::Perl;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 use base 'Mail::Box::Parser';
 
 use Mail::Message::Field;
@@ -26,7 +26,7 @@ sub init(@)
 sub pushSeparator($)
 {   my ($self, $sep) = @_;
     unshift @{$self->{MBPP_separators}}, $sep;
-    $self->{MBPP_strip_gt}++ if substr($sep, 0, 5) eq 'From ';
+    $self->{MBPP_strip_gt}++ if $sep eq 'From ';
     $self;
 }
 
@@ -35,7 +35,7 @@ sub pushSeparator($)
 sub popSeparator()
 {   my $self = shift;
     my $sep  = shift @{$self->{MBPP_separators}};
-    $self->{MBPP_strip_gt}-- if substr($sep, 0, 5) eq 'From ';
+    $self->{MBPP_strip_gt}-- if $sep eq 'From ';
     $sep;
 }
     
@@ -105,7 +105,7 @@ sub _is_good_end($)
 
     my $file = $self->{MBPP_file};
     my $here = $file->tell;
-    $file->seek($where, 0);
+    $file->seek($where, 0) or return 0;
 
     # Find first non-empty line on specified location.
     my $line = $file->getline;
@@ -115,8 +115,8 @@ sub _is_good_end($)
     $file->seek($here, 0);
     return 1 unless defined $line;
 
-    substr($line, 0, length $sep) eq $sep
-    && ($sep !~ m/^From / || $line =~ m/ (19[789]|20[01])\d\b/ );
+        substr($line, 0, length $sep) eq $sep
+    && ($sep ne 'From ' || $line =~ m/ (19[789]|20[01])\d\b/ );
 }
 
 #------------------------------------------
@@ -165,9 +165,7 @@ sub _read_stripped_lines(;$$)
             my $line  = $file->getline or last;
 
             if(   substr($line, 0, $l) eq $sep
-               && (   substr($sep, 0, 5) ne 'From '
-                   || $line =~ m/ (?:19[789]\d|20[01]\d)/
-                  )
+               && ($sep ne 'From ' || $line =~ m/ (?:19[789]\d|20[01]\d)/)
                )
             {   $file->seek($where, 0);
                 last;
@@ -185,8 +183,7 @@ sub _read_stripped_lines(;$$)
 
             foreach my $sep (@seps)
             {   next if substr($line, 0, length $sep) ne $sep;
-                next if substr($sep, 0, 5) eq 'From '
-                       && $line !~ m/ (?:19[789]\d|20[01]\d)/;
+                next if $sep eq 'From ' && $line !~ m/ (?:19[789]\d|20[01]\d)/;
 
                 $file->setpos($where);
                 last LINE;

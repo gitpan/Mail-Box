@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Convert::TextAutoformat;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 use base 'Mail::Message::Convert';
 
 use Mail::Message::Body::String;
@@ -18,9 +18,6 @@ sub init($)
     $self->{MMCA_options} = $args->{autoformat} || { all => 1 };
     $self;
 }
-
-#------------------------------------------
-
 
 #------------------------------------------
 

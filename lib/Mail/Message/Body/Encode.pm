@@ -4,12 +4,14 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 use base 'Mail::Reporter';
 
 use Carp;
 
 use MIME::Types;
+use File::Basename 'basename';
+
 my MIME::Types $mime_types;
 
 
@@ -157,6 +159,45 @@ sub isBinary()
 
 
 sub isText() { not shift->isBinary }
+
+#------------------------------------------
+
+
+sub dispositionFilename($)
+{   my ($self, $dir) = @_;
+    my $raw;
+
+    my $field;
+    if($field = $self->disposition)
+    {   $raw  = $field->attribute('filename')
+             || $field->attribute('file')
+             || $field->attribute('name');
+    }
+
+    if(!defined $raw && ($field = $self->type))
+    {   $raw  = $field->attribute('filename')
+             || $field->attribute('file')
+             || $field->attribute('name');
+    }
+
+    my $filename = '';
+    if(defined $raw)
+    {   $filename = basename $raw;
+        $filename =~ s/[^\w.-]//;
+    }
+
+    unless(length $filename)
+    {   my $ext    = ($self->mimeType->extensions)[0] || 'raw';
+        my $unique;
+        for($unique = 'part-0'; 1; $unique++)
+        {   my $out = File::Spec->catfile($dir, "$unique.$ext");
+            open IN, "<", $out or last;  # does not exist: can use it
+            close IN;
+        }
+        $filename = "$unique.$ext";
+    }
+    File::Spec->catfile($dir, $filename);
+}
 
 #------------------------------------------
 

@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Maildir;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
@@ -94,7 +94,7 @@ sub listSubFolders(@)
 
     my @dirs;
     while(my $d = readdir DIR)
-    {   next if $d =~ m/^(new$|tmp$|cur$|\.)/;
+    {   next if $d =~ m/^(new|tmp|cur|\.\.?)$/;
 
         my $dir = File::Spec->catfile($dir,$d);
         push @dirs, $d if -d $dir && -r _;

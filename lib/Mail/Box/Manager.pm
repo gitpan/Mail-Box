@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Box::Manager;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 use base 'Mail::Reporter';
 
 use Mail::Box;
@@ -138,8 +138,8 @@ sub open(@)
 
     # Do not open twice.
     if(my $folder = $self->isOpenFolder($name))
-    {   $self->log(NOTICE => "Folder $name is already open.\n");
-        return $folder;
+    {   $self->log(WARNING => "Folder $name is already open.\n");
+        return undef;
     }
 
     #

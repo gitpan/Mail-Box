@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport::Qmail;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 use base 'Mail::Transport::Send';
 
 use Carp;
@@ -37,7 +37,7 @@ sub trySend($@)
         return 0;
     }
  
-    $self->putContent($message, \*MAILER);
+    $self->putContent($message, \*MAILER, undislosed => 1);
 
     unless(close MAILER)
     {   $self->log(ERROR => "Errors when closing Qmail mailer $program: $!");

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field::Addresses;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 use base 'Mail::Message::Field::Structured';
 
 use Mail::Message::Field::AddrGroup;
@@ -71,7 +71,7 @@ sub addAddress(@)
 sub addGroup(@)
 {   my $self  = shift;
     my $group = @_ == 1 ? shift
-              : Mail::Message::Field::AddrGroup->new(name => '', @_);
+              : Mail::Message::Field::AddrGroup->new(@_);
 
     push @{$self->{MMFF_groups}}, $group;
     $group;

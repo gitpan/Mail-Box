@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Convert::Html;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 use base 'Mail::Message::Convert';
 
 use Carp;
@@ -15,15 +15,11 @@ sub init($)
     $self->SUPER::init($args);
 
     my $produce = $args->{produce} || 'HTML';
-    if($produce eq 'HTML')
-    {   $self->{MMCH_tail} = '>';
-    }
-    elsif($produce eq 'XHTML')
-    {   $self->{MMCH_tail} = ' />';
-    }
-    else
-    {   croak "Produce XHTML or HTML, not $produce.";
-    }
+
+    $self->{MMCH_tail}
+     = $produce eq 'HTML'  ?   '>'
+     : $produce eq 'XHTML' ? ' />'
+     : carp "Produce XHTML or HTML, not $produce.";
 
     $self;
 }

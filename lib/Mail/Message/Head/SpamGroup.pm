@@ -1,7 +1,7 @@
 
 package Mail::Message::Head::SpamGroup;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 use base 'Mail::Message::Head::FieldGroup';
 
 use strict;
@@ -68,9 +68,11 @@ sub collectFields($)
 
 #------------------------------------------
 
+
 sub isSpamGroupFieldName($)
 {  local $_ = $_[1];
-   $_ =~ $spam_assassin_names || $_ =~ $habeas_swe_names;
+    my $about_spam = ($_ =~ $spam_assassin_names || $_ =~ $habeas_swe_names);
+    $about_spam;
 }
 
 #------------------------------------------

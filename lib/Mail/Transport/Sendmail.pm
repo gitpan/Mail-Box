@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport::Sendmail;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 use base 'Mail::Transport::Send';
 
 use Carp;
@@ -21,6 +21,7 @@ sub init($)
      || $self->findBinary('sendmail')
      || return;
 
+    $self->{MTS_opts} = $args->{sendmail_options} || [];
     $self;
 }
 
@@ -32,12 +33,13 @@ sub trySend($@)
 
     my $program = $self->{MTS_program};
     if(open(MAILER, '|-')==0)
-    {   { exec $program, '-it'; }  # {} to avoid warning
+    {   my $options = $args{sendmail_options} || [];
+        { exec $program, '-it', @{$self->{MTS_opts}}; }  # {} to avoid warning
         $self->log(NOTICE => "Errors when opening pipe to $program: $!");
         return 0;
     }
  
-    $self->putContent($message, \*MAILER);
+    $self->putContent($message, \*MAILER, undisclosed => 1);
 
     unless(close MAILER)
     {   $self->log(NOTICE => "Errors when closing sendmail mailer $program: $!");

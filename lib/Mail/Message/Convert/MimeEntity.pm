@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Message::Convert::MimeEntity;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 use base 'Mail::Message::Convert';
 
 use MIME::Entity;

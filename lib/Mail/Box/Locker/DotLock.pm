@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Box::Locker::DotLock;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 use base 'Mail::Box::Locker';
 
 use IO::File;
@@ -42,7 +42,7 @@ sub _try_lock($)
                  :  O_CREAT|O_EXCL|O_WRONLY|O_NONBLOCK;
 
     my $lock     = IO::File->new($lockfile, $flags, 0600)
-        or return 0;
+       or return 0;
 
     close $lock;
     1;

@@ -1,6 +1,6 @@
 package Mail::Box::FastScalar;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 
 
 use strict;

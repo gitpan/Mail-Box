@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.048';
+$VERSION = '2.049';
 use base 'Mail::Reporter';
 
 use Mail::Message::Field;
@@ -73,7 +73,10 @@ sub init($)
     elsif(defined(my $data = $args->{data}))
     {
         if(!ref $data)
-        {   $self->_data_from_lines( [split /^/, $data] ) }
+        {   my @lines = split /^/, $data;
+            $lines[-1] .= "\n" if substr($lines[-1], -1) ne "\n";
+            $self->_data_from_lines(\@lines)
+        }
         elsif(ref $data eq 'ARRAY')
         {   $self->_data_from_lines($data) or return }
         else
@@ -330,6 +333,20 @@ sub printEscapedFrom($) {shift->notImplemented}
 #------------------------------------------
 
 
+sub write(@)
+{   my ($self, %args) = @_;
+    my $filename = $args{filename};
+    die "No filename for write() body" unless defined $filename;
+
+    open OUT, '>', $filename or return;
+    $self->print(\*OUT);
+    close OUT or return undef;
+    $self;
+}
+
+#------------------------------------------
+
+
 sub read(@) {shift->notImplemented}
 
 #------------------------------------------
@@ -407,7 +424,8 @@ sub load() {shift}
 #------------------------------------------
 
 
-my @in_encode = qw/check encode encoded eol isBinary isText unify/;
+my @in_encode = qw/check encode encoded eol isBinary isText unify
+                   dispositionFilename/;
 my %in_module = map { ($_ => 'encode') } @in_encode;
 
 sub AUTOLOAD(@)
