@@ -1,5 +1,5 @@
 package Mail::Box::POP3;
-our $VERSION = 2.038;  # Part of Mail::Box
+our $VERSION = 2.039;  # Part of Mail::Box
 use base 'Mail::Box::Net';
 
 use strict;
@@ -61,8 +61,9 @@ sub type() {'pop3'}
 sub close()
 {   my $self = shift;
 
-    my $pop  = $self->popClient;
-    $pop->disconnect if defined $pop;
+    if(my $pop = delete $self->{MBP_client})
+    {   $pop->disconnect;
+    }
 
     $self->SUPER::close;
 }

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Field;
-our $VERSION = 2.038;  # Part of Mail::Box
+our $VERSION = 2.039;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -104,19 +104,20 @@ sub attribute($;$)
 
     unless(@_)
     {   return
-           $body =~ m/\b$attr=( "( (?: [^"]|\\" )* )"
-                              | '( (?: [^']|\\' )* )'
-                              | (\S*)
-                              )
+           $body =~ m/\b$attr\s*\=\s*
+                       ( "( (?: [^"]|\\" )* )"
+                       | '( (?: [^']|\\' )* )'
+                       | (\S*)
+                       )
                   /xi ? $+ : undef;
     }
 
     my $value = shift;
     unless(defined $value)  # remove attribute
     {   for($body)
-        {      s/\b$attr='([^']|\\')*'//i
-            or s/\b$attr="([^"]|\\")*"//i
-            or s/\b$attr=\S*//i;
+        {      s/\b$attr\s*=\s*'([^']|\\')*'//i
+            or s/\b$attr\s*=\s*"([^"]|\\")*"//i
+            or s/\b$attr\s*=\s*\S*//i;
         }
         $self->unfoldedBody($body);
         return undef;
@@ -124,9 +125,9 @@ sub attribute($;$)
 
     (my $quoted = $value) =~ s/"/\\"/g;
     for($body)
-    {       s/\b$attr='([^']|\\')*'/$attr="$quoted"/i
-         or s/\b$attr="([^"]|\\")*"/$attr="$quoted"/i
-         or s/\b$attr=\S+/$attr="$quoted"/i
+    {       s/\b$attr\s*=\s*'([^']|\\')*'/$attr="$quoted"/i
+         or s/\b$attr\s*=\s*"([^"]|\\")*"/$attr="$quoted"/i
+         or s/\b$attr\s*=\s*\S+/$attr="$quoted"/i
          or do { $_ .= qq(; $attr="$quoted") }
     }
 

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Nested;
-our $VERSION = 2.038;  # Part of Mail::Box
+our $VERSION = 2.039;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -61,7 +61,6 @@ sub string()
 
 sub lines()
 {    my $nested = shift->nested;
-warn "Nested = ",ref $nested;
      defined $nested ? ($nested->lines) : ();
 }
 

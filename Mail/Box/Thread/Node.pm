@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Thread::Node;
-our $VERSION = 2.038;  # Part of Mail::Box
+our $VERSION = 2.039;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -82,6 +82,20 @@ sub repliedTo()
 sub follows($$)
 {   my ($self, $thread, $how) = @_;
     my $quality = $self->{MBTN_quality};
+
+    # Do not create cyclic constructs caused by erroneous refs.
+
+    my $msgid = $self->messageId;       # Look up for myself, upwards in thread
+    for(my $walker = $thread; defined $walker; $walker = $walker->repliedTo)
+    {   return undef if $walker->messageId eq $msgid;
+    }
+
+    my $threadid = $thread->messageId;  # a->b and b->a  (ref order reversed)
+    foreach ($self->followUps)
+    {   return undef if $_->messageId eq $threadid;
+    }
+
+    # Register
 
     if($how eq 'REPLY' || !defined $quality)
     {   $self->{MBTN_parent}  = $thread;

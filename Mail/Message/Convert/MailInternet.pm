@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::MailInternet;
-our $VERSION = 2.038;  # Part of Mail::Box
+our $VERSION = 2.039;  # Part of Mail::Box
 use base 'Mail::Message::Convert';
 
 use Mail::Internet;
@@ -22,9 +22,8 @@ sub export($@)
     my $mi_head = Mail::Header->new;
 
     my $head    = $message->head;
-    foreach my $name ($head->names)
-    {   $mi_head->add(undef, $_->string)
-            foreach $head->get($name);
+    foreach my $field ($head->orderedFields)
+    {   $mi_head->add($field->Name, scalar $field->foldedBody);
     }
 
     Mail::Internet->new

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Reporter;
-our $VERSION = 2.038;  # Part of Mail::Box
+our $VERSION = 2.039;  # Part of Mail::Box
 
 use Carp;
 use Scalar::Util 'dualvar';

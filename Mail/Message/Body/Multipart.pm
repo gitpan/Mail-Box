@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Multipart;
-our $VERSION = 2.038;  # Part of Mail::Box
+our $VERSION = 2.039;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -12,7 +12,8 @@ use IO::Lines;
 
 sub init($)
 {   my ($self, $args) = @_;
-    $args->{mime_type} ||= 'multipart/mixed';
+    my $based = $args->{based_on};
+    $args->{mime_type} ||= defined $based ? $based->mimeType :'multipart/mixed';
 
     $self->SUPER::init($args);
 
@@ -29,22 +30,32 @@ sub init($)
         }
     }
 
-    if(defined(my $based = $args->{based_on}))
+    my $preamble = $args->{preamble};
+    $preamble    = Mail::Message::Body->new(data => $preamble)
+       if defined $preamble && ! ref $preamble;
+
+    my $epilogue = $args->{epilogue};
+    $epilogue    = Mail::Message::Body->new(data => $epilogue)
+       if defined $epilogue && ! ref $epilogue;
+
+    if($based)
     {   $self->boundary($args->{boundary} || $based->boundary);
-        $self->{MMBM_preamble} = $args->{preamble} || $based->preamble;
+        $self->{MMBM_preamble}
+            = defined $preamble ? $preamble : $based->preamble;
 
         $self->{MMBM_parts}
             = @parts              ? \@parts
             : $based->isMultipart ? [ $based->parts('ACTIVE') ]
             : [];
 
-        $self->{MMBM_epilogue} = $args->{epilogue} || $based->epilogue;
+        $self->{MMBM_epilogue}
+            = defined $epilogue ? $epilogue : $based->epilogue;
     }
     else
     {   $self->boundary($args->{boundary} ||$self->type->attribute('boundary'));
-        $self->{MMBM_preamble} = $args->{preamble};
+        $self->{MMBM_preamble} = $preamble;
         $self->{MMBM_parts}    = \@parts;
-        $self->{MMBM_epilogue} = $args->{epilogue};
+        $self->{MMBM_epilogue} = $epilogue;
     }
 
     $self;

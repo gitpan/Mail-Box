@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Mbox;
-our $VERSION = 2.038;  # Part of Mail::Box
+our $VERSION = 2.039;  # Part of Mail::Box
 use base 'Mail::Box::File';
 
 use Mail::Box::Mbox::Message;

@@ -3,7 +3,7 @@ use strict;
 # file Mail::Message::Construct extends functionalities from Mail::Message
 
 package Mail::Message;
-our $VERSION = 2.038;  # Part of Mail::Box
+our $VERSION = 2.039;  # Part of Mail::Box
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -207,7 +207,7 @@ sub reply(@)
 
     my $reply   = $msgtype->buildFromBody
       ( $total
-      , From    => $from || '(undisclosed)'
+      , From    => $from || 'Undisclosed senders:;'
       , To      => $to
       , Subject => $subject
       , 'In-Reply-To' => $origid
@@ -510,7 +510,7 @@ sub buildFromBody(@)
      , @log
      );
 
-    $message->body($body->check);
+    $message->body($body);
     $message->statusToLabels;
 
     # be sure the mesasge-id is actually stored in the header.

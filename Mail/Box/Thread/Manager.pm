@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Thread::Manager;
-our $VERSION = 2.038;  # Part of Mail::Box
+our $VERSION = 2.039;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -273,8 +273,8 @@ sub _process_delayed_message($$)
     # This is the most secure relationship.
 
     if($replies)
-    {   $node->follows($replies, 'REPLY');
-        $replies->followedBy($node);
+    {   $node->follows($replies, 'REPLY')
+        and $replies->followedBy($node);
     }
 
     # Handle the `References' message header.
@@ -287,8 +287,8 @@ sub _process_delayed_message($$)
         my $from = shift @refs;
 
         while(my $to = shift @refs)
-        {   $to->follows($from, 'REFERENCE');
-            $from->followedBy($to);
+        {   $to->follows($from, 'REFERENCE')
+            and $from->followedBy($to);
             $from = $to;
         }
     }

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Field::Addresses;
-our $VERSION = 2.038;  # Part of Mail::Box
+our $VERSION = 2.039;  # Part of Mail::Box
 use base 'Mail::Message::Field::Full';
 
 use Mail::Message::Field::AddrGroup;

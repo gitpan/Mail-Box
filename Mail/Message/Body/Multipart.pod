@@ -88,10 +88,13 @@ See Mail::Message::Body::new(disposition)
 
 See Mail::Message::Body::new(eol)
 
-=item B<epilogue> =E<gt> BODY
+=item B<epilogue> =E<gt> BODY|STRING
 
 The text which is included in the main body after the final boundary.  This
 is usually empty, and has no meaning.
+
+Provide a BODY object or a STRING which will automatically translated
+into a text/plain body.
 
 =item B<file> =E<gt> FILENAME|FILEHANDLE|IOHANDLE
 
@@ -123,12 +126,15 @@ C<MIME::Entity> and C<Mail::Internet> objects are acceptable in the
 list, because they are coercible into Mail::Message::Part's.  Values
 of C<undef> will be skipped silently.
 
-=item B<preamble> =E<gt> BODY
+=item B<preamble> =E<gt> BODY|STRING
 
 The text which is included in the body before the first part.  It is
 common use to include a text to warn the user that the message is a
 multipart.  However, this was useful in earlier days: most mail
 agents are very capable in warning the user themselves.
+
+Provide a BODY object or a STRING which will automatically translated
+into a text/plain body.
 
 =item B<trace> =E<gt> LEVEL
 
@@ -147,6 +153,7 @@ Examples:
 
  my $body  = Mail::Message::Body::Multipart->new
    ( boundary => time . '--it-s-mine'
+   , preamble => "This is a multi-part message in MIME format.\n\n"
    , parts    => [ $intro, $folder->message(3)->decoded, $pgp ]
    );
 
@@ -506,7 +513,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.038.
+This code is beta, version 2.039.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

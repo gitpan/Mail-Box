@@ -1,5 +1,5 @@
 package Mail::Box::Tie;
-our $VERSION = 2.038;  # Part of Mail::Box
+our $VERSION = 2.039;  # Part of Mail::Box
 
 use strict;
 

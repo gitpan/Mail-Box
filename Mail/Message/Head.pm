@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Head;
-our $VERSION = 2.038;  # Part of Mail::Box
+our $VERSION = 2.039;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Complete;
@@ -51,7 +51,7 @@ sub isDelayed { 1 }
 
 sub isMultipart()
 {   my $type = shift->get('Content-Type');
-    $type && $type->body =~ m[^(multipart/)|(message/rfc822)]i;
+    $type && $type->body =~ m[^multipart/]i;
 }
 
 sub modified(;$)

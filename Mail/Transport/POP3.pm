@@ -2,11 +2,13 @@ use strict;
 use warnings;
 
 package Mail::Transport::POP3;
-our $VERSION = 2.038;  # Part of Mail::Box
+our $VERSION = 2.039;  # Part of Mail::Box
 use base 'Mail::Transport::Receive';
 
 use IO::Socket  ();
 use Digest::MD5 ();
+
+my $CRLF = "\015\012";
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -51,7 +53,7 @@ sub header($;$)
     my $socket    = $self->socket      or return;
     my $n         = $self->id2n($uidl) or return;
 
-    $self->sendList($socket, "TOP $n $bodylines\n");
+    $self->sendList($socket, "TOP $n $bodylines$CRLF");
 }
 
 sub message($;$)
@@ -60,7 +62,7 @@ sub message($;$)
 
     my $socket  = $self->socket      or return;
     my $n       = $self->id2n($uidl) or return;
-    my $message = $self->sendList($socket, "RETR $n\n");
+    my $message = $self->sendList($socket, "RETR $n$CRLF");
 
     return unless $message;
 
@@ -80,7 +82,7 @@ sub messageSize($)
     my $list;
     unless($list = $self->{MTP_n2length})
     {   my $socket = $self->socket or return;
-        my $raw = $self->sendList($socket, "LIST\n") or return;
+        my $raw = $self->sendList($socket, "LIST$CRLF") or return;
         my @n2length;
         foreach (@$raw)
         {   m#^(\d+) (\d+)#;
@@ -112,10 +114,10 @@ sub disconnect()
         {   my $dele  = $self->{MTP_dele} || {};
             while(my $uidl = each %$dele)
             {   my $n = $self->id2n($uidl) or next;
-                $self->send($socket, "DELE $n\n") or last;
+                $self->send($socket, "DELE $n$CRLF") or last;
             }
 
-            $quit = $self->send($socket, "QUIT\n");
+            $quit = $self->send($socket, "QUIT$CRLF");
             close $socket;
         }
     }
@@ -212,7 +214,7 @@ sub _connection(;$)
 
     if($wasconnected = $socket = $self->{MTP_socket})
     {   my $error = 1;
-        if(eval {print $socket "NOOP\n"})
+        if(eval {print $socket "NOOP$CRLF"})
         {   my $response = <$socket>;
             $error = !defined($response); # anything will indicate it's alive
         }
@@ -258,9 +260,9 @@ sub login(;$)
 # Check APOP login if automatic or APOP specifically requested
 
     if($authenticate eq 'AUTO' or $authenticate eq 'APOP')
-    {   if($welcome =~ m#^\+OK (<\d+\.\d+\@[^>]+>)#)
+    {   if($welcome =~ m#^\+OK .*(<\d+\.\d+\@[^>]+>)#)
         {   my $md5 = Digest::MD5::md5_hex($1.$password);
-            my $response = $self->send($socket, "APOP $username $md5\n")
+            my $response = $self->send($socket, "APOP $username $md5$CRLF")
 	        or return;
             $connected = OK($response);
         }
@@ -270,9 +272,12 @@ sub login(;$)
 
     unless($connected)
     {   if($authenticate eq 'AUTO' or $authenticate eq 'LOGIN')
-        {   my $response = $self->send($socket, "USER $username\n") or return;
+        {   my $response = $self->send($socket, "USER $username$CRLF")
+               or return;
+
             if(OK($response))
-	    {   $response = $self->send($socket, "PASS $password\n") or return;
+	    {   $response = $self->send($socket, "PASS $password$CRLF")
+                   or return;
                 $connected = OK($response);
             }
         }
@@ -294,7 +299,7 @@ sub status($;$)
 
 # Check if we can do a STAT
 
-    my $stat = $self->send($socket, "STAT\n") or return;
+    my $stat = $self->send($socket, "STAT$CRLF") or return;
     if($stat =~ m#^\+OK (\d+) (\d+)#)
     {   @$self{qw(MTP_messages MTP_total)} = ($1,$2);
     }
@@ -307,7 +312,7 @@ sub status($;$)
 
 # Check if we can do a UIDL
 
-    my $uidl = $self->send($socket, "UIDL\n") or return;
+    my $uidl = $self->send($socket, "UIDL$CRLF") or return;
     $self->{MTP_nouidl} = undef;
     delete $self->{MTP_uidl2n}; # lose the reverse lookup: UIDL -> number
     if(OK($uidl))
@@ -327,7 +332,7 @@ sub status($;$)
 # We can't do UIDL, we need to fake it
 
     else
-    {   my $list = $self->send($socket, "LIST\n") or return;
+    {   my $list = $self->send($socket, "LIST$CRLF") or return;
         my @n2length;
         my @n2uidl;
         if(OK($list))

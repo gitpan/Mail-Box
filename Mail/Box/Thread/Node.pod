@@ -150,8 +150,9 @@ be duplicated.
 =item B<follows> THREAD, QUALITY
 
 Register that the current thread is a reply to the specified THREAD. The
-QUALITY of the relation is specified by the second argument.  The THREAD
-may still have angles around it, and in that case maybe even blanks.
+QUALITY of the relation is specified by the second argument.  The method
+returns C<undef> if the link is not accepted in order to avoid circular
+references.
 
 The relation may be specified more than once, but only the most confident
 relation is used. For example, if a reply (QUALITY equals C<REPLY>) is
@@ -383,7 +384,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.038.
+This code is beta, version 2.039.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
