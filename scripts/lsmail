@@ -4,7 +4,7 @@ use strict;
 use lib '.';
 use Mail::Box::Manager;
 
-my $VERSION = '1.323';
+my $VERSION = '2.00_16';
 
 Mail::Box->VERSION($VERSION);
 
@@ -89,8 +89,8 @@ my $mgr = Mail::Box::Manager->new;
 
 my @folders;
 my @open_options =
-  ( access       => 'r'
-  , lazy_extract => 'ALWAYS'
+  ( access   => 'r'
+  , extract  => 'LAZY'
   );
 
 if(@mailboxes)
@@ -135,7 +135,7 @@ else
         open STDERR, ">/dev/null";
         
         MESSAGE:
-        foreach my $message ($folder->allMessages) {   
+        foreach my $message ($folder->messages) {   
                 
             if($option{header}) {
                 for my $h (keys %{$option{header}}) {
@@ -181,7 +181,7 @@ __END__
 =head1 DESCRIPTION
 
 List the contents of one or more mailboxes.  Specifying more than one
-name is only usefull when you read in threads, in which case the messages
+name is only useful when you read in threads, in which case the messages
 of both folders are merged.
 
 Options:
@@ -190,8 +190,10 @@ Options:
 
 =item --entities =E<gt> BOOLEAN
 
-(or C<-e>) show the number of MIME-entities in messages. When --threads is also given, the number is appended to the subject.
-Slows down lsmail significantly since a mail must be fully parsed to do that.
+(or C<-e>) show the number of MIME-entities in messages. When --threads is
+also given, the number is appended to the subject.  Slows down lsmail
+significantly since a mail message must be fully parsed to get the entities
+information.
 
 =item --size =E<gt> BOOLEAN
 
@@ -209,7 +211,8 @@ do not display mails whose HEADER-FIELD contains PATTERN.
 =item --threads =E<gt> BOOLEAN
 
 (or C<-t> or C<-nothreads> or C<-not>) list the messages in threads.  The
-messages are sorted on time: the oldest starter comes first.
+threads are sorted by time: the thread with the oldest starting message comes
+first.
 
 =item --help =E<gt> BOOLEAN
 
@@ -218,7 +221,7 @@ messages are sorted on time: the oldest starter comes first.
 =item --verbose =E<gt> BOOLEAN
 
 (or C<--verbose> or C<--noverbose>) Be verbose about the progress of the
-program.  Especially useful for debugging purposes.
+program.  This is especially useful for debugging purposes.
 
 =back
 
@@ -232,7 +235,7 @@ Additions by Tassilo v. Parseval (F<tassilo.parseval@post.rwth-aachen.de>)
 
 =head1 VERSION
 
-This code is beta, version 1.323
+This code is beta, version 2.00_16
 
 =cut
 

@@ -4,7 +4,7 @@ use strict;
 use lib '/home/markov/fake';
 use Mail::Box::Manager;
 
-my $VERSION = '1.323';
+my $VERSION = '2.00_16';
 
 Mail::Box->VERSION($VERSION);
 
@@ -19,7 +19,7 @@ sub default_messagepage();
 
 =head1 NAME
 
-mailbox2html - EXPERIMENTAL: convert mail-folders into an html-structure
+mailbox2html - EXPERIMENTAL: convert mail folders into an HTML structure
 
 =head1 SYNOPSIS
 
@@ -144,7 +144,7 @@ sub create_folder(@)
 
     my @subfolders;
     if($option{recurse})
-    {    my @subs  = sort $folder->listFolders;
+    {    my @subs  = sort $folder->listSubFolders;
          my $prev;
 
          for(my $i=0; $i<@subs; $i++)
@@ -171,7 +171,7 @@ sub create_folder(@)
     trace "processing folder $name";
 
     my @uplinks  = create_uplinks @{$args{path}};
-    my @messages = $folder->allMessages;
+    my @messages = $folder->messages;
 
     my %sum      =              # collect info for super-folder, so no place
       ( foldername    => $name  # for sub-folder stuff.
@@ -382,9 +382,9 @@ $manager  = Mail::Box::Manager->new;
 
 trace "Opening folder `$option{src}'.";
 my $folder = $manager->open
-  ( folderdir    => $option{src}
-  , folder       => '='          # open folderdir
-# , lazy_extract => 'NEVER'      # need all messages anyway.
+  ( folderdir  => $option{src}
+  , folder     => '='          # open folderdir
+  , extract    => 'ALWAYS'     # need all messages anyway.
   );
 
 die "Cannot open folder `$option{src}'.\n"
@@ -471,8 +471,8 @@ __END__
 
 =head1 DESCRIPTION
 
-Convert various kinds of mail-folders to html, permitting it to be
-read by a browser.
+Convert various kinds of mail folders to HTML, permitting them to be
+read by a web browser.
 
 Options:
 
@@ -480,19 +480,20 @@ Options:
 
 =item -cleanup =E<gt> BOOLEAN
 
-(or C<-cleanup> or C<-nocleanup>) removes the directory, before generating
+(or C<-cleanup> or C<-nocleanup>) removes the directory before generating
 the data.
 
 =item -dest =E<gt> DIRECTORY
 
-Where the output has to go to.  When this option is not specified, the program
-will try to create a sub-directory named C<mail2html> in the directory
-pointed to by the environment variable TMPDIR or tmpdir, otherwise in
-C</var/tmp>, or C</tmp>.
+The output directory. When this option is not specified, the program will
+try to create a sub-directory named C<mail2html> in the directory pointed
+to by the environment variable TMPDIR or tmpdir, otherwise the output will
+be in C</var/tmp> or C</tmp>.
 
 =item -folderpage =E<gt> FILENAME
 
-The template which is used to create folder-pages.  See the examples with
+# DWC Hm... 2nd sentence doesn't make sense
+The template which is used to create folder pages.  See the examples with
 the distribution of this code for examples.
 
 =item -help =E<gt> BOOLEAN
@@ -501,32 +502,34 @@ the distribution of this code for examples.
 
 =item -index =E<gt> FILENAME
 
-The filename in the directory where the web-server falls back onto, when
-the user specifies only the name of the directory to get data from.  By
-default, this is set to C<index.html>.
+The filename which the web server loads when the user specifies only the
+name of the directory in a URL. This option is set to C<index.html> by
+default.
 
 =item -messagepage =E<gt> FILENAME
 
+# DWC Hm... 2nd sentence doesn't make sense
 The template which is used to create one page per message.
 See the examples with the distribution of this code for examples.
 
 =item -recurse =E<gt> BOOLEAN
 
-(or C<-recurse> or <-norecurse>) Go recursive through subfolders.  By
-default, recursive production is enabled.
+(or C<-recurse> or <-norecurse>) Recurse through subfolders.  By default,
+recursive production is enabled.
 
 =item -src =E<gt> FILE | DIRECTORY
 
-Start with the folder(-directory) which can be found on the specified location.
-The type of folder is auto-detected.  By default, the content of the
-C<MAIL> or C<mail> environment-variable is taken.  If these are not defined,
-C<HOME> and C<home> are checked for a sub-directory named C<Mail>.  If that
-is unsuccessful too, the current directory is taken.
+Start with the folder(-directory) which can be found at the specified
+location.  The type of folder is auto-detected.  By default, the contents
+of the directory specified by the C<MAIL> or C<mail> environment variable
+are used. If these variables are not defined, C<HOME> and C<home> are
+checked for a sub-directory named C<Mail>.  If these are unsuccessful as
+well, the current directory is used.
 
 =item -verbose =E<gt> BOOLEAN
 
 (or C<-verbose> or C<-noverbose>) Be verbose about the progress of the
-program.  Especially useful for debugging purposes.
+program.  This is especially useful for debugging purposes.
 
 =back
 
@@ -538,7 +541,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 1.323
+This code is beta, version 2.00_16
 
 =cut
 
