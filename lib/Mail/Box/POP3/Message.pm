@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::POP3::Message;
 use vars '$VERSION';
-$VERSION = '2.053';
+$VERSION = '2.054';
 use base 'Mail::Box::Net::Message';
 
 use File::Copy;
@@ -40,9 +40,9 @@ sub label(@)
     return $self->SUPER::label(@_) if @_==1;
 
     # POP3 can only set 'deleted' in the source folder.  Don't forget
-    my $olddel = $self->label('deleted');
+    my $olddel = $self->label('deleted') ? 1 : 0;
     my $ret    = $self->SUPER::label(@_);
-    my $newdel = $self->label('deleted');
+    my $newdel = $self->label('deleted') ? 1 : 0;
 
     $self->folder->popClient->deleted($newdel, $self->unique)
         if $newdel != $olddel;

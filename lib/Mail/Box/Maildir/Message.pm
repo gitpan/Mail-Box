@@ -1,7 +1,7 @@
 
 package Mail::Box::Maildir::Message;
 use vars '$VERSION';
-$VERSION = '2.053';
+$VERSION = '2.054';
 use base 'Mail::Box::Dir::Message';
 
 use strict;

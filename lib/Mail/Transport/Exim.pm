@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport::Exim;
 use vars '$VERSION';
-$VERSION = '2.053';
+$VERSION = '2.054';
 use base 'Mail::Transport::Send';
 
 use Carp;
@@ -18,6 +18,7 @@ sub init($)
 
     $self->{MTS_program}
       = $args->{proxy}
+     || ( -x '/usr/sbin/exim4' ? '/usr/sbin/exim4' : undef)
      || $self->findBinary('exim', '/usr/exim/bin')
      || return;
 

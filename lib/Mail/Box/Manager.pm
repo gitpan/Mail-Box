@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Box::Manager;
 use vars '$VERSION';
-$VERSION = '2.053';
+$VERSION = '2.054';
 use base 'Mail::Reporter';
 
 use Mail::Box;
@@ -206,7 +206,7 @@ sub open(@)
     #
 
     eval "require $class";
-    croak if $@;
+    croak $@ if $@;
 
     push @defaults, manager => $self;
     my $folder = $class->new(@defaults, %args);

@@ -363,3 +363,4 @@ tests/81bodyconv/Definition.pm
 tests/Tools.pm
 tests/folders/mbox.cpy
 tests/folders/mbox.src
+META.yml                                 Module meta-data (added by MakeMaker)

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.053';
+$VERSION = '2.054';
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -79,7 +79,7 @@ sub coerce($)
         {   eval {require Mail::Message::Convert::MimeEntity};
                 confess "Install MIME::Entity" if $@;
 
-            $mime_entity_converter = Mail::Message::Convert::MailInternet->new;
+            $mime_entity_converter = Mail::Message::Convert::MimeEntity->new;
         }
 
         $message = $mime_entity_converter->from($message)
@@ -91,7 +91,7 @@ sub coerce($)
         {   eval {require Mail::Message::Convert::MailInternet};
             confess "Install Mail::Internet" if $@;
 
-            $mail_internet_converter = Mail::Message::Convert::MimeEntity->new;
+           $mail_internet_converter = Mail::Message::Convert::MailInternet->new;
         }
 
         $message = $mail_internet_converter->from($message)
