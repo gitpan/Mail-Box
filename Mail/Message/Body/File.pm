@@ -2,7 +2,8 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::File;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
@@ -12,6 +13,7 @@ use Carp;
 use IO::File;
 use POSIX 'tmpnam';
 use File::Copy;
+
 
 sub _data_from_filename(@)
 {   my ($self, $filename) = @_;
@@ -104,6 +106,8 @@ sub _data_from_lines(@)
     $self;
 }
 
+#------------------------------------------
+
 sub clone()
 {   my $self  = shift;
     my $clone = ref($self)->new(based_on => $self);
@@ -115,6 +119,8 @@ sub clone()
     $clone->{MMBF_size}    = $self->{MMBF_size};
     $self;
 }
+
+#------------------------------------------
 
 sub nrLines()
 {   my $self    = shift;
@@ -137,6 +143,8 @@ sub nrLines()
     $self->{MMBF_nrlines} = $nrlines;
 }
 
+#------------------------------------------
+
 sub size()
 {   my $self = shift;
 
@@ -150,6 +158,9 @@ sub size()
 
     $self->{MMBF_size} = $size;
 }
+
+
+#------------------------------------------
 
 sub string()
 {   my $self = shift;
@@ -167,6 +178,8 @@ sub string()
     $return;
 }
 
+#------------------------------------------
+
 sub lines()
 {   my $self = shift;
 
@@ -183,7 +196,11 @@ sub lines()
     wantarray ? @r: \@r;
 }
 
+#------------------------------------------
+
 sub file() { IO::File->new(shift->tempFilename, 'r') }
+
+#------------------------------------------
 
 sub print(;$)
 {   my $self = shift;
@@ -202,6 +219,8 @@ sub print(;$)
 
     $self;
 }
+
+#------------------------------------------
 
 sub printEscapedFrom($)
 {   my ($self, $fh) = @_;
@@ -231,6 +250,8 @@ sub printEscapedFrom($)
     $self;
 }
 
+#------------------------------------------
+
 sub read($$;$@)
 {   my ($self, $parser, $head, $bodytype) = splice @_, 0, 4;
     my $file = $self->tempFilename;
@@ -247,6 +268,9 @@ sub read($$;$@)
     $self;
 }
 
+#------------------------------------------
+
+
 sub tempFilename(;$)
 {   my $self = shift;
 
@@ -255,6 +279,11 @@ sub tempFilename(;$)
     :                          ($self->{MMBF_filename} = tmpnam);
 }
 
+#------------------------------------------
+
+
 sub DESTROY { unlink shift->tempFilename }
+
+#------------------------------------------
 
 1;

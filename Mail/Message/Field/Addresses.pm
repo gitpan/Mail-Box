@@ -2,13 +2,16 @@ use strict;
 use warnings;
 
 package Mail::Message::Field::Addresses;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Field::Full';
 
 use Mail::Message::Field::AddrGroup;
 use Mail::Message::Field::Address;
 use List::Util 'first';
 
+
+#------------------------------------------
 # what is permitted for each field.
 
 my $address_list = {groups => 1, multi => 1};
@@ -23,6 +26,10 @@ my %accepted     =
  , cc         => $address_list
  , bcc        => $address_list
  );
+
+
+#------------------------------------------
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -47,9 +54,12 @@ sub init($)
     (my $def = lc $name) =~ s/^resent\-//;
     $self->{MMFF_defaults} = $accepted{$def} || {};
     $self->{MMFF_groups}   = [];
-
+    
     $self;
 }
+
+#------------------------------------------
+
 
 sub parse($)
 {   my ($self, $string) = @_;
@@ -100,6 +110,10 @@ sub parse($)
     }
 }
 
+
+#------------------------------------------
+
+
 sub addAddress(@)
 {   my $self  = shift;
     my $email = @_ && ref $_[0] ? shift : undef;
@@ -113,6 +127,9 @@ sub addAddress(@)
     $set->addAddress($email);
 }
 
+#------------------------------------------
+
+
 sub addGroup(@)
 {   my $self  = shift;
 
@@ -123,17 +140,32 @@ sub addGroup(@)
     $group;
 }
 
+#------------------------------------------
+
+
 sub group($)
 {   my ($self, $name) = @_;
     $name = '' unless defined $name;
     first { lc($_->name) eq lc($name) } $self->groups;
 }
 
+#------------------------------------------
+
+
 sub groups() { @{shift->{MMFF_groups}} }
+
+#------------------------------------------
+
 
 sub groupNames() { map {$_->name} shift->groups }
 
+#------------------------------------------
+
+
 sub addresses() { map {$_->addresses} shift->groups }
+
+#------------------------------------------
+
 
 sub addAttribute($;@)
 {   my $self = shift;
@@ -141,11 +173,17 @@ sub addAttribute($;@)
     $self;
 }
 
+#------------------------------------------
+
+
 sub addExtra($@)
 {   my $self = shift;
     $self->log(ERROR => 'No extras in address fields.');
     $self;
 }
+
+#------------------------------------------
+
 
 sub consumeAddress($)
 {   my ($self, $string) = @_;
@@ -155,7 +193,7 @@ sub consumeAddress($)
 
     return (undef, $_[0])
         unless defined $local && $string =~ s/^\s*\@//;
-
+  
     (my $domain, $string, my $domcomment) = $self->consumeDomain($string);
     return (undef, $_[0]) unless defined $domain;
 
@@ -165,6 +203,9 @@ sub consumeAddress($)
 
     ($email, $string);
 }
+
+#------------------------------------------
+
 
 sub consumeDomain($)
 {   my ($self, $string) = @_;
@@ -176,5 +217,8 @@ sub consumeDomain($)
     $atom =~ s/\s//g;
     ($atom, $rest, $comment);
 }
+
+#------------------------------------------
+
 
 1;

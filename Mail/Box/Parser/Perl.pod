@@ -3,260 +3,424 @@
 
 Mail::Box::Parser::Perl - reading messages from file using Perl
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Box::Parser::Perl
    is a Mail::Box::Parser
    is a Mail::Reporter
 
+
 =head1 SYNOPSIS
+
 
 
 =head1 DESCRIPTION
 
-The Mail::Box::Parser::Perl implements parsing of messages in Perl.
-This may be a little slower than the C<C> based parser, but will also
-work on platforms where no C compiler is available.
+The C<Mail::Box::Parser::Perl> implements parsing of messages
+in Perl.  This may be a little slower than the C<C> based parser
+Mail::Box::Parser::C, but will also work on platforms where no C
+compiler is available.
+
+
 
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+Mail::Box::Parser::Perl-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-=item B<new> OPTIONS
+ Option             Defined in       Default      
+ file               L<Mail::Box::Parser>  undef        
+ filename           L<Mail::Box::Parser>  <required>   
+ fix_header_errors                   <false>      
+ log                L<Mail::Reporter>  C<'WARNINGS'>
+ mode               L<Mail::Box::Parser>  C<'r'>       
+ trace              L<Mail::Reporter>  C<'WARNINGS'>
+ trusted                             <false>      
 
-(Class method)
+. file FILE-HANDLE
 
- OPTION               DEFAULT
- file                 undef
- filename             <required>
- fix_header_errors    <false>
- log                  'WARNINGS'
- mode                 'r'
- trace                'WARNINGS'
- trusted              <false>
+. filename FILENAME
+
+. fix_header_errors BOOLEAN
 
 =over 4
-
-=item B<file> =E<gt> FILE-HANDLE
-
-See Mail::Box::Parser::new(file)
-
-=item B<filename> =E<gt> FILENAME
-
-See Mail::Box::Parser::new(filename)
-
-=item B<fix_header_errors> =E<gt> BOOLEAN
 
 When header errors are detected, the parsing of the header will
 be stopped.  Other header lines will become part of the body of
 the message.  Set this flag to have the erroneous line added to
 the previous header line.
 
-=item B<log> =E<gt> LEVEL
+=back
 
-See Mail::Reporter::new(log)
+. log LEVEL
 
-=item B<mode> =E<gt> OPENMODE
+. mode OPENMODE
 
-See Mail::Box::Parser::new(mode)
+. trace LEVEL
 
-=item B<trace> =E<gt> LEVEL
+. trusted BOOLEAN
 
-See Mail::Reporter::new(trace)
-
-=item B<trusted> =E<gt> BOOLEAN
+=over 4
 
 Is the input from the file to be trusted, or does it require extra
-tests.  Related to Mail::Box::new(trusted).
+tests.  Related to L<Mail::Box::new(trusted)|"Constructors">.
 
 =back
 
 =back
 
-=head2 The Parser
+=head2 The parser
+
+
+$obj-E<gt>B<fileChanged>
 
 =over 4
 
-=item B<defaultParserType> [CLASS]
-
-See Mail::Box::Parser::defaultParserType()
-
-=item B<fileChanged> 
-
-See Mail::Box::Parser::fileChanged()
-
-=item B<filename> 
-
-See Mail::Box::Parser::filename()
-
-=item B<restart> 
-
-See Mail::Box::Parser::restart()
-
-=item B<start> OPTIONS
-
-See Mail::Box::Parser::start()
-
-=item B<stop> 
-
-See Mail::Box::Parser::stop()
-
-=item B<takeFileInfo> 
-
-See Mail::Box::Parser::takeFileInfo()
+See L<Mail::Box::Parser/"The parser">
 
 =back
 
-=head2 Parsing
+$obj-E<gt>B<filename>
 
 =over 4
 
-=item B<bodyAsFile> FILEHANDLE [,CHARS [,LINES]]
+See L<Mail::Box::Parser/"The parser">
 
-See Mail::Box::Parser::bodyAsFile()
+=back
 
-=item B<bodyAsList> [,CHARS [,LINES]]
+$obj-E<gt>B<fixHeaderErrors>([BOOLEAN])
 
-See Mail::Box::Parser::bodyAsList()
-
-=item B<bodyAsString> [,CHARS [,LINES]]
-
-See Mail::Box::Parser::bodyAsString()
-
-=item B<bodyDelayed> [,CHARS [,LINES]]
-
-See Mail::Box::Parser::bodyDelayed()
-
-=item B<filePosition> [POSITION]
-
-See Mail::Box::Parser::filePosition()
-
-=item B<fixHeaderErrors> [BOOLEAN]
+=over 4
 
 If set to C<true>, parsing of a header will not stop on an error, but
 attempt to add the erroneous this line to previous field.  Without BOOLEAN,
 the current setting is returned.
 
-Examples:
+I<Example:> 
 
  $folder->parser->fixHeaderErrors(1);
  my $folder = $mgr->open('folder', fix_header_errors => 1);
 
-=item B<lineSeparator> 
-
-See Mail::Box::Parser::lineSeparator()
-
-=item B<popSeparator> 
-
-See Mail::Box::Parser::popSeparator()
-
-=item B<pushSeparator> STRING|REGEXP
-
-See Mail::Box::Parser::pushSeparator()
-
-=item B<readHeader> 
-
-=item B<readSeparator> OPTIONS
-
-See Mail::Box::Parser::readSeparator()
-
 =back
 
-=head2 Reading and Writing [internals]
+$obj-E<gt>B<restart>
 
 =over 4
 
-=item B<closeFile> 
-
-See Mail::Box::Parser::closeFile()
-
-=item B<openFile> ARGS
-
-See Mail::Box::Parser::openFile()
+See L<Mail::Box::Parser/"The parser">
 
 =back
 
-=head2 Logging and Tracing
+$obj-E<gt>B<start>(OPTIONS)
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+See L<Mail::Box::Parser/"The parser">
 
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<stop>
 
 =over 4
 
-=item B<AUTOLOAD> 
-
-See Mail::Reporter::AUTOLOAD()
-
-=item B<DESTROY> 
-
-See Mail::Reporter::DESTROY()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+See L<Mail::Box::Parser/"The parser">
 
 =back
 
-=head1 SEE ALSO
+=head2 Parsing
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
 
-=head1 AUTHOR
+$obj-E<gt>B<bodyAsFile>(FILEHANDLE [,CHARS [,LINES]])
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+=over 4
 
-=head1 VERSION
+See L<Mail::Box::Parser/"Parsing">
 
-This code is beta, version 2.040.
+=back
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+$obj-E<gt>B<bodyAsList>([,CHARS [,LINES]])
+
+=over 4
+
+See L<Mail::Box::Parser/"Parsing">
+
+=back
+
+$obj-E<gt>B<bodyAsString>([,CHARS [,LINES]])
+
+=over 4
+
+See L<Mail::Box::Parser/"Parsing">
+
+=back
+
+$obj-E<gt>B<bodyDelayed>([,CHARS [,LINES]])
+
+=over 4
+
+See L<Mail::Box::Parser/"Parsing">
+
+=back
+
+$obj-E<gt>B<filePosition>([POSITION])
+
+=over 4
+
+See L<Mail::Box::Parser/"Parsing">
+
+=back
+
+$obj-E<gt>B<lineSeparator>
+
+=over 4
+
+See L<Mail::Box::Parser/"Parsing">
+
+=back
+
+$obj-E<gt>B<popSeparator>
+
+=over 4
+
+See L<Mail::Box::Parser/"Parsing">
+
+=back
+
+$obj-E<gt>B<pushSeparator>(STRING|REGEXP)
+
+=over 4
+
+See L<Mail::Box::Parser/"Parsing">
+
+=back
+
+$obj-E<gt>B<readHeader>
+
+=over 4
+
+=back
+
+$obj-E<gt>B<readSeparator>(OPTIONS)
+
+=over 4
+
+See L<Mail::Box::Parser/"Parsing">
+
+=back
+
+=head2 Internals
+
+
+$obj-E<gt>B<closeFile>
+
+=over 4
+
+See L<Mail::Box::Parser/"Internals">
+
+=back
+
+$obj-E<gt>B<defaultParserType>([CLASS])
+
+Mail::Box::Parser::Perl-E<gt>B<defaultParserType>([CLASS])
+
+=over 4
+
+See L<Mail::Box::Parser/"Internals">
+
+=back
+
+$obj-E<gt>B<openFile>(ARGS)
+
+=over 4
+
+See L<Mail::Box::Parser/"Internals">
+
+=back
+
+$obj-E<gt>B<takeFileInfo>
+
+=over 4
+
+See L<Mail::Box::Parser/"Internals">
+
+=back
+
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Box::Parser::Perl-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<errors>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Box::Parser::Perl-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Box::Parser::Perl-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Warning:> File $filename changed during access.
+
+When a message parser starts working, it takes size and modification time
+of the file at hand.  If the folder is written, it checks wether there
+were changes in the file made by external programs.
+
+Calling L<Mail::Box::update()|"The folder"> on a folder before it being closed
+will read these new messages.  But the real source of this problem is
+locking: some external program (for instance the mail transfer agent,
+like sendmail) uses a different locking mechanism as you do and therefore
+violates your rights.
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+I<Warning:> Unexpected end of header in $source: $line
+
+While parsing a message from the specified source (usually a file name),
+the parser found a syntax error.  According to the MIME specification in the
+RFCs, each header line must either contain a colon, or start with a blank
+to indicate a folded field.  Apparently, this header contains a line which
+starts on the first position, but not with a field name.
+
+By default, parsing of the header will be stopped.  If there are more header
+lines after the erroneous line, they will be added to the body of the message.
+In case of new(fix_headers) set, the parsing of the header will be continued.
+The erroneous line will be added to the preceding field.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

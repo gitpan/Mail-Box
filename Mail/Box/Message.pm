@@ -1,12 +1,15 @@
+
 use strict;
 use warnings;
 
 package Mail::Box::Message;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message';
 
 use Date::Parse;
 use Scalar::Util 'weaken';
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -25,6 +28,9 @@ sub init($)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub coerce($)
 {   my ($class, $message) = @_;
     return bless $message, $class
@@ -35,32 +41,7 @@ sub coerce($)
     $coerced;
 }
 
-sub folder(;$)
-{   my $self = shift;
-    if(@_)
-    {   $self->{MBM_folder} = shift;
-        weaken($self->{MBM_folder});
-        $self->modified(1);
-    }
-    $self->{MBM_folder};
-}
-
-sub seqnr(;$)
-{   my $self = shift;
-    @_ ? $self->{MBM_seqnr} = shift : $self->{MBM_seqnr};
-}
-
-sub copyTo($)
-{   my ($self, $folder) = @_;
-    $folder->addMessage($self->clone);
-}
-
-sub moveTo($)
-{   my ($self, $folder) = @_;
-    my $added = $folder->addMessage($self->clone);
-    $self->delete;
-    $added;
-}
+#-------------------------------------------
 
 sub head(;$)
 {   my $self  = shift;
@@ -87,7 +68,52 @@ sub head(;$)
     $new || $old;
 }
 
+#-------------------------------------------
+
+
+sub folder(;$)
+{   my $self = shift;
+    if(@_)
+    {   $self->{MBM_folder} = shift;
+        weaken($self->{MBM_folder});
+        $self->modified(1);
+    }
+    $self->{MBM_folder};
+}
+
+#-------------------------------------------
+
+
+sub seqnr(;$)
+{   my $self = shift;
+    @_ ? $self->{MBM_seqnr} = shift : $self->{MBM_seqnr};
+}
+
+#-------------------------------------------
+
+
+sub copyTo($)
+{   my ($self, $folder) = @_;
+    $folder->addMessage($self->clone);
+}
+
+#-------------------------------------------
+
+
+sub moveTo($)
+{   my ($self, $folder) = @_;
+    my $added = $folder->addMessage($self->clone);
+    $self->delete;
+    $added;
+}
+
+#-------------------------------------------
+
+
 sub delete() { shift->{MBM_deleted} ||= time }
+
+#-------------------------------------------
+
 
 sub deleted(;$)
 {   my $self = shift;
@@ -97,7 +123,40 @@ sub deleted(;$)
     :             $self->delete;
 }
 
+#-------------------------------------------
+
+
 sub isDeleted() { shift->{MBM_deleted} }
+
+#-------------------------------------------
+
+
+sub readBody($$;$)
+{   my ($self, $parser, $head, $getbodytype) = @_;
+
+    unless($getbodytype)
+    {   my $folder   = $self->{MBM_folder};
+        $getbodytype = sub {$folder->determineBodyType(@_)};
+    }
+
+    $self->SUPER::readBody($parser, $head, $getbodytype);
+}
+
+#-------------------------------------------
+
+
+sub diskDelete() { shift }
+
+#-------------------------------------------
+
+sub forceLoad() {   # compatibility
+   my $self = shift;
+   $self->loadBody(@_);
+   $self;
+}
+
+#-------------------------------------------
+
 
 sub shortSize(;$)
 {   my $self = shift;
@@ -120,23 +179,6 @@ sub shortString()
     sprintf "%4s(%2d) %-30.30s", $self->shortSize, $subject;
 }
 
-sub readBody($$;$)
-{   my ($self, $parser, $head, $getbodytype) = @_;
-
-    unless($getbodytype)
-    {   my $folder   = $self->{MBM_folder};
-        $getbodytype = sub {$folder->determineBodyType(@_)};
-    }
-
-    $self->SUPER::readBody($parser, $head, $getbodytype);
-}
-
-sub diskDelete() { shift }
-
-sub forceLoad() {   # compatibility
-   my $self = shift;
-   $self->loadBody(@_);
-   $self;
-}
+#-------------------------------------------
 
 1;

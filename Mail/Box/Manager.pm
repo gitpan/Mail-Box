@@ -2,7 +2,8 @@ use strict;
 use warnings;
 
 package Mail::Box::Manager;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use Mail::Box;
@@ -10,6 +11,9 @@ use Mail::Box;
 use Carp;
 use List::Util   'first';
 use Scalar::Util 'weaken';
+
+#-------------------------------------------
+
 
 my @basic_folder_types =
   ( [ mbox    => 'Mail::Box::Mbox'    ]
@@ -63,11 +67,17 @@ sub init($)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub registerType($$@)
 {   my ($self, $name, $class, @options) = @_;
     unshift @{$self->{MBM_folder_types}}, [$name, $class, @options];
     $self;
 }
+
+#-------------------------------------------
+
 
 sub folderTypes()
 {   my $self = shift;
@@ -76,36 +86,9 @@ sub folderTypes()
     sort keys %uniq;
 }
 
-sub decodeFolderURL($)
-{   my ($self, $name) = @_;
 
-    return unless
-       my ($type, $username, $password, $hostname, $port, $path)
-          = $name =~ m!^(\w+)\:             # protocol
-                       (?://
-                          (?:([^:@./]*)     # username
-                            (?:\:([^@/]*))? # password
-                           \@)?
-                           ([\w.-]+)?       # hostname
-                           (?:\:(\d+))?     # port number
-                        )?
-                        (.*)                # foldername
-                      !x;
+#-------------------------------------------
 
-    $username ||= $ENV{USER} || $ENV{LOGNAME};
-
-    $password ||= '';        # decode password from url
-    $password =~ s/\+/ /g;
-    $password =~ s/\%([A-Fa-f0-9]{2})/chr hex $1/ge;
-
-    $hostname ||= 'localhost';
-    $path     ||= '=';
-
-    ( type        => $type,     folder      => $path
-    , username    => $username, password    => $password
-    , server_name => $hostname, server_port => $port
-    );
-}
 
 sub open(@)
 {   my $self = shift;
@@ -136,7 +119,7 @@ sub open(@)
     {   $self->log(ERROR => "No foldername specified to open.\n");
         return undef;
     }
-
+        
     $args{folderdir} ||= $self->{MBM_folderdirs}->[0]
         if $self->{MBM_folderdirs};
 
@@ -206,7 +189,7 @@ sub open(@)
     {   # use first type (last defined)
         ($folder_type, $class, @defaults) = @{$self->{MBM_folder_types}[0]};
     }
-
+    
     #
     # Try to open the folder
     #
@@ -227,12 +210,21 @@ sub open(@)
     $folder;
 }
 
+#-------------------------------------------
+
+
 sub openFolders() { @{shift->{MBM_folders}} }
+
+#-------------------------------------------
+
 
 sub isOpenFolder($)
 {   my ($self, $name) = @_;
     first {$name eq $_->name} $self->openFolders;
 }
+
+#-------------------------------------------
+
 
 sub close($@)
 {   my ($self, $folder, @options) = @_;
@@ -251,6 +243,9 @@ sub close($@)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub closeAllFolders(@)
 {   my ($self, @options) = @_;
     $_->close(@options) foreach $self->openFolders;
@@ -258,6 +253,18 @@ sub closeAllFolders(@)
 }
 
 END {map {defined $_ && $_->closeAllFolders} @managers}
+
+#-------------------------------------------
+
+
+sub delete($@)
+{   my ($self, $name, @options) = @_;
+    my $folder = $self->open(folder => $name, @options) or return;
+    $folder->delete;
+}
+
+#-------------------------------------------
+
 
 sub appendMessage(@)
 {   my $self     = shift;
@@ -312,7 +319,7 @@ sub appendMessages(@)
             last;
         }
     }
-
+ 
     # The folder was not found at all, so we take the default folder-type.
     my $type = $self->{MBM_default_type};
     if(!$found && $type)
@@ -337,6 +344,9 @@ sub appendMessages(@)
       , folder   => $folder
       );
 }
+
+#-------------------------------------------
+
 
 sub copyMessage(@)
 {   my $self   = shift;
@@ -372,16 +382,19 @@ sub copyMessage(@)
     @coerced;
 }
 
+#-------------------------------------------
+
+
 sub moveMessage(@)
 {   my $self = shift;
     $self->copyMessage(@_, _delete => 1);
 }
 
-sub delete($@)
-{   my ($self, $name, @options) = @_;
-    my $folder = $self->open(folder => $name, @options) or return;
-    $folder->delete;
-}
+#-------------------------------------------
+
+
+#-------------------------------------------
+
 
 sub threads(@)
 {   my $self    = shift;
@@ -426,14 +439,57 @@ sub threads(@)
     $threads;
 }
 
+#-------------------------------------------
+
+
 sub toBeThreaded($@)
 {   my $self = shift;
     $_->toBeThreaded(@_) foreach @{$self->{MBM_threads}};
 }
 
+#-------------------------------------------
+
+
 sub toBeUnthreaded($@)
 {   my $self = shift;
     $_->toBeUnthreaded(@_) foreach @{$self->{MBM_threads}};
 }
+
+#-------------------------------------------
+
+
+sub decodeFolderURL($)
+{   my ($self, $name) = @_;
+
+    return unless
+       my ($type, $username, $password, $hostname, $port, $path)
+          = $name =~ m!^(\w+)\:             # protocol
+                       (?://
+                          (?:([^:@./]*)     # username
+                            (?:\:([^@/]*))? # password
+                           \@)?
+                           ([\w.-]+)?       # hostname
+                           (?:\:(\d+))?     # port number
+                        )?
+                        (.*)                # foldername
+                      !x;
+
+    $username ||= $ENV{USER} || $ENV{LOGNAME};
+
+    $password ||= '';        # decode password from url
+    $password =~ s/\+/ /g;
+    $password =~ s/\%([A-Fa-f0-9]{2})/chr hex $1/ge;
+
+    $hostname ||= 'localhost';
+    $path     ||= '=';
+
+    ( type        => $type,     folder      => $path
+    , username    => $username, password    => $password
+    , server_name => $hostname, server_port => $port
+    );
+}
+
+#-------------------------------------------
+
 
 1;

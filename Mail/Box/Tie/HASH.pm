@@ -1,8 +1,11 @@
+
 use strict;
 package Mail::Box::Tie::HASH;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 
 use Carp;
+
 
 sub TIEHASH(@)
 {   my ($class, $folder) = @_;
@@ -12,7 +15,13 @@ sub TIEHASH(@)
     bless { MBT_folder => $folder, MBT_type => 'HASH' }, $class;
 }
 
+#-------------------------------------------
+
+
 sub FETCH($) { shift->{MBT_folder}->messageId(shift) }
+
+#-------------------------------------------
+
 
 sub STORE($$)
 {   my ($self, $key, $basicmsg) = @_;
@@ -23,6 +32,9 @@ sub STORE($$)
     $self->{MBT_folder}->addMessages($basicmsg);
 }
 
+#-------------------------------------------
+
+
 sub FIRSTKEY()
 {   my $self   = shift;
     my $folder = $self->{MBT_folder};
@@ -30,6 +42,9 @@ sub FIRSTKEY()
     $self->{MBT_each_index} = 0;
     $self->NEXTKEY();
 }
+
+#-------------------------------------------
+
 
 sub NEXTKEY($)
 {   my $self   = shift;
@@ -48,6 +63,9 @@ sub NEXTKEY($)
     $msg->messageId;
 }
 
+#-------------------------------------------
+
+
 sub EXISTS($)
 {   my $folder = shift->{MBT_folder};
     my $msgid  = shift;
@@ -55,14 +73,22 @@ sub EXISTS($)
     defined $msg && ! $msg->isDeleted;
 }
 
+#-------------------------------------------
+
+
 sub DELETE($)
 {    my ($self, $msgid) = @_;
      $self->{MBT_folder}->messageId($msgid)->delete;
 }
 
+#-------------------------------------------
+
+
 sub CLEAR()
 {   my $folder = shift->{MBT_folder};
     $_->delete foreach $folder->messages;
 }
+
+#-------------------------------------------
 
 1;

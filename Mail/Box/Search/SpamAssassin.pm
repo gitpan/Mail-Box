@@ -1,5 +1,7 @@
+
 package Mail::Box::Search::SpamAssassin;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Search';
 
 use strict;
@@ -7,6 +9,9 @@ use warnings;
 
 use Mail::SpamAssassin;
 use Mail::Message::Wrapper::SpamAssassin;
+
+#-------------------------------------------
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -26,13 +31,18 @@ sub init($)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub assassinator() { shift->{MBSS_sa} }
+
+#-------------------------------------------
 
 sub searchPart($)
 {   my ($self, $message) = @_;
 
     my @details = (message => $message);
-
+   
     my $sa      = Mail::Message::Wrapper::SpamAssassin->new($message);
     my $status  = $self->assassinator->check($sa);
 
@@ -47,8 +57,14 @@ sub searchPart($)
     $is_spam;
 }
 
+#-------------------------------------------
+
 sub inHead(@) {shift->notImplemented}
 
+#-------------------------------------------
+
 sub inBody(@) {shift->notImplemented}
+
+#-------------------------------------------
 
 1;

@@ -3,11 +3,12 @@
 
 Mail::Message::Body - the data of a body in a message
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Message::Body has extra code in
-   Mail::Message::Body::Construct
    Mail::Message::Body::Encode
+   Mail::Message::Body::Construct
 
  Mail::Message::Body
    is a Mail::Reporter
@@ -21,6 +22,7 @@ Mail::Message::Body - the data of a body in a message
 
  Mail::Message::Body is realized by
    Mail::Message::Body::Delayed
+
 
 =head1 SYNOPSIS
 
@@ -37,14 +39,15 @@ Mail::Message::Body - the data of a body in a message
     charset => 'us-ascii', transfer_encoding => 'none');
  my $decoded  = $body->decoded;
 
+
 =head1 DESCRIPTION
 
-The encoding and decoding functionality of a Mail::Message::Body is
-implemented in the Mail::Message::Body::Encode package.  That package is
+The encoding and decoding functionality of a L<Mail::Message::Body|Mail::Message::Body> is
+implemented in the L<Mail::Message::Body::Encode|Mail::Message::Body::Encode> package.  That package is
 automatically loaded when encoding and decoding of messages needs to take
 place.
 
-The body of a message (a Mail::Message object) is stored in one of the
+The body of a message (a L<Mail::Message|Mail::Message> object) is stored in one of the
 body types.  The functionality of each body type is equivalent, but there
 are performance differences.  Each body type has its own documentation
 which contains details about its implementation.
@@ -58,7 +61,7 @@ be written to a file or send to somewhere: they will be encoded if needed.
 
 For example:
 
- my $body    = Mail::Message::Body::String->new(mime_type => 'image/gif');
+ my $body    = L<Mail::Message::Body::String|Mail::Message::Body::String>->new(mime_type => 'image/gif');
  $body->print(\*OUT);    # this is binary image data...
 
  my $encoded = $message->body($body);
@@ -70,35 +73,35 @@ is used.
   
 =over 4
 
-=item * Mail::Message::Body::Lines
+=item * L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>
 
 Each line of the message body is stored as single scalar.  This is a
 useful representation for a detailed look in the message body, which is
 usually line-organized.
 
-=item * Mail::Message::Body::String
+=item * L<Mail::Message::Body::String|Mail::Message::Body::String>
 
 The whole message body is stored in one scalar.  Small messages can be
 contained this way without performance penalties.
 
-=item * Mail::Message::Body::File
+=item * L<Mail::Message::Body::File|Mail::Message::Body::File>
 
 The message body is stored in an external temporary file.  This type of
 storage is especially useful when the body is large, the total folder is
 large, or memory is limited.
 
-=item * Mail::Message::Body::Delayed
+=item * L<Mail::Message::Body::Delayed|Mail::Message::Body::Delayed>
 
 The message-body is not yet read, but the exact location of the
 body is known so the message can be read when needed.
 
-=item * Mail::Message::Body::Multipart
+=item * L<Mail::Message::Body::Multipart|Mail::Message::Body::Multipart>
 
 The message body contains a set of sub-messages (which can contain
 multipart bodies themselves).  Each sub-message is an instance
-of Mail::Message::Part, which is an extension of Mail::Message.
+of L<Mail::Message::Part|Mail::Message::Part>, which is an extension of L<Mail::Message|Mail::Message>.
 
-=item * Mail::Message::Body::Nested
+=item * L<Mail::Message::Body::Nested|Mail::Message::Body::Nested>
 
 Nested messages, like C<message/rfc822>: they contain a message in
 the body.  For most code, they simply behave like multiparts.
@@ -121,57 +124,150 @@ C<::External> object only uses a file when the folder is open.
 
 Each body type has methods to produce the storage of the other types.
 As example, you can ask any body type for the message as a list of lines,
-but this call will be most efficient for the MM::Body::Lines type.
+but this call will be most efficient for the L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>
+type.
+
+
+=head1 OVERLOADED
+
+
+overload: B<"">
+
+=over 4
+
+(stringification) Returns the body as string --which will trigger
+completion-- unless called to produce a string for C<Carp>.  The latter
+to avoid deep recursions.
+
+I<Example:> stringification of body
+
+
+ print $msg->body;   # implicit by print
+
+ my $body = $msg->body;
+ my $x    = "$body"; # explicit by interpolation
+
+=back
+
+overload: B<'==' and '!='>
+
+=over 4
+
+(numeric comparison) compares if two references point to the
+same message.  This only produces correct results is both arguments
+are message references B<within the same folder>.
+
+I<Example:> use of numeric comparison on a body
+
+
+ my $skip = $folder->message(3);
+ foreach my $msg (@$folder)
+ {   next if $msg == $skip;
+     $msg->send;
+ }
+
+=back
+
+overload: B<@{}>
+
+=over 4
+
+When a body object is used as being an array reference, the lines of
+the body are returned.  This is the same as using L<lines()|"Access to the payload">.
+
+I<Example:> using a body as array
+
+
+ print $body->lines->[1];  # second line
+ print $body->[1];         # same
+
+ my @lines = $body->lines;
+ my @lines = @$body;       # same
+
+=back
+
+overload: B<bool>
+
+=over 4
+
+Always returns a true value, which is needed to have overloaded
+objects to be used as in C<if($body)>.  Otherwise, C<if(defined $body)>
+would be needed to avoid a runtime error.
+
+=back
+
 
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+$obj-E<gt>B<clone>
 
 =over 4
 
-=item B<new> OPTIONS
+Return a copy of this body, usually to be included in a cloned
+message. Use L<Mail::Message::clone()|"Constructors"> for a whole message.
 
-(Class method) 
+=back
+
+Mail::Message::Body-E<gt>B<new>(OPTIONS)
+
+=over 4
+
 BE WARNED that, what you specify here are encodings and such which are
 already in place.  The options will not trigger conversions.  When you
 need conversions, first create a body with options which tell what you've
-got, and then call encode() for what you need.
+got, and then call L<encode()|"Constructing a body"> for what you need.
 
- OPTION               DEFAULT
- based_on             undef
- charset              'us-ascii'
- checked              <false>
- data                 undef
- disposition          undef
- eol                  'NATIVE'
- file                 undef
- log                  'WARNINGS'
- message              undef
- mime_type            'text/plain'
- modified             <false>
- trace                'WARNINGS'
- transfer_encoding    'NONE'
+ Option             Defined in       Default        
+ based_on                            undef          
+ charset                             C<'us-ascii'>  
+ checked                             <false>        
+ data                                undef          
+ disposition                         undef          
+ eol                                 C<'NATIVE'>    
+ file                                undef          
+ log                L<Mail::Reporter>  C<'WARNINGS'>  
+ message                             undef          
+ mime_type                           C<'text/plain'>
+ modified                            <false>        
+ trace              L<Mail::Reporter>  C<'WARNINGS'>  
+ transfer_encoding                   C<'NONE'>      
+
+. based_on BODY
 
 =over 4
-
-=item B<based_on> =E<gt> BODY
 
 The information about encodings must be taken from the specified BODY,
 unless specified differently.
 
-=item B<charset> =E<gt> STRING
+=back
+
+. charset STRING
+
+=over 4
 
 Defines the character-set which is used in the data.  Only useful in
 combination with a C<mime_type> which refers to C<text> in any shape.
 This field is case-insensitive.
 
-=item B<checked> =E<gt> BOOLEAN
+=back
+
+. checked BOOLEAN
+
+=over 4
 
 Whether the added information has been check not to contain illegal
 octets with respect to the transfer encoding and mime type.  If not
 checked, and then set as body for a message, it will be.
 
-=item B<data> =E<gt> ARRAY-OF-LINES | STRING
+=back
+
+. data ARRAY-OF-LINES | STRING
+
+=over 4
 
 The content of the body.  The only way to set the content of a body
 is during the creation of the body.  So if you want to modify the content
@@ -185,7 +281,11 @@ Specify a reference to an ARRAY of lines, each terminated by a newline.
 Or one STRING which may contain multiple lines, separated and terminated
 by a newline.
 
-=item B<disposition> =E<gt> STRING|FIELD
+=back
+
+. disposition STRING|FIELD
+
+=over 4
 
 How this message can be decomposed.  The data relates to the
 C<Content-Disposition> field.  Specify a STRING which will become the
@@ -201,7 +301,11 @@ upon some further action of the user.
 The C<filename> attribute specifies a name to which is suggested to the
 reader of the message when it is extracted.
 
-=item B<eol> =E<gt> 'CR'|'LF'|'CRLF'|'NATIVE'
+=back
+
+. eol 'CR'|'LF'|'CRLF'|'NATIVE'
+
+=over 4
 
 Convert the message into having the specified string as line terminator
 for all lines in the body.  C<NATIVE> is used to represent the C<\n>
@@ -211,25 +315,35 @@ BE WARNED that folders with a non-native encoding may appear on your
 platform, for instance in Windows folders handled from a UNIX system.
 The eol encoding has effect on the size of the body!
 
-=item B<file> =E<gt> FILENAME|FILEHANDLE|IOHANDLE
+=back
+
+. file FILENAME|FILEHANDLE|IOHANDLE
+
+=over 4
 
 Read the data from the specified file, file handle, or object of
 type C<IO::Handle>.
 
-=item B<log> =E<gt> LEVEL
+=back
 
-See Mail::Reporter::new(log)
+. log LEVEL
 
-=item B<message> =E<gt> MESSAGE
+. message MESSAGE
+
+=over 4
 
 The message where this body belongs to.
 
-=item B<mime_type> =E<gt> STRING|FIELD|MIME
+=back
+
+. mime_type STRING|FIELD|MIME
+
+=over 4
 
 The type of data which is added.  You may specify a content of a header
-line as STRING, or a FIELD object.  You may also specify a C<MIME::Type>
+line as STRING, or a FIELD object.  You may also specify a MIME::Type
 object.  In any case, it will be kept internally as
-a real field (a Mail::Message::Field object).  This relates to the
+a real field (a L<Mail::Message::Field|Mail::Message::Field> object).  This relates to the
 C<Content-Type> header field.
 
 A mime-type specification consists of two parts: a general class (C<text>,
@@ -238,24 +352,30 @@ specific classes with C<text> are C<plain>, C<html>, and C<xml>.  This
 field is case-insensitive but case preserving.  The default mime-type
 is C<text/plain>,
 
-=item B<modified> =E<gt> BOOLEAN
+=back
+
+. modified BOOLEAN
+
+=over 4
 
 Whether the body is flagged modified, directly from its creation.
 
-=item B<trace> =E<gt> LEVEL
+=back
 
-See Mail::Reporter::new(trace)
+. trace LEVEL
 
-=item B<transfer_encoding> =E<gt> STRING|FIELD
+. transfer_encoding STRING|FIELD
+
+=over 4
 
 The encoding that the data has.  If the data is to be encoded, than you
-will have to call encode() after the body is created.  That will
+will have to call L<encode()|"Constructing a body"> after the body is created.  That will
 return a new encoded body.  This field is case-insensitive and relates
 to the C<Content-Transfer-Encoding> field in the header.
 
 =back
 
-Examples:
+I<Example:> 
 
  my $body = Mail::Message::Body::String->new(file => \*IN,
     mime_type => 'text/html; charset="ISO-8859-1"');
@@ -271,18 +391,38 @@ Examples:
 
 =back
 
-=head2 The Body
+=head2 Constructing a body
+
+
+$obj-E<gt>B<attach>(MESSAGES, OPTIONS)
 
 =over 4
 
-=item B<clone> 
+See L<Mail::Message::Body::Construct/"Constructing a body">
 
-Return a copy of this body, usually to be included in a cloned
-message (see Mail::Message::clone()).
+=back
 
-=item B<decoded> OPTIONS
+$obj-E<gt>B<check>
 
-Returns a body (an object which is (a sub-)class of a Mail::Message::Body)
+=over 4
+
+See L<Mail::Message::Body::Encode/"Constructing a body">
+
+=back
+
+$obj-E<gt>B<concatenate>(COMPONENTS)
+
+=over 4
+
+See L<Mail::Message::Body::Construct/"Constructing a body">
+
+=back
+
+$obj-E<gt>B<decoded>(OPTIONS)
+
+=over 4
+
+Returns a body, an object which is (a sub-)class of a L<Mail::Message::Body|Mail::Message::Body>,
 which contains a simplified representation of textual data.  The returned
 object may be the object where this is called on, but may also be a new
 body of any type.
@@ -294,151 +434,220 @@ is equivalent with
  my $dec = $body->encode(mime_type => 'text/plain', charset => 'us-ascii',
     transfer_encoding => 'NONE');
 
-The C<$dec> which is returned is a body.  Ask with the mimeType() method
-what is produced.  This body is B<not related to a header>, so you can
-not ask C<< $dec->get('Content-Type') >>!
+The C<$dec> which is returned is a body.  Ask with the L<mimeType()|"About the payload"> method
+what is produced.  This C<$dec> body is B<not related to a header>.
 
- OPTION               DEFAULT
- result_type          <same as current>
+ Option       Defined in  Default          
+ result_type              <same as current>
 
-=over 4
-
-=item B<result_type> =E<gt> CLASS
+. result_type CLASS
 
 =back
 
-=item B<isDelayed> 
+$obj-E<gt>B<encode>(OPTIONS)
+
+=over 4
+
+See L<Mail::Message::Body::Encode/"Constructing a body">
+
+=back
+
+$obj-E<gt>B<encoded>
+
+=over 4
+
+See L<Mail::Message::Body::Encode/"Constructing a body">
+
+=back
+
+$obj-E<gt>B<eol>(['CR'|'LF'|'CRLF'|'NATIVE'])
+
+=over 4
+
+Returns the character (or characters) which are used to separate lines
+within this body.  When a kind of separator is specified, the body
+is translated to contain the specified line endings.
+
+=back
+
+$obj-E<gt>B<foreachLine>(CODE)
+
+=over 4
+
+See L<Mail::Message::Body::Construct/"Constructing a body">
+
+=back
+
+$obj-E<gt>B<stripSignature>(OPTIONS)
+
+=over 4
+
+See L<Mail::Message::Body::Construct/"Constructing a body">
+
+=back
+
+$obj-E<gt>B<unify>(BODY)
+
+=over 4
+
+See L<Mail::Message::Body::Encode/"Constructing a body">
+
+=back
+
+=head2 The body
+
+
+$obj-E<gt>B<isDelayed>
+
+=over 4
 
 Returns a true or false value, depending on whether the body of this
 message has been read from file.  This can only false for a
-Mail::Message::Body::Delayed.
+L<Mail::Message::Body::Delayed|Mail::Message::Body::Delayed>.
 
-=item B<isModified> 
+=back
 
-Returns whether the body has changed.
+$obj-E<gt>B<isMultipart>
 
-=item B<isMultipart> 
+=over 4
 
 Returns whether this message-body contains parts which are messages
 by themselves.
 
-=item B<isNested> 
+=back
+
+$obj-E<gt>B<isNested>
+
+=over 4
 
 Only true for a message body which contains exactly one sub-message:
-the C<::Nested> body type.
+the C<Mail::Message::Body::Nested> body type.
 
-=item B<message> [MESSAGE]
+=back
+
+$obj-E<gt>B<message>([MESSAGE])
+
+=over 4
 
 Returns the message where this body belongs to, optionally setting it
 to a new MESSAGE first.  If C<undef> is passed, the body will be
 disconnected from the message.
 
-=item B<modified> [BOOLEAN]
-
-Change the body modification flag.  This will force a re-write of the body
-to a folder file when it is closed.  It is quite dangerous to change the
-body: especially be warned that you have to change the message-id as well:
-no two messages should have the same id.
-
-Without value, the current setting is returned, although you can better use
-isModified().
-
-=item B<print> [FILEHANDLE]
-
-Print the body to the specified FILEHANDLE (defaults to the selected handle).
-The handle may be a GLOB, an IO::File object, or... any object with a
-C<print> method will do.  Nothing useful is returned.
-
-=item B<printEscapedFrom> FILEHANDLE
-
-Print the body to the specified FILEHANDLE but all lines which start
-with 'From ' (optionally already preceded by E<gt>'s) will habe an E<gt>
-added in front.  Nothing useful is returned.
-
 =back
 
-=head2 About the Payload
+=head2 About the payload
+
+
+$obj-E<gt>B<charset>
 
 =over 4
-
-=item B<charset> 
 
 Returns the character set which is used in the text body as string.  This
 is part of the result of what the C<type> method returns.
 
-=item B<checked> [BOOLEAN]
+=back
+
+$obj-E<gt>B<checked>([BOOLEAN])
+
+=over 4
 
 Returns whether the body encoding has been checked or not (optionally
 after setting the flag to a new value).
 
-=item B<disposition> [STRING|FIELD]
+=back
+
+$obj-E<gt>B<disposition>([STRING|FIELD])
+
+=over 4
 
 Returns (optionally after setting) how the message can be disposed (unpacked).
 The argument can be a STRING (which is converted into a field), or a
 fully prepared header field.  The related header field is
 C<Content-Disposition>.
 
-=item B<eol> ['CR'|'LF'|'CRLF'|'NATIVE']
+=back
 
-Returns the character (or characters) which are used to separate lines
-within this body.  When a kind of separator is specified, the body
-is translated to contain the specified line endings.
+$obj-E<gt>B<isBinary>
 
-=item B<isBinary> 
+=over 4
 
-See Mail::Message::Body::Encode::isBinary()
+See L<Mail::Message::Body::Encode/"About the payload">
 
-=item B<isText> 
+=back
 
-See Mail::Message::Body::Encode::isText()
+$obj-E<gt>B<isText>
 
-=item B<mimeType> 
+=over 4
+
+See L<Mail::Message::Body::Encode/"About the payload">
+
+=back
+
+$obj-E<gt>B<mimeType>
+
+=over 4
 
 Returns a MIME::Type object which is related to this body's type.  This
-differs from the C<type> method, which results in a Mail::Message::Field.
+differs from the C<type> method, which results in a L<Mail::Message::Field|Mail::Message::Field>.
 
-Examples:
+I<Example:> 
 
  if($body->mimeType eq 'text/html') {...}
  print $body->mimeType->simplified;
 
-=item B<nrLines> 
+=back
+
+$obj-E<gt>B<nrLines>
+
+=over 4
 
 Returns the number of lines in the message body.  For multi-part messages,
 this includes the header lines and boundaries of all the parts.
 
-=item B<size> 
+=back
+
+$obj-E<gt>B<size>
+
+=over 4
 
 The total number of bytes in the message body. The size of the body
 is computed in the shape it is in. For example, if this is a base64
 encoded message, the size of the encoded data is returned; you may
-want to call Mail::Message::decode() first.
+want to call L<Mail::Message::decoded()|"The body"> first.
 
-=item B<transferEncoding> [STRING|FIELD]
+=back
+
+$obj-E<gt>B<transferEncoding>([STRING|FIELD])
+
+=over 4
 
 Returns the transfer-encoding of the data within this body.  If it
-needs to be changed, call the encode() or decoded() method.
+needs to be changed, call the L<encode()|"Constructing a body"> or L<decoded()|"Constructing a body"> method.
 
 The optional STRING or FIELD enforces a new encoding to be set, without the
 actual required translations.
 
-Examples:
+I<Example:> 
 
  my $transfer = $msg->decoded->transferEncoding;
  $transfer->print;
     # --> Content-Encoding: base64
 
-=item B<type> 
+=back
+
+$obj-E<gt>B<type>
+
+=over 4
 
 Returns the type of information the body contains.  The type is taken from
 the header field C<Content-Type>, but may have changed during encoding
 --or decoding-- of the body (see the C<encode> method).
 
-The returned is a reference to a Mail::Message::Field object, where
+The returned is a reference to a L<Mail::Message::Field|Mail::Message::Field> object, where
 you can ask for the C<body> (main content of the field) and the comment
-(after a semicolon).  To get to the body, you can better use mimeType().
+(after a semicolon).  To get to the body, you can better use L<mimeType()|"About the payload">.
 
-Examples:
+I<Example:> 
 
  my $msg     = $folder->message(6);
  $msg->get('Content-Type')->print;
@@ -458,37 +667,41 @@ Examples:
 
 =back
 
-=head2 Access to the Payload
+=head2 Access to the payload
+
+
+$obj-E<gt>B<file>
 
 =over 4
-
-=item B<file> 
 
 Return the content of the body as a file handle.  The returned stream may
 be a real file, or a simulated file in any form that Perl supports.  While
 you may not be able to write to the file handle, you can read from it.
 
-WARNING: Even if the file handle supports writing, do not write to the
-file handle. If you do some of the internal values maintained by the
-Mail::Message::Body may not be updated.  Use only the data() method
-instead.
+WARNING: Even if the file handle supports writing, do not write
+to the file handle. If you do, some of the internal values of the
+L<Mail::Message::Body|Mail::Message::Body> may not be updated.
 
-=item B<lines> 
+=back
+
+$obj-E<gt>B<lines>
+
+=over 4
 
 Return the content of the body as a list of lines (in LIST context) or a
 reference to an array of lines (in SCALAR context).  In scalar context the
 array of lines is cached to avoid needless copying and therefore provide
 much faster access for large messages.
 
-To just get the number of lines in the body, use the nrLines() method,
+To just get the number of lines in the body, use the L<nrLines()|"About the payload"> method,
 which is usually much more efficient.
 
 BE WARNED: For some types of bodies the reference will refer to the
-original data. You must not change the referenced data! If you do some of
-the internal values maintained by the Mail::Message::Body may not be
-updated.   Use the data() method instead.
+original data. You must not change the referenced data! If you do, some of
+the essential internal variables of the L<Mail::Message::Body|Mail::Message::Body> may not be
+updated.
 
-Examples:
+I<Example:> 
 
  my @lines    = $body->lines;     # copies lines
  my $line3    = ($body->lines)[3] # only one copy
@@ -500,87 +713,118 @@ Examples:
 
  print $body->[0];                # by overloading
 
-=item B<string> 
+=back
+
+$obj-E<gt>B<print>([FILEHANDLE])
+
+=over 4
+
+Print the body to the specified FILEHANDLE (defaults to the selected handle).
+The handle may be a GLOB, an IO::File object, or... any object with a
+C<print()> method will do.  Nothing useful is returned.
+
+=back
+
+$obj-E<gt>B<printEscapedFrom>(FILEHANDLE)
+
+=over 4
+
+Print the body to the specified FILEHANDLE but all lines which start
+with 'From ' (optionally already preceded by E<gt>'s) will habe an E<gt>
+added in front.  Nothing useful is returned.
+
+=back
+
+$obj-E<gt>B<string>
+
+=over 4
 
 Return the content of the body as a scalar (a single string).  This is
 a copy of the internally kept information.
 
-Examples:
+I<Example:> 
 
  my $text = $body->string;
  print "Body: $body\n";     # by overloading
 
 =back
 
-=head2 Constructing a Body
+=head2 Internals
+
+
+$obj-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
+
+Mail::Message::Body-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
 
 =over 4
 
-=item B<addTransferEncHandler> NAME, CLASS|OBJECT
-
-See Mail::Message::Body::Encode::addTransferEncHandler()
-
-=item B<attach> MESSAGES, OPTIONS
-
-See Mail::Message::Body::Construct::attach()
-
-=item B<check> 
-
-See Mail::Message::Body::Encode::check()
-
-=item B<concatenate> COMPONENTS
-
-See Mail::Message::Body::Construct::concatenate()
-
-=item B<encode> OPTIONS
-
-See Mail::Message::Body::Encode::encode()
-
-=item B<encoded> 
-
-See Mail::Message::Body::Encode::encoded()
-
-=item B<foreachLine> CODE
-
-See Mail::Message::Body::Construct::foreachLine()
-
-=item B<getTransferEncHandler> TYPE
-
-See Mail::Message::Body::Encode::getTransferEncHandler()
-
-=item B<stripSignature> OPTIONS
-
-See Mail::Message::Body::Construct::stripSignature()
-
-=item B<unify> BODY
-
-See Mail::Message::Body::Encode::unify()
+See L<Mail::Message::Body::Encode/"Internals">
 
 =back
 
-=head2 Reading and Writing [internals]
+$obj-E<gt>B<fileLocation>([BEGIN,END])
 
 =over 4
-
-=item B<AUTOLOAD> 
-
-=item B<fileLocation> [BEGIN,END]
 
 The location of the body in the file.  Returned a list containing begin and
 end.  The begin is the offsets of the first byte if the folder used for
 this body.  The end is the offset of the first byte of the next message.
 
-=item B<load> 
+=back
+
+$obj-E<gt>B<getTransferEncHandler>(TYPE)
+
+=over 4
+
+See L<Mail::Message::Body::Encode/"Internals">
+
+=back
+
+$obj-E<gt>B<isModified>
+
+=over 4
+
+Returns whether the body has changed.
+
+=back
+
+$obj-E<gt>B<load>
+
+=over 4
 
 Be sure that the body is loaded.  This returns the loaded body.
 
-=item B<moveLocation> [DISTANCE]
+=back
+
+$obj-E<gt>B<modified>([BOOLEAN])
+
+=over 4
+
+Change the body modification flag.  This will force a re-write of the body
+to a folder file when it is closed.  It is quite dangerous to change the
+body: the same body may be shared between messages within your program.
+
+Especially be warned that you have to change the message-id when you
+change the body of the message: no two messages should have the same id.
+
+Without value, the current setting is returned, although you can better use
+L<isModified()|"Internals">.
+
+=back
+
+$obj-E<gt>B<moveLocation>([DISTANCE])
+
+=over 4
 
 Move the registration of the message to a new location over DISTANCE.  This
 is called when the message is written to a new version of the same
 folder-file.
 
-=item B<read> PARSER, HEAD, BODYTYPE [,CHARS [,LINES]]
+=back
+
+$obj-E<gt>B<read>(PARSER, HEAD, BODYTYPE [,CHARS [,LINES]])
+
+=over 4
 
 Read the body with the PARSER from file. The implementation of this method
 will differ between types of bodies.  The BODYTYPE argument is a class name
@@ -598,81 +842,165 @@ of the header.
 
 =back
 
-=head2 Logging and Tracing
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+When an unknown method is called on a message body object, this may
+not be problematic.  For performance reasons, some methods are
+implemented in separate files, and only demand-loaded.  If this
+delayed compilation of additional modules does not help, an error
+will be produced.
 
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Message::Body-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
 =over 4
 
-=item B<DESTROY> 
-
-See Mail::Reporter::DESTROY()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head1 SEE ALSO
+$obj-E<gt>B<errors>
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+=over 4
 
-=head1 AUTHOR
+See L<Mail::Reporter/"Error handling">
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+=back
 
-=head1 VERSION
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-This code is beta, version 2.040.
+Mail::Message::Body-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Message::Body-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Warning:> No decoder defined for transfer encoding $name.
+
+The data (message body) is encoded in a way which is not currently understood,
+therefore no decoding (or recoding) can take place.
+
+I<Warning:> No encoder defined for transfer encoding $name.
+
+The data (message body) has been decoded, but the required encoding is
+unknown.  The decoded data is returned.
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

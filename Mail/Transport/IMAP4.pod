@@ -3,18 +3,21 @@
 
 Mail::Transport::IMAP4 - handle messages via the IMAP4 protocol
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Transport::IMAP4
    is a Mail::Transport::Receive
    is a Mail::Transport
    is a Mail::Reporter
 
+
 =head1 SYNOPSIS
 
  my $imap = Mail::Transport::IMAP4->new(...);
  my $message = $imap->receive($id);
  $imap->send($message);
+
 
 =head1 DESCRIPTION
 
@@ -27,145 +30,147 @@ rfc2060.
 This package, as part of Mail::Box, does not implement the actual
 protocol itself, but uses Mail::IMAPClient to do the work.  The task
 for this package is to hide as much differences between that module's
-interface and the common Mail::Box folder types.  This package is used
-by Mail::Box::IMAP4 for the real work.
+interface and the common L<Mail::Box|Mail::Box> folder types.  This package is used
+by L<Mail::Box::IMAP4|Mail::Box::IMAP4> for the real work.
+
+
 
 =head1 METHODS
 
-=head2 Initiation
+
+$obj-E<gt>B<url>
 
 =over 4
-
-=item B<new> OPTIONS
-
-(Class method) 
-Create the IMAP connection to the server.  IMAP servers can handle
-multiple folders for a single user, which means that connections
-may get shared.  This is sharing is hidden for the user.
-
- OPTION               DEFAULT
- authenticate         'AUTO'
- executable           C<undef>
- hostname             'localhost'
- interval             30
- log                  'WARNINGS'
- password             undef
- port                 143
- proxy                undef
- retry                <false>
- timeout              120
- trace                'WARNINGS'
- username             undef
- via                  'sendmail'
-
-=over 4
-
-=item B<authenticate> =E<gt> 'KERBEROS_V4'|'GSSAPI'|'SKEY'|'AUTO'
-
-Authenthication method.  RFC1731 defines a few authentication methods
-to be (optionally) used with IMAP. NOT IMPLEMENTED YET.
-
-=item B<executable> =E<gt> FILENAME
-
-See Mail::Transport::new(executable)
-
-=item B<hostname> =E<gt> HOSTNAME|ARRAY-OF-HOSTNAMES
-
-See Mail::Transport::new(hostname)
-
-=item B<interval> =E<gt> SECONDS
-
-See Mail::Transport::new(interval)
-
-=item B<log> =E<gt> LEVEL
-
-See Mail::Reporter::new(log)
-
-=item B<password> =E<gt> STRING
-
-See Mail::Transport::new(password)
-
-=item B<port> =E<gt> INTEGER
-
-See Mail::Transport::new(port)
-
-=item B<proxy> =E<gt> PATH
-
-See Mail::Transport::new(proxy)
-
-=item B<retry> =E<gt> NUMBER|undef
-
-See Mail::Transport::new(retry)
-
-=item B<timeout> =E<gt> SECONDS
-
-See Mail::Transport::new(timeout)
-
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
-
-=item B<username> =E<gt> STRING
-
-See Mail::Transport::new(username)
-
-=item B<via> =E<gt> CLASS|NAME
-
-See Mail::Transport::new(via)
-
-=back
-
-=item B<url> 
 
 Represent this imap4 connection as URL.
 
 =back
 
-=head2 Server Connection
+=head2 Constructors
+
+
+Mail::Transport::IMAP4-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-=item B<findBinary> NAME [, DIRECTORIES]
+Create the IMAP connection to the server.  IMAP servers can handle
+multiple folders for a single user, which means that connections
+may get shared.  This is sharing is hidden for the user.
 
-See Mail::Transport::findBinary()
+ Option        Defined in       Default       
+ authenticate                   C<'AUTO'>     
+ executable    L<Mail::Transport>  C<undef>      
+ hostname      L<Mail::Transport>  C<'localhost'>
+ interval      L<Mail::Transport>  C<30>         
+ log           L<Mail::Reporter>  C<'WARNINGS'> 
+ password      L<Mail::Transport>  undef         
+ port          L<Mail::Transport>  143           
+ proxy         L<Mail::Transport>  undef         
+ retry         L<Mail::Transport>  <false>       
+ timeout       L<Mail::Transport>  C<120>        
+ trace         L<Mail::Reporter>  C<'WARNINGS'> 
+ username      L<Mail::Transport>  undef         
+ via           L<Mail::Transport>  C<'sendmail'> 
 
-=item B<remoteHost> 
+. authenticate 'KERBEROS_V4'|'GSSAPI'|'SKEY'|'AUTO'
 
-See Mail::Transport::remoteHost()
+=over 4
 
-=item B<retry> 
-
-See Mail::Transport::retry()
+Authenthication method.  RFC1731 defines a few authentication methods
+to be (optionally) used with IMAP. NOT IMPLEMENTED YET.
 
 =back
 
-=head2 Receiving Mail
+. executable FILENAME
+
+. hostname HOSTNAME|ARRAY-OF-HOSTNAMES
+
+. interval SECONDS
+
+. log LEVEL
+
+. password STRING
+
+. port INTEGER
+
+. proxy PATH
+
+. retry NUMBER|undef
+
+. timeout SECONDS
+
+. trace LEVEL
+
+. username STRING
+
+. via CLASS|NAME
+
+=back
+
+=head2 Receiving mail
+
+
+$obj-E<gt>B<receive>([UNIQUE-MESSAGE-ID])
 
 =over 4
 
-=item B<receive> [UNIQUE-MESSAGE-ID]
+See L<Mail::Transport::Receive/"Receiving mail">
 
-See Mail::Transport::Receive::receive()
+=back
+
+=head2 Server connection
+
+
+$obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
+
+=over 4
+
+See L<Mail::Transport/"Server connection">
+
+=back
+
+$obj-E<gt>B<remoteHost>
+
+=over 4
+
+See L<Mail::Transport/"Server connection">
+
+=back
+
+$obj-E<gt>B<retry>
+
+=over 4
+
+See L<Mail::Transport/"Server connection">
 
 =back
 
 =head2 Exchanging Information
 
-=over 4
 
-=item B<deleteFetched> 
+$obj-E<gt>B<deleteFetched>
+
+=over 4
 
 Mark all messages that have been fetched with message() for deletion.  See
 fetched().
 
-=item B<deleted> BOOLEAN, ID's
+=back
+
+$obj-E<gt>B<deleted>(BOOLEAN, ID's)
+
+=over 4
 
 Either mark the specified message(s) to be deleted on the remote server or
 unmark them for deletion (if the first parameter is false).  Deletion of
 messages will take place B<only> when the connection is specifically
 disconnected or the last reference to the object goes out of scope.
 
-=item B<disconnect> 
+=back
+
+$obj-E<gt>B<disconnect>
+
+=over 4
 
 Break contact with the server, if that (still) exists.  Returns true if
 successful.  Please note that even if the disconnect was not successful,
@@ -173,7 +178,11 @@ all knowledge of messages etc. will be removed from the object: the object
 basically has reverted to the state in which it was before anything was done
 with the mail box.
 
-=item B<fetched> 
+=back
+
+$obj-E<gt>B<fetched>
+
+=over 4
 
 Returns a reference to a list of ID's that have been fetched using the
 message() method.  This can be used to update a database of messages that
@@ -186,11 +195,19 @@ the messages themselves).
 
 See also deleteFetched().
 
-=item B<folderSize> 
+=back
+
+$obj-E<gt>B<folderSize>
+
+=over 4
 
 Returns the total number of octets used by the mailbox on the remote server.
 
-=item B<header> ID, [BODYLINES]
+=back
+
+$obj-E<gt>B<header>(ID, [BODYLINES])
+
+=over 4
 
 Returns a reference to an array which contains the header of the message
 with the specified ID.  C<undef> is returned if something has gone wrong.
@@ -198,41 +215,61 @@ with the specified ID.  C<undef> is returned if something has gone wrong.
 The optional integer BODYLINES specifies the number of lines from the body
 which should be added, by default none.
 
-Examples:
+I<Example:> 
 
  my $ref_lines = $imap4->header($uidl);
  print @$ref_lines;
 
-=item B<id2n> ID
+=back
+
+$obj-E<gt>B<id2n>(ID)
+
+=over 4
 
 Translates the unique ID of a message into a sequence number which
 represents the message as long a this connection to the IMAP4 server
 exists.  When the message has been deleted for some reason, C<undef>
 is returned.
 
-=item B<ids> 
+=back
+
+$obj-E<gt>B<ids>
+
+=over 4
 
 Returns a list (in list context) or a reference to a list (in scalar context)
 of all ID's which are known by the server on this moment.
 
-=item B<message> ID
+=back
+
+$obj-E<gt>B<message>(ID)
+
+=over 4
 
 Returns a reference to an array which contains the lines of the
 message with the specified ID.  Returns C<undef> if something has gone
 wrong.
 
-Examples:
+I<Example:> 
 
  my $ref_lines = $imap->message($uidl);
  print @$ref_lines;
 
-=item B<messageSize> ID
+=back
+
+$obj-E<gt>B<messageSize>(ID)
+
+=over 4
 
 Returns the size of the message which is indicated by the ID, in octets.
 If the message has been deleted on the remote server, this will return
 C<undef>.
 
-=item B<messages> 
+=back
+
+$obj-E<gt>B<messages>
+
+=over 4
 
 Returns (in scalar context only) the number of messages that are known
 to exist in the mailbox.
@@ -241,29 +278,45 @@ to exist in the mailbox.
 
 =head2 Protocol [internals]
 
-=over 4
+The follow methods handle protocol internals, and should not be used
+by a normal user of this class.
 
-=item B<askSubfolderSeparator> 
+$obj-E<gt>B<askSubfolderSeparator>
+
+=over 4
 
 Returns the separator which is used on the server side to indicate
 sub-folders.
 
-=item B<askSubfoldersOf> NAME
+=back
+
+$obj-E<gt>B<askSubfoldersOf>(NAME)
+
+=over 4
 
 Returns a list of subfolders for this server.
 
-=item B<getFlag> ID, LABEL
+=back
+
+$obj-E<gt>B<getFlag>(ID, LABEL)
+
+=over 4
 
 Returns the value of the LABEL for the message with this ID.
 
-=item B<login> 
+=back
+
+$obj-E<gt>B<login>
+
+=over 4
 
 Establish a new connection to the IMAP4 server, using username and password.
 
-IMAP4 requires a username and password
-Cannot connect to $host:$port for IMAP4: $!
+=back
 
-=item B<send> SOCKET, data
+$obj-E<gt>B<send>(SOCKET, data)
+
+=over 4
 
 Send data to the indicated socket and return the first line read from
 that socket.  Logs an error if either writing to or reading from socket failed.
@@ -271,7 +324,11 @@ that socket.  Logs an error if either writing to or reading from socket failed.
 This method does B<not> attempt to reconnect or anything: if reading or
 writing the socket fails, something is very definitely wrong.
 
-=item B<sendList> SOCKET, COMMAND
+=back
+
+$obj-E<gt>B<sendList>(SOCKET, COMMAND)
+
+=over 4
 
 Sends the indicated COMMAND to the specified socket, and retrieves the
 response.  It returns a reference to an array with all the lines that
@@ -279,9 +336,17 @@ were reveived after the first C<+OK> line and before the end-of-message
 delimiter (a single dot on a line).  Returns C<undef>
 whenever something has gone wrong.
 
-=item B<setFlags> ID, LABEL, VALUE, [LABEL, VALUE], ...
+=back
 
-=item B<socket> 
+$obj-E<gt>B<setFlags>(ID, LABEL, VALUE, [LABEL, VALUE], ...)
+
+=over 4
+
+=back
+
+$obj-E<gt>B<socket>
+
+=over 4
 
 Returns a connection to the IMAP4 server.  If there was no connection yet,
 it will be created transparently.  If the connection with the IMAP4 server
@@ -294,85 +359,179 @@ no further actions should be tried on the object.
 
 =back
 
-=head2 Logging and Tracing
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Transport::IMAP4-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
 =over 4
 
-=item B<AUTOLOAD> 
-
-See Mail::Reporter::AUTOLOAD()
-
-=item B<DESTROY> 
-
-See Mail::Reporter::DESTROY()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head1 SEE ALSO
+$obj-E<gt>B<errors>
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+=over 4
 
-=head1 AUTHOR
+See L<Mail::Reporter/"Error handling">
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+=back
 
-=head1 VERSION
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-This code is beta, version 2.040.
+Mail::Transport::IMAP4-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Transport::IMAP4-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+The connection is cleanly terminated when the program is cleanly
+terminated.
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Cannot connect to $host:$port for IMAP4: $!
+
+
+I<Error:> Cannot get the messages of imap4 via messages()
+
+It is not possible to retreive all messages on a remote IMAP4 folder
+at once: each shall be taken separately.  The IMAP4 folder will hide this
+for you.
+
+I<Error:> Cannot re-connect reliably to server which doesn't support UIDL.
+
+The connection to the remote IMAP4 was lost, and cannot be re-established
+because the server's protocol implementation lacks the necessary information.
+
+I<Error:> Cannot read IMAP4 from socket: $!
+
+It is not possible to read the success status of the previously given IMAP4
+command.  Connection lost?
+
+I<Error:> Cannot write IMAP4 to socket: $@
+
+It is not possible to send a protocol command to the IMAP4 server.  Connection
+lost?
+
+I<Error:> IMAP4 requires a username and password
+
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

@@ -1,11 +1,14 @@
+
 package Mail::Box::Maildir::Message;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Dir::Message';
 
 use strict;
 use File::Copy;
 use Carp;
 use warnings;
+
 
 sub filename(;$)
 {   my $self    = shift;
@@ -40,6 +43,9 @@ sub filename(;$)
     $self->SUPER::filename($newname);
 }
 
+#-------------------------------------------
+
+
 sub guessTimestamp()
 {   my $self = shift;
     my $timestamp   = $self->SUPER::guessTimestamp;
@@ -47,6 +53,8 @@ sub guessTimestamp()
 
     $self->filename =~ m/(\d+)/ ? $1 : undef;
 }
+
+#-------------------------------------------
 
 sub deleted($)
 {   my $self = shift;
@@ -58,6 +66,8 @@ sub deleted($)
     $set;
 }
 
+#-------------------------------------------
+
 sub label(@)
 {   my $self   = shift;
     return $self->SUPER::label unless @_;
@@ -66,6 +76,9 @@ sub label(@)
     $self->labelsToFilename;
     $return;
 }
+
+#-------------------------------------------
+
 
 sub accept($)
 {   my $self   = shift;
@@ -82,6 +95,9 @@ sub accept($)
     $self->log(PROGRESS => "Message $old is accepted.\n");
     $self->filename($new);
 }
+
+#-------------------------------------------
+
 
 sub labelsToFilename()
 {   my $self   = shift;
@@ -111,5 +127,7 @@ sub labelsToFilename()
 
     $new;
 }
+
+#-------------------------------------------
 
 1;

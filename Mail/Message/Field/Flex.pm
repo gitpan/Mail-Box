@@ -2,10 +2,12 @@ use strict;
 use warnings;
 
 package Mail::Message::Field::Flex;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Field';
 
 use Carp;
+
 
 sub new($;$$@)
 {   my $class  = shift;
@@ -40,19 +42,29 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
 sub clone()
 {   my $self = shift;
     (ref $self)->new($self->Name, $self->body);
 }
+
+#------------------------------------------
 
 sub length()
 {   my $self = shift;
     length($self->{MMFF_name}) + 1 + length($self->{MMFF_body});
 }
 
+#------------------------------------------
+
 sub name() { lc shift->{MMFF_name}}
 
+#------------------------------------------
+
 sub Name() { shift->{MMFF_name}}
+
+#------------------------------------------
 
 sub folded(;$)
 {   my $self = shift;
@@ -64,6 +76,8 @@ sub folded(;$)
     ($first, @lines);
 }
 
+#------------------------------------------
+
 sub unfoldedBody($;@)
 {   my $self = shift;
     $self->{MMFF_body} = $self->fold($self->{MMFF_name}, @_)
@@ -72,6 +86,8 @@ sub unfoldedBody($;@)
     $self->unfold($self->{MMFF_body});
 }
 
+#------------------------------------------
+
 sub foldedBody($)
 {   my ($self, $body) = @_;
     if(@_==2) { $self->{MMFF_body} = $body }
@@ -79,5 +95,7 @@ sub foldedBody($)
 
     wantarray ? (split /^/, $body) : $body;
 }
+
+#------------------------------------------
 
 1;

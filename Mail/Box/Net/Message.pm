@@ -1,12 +1,15 @@
+
 use strict;
 use warnings;
 
 package Mail::Box::Net::Message;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Message';
 
 use File::Copy;
 use Carp;
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -21,10 +24,18 @@ sub init($)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub unique(;$)
 {   my $self = shift;
     @_ ? $self->{MBNM_unique} = shift : $self->{MBNM_unique};
 }
+
+#-------------------------------------------
+
+
+#-------------------------------------------
 
 sub loadHead()
 {   my $self     = shift;
@@ -42,6 +53,9 @@ sub loadHead()
     $self->log(PROGRESS => 'Loaded delayed head.');
     $self->head;
 }
+
+#-------------------------------------------
+
 
 sub loadBody()
 {   my $self     = shift;
@@ -77,5 +91,7 @@ sub loadBody()
     $self->log(PROGRESS => 'Loaded delayed body.');
     $self->storeBody($newbody);
 }
+
+#-------------------------------------------
 
 1;

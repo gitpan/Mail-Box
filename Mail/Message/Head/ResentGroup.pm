@@ -1,7 +1,9 @@
+
 use strict;
 
 package Mail::Message::Head::ResentGroup;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use Scalar::Util 'weaken';
@@ -9,8 +11,10 @@ use Mail::Message::Field::Fast;
 
 use Sys::Hostname;
 
+
 my @ordered_field_names = qw/return_path delivered_to received date from
   sender to cc bcc message_id/;
+
 
 sub new(@)
 {   my $class = shift;
@@ -41,6 +45,12 @@ sub init($$)
     $self;
 }
 
+#------------------------------------------
+
+
+#------------------------------------------
+
+
 sub delete()
 {   my $self   = shift;
     my $head   = $self->{MMHR_head};
@@ -50,6 +60,24 @@ sub delete()
     $head->removeField($_) foreach @fields;
     $self;
 }
+
+
+sub orderedFields()
+{   my $self   = shift;
+    map { $self->{ "MMHR_$_" } || () } @ordered_field_names;
+}
+
+#-------------------------------------------
+
+
+sub print(;$)
+{   my $self = shift;
+    my $fh   = shift || select;
+    $_->print($fh) foreach $self->orderedFields;
+}
+
+#------------------------------------------
+
 
 sub set($$)
 {   my $self  = shift;
@@ -70,11 +98,23 @@ sub set($$)
     $self->{ "MMHR_$name" } = $field;
 }
 
+#------------------------------------------
+
+
 sub returnPath() { shift->{MMHR_return_path} }
+
+#------------------------------------------
+
 
 sub deliveredTo() { shift->{MMHR_delivered_to} }
 
+#------------------------------------------
+
+
 sub received() { shift->{MMHR_received} }
+
+#------------------------------------------
+
 
 sub receivedTimestamp()
 {   my $received = shift->{MMHR_received} or return;
@@ -82,55 +122,74 @@ sub receivedTimestamp()
     Mail::Message::Field->dateToTimestamp($comment);
 }
 
+#------------------------------------------
+
+
 sub date($) { shift->{MMHR_date} }
+
+#------------------------------------------
+
 
 sub dateTimestamp()
 {   my $date = shift->{MMHR_date} or return;
     Mail::Message::Field->dateToTimestamp($date);
 }
 
+#------------------------------------------
+
+
 sub from()
 {   my $from = shift->{MMHR_from} or return ();
     wantarray ? $from->addresses : $from;
 }
+
+#------------------------------------------
+
 
 sub sender()
 {   my $sender = shift->{MMHR_sender} or return ();
     wantarray ? $sender->addresses : $sender;
 }
 
+#------------------------------------------
+
+
 sub to()
 {   my $to = shift->{MMHR_to} or return ();
     wantarray ? $to->addresses : $to;
 }
+
+#------------------------------------------
+
 
 sub cc()
 {   my $cc = shift->{MMHR_cc} or return ();
     wantarray ? $cc->addresses : $cc;
 }
 
+#------------------------------------------
+
+
 sub bcc()
 {   my $bcc = shift->{MMHR_bcc} or return ();
     wantarray ? $bcc->addresses : $bcc;
 }
+
+#------------------------------------------
+
 
 sub destinations()
 {   my $self = shift;
     ($self->to, $self->cc, $self->bcc);
 }
 
+#------------------------------------------
+
+
 sub messageId() { shift->{MMHR_message_id} }
 
-sub orderedFields()
-{   my $self   = shift;
-    map { $self->{ "MMHR_$_" } || () } @ordered_field_names;
-}
+#------------------------------------------
 
-sub print(;$)
-{   my $self = shift;
-    my $fh   = shift || select;
-    $_->print($fh) foreach $self->orderedFields;
-}
 
 my $unique_received_id = 'rc'.time;
 
@@ -149,5 +208,8 @@ sub createReceived()
 
     $self->set(Received => $received);
 }
+
+#-------------------------------------------
+
 
 1;

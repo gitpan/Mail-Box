@@ -3,10 +3,12 @@
 
 Mail::Box::MH::Index - keep index files for messages.
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Box::MH::Index
    is a Mail::Reporter
+
 
 =head1 SYNOPSIS
 
@@ -14,177 +16,265 @@ Mail::Box::MH::Index - keep index files for messages.
  $index->read(...)
  $index->write(...)
 
+
 =head1 DESCRIPTION
 
 Message folders which store their data in one single file per message are
 very inefficient for producing subject overviews and for computing message
-threads.  The Mail::Box::MH::Index object is able to store and read a the
-headers of all messages in one file.
+threads.  The C<Mail::Box::MH::Index> object is able to store and read a the
+headers of a set of C<Mail::Box::MH::Message> messages which are
+part of a single C<Mail::Box::MH> folder in one file.
 
-When the Mail::Box::MH::Index functionality is enabled by specifying
-C<keep_index> when opening a folder, the index file is automatically read.
-When the folder is closed, a new index file is created.
+When the C<Mail::Box::MH::Index> functionality is enabled by specifying
+L<Mail::Box::MH::new(keep_index)|"METHODS"> when opening a folder, the index file
+is automatically read.  When the folder is closed, a new index file is
+created.
 
 Special care is taken to avoid problems which occur when the user changes
 or removes message files without updating the index. If the index is not
 trustworthy it will not be used (costing some performance for the reader
 of the folder).
 
+
+
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+Mail::Box::MH::Index-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-=item B<new> OPTIONS
+ Option     Defined in       Default                                                   
+ filename                    <required>                                                
+ head_type                   L<Mail::Message::Head::Subset|Mail::Message::Head::Subset>
+ head_wrap                   72                                                        
+ log        L<Mail::Reporter>  C<'WARNINGS'>                                             
+ trace      L<Mail::Reporter>  C<'WARNINGS'>                                             
 
-(Class method)
-
- OPTION               DEFAULT
- filename             <obligatory>
- head_type            'Mail::Message::Head::Subset'
- head_wrap            72
- log                  'WARNINGS'
- trace                'WARNINGS'
+. filename FILENAME
 
 =over 4
-
-=item B<filename> =E<gt> FILENAME
 
 The FILENAME which is used to store the headers of all the e-mails for
 one folder. This must be an absolute pathname.
 
-=item B<head_type> =E<gt> CLASS
+=back
+
+. head_type CLASS
+
+=over 4
 
 The type of headers which will be used to store header information when
 it is read from the index file.  You can not be sure the index contains
 all header line (the mailbox may have been updated without updating
 the index) so this will usually be (an sub-class of)
-Mail::Message::Head::Subset.
+L<Mail::Message::Head::Subset|Mail::Message::Head::Subset>.
 
-=item B<head_wrap> =E<gt> INTEGER
+=back
+
+. head_wrap INTEGER
+
+=over 4
 
 The preferred number of character in each header line.
 
-=item B<log> =E<gt> LEVEL
-
-See Mail::Reporter::new(log)
-
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
-
 =back
+
+. log LEVEL
+
+. trace LEVEL
 
 =back
 
 =head2 The Index
 
-=over 4
 
-=item B<filename> 
+$obj-E<gt>B<filename>
+
+=over 4
 
 Returns the name of the index file.
 
-=item B<get> MSGFILE
+=back
+
+$obj-E<gt>B<get>(MSGFILE)
+
+=over 4
 
 Look if there is header info for the specified MSGFILE.  The filename
 represents one message in folder type which are organized as directory.
-This method will return an object of the C<head_type> as specified
+This method will return an object of the L<new(head_type)|"Constructors"> as specified
 during creation of the index object, or C<undef> if the information
 is not known or not trustworthy -i.e. the file size changed.
 
-=item B<read> 
+=back
+
+$obj-E<gt>B<read>
+
+=over 4
 
 Read the index file.  The header objects can after this be requested
 with the get() method.
 
-=item B<write> MESSAGES
+=back
+
+$obj-E<gt>B<write>(MESSAGES)
+
+=over 4
 
 Write an index file containing the headers specified MESSAGES
 (Mail::Message objects).
 
 =back
 
-=head2 Logging and Tracing
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Box::MH::Index-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
 =over 4
 
-=item B<AUTOLOAD> 
-
-See Mail::Reporter::AUTOLOAD()
-
-=item B<DESTROY> 
-
-See Mail::Reporter::DESTROY()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head1 SEE ALSO
+$obj-E<gt>B<errors>
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+=over 4
 
-=head1 AUTHOR
+See L<Mail::Reporter/"Error handling">
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+=back
 
-=head1 VERSION
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-This code is beta, version 2.040.
+Mail::Box::MH::Index-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Box::MH::Index-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

@@ -3,11 +3,13 @@
 
 Mail::Message::Convert::Html - Format messages from or to HTML
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Message::Convert::Html
    is a Mail::Message::Convert
    is a Mail::Reporter
+
 
 =head1 SYNOPSIS
 
@@ -19,86 +21,89 @@ Mail::Message::Convert::Html - Format messages from or to HTML
  print $html->headToHtmlTable($head);
  print $html->textToHtml($text);
 
+
 =head1 DESCRIPTION
 
 The package contains various translators which handle HTML or XHTML
 without the help of external modules.  There are more HTML related modules,
 which do require extra packages to be installed.
 
+
+
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+Mail::Message::Convert::Html-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-=item B<new> OPTIONS
+ Option       Defined in       Default          
+ fields       L<Mail::Message::Convert>  <see description>
+ head_mailto                   <true>           
+ log          L<Mail::Reporter>  C<'WARNINGS'>    
+ produce                       C<'HTML'>        
+ trace        L<Mail::Reporter>  C<'WARNINGS'>    
 
-(Class method)
+. fields NAMES|ARRAY-OF-NAMES|REGEXS
 
- OPTION               DEFAULT
- fields               <see description>
- head_mailto          <true>
- log                  'WARNINGS'
- produce              'HTML'
- trace                'WARNINGS'
+. head_mailto BOOLEAN
 
 =over 4
-
-=item B<fields> =E<gt> NAMES|ARRAY-OF-NAMES|REGEXS
-
-See Mail::Message::Convert::new(fields)
-
-=item B<head_mailto> =E<gt> BOOLEAN
 
 Whether to replace e-mail addresses in some header lines with links.
 
-=item B<log> =E<gt> LEVEL
+=back
 
-See Mail::Reporter::new(log)
+. log LEVEL
 
-=item B<produce> =E<gt> 'HTML'|'XHTML'
+. produce 'HTML'|'XHTML'
+
+=over 4
 
 Produce HTML or XHTML output.  The output is slightly different, even
 html browsers will usually accept the XHTML data.
 
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
-
 =back
+
+. trace LEVEL
 
 =back
 
 =head2 Converting
 
-=over 4
 
-=item B<fieldContentsToHtml> FIELD, [SUBJECT]
+$obj-E<gt>B<fieldContentsToHtml>(FIELD, [SUBJECT])
+
+=over 4
 
 Format one field from the header to HTML.  When the header line usually
 usually contains e-mail addresses, the line is scanned and valid addresses
 are linked with an C<mailto:> anchor.  The SUBJECT can be specified to
 be included in that link.
 
-=item B<fieldToHtml> FIELD, [SUBJECT]
+=back
 
-Reformat one header line field to HTML.  The FIELD's name
-is printed in bold, followed by the formatted field content,
-which is produced by the C<fieldContentsToHtml> method.
-
-=item B<headToHtmlHead> HEAD, META
-
-Translate the selected header lines (fields) to an html page header.  Each
-selected field will get its own meta line with the same name as the line.
-Furthermore:
+$obj-E<gt>B<fieldToHtml>(FIELD, [SUBJECT])
 
 =over 4
 
-=item * the C<Subject> field will become the C<title>,
-
-=item * C<From> is used for the C<Author>
+Reformat one header line field to HTML.  The FIELD's name
+is printed in bold, followed by the formatted field content,
+which is produced by L<fieldContentsToHtml()|"Converting">.
 
 =back
+
+$obj-E<gt>B<headToHtmlHead>(HEAD, META)
+
+=over 4
+
+Translate the selected header lines (fields) to an html page header.  Each
+selected field will get its own meta line with the same name as the line.
+Furthermore, the C<Subject> field will become the C<title>,
+and C<From> is used for the C<Author>.
 
 Besides, you can specify your own meta fields, which will overrule header
 fields.  Empty fields will not be included.  When a C<title> is specified,
@@ -109,7 +114,7 @@ the whole text is returned as one.
 If you need to add lines to the head (for instance, http-equiv lines), then
 splice them before the last element in the returned list.
 
-Examples:
+I<Example:> 
 
  my @head = $html->headToHtmlHead
      ( $head
@@ -119,110 +124,187 @@ Examples:
  splice @head, -1, 0, '<meta http-equiv=...>';
  print @head;
 
-=item B<headToHtmlTable> HEAD, [TABLE-PARAMS]
+=back
 
-Produce a display of the selected fields of the header (see
-selectedFields()) in a table shape.  The optional
-TABLE-PARAMS are added as parameters to the produced TABLE tag.
-In list context, the separate lines are returned.  In scalar
-context, everything is returned as one.
+$obj-E<gt>B<headToHtmlTable>(HEAD, [TABLE-PARAMS])
 
-Examples:
+=over 4
+
+Produce a display of the L<selectedFields()|"Converting"> of the header in a
+table shape.  The optional TABLE-PARAMS are added as parameters to the
+produced TABLE tag.  In list context, the separate lines are returned.
+In scalar context, everything is returned as one.
+
+I<Example:> 
 
  print $html->headToHtmlTable($head, 'width="50%"');
 
-=item B<selectedFields> HEAD
+=back
 
-See Mail::Message::Convert::selectedFields()
+$obj-E<gt>B<selectedFields>(HEAD)
 
-=item B<textToHtml> LINES
+=over 4
+
+See L<Mail::Message::Convert/"Converting">
+
+=back
+
+$obj-E<gt>B<textToHtml>(LINES)
+
+=over 4
 
 Translate one or more LINES from text into HTML.  Each line is taken one
-after the other, and only simple things are translated.  The C<plainToHtml>
-method is able to convert large plain texts in a descent fashion.  In scalar
+after the other, and only simple things are translated.  C<textToHtml>
+is able to convert large plain texts in a descent fashion.  In scalar
 context, the resulting lines are returned as one.
 
 =back
 
-=head2 Logging and Tracing
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Message::Convert::Html-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
 =over 4
 
-=item B<AUTOLOAD> 
-
-See Mail::Reporter::AUTOLOAD()
-
-=item B<DESTROY> 
-
-See Mail::Reporter::DESTROY()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head1 SEE ALSO
+$obj-E<gt>B<errors>
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+=over 4
 
-=head1 AUTHOR
+See L<Mail::Reporter/"Error handling">
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+=back
 
-=head1 VERSION
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-This code is beta, version 2.040.
+Mail::Message::Convert::Html-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Message::Convert::Html-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

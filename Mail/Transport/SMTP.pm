@@ -2,10 +2,12 @@ use strict;
 use warnings;
 
 package Mail::Transport::SMTP;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Transport::Send';
 
 use Net::SMTP;
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -34,6 +36,9 @@ sub init($)
 
     $self;
 }
+
+#------------------------------------------
+
 
 sub trySend($@)
 {   my ($self, $message, %args) = @_;
@@ -113,6 +118,9 @@ sub trySend($@)
     $server->quit;
 }
 
+#------------------------------------------
+
+
 sub contactAnyServer()
 {   my $self = shift;
 
@@ -146,9 +154,14 @@ sub contactAnyServer()
     undef;
 }
 
+#------------------------------------------
+
+
 sub tryConnectTo($@)
 {   my ($self, $host) = (shift, shift);
     Net::SMTP->new($host, @_);
 }
+
+#------------------------------------------
 
 1;

@@ -1,12 +1,15 @@
+
 use strict;
 
 package Mail::Box::Locker::DotLock;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Locker';
 
 use IO::File;
 use Carp;
 use File::Spec;
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -24,7 +27,11 @@ sub init($)
     $self->SUPER::init($args);
 }
 
+#-------------------------------------------
+
 sub name() {'DOTLOCK'}
+
+#-------------------------------------------
 
 sub _try_lock($)
 {   my ($self, $lockfile) = @_;
@@ -41,6 +48,8 @@ sub _try_lock($)
     1;
 }
 
+#-------------------------------------------
+
 sub unlock()
 {   my $self = shift;
     return $self unless $self->{MBL_has_lock};
@@ -53,6 +62,8 @@ sub unlock()
     delete $self->{MBL_has_lock};
     $self;
 }
+
+#-------------------------------------------
 
 sub lock()
 {   my $self   = shift;
@@ -87,7 +98,11 @@ sub lock()
     return 0;
 }
 
+#-------------------------------------------
+
 sub isLocked() { -e shift->filename }
+
+#-------------------------------------------
 
 1;
 

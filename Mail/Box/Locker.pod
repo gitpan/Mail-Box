@@ -3,7 +3,8 @@
 
 Mail::Box::Locker - manage the locking of mail folders
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Box::Locker
    is a Mail::Reporter
@@ -14,6 +15,7 @@ Mail::Box::Locker - manage the locking of mail folders
    Mail::Box::Locker::Multi
    Mail::Box::Locker::NFS
    Mail::Box::Locker::POSIX
+
 
 =head1 SYNOPSIS
 
@@ -29,58 +31,72 @@ Mail::Box::Locker - manage the locking of mail folders
  my $folder = Mail::Box->new(lock_method => 'DOTLOCK');
  print $folder->locker->type;
 
+
 =head1 DESCRIPTION
 
-Each Mail::Box will create its own Mail::Box::Locker object which will
-handle the locking for it.  You can access of the object directly from
-the folder, as shown in the examples below.
+Each L<Mail::Box|Mail::Box> will create its own C<Mail::Box::Locker> object which
+will handle the locking for it.  You can access of the object directly
+from the folder, as shown in the examples below.
+
+
 
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+Mail::Box::Locker-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-=item B<new> OPTIONS
-
-(Class method) 
 Create a new lock. You may do this directly. However, in most cases the
 lock will not be separately instantiated but will be the second class in
-a multiple inheritance construction with a Mail::Box.
+a multiple inheritance construction with a L<Mail::Box|Mail::Box>.
 
 Generally the client program specifies the locking behavior through
 options given to the folder class.
 
- OPTION               DEFAULT
- expires              1 hour
- file                 undef
- folder               <obligatory>
- log                  'WARNINGS'
- method               'DOTLOCK'
- timeout              10 seconds
- trace                'WARNINGS'
+ Option   Defined in       Default      
+ expires                   1 hour       
+ file                      undef        
+ folder                    <required>   
+ log      L<Mail::Reporter>  C<'WARNINGS'>
+ method                    C<'DOTLOCK'> 
+ timeout                   10 seconds   
+ trace    L<Mail::Reporter>  C<'WARNINGS'>
+
+. expires SECONDS
 
 =over 4
-
-=item B<expires> =E<gt> SECONDS
 
 How long can a lock exist?  If a different e-mail program leaves a stale
 lock, then this lock will be removed automatically after the specified
 number of seconds.
 
-=item B<file> =E<gt> FILENAME
+=back
+
+. file FILENAME
+
+=over 4
 
 Name of the file to lock.  By default, the name of the folder is taken.
 
-=item B<folder> =E<gt> FOLDER
+=back
+
+. folder FOLDER
+
+=over 4
 
 Which folder is locked.
 
-=item B<log> =E<gt> LEVEL
+=back
 
-See Mail::Reporter::new(log)
+. log LEVEL
 
-=item B<method> =E<gt> METHOD | CLASS
+. method METHOD | CLASS
+
+=over 4
 
 Which kind of locking, specified as one of the following names, or a
 full CLASS name.  Supported METHODs are
@@ -102,7 +118,7 @@ options to change the default behavior.
 For some folder handlers, locking is based on a file locking mechanism
 provided by the operating system.  However, this does not work on all
 systems, such as network filesystems, and such. This also doesn't work on
-folders based on directories (Mail::Box::Dir and derived).
+folders based on directories (L<Mail::Box::Dir|Mail::Box::Dir> and derived).
 
 =item 'POSIX' | 'posix'
 
@@ -126,7 +142,7 @@ Do not use locking.
 
 =back
 
-The other option is to produce your own Mail::Box::Locker derived class,
+The other option is to produce your own C<Mail::Box::Locker> derived class,
 which implements the desired locking method. (Please consider offering it
 for inclusion in the public Mail::Box module!) Create an instance of that
 class with this parameter:
@@ -134,40 +150,59 @@ class with this parameter:
  my $locker = Mail::Box::Locker::MyOwn->new;
  $folder->open(locker => $locker);
 
-=item B<timeout> =E<gt> SECONDS|'NOTIMEOUT'
+=back
+
+. timeout SECONDS|'NOTIMEOUT'
+
+=over 4
 
 How long to wait while trying to acquire the lock. The lock request will
-fail when the specified number of seconds is reached.  If 'NOTIMEOUT' is
+fail when the specified number of seconds is reached.  If C<'NOTIMEOUT'> is
 specified, the module will wait until the lock can be taken.
 
 Whether it is possible to limit the wait time is platform- and
 locking-method-specific.  For instance, the `dotlock' method on Windows
 will always wait until the lock has been received.
 
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
-
 =back
+
+. trace LEVEL
 
 =back
 
 =head2 The Locker
 
+
+$obj-E<gt>B<filename>([FILENAME])
+
 =over 4
 
-=item B<DESTROY> 
+Returns the filename which is used to lock the folder, optionally after
+setting it to the specified FILENAME.
 
-When the locker is destroyed, for instance when the folder is closed
-or the program ends, the lock will be automatically removed.
+I<Example:> 
 
-=item B<name> 
+ print $locker->filename;
 
-Returns the method used to lock the folder. See the new() method for
+=back
+
+$obj-E<gt>B<folder>
+
+=over 4
+
+Returns the folder object which is locker.
+
+=back
+
+$obj-E<gt>B<name>
+
+=over 4
+
+Returns the method used to lock the folder. See the L<new(method)|"METHODS"> for
 details on how to specify the lock method.  The name of the method is
-returned in uppercase.
+returned in upper-case.
 
-Examples:
+I<Example:> 
 
  if($locker->name eq 'FLOCK') ...
 
@@ -175,134 +210,205 @@ Examples:
 
 =head2 Locking
 
+
+$obj-E<gt>B<hasLock>
+
 =over 4
-
-=item B<filename> [FILENAME]
-
-Returns the filename which is used to lock the folder, optionally after
-setting it to the specified FILENAME.
-
-Examples:
-
- print $locker->filename;
-
-=item B<folder> 
-
-Returns the folder object which is locker.
-
-=item B<hasLock> 
 
 Check whether the folder has the lock.
 
-Examples:
+I<Example:> 
 
  if($locker->hasLock) {...}
  if($folder->locker->hasLock) {...}
 
-=item B<isLocked> 
+=back
+
+$obj-E<gt>B<isLocked>
+
+=over 4
 
 Test if the folder is locked by this or a different application.
 
-Examples:
+I<Example:> 
 
  if($locker->isLocked) {...}
  if($folder->locker->isLocked) {...}
 
-=item B<lock> FOLDER
+=back
+
+$obj-E<gt>B<lock>(FOLDER)
+
+=over 4
 
 Get a lock on a folder.  This will return false if the lock fails.
 
-Examples:
+I<Example:> 
 
  die unless $locker->lock;
  if($folder->locker->lock) {...}
 
-=item B<unlock> 
+=back
+
+$obj-E<gt>B<unlock>
+
+=over 4
 
 Undo the lock on a folder.
 
-Examples:
+I<Example:> 
 
  $locker->unlock;
  $folder->locker->unlock;
 
 =back
 
-=head2 Logging and Tracing
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Box::Locker-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
 =over 4
 
-=item B<AUTOLOAD> 
-
-See Mail::Reporter::AUTOLOAD()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head1 SEE ALSO
+$obj-E<gt>B<errors>
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+=over 4
 
-=head1 AUTHOR
+See L<Mail::Reporter/"Error handling">
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+=back
 
-=head1 VERSION
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-This code is beta, version 2.040.
+Mail::Box::Locker-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Box::Locker-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+When the locker is destroyed, for instance when the folder is closed
+or the program ends, the lock will be automatically removed.
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

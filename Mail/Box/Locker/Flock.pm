@@ -1,14 +1,21 @@
+
 use strict;
 
 package Mail::Box::Locker::Flock;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Locker';
 
 use IO::File;
 use Fcntl         qw/:DEFAULT :flock/;
 use Errno         qw/EAGAIN/;
 
+
+#-------------------------------------------
+
 sub name() {'FLOCK'}
+
+#-------------------------------------------
 
 sub _try_lock($)
 {   my ($self, $file) = @_;
@@ -21,6 +28,9 @@ sub _unlock($)
     delete $self->{MBL_has_lock};
     $self;
 }
+
+#-------------------------------------------
+
 
 # 'r+' is require under Solaris and AIX, other OSes are satisfied with 'r'.
 my $lockfile_access_mode = ($^O eq 'solaris' || $^O eq 'aix') ? 'r+' : 'r';
@@ -60,6 +70,9 @@ sub lock()
     return 0;
 }
 
+#-------------------------------------------
+
+
 sub isLocked()
 {   my $self     = shift;
     my $filename = $self->filename;
@@ -78,6 +91,8 @@ sub isLocked()
     1;
 }
 
+#-------------------------------------------
+
 sub unlock()
 {   my $self = shift;
 
@@ -86,5 +101,7 @@ sub unlock()
 
     $self;
 }
+
+#-------------------------------------------
 
 1;

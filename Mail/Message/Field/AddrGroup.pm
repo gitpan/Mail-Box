@@ -2,8 +2,10 @@ use strict;
 use warnings;
 
 package Mail::Message::Field::AddrGroup;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -15,7 +17,13 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
+
 sub name() { shift->{MMFA_name} }
+
+#------------------------------------------
+
 
 sub addAddress(@)
 {   my $self  = shift;
@@ -25,7 +33,8 @@ sub addAddress(@)
     $email;
 }
 
-sub addresses() { @{shift->{MMFA_addresses}} }
+#------------------------------------------
+
 
 sub string()
 {   my $self = shift;
@@ -33,5 +42,13 @@ sub string()
     $name .= ': ' if length $name;
     $name . join(', ', $self->addresses) . ';';
 }
+
+#------------------------------------------
+
+
+sub addresses() { @{shift->{MMFA_addresses}} }
+
+#------------------------------------------
+
 
 1;

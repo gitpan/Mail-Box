@@ -1,11 +1,14 @@
+
 use strict;
 
 package Mail::Box::Locker::Multi;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Locker';
 
 use IO::File;
 use Carp;
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -37,9 +40,11 @@ sub init($)
     $self;
 }
 
+#-------------------------------------------
+
 sub name() {'MULTI'}
 
-sub lockers() { @{shift->{MBLM_lockers}} }
+#-------------------------------------------
 
 sub _try_lock($)
 {   my $self     = shift;
@@ -57,6 +62,8 @@ sub _try_lock($)
     1;
 }
 
+#-------------------------------------------
+
 sub unlock()
 {   my $self = shift;
     return $self unless $self->{MBL_has_lock};
@@ -66,6 +73,8 @@ sub unlock()
 
     $self;
 }
+
+#-------------------------------------------
 
 sub lock()
 {   my $self  = shift;
@@ -84,11 +93,20 @@ sub lock()
     return 0;
 }
 
+#-------------------------------------------
+
 sub isLocked()
 {   my $self     = shift;
     $self->_try_lock($self->filename) or return 0;
     $self->unlock;
     1;
 }
+
+#-------------------------------------------
+
+
+sub lockers() { @{shift->{MBLM_lockers}} }
+
+#-------------------------------------------
 
 1;

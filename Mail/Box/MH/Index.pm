@@ -1,11 +1,17 @@
+
 use strict;
 
 package Mail::Box::MH::Index;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Subset;
 use Carp;
+
+
+#-------------------------------------------
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -20,6 +26,14 @@ sub init($)
 
     $self;
 }
+
+#-------------------------------------------
+
+
+sub filename() {shift->{MBMI_filename}}
+
+#-------------------------------------------
+
 
 sub write(@)
 {   my $self      = shift;
@@ -55,6 +69,9 @@ sub write(@)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub read(;$)
 {   my $self     = shift;
     my $filename = $self->{MBMI_filename};
@@ -84,11 +101,15 @@ sub read(;$)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub get($)
 {   my ($self, $msgfile) = @_;
     $self->{MBMI_index}{$msgfile};
 }
 
-sub filename() {shift->{MBMI_filename}}
+#-------------------------------------------
+
 
 1;

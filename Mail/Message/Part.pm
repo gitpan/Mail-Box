@@ -2,13 +2,17 @@ use strict;
 use warnings;
 
 package Mail::Message::Part;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message';
 
 use Carp;
 
+
 sub init($)
 {   my ($self, $args) = @_;
+    $args->{head} ||= Mail::Message::Head::Complete->new;
+
     $self->SUPER::init($args);
 
     confess "No container specified for part.\n"
@@ -17,6 +21,27 @@ sub init($)
     $self->{MMP_container} = $args->{container};
     $self;
 }
+
+#------------------------------------------
+
+
+sub coerce($@)
+{   my ($class, $thing, $container) = (shift, shift, shift);
+
+    return $class->buildFromBody($thing, $container, @_)
+        if $thing->isa('Mail::Message::Body');
+
+    # Although cloning is a Bad Thing(tm), we must avoid modifying
+    # header fields of messages which reside in a folder.
+    my $message = $thing->isa('Mail::Box::Message') ? $thing->clone : $thing;
+
+    my $part    = $class->SUPER::coerce($message);
+    $part->{MMP_container} = $container;
+    $part;
+}
+
+#------------------------------------------
+
 
 sub buildFromBody($$;@)
 {   my ($class, $body, $container) = (shift, shift, shift);
@@ -38,36 +63,14 @@ sub buildFromBody($$;@)
     $part;
 }
 
-sub coerce($@)
-{   my ($class, $thing, $container) = (shift, shift, shift);
-
-    return $class->buildFromBody($thing, $container, @_)
-        if $thing->isa('Mail::Message::Body');
-
-    # Although cloning is a Bad Thing(tm), we must avoid modifying
-    # header fields of messages which reside in a folder.
-    my $message = $thing->isa('Mail::Box::Message') ? $thing->clone : $thing;
-
-    my $part    = $class->SUPER::coerce($message);
-    $part->{MMP_container} = $container;
-    $part;
-}
-
-sub delete() { shift->{MMP_deleted} ||= time }
-
-sub deleted(;$)
-{   my $self = shift;
-      ! @_      ? $self->isDeleted   # compat 2.036
-    : ! (shift) ? ($self->{MMP_deleted} = undef)
-    :             $self->delete;
-}
-
-sub isDeleted() { shift->{MMP_deleted} }
+#------------------------------------------
 
 sub container(;$)
 {   my $self = shift;
     @_ ? $self->{MMP_container} = shift : $self->{MMP_container};
 }
+
+#------------------------------------------
 
 sub toplevel()
 {   my $body = shift->container or return;
@@ -75,13 +78,20 @@ sub toplevel()
     $msg->toplevel;
 }
 
+#------------------------------------------
+
 sub isPart() { 1 }
+
+#------------------------------------------
+
 
 sub printEscapedFrom($)
 {   my ($self, $out) = @_;
     $self->head->print($out);
     $self->body->printEscapedFrom($out);
 }
+
+#------------------------------------------
 
 sub readFromParser($;$)
 {   my ($self, $parser, $bodytype) = @_;
@@ -100,5 +110,27 @@ sub readFromParser($;$)
     $self->storeBody($body);
     $self;
 }
+
+#------------------------------------------
+
+
+sub delete() { shift->{MMP_deleted} ||= time }
+
+#------------------------------------------
+
+
+sub deleted(;$)
+{   my $self = shift;
+      ! @_      ? $self->isDeleted   # compat 2.036
+    : ! (shift) ? ($self->{MMP_deleted} = undef)
+    :             $self->delete;
+}
+
+#------------------------------------------
+
+
+sub isDeleted() { shift->{MMP_deleted} }
+
+#------------------------------------------
 
 1;

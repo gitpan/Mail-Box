@@ -4,13 +4,15 @@ use warnings;
 # Mail::Message::Body::Construct adds functionality to Mail::Message::Body
 
 package Mail::Message::Body;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 
 use Carp;
 use IO::Scalar;
 
 use Mail::Message::Body::String;
 use Mail::Message::Body::Lines;
+
 
 sub foreachLine($)
 {   my ($self, $code) = @_;
@@ -25,7 +27,7 @@ sub foreachLine($)
         }
         else {$changes++}
      }
-
+      
      return $self unless $changes;
 
      ref($self)->new
@@ -33,6 +35,9 @@ sub foreachLine($)
       , data     => \@result
       );
 }
+
+#------------------------------------------
+
 
 sub concatenate(@)
 {   my $self = shift;
@@ -73,6 +78,9 @@ sub concatenate(@)
       );
 }
 
+#------------------------------------------
+
+
 sub attach(@)
 {   my $self  = shift;
 
@@ -90,6 +98,9 @@ sub attach(@)
     Mail::Message::Body::Multipart->new(parts => \@parts, @_);
 }
 
+#------------------------------------------
+
+
 # tests in t/51stripsig.t
 
 sub stripSignature($@)
@@ -100,15 +111,15 @@ sub stripSignature($@)
     my $pattern = !defined $args{pattern} ? qr/^--\s?$/
                 : !ref $args{pattern}     ? qr/^\Q${args{pattern}}/
                 :                           $args{pattern};
-
+ 
     my $lines   = $self->lines;   # no copy!
     my $stop    = defined $args{max_lines}? @$lines - $args{max_lines}
-                : exists $args{max_lines} ? 0
+                : exists $args{max_lines} ? 0 
                 :                           @$lines-10;
 
     $stop = 0 if $stop < 0;
     my ($sigstart, $found);
-
+ 
     if(ref $pattern eq 'CODE')
     {   for($sigstart = $#$lines; $sigstart >= $stop; $sigstart--)
         {   next unless $pattern->($lines->[$sigstart]);
@@ -123,9 +134,9 @@ sub stripSignature($@)
             last;
         }
     }
-
+ 
     return $self unless $found;
-
+ 
     my $bodytype = $args{result_type} || ref $self;
 
     my $stripped = $bodytype->new
@@ -139,8 +150,10 @@ sub stripSignature($@)
       ( based_on => $self
       , data     => [ @$lines[$sigstart..$#$lines] ]
       );
-
+      
     ($stripped, $sig);
 }
+
+#------------------------------------------
 
 1;

@@ -1,10 +1,13 @@
+
 use strict;
 package Mail::Box::Mbox;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::File';
 
 use Mail::Box::Mbox::Message;
 use File::Copy 'move';
+
 
 my $default_folder_dir    = exists $ENV{HOME} ? $ENV{HOME} . '/Mail' : '.';
 my $default_sub_extension = '.d';
@@ -18,13 +21,20 @@ sub init($)
     $self->SUPER::init($args);
 }
 
+#-------------------------------------------
+
+
 sub create($@)
-{   my ($class, $name, %args) = @_;
+{   my ($thingy, $name, %args) = @_;
+    my $class = ref $thingy    || $thingy;
     $args{folderdir}           ||= $default_folder_dir;
     $args{subfolder_extension} ||= $default_sub_extension;
 
     $class->SUPER::create($name, %args);
 }
+
+#-------------------------------------------
+
 
 sub foundIn($@)
 {   my $class = shift;
@@ -55,6 +65,8 @@ sub foundIn($@)
     return 1;
 }
 
+#-------------------------------------------
+
 sub writeMessages($)
 {   my ($self, $args) = @_;
 
@@ -70,7 +82,12 @@ sub writeMessages($)
     $self;
 }
 
+#-------------------------------------------
+
 sub type() {'mbox'}
+
+#-------------------------------------------
+
 
 sub listSubFolders(@)
 {   my ($thingy, %args)  = @_;
@@ -136,12 +153,18 @@ sub listSubFolders(@)
     keys %folders;
 }
 
+#-------------------------------------------
+
+
 sub dirToSubfolder($$)
 {   my ($self, $dir, $extension) = @_;
     $extension ||= $default_sub_extension;
 
     move $dir, $dir.$extension;
 }
+
+#-------------------------------------------
+
 
 sub folderToFilename($$;$)
 {   my ($thingy, $name, $folderdir, $extension) = @_;
@@ -159,7 +182,7 @@ sub folderToFilename($$;$)
     if(@parts)
     {   my $file  = pop @parts;
 
-        $real = File::Spec->catdir($real.(-d $real ? '' : $extension), $_)
+        $real = File::Spec->catdir($real.(-d $real ? '' : $extension), $_) 
            foreach @parts;
 
         $real = File::Spec->catfile($real.(-d $real ? '' : $extension), $file);
@@ -168,6 +191,7 @@ sub folderToFilename($$;$)
     $real;
 }
 
-1;
+#-------------------------------------------
+
 
 1;

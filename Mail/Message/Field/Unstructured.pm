@@ -2,8 +2,10 @@ use strict;
 use warnings;
 
 package Mail::Message::Field::Unstructured;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Field::Full';
+
 
 my %implementation;
 
@@ -27,5 +29,8 @@ sub init($)
     $self->SUPER::init($args) or return;
     $self;
 }
+
+#------------------------------------------
+
 
 1;

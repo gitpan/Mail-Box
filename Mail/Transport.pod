@@ -3,7 +3,8 @@
 
 Mail::Transport - base class for message exchange
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Transport
    is a Mail::Reporter
@@ -11,6 +12,7 @@ Mail::Transport - base class for message exchange
  Mail::Transport is extended by
    Mail::Transport::Receive
    Mail::Transport::Send
+
 
 =head1 SYNOPSIS
 
@@ -20,50 +22,53 @@ Mail::Transport - base class for message exchange
  $message->send;
  $message->send(via => 'sendmail');
 
- my $sender = Mail::Transport::SMTP->new(...);
+ my $sender = L<Mail::Transport::SMTP|Mail::Transport::SMTP>->new(...);
  $sender->send($message);
 
  # Some extensions implement receiving:
- my $receiver = Mail::Transport::POP3->new(...);
+ my $receiver = L<Mail::Transport::POP3|Mail::Transport::POP3>->new(...);
  $message = $receiver->receive;
+
 
 =head1 DESCRIPTION
 
-Objects which extend Mail::Transport implement sending and/or
+Objects which extend C<Mail::Transport> implement sending and/or
 receiving of messages, using various protocols.
 
-Mail::Transport::Send extends this class, and offers general
-functionality for send protocols, like SMTP.  Mail::Transport::Receive
+L<Mail::Transport::Send|Mail::Transport::Send> extends this class, and offers general
+functionality for send protocols, like SMTP.  L<Mail::Transport::Receive|Mail::Transport::Receive>
 also extends this class, and offers receive method.  Some transport
 protocols will implement both sending and receiving.
 
+
+
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+Mail::Transport-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-=item B<new> OPTIONS
+ Option      Defined in       Default       
+ executable                   C<undef>      
+ hostname                     C<'localhost'>
+ interval                     C<30>         
+ log         L<Mail::Reporter>  C<'WARNINGS'> 
+ password                     undef         
+ port                         undef         
+ proxy                        undef         
+ retry                        <false>       
+ timeout                      C<120>        
+ trace       L<Mail::Reporter>  C<'WARNINGS'> 
+ username                     undef         
+ via                          C<'sendmail'> 
 
-(Class method)
-
- OPTION               DEFAULT
- executable           C<undef>
- hostname             'localhost'
- interval             30
- log                  'WARNINGS'
- password             undef
- port                 undef
- proxy                undef
- retry                <false>
- timeout              120
- trace                'WARNINGS'
- username             undef
- via                  'sendmail'
+. executable FILENAME
 
 =over 4
-
-=item B<executable> =E<gt> FILENAME
 
 If you specify an executable, the module does not need to search the
 system directories to figure-out where the client lives.  Using this
@@ -71,167 +76,286 @@ decreases the flexible usage of your program: moving your program
 to other systems may involve changing the path to the executable,
 which otherwise would work auto-detect and unmodified.
 
-=item B<hostname> =E<gt> HOSTNAME|ARRAY-OF-HOSTNAMES
+=back
+
+. hostname HOSTNAME|ARRAY-OF-HOSTNAMES
+
+=over 4
 
 The host on which the server runs.  Some protocols accept an array
 of alternatives for this option.
 
-=item B<interval> =E<gt> SECONDS
+=back
+
+. interval SECONDS
+
+=over 4
 
 The time between tries to contact the remote server for sending or
 receiving a message in SECONDS.  This number must be larger than 0.
 
-=item B<log> =E<gt> LEVEL
+=back
 
-See Mail::Reporter::new(log)
+. log LEVEL
 
-=item B<password> =E<gt> STRING
+. password STRING
+
+=over 4
 
 Some protocols require a password to be given, usually in combination
 with a password.
 
-=item B<port> =E<gt> INTEGER
+=back
+
+. port INTEGER
+
+=over 4
 
 The port number behind which the service is hiding on the remote server.
 
-=item B<proxy> =E<gt> PATH
+=back
+
+. proxy PATH
+
+=over 4
 
 The name of the proxy software (the mail handler).  This must be
 the name (preferable the absolute path) of your mail delivery
 software.
 
-=item B<retry> =E<gt> NUMBER|undef
+=back
+
+. retry NUMBER|undef
+
+=over 4
 
 The number of retries before the sending will fail.  If C<undef>, the
 number of retries is unlimited.
 
-=item B<timeout> =E<gt> SECONDS
-
-SECONDS till time-out while establishing the connection to a remote server.
-
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
-
-=item B<username> =E<gt> STRING
-
-Some protocols require a user to login.
-
-=item B<via> =E<gt> CLASS|NAME
-
-Which CLASS (extending Mail::Transport) will transport the data.  Some
-predefined NAMEs avoid long class names: C<mail> and C<mailx> are handled
-by the Mail::Transport::Mailx module, C<sendmail> and C<postfix> belong to
-C<::Sendmail>, and C<smtp> is implemented in C<::SMTP>.  The C<pop> or
-C<pop3> protocol implementation can be found in C<::POP3>.
-
 =back
 
-=back
-
-=head2 Server Connection
+. timeout SECONDS
 
 =over 4
 
-=item B<findBinary> NAME [, DIRECTORIES]
+SECONDS till time-out while establishing the connection to a remote server.
+
+=back
+
+. trace LEVEL
+
+. username STRING
+
+=over 4
+
+Some protocols require a user to login.
+
+=back
+
+. via CLASS|NAME
+
+=over 4
+
+Which CLASS (extending C<Mail::Transport>) will transport the data.
+Some predefined NAMEs avoid long class names: C<mail> and C<mailx>
+are handled by the L<Mail::Transport::Mailx|Mail::Transport::Mailx> module, C<sendmail>
+and C<postfix> belong to L<Mail::Transport::Sendmail|Mail::Transport::Sendmail>, and C<smtp>
+is implemented in L<Mail::Transport::SMTP|Mail::Transport::SMTP>.  The C<pop> or C<pop3>
+protocol implementation can be found in L<Mail::Transport::POP3|Mail::Transport::POP3>.
+
+=back
+
+=back
+
+=head2 Server connection
+
+
+$obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
+
+=over 4
 
 Look for a binary with the specified NAME in the directories which
 are defined to be safe.  The list of standard directories is followed
 by the optional DIRECTORIES.  The full pathname is returned.
 
-You may specify a C<proxy> option, which specifies the absolute name
+You may specify L<new(proxy)|"METHODS">, which specifies the absolute name
 of the binary to be used.
 
-=item B<remoteHost> 
+=back
+
+$obj-E<gt>B<remoteHost>
+
+=over 4
 
 Returns the hostname, port number, username and password to be used to
 establish the connection to the server for sending or receiving mail.
 
-=item B<retry> 
+=back
+
+$obj-E<gt>B<retry>
+
+=over 4
 
 Returns the retry interval, retry count, and timeout for the connection.
 
 =back
 
-=head2 Logging and Tracing
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Transport-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
 =over 4
 
-=item B<AUTOLOAD> 
-
-See Mail::Reporter::AUTOLOAD()
-
-=item B<DESTROY> 
-
-See Mail::Reporter::DESTROY()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head1 SEE ALSO
+$obj-E<gt>B<errors>
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+=over 4
 
-=head1 AUTHOR
+See L<Mail::Reporter/"Error handling">
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+=back
 
-=head1 VERSION
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-This code is beta, version 2.040.
+Mail::Transport-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Transport-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Warning:> Avoid program abuse with an absolute path for $exec.
+
+Specifying explicit locations for executables of email transfer agents
+should only be done with absolute file names, to avoid various pontential
+security problems.
+
+I<Warning:> Executable $exec does not exist.
+
+The explicitly indicated mail transfer agent does not exists. The normal
+settings are used to find the correct location.
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

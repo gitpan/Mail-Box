@@ -1,9 +1,14 @@
+
 package Mail::Box::Tie;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 
 use strict;
 
 use Carp;
+
+
+#-------------------------------------------
 
 sub TIEHASH(@)
 {   my $class = (shift) . "::HASH";
@@ -13,6 +18,8 @@ sub TIEHASH(@)
     $class->TIEHASH(@_);
 }
 
+#-------------------------------------------
+
 sub TIEARRAY(@)
 {   my $class = (shift) . "::ARRAY";
     eval "require $class";   # bootstrap
@@ -20,5 +27,7 @@ sub TIEARRAY(@)
     confess $@ if $@;
     $class->TIEARRAY(@_);
 }
+
+#-------------------------------------------
 
 1;

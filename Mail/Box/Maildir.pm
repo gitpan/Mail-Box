@@ -1,6 +1,8 @@
+
 use strict;
 package Mail::Box::Maildir;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
@@ -9,6 +11,7 @@ use Carp;
 use File::Copy;
 use File::Spec;
 use Sys::Hostname;
+
 
 my $default_folder_dir = exists $ENV{HOME} ? "$ENV{HOME}/.maildir" : '.';
 
@@ -28,8 +31,12 @@ sub init($)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub create($@)
-{   my ($class, $name, %args) = @_;
+{   my ($thingy, $name, %args) = @_;
+    my $class     = ref $thingy      || $thingy;
     my $folderdir = $args{folderdir} || $default_folder_dir;
     my $directory = $class->folderToDirectory($name, $folderdir);
 
@@ -43,6 +50,8 @@ sub create($@)
     }
 }
 
+#-------------------------------------------
+
 sub foundIn($@)
 {   my $class = shift;
     my $name  = @_ % 2 ? shift : undef;
@@ -53,7 +62,11 @@ sub foundIn($@)
     -d File::Spec->catdir($directory, 'cur');
 }
 
+#-------------------------------------------
+
 sub type() {'maildir'}
+
+#-------------------------------------------
 
 sub listSubFolders(@)
 {   my ($class, %args) = @_;
@@ -99,13 +112,18 @@ sub listSubFolders(@)
     grep { $class->foundIn(File::Spec->catfile($dir,$_)) } @dirs;
 }
 
+#-------------------------------------------
+
 sub openSubFolder($@)
 {   my ($self, $name) = (shift, shift);
     $self->createDirs(File::Spec->catfile($self->directory, $name));
     $self->SUPER::openSubFolder($name, @_);
 }
 
+#-------------------------------------------
+
 my $uniq = rand 1000;
+
 
 sub coerce($)
 {   my ($self, $message) = @_;
@@ -130,6 +148,9 @@ sub coerce($)
     $coerced;
 }
 
+#-------------------------------------------
+
+
 sub createDirs($)
 {   my ($thing, $dir) = @_;
 
@@ -150,6 +171,9 @@ sub createDirs($)
 
     $thing;
 }
+
+#-------------------------------------------
+
 
 sub folderIsEmpty($)
 {   my ($self, $dir) = @_;
@@ -179,6 +203,8 @@ sub folderIsEmpty($)
     1;
 }
 
+#-------------------------------------------
+
 sub readMessageFilenames
 {   my ($self, $dirname) = @_;
 
@@ -202,6 +228,8 @@ sub readMessageFilenames
     m/^(\d+)/ and $unified{ ('0' x (9-length($1))).$_ } = $_ foreach @files;
     map { $unified{$_} } sort keys %unified;
 }
+
+#-------------------------------------------
 
 sub readMessages(@)
 {   my ($self, %args) = @_;
@@ -234,6 +262,8 @@ sub readMessages(@)
     $self->update;   # Get new messages
     $self;
 }
+ 
+#-------------------------------------------
 
 sub updateMessages($)
 {   my ($self, %args) = @_;
@@ -248,7 +278,7 @@ sub updateMessages($)
     my @newmsgs;
 
     foreach my $newfile (@new)
-    {
+    {    
         my $msgpath = File::Spec->catfile($directory, new => $newfile);
         my $head    = $args{head_delayed_type}->new(@log);
         my $message = $args{message_type}->new
@@ -273,6 +303,8 @@ sub updateMessages($)
 
     @newmsgs;
 }
+
+#-------------------------------------------
 
 sub writeMessages($)
 {   my ($self, $args) = @_;
@@ -326,6 +358,9 @@ sub writeMessages($)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub appendMessages(@)
 {   my $class  = shift;
     my %args   = @_;
@@ -360,10 +395,13 @@ sub appendMessages(@)
        else {$self->log(ERROR    =>
                 "Cannot append Maildir message in $new to folder $self.") }
     }
-
+ 
     $self->close;
 
     @messages;
 }
+
+#-------------------------------------------
+
 
 1;

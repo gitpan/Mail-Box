@@ -3,10 +3,12 @@
 
 Mail::Message::Head::ResentGroup - a group of header fields about resending
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Message::Head::ResentGroup
    is a Mail::Reporter
+
 
 =head1 SYNOPSIS
 
@@ -21,192 +23,274 @@ Mail::Message::Head::ResentGroup - a group of header fields about resending
  my @rgs = $head->resentGroups;
  $rg[2]->delete if @rgs > 2;
 
+
 =head1 DESCRIPTION
 
 A I<resent group> is a set of header lines which describe a intermediate
 step in the message transport.  Resent groups B<have NOTHING to do> with
-user activety; there is no relation to the user's sense of creating
-C<reply>, C<forward> or C<bounce> messages at all!
+user activety; there is no relation to the C<user's> sense of creating
+reply, forward, or bounce messages at all!
+
+
 
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+Mail::Message::Head::ResentGroup-E<gt>B<new>([FIELDS], OPTIONS)
 
 =over 4
 
-=item B<new> [FIELDS], OPTIONS
-
-(Class method) 
 Create an object which maintains one set of resent headers.  The
-FIELDS are Mail::Message::Field objects from the same header.
+FIELDS are L<Mail::Message::Field|Mail::Message::Field> objects from the same header.
 
 OPTIONS which start with capitals will be used to construct additional
 fields.  These option names are prepended with C<Resent->, keeping the
 capitization of what is specified.
 
- OPTION               DEFAULT
- Bcc                  undef
- Cc                   undef
- Date                 <now>
- Delivered-To         undef
- From                 <required>
- Message-ID           <uniquely created>
- Received             <required>
- Return-Path          undef
- Sender               undef
- To                   undef
- head                 <required>
- log                  'WARNINGS'
- trace                'WARNINGS'
+ Option        Defined in       Default           
+ Bcc                            undef             
+ Cc                             undef             
+ Date                           <now>             
+ Delivered-To                   undef             
+ From                           <required>        
+ Message-ID                     <uniquely created>
+ Received                       <required>        
+ Return-Path                    undef             
+ Sender                         undef             
+ To                             undef             
+ head                           <required>        
+ log           L<Mail::Reporter>  C<'WARNINGS'>     
+ trace         L<Mail::Reporter>  C<'WARNINGS'>     
+
+. Bcc STRING|OBJECT|OBJECTS
+
+. Cc STRING|OBJECT|OBJECTS
+
+. Date STRING
 
 =over 4
-
-=item B<Bcc> =E<gt> STRING|OBJECT|OBJECTS
-
-=item B<Cc> =E<gt> STRING|OBJECT|OBJECTS
-
-=item B<Date> =E<gt> STRING
 
 When this resent-group is dispatched by the resender of the message. Like
 the C<Date> field, it is not the date and time that the message was
 actually transported.
 
-=item B<Delivered-To> =E<gt> STRING|FIELD
+=back
 
-=item B<From> =E<gt> STRING|OBJECT|OBJECTS
+. Delivered-To STRING|FIELD
 
-=item B<Message-ID> =E<gt> STRING|FIELD
+. From STRING|OBJECT|OBJECTS
+
+. Message-ID STRING|FIELD
+
+=over 4
 
 The C<Resent-Message-ID> which identifies this resent group.  The FIELD
 must contain a message id.
 
-=item B<Received> =E<gt> STRING
+=back
+
+. Received STRING
+
+=over 4
 
 The C<Received> field is the starting line for a resent group of header
 lines, therefore it is obligatory.
 
-=item B<Return-Path> =E<gt> STRING|FIELD
+=back
 
-=item B<Sender> =E<gt> STRING|OBJECT
+. Return-Path STRING|FIELD
+
+. Sender STRING|OBJECT
+
+=over 4
 
 Only permitted when more than one from address is specified.  In this case,
 it selects one of these addresses as the main originator of the message.
 
-=item B<To> =E<gt> STRING|OBJECT|OBJECTS
-
-=item B<head> =E<gt> OBJECT
-
-The header where this resent group belongs to.
-
-=item B<log> =E<gt> LEVEL
-
-See Mail::Reporter::new(log)
-
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
-
 =back
 
-=back
+. To STRING|OBJECT|OBJECTS
 
-=head2 The Header
+. head OBJECT
 
 =over 4
 
-=item B<delete> 
+The header where this resent group belongs to.
+
+=back
+
+. log LEVEL
+
+. trace LEVEL
+
+=back
+
+=head2 The header
+
+
+$obj-E<gt>B<delete>
+
+=over 4
 
 Remove all the header lines which are combined in this resent group
 from the header.
 
 =back
 
-=head2 Access to the Header
+$obj-E<gt>B<orderedFields>
 
 =over 4
 
-=item B<bcc> 
+Returns the fields in the order as should appear in header according
+to rfc2822.  For the C<Resent-> fields of the group, the order is
+not that important, but the C<Return-Path>, C<Delivered-To>, and C<Received>
+must come first.  Only fields mentioned in the RFC are returned.
+
+=back
+
+$obj-E<gt>B<print>([FILEHANDLE])
+
+=over 4
+
+=back
+
+=head2 Access to the header
+
+
+$obj-E<gt>B<bcc>
+
+=over 4
 
 In scalar context, the C<Resent-Bcc> field is returned.  In list context,
 the addresses as specified within the bcc field are returned as
 Mail::Address objects.  Bcc fields are not transmitted (hidden for
 external parties).
 
-=item B<cc> 
+=back
+
+$obj-E<gt>B<cc>
+
+=over 4
 
 In scalar context, the C<Resent-Cc> field is returned.  In list context,
 the addresses as specified within the cc field are returned as
 Mail::Address objects.
 
-=item B<date> 
+=back
+
+$obj-E<gt>B<date>
+
+=over 4
 
 Returns the C<Resent-Date> field, or C<undef> if it was not defined.
 
-=item B<dateTimestamp> 
+=back
+
+$obj-E<gt>B<dateTimestamp>
+
+=over 4
 
 The timestamp as stored within the C<Resent-Date> field converted to
 local system time.
 
-=item B<deliveredTo> 
+=back
+
+$obj-E<gt>B<deliveredTo>
+
+=over 4
 
 The field which describes the C<Delivered-To> of this resent group.
 
-=item B<destinations> 
+=back
+
+$obj-E<gt>B<destinations>
+
+=over 4
 
 Returns a list of all addresses specified in the C<Resent-To>, C<-Cc>, and
 C<-Bcc> fields of this resent group.
 
-=item B<from> 
+=back
+
+$obj-E<gt>B<from>
+
+=over 4
 
 In scalar context, the C<Resent-From> field is returned.  In list
 context, the addresses as specified within the from field are
 returned as Mail::Address objects.
 
-=item B<messageId> 
+=back
+
+$obj-E<gt>B<messageId>
+
+=over 4
 
 Returns the message-ID used for this group of resent lines.
 
-=item B<received> 
+=back
+
+$obj-E<gt>B<received>
+
+=over 4
 
 The field which describes the C<Received> data of this resent group.
 
-=item B<receivedTimestamp> 
+=back
+
+$obj-E<gt>B<receivedTimestamp>
+
+=over 4
 
 The timestamp as stored within the C<Received> field converted to
 local system time.
 
-=item B<returnPath> 
+=back
+
+$obj-E<gt>B<returnPath>
+
+=over 4
 
 The field which describes the C<Return-Path> of this resent group.
 
-=item B<sender> 
+=back
+
+$obj-E<gt>B<sender>
+
+=over 4
 
 In scalar context, the C<Resent-Sender> field is returned.  In list
 context, the addresses as specified within the from field are
 returned as Mail::Address objects.
 
-=item B<set> (FIELD =E<gt> VALUE) | OBJECT
+=back
+
+$obj-E<gt>B<set>((FIELD =E<gt> VALUE) | OBJECT)
+
+=over 4
 
 Set a FIELD to a (new) VALUE.  The FIELD names which do not start with
 'Resent-*' but need it will have that added.  It is also an option to
 specify a fully prepared message field OBJECT.  In any case, a field
 OBJECT is returned.
-See also Mail::Message::Head::resent() and
-Mail::Message::Construct::bounce().
 
-Examples:
+I<Example:> 
 
- my @rgs  = $msg->head->resentGroups;
- my $this = $rgs[0];
+ my $this = Mail::Message::Head::ResentGroup->new;
  $this->set(To => 'fish@tux.aq');
- $msg->send;
-
- $msg->head->resent(To => 'fish@tux.aq');   # the same
+ $msg->addResentGroup($this);
  $msg->send;
 
  $msg->bounce(To => 'fish@tux.aq')->send;   # the same
 
-=item B<to> 
+=back
+
+$obj-E<gt>B<to>
+
+=over 4
 
 In scalar context, the C<Resent-To> field is returned.  In list context,
 the addresses as specified within the to field are returned as
@@ -214,11 +298,12 @@ Mail::Address objects.
 
 =back
 
-=head2 Reading and Writing [internals]
+=head2 Internals
+
+
+$obj-E<gt>B<createReceived>
 
 =over 4
-
-=item B<createReceived> 
 
 Create a recieved field for this resent group.  This is automatically
 called if none was specified during creation of this resent group object.
@@ -226,96 +311,160 @@ called if none was specified during creation of this resent group object.
 The content of this field is described in RFC2821 section 4.4.  It could use
 some improvement.
 
-=item B<orderedFields> 
-
-Returns the fields in the order as should appear in header according
-to rfc2822.  For the C<Resent-> fields of the group, the order is
-not that important, but the C<Return-Path>, C<Delivered-To>, and C<Received>
-must come first.  Only fields mentioned in the RFC are returned.
-
-=item B<print> [FILEHANDLE]
-
 =back
 
-=head2 Logging and Tracing
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Message::Head::ResentGroup-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
 =over 4
 
-=item B<AUTOLOAD> 
-
-See Mail::Reporter::AUTOLOAD()
-
-=item B<DESTROY> 
-
-See Mail::Reporter::DESTROY()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head1 SEE ALSO
+$obj-E<gt>B<errors>
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+=over 4
 
-=head1 AUTHOR
+See L<Mail::Reporter/"Error handling">
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+=back
 
-=head1 VERSION
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-This code is beta, version 2.040.
+Mail::Message::Head::ResentGroup-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Message::Head::ResentGroup-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Message header required for creation of ResentGroup.
+
+It is required to know to which header the resent-group
+is created.  Use the C<head> option.  Maybe you should use
+L<Mail::Message::Head::Complete::addResentGroup()|"Access to the header"> with DATA, which will
+organize the correct initiations for you.
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

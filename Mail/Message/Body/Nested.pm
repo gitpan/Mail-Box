@@ -2,13 +2,15 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Nested;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
 use Mail::Message::Part;
 
 use Carp;
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -24,19 +26,19 @@ sub init($)
             unless defined $nested;
     }
 
-    my $based = $args->{based_on};
-
-    $self->{MMBN_nested}
-       = (!$based || defined $nested) ? $nested
-       : $based->isNested             ? $based->nested
-       : undef;
-
+    $self->{MMBN_nested} = $nested;
     $self;
 }
 
+#------------------------------------------
+
 sub isNested() {1}
 
+#------------------------------------------
+
 sub isBinary() {shift->nested->body->isBinary}
+
+#------------------------------------------
 
 sub clone()
 {   my $self     = shift;
@@ -48,42 +50,95 @@ sub clone()
      );
 }
 
+#------------------------------------------
+
 sub nrLines() { shift->nested->nrLines }
+
+#------------------------------------------
 
 sub size()    { shift->nested->size }
 
-sub nested() { shift->{MMBN_nested} }
+#------------------------------------------
 
 sub string()
 {    my $nested = shift->nested;
      defined $nested ? $nested->string : '';
 }
 
+#------------------------------------------
+
 sub lines()
 {    my $nested = shift->nested;
      defined $nested ? ($nested->lines) : ();
 }
+
+#------------------------------------------
 
 sub file()
 {    my $nested = shift->nested;
      defined $nested ? $nested->file : undef;
 }
 
+#------------------------------------------
+
 sub print(;$)
 {   my $self = shift;
     $self->nested->print(shift || select);
 }
+
+#------------------------------------------
 
 sub printEscapedFrom($)
 {   my $self = shift;
     $self->nested->printEscapedFrom(shift);
 }
 
+sub check() { shift->forNested( sub {$_[1]->check} ) }
+
+#------------------------------------------
+
+sub encode(@)
+{   my ($self, %args) = @_;
+    $self->forNested( sub {$_[1]->encode(%args)} );
+}
+
+#------------------------------------------
+
+sub encoded() { shift->forNested( sub {$_[1]->encoded} ) }
+
+#------------------------------------------
+
+sub read($$$$)
+{   my ($self, $parser, $head, $bodytype) = @_;
+
+    my $nest = Mail::Message::Part->new(container => undef);
+    $nest->readFromParser($parser, $bodytype)
+       or return;
+
+    $nest->container($self);
+    $self->{MMBN_nested} = $nest;
+    $self;
+}
+
+#-------------------------------------------
+
+sub fileLocation(;$$) { shift->{MMBN_nested}->fileLocation(@_) }
+
+#------------------------------------------
+
+
+sub nested() { shift->{MMBN_nested} }
+
+#------------------------------------------
+
+
 sub forNested($)
 {   my ($self, $code) = @_;
     my $nested    = $self->nested;
     my $body      = $nested->body;
-    my $new_body  = $code->($self, $body);
+
+    my $new_body  = $code->($self, $body)
+       or return;
 
     return $self if $new_body == $body;
 
@@ -103,27 +158,6 @@ sub forNested($)
     $created;
 }
 
-sub check() { shift->forNested( sub {$_[1]->check} ) }
-
-sub encode(@)
-{   my ($self, %args) = @_;
-    $self->forNested( sub {$_[1]->encode(%args)} );
-}
-
-sub encoded() { shift->forNested( sub {$_[1]->encoded} ) }
-
-sub read($$$$)
-{   my ($self, $parser, $head, $bodytype) = @_;
-
-    my $nest = Mail::Message::Part->new(container => undef);
-    $nest->readFromParser($parser, $bodytype)
-       or return;
-
-    $nest->container($self);
-    $self->{MMBN_nested} = $nest;
-    $self;
-}
-
-sub fileLocation(;$$) { shift->{MMBN_nested}->fileLocation(@_) }
+#-------------------------------------------
 
 1;

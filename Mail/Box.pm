@@ -1,8 +1,10 @@
+
 use strict;
 use warnings;
 
 package Mail::Box;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -12,13 +14,23 @@ use File::Spec;
 use Carp;
 use Scalar::Util 'weaken';
 
+#-------------------------------------------
+# Clean exist required to remove lockfiles and to save changes.
+
+$SIG{INT} = $SIG{QUIT} = $SIG{PIPE} = $SIG{TERM} = sub {exit 0};
+
+#-------------------------------------------
+
+
+#-------------------------------------------
+
+
 use overload '@{}' => sub { shift->{MB_messages} }
            , '""'  => 'name'
            , 'cmp' => sub {$_[0]->name cmp "${_[1]}"};
 
-# Clean exist required to remove lockfiles and to save changes.
+#-------------------------------------------
 
-$SIG{INT} = $SIG{QUIT} = $SIG{PIPE} = $SIG{TERM} = sub {exit 0};
 
 sub new(@)
 {   my $class        = shift;
@@ -126,16 +138,13 @@ sub init($)
     $self;
 }
 
-sub clone(@)
-{   my $self  = shift;
+#-------------------------------------------
 
-    (ref $self)->new
-     ( @{$self->{MB_init_options}}
-     , @_
-     );
-}
 
 sub create($@) {shift->notImplemented}
+
+#-------------------------------------------
+
 
 sub folderdir(;$)
 {   my $self = shift;
@@ -143,57 +152,31 @@ sub folderdir(;$)
     $self->{MB_folderdir};
 }
 
+#-------------------------------------------
+
+
 sub foundIn($@) { shift->notImplemented }
+
+#-------------------------------------------
+
 
 sub name() {shift->{MB_foldername}}
 
+#-------------------------------------------
+
+
 sub type() {shift->notImplemented}
+
+#-------------------------------------------
+
 
 sub url()
 {   my $self = shift;
     $self->type . ':' . $self->name;
 }
 
-sub writable()  {shift->{MB_access} =~ /w|a/ }
-sub writeable() {shift->writable}  # compatibility [typo]
-sub readable()  {1}  # compatibility
+#-------------------------------------------
 
-sub write(@)
-{   my ($self, %args) = @_;
-
-    unless($args{force} || $self->writable)
-    {   $self->log(ERROR => "Folder $self is opened read-only.\n");
-        return;
-    }
-
-    my (@keep, @destroy);
-    if($args{save_deleted}) {@keep = $self->messages }
-    else
-    {   foreach ($self->messages)
-        {   if($_->isDeleted)
-            {   push @destroy, $_;
-                $_->diskDelete;
-            }
-            else {push @keep, $_}
-        }
-    }
-
-    unless(@destroy || $self->isModified)
-    {   $self->log(PROGRESS => "Folder $self not changed, so not updated.");
-        return $self;
-    }
-
-    $args{messages} = \@keep;
-    unless($self->writeMessages(\%args))
-    {   $self->log(WARNING => "Writing folder $self failed.");
-        return undef;
-    }
-
-    $self->modified(0);
-    $self->{MB_messages} = \@keep;
-
-    $self;
-}
 
 sub update(@)
 {   my $self = shift;
@@ -212,31 +195,13 @@ sub update(@)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub organization() { shift->notImplemented }
 
-sub modified(;$)
-{   my $self = shift;
-    return $self->isModified unless @_;   # compat 2.036
+#-------------------------------------------
 
-    return
-      if $self->{MB_modified} = shift;    # force modified flag
-
-    # unmodify all messages
-    $_->modified(0) foreach $self->messages;
-    0;
-}
-
-sub isModified()
-{   my $self     = shift;
-    return 1 if $self->{MB_modified};
-
-    foreach (@{$self->{MB_messages}})
-    {    return $self->{MB_modified} = 1
-            if $_->isDeleted || $_->isModified;
-    }
-
-    0;
-}
 
 sub addMessage($)
 {   my $self    = shift;
@@ -274,6 +239,9 @@ sub addMessages(@)
 {   my $self = shift;
     map {$self->addMessage($_)} @_;
 }
+
+#-------------------------------------------
+
 
 sub copyTo($@)
 {   my ($self, $to, %args) = @_;
@@ -347,6 +315,9 @@ sub _copy_to($@)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub close(@)
 {   my ($self, %args) = @_;
     my $force = $args{force} || 0;
@@ -385,6 +356,9 @@ Suggestion: \$folder->close(write => 'NEVER')");
     $rc;
 }
 
+#-------------------------------------------
+
+
 sub delete()
 {   my $self = shift;
 
@@ -410,15 +384,58 @@ sub delete()
     $self;
 }
 
-sub DESTROY
+#-------------------------------------------
+
+
+sub appendMessages(@) {shift->notImplemented}
+
+#-------------------------------------------
+
+
+sub writable()  {shift->{MB_access} =~ /w|a/ }
+sub writeable() {shift->writable}  # compatibility [typo]
+sub readable()  {1}  # compatibility
+
+#-------------------------------------------
+
+
+sub modified(;$)
 {   my $self = shift;
-    $self->close unless $self->inGlobalDestruction || $self->{MB_is_closed};
+    return $self->isModified unless @_;   # compat 2.036
+
+    return
+      if $self->{MB_modified} = shift;    # force modified flag
+
+    # unmodify all messages
+    $_->modified(0) foreach $self->messages;
+    0;
 }
+
+#-------------------------------------------
+
+
+sub isModified()
+{   my $self     = shift;
+    return 1 if $self->{MB_modified};
+
+    foreach (@{$self->{MB_messages}})
+    {    return $self->{MB_modified} = 1
+            if $_->isDeleted || $_->isModified;
+    }
+
+    0;
+}
+
+#-------------------------------------------
+
 
 sub message(;$$)
 {   my ($self, $index) = (shift, shift);
     @_ ?  $self->{MB_messages}[$index] = shift : $self->{MB_messages}[$index];
 }
+
+#-------------------------------------------
+
 
 sub messageId($;$)
 {   my ($self, $msgid) = (shift, shift);
@@ -465,6 +482,9 @@ sub messageId($;$)
 
 sub messageID(@) {shift->messageId(@_)} # compatibility
 
+#-------------------------------------------
+
+
 sub find($)
 {   my ($self, $msgid) = (shift, shift);
     my $msgids = $self->{MB_msgid};
@@ -479,6 +499,9 @@ sub find($)
 
     $msgids->{$msgid};
 }
+
+#-------------------------------------------
+
 
 sub messages($;$)
 {   my $self = shift;
@@ -508,9 +531,15 @@ sub messages($;$)
     grep {$action->($_)} @{$self->{MB_messages}};
 }
 
+#-------------------------------------------
+
+
 sub messageIds()    { map {$_->messageId} shift->messages }
 sub allMessageIds() {shift->messageIds}  # compatibility
 sub allMessageIDs() {shift->messageIds}  # compatibility
+
+#-------------------------------------------
+
 
 sub current(;$)
 {   my $self = shift;
@@ -526,25 +555,27 @@ sub current(;$)
     $next;
 }
 
+#-------------------------------------------
+
+
 sub scanForMessages($$$$)
 {   my ($self, $startid, $msgids, $moment, $window) = @_;
 
     # Set-up msgid-list
-    my %search = map {($_, 1)} ref $msgids ? @$msgids : $msgids;
+    my %search = map {($_ => 1)} ref $msgids ? @$msgids : $msgids;
     return () unless keys %search;
 
     # do not run on empty folder
     my $nr_messages = $self->messages
-        or return keys %search;
+        or return keys %search; 
+
+    my $startmsg = $self->messageId($startid)
+        if defined $startid;
 
     # Set-up window-bound.
-    my $bound;
-    if($window eq 'ALL')
-    {   $bound = 0;
-    }
-    elsif(defined $startid)
-    {   my $startmsg = $self->messageId($startid);
-        $bound = $startmsg->seqnr - $window if $startmsg;
+    my $bound = 0;
+    if($window ne 'ALL' && defined $startmsg)
+    {   $bound = $startmsg->seqnr - $window;
         $bound = 0 if $bound < 0;
     }
 
@@ -552,9 +583,11 @@ sub scanForMessages($$$$)
     return keys %search if defined $bound && $bound > $last;
 
     # Set-up time-bound
-    my $after = $moment eq 'EVER' ? 0 : $moment;
+    my $after = $moment eq 'EVER'   ? 0
+              : $moment =~ m/^\d+$/ ? $moment
+              : $startmsg->timestamp - $self->timespan2seconds($moment);
 
-    while(!defined $bound || $last >= $bound)
+    while($last >= $bound)
     {   my $message = $self->message($last);
         my $msgid   = $message->messageId; # triggers load
 
@@ -570,7 +603,13 @@ sub scanForMessages($$$$)
     keys %search;
 }
 
+#-------------------------------------------
+
+
 sub listSubFolders(@) { () }   # by default no sub-folders
+
+#-------------------------------------------
+
 
 sub openRelatedFolder(@)
 {   my $self    = shift;
@@ -581,15 +620,24 @@ sub openRelatedFolder(@)
     :  (ref $self)->new(@options);
 }
 
+#-------------------------------------------
+
+
 sub openSubFolder($@)
 {   my ($self, $name) = (shift, shift);
     $self->openRelatedFolder(@_, folder => "$self/$name");
 }
 
+#-------------------------------------------
+
+
 sub nameOfSubfolder($)
 {   my ($self, $name)= @_;
     "$self/$name";
 }
+
+#-------------------------------------------
+
 
 sub read(@)
 {   my $self = shift;
@@ -623,6 +671,49 @@ sub read(@)
     $self;
 }
 
+#-------------------------------------------
+
+
+sub write(@)
+{   my ($self, %args) = @_;
+
+    unless($args{force} || $self->writable)
+    {   $self->log(ERROR => "Folder $self is opened read-only.\n");
+        return;
+    }
+
+    my (@keep, @destroy);
+    if($args{save_deleted}) {@keep = $self->messages }
+    else
+    {   foreach ($self->messages)
+        {   if($_->isDeleted)
+            {   push @destroy, $_;
+                $_->diskDelete;
+            }
+            else {push @keep, $_}
+        }
+    }
+
+    unless(@destroy || $self->isModified)
+    {   $self->log(PROGRESS => "Folder $self not changed, so not updated.");
+        return $self;
+    }
+
+    $args{messages} = \@keep;
+    unless($self->writeMessages(\%args))
+    {   $self->log(WARNING => "Writing folder $self failed.");
+        return undef;
+    }
+
+    $self->modified(0);
+    $self->{MB_messages} = \@keep;
+
+    $self;
+}
+
+#-------------------------------------------
+
+
 sub determineBodyType($$)
 {   my ($self, $message, $head) = @_;
 
@@ -646,6 +737,9 @@ sub lazyPermitted($)
     $self->{MB_lazy_permitted} = shift;
 }
 
+#-------------------------------------------
+
+
 sub storeMessage($)
 {   my ($self, $message) = @_;
 
@@ -653,6 +747,9 @@ sub storeMessage($)
     $message->seqnr( @{$self->{MB_messages}} -1);
     $message;
 }
+
+#-------------------------------------------
+
 
 my %seps = (CR => "\015", LF => "\012", CRLF => "\015\012");
 
@@ -668,20 +765,37 @@ sub lineSeparator(;$)
    $sep;
 }
 
+#-------------------------------------------
+
+
 sub coerce($)
 {   my ($self, $message) = @_;
     $self->{MB_message_type}->coerce($message);
 }
 
+
+#-------------------------------------------
+
+
 sub readMessages(@) {shift->notImplemented}
+
+#-------------------------------------------
+
 
 sub updateMessages(@) {shift}
 
+#-------------------------------------------
+
+
 sub writeMessages(@) {shift->notImplemented}
 
-sub appendMessages(@) {shift->notImplemented}
+#-------------------------------------------
+
 
 sub locker() { shift->{MB_locker}}
+
+#-------------------------------------------
+
 
 sub toBeThreaded(@)
 {   my $self = shift;
@@ -693,6 +807,9 @@ sub toBeThreaded(@)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub toBeUnthreaded(@)
 {   my $self = shift;
 
@@ -702,6 +819,9 @@ sub toBeUnthreaded(@)
     $manager->toBeThreaded($self, @_);
     $self;
 }
+
+#-------------------------------------------
+
 
 sub timespan2seconds($)
 {
@@ -716,6 +836,16 @@ sub timespan2seconds($)
     }
 }
 
+#-------------------------------------------
+
+
+sub DESTROY
+{   my $self = shift;
+    $self->close unless $self->inGlobalDestruction || $self->{MB_is_closed};
+}
+
+
+#-------------------------------------------
 # Instance variables
 # MB_access: new(access)
 # MB_body_type: new(body_type)
@@ -740,5 +870,7 @@ sub timespan2seconds($)
 # MB_organization: new(organization)
 # MB_remove_empty: new(remove_when_empty)
 # MB_save_on_exit: new(save_on_exit)
+
+#-------------------------------------------
 
 1;

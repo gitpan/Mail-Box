@@ -2,12 +2,14 @@ use strict;
 use warnings;
 
 package Mail::Box::Parser::Perl;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Parser';
 
 use Mail::Message::Field;
 use List::Util 'sum';
 use IO::File;
+
 
 sub init(@)
 {   my ($self, $args) = @_;
@@ -19,10 +21,8 @@ sub init(@)
     $self;
 }
 
-sub fixHeaderErrors(;$)
-{   my $self = shift;
-    @_ ? ($self->{MBPP_fix} = shift) : $self->{MBPP_fix};
-}
+
+#------------------------------------------
 
 sub pushSeparator($)
 {   my ($self, $sep) = @_;
@@ -31,12 +31,16 @@ sub pushSeparator($)
     $self;
 }
 
+#------------------------------------------
+
 sub popSeparator()
 {   my $self = shift;
     my $sep  = shift @{$self->{MBPP_separators}};
     $self->{MBPP_strip_gt}-- if substr($sep, 0, 5) eq 'From ';
     $sep;
 }
+    
+#------------------------------------------
 
 sub filePosition(;$)
 {   my $self = shift;
@@ -44,6 +48,9 @@ sub filePosition(;$)
 }
 
 my $empty = qr/^[\015\012]*$/;
+
+#------------------------------------------
+
 
 sub readHeader()
 {   my $self  = shift;
@@ -88,6 +95,8 @@ LINE:
     @ret;
 }
 
+#------------------------------------------
+
 sub _is_good_end($)
 {   my ($self, $where) = @_;
 
@@ -110,6 +119,8 @@ sub _is_good_end($)
     substr($line, 0, length $sep) eq $sep
     && ($sep !~ m/^From / || $line =~ m/ (19[789]|20[01])\d\b/ );
 }
+
+#------------------------------------------
 
 sub readSeparator()
 {   my $self = shift;
@@ -135,6 +146,8 @@ sub readSeparator()
     $file->seek($start, 0);
     ();
 }
+
+#------------------------------------------
 
 sub _read_stripped_lines(;$$)
 {   my ($self, $exp_chars, $exp_lines) = @_;
@@ -165,7 +178,7 @@ sub _read_stripped_lines(;$$)
         }
     }
     elsif(@seps)
-    {
+    {   
 
   LINE: while(1)
         {   my $where = $file->getpos;
@@ -209,6 +222,8 @@ sub _read_stripped_lines(;$$)
     $end, \@lines;
 }
 
+#------------------------------------------
+
 sub _take_scalar($$)
 {   my ($self, $begin, $end) = @_;
     my $file = $self->{MBPP_file};
@@ -219,6 +234,8 @@ sub _take_scalar($$)
     $return =~ s/\015//g;
     $return;
 }
+
+#------------------------------------------
 
 sub bodyAsString(;$$)
 {   my ($self, $exp_chars, $exp_lines) = @_;
@@ -240,6 +257,9 @@ sub bodyAsString(;$$)
     return ($begin, $end, join('', @$lines));
 }
 
+
+#------------------------------------------
+
 sub bodyAsList(;$$)
 {   my ($self, $exp_chars, $exp_lines) = @_;
     my $file  = $self->{MBPP_file};
@@ -248,6 +268,8 @@ sub bodyAsList(;$$)
     my ($end, $lines) = $self->_read_stripped_lines($exp_chars, $exp_lines);
     ($begin, $end, @$lines);
 }
+
+#------------------------------------------
 
 sub bodyAsFile($;$$)
 {   my ($self, $out, $exp_chars, $exp_lines) = @_;
@@ -259,6 +281,8 @@ sub bodyAsFile($;$$)
     $out->print($_) foreach @$lines;
     ($begin, $end, scalar @$lines);
 }
+
+#------------------------------------------
 
 sub bodyDelayed(;$$)
 {   my ($self, $exp_chars, $exp_lines) = @_;
@@ -278,6 +302,8 @@ sub bodyDelayed(;$$)
     my $chars = sum(map {length} @$lines);
     ($begin, $end, $chars, scalar @$lines);
 }
+
+#------------------------------------------
 
 sub openFile($)
 {   my ($self, $args) = @_;
@@ -304,6 +330,8 @@ sub openFile($)
     $self;
 }
 
+#------------------------------------------
+
 sub closeFile()
 {   my $self = shift;
 
@@ -314,5 +342,14 @@ sub closeFile()
     $file->close;
     $self;
 }
+#------------------------------------------
+
+
+sub fixHeaderErrors(;$)
+{   my $self = shift;
+    @_ ? ($self->{MBPP_fix} = shift) : $self->{MBPP_fix};
+}
+
+#------------------------------------------
 
 1;

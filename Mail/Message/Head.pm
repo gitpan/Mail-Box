@@ -2,7 +2,8 @@ use strict;
 use warnings;
 
 package Mail::Message::Head;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Complete;
@@ -11,8 +12,24 @@ use Mail::Message::Field::Fast;
 use Carp;
 use Scalar::Util 'weaken';
 
+
 use overload qq("") => 'string_unless_carp'
            , bool   => 'isEmpty';
+
+# To satisfy overload in static resolving.
+sub toString() { shift->load->toString }
+sub string()   { shift->load->string }
+
+sub string_unless_carp()
+{   my $self = shift;
+    return $self->toString unless (caller)[0] eq 'Carp';
+
+    (my $class = ref $self) =~ s/^Mail::Message/MM/;
+    "$class object";
+}
+
+#------------------------------------------
+
 
 sub new(@)
 {   my $class = shift;
@@ -22,7 +39,7 @@ sub new(@)
 
     $class->SUPER::new(@_);
 }
-
+      
 sub init($)
 {   my ($self, $args) = @_;
 
@@ -40,19 +57,21 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
+
 sub build(@)
-{   my $self = shift;
-    my $head = $self->new;
-    $head->add(shift, shift) while @_;
-    $head;
+{   shift;
+    Mail::Message::Head::Complete->build(@_);
 }
+
+#------------------------------------------
+
 
 sub isDelayed { 1 }
 
-sub isMultipart()
-{   my $type = shift->get('Content-Type');
-    $type && $type->body =~ m[^multipart/]i;
-}
+#------------------------------------------
+
 
 sub modified(;$)
 {   my $self = shift;
@@ -60,9 +79,18 @@ sub modified(;$)
     $self->{MMH_modified} = shift;
 }
 
+#------------------------------------------
+
+
 sub isModified() { shift->{MMH_modified} }
 
+#------------------------------------------
+
+
 sub isEmpty { scalar keys %{shift->{MMH_fields}} }
+
+#------------------------------------------
+
 
 sub message(;$)
 {   my $self = shift;
@@ -74,7 +102,18 @@ sub message(;$)
     $self->{MMH_message};
 }
 
-sub setField($$) {shift->add(@_)} # compatibility
+#------------------------------------------
+
+
+sub orderedFields() { grep {defined $_} @{shift->{MMH_order}} }
+
+#------------------------------------------
+
+
+sub knownNames() { keys %{shift->{MMH_fields}} }
+
+#------------------------------------------
+
 
 sub get($;$)
 {   my $known = shift->{MMH_fields};
@@ -100,21 +139,21 @@ sub get($;$)
 }
 
 sub get_all(@) { my @all = shift->get(@_) }   # compatibility, force list
+sub setField($$) {shift->add(@_)} # compatibility
 
-sub knownNames() { keys %{shift->{MMH_fields}} }
+#------------------------------------------
 
-# To satisfy overload in static resolving.
 
-sub toString() { shift->load->toString }
-sub string()   { shift->load->string }
+#------------------------------------------
 
-sub string_unless_carp()
-{   my $self = shift;
-    return $self->toString unless (caller)[0] eq 'Carp';
 
-    (my $class = ref $self) =~ s/^Mail::Message/MM/;
-    "$class object";
+sub isMultipart()
+{   my $type = shift->get('Content-Type');
+    $type && $type->body =~ m[^multipart/]i;
 }
+
+#------------------------------------------
+
 
 sub read($)
 {   my ($self, $parser) = @_;
@@ -130,7 +169,8 @@ sub read($)
     $self;
 }
 
-sub orderedFields() { grep {defined $_} @{shift->{MMH_order}} }
+#------------------------------------------
+
 
 #  Warning: fields are added in addResentGroup() as well!
 sub addOrderedFields(@)
@@ -142,12 +182,21 @@ sub addOrderedFields(@)
     @_;
 }
 
+#------------------------------------------
+
+
 sub load($) {shift}
+
+#------------------------------------------
+
 
 sub fileLocation()
 {   my $self = shift;
     @$self{ qw/MMH_begin MMH_end/ };
 }
+
+#------------------------------------------
+
 
 sub moveLocation($)
 {   my ($self, $dist) = @_;
@@ -155,6 +204,9 @@ sub moveLocation($)
     $self->{MMH_end}   -= $dist;
     $self;
 }
+
+#------------------------------------------
+
 
 sub setNoRealize($)
 {   my ($self, $field) = @_;
@@ -166,6 +218,9 @@ sub setNoRealize($)
     $known->{$name} = $field;
     $field;
 }
+
+#------------------------------------------
+
 
 sub addNoRealize($)
 {   my ($self, $field) = @_;
@@ -185,5 +240,8 @@ sub addNoRealize($)
 
     $field;
 }
+
+#------------------------------------------
+
 
 1;

@@ -3,6 +3,10 @@
 
 Mail::Box::Tie::HASH - access an existing message folder as a hash
 
+
+=head1 INHERITANCE
+
+
 =head1 SYNOPSIS
 
  tie my(%inbox), 'Mail::Box::Tie::HASH', $folder;
@@ -13,6 +17,7 @@ Mail::Box::Tie::HASH - access an existing message folder as a hash
  }
 
  $inbox{$msg->messageId} = $msg;
+
 
 =head1 DESCRIPTION
 
@@ -26,18 +31,21 @@ folder, one will be flagged for deletion and the other will be returned.
 This implementation uses basic folder access routines which are related
 to the message-id.
 
+
+
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+B<TIEHASH>('Mail::Box::Tie::HASH', FOLDER)
 
 =over 4
 
-=item B<tie> HASH, 'Mail::Box::Tie::HASH', FOLDER
-
-(not a method) 
 Connects the FOLDER object to a HASH.
 
-Examples:
+I<Example:> 
 
  my $mgr    = Mail::Box::Manager->new;
  my $folder = $mgr->open(access => 'rw');
@@ -47,32 +55,81 @@ Examples:
 
 =head2 Tied Interface
 
+
+$obj-E<gt>B<CLEAR>
+
 =over 4
 
-=item B<DELETE> MESSAGE-ID
+Remove the contents of the hash.  This is not really possible, but all
+the messages will be flagged for deletion.
 
-Remove the message with the specified MESSAGE-ID.
-
-Examples:
+I<Example:> 
 
  %inbox = ();
  %inbox = ($msg->messageId, $msg); #before adding msg
 
-=item B<EXISTS> MESSAGE-ID
+=back
+
+$obj-E<gt>B<DELETE>(MESSAGE-ID)
+
+=over 4
+
+Remove the message with the specified MESSAGE-ID.
+
+I<Example:> 
+
+ delete $inbox{$msgid};
+
+=back
+
+$obj-E<gt>B<EXISTS>(MESSAGE-ID)
+
+=over 4
 
 Check whether a message with a certain MESSAGE-ID exists.
 
-Examples:
+I<Example:> 
 
  if(exists $inbox{$msgid}) ...
 
-=item B<FETCH> MESSAGEID
+=back
+
+$obj-E<gt>B<FETCH>(MESSAGEID)
+
+=over 4
 
 Get the message with the specified id.  The returned message may be
 a dummy if message thread detection is used.  Returns C<undef> when
 there is no message with the specified id.
 
-Examples:
+I<Example:> 
+
+ my $msg = $inbox{$msgid};
+ if($inbox{$msgid}->isDummy)  ...
+
+=back
+
+$obj-E<gt>B<FIRSTKEY>
+
+=over 4
+
+See L<NEXTKEY()|"Tied Interface">.
+
+=back
+
+$obj-E<gt>B<NEXTKEY>(PREVIOUS)
+
+=over 4
+
+L<FIRSTKEY()|"Tied Interface"> returns the first message-id/message pair from the folder,
+and NEXTKEY returns the message-id/message pair for the next message,
+in the order in which the message is stored in the folder.
+
+Messages flagged for deletion will B<not> be returned. See the
+L<Mail::Box::messages()|"The messages"> method of the folder type for more information
+about the folder message order.
+
+I<Example:> 
 
  foreach my $msgid (keys %inbox) ...
  foreach my $msg (values %inbox) ...
@@ -83,21 +140,44 @@ Examples:
 
 =back
 
-=head1 SEE ALSO
+$obj-E<gt>B<STORE>(undef, MESSAGE)
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+=over 4
 
-=head1 AUTHOR
+Store a message in the folder.  The key must be C<undef>, because the
+message-id of the specified message is taken.  This is shown in the
+first example.  However, as you see, it is a bit complicated to specify
+C<undef>, therefore the string C<"undef"> is accepted as well.
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+The message may be converted into something which can be stored in the
+folder type which is at stake.  The added instance is returned.
 
-=head1 VERSION
+I<Example:> 
 
-This code is beta, version 2.040.
+ $inbox{ (undef) } = $msg;
+ $inbox{undef} = $msg;
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+=back
+
+
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

@@ -1,12 +1,17 @@
+
 use strict;
 
 package Mail::Box::Locker;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use Carp;
 use File::Spec;
 use Scalar::Util 'weaken';
+
+#-------------------------------------------
+
 
 my %lockers =
   ( DOTLOCK => __PACKAGE__ .'::DotLock'
@@ -58,24 +63,48 @@ sub init($)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub name {shift->notImplemented}
+
+#-------------------------------------------
 
 sub lockMethod($$$$)
 {   confess "Method removed: use inheritance to implement own method."
 }
 
-sub DESTROY()
+#-------------------------------------------
+
+
+sub folder() {shift->{MBL_folder}}
+
+#-------------------------------------------
+
+
+sub filename(;$)
 {   my $self = shift;
-    $self->unlock if $self->hasLock;
-    $self->SUPER::DESTROY;
-    $self;
+    $self->{MBL_filename} = shift if @_;
+    $self->{MBL_filename};
 }
+
+#-------------------------------------------
+
 
 sub lock($) { shift->{MBL_has_lock} = 1 }
 
+#-------------------------------------------
+
+
 sub isLocked($) {0}
 
+#-------------------------------------------
+
+
 sub hasLock() {shift->{MBL_has_lock} }
+
+#-------------------------------------------
+
 
 # implementation hazard: the unlock must be self-reliant, without
 # help by the folder, because it may be called at global destruction
@@ -83,12 +112,14 @@ sub hasLock() {shift->{MBL_has_lock} }
 
 sub unlock() { shift->{MBL_has_lock} = 0 }
 
-sub folder() {shift->{MBL_folder}}
+#-------------------------------------------
 
-sub filename(;$)
+
+sub DESTROY()
 {   my $self = shift;
-    $self->{MBL_filename} = shift if @_;
-    $self->{MBL_filename};
+    $self->unlock if $self->hasLock;
+    $self->SUPER::DESTROY;
+    $self;
 }
 
 1;

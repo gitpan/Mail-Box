@@ -2,11 +2,13 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::TextAutoformat;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Convert';
 
 use Mail::Message::Body::String;
 use Text::Autoformat;
+
 
 sub init($)
 {   my ($self, $args)  = @_;
@@ -17,6 +19,12 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
+
+#------------------------------------------
+
+
 sub autoformatBody($)
 {   my ($self, $body) = @_;
 
@@ -25,5 +33,7 @@ sub autoformatBody($)
        , data     => autoformat($body->string, $self->{MMCA_options})
        );
 }
+
+#------------------------------------------
 
 1;

@@ -1,6 +1,8 @@
+
 use strict;
 package Mail::Box::Net;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 
 use base 'Mail::Box';
 
@@ -18,6 +20,7 @@ use Carp;
 use File::Copy;
 use File::Spec;
 use File::Basename;
+
 
 sub init($)
 {   my ($self, $args)     = @_;
@@ -37,11 +40,21 @@ sub init($)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub create(@) {shift->notImplemented}
+
+#-------------------------------------------
+
 
 sub folderdir(;$) { undef }
 
+#-------------------------------------------
+
 sub organization() { 'REMOTE' }
+
+#-------------------------------------------
 
 sub url()
 {   my $self = shift;
@@ -63,8 +76,10 @@ sub url()
 
     my $name = $self->name;
     $loc    .= '/'.$name if $name ne '/';
-
+    
     $self->type . '://' . $perm . $loc;
 }
+
+#-------------------------------------------
 
 1;

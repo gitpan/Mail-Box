@@ -1,8 +1,10 @@
+
 use strict;
 use warnings;
 
 package Mail::Message::Body;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -10,15 +12,6 @@ use Carp;
 use MIME::Types;
 my MIME::Types $mime_types;
 
-sub isBinary()
-{   my $self = shift;
-    $mime_types ||= MIME::Types->new(only_complete => 1);
-    my $type = $self->type                    or return 1;
-    my $mime = $mime_types->type($type->body) or return 1;
-    $mime->isBinary;
-}
-
-sub isText() { not shift->isBinary }
 
 sub encode(@)
 {   my ($self, %args) = @_;
@@ -81,6 +74,9 @@ sub encode(@)
     $encoded;
 }
 
+#------------------------------------------
+
+
 sub check()
 {   my $self     = shift;
     return $self if $self->checked;
@@ -101,6 +97,9 @@ sub check()
     $checked;
 }
 
+#------------------------------------------
+
+
 sub encoded()
 {   my $self = shift;
 
@@ -113,6 +112,9 @@ sub encoded()
     $self->encode(transfer_encoding =>
          defined $mime ? $mime->encoding : 'base64');
 }
+
+#------------------------------------------
+
 
 sub unify($)
 {   my ($self, $body) = @_;
@@ -140,6 +142,25 @@ sub unify($)
     $encoded;
 }
 
+#------------------------------------------
+
+
+sub isBinary()
+{   my $self = shift;
+    $mime_types ||= MIME::Types->new(only_complete => 1);
+    my $type = $self->type                    or return 1;
+    my $mime = $mime_types->type($type->body) or return 1;
+    $mime->isBinary;
+}
+ 
+#------------------------------------------
+
+
+sub isText() { not shift->isBinary }
+
+#------------------------------------------
+
+
 my %transfer_encoder_classes =
  ( base64  => 'Mail::Message::TransferEnc::Base64'
  , binary  => 'Mail::Message::TransferEnc::Binary'
@@ -164,6 +185,9 @@ sub getTransferEncHandler($)
 
     $transfer_encoders{$type} = $class->new;
 }
+
+#------------------------------------------
+
 
 sub addTransferEncHandler($$)
 {   my ($this, $name, $what) = @_;

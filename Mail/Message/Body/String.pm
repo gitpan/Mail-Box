@@ -2,12 +2,15 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::String;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Body';
 
 use Carp;
 use IO::Scalar;
 
+
+#------------------------------------------
 # The scalar is stored as reference to avoid a copy during creation of
 # a string object.
 
@@ -54,11 +57,14 @@ sub _data_from_lines(@)
     $self;
 }
 
+#------------------------------------------
+
 sub clone()
 {   my $self = shift;
     ref($self)->new(data => $self->string, based_on => $self);
 }
 
+#------------------------------------------
 # Only compute it once, if needed.  The scalar contains lines, so will
 # have a \n even at the end.
 
@@ -74,22 +80,34 @@ sub nrLines()
     $self->{MMBS_nrlines} = $nrlines;
 }
 
+#------------------------------------------
+
 sub size() { length shift->{MMBS_scalar} }
 
+#------------------------------------------
+
 sub string() { shift->{MMBS_scalar} }
+
+#------------------------------------------
 
 sub lines()
 {   my @lines = split /^/, shift->{MMBS_scalar};
     wantarray ? @lines : \@lines;
 }
 
+#------------------------------------------
+
 sub file() { IO::Scalar->new(shift->{MMBS_scalar}) }
+
+#------------------------------------------
 
 sub print(;$)
 {   my $self = shift;
     my $fh   = shift || select;
     $fh->print($self->{MMBS_scalar});
 }
+
+#------------------------------------------
 
 sub printEscapedFrom($)
 {   my ($self, $fh) = @_;
@@ -98,6 +116,8 @@ sub printEscapedFrom($)
     $text    =~ s/^(?=\>*From )/>/;
     $fh->print($text);
 }
+
+#------------------------------------------
 
 sub read($$;$@)
 {   my ($self, $parser, $head, $bodytype) = splice @_, 0, 4;
@@ -108,5 +128,7 @@ sub read($$;$@)
 
     $self;
 }
+
+#------------------------------------------
 
 1;

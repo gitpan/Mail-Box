@@ -2,7 +2,8 @@ use strict;
 use warnings;
 
 package Mail::Message::Head::Complete;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Head';
 
 use Mail::Box::Parser;
@@ -11,7 +12,6 @@ use Carp;
 use Scalar::Util 'weaken';
 use List::Util 'sum';
 
-sub isDelayed() {0}
 
 sub clone(;@)
 {   my $self   = shift;
@@ -21,6 +21,33 @@ sub clone(;@)
     $copy->modified(1);
     $copy;
 }
+
+#------------------------------------------
+
+sub build(@)
+{   my $self = shift;
+    my $head = $self->new;
+    $head->add(shift, shift) while @_;
+    $head;
+}
+
+#------------------------------------------
+
+
+sub isDelayed() {0}
+
+#------------------------------------------
+
+
+sub nrLines() { sum 1, map { $_->nrLines } shift->orderedFields }
+
+#------------------------------------------
+
+
+sub size() { sum 1, map {$_->size} shift->orderedFields }
+
+#------------------------------------------
+
 
 sub add(@)
 {   my $self = shift;
@@ -52,6 +79,49 @@ sub add(@)
     $field;
 }
 
+#------------------------------------------
+
+
+sub count($)
+{   my $known = shift->{MMH_fields};
+    my $value = $known->{lc shift};
+
+      ! defined $value ? 0
+    : ref $value       ? @$value
+    :                    1;
+}
+
+#------------------------------------------
+
+
+sub names() {shift->knownNames}
+ 
+#------------------------------------------
+
+
+sub grepNames(@)
+{   my $self = shift;
+    my @take;
+    push @take, (ref $_ eq 'ARRAY' ? @$_ : $_) foreach @_;
+
+    return $self->names unless @take;
+
+    my $take;
+    if(@take==1 && ref $take[0] eq 'Regexp')
+    {   $take    = $take[0];   # one regexp prepared already
+    }
+    else
+    {   # I love this trick:
+        local $" = ')|(?:';
+        $take    = qr/^(?:(?:@take))/i;
+    }
+
+    grep {$_->Name =~ $take} $self->orderedFields;
+}
+
+#------------------------------------------
+
+
 my @skip_none = qw/content-transfer-encoding content-disposition/;
 my %skip_none = map { ($_ => 1) } @skip_none;
 
@@ -81,6 +151,9 @@ sub set(@)
     $field;
 }
 
+#------------------------------------------
+
+
 sub reset($@)
 {   my ($self, $name) = (shift, lc shift);
 
@@ -104,8 +177,14 @@ sub reset($@)
     $self->addOrderedFields(@fields);
     $self;
 }
+ 
+#------------------------------------------
+
 
 sub delete($) { $_[0]->reset($_[1]) }
+
+#------------------------------------------
+
 
 sub removeField($)
 {   my ($self, $field) = @_;
@@ -131,36 +210,8 @@ sub removeField($)
     return;
 }
 
-sub count($)
-{   my $known = shift->{MMH_fields};
-    my $value = $known->{lc shift};
+#------------------------------------------
 
-      ! defined $value ? 0
-    : ref $value       ? @$value
-    :                    1;
-}
-
-sub names() {shift->knownNames}
-
-sub grepNames(@)
-{   my $self = shift;
-    my @take;
-    push @take, (ref $_ eq 'ARRAY' ? @$_ : $_) foreach @_;
-
-    return $self->names unless @take;
-
-    my $take;
-    if(@take==1 && ref $take[0] eq 'Regexp')
-    {   $take    = $take[0];   # one regexp prepared already
-    }
-    else
-    {   # I love this trick:
-        local $" = ')|(?:';
-        $take    = qr/^(?:(?:@take))/i;
-    }
-
-    grep {$_->Name =~ $take} $self->orderedFields;
-}
 
 sub print(;$)
 {   my $self  = shift;
@@ -174,6 +225,9 @@ sub print(;$)
     $self;
 }
 
+#------------------------------------------
+
+
 sub printUndisclosed($)
 {   my ($self, $fh) = @_;
 
@@ -185,6 +239,9 @@ sub printUndisclosed($)
     $self;
 }
 
+#------------------------------------------
+
+
 sub toString() {shift->string}
 sub string()
 {   my $self  = shift;
@@ -195,42 +252,8 @@ sub string()
     wantarray ? @lines : join('', @lines);
 }
 
-sub nrLines() { sum 1, map { $_->nrLines } shift->orderedFields }
+#------------------------------------------
 
-sub size() { sum 1, map {$_->size} shift->orderedFields }
-
-sub timestamp() {shift->guessTimestamp || time}
-
-sub guessTimestamp()
-{   my $self = shift;
-    return $self->{MMH_timestamp} if $self->{MMH_timestamp};
-
-    my $stamp;
-    if(my $date = $self->get('date'))
-    {   $stamp = Mail::Message::Field->dateToTimestamp($date);
-    }
-
-    unless($stamp)
-    {   foreach (reverse $self->get('received'))
-        {   $stamp = Mail::Message::Field->dateToTimestamp($_->comment);
-            last if $stamp;
-        }
-    }
-
-    $self->{MBM_timestamp} = $stamp;
-}
-
-sub guessBodySize()
-{   my $self = shift;
-
-    my $cl = $self->get('Content-Length');
-    return $1 if defined $cl && $cl =~ m/(\d+)/;
-
-    my $lines = $self->get('Lines');   # 40 chars per lines
-    return $1 * 40   if defined $lines && $lines =~ m/(\d+)/;
-
-    undef;
-}
 
 sub resentGroups()
 {   my $self = shift;
@@ -261,6 +284,9 @@ sub resentGroups()
 
     @groups;
 }
+
+#------------------------------------------
+
 
 sub addResentGroup(@)
 {   my $self  = shift;
@@ -295,6 +321,51 @@ sub addResentGroup(@)
     $rg;
 }
 
+#------------------------------------------
+
+
+
+sub timestamp() {shift->guessTimestamp || time}
+
+#------------------------------------------
+
+
+sub guessTimestamp()
+{   my $self = shift;
+    return $self->{MMH_timestamp} if $self->{MMH_timestamp};
+
+    my $stamp;
+    if(my $date = $self->get('date'))
+    {   $stamp = Mail::Message::Field->dateToTimestamp($date);
+    }
+
+    unless($stamp)
+    {   foreach (reverse $self->get('received'))
+        {   $stamp = Mail::Message::Field->dateToTimestamp($_->comment);
+            last if $stamp;
+        }
+    }
+
+    $self->{MBM_timestamp} = $stamp;
+}
+
+#------------------------------------------
+
+sub guessBodySize()
+{   my $self = shift;
+
+    my $cl = $self->get('Content-Length');
+    return $1 if defined $cl && $cl =~ m/(\d+)/;
+
+    my $lines = $self->get('Lines');   # 40 chars per lines
+    return $1 * 40   if defined $lines && $lines =~ m/(\d+)/;
+
+    undef;
+}
+
+#------------------------------------------
+
+
 sub createFromLine()
 {   my $self   = shift;
 
@@ -303,6 +374,9 @@ sub createFromLine()
     my $sender = $from =~ m/\<.*?\>/ ? $& : 'unknown';
     "From $sender ".(gmtime $stamp)."\n";
 }
+
+#------------------------------------------
+
 
 my $unique_id     = time;
 my $hostname;
@@ -318,6 +392,9 @@ sub createMessageId()
     $mid . '@' . $hostname;
 }
 
+#------------------------------------------
+
+
 our $unique_prefix;
 
 sub messageIdPrefix(;$)
@@ -326,5 +403,7 @@ sub messageIdPrefix(;$)
 
     $unique_prefix = shift || "mailbox-$$";
 }
+
+#------------------------------------------
 
 1;

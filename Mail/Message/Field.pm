@@ -2,7 +2,8 @@ use strict;
 use warnings;
 
 package Mail::Message::Field;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -12,8 +13,9 @@ use Date::Parse;
 our %_structured;  # not to be used directly: call isStructured!
 my $default_wrap_length = 78;
 
+
 use overload qq("") => sub { $_[0]->unfoldedBody }
-           , '+0'   => 'toInt'
+           , '+0'   => sub { $_[0]->toInt || 0 }
            , bool   => sub {1}
            , cmp    => sub { $_[0]->unfoldedBody cmp "$_[1]" }
            , '<=>'  => sub { $_[2]
@@ -21,6 +23,9 @@ use overload qq("") => sub { $_[0]->unfoldedBody }
                            : $_[0]->toInt <=> $_[1]
                            }
            , fallback => 1;
+
+#------------------------------------------
+
 
 sub new(@)
 {   my $class = shift;
@@ -30,6 +35,15 @@ sub new(@)
     }
     $class->SUPER::new(@_);
 }
+
+#------------------------------------------
+
+
+#------------------------------------------
+
+
+#------------------------------------------
+
 
 BEGIN {
 %_structured = map { (lc($_) => 1) }
@@ -43,12 +57,60 @@ BEGIN {
      MIME-Version
      Precedence
      Status/;
-}
+} 
 
 sub isStructured(;$)
 {   my $name  = ref $_[0] ? shift->name : $_[1];
     exists $_structured{lc $name};
 }
+
+#------------------------------------------
+
+
+sub print(;$)
+{   my $self = shift;
+    my $fh   = shift || select;
+    $fh->print(scalar $self->folded);
+}
+
+#------------------------------------------
+
+
+sub toString(;$) {my $self = shift;$self->string(@_)}
+sub string(;$)
+{   my $self  = shift;
+    return $self->folded unless @_;
+
+    my $wrap  = shift || $default_wrap_length;
+    my $name  = $self->Name;
+    my @lines = $self->fold($name, $self->unfoldedBody, $wrap);
+    $lines[0] = $name . ':' . $lines[0];
+    wantarray ? @lines : join('', @lines);
+}
+
+#------------------------------------------
+
+
+sub toDisclose()
+{   shift->name !~ m!^(?: (?:x-)?status
+                      |   (?:resent-)?bcc
+                      |   Content-Length
+                      |   x-spam-
+                      ) $!x;
+}
+
+#------------------------------------------
+
+
+sub nrLines() { my @l = shift->foldedBody; scalar @l }
+
+#------------------------------------------
+
+
+sub size() {length shift->toString}
+
+#------------------------------------------
+
 
 # attempt to change the case of a tag to that required by RFC822. That
 # being all characters are lowercase except the first of each
@@ -70,6 +132,12 @@ sub wellformedName(;$)
           split /\-/, $name;
 }
 
+#------------------------------------------
+
+
+#------------------------------------------
+
+
 sub body()
 {   my $self = shift;
     my $body = $self->unfoldedBody;
@@ -78,6 +146,51 @@ sub body()
     $body =~ s/\s*\;.*//s;
     $body;
 }
+
+#------------------------------------------
+
+
+#------------------------------------------
+
+
+#------------------------------------------
+
+
+sub stripCFWS($)
+{   my $thing  = shift;
+
+    # get (folded) data
+    my $string = @_ ? shift : $thing->foldedBody;
+
+    # remove comments
+    my $r          = '';
+    my $in_dquotes = 0;
+    my $open_paren = 0;
+
+    my @s = split m/([()"])/, $string;
+    while(@s)
+    {   my $s = shift @s;
+
+           if(length $r && substr($r, -1) eq "\\") { $r .= $s } # esc'd special
+        elsif($s eq '"')   { $in_dquotes = not $in_dquotes; $r .= $s }
+        elsif($s eq '(' && !$in_dquotes) { $open_paren++ }
+        elsif($s eq ')' && !$in_dquotes) { $open_paren-- }
+        elsif($open_paren) {}  # in comment
+        else               { $r .= $s }
+    }
+
+    # beautify and unfold at the same time
+    for($r)
+    {  s/\s+/ /gs;
+       s/\s+$//;
+       s/^\s+//;
+    }
+
+    $r;
+}
+
+#------------------------------------------
+
 
 sub comment(;$)
 {   my $self = shift;
@@ -92,11 +205,16 @@ sub comment(;$)
         $self->unfoldedBody($body);
         return $comment;
     }
-
+ 
     $body =~ s/.*?\;\s*// ? $body : '';
 }
 
+#------------------------------------------
+
 sub content() { shift->unfoldedBody }  # Compatibility
+
+#------------------------------------------
+
 
 sub attribute($;$)
 {   my ($self, $attr) = (shift, shift);
@@ -135,23 +253,8 @@ sub attribute($;$)
     $value;
 }
 
-sub print(;$)
-{   my $self = shift;
-    my $fh   = shift || select;
-    $fh->print($self->folded);
-}
+#------------------------------------------
 
-sub toString(;$) {my $self = shift;$self->string(@_)}
-sub string(;$)
-{   my $self  = shift;
-    return $self->folded unless @_;
-
-    my $wrap  = shift || $default_wrap_length;
-    my $name  = $self->Name;
-    my @lines = $self->fold($name, $self->unfoldedBody, $wrap);
-    $lines[0] = $name . ':' . $lines[0];
-    wantarray ? @lines : join('', @lines);
-}
 
 sub toInt()
 {   my $self = shift;
@@ -162,45 +265,26 @@ sub toInt()
     return undef;
 }
 
+#------------------------------------------
+
+
+my @weekday = qw/Sun Mon Tue Wed Thu Fri Sat Sun/;
+my @month   = qw/Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec/;
+
 sub toDate($)
 {   my $class = shift;
     use POSIX 'strftime';
     my @time  = @_ ? localtime(shift) : localtime;
-    strftime "%a, %d %b %Y %H:%M:%S %z", @time;
+    strftime "$weekday[$time[6]], %d $month[$time[4]] %Y %H:%M:%S %z", @time;
 }
 
-sub stripCFWS($)
-{   my $thing  = shift;
+#------------------------------------------
 
-    # get (folded) data
-    my $string = @_ ? shift : $thing->foldedBody;
 
-    # remove comments
-    my $r          = '';
-    my $in_dquotes = 0;
-    my $open_paren = 0;
+sub addresses() { Mail::Address->parse(shift->unfoldedBody) }
 
-    my @s = split m/([()"])/, $string;
-    while(@s)
-    {   my $s = shift @s;
+#------------------------------------------
 
-           if(length $r && substr($r, -1) eq "\\") { $r .= $s } # esc'd special
-        elsif($s eq '"')   { $in_dquotes = not $in_dquotes; $r .= $s }
-        elsif($s eq '(' && !$in_dquotes) { $open_paren++ }
-        elsif($s eq ')' && !$in_dquotes) { $open_paren-- }
-        elsif($open_paren) {}  # in comment
-        else               { $r .= $s }
-    }
-
-    # beautify and unfold at the same time
-    for($r)
-    {  s/\s+/ /gs;
-       s/\s+$//;
-       s/^\s+//;
-    }
-
-    $r;
-}
 
 sub dateToTimestamp($)
 {   my $string = $_[0]->stripCFWS($_[1]);
@@ -211,19 +295,9 @@ sub dateToTimestamp($)
     str2time($string, 'GMT');
 }
 
-sub addresses() { Mail::Address->parse(shift->unfoldedBody) }
 
-sub nrLines() { my @l = shift->foldedBody; scalar @l }
+#------------------------------------------
 
-sub size() {length shift->toString}
-
-sub toDisclose()
-{   shift->name !~ m!^(?: (?:x-)?status
-                      |   (?:resent-)?bcc
-                      |   Content-Length
-                      |   x-spam-
-                      ) $!x;
-}
 
 #=notice Empty field: $name
 #Empty fields are not allowed, however sometimes found in messages constructed
@@ -272,6 +346,9 @@ sub consume($;$)
     ($name, $body);
 }
 
+#------------------------------------------
+
+
 sub setWrapLength(;$)
 {   my $self = shift;
 
@@ -281,10 +358,16 @@ sub setWrapLength(;$)
     $self;
 }
 
+#------------------------------------------
+
+
 sub defaultWrapLength(;$)
 {   my $self = shift;
     @_ ? ($default_wrap_length = shift) : $default_wrap_length;
 }
+
+#------------------------------------------
+
 
 sub fold($$;$)
 {   my $self = shift;
@@ -320,6 +403,9 @@ sub fold($$;$)
     wantarray ? @folded : join('', @folded);
 }
 
+#------------------------------------------
+
+
 sub unfold($)
 {   my $string = $_[1];
     for($string)
@@ -328,5 +414,8 @@ sub unfold($)
     }
     $string;
 }
+
+#------------------------------------------
+
 
 1;

@@ -1,8 +1,10 @@
+
 use strict;
 use warnings;
 
 package Mail::Message::Convert::MimeEntity;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Convert';
 
 use Mail::Message::Head::Complete;
@@ -12,6 +14,7 @@ use Mail::Message::Body::Multipart;
 use MIME::Entity;
 use MIME::Body;
 use Carp;
+
 
 sub export($$)
 {   my ($self, $message) = @_;
@@ -48,6 +51,9 @@ sub export($$)
     $me->sync_headers(Length => 'COMPUTE');
     $me;
 }
+
+#------------------------------------------
+
 
 sub from($;$)
 {   my ($self, $me, $container) = @_;
@@ -100,5 +106,7 @@ sub from($;$)
 
     $message;
 }
+
+#------------------------------------------
 
 1;

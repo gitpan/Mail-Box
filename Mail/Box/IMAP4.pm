@@ -1,5 +1,7 @@
+
 package Mail::Box::IMAP4;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Net';
 
 use strict;
@@ -13,6 +15,7 @@ use File::Spec;
 use File::Basename;
 use Carp;
 
+
 sub init($)
 {   my ($self, $args) = @_;
 
@@ -20,7 +23,7 @@ sub init($)
 
     $self->SUPER::init($args);
 
-    $self->{MBI_client}    = $args->{imap_client};
+    $self->{MBI_client}    = $args->{imap_client}; 
     $self->{MBI_auth}      = $args->{authenticate} || 'AUTO';
 
     my $imap               = $self->imapClient or return;
@@ -29,11 +32,15 @@ sub init($)
     $self;
 }
 
+#-------------------------------------------
+
 sub create($@)
 {   my ($class, %args) =  @_;
     $class->log(INTERNAL => "Folder creation for IMAP4 not implemented yet");
     undef;
 }
+
+#-------------------------------------------
 
 sub foundIn(@)
 {   my $self = shift;
@@ -44,7 +51,11 @@ sub foundIn(@)
     || (exists $options{folder} && $options{folder} =~ m/^imap/);
 }
 
+#-------------------------------------------
+
 sub type() {'imap4'}
+
+#-------------------------------------------
 
 sub close()
 {   my $self = shift;
@@ -54,6 +65,8 @@ sub close()
 
     $self->SUPER::close;
 }
+
+#-------------------------------------------
 
 sub listSubFolders(@)
 {   my ($thing, %args) = @_;
@@ -73,10 +86,15 @@ sub listSubFolders(@)
     $self->askSubfoldersOf("$name$self->{MBI_subsep}");
 }
 
+#-------------------------------------------
+
 sub nameOfSubfolder($)
 {   my ($self, $name) = @_;
     "$self" . $self->{MBI_subsep} . $name;
 }
+
+#-------------------------------------------
+
 
 sub imapClient()
 {   my $self = shift;
@@ -100,6 +118,8 @@ sub imapClient()
 
     $self->{MBI_client} = $client;
 }
+
+#-------------------------------------------
 
 sub readMessages(@)
 {   my ($self, %args) = @_;
@@ -125,6 +145,9 @@ sub readMessages(@)
 
     $self;
 }
+ 
+#-------------------------------------------
+
 
 sub getHead($)
 {   my ($self, $message) = @_;
@@ -153,6 +176,9 @@ sub getHead($)
     $self->log(PROGRESS => "Loaded head of $uidl.");
     $head;
 }
+
+#-------------------------------------------
+
 
 sub getHeadAndBody($)
 {   my ($self, $message) = @_;
@@ -191,6 +217,8 @@ sub getHeadAndBody($)
     ($head, $body);
 }
 
+#-------------------------------------------
+
 sub writeMessages($@)
 {   my ($self, $args) = @_;
 
@@ -200,5 +228,8 @@ sub writeMessages($@)
 
     $self;
 }
+
+#-------------------------------------------
+
 
 1;

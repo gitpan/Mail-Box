@@ -3,9 +3,14 @@
 
 Mail::Box-Cookbook - Examples how to use Mail::Box
 
+
+=head1 INHERITANCE
+
+
+
 =head1 DESCRIPTION
 
-The C<Mail::Box> package is a suite of classes for accessing and managing
+The Mail::Box package is a suite of classes for accessing and managing
 email folders in a folder-independent manner.  This manual demonstrates
 a few simple applications.  Please contribute with examples and fixes.
 It may also help to have a look at the programs included in the
@@ -14,8 +19,8 @@ C<scripts/> and the C<examples/> directories of the distribution.
 =head2 The Manager
 
 For more details about all the packages which are involved in the
-C<Mail::Box> suite you have to read C<Mail::Box-Overview>.  But you
-do not need to know much if you want to use the C<Mail::Box> suite.
+Mail::Box suite you have to read L<Mail::Box-Overview|Mail::Box-Overview>.  But you
+do not need to know much if you want to use the Mail::Box suite.
 
 Please use the manager to open your folders.  You will certainly
 benefit from it.  The manager takes care of detecting which folder
@@ -24,7 +29,7 @@ the accidental re-opening of an already open folder.
 
 The C<examples/open.pl> script contains mainly
 
- my $mgr    = Mail::Box::Manager->new;
+ my $mgr    = L<Mail::Box::Manager|Mail::Box::Manager>->new;
  my $folder = $mgr->open($filename);
  foreach my $message ($folder->messages) {
      print $message->get('Subject') || '<no subject>', "\n";
@@ -33,7 +38,7 @@ The C<examples/open.pl> script contains mainly
 
 which shows all the most important functions.  It will cause all
 subjects of the messages in the indicated folder to be listed.  So:
-although the number of packages included in the C<Mail::Box> module
+although the number of packages included in the Mail::Box module
 is huge, only little is needed for normal programs.
 
 In stead of calling C<close> on the folder, you may also call
@@ -42,7 +47,6 @@ In stead of calling C<close> on the folder, you may also call
 
 If you forget to close a folder, changes will not be written.  This
 may change in the future.
-
 
 =head2 Multi part messages
 
@@ -78,7 +82,6 @@ message has a special body: it contains a list of parts and optionally
 also a preamble and an epilogue, which are respectively the lines before
 and after the parts.  These texts may be ignored, because they are only
 descriptive on how the multi-part was created.
-
 
 =head2 Filter
 
@@ -121,10 +124,9 @@ For instance, use C<timestamp> to find old messages:
  my @old = grep {$_->timestamp - $now > YEAR} $inbox->messages;
  $mgr->moveMessage($oldbox, @old);
 
-
 =head2 Create a reply
 
-The complex message treatment is implemented in Mail::Message::Construct
+The complex message treatment is implemented in L<Mail::Message::Construct|Mail::Message::Construct>
 and automatically loaded when needed.  It is sufficient to simply call
 C<reply> on any message:
 
@@ -152,7 +154,7 @@ contains one part, and that INLINE is requested, it will be 'flattened':
 the reply may be a single-part.
 
 Have a look at the parameters which can be passed to reply in
-L<Mail::Message::Construct>.  For a single-part reply, the return
+L<L<Mail::Message::Construct|Mail::Message::Construct>>.  For a single-part reply, the return
 will be
 
  prelude
@@ -169,28 +171,27 @@ A multipart body will be
  part 2: stripped original multipart
  part 3: signature
 
-
 =head2 Build a message
 
 There are three ways to create a message which is not a reply:
 
 =over 4
 
-=item * Mail::Message::buildFromBody()
+=item * L<Mail::Message::buildFromBody()|"Constructing a message">
 
 Start with creating a body, and transform that into a message.
 
-=item * Mail::Message::build()
+=item * L<Mail::Message::build()|"Constructing a message">
 
 create the whole message at once.
 
-=item * Mail::Message::read()
+=item * L<Mail::Message::read()|"Constructing a message">
 
 read a message from a file-handle, scalar, or array of lines.
 
 =back
 
-All three methods are implemented in Mail::Message::Construct.  Please,
+All three methods are implemented in L<Mail::Message::Construct|Mail::Message::Construct>.  Please,
 do yourself a favor, and give preference to the C<build*> methods, over
 the C<read>, because they are much more powerful.  Use the C<read> only
 when you have the message on STDIN or an array of lines which is supplied
@@ -200,7 +201,7 @@ Very important to remember from now on: information about the content of
 the body (the C<Content-> lines in the header) is stored within the body
 object, for as long as the body is not contained with a message object.
 
-For instance, C<< $message->decoded >> returns the decoded body of the
+For instance, C<$message> method C<decoded> returns the decoded body of the
 C<$message>.  It is a body object by itself, however outside a real
 message.  Then you may want to play around with it, by concatenating
 some texts: again resulting in a new body.  Each body contains the
@@ -210,7 +211,7 @@ to specify the source and destination addresses (the C<From> and C<To> lines>).
 At that moment, the body will automatically be encoded to be acceptable for
 mail folders and transmission programs.
 
- my $body = Mail::Message::Body->new
+ my $body = L<Mail::Message::Body|Mail::Message::Body>->new
   ( mime_type         => 'text/css'
   , transfer_encoding => '8bit'
   , data              => \@lines
@@ -225,7 +226,7 @@ To start with the first way to create a message.  This solution provides
 maximum control over the message creation.  Quite some work is hidden for
 you when executing the next line.
 
- my $message = Mail::Message->buildFromBody
+ my $message = L<Mail::Message|Mail::Message>->buildFromBody
    ( $body
    , From => 'me@example.com'
    , To   => 'you@anywhere.net'
@@ -248,7 +249,7 @@ refers to construed bodies and messages.  Each option can be used as
 often as needed.  If more than one source of data is provided, a
 multi-part message is produced.
 
- my $message = Mail::Message->build
+ my $message = L<Mail::Message|Mail::Message>->build
   ( From       => 'me@example.com'
   , To         => 'you@anywhere.net'
   , 'X-Mailer' => 'Automatic mailing system'
@@ -257,21 +258,27 @@ multi-part message is produced.
   , attach     => $signature_body
   );
 
-=head1 SEE ALSO
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
 
-=head1 AUTHOR
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
 
-=head1 VERSION
 
-This code is beta, version 2.040.
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

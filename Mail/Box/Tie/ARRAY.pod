@@ -3,6 +3,10 @@
 
 Mail::Box::Tie::ARRAY - access an existing message folder as array
 
+
+=head1 INHERITANCE
+
+
 =head1 SYNOPSIS
 
  use Mail::Box::Manager;
@@ -29,6 +33,7 @@ Mail::Box::Tie::ARRAY - access an existing message folder as array
  my $folder = tied @inbox;
  untie @inbox;
 
+
 =head1 DESCRIPTION
 
 Certainly when you look at a folder as a list of messages, it is logical to
@@ -42,18 +47,22 @@ Examples what you I<cannot> do:
 
  shift/unshift/pop/splice @inbox;
 
+
+
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+B<TIEARRAY>('Mail::Box::Tie::ARRAY', FOLDER)
 
 =over 4
 
-=item B<tie> ARRAY, 'Mail::Box::Tie::ARRAY', FOLDER
-
-(not a method) 
 Create the tie on an existing folder.
 
-Examples:
+I<Example:> tie an array to a folder
+
 
  my $mgr   = Mail::Box::Manager->new;
  my $inbox = $mgr->new(folder => $ENV{MAIL});
@@ -63,65 +72,92 @@ Examples:
 
 =head2 Tied Interface
 
-=over 4
 
-=item B<DELETE> 
+$obj-E<gt>B<DELETE>
+
+=over 4
 
 Flag a message to be removed.  Be warned that the message stays in
 the folder, and is not removed before the folder is written.
 
-Examples:
+I<Example:> 
 
  delete $inbox[5];
  $inbox[5]->delete;   #same
 
-=item B<FETCH> INDEX
+=back
+
+$obj-E<gt>B<FETCH>(INDEX)
+
+=over 4
 
 Get the message which is at the indicated location in the list of
 messages contained in this folder.  Deleted messages will be returned
-as C<undef>
+as C<undef>.
 
-Examples:
+I<Example:> 
 
- print $inbox[3];
+ print $inbox[3];     # 4th message in the folder
+ print @inbox[3,0];   # 4th and first of the folder
+ print $inbox[-1];    # last message
 
-=item B<FETCHSIZE> 
+=back
+
+$obj-E<gt>B<FETCHSIZE>
+
+=over 4
 
 Return the total number of messages in a folder.  This is called when
 the folder-array is used in scalar context, for instance.
 
-Examples:
+I<Example:> 
 
  if(@inbox > 10)    # contains more than 10 messages?
  my $nrmsgs = @inbox;
 
-=item B<PUSH> MESSAGES
+=back
+
+$obj-E<gt>B<PUSH>(MESSAGES)
+
+=over 4
 
 Add MESSAGES to the end of the folder.
 
-Examples:
+I<Example:> 
 
     push @inbox, $newmsg;
 
-=item B<STORE> INDEX, MESSAGE
+=back
+
+$obj-E<gt>B<STORE>(INDEX, MESSAGE)
+
+=over 4
 
 Random message replacement is is not permitted--doing so would disturb threads
 etc.  An error occurs if you try to do this. The only thing which is allowed
 is to store a message at the first free index at the end of the folder (which
-is also achievable with PUSH--see below).
+is also achievable with L<PUSH()|"Tied Interface">).
 
-Examples:
+I<Example:> 
 
- $inbox[$#inbox] = $add;
+ $inbox[8] = $add;
+ $inbox[-1] = $add;
  push @inbox, $add;
 
-=item B<STORESIZE> LENGTH
+=back
+
+$obj-E<gt>B<STORESIZE>(LENGTH)
+
+=over 4
 
 Sets all messages behind from LENGTH to the end of folder to be deleted.
 
 =back
 
-=head1 IMPLEMENTATION
+
+
+
+=head1 DETAILS
 
 This module implements C<TIEARRAY>, C<FETCH>, C<STORE>, C<FETCHSIZE>,
 C<STORESIZE>, C<DELETE>, C<PUSH>, and C<DESTROY>.
@@ -130,21 +166,22 @@ This module does not implement all other methods as described in
 the Tie::Array documentation, because the real array of messages
 is not permitted to shrink or be mutilated.
 
-=head1 SEE ALSO
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
 
-=head1 AUTHOR
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
 
-=head1 VERSION
+=head1 REFERENCES
 
-This code is beta, version 2.040.
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

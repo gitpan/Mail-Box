@@ -1,9 +1,12 @@
+
 use strict;
 use warnings;
 
 package Mail::Message::TransferEnc;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
+
 
 my %encoder =
  ( base64 => 'Mail::Message::TransferEnc::Base64'
@@ -12,6 +15,9 @@ my %encoder =
  , 'quoted-printable' => 'Mail::Message::TransferEnc::QuotedPrint'
  );
 
+#------------------------------------------
+
+ 
 sub create($@)
 {   my ($class, $type) = (shift, shift);
 
@@ -31,18 +37,36 @@ sub create($@)
     $encoder->new(@_);
 }
 
+#------------------------------------------
+
+
 sub addTransferEncoder($$)
 {   my ($class, $type, $encoderclass) = @_;
     $encoder{lc $type} = $encoderclass;
     $class;
 }
 
+#------------------------------------------
+
+
 sub name {shift->notImplemented}
+
+#------------------------------------------
+
 
 sub check($@) {shift->notImplemented}
 
+#------------------------------------------
+
+
 sub decode($@) {shift->notImplemented}
 
+#------------------------------------------
+
+
 sub encode($) {shift->notImplemented}
+
+#------------------------------------------
+
 
 1;

@@ -1,9 +1,12 @@
+
 use strict;
 use warnings;
 
 package Mail::Message::Convert;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -15,9 +18,15 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
+
 sub selectedFields($)
 {   my ($self, $head) = @_;
     $head->grepNames($self->{MMC_fields});
 }
+
+#------------------------------------------
+
 
 1;

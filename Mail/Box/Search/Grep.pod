@@ -3,11 +3,13 @@
 
 Mail::Box::Search::Grep - select messages within a mail box like grep does
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Box::Search::Grep
    is a Mail::Box::Search
    is a Mail::Reporter
+
 
 =head1 SYNOPSIS
 
@@ -29,63 +31,59 @@ Mail::Box::Search::Grep - select messages within a mail box like grep does
 
  if($filter->search($message)) {...}
 
+
 =head1 DESCRIPTION
 
 Try to find some text strings in the header and footer of messages.  Various
 ways to limit the search to certain header fields, the whole header, only
 the body, the whole message, but even binary multiparts, are provided for.
 
-The name `grep' is derived from the UNIX tool `grep', which means: "Get
+The name I<grep> is derived from the UNIX tool I<grep>, which means: "Get
 Regular Expression and Print".  Although you can search using regular
 expressions (the Perl way of them), you do not have to print those as
 result.
 
+
+
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+Mail::Box::Search::Grep-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-=item B<new> OPTIONS
-
-(Class method) 
 Create a UNIX-grep like search filter.
 
- OPTION               DEFAULT
- binaries             <false>
- decode               <true>
- delayed              <true>
- deleted              <false>
- deliver              undef
- field                undef
- in                   <$field ? 'HEAD' : 'BODY'>
- label                undef
- limit                0
- log                  'WARNINGS'
- logical              'REPLACE'
- match                <obligatory>
- multiparts           <true>
- trace                'WARNINGS'
+ Option      Defined in       Default                         
+ binaries    L<Mail::Box::Search>  <false>                         
+ decode      L<Mail::Box::Search>  <true>                          
+ delayed     L<Mail::Box::Search>  <true>                          
+ deleted     L<Mail::Box::Search>  <false>                         
+ deliver                      undef                           
+ field                        undef                           
+ in          L<Mail::Box::Search>  <$field ? C<'HEAD'> : C<'BODY'>>
+ label       L<Mail::Box::Search>  undef                           
+ limit       L<Mail::Box::Search>  C<0>                            
+ log         L<Mail::Reporter>  C<'WARNINGS'>                   
+ logical     L<Mail::Box::Search>  C<'REPLACE'>                    
+ match                        <required>                      
+ multiparts  L<Mail::Box::Search>  <true>                          
+ trace       L<Mail::Reporter>  C<'WARNINGS'>                   
+
+. binaries BOOLEAN
+
+. decode BOOLEAN
+
+. delayed BOOLEAN
+
+. deleted BOOLEAN
+
+. deliver undef|CODE|'DELETE'|LABEL|'PRINT'|REF-ARRAY
 
 =over 4
-
-=item B<binaries> =E<gt> BOOLEAN
-
-See Mail::Box::Search::new(binaries)
-
-=item B<decode> =E<gt> BOOLEAN
-
-See Mail::Box::Search::new(decode)
-
-=item B<delayed> =E<gt> BOOLEAN
-
-See Mail::Box::Search::new(delayed)
-
-=item B<deleted> =E<gt> BOOLEAN
-
-See Mail::Box::Search::new(deleted)
-
-=item B<deliver> =E<gt> undef|CODE|'DELETE'|LABEL|'PRINT'|REF-ARRAY
 
 Store the details about where the match was found.  The search may take
 much longer when this feature is enabled.
@@ -93,14 +91,14 @@ much longer when this feature is enabled.
 When an ARRAY is specified it will contain a list of references to hashes.
 Each hash contains the information of one match.  A match in a header
 line will result in a line with fields C<message>, C<part>, and C<field>, where
-the field is a Mail::Message::Field object.  When the match is in
+the field is a L<Mail::Message::Field|Mail::Message::Field> object.  When the match is in
 the body the hash will contain a C<message>, C<part>, C<linenr>, and C<line>.
 
 In case of a CODE reference, that routine is called for each match. The
 first argument is this search object and the second a reference to same
 hash as would be stored in the array.
 
-The C<PRINT> will call printMatchedHead() or printMatchedBody() when
+The C<PRINT> will call L<printMatchedHead()|"The Results"> or L<printMatchedBody()|"The Results"> when
 any matching header resp body line was found.  The output is minimized
 by not reprinting the message info on multiple matches in the same
 message.
@@ -109,36 +107,34 @@ C<DELETE> will flag
 the message to be deleted in case of a match.  When a multipart's part
 is matched, the whole message will be flagged for deletion.
 
-=item B<field> =E<gt> undef|STRING|REGEX|CODE
+=back
 
-Not valid in combination with C<< in => BODY >>.
+. field undef|STRING|REGEX|CODE
+
+=over 4
+
+Not valid in combination with C<in> set to C<BODY>.
 The STRING is one full field name (case-insensitive).  Use a REGEX
 to select more than one header line to be scanned. CODE is a routine which
 is called for each field in the header.   The CODE is called with the header
 as first, and the field as second argument.  If the CODE returns true, the
 message is selected.
 
-=item B<in> =E<gt> 'HEAD'|'BODY'|'MESSAGE'
+=back
 
-See Mail::Box::Search::new(in)
+. in 'HEAD'|'BODY'|'MESSAGE'
 
-=item B<label> =E<gt> STRING
+. label STRING
 
-See Mail::Box::Search::new(label)
+. limit NUMBER
 
-=item B<limit> =E<gt> NUMBER
+. log LEVEL
 
-See Mail::Box::Search::new(limit)
+. logical 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT'
 
-=item B<log> =E<gt> LEVEL
+. match STRING|REGEX|CODE
 
-See Mail::Reporter::new(log)
-
-=item B<logical> =E<gt> 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT'
-
-See Mail::Box::Search::new(logical)
-
-=item B<match> =E<gt> STRING|REGEX|CODE
+=over 4
 
 The pattern to be search for can be a REGular EXpression, or a STRING.  In
 both cases, the match succeeds if it is found anywhere within the selected
@@ -154,136 +150,220 @@ The C<$head> resp C<$body> are one message's head resp. body object.  The
 C<$field> is a header line which matches.  The C<$line> and C<$linenr>
 tell the matching line in the body.
 
-Be warned that when you search C<< in => MESSAGE >> the code must accept
+Be warned that when you search in C<MESSAGE> the code must accept
 both formats.
 
-=item B<multiparts> =E<gt> BOOLEAN
-
-See Mail::Box::Search::new(multiparts)
-
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
-
 =back
+
+. multiparts BOOLEAN
+
+. trace LEVEL
 
 =back
 
 =head2 Searching
 
+
+$obj-E<gt>B<inBody>(PART, BODY)
+
 =over 4
 
-=item B<inBody> PART, BODY
+See L<Mail::Box::Search/"Searching">
 
-See Mail::Box::Search::inBody()
+=back
 
-=item B<inHead> PART, HEAD
+$obj-E<gt>B<inHead>(PART, HEAD)
 
-See Mail::Box::Search::inHead()
+=over 4
 
-=item B<search> FOLDER|THREAD|MESSAGE|ARRAY-OF-MESSAGES
+See L<Mail::Box::Search/"Searching">
 
-See Mail::Box::Search::search()
+=back
 
-=item B<searchPart> PART
+$obj-E<gt>B<search>(FOLDER|THREAD|MESSAGE|ARRAY-OF-MESSAGES)
 
-See Mail::Box::Search::searchPart()
+=over 4
+
+See L<Mail::Box::Search/"Searching">
+
+=back
+
+$obj-E<gt>B<searchPart>(PART)
+
+=over 4
+
+See L<Mail::Box::Search/"Searching">
 
 =back
 
 =head2 The Results
 
-=over 4
 
-=item B<printMatch> [FILEHANDLE], HASH
-
-See Mail::Box::Search::printMatch()
-
-=item B<printMatchedBody> FILEHANDLE, MATCH
-
-=item B<printMatchedHead> FILEHANDLE, MATCH
-
-=back
-
-=head2 Logging and Tracing
+$obj-E<gt>B<printMatch>([FILEHANDLE], HASH)
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+See L<Mail::Box::Search/"The Results">
 
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<printMatchedBody>(FILEHANDLE, MATCH)
 
 =over 4
 
-=item B<AUTOLOAD> 
+=back
 
-See Mail::Reporter::AUTOLOAD()
+$obj-E<gt>B<printMatchedHead>(FILEHANDLE, MATCH)
 
-=item B<DESTROY> 
-
-See Mail::Reporter::DESTROY()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+=over 4
 
 =back
 
-=head1 SEE ALSO
+=head2 Error handling
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
 
-=head1 AUTHOR
+$obj-E<gt>B<AUTOLOAD>
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+=over 4
 
-=head1 VERSION
+See L<Mail::Reporter/"Error handling">
 
-This code is beta, version 2.040.
+=back
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Box::Search::Grep-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<errors>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Box::Search::Grep-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Box::Search::Grep-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

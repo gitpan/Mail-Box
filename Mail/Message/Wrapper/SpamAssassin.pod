@@ -3,10 +3,12 @@
 
 Mail::Message::Wrapper::SpamAssassin - Connect a Mail::Message with Mail::SpamAssassin
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Message::Wrapper::SpamAssassin
    is a Mail::SpamAssassin::Message
+
 
 =head1 SYNOPSIS
 
@@ -21,41 +23,46 @@ Mail::Message::Wrapper::SpamAssassin - Connect a Mail::Message with Mail::SpamAs
  $msg->label(spam => 1) if $status->is_spam;
  $status->rewrite_mail;  # Adds spam lines to header
 
+
 =head1 DESCRIPTION
 
-The Mail::Message::Wrapper::SpamAssassin class --sorry for the long package
-name-- is a wrapper aroung Mail::SpamAssassin::Message, which is an
+The C<Mail::Message::Wrapper::SpamAssassin>
+class --sorry for the long package
+name-- is a wrapper around Mail::SpamAssassin::Message, which is an
 interface to the spam checking software of Mail::SpamAssassin.
+
+
 
 =head1 METHODS
 
-=head2 Initiation
+
+Mail::Message::Wrapper::SpamAssassin-E<gt>B<new>(MESSAGE, OPTIONS)
 
 =over 4
 
-=item B<new> MESSAGE, OPTIONS
-
-(Class method) 
-Creates a wrapper around the MESSAGE.  There are no OPTIONS defined
-yet.
+Creates a wrapper around the MESSAGE.
 
 =back
 
-=head1 SEE ALSO
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
 
-=head1 AUTHOR
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
 
-=head1 VERSION
 
-This code is beta, version 2.040.
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

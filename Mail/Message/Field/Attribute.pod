@@ -3,6 +3,10 @@
 
 Mail::Message::Field::Attribute - one attribute of a full field
 
+
+=head1 INHERITANCE
+
+
 =head1 SYNOPSIS
 
  my $field    = $msg->head->get('Content-Disposition') or return;
@@ -15,99 +19,85 @@ Mail::Message::Field::Attribute - one attribute of a full field
  print $filename->string; # print string as was found in the file
  $filename->print(\*OUT); # print as was found in the file
 
+
 =head1 DESCRIPTION
 
 Attributes within MIME fields can be quite complex, and therefore be slow
-and consumes a lot of memory.  The Mail::Message::Field::Fast and
-Mail::Message::Field::Flex simplify them the attributes a lot, which
+and consumes a lot of memory.  The L<Mail::Message::Field::Fast|Mail::Message::Field::Fast> and
+L<Mail::Message::Field::Flex|Mail::Message::Field::Flex> simplify them the attributes a lot, which
 may result in erroneous behavior in rare cases.  With the increase of
 non-western languages on Internet, the need for the complex headers
 becomes more and more in demand.
 
-A Mail::Message::Field::Attribute can be found in any structured
-Mail::Message::Field::Full header field.
+A C<Mail::Message::Field::Attribute> can be found in any structured
+L<Mail::Message::Field::Full|Mail::Message::Field::Full> header field.
+
+
 
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+Mail::Message::Field::Attribute-E<gt>B<new>((NAME, [VALUE] | STRING), OPTIONS)
 
 =over 4
 
-=item B<addComponent> STRING
-
-A component is a parameter as defined by RFC2045, optionally using
-encoding or continuations as defined by RFC2231.  Components of an
-attribute are found when a field is being parsed.  The RFCs are
-very strict on valid characters, but we cannot be: you have to accept
-what is coming in if you can.
-
-Examples:
-
- my $param = Mail::Message::Field::Attribute->new('Content-Type');
- $param->addComponent("filename*=iso10646'nl-BE'%Re\47u");
-
-=item B<charset> 
-
-Returns the character set which is used for this parameter.  If any component
-is added which contains character set information, this is directly
-available.  Be warned that a character-set is case insensitive.
-
-=item B<language> 
-
-Returns the language which is defined in the argument.  If no language is
-defined C<undef> is returned, which should be interpreted as "ANY"
-
-=item B<name> 
-
-Returns the name of this attribute.
-
-=item B<new> (NAME, [VALUE] | STRING), OPTIONS
-
-(Class method) 
 Create a new attribute NAME with the optional VALUE.  If no VALUE is specified,
 the first argument of this method is inspected for an equals sign C<'='>.
 If that character is present, the argument is taken as STRING, containing
 a preformatted attribute which is processed.  Otherwise, the argument is
 taken as name without VALUE: set the value later with value().
 
-Whether encoding takes place
-depends on the OPTIONS and the existence of non-ascii characters in the VALUE.
-The NAME can only contain ascii characters, hence is never encoded.
+Whether encoding takes place depends on the OPTIONS and the existence
+of non-ascii characters in the VALUE.  The NAME can only contain ascii
+characters, hence is never encoded.
 
-To speed things up, attributes are not derived from the Mail::Reporter
+To speed things up, attributes are not derived from the L<Mail::Reporter|Mail::Reporter>
 base-class.
 
- OPTION               DEFAULT
- charset              'us-ascii'
- language             C<undef>
- use_continuations    1
+ Option             Defined in       Default      
+ charset                             C<'us-ascii'>
+ language                            undef        
+ use_continuations                   <true>       
+
+. charset STRING
 
 =over 4
-
-=item B<charset> =E<gt> STRING
 
 The VALUE is translated from utf-8 (Perl internal) to this character set,
 and the resulting string is encoded if required.  C<us-ascii> is the normal
 encoding for e-mail.  Valid character sets can be found with 
 Encode::encodings(':all').
 
-=item B<language> =E<gt> STRING
+=back
+
+. language STRING
+
+=over 4
 
 RFC2231 adds the possiblity to specify a language with the field.  When no
-language is specified, none is included in the encoding.  Valid language names
-are defined by RFC2130.  This module has only limited support for this feature.
-
-=item B<use_continuations> =E<gt> BOOLEAN
-
-Continuations are used to break-up long parameters into pieces which are no
-longer than 76 characters. Encodings are specified in RFC2231, but not supported
-by some Mail User Agents.
+language is specified, none is included in the encoding.  Valid language
+names are defined by RFC2130.  This module has only limited support for
+this feature.
 
 =back
 
-Examples:
+. use_continuations BOOLEAN
 
- my $fn    = Mail::Message::Field::Attribute->new(filename => 'xyz');
+=over 4
+
+Continuations are used to break-up long parameters into pieces which
+are no longer than 76 characters. Encodings are specified in RFC2231,
+but not supported by some Mail User Agents.
+
+=back
+
+I<Example:> 
+
+ my $fn    = Mail::Message::Field::Attribute
+                ->new(filename => 'xyz');
 
  my $fattr = 'Mail::Message::Field::Attribute';  # abbrev
  my $fn    = $fattr->new
@@ -115,32 +105,102 @@ Examples:
      , charset  => 'iso-8859-15'
      , language => 'nl-BE'
      );
- print $fn;   # print  filename*=iso-8859-15'nl-BE'Re%C7u
+ print $fn;
+   # -->  filename*=iso-8859-15'nl-BE'Re%C7u
 
-=item B<string> 
+=back
+
+=head2 The attribute
+
+
+$obj-E<gt>B<addComponent>(STRING)
+
+=over 4
+
+A component is a parameter as defined by RFC2045, optionally using
+encoding or continuations as defined by RFC2231.  Components of an
+attribute are found when a field is being parsed.  The RFCs are
+very strict on valid characters, but we cannot be: you have to accept
+what is coming in if you can.
+
+I<Example:> 
+
+ my $param = Mail::Message::Field::Attribute
+               ->new('Content-Type');
+
+ $param->addComponent("filename*=iso10646'nl-BE'%Re\47u");
+
+=back
+
+$obj-E<gt>B<charset>
+
+=over 4
+
+Returns the character set which is used for this parameter.  If any component
+is added which contains character set information, this is directly
+available.  Be warned that a character-set is case insensitive.
+
+=back
+
+$obj-E<gt>B<language>
+
+=over 4
+
+Returns the language which is defined in the argument.  If no language is
+defined C<undef> is returned, which should be interpreted as "ANY"
+
+=back
+
+$obj-E<gt>B<name>
+
+=over 4
+
+Returns the name of this attribute.
+
+=back
+
+$obj-E<gt>B<string>
+
+=over 4
 
 Returns the parameter as reference to an array of lines.  When only one line
 is returned, it may be short enough to fit on the same line with other components
 of the header field.
 
-=item B<value> [STRING]
+=back
+
+$obj-E<gt>B<value>([STRING])
+
+=over 4
 
 Returns the value of this parameter, optionally after setting it first.
 
 =back
 
-=head2 Reading and Writing [internals]
+=head2 Attribute encoding
+
+
+$obj-E<gt>B<decode>
 
 =over 4
-
-=item B<decode> 
 
 Translate all known continuations into a value.  The produced value is
 returned and may be utf-8 encoded or a plain string.
 
-=item B<encode> 
+=back
 
-=item B<mergeComponent> ATTRIBUTE
+$obj-E<gt>B<encode>
+
+=over 4
+
+=back
+
+=head2 Internals
+
+
+$obj-E<gt>B<mergeComponent>(ATTRIBUTE)
+
+=over 4
 
 Merge the components from the specified attribute in this attribute.  This is
 needed when components of the same attribute are created separately.  Merging
@@ -148,21 +208,41 @@ is required by the field parsing.
 
 =back
 
-=head1 SEE ALSO
+=head2 Error handling
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+This class does not extend L<Mail::Reporter|Mail::Reporter> for obvious performance
+reasons: there is no logging or tracing available.
 
-=head1 AUTHOR
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
 
-=head1 VERSION
+=head1 DIAGNOSTICS
 
-This code is beta, version 2.040.
+I<Warning:> Illegal character in parameter name '$name'
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+The specified parameter name contains characters which are not permitted by
+the RFCs.  You can better change the name into something which is accepted,
+or risk applications to corrupt or ignore the message.
+
+I<Error:> Too late to merge: value already changed.
+
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

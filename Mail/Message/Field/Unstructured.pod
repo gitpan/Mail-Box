@@ -3,16 +3,20 @@
 
 Mail::Message::Field::Unstructured - unstructured "Full" field
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Message::Field::Unstructured
    is a Mail::Message::Field::Full
    is a Mail::Message::Field
    is a Mail::Reporter
 
+
 =head1 SYNOPSIS
 
+ !! UNDER CONSTRUCTION !!
  my $f = Mail::Message::Field::Unstructured->new(Comments => 'hi!');
+
 
 =head1 DESCRIPTION
 
@@ -21,19 +25,85 @@ any way.  RFC2822 defines some unstructured fields, but by default all
 unknown fields are unstructured as well.  Things like attributes and
 comments have no meaning for unstructured fields, but encoding does.
 
-=head1 METHODS
+=head2 Header fields
 
-=head2 Initiation
+
+=head2 Folding
+
+
+=head2 Performance consideration
+
+
+
+=head1 OVERLOADED
+
+
+overload: B<"">
 
 =over 4
 
-=item B<from> FIELD, OPTIONS
+See L<Mail::Message::Field/"OVERLOADED">
 
-See Mail::Message::Field::Full::from()
+=back
 
-=item B<new> DATA
+overload: B<+0>
 
-(Class method) 
+=over 4
+
+See L<Mail::Message::Field/"OVERLOADED">
+
+=back
+
+overload: B<<=>>
+
+=over 4
+
+See L<Mail::Message::Field/"OVERLOADED">
+
+=back
+
+overload: B<bool>
+
+=over 4
+
+See L<Mail::Message::Field/"OVERLOADED">
+
+=back
+
+overload: B<cmp>
+
+=over 4
+
+See L<Mail::Message::Field/"OVERLOADED">
+
+=back
+
+
+=head1 METHODS
+
+
+=head2 Constructors
+
+
+$obj-E<gt>B<clone>
+
+=over 4
+
+See L<Mail::Message::Field/"Constructors">
+
+=back
+
+Mail::Message::Field::Unstructured-E<gt>B<from>(FIELD, OPTIONS)
+
+=over 4
+
+See L<Mail::Message::Field::Full/"Constructors">
+
+=back
+
+Mail::Message::Field::Unstructured-E<gt>B<new>(DATA)
+
+=over 4
 
 When the DATA is specified as single line, the content part is considered to
 be correcly (character) encoded and escaped.  Typically, it is a line as
@@ -48,58 +118,36 @@ separated list).  Each BODY element is interpreted with the specified encoding.
 When the BODY is empty, the construction of the object fails: C<undef> is
 returned.
 
- OPTION               DEFAULT
- attributes           C<not accepted>
- charset              C<undef>
- encoding             'q'
- extra                C<not accepted>
- force                false
- is_structured        0
- language             C<undef>
- log                  'WARNINGS'
- trace                'WARNINGS'
+ Option         Defined in       Default       
+ attributes     L<Mail::Message::Field::Full>  <not accepted>
+ charset        L<Mail::Message::Field::Full>  undef         
+ encoding       L<Mail::Message::Field::Full>  C<'q'>        
+ extra          L<Mail::Message::Field::Full>  <not accepted>
+ force          L<Mail::Message::Field::Full>  false         
+ is_structured  L<Mail::Message::Field::Full>  <false>       
+ language       L<Mail::Message::Field::Full>  undef         
+ log            L<Mail::Reporter>  C<'WARNINGS'> 
+ trace          L<Mail::Reporter>  C<'WARNINGS'> 
 
-=over 4
+. attributes ATTRS
 
-=item B<attributes> =E<gt> ATTRS
+. charset STRING
 
-See Mail::Message::Field::Full::new(attributes)
+. encoding 'q'|'Q'|'b'|'B'
 
-=item B<charset> =E<gt> STRING
+. extra STRING
 
-See Mail::Message::Field::Full::new(charset)
+. force BOOLEAN
 
-=item B<encoding> =E<gt> 'q'|'Q'|'b'|'B'
+. is_structured BOOLEAN
 
-See Mail::Message::Field::Full::new(encoding)
+. language STRING
 
-=item B<extra> =E<gt> STRING
+. log LEVEL
 
-See Mail::Message::Field::Full::new(extra)
+. trace LEVEL
 
-=item B<force> =E<gt> BOOLEAN
-
-See Mail::Message::Field::Full::new(force)
-
-=item B<is_structured> =E<gt> BOOLEAN
-
-See Mail::Message::Field::Full::new(is_structured)
-
-=item B<language> =E<gt> STRING
-
-See Mail::Message::Field::Full::new(language)
-
-=item B<log> =E<gt> LEVEL
-
-See Mail::Reporter::new(log)
-
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
-
-=back
-
-Examples:
+I<Example:> 
 
  my $s = Mail::Message::Field::Unstructured->new('Comment: Hi!');
  my $s = Mail::Message::Field::Unstructured->new('Comment', 'Hi!');
@@ -110,263 +158,528 @@ Examples:
 
 =back
 
-=head2 The Field
+=head2 The field
+
+
+$obj-E<gt>B<isStructured>
+
+Mail::Message::Field::Unstructured-E<gt>B<isStructured>
 
 =over 4
 
-=item B<addAttribute> ...
+See L<Mail::Message::Field/"The field">
+
+=back
+
+$obj-E<gt>B<length>
+
+=over 4
+
+See L<Mail::Message::Field/"The field">
+
+=back
+
+$obj-E<gt>B<nrLines>
+
+=over 4
+
+See L<Mail::Message::Field/"The field">
+
+=back
+
+$obj-E<gt>B<print>([FILEHANDLE])
+
+=over 4
+
+See L<Mail::Message::Field/"The field">
+
+=back
+
+$obj-E<gt>B<size>
+
+=over 4
+
+See L<Mail::Message::Field/"The field">
+
+=back
+
+$obj-E<gt>B<string>([WRAP])
+
+=over 4
+
+See L<Mail::Message::Field/"The field">
+
+=back
+
+$obj-E<gt>B<toDisclose>
+
+=over 4
+
+See L<Mail::Message::Field/"The field">
+
+=back
+
+=head2 Access to the name
+
+
+$obj-E<gt>B<Name>
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the name">
+
+=back
+
+$obj-E<gt>B<name>
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the name">
+
+=back
+
+$obj-E<gt>B<wellformedName>([STRING])
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the name">
+
+=back
+
+=head2 Access to the body
+
+
+$obj-E<gt>B<body>
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the body">
+
+=back
+
+$obj-E<gt>B<decodedBody>(OPTIONS)
+
+=over 4
+
+See L<Mail::Message::Field::Full/"Access to the body">
+
+=back
+
+$obj-E<gt>B<folded>
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the body">
+
+=back
+
+$obj-E<gt>B<foldedBody>([BODY])
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the body">
+
+=back
+
+$obj-E<gt>B<stripCFWS>([STRING])
+
+Mail::Message::Field::Unstructured-E<gt>B<stripCFWS>([STRING])
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the body">
+
+=back
+
+$obj-E<gt>B<unfoldedBody>([BODY, [WRAP]])
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the body">
+
+=back
+
+=head2 Access to the content
+
+
+$obj-E<gt>B<addAttribute>(...)
+
+=over 4
 
 Attributes are not supported for unstructured fields.
 
-=item B<addComment> ...
+=back
+
+$obj-E<gt>B<addComment>(...)
+
+=over 4
 
 Comments are not supported for unstructured fields.
 
-=item B<addExtra> ...
+=back
+
+$obj-E<gt>B<addExtra>(...)
+
+=over 4
 
 Extras are not supported for unstructured fields.
 
-=item B<addPhrase> STRING, OPTIONS
-
-See Mail::Message::Field::Full::addPhrase()
-
-=item B<attributes> 
-
-See Mail::Message::Field::Full::attributes()
-
-=item B<clone> 
-
-See Mail::Message::Field::clone()
-
-=item B<createComment> STRING, OPTIONS
-
-See Mail::Message::Field::Full::createComment()
-
-=item B<createPhrase> STRING, OPTIONS
-
-See Mail::Message::Field::Full::createPhrase()
-
-=item B<isStructured> 
-
-See Mail::Message::Field::isStructured()
-
-=item B<length> 
-
-See Mail::Message::Field::length()
-
 =back
 
-=head2 Access to the Field
+$obj-E<gt>B<addPhrase>(STRING, OPTIONS)
 
 =over 4
 
-=item B<Name> 
-
-See Mail::Message::Field::Name()
-
-=item B<addresses> 
-
-See Mail::Message::Field::addresses()
-
-=item B<attribute> NAME [, VALUE]
-
-See Mail::Message::Field::attribute()
-
-=item B<body> 
-
-See Mail::Message::Field::body()
-
-=item B<comment> [STRING]
-
-See Mail::Message::Field::comment()
-
-=item B<dateToTimestamp> STRING
-
-See Mail::Message::Field::dateToTimestamp()
-
-=item B<decodedBody> OPTIONS
-
-See Mail::Message::Field::Full::decodedBody()
-
-=item B<folded> 
-
-See Mail::Message::Field::folded()
-
-=item B<foldedBody> [BODY]
-
-See Mail::Message::Field::foldedBody()
-
-=item B<name> 
-
-See Mail::Message::Field::name()
-
-=item B<nrLines> 
-
-See Mail::Message::Field::nrLines()
-
-=item B<print> [FILEHANDLE]
-
-See Mail::Message::Field::print()
-
-=item B<size> 
-
-See Mail::Message::Field::size()
-
-=item B<string> [WRAP]
-
-See Mail::Message::Field::string()
-
-=item B<stripCFWS> [STRING]
-
-See Mail::Message::Field::stripCFWS()
-
-=item B<toDate> [TIME]
-
-See Mail::Message::Field::toDate()
-
-=item B<toDisclose> 
-
-See Mail::Message::Field::toDisclose()
-
-=item B<toInt> 
-
-See Mail::Message::Field::toInt()
-
-=item B<unfoldedBody> [BODY, [WRAP]]
-
-See Mail::Message::Field::unfoldedBody()
-
-=item B<wellformedName> [STRING]
-
-See Mail::Message::Field::wellformedName()
+See L<Mail::Message::Field::Full/"Access to the content">
 
 =back
 
-=head2 Reading and Writing [internals]
+$obj-E<gt>B<addresses>
 
 =over 4
 
-=item B<consume> LINE | (NAME,BODY|OBJECTS)
-
-See Mail::Message::Field::consume()
-
-=item B<consumeComment> STRING
-
-See Mail::Message::Field::Full::consumeComment()
-
-=item B<consumeDotAtom> STRING
-
-See Mail::Message::Field::Full::consumeDotAtom()
-
-=item B<consumePhrase> STRING
-
-See Mail::Message::Field::Full::consumePhrase()
-
-=item B<decode> STRING, OPTIONS
-
-See Mail::Message::Field::Full::decode()
-
-=item B<defaultWrapLength> [LENGTH]
-
-See Mail::Message::Field::defaultWrapLength()
-
-=item B<encode> STRING, OPTIONS
-
-See Mail::Message::Field::Full::encode()
-
-=item B<fold> NAME, BODY, [MAXCHARS]
-
-See Mail::Message::Field::fold()
-
-=item B<setWrapLength> [LENGTH]
-
-See Mail::Message::Field::setWrapLength()
-
-=item B<unfold> STRING
-
-See Mail::Message::Field::unfold()
+See L<Mail::Message::Field/"Access to the content">
 
 =back
 
-=head2 Logging and Tracing
+$obj-E<gt>B<attribute>(NAME [, VALUE])
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+See L<Mail::Message::Field/"Access to the content">
 
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<attributes>
 
 =over 4
 
-=item B<AUTOLOAD> 
-
-See Mail::Reporter::AUTOLOAD()
-
-=item B<DESTROY> 
-
-See Mail::Reporter::DESTROY()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+See L<Mail::Message::Field::Full/"Access to the content">
 
 =back
 
-=head1 SEE ALSO
+$obj-E<gt>B<comment>([STRING])
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+=over 4
 
-=head1 AUTHOR
+See L<Mail::Message::Field/"Access to the content">
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+=back
 
-=head1 VERSION
+$obj-E<gt>B<createComment>(STRING, OPTIONS)
 
-This code is beta, version 2.040.
+Mail::Message::Field::Unstructured-E<gt>B<createComment>(STRING, OPTIONS)
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+=over 4
+
+See L<Mail::Message::Field::Full/"Access to the content">
+
+=back
+
+$obj-E<gt>B<createPhrase>(STRING, OPTIONS)
+
+Mail::Message::Field::Unstructured-E<gt>B<createPhrase>(STRING, OPTIONS)
+
+=over 4
+
+See L<Mail::Message::Field::Full/"Access to the content">
+
+=back
+
+$obj-E<gt>B<toDate>([TIME])
+
+Mail::Message::Field::Unstructured-E<gt>B<toDate>([TIME])
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the content">
+
+=back
+
+$obj-E<gt>B<toInt>
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the content">
+
+=back
+
+=head2 Other methods
+
+
+$obj-E<gt>B<dateToTimestamp>(STRING)
+
+Mail::Message::Field::Unstructured-E<gt>B<dateToTimestamp>(STRING)
+
+=over 4
+
+See L<Mail::Message::Field/"Other methods">
+
+=back
+
+=head2 Internals
+
+
+$obj-E<gt>B<consume>(LINE | (NAME,BODY|OBJECTS))
+
+=over 4
+
+See L<Mail::Message::Field/"Internals">
+
+=back
+
+$obj-E<gt>B<consumeComment>(STRING)
+
+Mail::Message::Field::Unstructured-E<gt>B<consumeComment>(STRING)
+
+=over 4
+
+See L<Mail::Message::Field::Full/"Internals">
+
+=back
+
+$obj-E<gt>B<consumeDotAtom>(STRING)
+
+=over 4
+
+See L<Mail::Message::Field::Full/"Internals">
+
+=back
+
+$obj-E<gt>B<consumePhrase>(STRING)
+
+Mail::Message::Field::Unstructured-E<gt>B<consumePhrase>(STRING)
+
+=over 4
+
+See L<Mail::Message::Field::Full/"Internals">
+
+=back
+
+$obj-E<gt>B<decode>(STRING, OPTIONS)
+
+Mail::Message::Field::Unstructured-E<gt>B<decode>(STRING, OPTIONS)
+
+=over 4
+
+See L<Mail::Message::Field::Full/"Internals">
+
+=back
+
+$obj-E<gt>B<defaultWrapLength>([LENGTH])
+
+=over 4
+
+See L<Mail::Message::Field/"Internals">
+
+=back
+
+$obj-E<gt>B<encode>(STRING, OPTIONS)
+
+=over 4
+
+See L<Mail::Message::Field::Full/"Internals">
+
+=back
+
+$obj-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
+
+=over 4
+
+See L<Mail::Message::Field/"Internals">
+
+=back
+
+$obj-E<gt>B<setWrapLength>([LENGTH])
+
+=over 4
+
+See L<Mail::Message::Field/"Internals">
+
+=back
+
+$obj-E<gt>B<unfold>(STRING)
+
+=over 4
+
+See L<Mail::Message::Field/"Internals">
+
+=back
+
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Message::Field::Unstructured-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<errors>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Message::Field::Unstructured-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Message::Field::Unstructured-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Warning:> Field content is not numerical: $content
+
+The numeric value of a field is requested (for instance the C<Lines> or
+C<Content-Length> fields should be numerical), however the data contains
+weird characters.
+
+I<Warning:> Illegal character in charset '$charset'
+
+The field is created with an utf8 string which only contains data from the
+specified character set.  However, that character set can never be a valid
+name because it contains characters which are not permitted.
+
+I<Warning:> Illegal character in field name $name
+
+A new field is being created which does contain characters not permitted
+by the RFCs.  Using this field in messages may break other e-mail clients
+or transfer agents, and therefore mutulate or extinguish your message.
+
+I<Warning:> Illegal character in language '$lang'
+
+The field is created with data which is specified to be in a certain language,
+however, the name of the language cannot be valid: it contains characters
+which are not permitted by the RFCs.
+
+I<Warning:> Illegal encoding '$encoding', used 'q'
+
+The RFCs only permit base64 (C<b > or C<B >) or quoted-printable
+(C<q> or C<Q>) encoding.  Other than these four options are illegal.
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

@@ -3,16 +3,19 @@
 
 Mail::Message::Body::Delayed - body of a Mail::Message but not read yet.
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Message::Body::Delayed realizes a Mail::Message::Body
 
  Mail::Message::Body::Delayed
    is a Mail::Reporter
 
+
 =head1 SYNOPSIS
 
- See Mail::Message::Body
+ See L<Mail::Message::Body|Mail::Message::Body>
+
 
 =head1 DESCRIPTION
 
@@ -20,338 +23,299 @@ Message bodies of this type will be replaced by another type the moment you
 access the content.  In this documentation you will find the description of
 how a message body gets delay loaded.
 
+
+=head1 OVERLOADED
+
+
+overload: B<"">
+
+=over 4
+
+(stringification) Returns the body as string --which will trigger
+completion-- unless called to produce a string for C<Carp>.  The latter
+to avoid deep recursions.
+
+I<Example:> stringification of delayed body
+
+
+ print $msg->body;   # implicit by print
+
+ my $body = $msg->body;
+ my $x    = "$body"; # explicit by interpolation
+
+=back
+
+overload: B<@{}>
+
+=over 4
+
+When a body object is used as being an array reference, the lines of
+the body are returned.  This is the same as using the C<lines> method.
+
+=back
+
+overload: B<bool>
+
+=over 4
+
+Always returns a true value, which is needed to have overloaded
+objects to be used as in C<if($body)>.  Otherwise, C<if(defined $body)>
+would be needed to avoid a runtime error.
+
+=back
+
+
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+Mail::Message::Body::Delayed-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-=item B<new> OPTIONS
+ Option   Defined in       Default      
+ log      L<Mail::Reporter>  C<'WARNINGS'>
+ message                   <required>   
+ trace    L<Mail::Reporter>  C<'WARNINGS'>
 
-(Class method)
+. log LEVEL
 
- OPTION               DEFAULT
- based_on             undef
- charset              'us-ascii'
- checked              <false>
- data                 undef
- disposition          undef
- eol                  'NATIVE'
- file                 undef
- log                  'WARNINGS'
- message              <required>
- mime_type            'text/plain'
- modified             <false>
- trace                'WARNINGS'
- transfer_encoding    'NONE'
+. message MESSAGE
 
 =over 4
-
-=item B<based_on> =E<gt> BODY
-
-See Mail::Message::Body::new(based_on)
-
-=item B<charset> =E<gt> STRING
-
-See Mail::Message::Body::new(charset)
-
-=item B<checked> =E<gt> BOOLEAN
-
-See Mail::Message::Body::new(checked)
-
-=item B<data> =E<gt> ARRAY-OF-LINES | STRING
-
-See Mail::Message::Body::new(data)
-
-=item B<disposition> =E<gt> STRING|FIELD
-
-See Mail::Message::Body::new(disposition)
-
-=item B<eol> =E<gt> 'CR'|'LF'|'CRLF'|'NATIVE'
-
-See Mail::Message::Body::new(eol)
-
-=item B<file> =E<gt> FILENAME|FILEHANDLE|IOHANDLE
-
-See Mail::Message::Body::new(file)
-
-=item B<log> =E<gt> LEVEL
-
-See Mail::Reporter::new(log)
-
-=item B<message> =E<gt> MESSAGE
 
 The MESSAGE object which contains this delayed body.
 
-=item B<mime_type> =E<gt> STRING|FIELD|MIME
+=back
 
-See Mail::Message::Body::new(mime_type)
-
-=item B<modified> =E<gt> BOOLEAN
-
-See Mail::Message::Body::new(modified)
-
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
-
-=item B<transfer_encoding> =E<gt> STRING|FIELD
-
-See Mail::Message::Body::new(transfer_encoding)
+. trace LEVEL
 
 =back
 
-=back
+=head2 The body
 
-=head2 The Body
+
+$obj-E<gt>B<message>
 
 =over 4
 
-=item B<clone> 
-
-See Mail::Message::Body::clone()
-
-=item B<decoded> OPTIONS
-
-See Mail::Message::Body::decoded()
-
-=item B<guessSize> 
-
-=item B<isDelayed> 
-
-=item B<isModified> 
-
-See Mail::Message::Body::isModified()
-
-=item B<isMultipart> 
-
-=item B<isNested> 
-
-See Mail::Message::Body::isNested()
-
-=item B<message> 
-
-=item B<modified> [BOOLEAN]
-
-See Mail::Message::Body::modified()
-
-=item B<print> [FILEHANDLE]
-
-See Mail::Message::Body::print()
-
-=item B<printEscapedFrom> FILEHANDLE
-
-See Mail::Message::Body::printEscapedFrom()
-
 =back
 
-=head2 About the Payload
+=head2 About to the payload
+
+
+$obj-E<gt>B<guessSize>
 
 =over 4
 
-=item B<charset> 
-
-See Mail::Message::Body::charset()
-
-=item B<checked> [BOOLEAN]
-
-See Mail::Message::Body::checked()
-
-=item B<disposition> [STRING|FIELD]
-
-See Mail::Message::Body::disposition()
-
-=item B<eol> ['CR'|'LF'|'CRLF'|'NATIVE']
-
-See Mail::Message::Body::eol()
-
-=item B<isBinary> 
-
-See Mail::Message::Body::Encode::isBinary()
-
-=item B<isText> 
-
-See Mail::Message::Body::Encode::isText()
-
-=item B<mimeType> 
-
-See Mail::Message::Body::mimeType()
-
-=item B<nrLines> 
-
-=item B<size> 
-
-See Mail::Message::Body::size()
-
-=item B<transferEncoding> [STRING|FIELD]
-
-See Mail::Message::Body::transferEncoding()
-
-=item B<type> 
-
-See Mail::Message::Body::type()
-
 =back
 
-=head2 Access to the Payload
+$obj-E<gt>B<isDelayed>
 
 =over 4
 
-=item B<file> 
-
-See Mail::Message::Body::file()
-
-=item B<lines> 
-
-See Mail::Message::Body::lines()
-
-=item B<string> 
-
-See Mail::Message::Body::string()
-
 =back
 
-=head2 Constructing a Body
+$obj-E<gt>B<isModified>
 
 =over 4
 
-=item B<addTransferEncHandler> NAME, CLASS|OBJECT
-
-See Mail::Message::Body::Encode::addTransferEncHandler()
-
-=item B<attach> MESSAGES, OPTIONS
-
-See Mail::Message::Body::Construct::attach()
-
-=item B<check> 
-
-See Mail::Message::Body::Encode::check()
-
-=item B<concatenate> COMPONENTS
-
-See Mail::Message::Body::Construct::concatenate()
-
-=item B<encode> OPTIONS
-
-See Mail::Message::Body::Encode::encode()
-
-=item B<encoded> 
-
-See Mail::Message::Body::Encode::encoded()
-
-=item B<foreachLine> CODE
-
-See Mail::Message::Body::Construct::foreachLine()
-
-=item B<getTransferEncHandler> TYPE
-
-See Mail::Message::Body::Encode::getTransferEncHandler()
-
-=item B<stripSignature> OPTIONS
-
-See Mail::Message::Body::Construct::stripSignature()
-
-=item B<unify> BODY
-
-See Mail::Message::Body::Encode::unify()
-
 =back
 
-=head2 Reading and Writing [internals]
+$obj-E<gt>B<isMultipart>
 
 =over 4
 
-=item B<AUTOLOAD> 
+=back
 
-See Mail::Message::Body::AUTOLOAD()
+$obj-E<gt>B<modified>
 
-=item B<fileLocation> BEGIN, END
+=over 4
 
-=item B<load> 
+=back
+
+$obj-E<gt>B<nrLines>
+
+=over 4
+
+=back
+
+=head2 Internals
+
+
+$obj-E<gt>B<fileLocation>(BEGIN, END)
+
+=over 4
+
+=back
+
+$obj-E<gt>B<load>
+
+=over 4
 
 Returns the loaded version of this body.
 
-=item B<moveLocation> DISTANCE
-
-=item B<read> PARSER, HEAD, BODYTYPE
-
 =back
 
-=head2 Logging and Tracing
+$obj-E<gt>B<moveLocation>(DISTANCE)
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
-
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<read>(PARSER, HEAD, BODYTYPE)
 
 =over 4
 
-=item B<DESTROY> 
+=back
 
-See Mail::Reporter::DESTROY()
+=head2 Error handling
 
-=item B<inGlobalDestruction> 
 
-See Mail::Reporter::inGlobalDestruction()
+$obj-E<gt>B<AUTOLOAD>
 
-=item B<logPriority> LEVEL
+=over 4
 
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head1 SEE ALSO
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+Mail::Message::Body::Delayed-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
-=head1 AUTHOR
+=over 4
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+See L<Mail::Reporter/"Error handling">
 
-=head1 VERSION
+=back
 
-This code is beta, version 2.040.
+$obj-E<gt>B<errors>
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Message::Body::Delayed-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Message::Body::Delayed-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

@@ -2,11 +2,13 @@ use strict;
 use warnings;
 
 package Mail::Transport;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use Carp;
 use File::Spec;
+
 
 my %mailers =
  ( exim     => '::Exim'
@@ -19,6 +21,9 @@ my %mailers =
  , sendmail => '::Sendmail'
  , smtp     => '::SMTP'
  );
+
+#------------------------------------------
+
 
 sub new(@)
 {   my $class = shift;
@@ -74,15 +79,24 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
+
 sub remoteHost()
 {   my $self = shift;
     @$self{ qw/MT_hostname MT_port MT_username MT_password/ };
 }
 
+#------------------------------------------
+
+
 sub retry()
 {   my $self = shift;
     @$self{ qw/MT_interval MT_retry MT_timeout/ };
 }
+
+#------------------------------------------
+
 
 my @safe_directories
    = qw(/usr/local/bin /usr/bin /bin /sbin /usr/sbin /usr/lib);
@@ -100,5 +114,8 @@ sub findBinary($@)
 
     undef;
 }
+
+#------------------------------------------
+
 
 1;

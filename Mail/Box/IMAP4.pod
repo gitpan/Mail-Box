@@ -3,17 +3,20 @@
 
 Mail::Box::IMAP4 - handle IMAP4 folders as client
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Box::IMAP4
    is a Mail::Box::Net
    is a Mail::Box
    is a Mail::Reporter
 
+
 =head1 SYNOPSIS
 
  use Mail::Box::IMAP4;
  my $folder = new Mail::Box::IMAP4 folder => $ENV{MAIL}, ...;
+
 
 =head1 DESCRIPTION
 
@@ -25,195 +28,183 @@ using the IMAP4 protocol.  This class uses Mail::Transport::IMAP4 to
 hide the transport of information, and focusses solely on the correct
 handling of messages within a IMAP4 folder.
 
-=head1 METHODS
 
-=head2 Initiation
+=head1 OVERLOADED
+
+
+overload: B<"">
 
 =over 4
 
-=item B<new> OPTIONS
+See L<Mail::Box/"OVERLOADED">
 
-(Class method) 
+=back
+
+overload: B<@{}>
+
+=over 4
+
+See L<Mail::Box/"OVERLOADED">
+
+=back
+
+overload: B<cmp>
+
+=over 4
+
+See L<Mail::Box/"OVERLOADED">
+
+=back
+
+
+=head1 METHODS
+
+
+=head2 Constructors
+
+
+$obj-E<gt>B<create>(FOLDER, OPTIONS)
+
+Mail::Box::IMAP4-E<gt>B<create>(FOLDER, OPTIONS)
+
+=over 4
+
+See L<Mail::Box::Net/"METHODS">
+
+=back
+
+Mail::Box::IMAP4-E<gt>B<new>(OPTIONS)
+
+=over 4
+
 For authentications, you
 have three choices: specify a foldername which resembles an URL, or
 specify a pop-client object, or separate options for user, password,
 pop-server and server-port.
 
- OPTION               DEFAULT
- access               'r'
- authenticate         'AUTO'
- body_delayed_type    'Mail::Message::Body::Delayed'
- body_type            'Mail::Message::Body::Lines'
- coerce_options       []
- create               <false>
- extract              10240
- field_type           undef
- fix_headers          <false>
- folder               '/'
- folderdir            <not used>
- head_delayed_type    'Mail::Message::Head::Delayed'
- head_type            'Mail::Message::Head::Complete'
- imap_client          undef
- keep_dups            <false>
- lock_file            undef
- lock_timeout         1 hour
- lock_type            'NONE'
- lock_wait            10 seconds
- locker               undef
- log                  'WARNINGS'
- manager              undef
- message_type         'Mail::Box::IMAP4::Message'
- multipart_type       'Mail::Message::Body::Multipart'
- password             undef
- remove_when_empty    <false>
- save_on_exit         <true>
- server_name          undef
- server_port          143
- sub_sep              <autodetect>
- trace                'WARNINGS'
- trusted              <false>
- username             undef
+ Option             Defined in       Default                                                         
+ access             L<Mail::Box>     C<'r'>                                                          
+ authenticate                        C<'AUTO'>                                                       
+ body_delayed_type  L<Mail::Box>     L<Mail::Message::Body::Delayed|Mail::Message::Body::Delayed>    
+ body_type          L<Mail::Box>     L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>        
+ coerce_options     L<Mail::Box>     C<[]>                                                           
+ create             L<Mail::Box>     <false>                                                         
+ extract            L<Mail::Box>     C<10240>                                                        
+ field_type         L<Mail::Box>     undef                                                           
+ fix_headers        L<Mail::Box>     <false>                                                         
+ folder             L<Mail::Box>     C<'/'>                                                          
+ folderdir          L<Mail::Box>     <not used>                                                      
+ head_delayed_type  L<Mail::Box>     L<Mail::Message::Head::Delayed|Mail::Message::Head::Delayed>    
+ head_type          L<Mail::Box>     L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>  
+ imap_client                         undef                                                           
+ keep_dups          L<Mail::Box>     <false>                                                         
+ lock_file          L<Mail::Box>     undef                                                           
+ lock_timeout       L<Mail::Box>     1 hour                                                          
+ lock_type          L<Mail::Box>     C<'NONE'>                                                       
+ lock_wait          L<Mail::Box>     10 seconds                                                      
+ locker             L<Mail::Box>     undef                                                           
+ log                L<Mail::Reporter>  C<'WARNINGS'>                                                   
+ manager            L<Mail::Box>     undef                                                           
+ message_type       L<Mail::Box>     L<Mail::Box::IMAP4::Message|Mail::Box::IMAP4::Message>          
+ multipart_type     L<Mail::Box>     L<Mail::Message::Body::Multipart|Mail::Message::Body::Multipart>
+ password           L<Mail::Box::Net>  undef                                                           
+ remove_when_empty  L<Mail::Box>     <false>                                                         
+ save_on_exit       L<Mail::Box>     <true>                                                          
+ server_name        L<Mail::Box::Net>  undef                                                           
+ server_port        L<Mail::Box::Net>  143                                                             
+ sub_sep                             <autodetect>                                                    
+ trace              L<Mail::Reporter>  C<'WARNINGS'>                                                   
+ trusted            L<Mail::Box>     <false>                                                         
+ username           L<Mail::Box::Net>  undef                                                           
+
+. access MODE
+
+. authenticate 'KERBEROS_V4'|'GSSAPI'|'SKEY'|'AUTO'
 
 =over 4
-
-=item B<access> =E<gt> MODE
-
-See Mail::Box::new(access)
-
-=item B<authenticate> =E<gt> 'KERBEROS_V4'|'GSSAPI'|'SKEY'|'AUTO'
 
 IMAP defines various authentications mechanisms.
 See Mail::Transport::IMAP4::new(authenticate).
 
-=item B<body_delayed_type> =E<gt> CLASS
+=back
 
-See Mail::Box::new(body_delayed_type)
+. body_delayed_type CLASS
 
-=item B<body_type> =E<gt> CLASS|CODE
+. body_type CLASS|CODE
 
-See Mail::Box::new(body_type)
+. coerce_options ARRAY
 
-=item B<coerce_options> =E<gt> ARRAY
+. create BOOLEAN
 
-See Mail::Box::new(coerce_options)
+. extract INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
 
-=item B<create> =E<gt> BOOLEAN
+. field_type CLASS
 
-See Mail::Box::new(create)
+. fix_headers BOOLEAN
 
-=item B<extract> =E<gt> INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
+. folder FOLDERNAME
 
-See Mail::Box::new(extract)
+. folderdir DIRECTORY
 
-=item B<field_type> =E<gt> CLASS
+. head_delayed_type CLASS
 
-See Mail::Box::new(field_type)
+. head_type CLASS
 
-=item B<fix_headers> =E<gt> BOOLEAN
+. imap_client OBJECT
 
-See Mail::Box::new(fix_headers)
-
-=item B<folder> =E<gt> FOLDERNAME
-
-See Mail::Box::new(folder)
-
-=item B<folderdir> =E<gt> DIRECTORY
-
-See Mail::Box::new(folderdir)
-
-=item B<head_delayed_type> =E<gt> CLASS
-
-See Mail::Box::new(head_delayed_type)
-
-=item B<head_type> =E<gt> CLASS
-
-See Mail::Box::new(head_type)
-
-=item B<imap_client> =E<gt> OBJECT
+=over 4
 
 You may want to specify your own imap-client object.  The object
-which is passed must extend Mail::Transport::IMAP4.
+which is passed must extend L<Mail::Transport::IMAP4|Mail::Transport::IMAP4>.
 
-=item B<keep_dups> =E<gt> BOOLEAN
+=back
 
-See Mail::Box::new(keep_dups)
+. keep_dups BOOLEAN
 
-=item B<lock_file> =E<gt> FILENAME
+. lock_file FILENAME
 
-See Mail::Box::new(lock_file)
+. lock_timeout SECONDS
 
-=item B<lock_timeout> =E<gt> SECONDS
+. lock_type CLASS|STRING
 
-See Mail::Box::new(lock_timeout)
+. lock_wait SECONDS
 
-=item B<lock_type> =E<gt> CLASS|STRING
+. locker OBJECT
 
-See Mail::Box::new(lock_type)
+. log LEVEL
 
-=item B<lock_wait> =E<gt> SECONDS
+. manager MANAGER
 
-See Mail::Box::new(lock_wait)
+. message_type CLASS
 
-=item B<locker> =E<gt> OBJECT
+. multipart_type CLASS
 
-See Mail::Box::new(locker)
+. password STRING
 
-=item B<log> =E<gt> LEVEL
+. remove_when_empty BOOLEAN
 
-See Mail::Reporter::new(log)
+. save_on_exit BOOLEAN
 
-=item B<manager> =E<gt> MANAGER
+. server_name HOSTNAME
 
-See Mail::Box::new(manager)
+. server_port INTEGER
 
-=item B<message_type> =E<gt> CLASS
+. sub_sep CHARACTER
 
-See Mail::Box::new(message_type)
-
-=item B<multipart_type> =E<gt> CLASS
-
-See Mail::Box::new(multipart_type)
-
-=item B<password> =E<gt> STRING
-
-See Mail::Box::Net::new(password)
-
-=item B<remove_when_empty> =E<gt> BOOLEAN
-
-See Mail::Box::new(remove_when_empty)
-
-=item B<save_on_exit> =E<gt> BOOLEAN
-
-See Mail::Box::new(save_on_exit)
-
-=item B<server_name> =E<gt> HOSTNAME
-
-See Mail::Box::Net::new(server_name)
-
-=item B<server_port> =E<gt> INTEGER
-
-See Mail::Box::Net::new(server_port)
-
-=item B<sub_sep> =E<gt> CHARACTER
+=over 4
 
 A single character used as sub-folder indicator.  The IMAP protocol is
 able to find-out the right separator itself.
 
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
-
-=item B<trusted> =E<gt> BOOLEAN
-
-See Mail::Box::new(trusted)
-
-=item B<username> =E<gt> STRING
-
-See Mail::Box::Net::new(username)
-
 =back
 
-Examples:
+. trace LEVEL
+
+. trusted BOOLEAN
+
+. username STRING
+
+I<Example:> 
 
  my $imap = Mail::Box::IMAP4->new('imap4://user:password@imap.xs4all.nl');
 
@@ -222,317 +213,615 @@ Examples:
 
 =back
 
-=head2 Opening folders
+=head2 The folder
+
+
+$obj-E<gt>B<addMessage>(MESSAGE)
 
 =over 4
 
-=item B<clone> OPTIONS
-
-See Mail::Box::clone()
-
-=item B<create> FOLDER, OPTIONS
-
-See Mail::Box::Net::create()
-
-=item B<folderdir> [DIRECTORY]
-
-See Mail::Box::Net::folderdir()
-
-=item B<foundIn> [FOLDERNAME], OPTIONS
-
-See Mail::Box::foundIn()
+See L<Mail::Box/"The folder">
 
 =back
 
-=head2 On open folders
+$obj-E<gt>B<addMessages>(MESSAGE [, MESSAGE, ...])
 
 =over 4
 
-=item B<addMessage> MESSAGE
-
-See Mail::Box::addMessage()
-
-=item B<addMessages> MESSAGE [, MESSAGE, ...]
-
-See Mail::Box::addMessages()
-
-=item B<copyTo> FOLDER, OPTIONS
-
-See Mail::Box::copyTo()
-
-=item B<isModified> 
-
-See Mail::Box::isModified()
-
-=item B<modified> [BOOLEAN]
-
-See Mail::Box::modified()
-
-=item B<name> 
-
-See Mail::Box::name()
-
-=item B<organization> 
-
-See Mail::Box::organization()
-
-=item B<type> 
-
-See Mail::Box::type()
-
-=item B<update> OPTIONS
-
-See Mail::Box::update()
-
-=item B<url> 
-
-See Mail::Box::url()
-
-=item B<writable> 
-
-See Mail::Box::writable()
-
-=item B<write> OPTIONS
-
-See Mail::Box::write()
+See L<Mail::Box/"The folder">
 
 =back
 
-=head2 Closing the folder
+Mail::Box::IMAP4-E<gt>B<appendMessages>(OPTIONS)
 
 =over 4
 
-=item B<DESTROY> 
+See L<Mail::Box/"The folder">
 
-See Mail::Box::DESTROY()
+=back
 
-=item B<close> OPTIONS
+$obj-E<gt>B<close>(OPTIONS)
 
-See Mail::Box::close()
+=over 4
 
-=item B<delete> 
+See L<Mail::Box/"The folder">
 
-See Mail::Box::delete()
+=back
+
+$obj-E<gt>B<copyTo>(FOLDER, OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"The folder">
+
+=back
+
+$obj-E<gt>B<delete>
+
+=over 4
+
+See L<Mail::Box/"The folder">
+
+=back
+
+$obj-E<gt>B<folderdir>([DIRECTORY])
+
+=over 4
+
+See L<Mail::Box::Net/"METHODS">
+
+=back
+
+Mail::Box::IMAP4-E<gt>B<foundIn>([FOLDERNAME], OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"The folder">
+
+=back
+
+$obj-E<gt>B<name>
+
+=over 4
+
+See L<Mail::Box/"The folder">
+
+=back
+
+$obj-E<gt>B<organization>
+
+=over 4
+
+See L<Mail::Box/"The folder">
+
+=back
+
+$obj-E<gt>B<type>
+
+=over 4
+
+See L<Mail::Box/"The folder">
+
+=back
+
+$obj-E<gt>B<update>(OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"The folder">
+
+=back
+
+$obj-E<gt>B<url>
+
+=over 4
+
+See L<Mail::Box/"The folder">
+
+=back
+
+=head2 Folder flags
+
+
+$obj-E<gt>B<isModified>
+
+=over 4
+
+See L<Mail::Box/"Folder flags">
+
+=back
+
+$obj-E<gt>B<modified>([BOOLEAN])
+
+=over 4
+
+See L<Mail::Box/"Folder flags">
+
+=back
+
+$obj-E<gt>B<writable>
+
+=over 4
+
+See L<Mail::Box/"Folder flags">
 
 =back
 
 =head2 The messages
 
+
+$obj-E<gt>B<current>([NUMBER|MESSAGE|MESSAGE-ID])
+
 =over 4
 
-=item B<current> [NUMBER|MESSAGE|MESSAGE-ID]
+See L<Mail::Box/"The messages">
 
-See Mail::Box::current()
+=back
 
-=item B<find> MESSAGE-ID
+$obj-E<gt>B<find>(MESSAGE-ID)
 
-See Mail::Box::find()
+=over 4
 
-=item B<message> INDEX [,MESSAGE]
+See L<Mail::Box/"The messages">
 
-See Mail::Box::message()
+=back
 
-=item B<messageId> MESSAGE-ID [,MESSAGE]
+$obj-E<gt>B<message>(INDEX [,MESSAGE])
 
-See Mail::Box::messageId()
+=over 4
 
-=item B<messageIds> 
+See L<Mail::Box/"The messages">
 
-See Mail::Box::messageIds()
+=back
 
-=item B<messages> ['ALL',RANGE,'ACTIVE','DELETED',LABEL,!LABEL,FILTER]
+$obj-E<gt>B<messageId>(MESSAGE-ID [,MESSAGE])
 
-See Mail::Box::messages()
+=over 4
 
-=item B<scanForMessages> MESSAGE, MESSAGE-IDS, TIMESTAMP, WINDOW
+See L<Mail::Box/"The messages">
 
-See Mail::Box::scanForMessages()
+=back
+
+$obj-E<gt>B<messageIds>
+
+=over 4
+
+See L<Mail::Box/"The messages">
+
+=back
+
+$obj-E<gt>B<messages>(['ALL',RANGE,'ACTIVE','DELETED',LABEL,!LABEL,FILTER])
+
+=over 4
+
+See L<Mail::Box/"The messages">
+
+=back
+
+$obj-E<gt>B<scanForMessages>(MESSAGE, MESSAGE-IDS, TIMESPAN, WINDOW)
+
+=over 4
+
+See L<Mail::Box/"The messages">
 
 =back
 
 =head2 Sub-folders
 
+
+$obj-E<gt>B<listSubFolders>(OPTIONS)
+
+Mail::Box::IMAP4-E<gt>B<listSubFolders>(OPTIONS)
+
 =over 4
 
-=item B<listSubFolders> OPTIONS
-
-See Mail::Box::listSubFolders()
-
-=item B<nameOfSubfolder> NAME
-
-See Mail::Box::nameOfSubfolder()
-
-=item B<openRelatedFolder> OPTIONS
-
-See Mail::Box::openRelatedFolder()
-
-=item B<openSubFolder> NAME, OPTIONS
-
-See Mail::Box::openSubFolder()
+See L<Mail::Box/"Sub-folders">
 
 =back
 
-=head2 Message threads [internals]
+$obj-E<gt>B<nameOfSubfolder>(NAME)
 
 =over 4
 
-=item B<toBeThreaded> MESSAGES
-
-See Mail::Box::toBeThreaded()
-
-=item B<toBeUnthreaded> MESSAGES
-
-See Mail::Box::toBeUnthreaded()
+See L<Mail::Box/"Sub-folders">
 
 =back
 
-=head2 Reading and Writing [internals]
+$obj-E<gt>B<openRelatedFolder>(OPTIONS)
 
 =over 4
 
-=item B<appendMessages> OPTIONS
+See L<Mail::Box/"Sub-folders">
 
-See Mail::Box::appendMessages()
+=back
 
-=item B<coerce> MESSAGE
+$obj-E<gt>B<openSubFolder>(NAME, OPTIONS)
 
-See Mail::Box::coerce()
+=over 4
 
-=item B<determineBodyType> MESSAGE, HEAD
+See L<Mail::Box/"Sub-folders">
 
-See Mail::Box::determineBodyType()
+=back
 
-=item B<getHead> MESSAGE
+=head2 Internals
+
+
+$obj-E<gt>B<coerce>(MESSAGE)
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<determineBodyType>(MESSAGE, HEAD)
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<getHead>(MESSAGE)
+
+=over 4
 
 Read the header for the specified message from the remote server.
 C<undef> is returned in case the message disappeared.
 
-=item B<getHeadAndBody> MESSAGE
+=back
+
+$obj-E<gt>B<getHeadAndBody>(MESSAGE)
+
+=over 4
 
 Read all data for the specified message from the remote server.
 Return head and body of the mesasge as list, or an empty list
 if the MESSAGE disappeared from the server.
 
-=item B<imapClient> 
+=back
 
-Returns the imap client object: a Mail::Transport::IMAP4 object.
+$obj-E<gt>B<imapClient>
+
+=over 4
+
+Returns the IMAP client object: a L<Mail::Transport::IMAP4|Mail::Transport::IMAP4> object.
 This does not establish the connection.
 
-=item B<lineSeparator> [STRING|'CR'|'LF'|'CRLF']
-
-See Mail::Box::lineSeparator()
-
-=item B<locker> 
-
-See Mail::Box::locker()
-
-=item B<read> OPTIONS
-
-See Mail::Box::read()
-
-=item B<readMessages> OPTIONS
-
-See Mail::Box::readMessages()
-
-=item B<storeMessage> MESSAGE
-
-See Mail::Box::storeMessage()
-
-=item B<updateMessages> OPTIONS
-
-See Mail::Box::updateMessages()
-
-=item B<writeMessages> OPTIONS
-
-See Mail::Box::writeMessages()
-
 =back
 
-=head2 Logging and Tracing
+$obj-E<gt>B<lineSeparator>([STRING|'CR'|'LF'|'CRLF'])
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+See L<Mail::Box/"Internals">
 
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<locker>
 
 =over 4
 
-=item B<AUTOLOAD> 
-
-See Mail::Reporter::AUTOLOAD()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
-
-=item B<timespan2seconds> TIME
-
-See Mail::Box::timespan2seconds()
+See L<Mail::Box/"Internals">
 
 =back
 
-=head1 IMPLEMENTATION
+$obj-E<gt>B<read>(OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<readMessages>(OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<storeMessage>(MESSAGE)
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<toBeThreaded>(MESSAGES)
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<toBeUnthreaded>(MESSAGES)
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<updateMessages>(OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<write>(OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<writeMessages>(OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+=head2 Other methods
+
+
+$obj-E<gt>B<timespan2seconds>(TIME)
+
+Mail::Box::IMAP4-E<gt>B<timespan2seconds>(TIME)
+
+=over 4
+
+See L<Mail::Box/"Other methods">
+
+=back
+
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Box::IMAP4-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<errors>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Box::IMAP4-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Box::IMAP4-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Box/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Cannot create IMAP4 client $url.
+
+Connecting to the specified IMAP4 server failed.  A message about the reason
+is produced as well.
+
+I<Warning:> Cannot find head back for $uidl in $folder.
+
+The header was read before, but now seems empty: the IMAP4 server does
+not produce the header lines anymore.
+
+I<Warning:> Cannot read body for $uidl in $folder.
+
+The header of the message was retreived from the IMAP4 server, but the
+body is not read, for an unknown reason.
+
+I<Warning:> Changes not written to read-only folder $self.
+
+You have opened the folder read-only --which is the default set
+by L<new(access)|Mail::Box/"Constructors">--, made modifications, and now want to close it.
+Set L<close(force)|"The folder"> if you want to overrule the access mode, or close
+the folder with L<close(write)|"The folder"> set to C<NEVER>.
+
+I<Error:> Copying failed for one message.
+
+For some reason, for instance disc full, removed by external process, or
+read-protection, it is impossible to copy one of the messages.  Copying will
+proceed for the other messages.
+
+I<Error:> Destination folder $name is not writable.
+
+The folder where the messages are copied to is not opened with write
+access (see L<new(access)|Mail::Box/"Constructors">).  This has no relation with write permission
+to the folder which is controled by your operating system.
+
+I<Warning:> Different messages with id $msgid.
+
+The message id is discovered more than once within the same folder, but the
+content of the message seems to be different.  This should not be possible:
+each message must be unique.
+
+I<Error:> Folder $name is opened read-only
+
+You can not write to this folder unless you have opened the folder to
+write or append with L<new(access)|Mail::Box/"Constructors">, or the C<force> option is set true.
+
+I<Error:> Folder $name not deleted: not writable.
+
+The folder must be opened with write access via L<new(access)|Mail::Box/"Constructors">, otherwise
+removing it will be refused.  So, you may have write-access according to
+the operating system, but that will not automatically mean that this
+C<delete> method permits you to.  The reverse remark is valid as well.
+
+I<Error:> Invalid timespan '$timespan' specified.
+
+The string does not follow the strict rules of the time span syntax which
+is permitted as parameter.
+
+I<Warning:> Message $uidl disappeared from $folder.
+
+Trying to get the specific message from the server, but it appears to be
+gone.
+
+I<Warning:> Message $uidl disappeared from $folder.
+
+Trying to get the specific message from the server, but it appears to be
+gone.
+
+I<Warning:> Message-id '$msgid' does not contain a domain.
+
+According to the RFCs, message-ids need to contain a unique random part,
+then an C<@>, and then a domain name.  This is made to avoid the creation
+of two messages with the same id.  The warning emerges when the C<@> is
+missing from the string.
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+I<Error:> Unable to create subfolder $name of $folder.
+
+The copy includes the subfolders, but for some reason it was not possible
+to copy one of these.  Copying will proceed for all other sub-folders.
+
+I<Error:> Writing folder $name failed
+
+For some reason (you probably got more error messages about this problem)
+it is impossible to write the folder, although you should because there
+were changes made.
+
+
+=head1 DETAILS
+
 
 =head2 How IMAP4 folders work
 
+
 =head2 This implementation
 
-=head1 SEE ALSO
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
 
-=head1 AUTHOR
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
 
-=head1 VERSION
 
-This code is beta, version 2.040.
+=head1 REFERENCES
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

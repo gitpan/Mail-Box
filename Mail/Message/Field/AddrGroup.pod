@@ -3,13 +3,16 @@
 
 Mail::Message::Field::AddrGroup - A group of Mail::Message::Field::Address objects
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Message::Field::AddrGroup
    is a Mail::Reporter
 
+
 =head1 SYNOPSIS
 
+ !! UNDER CONSTRUCTION !!
  my $g = Mail::Message::Field::AddrGroup->new('name');
 
  my $a = Mail::Message::Field::Address->new(...);
@@ -18,132 +21,216 @@ Mail::Message::Field::AddrGroup - A group of Mail::Message::Field::Address objec
  my $f = Mail::Message::Field::Addresses->new;
  $f->addGroup($g);
 
+
 =head1 DESCRIPTION
+
+
 
 
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+Mail::Message::Field::AddrGroup-E<gt>B<new>(DATA)
 
 =over 4
 
-=item B<addAddress> ADDRESS|OPTIONS
+ Option  Defined in       Default      
+ log     L<Mail::Reporter>  C<'WARNINGS'>
+ trace   L<Mail::Reporter>  C<'WARNINGS'>
 
-=item B<addresses> 
+. log LEVEL
 
-Returns all addresses defined in this group.
+. trace LEVEL
 
-=item B<name> 
+I<Example:> 
+
+
+=back
+
+=head2 The group
+
+
+$obj-E<gt>B<addAddress>(ADDRESS|OPTIONS)
+
+=over 4
+
+=back
+
+$obj-E<gt>B<name>
+
+=over 4
 
 Returns the name of this group.
 
-=item B<new> DATA
+=back
 
-(Class method)
-
- OPTION               DEFAULT
- log                  'WARNINGS'
- trace                'WARNINGS'
+$obj-E<gt>B<string>
 
 =over 4
 
-=item B<log> =E<gt> LEVEL
-
-See Mail::Reporter::new(log)
-
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
+Returns the address group as string.
 
 =back
 
-Examples:
+=head2 The addresses
 
-=item B<string> 
 
-Returns the group as string.
-
-=back
-
-=head2 Logging and Tracing
+$obj-E<gt>B<addresses>
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+Returns all addresses defined in this group.
 
 =back
 
-=head2 Other Methods
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
 
 =over 4
 
-=item B<AUTOLOAD> 
-
-See Mail::Reporter::AUTOLOAD()
-
-=item B<DESTROY> 
-
-See Mail::Reporter::DESTROY()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head1 SEE ALSO
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+Mail::Message::Field::AddrGroup-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
-=head1 AUTHOR
+=over 4
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+See L<Mail::Reporter/"Error handling">
 
-=head1 VERSION
+=back
 
-This code is beta, version 2.040.
+$obj-E<gt>B<errors>
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Message::Field::AddrGroup-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Message::Field::AddrGroup-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

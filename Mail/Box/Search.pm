@@ -1,11 +1,14 @@
+
 package Mail::Box::Search;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use strict;
 use warnings;
 
 use Carp;
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -47,6 +50,9 @@ sub init($)
 
     $self;
 }
+
+#-------------------------------------------
+
 
 sub search(@)
 {   my ($self, $object) = @_;
@@ -93,6 +99,10 @@ sub search(@)
     $limit < 0 ? reverse @selected : @selected;
 }
 
+
+#-------------------------------------------
+
+
 sub searchPart($)
 {  my ($self, $part) = @_;
 
@@ -138,10 +148,22 @@ sub searchPart($)
    $matched;
 }
 
+#-------------------------------------------
+
+
 sub inHead(@) {shift->notImplemented}
+
+#-------------------------------------------
+
 
 sub inBody(@) {shift->notImplemented}
 
+#-------------------------------------------
+
+
 sub printMatch($) {shift->notImplemented}
+
+#-------------------------------------------
+
 
 1;

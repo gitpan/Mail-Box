@@ -1,8 +1,10 @@
+
 use strict;
 use warnings;
 
 package Mail::Message::Convert::MailInternet;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Convert';
 
 use Mail::Internet;
@@ -12,6 +14,7 @@ use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
 
 use Carp;
+
 
 sub export($@)
 {   my ($thing, $message) = (shift, shift);
@@ -32,6 +35,9 @@ sub export($@)
      , @_
      );
 }
+
+#------------------------------------------
+
 
 my @pref_order = qw/From To Cc Subject Date In-Reply-To References
     Content-Type Lines Content-Length/;
@@ -54,7 +60,7 @@ sub from($@)
     {   push @tags, $_ if delete $tags{lc $_};
     }
     push @tags, sort values %tags;
-
+    
     foreach my $name (@tags)
     {   $head->add($name, $_)
             foreach $mi_head->get($name);
@@ -62,5 +68,7 @@ sub from($@)
 
     Mail::Message->new(head => $head, body => $body, @_);
 }
+
+#------------------------------------------
 
 1;

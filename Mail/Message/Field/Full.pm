@@ -2,7 +2,8 @@ use strict;
 use warnings;
 
 package Mail::Message::Field::Full;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Field';
 
 use Mail::Message::Field::Attribute;
@@ -13,6 +14,7 @@ use MIME::QuotedPrint ();
 
 use Carp;
 my $atext = q[a-zA-Z0-9!#\$%&'*+\-\/=?^_`{|}~];  # from RFC
+
 
 my %implementation
  = ( from => 'Addresses', to  => 'Addresses', sender     => 'Addresses'
@@ -83,10 +85,88 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
+sub clone()
+{   my $self = shift;
+    croak;
+}
+
+#------------------------------------------
+
+sub length()
+{   my $self = shift;
+    croak;
+}
+
+#------------------------------------------
+
+sub name() { lc shift->{MMFF_name}}
+
+#------------------------------------------
+
+sub Name() { shift->{MMFF_name}}
+
+#------------------------------------------
+
+sub folded(;$)
+{   my $self = shift;
+    return $self->{MMFF_name}.':'.$self->foldedBody
+        unless wantarray;
+
+    my @lines = $self->foldedBody;
+    my $first = $self->{MMFF_name}. ':'. shift @lines;
+    ($first, @lines);
+}
+
+#------------------------------------------
+
+sub unfoldedBody($;@)
+{   my $self = shift;
+    if(@_)
+    {   my $part = join ' ', @_;
+        $self->{MMFF_body}  = $self->fold($self->{MMFF_name}, $part);
+        $self->{MMFF_parts} = [ $part ];
+        return $part;
+    }
+
+    join(' ', @{$self->{MMFF_parts}});
+}
+
+#------------------------------------------
+
+sub foldedBody($)
+{   my ($self, $body) = @_;
+
+       if(@_==2) { $self->{MMFF_body} = $body }
+    elsif($body = $self->{MMFF_body}) { ; }
+    else
+    {   # Create a new folded body from the parts.
+        $self->{MMFF_body} = $body
+           = $self->fold($self->{MMFF_name}, join(' ', @{$self->{MMFF_parts}}));
+    }
+
+    wantarray ? (split /^/, $body) : $body;
+}
+
+#------------------------------------------
+
+
 sub from($@)
 {   my ($class, $field) = (shift, shift);
     defined $field ?  $class->new($field->Name, $field->folded, @_) : ();
 }
+
+#------------------------------------------
+
+
+sub decodedBody()
+{   my $self = shift;
+    $self->decode($self->unfoldedBody, @_);
+}
+
+#------------------------------------------
+
 
 sub addAttribute($;@)
 {   my $self = shift;
@@ -113,12 +193,20 @@ sub addAttribute($;@)
     }
 }
 
+#------------------------------------------
+
 sub attribute($;$)
 {   my ($self, $name) = (shift, shift);
     @_ ? $self->addAttribute($name, shift) : $self->{MMFF_attrs}{lc $name};
 }
 
+#------------------------------------------
+
+
 sub attributes() { values %{shift->{MMFF_attrs}} }
+
+#------------------------------------------
+
 
 sub createComment($@)
 {   my ($thing, $comment) = (shift, shift);
@@ -139,6 +227,9 @@ sub createComment($@)
     "($comment)";
 }
 
+#------------------------------------------
+
+
 sub addComment($@)
 {   my $self = shift;
 
@@ -150,13 +241,16 @@ sub addComment($@)
 
     return undef
        if ! defined $_[0] || ! CORE::length($_[0]);
-
+ 
     my $comment = $self->createComment(@_);
     push @{$self->{MMFF_parts}}, $comment;
     delete $self->{MMFF_body};
 
     $comment;
 }
+
+#------------------------------------------
+
 
 sub addExtra($)
 {   my ($self, $extra) = @_;
@@ -167,13 +261,16 @@ sub addExtra($)
         return;
     }
 
-    if(defined $extra && length $extra)
+    if(defined $extra && CORE::length $extra)
     {   push @{$self->{MMFF_parts}}, '; '.$extra;
         delete $self->{MMFF_body};
     }
 
     $self;
 }
+
+#------------------------------------------
+
 
 sub createPhrase($)
 {   my $self = shift;
@@ -190,6 +287,9 @@ sub createPhrase($)
     $_;
 }
 
+#------------------------------------------
+
+
 sub addPhrase($)
 {   my ($self, $string) = (shift, shift);
 
@@ -203,60 +303,8 @@ sub addPhrase($)
     $phrase;
 }
 
-sub clone()
-{   my $self = shift;
-    croak;
-}
+#------------------------------------------
 
-sub length()
-{   my $self = shift;
-    croak;
-}
-
-sub name() { lc shift->{MMFF_name}}
-
-sub Name() { shift->{MMFF_name}}
-
-sub folded(;$)
-{   my $self = shift;
-    return $self->{MMFF_name}.':'.$self->foldedBody
-        unless wantarray;
-
-    my @lines = $self->foldedBody;
-    my $first = $self->{MMFF_name}. ':'. shift @lines;
-    ($first, @lines);
-}
-
-sub unfoldedBody($;@)
-{   my $self = shift;
-    if(@_)
-    {   my $part = join ' ', @_;
-        $self->{MMFF_body}  = $self->fold($self->{MMFF_name}, $part);
-        $self->{MMFF_parts} = [ $part ];
-        return $part;
-    }
-
-    join(' ', @{$self->{MMFF_parts}});
-}
-
-sub foldedBody($)
-{   my ($self, $body) = @_;
-
-       if(@_==2) { $self->{MMFF_body} = $body }
-    elsif($body = $self->{MMFF_body}) { ; }
-    else
-    {   # Create a new folded body from the parts.
-        $self->{MMFF_body} = $body
-           = $self->fold($self->{MMFF_name}, join(' ', @{$self->{MMFF_parts}}));
-    }
-
-    wantarray ? (split /^/, $body) : $body;
-}
-
-sub decodedBody()
-{   my $self = shift;
-    $self->decode($self->unfoldedBody, @_);
-}
 
 sub encode($@)
 {   my ($self, $utf8, %args) = @_;
@@ -323,6 +371,9 @@ sub encode($@)
     $ready;
 }
 
+#------------------------------------------
+
+
 sub _decoder($$$)
 {   my ($charset, $encoding, $encoded) = @_;
     $charset   =~ s/\*[^*]+$//;   # string language, not used
@@ -344,7 +395,7 @@ sub _decoder($$$)
         return $encoded;
     }
 
-    Encode::encode($charset, $decoded, 0);
+    Encode::decode($charset, $decoded, 0);
 }
 
 sub decode($@)
@@ -359,6 +410,9 @@ sub decode($@)
 
     $encoded;
 }
+
+#------------------------------------------
+
 
 sub consumePhrase($)
 {   my ($thing, $string) = @_;
@@ -376,6 +430,9 @@ sub consumePhrase($)
 
     (undef, $string);
 }
+
+#------------------------------------------
+
 
 sub consumeComment($)
 {   my ($thing, $string) = @_;
@@ -399,6 +456,9 @@ sub consumeComment($)
     ($comment, $string);
 }
 
+#------------------------------------------
+
+
 sub consumeDotAtom($)
 {   my ($self, $string) = @_;
     my ($atom, $comment);
@@ -414,5 +474,7 @@ sub consumeDotAtom($)
 
     ($atom, $string, $comment);
 }
+
+#------------------------------------------
 
 1;

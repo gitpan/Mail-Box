@@ -1,14 +1,19 @@
+
 use strict;
 
 package Mail::Box::Locker::NFS;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Locker';
 
 use IO::File;
 use Sys::Hostname;
 use Carp;
 
+
 sub name() {'NFS'}
+
+#-------------------------------------------
 
 # METHOD nfs
 # This hack is copied from the Mail::Folder packages, as written
@@ -65,6 +70,9 @@ sub _unlock($$)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub lock()
 {   my $self     = shift;
     return 1 if $self->hasLock;
@@ -96,6 +104,8 @@ sub lock()
     return 0;
 }
 
+#-------------------------------------------
+
 sub isLocked()
 {   my $self     = shift;
     my $tmpfile  = $self->_construct_tmpfile or return 0;
@@ -108,6 +118,8 @@ sub isLocked()
     1;
 }
 
+#-------------------------------------------
+
 sub unlock($)
 {   my $self   = shift;
     return $self unless $self->hasLock;
@@ -116,5 +128,7 @@ sub unlock($)
     delete $self->{MBL_has_lock};
     $self;
 }
+
+#-------------------------------------------
 
 1;

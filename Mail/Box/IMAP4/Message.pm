@@ -1,12 +1,15 @@
+
 use strict;
 use warnings;
 
 package Mail::Box::IMAP4::Message;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Net::Message';
 
 use File::Copy;
 use Carp;
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -17,14 +20,19 @@ sub init($)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub size($)
 {   my $self = shift;
-
+    
     return $self->SUPER::size
         unless $self->isDelayed;
 
     $self->folder->imapClient->messageSize($self->unique);
 }
+
+#-------------------------------------------
 
 sub deleted(;$)
 {   my $self   = shift;
@@ -34,6 +42,9 @@ sub deleted(;$)
     $self->folder->imapClient->deleted($set, $self->unique);
     $self->SUPER::deleted($set);
 }
+
+#-------------------------------------------
+
 
 sub label(@)
 {   my $self = shift;
@@ -46,6 +57,9 @@ sub label(@)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub loadHead()
 {   my $self     = shift;
     my $head     = $self->head;
@@ -53,6 +67,8 @@ sub loadHead()
 
     $self->head($self->folder->getHead($self));
 }
+
+#-------------------------------------------
 
 sub loadBody()
 {   my $self     = shift;
@@ -64,5 +80,7 @@ sub loadBody()
     $self->head($head) if $head->isDelayed;
     $self->storeBody($body);
 }
+
+#-------------------------------------------
 
 1;

@@ -1,11 +1,16 @@
+
 use strict;
 use warnings;
 
 package Mail::Box::MH::Message;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Dir::Message';
 
 use File::Copy;
 use Carp;
+
+
+# implementation in Mail::Box::Message.  It is only "helpful" text.
 
 1;

@@ -1,12 +1,15 @@
+
 use strict;
 use warnings;
 
 package Mail::Box::POP3::Message;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Net::Message';
 
 use File::Copy;
 use Carp;
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -17,20 +20,27 @@ sub init($)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub size($)
 {   my $self = shift;
-
+    
     return $self->SUPER::size
         unless $self->isDelayed;
 
     $self->folder->popClient->messageSize($self->unique);
 }
 
+#-------------------------------------------
+
 sub delete()
 {   my $self = shift;
     $self->folder->popClient->deleted(1, $self->unique);
     $self->SUPER::delete;
 }
+
+#-------------------------------------------
 
 sub deleted(;$)
 {   my $self   = shift;
@@ -43,6 +53,9 @@ sub deleted(;$)
     $self->SUPER::deleted($set);
 }
 
+#-------------------------------------------
+
+
 sub loadHead()
 {   my $self     = shift;
     my $head     = $self->head;
@@ -50,6 +63,8 @@ sub loadHead()
 
     $self->head($self->folder->getHead($self));
 }
+
+#-------------------------------------------
 
 sub loadBody()
 {   my $self     = shift;
@@ -61,5 +76,7 @@ sub loadBody()
     $self->head($head) if $head->isDelayed;
     $self->storeBody($body);
 }
+
+#-------------------------------------------
 
 1;

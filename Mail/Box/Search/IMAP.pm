@@ -1,5 +1,7 @@
+
 package Mail::Box::Search::IMAP;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Search';
 
 use strict;
@@ -7,9 +9,14 @@ use warnings;
 
 use Carp;
 
+#-------------------------------------------
+
+
 sub init($)
 {   my ($self, $args) = @_;
     $self->notImplemented;
 }
+
+#-------------------------------------------
 
 1;

@@ -1,6 +1,8 @@
+
 use strict;
 package Mail::Box::File;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box';
 
 use Mail::Box::File::Message;
@@ -18,6 +20,7 @@ use File::Spec;
 use File::Basename;
 use POSIX ':unistd_h';
 use IO::File ();
+
 
 my $default_folder_dir = exists $ENV{HOME} ? $ENV{HOME} . '/Mail' : '.';
 
@@ -87,8 +90,12 @@ sub init($)
     :                              undef;
 }
 
+#-------------------------------------------
+
+
 sub create($@)
-{   my ($class, $name, %args) = @_;
+{   my ($thingy, $name, %args) = @_;
+    my $class     = ref $thingy      || $thingy;
     my $folderdir = $args{folderdir} || $default_folder_dir;
     my $subext    = $args{subfolder_extension};    # not always available
     my $filename  = $class->folderToFilename($name, $folderdir, $subext);
@@ -114,6 +121,8 @@ sub create($@)
     $class;
 }
 
+#-------------------------------------------
+
 sub foundIn($@)
 {   my $class = shift;
     my $name  = @_ % 2 ? shift : undef;
@@ -126,9 +135,11 @@ sub foundIn($@)
     -f $filename;
 }
 
+#-------------------------------------------
+
 sub organization() { 'FILE' }
 
-sub filename() { shift->{MBF_filename} }
+#-------------------------------------------
 
 sub close(@)
 {   my $self = $_[0];            # be careful, we want to set the calling
@@ -142,10 +153,62 @@ sub close(@)
     $rc;
 }
 
+#-------------------------------------------
+
 sub openSubFolder($@)
 {   my ($self, $name) = (shift, shift);
     $self->openRelatedFolder(@_, folder => "$self/$name");
 }
+
+#-------------------------------------------
+
+
+sub appendMessages(@)
+{   my $class  = shift;
+    my %args   = @_;
+
+    my @messages
+      = exists $args{message}  ? $args{message}
+      : exists $args{messages} ? @{$args{messages}}
+      :                          return ();
+
+    my $folder   = $class->new(lock_type => 'NONE', @_, access => 'w+')
+       or return ();
+ 
+    my $filename = $folder->filename;
+
+    my $out      = IO::File->new($filename, 'a');
+    unless($out)
+    {   $class->log(ERROR => "Cannot append messages to folder file $filename: $!");
+        return ();
+    }
+
+    my $msgtype = 'Mail::Box::File::Message';
+    my @coerced;
+
+    foreach my $msg (@messages)
+    {   my $coerced
+           = $msg->isa($msgtype) ? $msg
+           : $msg->can('clone')  ? $msgtype->coerce($msg->clone)
+           :                       $msgtype->coerce($msg);
+
+        $coerced->write($out);
+        push @coerced, $coerced;
+    }
+
+    my $ok = $folder->close;
+    return 0 unless $out->close && $ok;
+
+    @coerced;
+}
+
+#-------------------------------------------
+
+
+sub filename() { shift->{MBF_filename} }
+
+#-------------------------------------------
+
 
 sub parser()
 {   my $self = shift;
@@ -170,6 +233,8 @@ sub parser()
     $parser->pushSeparator('From ');
     $parser;
 }
+
+#-------------------------------------------
 
 sub readMessages(@)
 {   my ($self, %args) = @_;
@@ -199,6 +264,9 @@ sub readMessages(@)
     # Release the folder.
     $self;
 }
+ 
+#-------------------------------------------
+
 
 sub writeMessages($)
 {   my ($self, $args) = @_;
@@ -370,44 +438,8 @@ sub _write_inplace($)
     1;
 }
 
-sub appendMessages(@)
-{   my $class  = shift;
-    my %args   = @_;
+#-------------------------------------------
 
-    my @messages
-      = exists $args{message}  ? $args{message}
-      : exists $args{messages} ? @{$args{messages}}
-      :                          return ();
-
-    my $folder   = $class->new(lock_type => 'NONE', @_, access => 'w+')
-       or return ();
-
-    my $filename = $folder->filename;
-
-    my $out      = IO::File->new($filename, 'a');
-    unless($out)
-    {   $class->log(ERROR => "Cannot append messages to folder file $filename: $!");
-        return ();
-    }
-
-    my $msgtype = 'Mail::Box::File::Message';
-    my @coerced;
-
-    foreach my $msg (@messages)
-    {   my $coerced
-           = $msg->isa($msgtype) ? $msg
-           : $msg->can('clone')  ? $msgtype->coerce($msg->clone)
-           :                       $msgtype->coerce($msg);
-
-        $coerced->write($out);
-        push @coerced, $coerced;
-    }
-
-    my $ok = $folder->close;
-    return 0 unless $out->close && $ok;
-
-    @coerced;
-}
 
 sub folderToFilename($$;$)
 {   my ($thing, $name, $folderdir) = @_;
@@ -419,5 +451,8 @@ sub folderToFilename($$;$)
 }
 
 sub tmpNewFolder($) { shift->filename . '.tmp' }
+
+#-------------------------------------------
+
 
 1;

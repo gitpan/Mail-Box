@@ -3,7 +3,8 @@
 
 Mail::Message::Convert - conversions between message types
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Message::Convert
    is a Mail::Reporter
@@ -16,16 +17,18 @@ Mail::Message::Convert - conversions between message types
    Mail::Message::Convert::MimeEntity
    Mail::Message::Convert::TextAutoformat
 
+
 =head1 SYNOPSIS
 
 Available methods are very converter-specific.
+
 
 =head1 DESCRIPTION
 
 This class is the base for various message (and message parts) converters.
 When the conversion does not change the contents of the body, most of
 the converters will return the source object.  In any case, an
-Mail::Message::Body is returned with the conversion applied but as
+L<Mail::Message::Body|Mail::Message::Body> is returned with the conversion applied but as
 much of the other meta data stored in the source body unchanged.
 
 In most cases, converters are created by Mail::Message when they are
@@ -36,166 +39,231 @@ The following converters are currently available:
 
 =over 4
 
-=item * Mail::Message::Convert::Html
+=item * L<Mail::Message::Convert::Html|Mail::Message::Convert::Html>
 
 Plays tricks with HTML/XMHTML without help of external modules.
 
-=item * Mail::Message::Convert::HtmlFormatText
+=item * L<Mail::Message::Convert::HtmlFormatText|Mail::Message::Convert::HtmlFormatText>
 
 Converts HTML body objects to plain text objects using the
 HTML::FormatText module.
 
-=item * Mail::Message::Convert::HtmlFormatPS
+=item * L<Mail::Message::Convert::HtmlFormatPS|Mail::Message::Convert::HtmlFormatPS>
 
 Converts HTML body objects to Postscript objects using the
 HTML::FormatPS module.
 
-=item * Mail::Message::Convert::MailInternet
+=item * L<Mail::Message::Convert::MailInternet|Mail::Message::Convert::MailInternet>
 
-Converts the simple Mail::Internet messages into Mail::Message
+Converts the simple Mail::Internet messages into L<Mail::Message|Mail::Message>
 objects.
 
-=item * Mail::Message::Convert::MimeEntity
+=item * L<Mail::Message::Convert::MimeEntity|Mail::Message::Convert::MimeEntity>
 
 Converts the more complicated MIME::Entity messages into
-C<Mail::Message> objects.
+L<Mail::Message|Mail::Message> objects.
 
-=item * Mail::Message::Convert::TextAutoformat
+=item * L<Mail::Message::Convert::TextAutoformat|Mail::Message::Convert::TextAutoformat>
 
 Converts a text message into text using Text::Autoformat.
 
 =back
 
+
+
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+Mail::Message::Convert-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-=item B<new> OPTIONS
+ Option  Defined in       Default          
+ fields                   <see description>
+ log     L<Mail::Reporter>  C<'WARNINGS'>    
+ trace   L<Mail::Reporter>  C<'WARNINGS'>    
 
-(Class method)
-
- OPTION               DEFAULT
- fields               <see description>
- log                  'WARNINGS'
- trace                'WARNINGS'
+. fields NAMES|ARRAY-OF-NAMES|REGEXS
 
 =over 4
 
-=item B<fields> =E<gt> NAMES|ARRAY-OF-NAMES|REGEXS
-
-Select the fields of a header which are to be handled.  Other fields will not
-be used.  The value of this option is passed to Mail::Message::Head::grepNames()
-whenever converters feel a need for header line selection.
+Select the fields of a header which are to be handled.  Other
+fields will not be used.  The value of this option is passed to
+L<Mail::Message::Head::Complete::grepNames()|"Access to the header"> whenever converters feel
+a need for header line selection.
 By default, the C<To>, C<From>, C<Cc>, C<Bcc>, C<Date>, C<Subject>, and their
 C<Resent-> counterparts will be selected.  Specify an empty list to get all
 fields.
 
-=item B<log> =E<gt> LEVEL
-
-See Mail::Reporter::new(log)
-
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
-
 =back
+
+. log LEVEL
+
+. trace LEVEL
 
 =back
 
 =head2 Converting
 
-=over 4
 
-=item B<selectedFields> HEAD
+$obj-E<gt>B<selectedFields>(HEAD)
+
+=over 4
 
 Returns a list of fields to be included in the format.  The list is
 an ordered selection of the fields in the actual header, and filtered
-through the information as specified with the C<fields> option for
-new().
+through the information as specified with L<new(fields)|"METHODS">.
 
 =back
 
-=head2 Logging and Tracing
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Message::Convert-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
 =over 4
 
-=item B<AUTOLOAD> 
-
-See Mail::Reporter::AUTOLOAD()
-
-=item B<DESTROY> 
-
-See Mail::Reporter::DESTROY()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head1 SEE ALSO
+$obj-E<gt>B<errors>
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+=over 4
 
-=head1 AUTHOR
+See L<Mail::Reporter/"Error handling">
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+=back
 
-=head1 VERSION
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-This code is beta, version 2.040.
+Mail::Message::Convert-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Message::Convert-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

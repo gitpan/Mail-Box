@@ -2,15 +2,19 @@ use strict;
 use warnings;
 
 package Mail::Message::Field::Fast;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Field';
 
 use Carp;
 
+
+#------------------------------------------
 #
 # The DATA is stored as:   [ NAME, FOLDED-BODY ]
 # The body is kept in a folded fashion, where each line starts with
 # a single blank.
+
 
 sub new($;$@)
 {   my $class = shift;
@@ -27,19 +31,29 @@ sub new($;$@)
     $self;
 }
 
+#------------------------------------------
+
 sub clone()
 {   my $self = shift;
     bless [ @$self ], ref $self;
 }
+
+#------------------------------------------
 
 sub length()
 {   my $self = shift;
     length($self->[0]) + 1 + length($self->[1]);
 }
 
+#------------------------------------------
+
 sub name() { lc shift->[0] }
 
+#------------------------------------------
+
 sub Name() { shift->[0] }
+
+#------------------------------------------
 
 sub folded()
 {   my $self = shift;
@@ -51,6 +65,8 @@ sub folded()
     ($first, @lines);
 }
 
+#------------------------------------------
+
 sub unfoldedBody($;@)
 {   my $self = shift;
 
@@ -60,19 +76,25 @@ sub unfoldedBody($;@)
     $self->unfold($self->[1]);
 }
 
+#------------------------------------------
+
 sub foldedBody($)
 {   my ($self, $body) = @_;
     if(@_==2) { $self->[1] = $body }
     else      { $body = $self->[1] }
-
+     
     wantarray ? (split m/^/, $body) : $body;
 }
 
-# For performance only
+#------------------------------------------
+
+# For performance reasons only
 
 sub print(;$)
 {   my $self = shift;
     (shift || select)->print($self->[0].':'.$self->[1]);
 }
+
+#------------------------------------------
 
 1;

@@ -1,7 +1,9 @@
+
 use strict;
 
 package Mail::Message::Head::Subset;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Head';
 
 use Object::Realize::Later
@@ -12,9 +14,24 @@ use Object::Realize::Later
 use Carp;
 use Date::Parse;
 
+
+sub count($)
+{   my ($self, $name) = @_;
+
+    my @values = $self->get($name);
+
+    return $self->load->count($name)
+       unless @values;
+
+    scalar @values;
+}
+
+#-------------------------------------------
+
+
 sub get($;$)
 {   my $self = shift;
-
+ 
     if(wantarray)
     {   my @values = $self->SUPER::get(@_);
         return @values if @values;
@@ -27,16 +44,9 @@ sub get($;$)
     $self->load->get(@_);
 }
 
-sub count($)
-{   my ($self, $name) = @_;
 
-    my @values = $self->get($name);
+#-------------------------------------------
 
-    return $self->load->count($name)
-       unless @values;
-
-    scalar @values;
-}
 
 sub guessBodySize()
 {   my $self = shift;
@@ -50,6 +60,7 @@ sub guessBodySize()
     undef;
 }
 
+#-------------------------------------------
 # Be careful not to trigger loading: this is not the thoroughness
 # we want from this method.
 
@@ -72,6 +83,11 @@ sub guessTimestamp()
     $self->{MMHS_timestamp} = $stamp;
 }
 
+#-------------------------------------------
+
+
 sub load() {$_[0] = $_[0]->message->loadHead}
+
+#------------------------------------------
 
 1;

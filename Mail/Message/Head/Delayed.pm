@@ -1,7 +1,9 @@
+
 use strict;
 
 package Mail::Message::Head::Delayed;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Head';
 
 use Object::Realize::Later
@@ -13,7 +15,10 @@ use Carp;
 use Date::Parse;
 use Scalar::Util 'weaken';
 
+
 sub build(@) {shift->log(ERROR => "Cannot build() a delayed header.") }
+
+#------------------------------------------
 
 sub init($$)
 {   my ($self, $args) = @_;
@@ -27,23 +32,41 @@ sub init($$)
     $self;
 }
 
+#------------------------------------------
+
 sub isDelayed() {1}
+
+#------------------------------------------
 
 sub modified(;$)
 {   return 0 if @_==1 || !$_[1];
     shift->forceRealize->modified(1);
 }
 
+#------------------------------------------
+
 sub isModified() { 0 }
+
+#------------------------------------------
+
 
 sub get($;$)
 {   my $self = shift;
     $self->load->get(@_);
 }
 
+#------------------------------------------
+
+
 sub guessBodySize() {undef}
 
+#-------------------------------------------
+
+
 sub guessTimestamp() {undef}
+
+#------------------------------------------
+
 
 sub read($)
 {   my ($self, $parser, $headtype, $bodytype)  = @_;
@@ -53,8 +76,14 @@ sub read($)
     $self;
 }
 
+#------------------------------------------
+
 sub load() {$_[0] = $_[0]->message->loadHead}
 
+#------------------------------------------
+
 sub setNoRealize($) { shift->log(INTERNAL => "Setting field on a delayed?") }
+
+#-------------------------------------------
 
 1;

@@ -2,11 +2,13 @@ use strict;
 use warnings;
 
 package Mail::Message::Field::Address;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use Mail::Message::Field::Full;
 my $format = 'Mail::Message::Field::Full';
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -22,7 +24,13 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
+
 sub name() { shift->{MMFA_name} }
+
+#------------------------------------------
+
 
 sub address()
 {   my $self  = shift;
@@ -35,9 +43,12 @@ sub address()
 
     push @parts, $format->createComment($self->{MMFA_domcomment})
        if exists $self->{MMFA_domcomment};
-
+    
     join '', @parts;
 }
+
+#------------------------------------------
+
 
 sub string()
 {   my $self    = shift;
@@ -54,5 +65,9 @@ sub string()
 
     join ' ', @parts;
 }
+
+#------------------------------------------
+
+
 
 1;

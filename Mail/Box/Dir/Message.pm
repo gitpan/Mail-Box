@@ -1,13 +1,16 @@
+
 use strict;
 use warnings;
 
 package Mail::Box::Dir::Message;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Message';
 
 use Carp;
 use IO::File;
 use File::Copy qw/move/;
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -19,6 +22,11 @@ sub init($)
     $self->{MBDM_fix_header} = $args->{fix_header};
     $self;
 }
+
+#-------------------------------------------
+
+
+#-------------------------------------------
 
 sub print(;$)
 {   my $self     = shift;
@@ -42,12 +50,20 @@ sub print(;$)
     1;
 }
 
+#-------------------------------------------
+
 BEGIN { *write = \&print }  # simply alias
+
+#-------------------------------------------
+
 
 sub filename(;$)
 {   my $self = shift;
     @_ ? $self->{MBDM_filename} = shift : $self->{MBDM_filename};
 }
+
+#-------------------------------------------
+
 
 # Asking the filesystem for the size is faster counting (in
 # many situations.  It even may be lazy.
@@ -66,6 +82,8 @@ sub size()
     $self->SUPER::size;
 }
 
+#-------------------------------------------
+
 sub diskDelete()
 {   my $self = shift;
     $self->SUPER::diskDelete;
@@ -74,6 +92,9 @@ sub diskDelete()
     unlink $filename if $filename;
     $self;
 }
+
+#-------------------------------------------
+
 
 sub parser()
 {   my $self   = shift;
@@ -93,6 +114,9 @@ sub parser()
     $parser;
 }
 
+#-------------------------------------------
+
+
 sub loadHead()
 {   my $self     = shift;
     my $head     = $self->head;
@@ -110,6 +134,9 @@ sub loadHead()
     $self->log(PROGRESS => 'Loaded delayed head.');
     $self->head;
 }
+
+#-------------------------------------------
+
 
 sub loadBody()
 {   my $self     = shift;
@@ -148,6 +175,9 @@ sub loadBody()
     $self->storeBody($newbody);
 }
 
+#-------------------------------------------
+
+
 sub create($)
 {   my ($self, $filename) = @_;
 
@@ -179,5 +209,7 @@ sub create($)
 
     $self;
 }
+
+#-------------------------------------------
 
 1;

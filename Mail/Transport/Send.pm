@@ -2,17 +2,22 @@ use strict;
 use warnings;
 
 package Mail::Transport::Send;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Transport';
 
 use Carp;
 use File::Spec;
 use Errno 'EAGAIN';
 
+
 sub new(@)
 {   my $class = shift;
     $class->SUPER::new(via => 'sendmail', @_);
 }
+
+#------------------------------------------
+
 
 sub send($@)
 {   my ($self, $message) = (shift, shift);
@@ -41,10 +46,16 @@ sub send($@)
     0;
 }
 
+#------------------------------------------
+
+
 sub trySend($@)
 {   my $self = shift;
     $self->log(ERROR => "Transporters of type ".ref($self). " cannot send.");
 }
+
+#------------------------------------------
+
 
 sub putContent($$@)
 {   my ($self, $message, $fh, %args) = @_;
@@ -58,6 +69,9 @@ sub putContent($$@)
 
     $self;
 }
+
+#------------------------------------------
+
 
 sub destinations($;$)
 {   my ($self, $message, $overrule) = @_;
@@ -81,5 +95,8 @@ sub destinations($;$)
 
     @to;
 }
+
+#------------------------------------------
+
 
 1;

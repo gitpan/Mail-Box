@@ -3,17 +3,20 @@
 
 Mail::Message::TransferEnc::Base64 - encode/decode base64 message bodies
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Message::TransferEnc::Base64
    is a Mail::Message::TransferEnc
    is a Mail::Reporter
+
 
 =head1 SYNOPSIS
 
  my Mail::Message $msg = ...;
  my $decoded = $msg->decoded;
  my $encoded = $msg->encode(transfer => 'base64');
+
 
 =head1 DESCRIPTION
 
@@ -29,158 +32,239 @@ C<[A-Za-z0-9+/]>.  This way, three data bytes become 4 base64 bytes.
 The encoded data will be trailed by C<'='> characters to align on
 four bytes.
 
+
+
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+Mail::Message::TransferEnc::Base64-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-=item B<new> OPTIONS
-
-(Class method)
-
- OPTION               DEFAULT
- log                  'WARNINGS'
- trace                'WARNINGS'
-
-=over 4
-
-=item B<log> =E<gt> LEVEL
-
-See Mail::Reporter::new(log)
-
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
-
-=back
+See L<Mail::Reporter/"Constructors">
 
 =back
 
 =head2 The Encoder
 
+
+Mail::Message::TransferEnc::Base64-E<gt>B<addTransferEncoder>(TYPE, CLASS)
+
 =over 4
 
-=item B<addTransferEncoder> TYPE, CLASS
+See L<Mail::Message::TransferEnc/"The Encoder">
 
-See Mail::Message::TransferEnc::addTransferEncoder()
+=back
 
-=item B<create> TYPE, OPTIONS
+$obj-E<gt>B<create>(TYPE, OPTIONS)
 
-See Mail::Message::TransferEnc::create()
+=over 4
 
-=item B<name> 
+See L<Mail::Message::TransferEnc/"The Encoder">
 
-See Mail::Message::TransferEnc::name()
+=back
+
+$obj-E<gt>B<name>
+
+=over 4
+
+See L<Mail::Message::TransferEnc/"The Encoder">
 
 =back
 
 =head2 Encoding
 
-=over 4
 
-=item B<check> BODY, OPTIONS
-
-See Mail::Message::TransferEnc::check()
-
-=item B<decode> BODY, OPTIONS
-
- OPTION               DEFAULT
- result_type          <type of source body>
+$obj-E<gt>B<check>(BODY, OPTIONS)
 
 =over 4
 
-=item B<result_type> =E<gt> CLASS
-
-See Mail::Message::TransferEnc::decode(result_type)
+See L<Mail::Message::TransferEnc/"Encoding">
 
 =back
 
-=item B<encode> BODY, OPTIONS
-
-See Mail::Message::TransferEnc::encode()
-
-=back
-
-=head2 Logging and Tracing
+$obj-E<gt>B<decode>(BODY, OPTIONS)
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
+ Option       Defined in                     Default              
+ result_type  L<Mail::Message::TransferEnc>  <type of source body>
 
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+. result_type CLASS
 
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<encode>(BODY, OPTIONS)
 
 =over 4
 
-=item B<AUTOLOAD> 
-
-See Mail::Reporter::AUTOLOAD()
-
-=item B<DESTROY> 
-
-See Mail::Reporter::DESTROY()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+See L<Mail::Message::TransferEnc/"Encoding">
 
 =back
 
-=head1 SEE ALSO
+=head2 Error handling
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
 
-=head1 AUTHOR
+$obj-E<gt>B<AUTOLOAD>
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+=over 4
 
-=head1 VERSION
+See L<Mail::Reporter/"Error handling">
 
-This code is beta, version 2.040.
+=back
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Message::TransferEnc::Base64-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<errors>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Message::TransferEnc::Base64-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Message::TransferEnc::Base64-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Warning:> Base64 line length not padded on 4.
+
+While decoding base64 the data in a message body, a string was found which
+was not padded into a multiple of four bytes.  This is illegal, and therefore
+this data is ignored.
+
+I<Error:> Decoder for transfer encoding $type does not work: $@
+
+Compiling the required transfer encoding resulted in errors, which means
+that the decoder can not be used.
+
+I<Warning:> No decoder for transfer encoding $type.
+
+A decoder for the specified type of transfer encoding is not implemented.
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

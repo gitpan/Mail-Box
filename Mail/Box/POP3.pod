@@ -3,81 +3,127 @@
 
 Mail::Box::POP3 - handle POP3 folders as client
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Box::POP3
    is a Mail::Box::Net
    is a Mail::Box
    is a Mail::Reporter
 
+
 =head1 SYNOPSIS
 
  use Mail::Box::POP3;
  my $folder = new Mail::Box::POP3 folder => $ENV{MAIL}, ...;
 
+
 =head1 DESCRIPTION
 
 Maintain a folder which has its messages stored on a remote server.  The
 communication between the client application and the server is implemented
-using the POP3 protocol.  This class uses Mail::Transport::POP3 to
+using the POP3 protocol.  This class uses L<Mail::Transport::POP3|Mail::Transport::POP3> to
 hide the transport of information, and focusses solely on the correct
 handling of messages within a POP3 folder.
 
+
+=head1 OVERLOADED
+
+
+overload: B<"">
+
+=over 4
+
+See L<Mail::Box/"OVERLOADED">
+
+=back
+
+overload: B<@{}>
+
+=over 4
+
+See L<Mail::Box/"OVERLOADED">
+
+=back
+
+overload: B<cmp>
+
+=over 4
+
+See L<Mail::Box/"OVERLOADED">
+
+=back
+
+
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+$obj-E<gt>B<create>(FOLDER, OPTIONS)
+
+Mail::Box::POP3-E<gt>B<create>(FOLDER, OPTIONS)
 
 =over 4
 
-=item B<new> OPTIONS
+It is not possible to create a new folder on a POP3 server.  This method
+will always return C<false>.
 
-(Class method) 
-For authentications, you
-have three choices: specify a foldername which resembles an URL, or
-specify a pop-client object, or separate options for user, password,
-pop-server and server-port.
+ Option     Defined in    Default   
+ folderdir  L<Mail::Box>  <not used>
 
- OPTION               DEFAULT
- access               'r'
- authenticate         'AUTO'
- body_delayed_type    'Mail::Message::Body::Delayed'
- body_type            'Mail::Message::Body::Lines'
- coerce_options       []
- create               <not applicable>
- extract              10240
- field_type           undef
- fix_headers          <false>
- folder               '/'
- folderdir            <not used>
- head_delayed_type    'Mail::Message::Head::Delayed'
- head_type            'Mail::Message::Head::Complete'
- keep_dups            <false>
- lock_file            undef
- lock_timeout         1 hour
- lock_type            'NONE'
- lock_wait            10 seconds
- locker               undef
- log                  'WARNINGS'
- manager              undef
- message_type         'Mail::Box::POP3::Message'
- multipart_type       'Mail::Message::Body::Multipart'
- password             undef
- pop_client           undef
- remove_when_empty    <false>
- save_on_exit         <true>
- server_name          undef
- server_port          110
- trace                'WARNINGS'
- trusted              <false>
- username             undef
+. folderdir DIRECTORY
+
+=back
+
+Mail::Box::POP3-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-=item B<access> =E<gt> MODE
+For authentications, you have three choices: specify a foldername which
+resembles an URL, or specify a pop-client object, or separate options
+for user, password, pop-server and server-port.
 
-See Mail::Box::new(access)
+ Option             Defined in       Default                                                         
+ access             L<Mail::Box>     C<'r'>                                                          
+ authenticate                        C<'AUTO'>                                                       
+ body_delayed_type  L<Mail::Box>     L<Mail::Message::Body::Delayed|Mail::Message::Body::Delayed>    
+ body_type          L<Mail::Box>     L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>        
+ coerce_options     L<Mail::Box>     C<[]>                                                           
+ create             L<Mail::Box>     <not applicable>                                                
+ extract            L<Mail::Box>     C<10240>                                                        
+ field_type         L<Mail::Box>     undef                                                           
+ fix_headers        L<Mail::Box>     <false>                                                         
+ folder             L<Mail::Box>     C<'/'>                                                          
+ folderdir          L<Mail::Box>     <not used>                                                      
+ head_delayed_type  L<Mail::Box>     L<Mail::Message::Head::Delayed|Mail::Message::Head::Delayed>    
+ head_type          L<Mail::Box>     L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>  
+ keep_dups          L<Mail::Box>     <false>                                                         
+ lock_file          L<Mail::Box>     undef                                                           
+ lock_timeout       L<Mail::Box>     1 hour                                                          
+ lock_type          L<Mail::Box>     C<'NONE'>                                                       
+ lock_wait          L<Mail::Box>     10 seconds                                                      
+ locker             L<Mail::Box>     undef                                                           
+ log                L<Mail::Reporter>  C<'WARNINGS'>                                                   
+ manager            L<Mail::Box>     undef                                                           
+ message_type       L<Mail::Box>     L<Mail::Box::POP3::Message|Mail::Box::POP3::Message>            
+ multipart_type     L<Mail::Box>     L<Mail::Message::Body::Multipart|Mail::Message::Body::Multipart>
+ password           L<Mail::Box::Net>  undef                                                           
+ pop_client                          undef                                                           
+ remove_when_empty  L<Mail::Box>     <false>                                                         
+ save_on_exit       L<Mail::Box>     <true>                                                          
+ server_name        L<Mail::Box::Net>  undef                                                           
+ server_port        L<Mail::Box::Net>  110                                                             
+ trace              L<Mail::Reporter>  C<'WARNINGS'>                                                   
+ trusted            L<Mail::Box>     <false>                                                         
+ username           L<Mail::Box::Net>  undef                                                           
 
-=item B<authenticate> =E<gt> 'LOGIN'|'APOP'|'AUTO'
+. access MODE
+
+. authenticate 'LOGIN'|'APOP'|'AUTO'
+
+=over 4
 
 POP3 can use two methods of authentication: the old LOGIN protocol, which
 transmits a username and password in plain text, and the newer APOP
@@ -85,177 +131,92 @@ protocol which uses MD5 encryption.  APOP is therefore much better, however
 not always supported by the server.  With AUTO, first APOP is tried and
 if that fails LOGIN.
 
-=item B<body_delayed_type> =E<gt> CLASS
+=back
 
-See Mail::Box::new(body_delayed_type)
+. body_delayed_type CLASS
 
-=item B<body_type> =E<gt> CLASS|CODE
+. body_type CLASS|CODE
 
-See Mail::Box::new(body_type)
+. coerce_options ARRAY
 
-=item B<coerce_options> =E<gt> ARRAY
+. create BOOLEAN
 
-See Mail::Box::new(coerce_options)
+. extract INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
 
-=item B<create> =E<gt> BOOLEAN
+. field_type CLASS
 
-See Mail::Box::new(create)
+. fix_headers BOOLEAN
 
-=item B<extract> =E<gt> INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
+. folder FOLDERNAME
 
-See Mail::Box::new(extract)
+. folderdir DIRECTORY
 
-=item B<field_type> =E<gt> CLASS
+. head_delayed_type CLASS
 
-See Mail::Box::new(field_type)
+. head_type CLASS
 
-=item B<fix_headers> =E<gt> BOOLEAN
+. keep_dups BOOLEAN
 
-See Mail::Box::new(fix_headers)
+. lock_file FILENAME
 
-=item B<folder> =E<gt> FOLDERNAME
+. lock_timeout SECONDS
 
-See Mail::Box::new(folder)
+. lock_type CLASS|STRING
 
-=item B<folderdir> =E<gt> DIRECTORY
+. lock_wait SECONDS
 
-See Mail::Box::new(folderdir)
+. locker OBJECT
 
-=item B<head_delayed_type> =E<gt> CLASS
+. log LEVEL
 
-See Mail::Box::new(head_delayed_type)
+. manager MANAGER
 
-=item B<head_type> =E<gt> CLASS
+. message_type CLASS
 
-See Mail::Box::new(head_type)
+. multipart_type CLASS
 
-=item B<keep_dups> =E<gt> BOOLEAN
+. password STRING
 
-See Mail::Box::new(keep_dups)
+. pop_client OBJECT
 
-=item B<lock_file> =E<gt> FILENAME
-
-See Mail::Box::new(lock_file)
-
-=item B<lock_timeout> =E<gt> SECONDS
-
-See Mail::Box::new(lock_timeout)
-
-=item B<lock_type> =E<gt> CLASS|STRING
-
-See Mail::Box::new(lock_type)
-
-=item B<lock_wait> =E<gt> SECONDS
-
-See Mail::Box::new(lock_wait)
-
-=item B<locker> =E<gt> OBJECT
-
-See Mail::Box::new(locker)
-
-=item B<log> =E<gt> LEVEL
-
-See Mail::Reporter::new(log)
-
-=item B<manager> =E<gt> MANAGER
-
-See Mail::Box::new(manager)
-
-=item B<message_type> =E<gt> CLASS
-
-See Mail::Box::new(message_type)
-
-=item B<multipart_type> =E<gt> CLASS
-
-See Mail::Box::new(multipart_type)
-
-=item B<password> =E<gt> STRING
-
-See Mail::Box::Net::new(password)
-
-=item B<pop_client> =E<gt> OBJECT
+=over 4
 
 You may want to specify your own pop-client object.  The object
-which is passed must extend Mail::Transport::POP3.
-
-=item B<remove_when_empty> =E<gt> BOOLEAN
-
-See Mail::Box::new(remove_when_empty)
-
-=item B<save_on_exit> =E<gt> BOOLEAN
-
-See Mail::Box::new(save_on_exit)
-
-=item B<server_name> =E<gt> HOSTNAME
-
-See Mail::Box::Net::new(server_name)
-
-=item B<server_port> =E<gt> INTEGER
-
-See Mail::Box::Net::new(server_port)
-
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
-
-=item B<trusted> =E<gt> BOOLEAN
-
-See Mail::Box::new(trusted)
-
-=item B<username> =E<gt> STRING
-
-See Mail::Box::Net::new(username)
+which is passed must extend L<Mail::Transport::POP3|Mail::Transport::POP3>.
 
 =back
 
-Examples:
+. remove_when_empty BOOLEAN
 
- my $pop = Mail::Box::POP3->new('pop3://user:password@pop.xs4all.nl');
+. save_on_exit BOOLEAN
 
- my $pop = $mgr->open(type => 'pop3', username => 'myname',
-    password => 'mypassword', server_name => 'pop.xs4all.nl');
+. server_name HOSTNAME
+
+. server_port INTEGER
+
+. trace LEVEL
+
+. trusted BOOLEAN
+
+. username STRING
+
+I<Example:> 
+
+ my $url = 'pop3://user:password@pop.xs4all.nl'
+ my $pop = Mail::Box::POP3->new($url);
+
+ my $pop = $mgr->open(type => 'pop3',
+    username => 'myname', password => 'mypassword',
+    server_name => 'pop.xs4all.nl');
 
 =back
 
-=head2 Opening folders
+=head2 The folder
+
+
+$obj-E<gt>B<addMessage>(MESSAGE)
 
 =over 4
-
-=item B<clone> OPTIONS
-
-See Mail::Box::clone()
-
-=item B<create> FOLDER, OPTIONS
-
-It is not possible to create a new folder on a POP3 server.  This method
-will always return C<false>.
-
- OPTION               DEFAULT
- folderdir            <not used>
-
-=over 4
-
-=item B<folderdir> =E<gt> DIRECTORY
-
-See Mail::Box::create(folderdir)
-
-=back
-
-=item B<folderdir> [DIRECTORY]
-
-See Mail::Box::Net::folderdir()
-
-=item B<foundIn> [FOLDERNAME], OPTIONS
-
-See Mail::Box::foundIn()
-
-=back
-
-=head2 On open folders
-
-=over 4
-
-=item B<addMessage> MESSAGE
 
 It is impossible to write messages to the average POP3 server.  There are
 extensions to the protocol which do permit it, however these are not
@@ -264,62 +225,44 @@ implemented (yet, patches welcome).
 C<undef> is returned, and an error displayed.  However, no complaint is
 given when the MESSAGE is C<undef> itself.
 
-=item B<addMessages> MESSAGES
-
-As useless as addMessage().  The only acceptable call to this method
-is without any message.
-
-=item B<copyTo> FOLDER, OPTIONS
-
-See Mail::Box::copyTo()
-
-=item B<isModified> 
-
-See Mail::Box::isModified()
-
-=item B<modified> [BOOLEAN]
-
-See Mail::Box::modified()
-
-=item B<name> 
-
-See Mail::Box::name()
-
-=item B<organization> 
-
-See Mail::Box::organization()
-
-=item B<type> 
-
-See Mail::Box::type()
-
-=item B<url> 
-
-See Mail::Box::url()
-
-=item B<writable> 
-
-See Mail::Box::writable()
-
-=item B<write> OPTIONS
-
-See Mail::Box::write()
-
 =back
 
-=head2 Closing the folder
+$obj-E<gt>B<addMessages>(MESSAGES)
 
 =over 4
 
-=item B<DESTROY> 
+As useless as L<addMessage()|"METHODS">.  The only acceptable call to this method
+is without any message.
 
-See Mail::Box::DESTROY()
+=back
 
-=item B<close> OPTIONS
+Mail::Box::POP3-E<gt>B<appendMessages>(OPTIONS)
 
-See Mail::Box::close()
+=over 4
 
-=item B<delete> 
+See L<Mail::Box/"The folder">
+
+=back
+
+$obj-E<gt>B<close>(OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"The folder">
+
+=back
+
+$obj-E<gt>B<copyTo>(FOLDER, OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"The folder">
+
+=back
+
+$obj-E<gt>B<delete>
+
+=over 4
 
 It is not possible to delete a POP3 folder remotely: the best we can do
 is remove all the messages in it... which is the action implemented here.
@@ -327,226 +270,577 @@ A notice is logged about this.
 
 =back
 
-=head2 The messages
+$obj-E<gt>B<folderdir>([DIRECTORY])
 
 =over 4
 
-=item B<current> [NUMBER|MESSAGE|MESSAGE-ID]
-
-See Mail::Box::current()
-
-=item B<find> MESSAGE-ID
-
-See Mail::Box::find()
-
-=item B<message> INDEX [,MESSAGE]
-
-See Mail::Box::message()
-
-=item B<messageId> MESSAGE-ID [,MESSAGE]
-
-See Mail::Box::messageId()
-
-=item B<messageIds> 
-
-See Mail::Box::messageIds()
-
-=item B<messages> ['ALL',RANGE,'ACTIVE','DELETED',LABEL,!LABEL,FILTER]
-
-See Mail::Box::messages()
-
-=item B<scanForMessages> MESSAGE, MESSAGE-IDS, TIMESTAMP, WINDOW
-
-See Mail::Box::scanForMessages()
+See L<Mail::Box::Net/"METHODS">
 
 =back
 
-=head2 Sub-folders
+Mail::Box::POP3-E<gt>B<foundIn>([FOLDERNAME], OPTIONS)
 
 =over 4
 
-=item B<listSubFolders> OPTIONS
+See L<Mail::Box/"The folder">
 
-See Mail::Box::listSubFolders()
+=back
 
-=item B<nameOfSubfolder> NAME
+$obj-E<gt>B<name>
 
-See Mail::Box::nameOfSubfolder()
+=over 4
 
-=item B<openRelatedFolder> OPTIONS
+See L<Mail::Box/"The folder">
 
-See Mail::Box::openRelatedFolder()
+=back
 
-=item B<openSubFolder> NAME, OPTIONS
+$obj-E<gt>B<organization>
 
-See Mail::Box::openSubFolder()
+=over 4
 
-=item B<update> 
+See L<Mail::Box/"The folder">
+
+=back
+
+$obj-E<gt>B<type>
+
+=over 4
+
+See L<Mail::Box/"The folder">
+
+=back
+
+$obj-E<gt>B<update>
+
+=over 4
 
 NOT IMPLEMENTED YET
 
 =back
 
-=head2 Message threads [internals]
+$obj-E<gt>B<url>
 
 =over 4
 
-=item B<toBeThreaded> MESSAGES
-
-See Mail::Box::toBeThreaded()
-
-=item B<toBeUnthreaded> MESSAGES
-
-See Mail::Box::toBeUnthreaded()
+See L<Mail::Box/"The folder">
 
 =back
 
-=head2 Reading and Writing [internals]
+=head2 Folder flags
+
+
+$obj-E<gt>B<isModified>
 
 =over 4
 
-=item B<appendMessages> OPTIONS
+See L<Mail::Box/"Folder flags">
 
-See Mail::Box::appendMessages()
+=back
 
-=item B<coerce> MESSAGE
+$obj-E<gt>B<modified>([BOOLEAN])
 
-See Mail::Box::coerce()
+=over 4
 
-=item B<determineBodyType> MESSAGE, HEAD
+See L<Mail::Box/"Folder flags">
 
-See Mail::Box::determineBodyType()
+=back
 
-=item B<getHead> MESSAGE
+$obj-E<gt>B<writable>
+
+=over 4
+
+See L<Mail::Box/"Folder flags">
+
+=back
+
+=head2 The messages
+
+
+$obj-E<gt>B<current>([NUMBER|MESSAGE|MESSAGE-ID])
+
+=over 4
+
+See L<Mail::Box/"The messages">
+
+=back
+
+$obj-E<gt>B<find>(MESSAGE-ID)
+
+=over 4
+
+See L<Mail::Box/"The messages">
+
+=back
+
+$obj-E<gt>B<message>(INDEX [,MESSAGE])
+
+=over 4
+
+See L<Mail::Box/"The messages">
+
+=back
+
+$obj-E<gt>B<messageId>(MESSAGE-ID [,MESSAGE])
+
+=over 4
+
+See L<Mail::Box/"The messages">
+
+=back
+
+$obj-E<gt>B<messageIds>
+
+=over 4
+
+See L<Mail::Box/"The messages">
+
+=back
+
+$obj-E<gt>B<messages>(['ALL',RANGE,'ACTIVE','DELETED',LABEL,!LABEL,FILTER])
+
+=over 4
+
+See L<Mail::Box/"The messages">
+
+=back
+
+$obj-E<gt>B<scanForMessages>(MESSAGE, MESSAGE-IDS, TIMESPAN, WINDOW)
+
+=over 4
+
+See L<Mail::Box/"The messages">
+
+=back
+
+=head2 Sub-folders
+
+
+$obj-E<gt>B<listSubFolders>(OPTIONS)
+
+Mail::Box::POP3-E<gt>B<listSubFolders>(OPTIONS)
+
+=over 4
+
+The standard POP3 protocol does not support sub-folders, so an
+empty list will be returned in any case.
+
+ Option      Defined in       Default      
+ check       L<Mail::Box>     <false>      
+ folder      L<Mail::Box>     <required>   
+ folderdir   L<Mail::Box>     <from folder>
+ skip_empty  L<Mail::Box>     <false>      
+
+. check BOOLEAN
+
+. folder FOLDERNAME
+
+. folderdir DIRECTORY
+
+. skip_empty BOOL
+
+=back
+
+$obj-E<gt>B<nameOfSubfolder>(NAME)
+
+=over 4
+
+See L<Mail::Box/"Sub-folders">
+
+=back
+
+$obj-E<gt>B<openRelatedFolder>(OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"Sub-folders">
+
+=back
+
+$obj-E<gt>B<openSubFolder>(OPTIONS)
+
+=over 4
+
+It is not possible to open a sub-folder for a POP3 folder, because that
+is not supported by the official POP3 protocol. In any case, C<undef>
+is returned to indicate a failure.
+
+=back
+
+=head2 Internals
+
+
+$obj-E<gt>B<coerce>(MESSAGE)
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<determineBodyType>(MESSAGE, HEAD)
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<getHead>(MESSAGE)
+
+=over 4
 
 Read the header for the specified message from the remote server.
 
-=item B<getHeadAndBody> MESSAGE
+=back
+
+$obj-E<gt>B<getHeadAndBody>(MESSAGE)
+
+=over 4
 
 Read all data for the specified message from the remote server.
 
-=item B<lineSeparator> [STRING|'CR'|'LF'|'CRLF']
+=back
 
-See Mail::Box::lineSeparator()
+$obj-E<gt>B<lineSeparator>([STRING|'CR'|'LF'|'CRLF'])
 
-=item B<locker> 
+=over 4
 
-See Mail::Box::locker()
+See L<Mail::Box/"Internals">
 
-=item B<popClient> 
+=back
+
+$obj-E<gt>B<locker>
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<popClient>
+
+=over 4
 
 Returns the pop client object.  This does not establish the connection.
 
-=item B<read> OPTIONS
+=back
 
-See Mail::Box::read()
-
-=item B<readMessages> OPTIONS
-
-See Mail::Box::readMessages()
-
-=item B<storeMessage> MESSAGE
-
-See Mail::Box::storeMessage()
-
-=item B<updateMessages> OPTIONS
-
-See Mail::Box::updateMessages()
-
-=item B<writeMessages> OPTIONS
-
- OPTION               DEFAULT
- messages             <required>
+$obj-E<gt>B<read>(OPTIONS)
 
 =over 4
 
-=item B<messages> =E<gt> ARRAY
-
-See Mail::Box::writeMessages(messages)
+See L<Mail::Box/"Internals">
 
 =back
 
-=back
-
-=head2 Logging and Tracing
+$obj-E<gt>B<readMessages>(OPTIONS)
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+See L<Mail::Box/"Internals">
 
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<storeMessage>(MESSAGE)
 
 =over 4
 
-=item B<AUTOLOAD> 
-
-See Mail::Reporter::AUTOLOAD()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
-
-=item B<timespan2seconds> TIME
-
-See Mail::Box::timespan2seconds()
+See L<Mail::Box/"Internals">
 
 =back
 
-=head1 SEE ALSO
+$obj-E<gt>B<toBeThreaded>(MESSAGES)
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+=over 4
 
-=head1 AUTHOR
+See L<Mail::Box/"Internals">
 
-Written by Liz Mattijsen (L<liz@dijkmat.nl|mailto:liz@dijkmat.nl>) and Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+=back
 
-=head1 VERSION
+$obj-E<gt>B<toBeUnthreaded>(MESSAGES)
 
-This code is beta, version 2.040.
+=over 4
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<updateMessages>(OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<write>(OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<writeMessages>(OPTIONS)
+
+=over 4
+
+ Option    Defined in    Default   
+ messages  L<Mail::Box>  <required>
+
+. messages ARRAY
+
+=back
+
+=head2 Other methods
+
+
+$obj-E<gt>B<timespan2seconds>(TIME)
+
+Mail::Box::POP3-E<gt>B<timespan2seconds>(TIME)
+
+=over 4
+
+See L<Mail::Box/"Other methods">
+
+=back
+
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Box::POP3-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<errors>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Box::POP3-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Box::POP3-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Box/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Warning:> A POP3 folder cannot be deleted: it will be emptied.
+
+Each user has only one POP3 folder on a server.  This folder is created and
+deleted by the server's administrator only.  A delete can only remove the
+messages in the folder for you.
+
+I<Error:> Cannot create POP3 client for $name.
+
+The connection to the POP3 server cannot be established.  You may see
+more, related, error messages about the failure.
+
+I<Error:> Cannot find head back for $uidl on POP3 server $name.
+
+The server told to have this message, but when asked for its headers, no
+single line was returned.  Did the message get destroyed?
+
+I<Error:> Cannot read body for $uidl on POP3 server $name.
+
+The message's headers are retreived from the server, but the body seems
+to be lost.  Did the message get destroyed between reading the header
+and reading the body?
+
+I<Warning:> Changes not written to read-only folder $self.
+
+You have opened the folder read-only --which is the default set
+by L<new(access)|Mail::Box/"Constructors">--, made modifications, and now want to close it.
+Set L<close(force)|"The folder"> if you want to overrule the access mode, or close
+the folder with L<close(write)|"The folder"> set to C<NEVER>.
+
+I<Error:> Copying failed for one message.
+
+For some reason, for instance disc full, removed by external process, or
+read-protection, it is impossible to copy one of the messages.  Copying will
+proceed for the other messages.
+
+I<Error:> Destination folder $name is not writable.
+
+The folder where the messages are copied to is not opened with write
+access (see L<new(access)|Mail::Box/"Constructors">).  This has no relation with write permission
+to the folder which is controled by your operating system.
+
+I<Warning:> Different messages with id $msgid.
+
+The message id is discovered more than once within the same folder, but the
+content of the message seems to be different.  This should not be possible:
+each message must be unique.
+
+I<Error:> Folder $name is opened read-only
+
+You can not write to this folder unless you have opened the folder to
+write or append with L<new(access)|Mail::Box/"Constructors">, or the C<force> option is set true.
+
+I<Error:> Invalid timespan '$timespan' specified.
+
+The string does not follow the strict rules of the time span syntax which
+is permitted as parameter.
+
+I<Warning:> Message $uidl on POP3 server $name disappeared.
+
+The server indicated the existence of this message before, however it
+has no information about the message anymore.
+
+I<Warning:> Message-id '$msgid' does not contain a domain.
+
+According to the RFCs, message-ids need to contain a unique random part,
+then an C<@>, and then a domain name.  This is made to avoid the creation
+of two messages with the same id.  The warning emerges when the C<@> is
+missing from the string.
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+I<Error:> Unable to create subfolder $name of $folder.
+
+The copy includes the subfolders, but for some reason it was not possible
+to copy one of these.  Copying will proceed for all other sub-folders.
+
+I<Error:> Update of $nr messages ignored for POP3 folder $name.
+
+The standard POP3 implementation does not support writing from client back
+to the server.  Therefore, modifications may be lost.
+
+I<Error:> Writing folder $name failed
+
+For some reason (you probably got more error messages about this problem)
+it is impossible to write the folder, although you should because there
+were changes made.
+
+I<Error:> You cannot write a message to a pop server (yet)
+
+Some extensions to the POP3 protocol do permit writing messages to the server,
+but the standard protocol only implements retreival.  Feel invited to extend our
+implementation with writing.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

@@ -2,7 +2,8 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Delayed;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use Object::Realize::Later
@@ -11,12 +12,16 @@ use Object::Realize::Later
     warn_realization => 0,
     believe_caller   => 1;
 
+use Carp;
+use Scalar::Util 'weaken';
+
+
 use overload '""'    => 'string_unless_carp'
            , bool    => sub {1}
            , '@{}'   => sub {shift->load->lines};
 
-use Carp;
-use Scalar::Util 'weaken';
+#------------------------------------------
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -30,20 +35,41 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
+
 sub message() { shift->{MMBD_message} }
+
+#------------------------------------------
+
 
 sub modified(;$)
 {   return 0 if @_==1 || !$_[1];
     shift->forceRealize(shift);
 }
 
+#------------------------------------------
+
+
 sub isModified() { 0 }
+
+#------------------------------------------
+
 
 sub isDelayed()   {1}
 
+#------------------------------------------
+
+
 sub isMultipart() {shift->message->head->isMultipart}
 
+#------------------------------------------
+
+
 sub guessSize()   {shift->{MMBD_size}}
+
+#------------------------------------------
+
 
 sub nrLines()
 {   my ($self) = @_;
@@ -52,6 +78,8 @@ sub nrLines()
     : $_[0]->forceRealize->nrLines;
 }
 
+#------------------------------------------
+
 sub string_unless_carp()
 {   my $self = shift;
     return $self->load->string unless (caller)[0] eq 'Carp';
@@ -59,6 +87,9 @@ sub string_unless_carp()
     (my $class = ref $self) =~ s/^Mail::Message/MM/g;
     "$class object";
 }
+
+#------------------------------------------
+
 
 sub read($$;$@)
 {   my ($self, $parser, $head, $bodytype) = splice @_, 0, 4;
@@ -70,11 +101,17 @@ sub read($$;$@)
     $self;
 }
 
+#------------------------------------------
+
+
 sub fileLocation(;@) {
    my $self = shift;
    return @$self{ qw/MMBD_begin MMBD_end/ } unless @_;
    @$self{ qw/MMBD_begin MMBD_end/ } = @_;
 }
+
+#------------------------------------------
+
 
 sub moveLocation($)
 {   my ($self, $dist) = @_;
@@ -83,6 +120,12 @@ sub moveLocation($)
     $self;
 }
 
+#------------------------------------------
+
+
 sub load() {$_[0] = $_[0]->message->loadBody}
+
+#------------------------------------------
+
 
 1;

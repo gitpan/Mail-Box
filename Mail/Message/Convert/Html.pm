@@ -2,10 +2,12 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::Html;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Convert';
 
 use Carp;
+
 
 sub init($)
 {   my ($self, $args)  = @_;
@@ -26,6 +28,9 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
+
 sub textToHtml(@)
 {   my $self  = shift;
 
@@ -37,11 +42,17 @@ sub textToHtml(@)
     wantarray ? @lines : join('', @lines);
 }
 
+#------------------------------------------
+
+
 sub fieldToHtml($;$)
 {   my ($self, $field, $subject) = @_;
     '<strong>'. $self->textToHtml($field->wellformedName)
     .': </strong>' . $self->fieldContentsToHtml($field,$subject);
 }
+
+#------------------------------------------
+
 
 sub headToHtmlTable($;$)
 {   my ($self, $head) = (shift, shift);
@@ -67,6 +78,9 @@ sub headToHtmlTable($;$)
     push @lines, "</table>\n";
     wantarray ? @lines : join('',@lines);
 }
+
+#------------------------------------------
+
 
 sub headToHtmlHead($@)
 {   my ($self, $head) = (shift,shift);
@@ -108,6 +122,9 @@ sub headToHtmlHead($@)
     push @lines, "</head>\n";
     wantarray ? @lines : join('',@lines);
 }
+    
+#------------------------------------------
+
 
 my $atom          = qr/[^()<>@,;:\\".\[\]\s[:cntrl:]]+/;
 my $email_address = qr/(($atom(?:\.$atom)*)\@($atom(?:\.$atom)+))/o;
@@ -123,5 +140,7 @@ sub fieldContentsToHtml($;$)
 
     $body . ($comment ? '; '.$self->textToHtml($comment) : '');
 }
+
+#------------------------------------------
 
 1;

@@ -3,15 +3,18 @@
 
 Mail::Box::Locker::POSIX - lock a folder using kernel file-locking
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Box::Locker::POSIX
    is a Mail::Box::Locker
    is a Mail::Reporter
 
+
 =head1 SYNOPSIS
 
- See Mail::Box::Locker
+ See L<Mail::Box::Locker|Mail::Box::Locker>
+
 
 =head1 DESCRIPTION
 
@@ -20,174 +23,263 @@ the file which contains the data using the kernel's POSIX facilities.  This
 lock is created on a separate file-handle to the folder file, so not the
 handle which is reading.  Not all platforms support POSIX locking.
 
+
+
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+Mail::Box::Locker::POSIX-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-=item B<new> OPTIONS
+ Option   Defined in       Default      
+ expires  L<Mail::Box::Locker>  1 hour       
+ file     L<Mail::Box::Locker>  undef        
+ folder   L<Mail::Box::Locker>  <required>   
+ log      L<Mail::Reporter>  C<'WARNINGS'>
+ method   L<Mail::Box::Locker>  C<POSIX>     
+ timeout  L<Mail::Box::Locker>  10 seconds   
+ trace    L<Mail::Reporter>  C<'WARNINGS'>
 
-(Class method)
+. expires SECONDS
 
- OPTION               DEFAULT
- expires              1 hour
- file                 undef
- folder               <obligatory>
- log                  'WARNINGS'
- method               'DOTLOCK'
- timeout              10 seconds
- trace                'WARNINGS'
+. file FILENAME
 
-=over 4
+. folder FOLDER
 
-=item B<expires> =E<gt> SECONDS
+. log LEVEL
 
-See Mail::Box::Locker::new(expires)
+. method METHOD | CLASS
 
-=item B<file> =E<gt> FILENAME
+. timeout SECONDS|'NOTIMEOUT'
 
-See Mail::Box::Locker::new(file)
-
-=item B<folder> =E<gt> FOLDER
-
-See Mail::Box::Locker::new(folder)
-
-=item B<log> =E<gt> LEVEL
-
-See Mail::Reporter::new(log)
-
-=item B<method> =E<gt> METHOD | CLASS
-
-See Mail::Box::Locker::new(method)
-
-=item B<timeout> =E<gt> SECONDS|'NOTIMEOUT'
-
-See Mail::Box::Locker::new(timeout)
-
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
-
-=back
+. trace LEVEL
 
 =back
 
 =head2 The Locker
 
+
+$obj-E<gt>B<filename>([FILENAME])
+
 =over 4
 
-=item B<DESTROY> 
+See L<Mail::Box::Locker/"The Locker">
 
-See Mail::Box::Locker::DESTROY()
+=back
 
-=item B<name> 
+$obj-E<gt>B<folder>
 
-See Mail::Box::Locker::name()
+=over 4
+
+See L<Mail::Box::Locker/"The Locker">
+
+=back
+
+$obj-E<gt>B<name>
+
+=over 4
+
+See L<Mail::Box::Locker/"The Locker">
 
 =back
 
 =head2 Locking
 
-=over 4
 
-=item B<filename> [FILENAME]
-
-See Mail::Box::Locker::filename()
-
-=item B<folder> 
-
-See Mail::Box::Locker::folder()
-
-=item B<hasLock> 
-
-See Mail::Box::Locker::hasLock()
-
-=item B<isLocked> 
-
-=item B<lock> 
-
-=item B<unlock> 
-
-See Mail::Box::Locker::unlock()
-
-=back
-
-=head2 Logging and Tracing
+$obj-E<gt>B<hasLock>
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+See L<Mail::Box::Locker/"Locking">
 
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<isLocked>
 
 =over 4
 
-=item B<AUTOLOAD> 
+=back
 
-See Mail::Reporter::AUTOLOAD()
+$obj-E<gt>B<lock>
 
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+=over 4
 
 =back
 
-=head1 SEE ALSO
+$obj-E<gt>B<unlock>
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+=over 4
 
-=head1 AUTHOR
+See L<Mail::Box::Locker/"Locking">
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+=back
 
-=head1 VERSION
+=head2 Error handling
 
-This code is beta, version 2.040.
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+$obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Box::Locker::POSIX-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<errors>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Box::Locker::POSIX-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Box::Locker::POSIX-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Box::Locker/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+I<Error:> Unable to check lock file $filename for $folder: $!
+
+To check whether the filename is used to flock a folder, the file must be
+opened.  Apparently this fails, which does not mean that the folder is
+locked neither that it is unlocked.
+
+I<Error:> Unable to open POSIX lock file $filename for $folder: $!
+
+For POSIX style locking, a folder it must be opened, which does not
+succeed for the specified reason.
+
+I<Error:> Will never get a POSIX lock at $filename for $folder: $!
+
+Tried to lock the folder, but it did not succeed.  The error code received
+from the OS indicates that it will not succeed ever, so we do not need to
+try again.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

@@ -1,10 +1,13 @@
+
 use strict;
 
 package Mail::Message::Dummy;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message';
 
 use Carp;
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -17,17 +20,25 @@ sub init($)
 
     $self;
 }
+ 
+#-------------------------------------------
 
 sub isDummy()    { 1 }
+
+#-------------------------------------------
 
 sub head()
 {    shift->log(INTERNAL => "You cannot take the head of a dummy");
      ();
 }
 
+#-------------------------------------------
+
 sub body()
 {    shift->log(INTERNAL => "You cannot take the body of a dummy");
      ();
 }
+
+#-------------------------------------------
 
 1;

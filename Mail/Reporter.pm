@@ -2,12 +2,13 @@ use strict;
 use warnings;
 
 package Mail::Reporter;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 
 use Carp;
 use Scalar::Util 'dualvar';
 
-# synchronize this with C code in Mail::Box::Parser.
+
 my @levelname = (undef, qw(DEBUG NOTICE PROGRESS WARNING ERROR NONE INTERNAL));
 
 my %levelprio = (ERRORS => 5, WARNINGS => 4, NOTICES => 2);
@@ -28,6 +29,9 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
+
 sub defaultTrace(;$$)
 {   my $thing = shift;
 
@@ -44,6 +48,9 @@ sub defaultTrace(;$$)
     ( $thing->logPriority($default_log), $thing->logPriority($default_trace) );
 }
 
+#------------------------------------------
+
+
 sub trace(;$)
 {   my $self = shift;
 
@@ -56,6 +63,9 @@ sub trace(;$)
 
     $self->{MR_trace} = $prio;
 }
+
+#------------------------------------------
+
 
 # Implementation detail: the C code avoids calls back to Perl by
 # checking the trace-level itself.  In the perl code of this module
@@ -100,6 +110,10 @@ sub log(;$@)
     $thing;
 }
 
+
+#------------------------------------------
+
+
 sub report(;$)
 {   my $self    = shift;
     my $reports = $self->{MR_report} || return ();
@@ -122,14 +136,26 @@ sub report(;$)
     @reports;
 }
 
+#-------------------------------------------
+
+
 sub reportAll(;$)
 {   my $self = shift;
     map { [ $self, @$_ ] } $self->report(@_);
 }
 
+#-------------------------------------------
+
+
 sub errors(@)   {shift->report('ERRORS')}
 
+#-------------------------------------------
+
+
 sub warnings(@) {shift->report('WARNINGS')}
+
+#-------------------------------------------
+
 
 sub notImplemented(@)
 {   my $self    = shift;
@@ -140,30 +166,47 @@ sub notImplemented(@)
     confess "Please warn the author, this shouldn't happen.";
 }
 
+#------------------------------------------
+
+
 sub logPriority($)
 {   my $level = $levelprio{$_[1]} or return undef;
     dualvar $level, $levelname[$level];
 }
+
+#-------------------------------------------
+
 
 sub logSettings()
 {  my $self = shift;
    (log => $self->{MR_log}, trace => $self->{MR_trace});
 }
 
-my $global_destruction;
-END {$global_destruction++}
-sub inGlobalDestruction() {$global_destruction}
+#-------------------------------------------
 
-sub DESTROY {shift}
 
 sub AUTOLOAD(@)
 {   my $thing   = shift;
     our $AUTOLOAD;
     my $class   = ref $thing || $thing;
-    (my $method = $AUTOLOAD) =~ s/^$class\:\://;
+    (my $method = $AUTOLOAD) =~ s/^.*\:\://;
 
     $Carp::MaxArgLen=20;
     confess "Method $method() is not defined for a $class.\n";
 }
+
+#-------------------------------------------
+
+
+my $global_destruction;
+END {$global_destruction++}
+sub inGlobalDestruction() {$global_destruction}
+
+#-------------------------------------------
+
+
+sub DESTROY {shift}
+
+#-------------------------------------------
 
 1;

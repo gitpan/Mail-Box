@@ -3,7 +3,8 @@
 
 Mail::Box::Search - select messages within a mail box
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Box::Search
    is a Mail::Reporter
@@ -12,6 +13,7 @@ Mail::Box::Search - select messages within a mail box
    Mail::Box::Search::Grep
    Mail::Box::Search::IMAP
    Mail::Box::Search::SpamAssassin
+
 
 =head1 SYNOPSIS
 
@@ -23,9 +25,10 @@ Mail::Box::Search - select messages within a mail box
  my @msgs   = $filter->search($folder, ...);
  if($filter->search($message)) {...}
 
+
 =head1 DESCRIPTION
 
-This Mail::Box::Search class is the base class for various message scan
+This C<Mail::Box::Search> class is the base class for various message scan
 algorithms.  The selected messages can be labeled.  Boolean operations on
 messages are supported.
 
@@ -33,73 +36,90 @@ Currently implemented searches:
 
 =over 4
 
-=item Mail::Box::Search::Grep
+=item L<Mail::Box::Search::Grep|Mail::Box::Search::Grep>
 
 Match header or body against a regular expression in a UNIX C<grep> like
 fashion.
 
-=item Mail::Box::Search::SpamAssassin
+=item L<Mail::Box::Search::SpamAssassin|Mail::Box::Search::SpamAssassin>
 
 Try to detect spam, using Mail::SpamAssassin.
 
-=item Mail::Box::Search::IMAP
+=item L<Mail::Box::Search::IMAP|Mail::Box::Search::IMAP>
 
 Search an IMAP folder for special interface IMAP folders provide for it.
-UNDER CONSTRUCTION till Mail::Transport::IMAP4 is complete.
-
-=item
+UNDER CONSTRUCTION till L<Mail::Transport::IMAP4|Mail::Transport::IMAP4> is complete.
 
 =back
 
+
+
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+Mail::Box::Search-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-=item B<new> OPTIONS
-
-(Class method) 
 Create a filter.
 
- OPTION               DEFAULT
- binaries             <false>
- decode               <true>
- delayed              <true>
- deleted              <false>
- deliver              undef
- in                   'BODY;
- label                undef
- limit                0
- log                  'WARNINGS'
- logical              'REPLACE'
- multiparts           <true>
- trace                'WARNINGS'
+ Option      Defined in       Default      
+ binaries                     <false>      
+ decode                       <true>       
+ delayed                      <true>       
+ deleted                      <false>      
+ deliver                      undef        
+ in                           C<'BODY'>    
+ label                        undef        
+ limit                        C<0>         
+ log         L<Mail::Reporter>  C<'WARNINGS'>
+ logical                      C<'REPLACE'> 
+ multiparts                   <true>       
+ trace       L<Mail::Reporter>  C<'WARNINGS'>
+
+. binaries BOOLEAN
 
 =over 4
-
-=item B<binaries> =E<gt> BOOLEAN
 
 Whether to include binary bodies in the search.
 
-=item B<decode> =E<gt> BOOLEAN
+=back
+
+. decode BOOLEAN
+
+=over 4
 
 Decode the messages before the search takes place.  Even plain text messages
 can be encoded, for instance as C<quoted-printable>, which may disturb the
 results.  However, decoding will slow-down the search.
 
-=item B<delayed> =E<gt> BOOLEAN
+=back
+
+. delayed BOOLEAN
+
+=over 4
 
 Include the delayed messages (which will be parsed) in the search.  If you
 set this to false, you may find fewer hits.
 
-=item B<deleted> =E<gt> BOOLEAN
+=back
+
+. deleted BOOLEAN
+
+=over 4
 
 In most cases, you will not be interested in results which are
 found in messages flagged to be deleted.  However, with this option
 you can specify you want them to be searched too.
 
-=item B<deliver> =E<gt> undef|CODE|'DELETE'
+=back
+
+. deliver undef|CODE|'DELETE'
+
+=over 4
 
 The exact functionality of this parameter differs per search method, so
 read the applicable man-page.  In any case C<undef> means that details
@@ -110,28 +130,42 @@ You may also specify your own CODE reference.  With an reference
 to an array, the information about the matches is collected as a list
 of hashes, one hash per match.
 
-=item B<in> =E<gt> 'HEAD'|'BODY'|'MESSAGE'
+=back
+
+. in 'HEAD'|'BODY'|'MESSAGE'
+
+=over 4
 
 Where to look for the match.
 
-=item B<label> =E<gt> STRING
+=back
+
+. label STRING
+
+=over 4
 
 Mark all selected messages with the specified STRING.  If this field is
 not specified, the message will not get a label; search() also returns
 a list of selected messages.
 
-=item B<limit> =E<gt> NUMBER
+=back
+
+. limit NUMBER
+
+=over 4
 
 Limit the search to the specified NUMBER of messages.  When the NUMBER
 is positive, the search starts at the first message in the folder or
 thread.  A negative NUMBER starts at the end of the folder.  If the limit
 is set to zero, there is no limit.
 
-=item B<log> =E<gt> LEVEL
+=back
 
-See Mail::Reporter::new(log)
+. log LEVEL
 
-=item B<logical> =E<gt> 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT'
+. logical 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT'
+
+=over 4
 
 Only applicable in combination with a C<label>.
 How to handle the existing labels.  In case of C<REPLACE>, messages
@@ -141,52 +175,63 @@ be selected by this search and already carry the label, otherwise the
 label will not be set.  Specify C<OR> to have newly selected messages
 added to the set of already selected messages.
 
-C<NOT> is true for messages which do not fulfill the search.  The
+C<NOT> is true for messages which do not fulfil the search.  The
 details output will still contain the places where the the match was
 found, however those messages will complementary set of messages will
 be labeled and returned.
 
-=item B<multiparts> =E<gt> BOOLEAN
+=back
+
+. multiparts BOOLEAN
+
+=over 4
 
 Are multiparts to be included in the search results?  Some MUA have
 problems handling details received from the search.  When this flag
 is turned off, the body of multiparts will be ignored.  The parts
 search will include the preamble and epilogue.
 
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
-
 =back
+
+. trace LEVEL
 
 =back
 
 =head2 Searching
 
-=over 4
 
-=item B<inBody> PART, BODY
+$obj-E<gt>B<inBody>(PART, BODY)
+
+=over 4
 
 Tests whether body contains the requesting information.  See the
 specific search module for its parameters.
 
-=item B<inHead> PART, HEAD
+=back
+
+$obj-E<gt>B<inHead>(PART, HEAD)
+
+=over 4
 
 Tests whether header contains the requesting information.  See the
 specific search module for its parameters.
 
-=item B<search> FOLDER|THREAD|MESSAGE|ARRAY-OF-MESSAGES
+=back
+
+$obj-E<gt>B<search>(FOLDER|THREAD|MESSAGE|ARRAY-OF-MESSAGES)
+
+=over 4
 
 Check which messages from the FOLDER (Mail::Box) match the
 search parameters.  The matched messages are returned as list.  You
-can also specify a THREAD (Mail::Box::Thread::Node), one single
-MESSAGE (Mail::Message), or an array of messages.
+can also specify a THREAD (a L<Mail::Box::Thread::Node|Mail::Box::Thread::Node>), one single
+MESSAGE (a L<Mail::Message|Mail::Message>), or an array of messages.
 
 Sometimes we know how only one match is needed.  In this case, this
 searching will stop at the first match.  For instance, when C<limit> is C<-1>
 or C<1>, or when the search in done in scalar context.
 
-Examples:
+I<Example:> 
 
  my $grep = Mail::Box::Search::Grep->new
   ( match   => 'My Name Is Nobody'
@@ -201,7 +246,11 @@ Examples:
  my $thread  = $message->threadStart;
  $grep->search($thread);
 
-=item B<searchPart> PART
+=back
+
+$obj-E<gt>B<searchPart>(PART)
+
+=over 4
 
 Search this message PART for matches.
 
@@ -209,96 +258,182 @@ Search this message PART for matches.
 
 =head2 The Results
 
+
+$obj-E<gt>B<printMatch>([FILEHANDLE], HASH)
+
 =over 4
 
-=item B<printMatch> [FILEHANDLE], HASH
-
-Print the information about the match (see search(deliver)) in
+Print the information about the match (see L<new(deliver)|"METHODS">) in
 some understandable way.  If no file handle
 is specified, the output will go to the selected filehandle (see
 C<perldoc -f select>).
 
 =back
 
-=head2 Logging and Tracing
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head2 Other Methods
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Box::Search-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
 =over 4
 
-=item B<AUTOLOAD> 
-
-See Mail::Reporter::AUTOLOAD()
-
-=item B<DESTROY> 
-
-See Mail::Reporter::DESTROY()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+See L<Mail::Reporter/"Error handling">
 
 =back
 
-=head1 SEE ALSO
+$obj-E<gt>B<errors>
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+=over 4
 
-=head1 AUTHOR
+See L<Mail::Reporter/"Error handling">
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+=back
 
-=head1 VERSION
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-This code is beta, version 2.040.
+Mail::Box::Search-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Box::Search-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Cannot search in body.
+
+Th search object does not implement L<inBody()|"Searching">, and can therefore
+not search a message body.
+
+I<Error:> Cannot search in header.
+
+Th search object does not implement L<inHead()|"Searching">, and can therefore
+not search a message header.
+
+I<Error:> Don't know how to deliver via results in $way.
+
+The search results cannot be delivered in the specific way, because that is
+not a defined alternative.
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+I<Error:> Search in BODY, HEAD or MESSAGE not $in.
+
+The C<in> option defines only three names.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

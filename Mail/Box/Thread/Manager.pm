@@ -1,11 +1,14 @@
+
 use strict;
 package Mail::Box::Thread::Manager;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use Carp;
 use Mail::Box::Thread::Node;
 use Mail::Message::Dummy;
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -28,7 +31,13 @@ sub init($)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub folders() { values %{shift->{MBTM_folders}} }
+
+#-------------------------------------------
+
 
 sub includeFolder(@)
 {   my $self = shift;
@@ -48,6 +57,9 @@ sub includeFolder(@)
 
     $self;
 }
+
+#-------------------------------------------
+
 
 sub removeFolder(@)
 {   my $self = shift;
@@ -69,6 +81,9 @@ sub removeFolder(@)
 
     $self;
 }
+
+#-------------------------------------------
+
 
 sub thread($)
 {   my ($self, $message) = @_;
@@ -108,6 +123,9 @@ sub thread($)
     $thread;
 }
 
+#-------------------------------------------
+
+
 sub threadStart($)
 {   my ($self, $message) = @_;
 
@@ -136,11 +154,17 @@ sub threadStart($)
     $thread;
 }
 
+#-------------------------------------------
+
+
 sub all()
 {   my $self = shift;
     $_->find('not-existing') for $self->folders;
     $self->known;
 }
+
+#-------------------------------------------
+
 
 sub sortedAll(@)
 {   my $self = shift;
@@ -148,17 +172,23 @@ sub sortedAll(@)
     $self->sortedKnown(@_);
 }
 
+#-------------------------------------------
+
+
 sub known()
 {   my $self      = shift->_process_delayed_nodes->_cleanup;
     grep {!defined $_->repliedTo} values %{$self->{MBTM_ids}};
 }
+
+#-------------------------------------------
+
 
 sub sortedKnown(;$$)
 {   my $self    = shift;
     my $prepare = shift || sub {shift->startTimeEstimate||0};
     my $compare = shift || sub {(shift) <=> (shift)};
 
-    my %value   = map { ($prepare->($_) => $_) } $self->known;
+    my %value   = map { ($prepare->($_) => $_) } $self->known; 
     map { $value{$_} } sort {$compare->($a, $b)} keys %value;
 }
 
@@ -197,6 +227,9 @@ sub _cleanup()
     $self;
 }
 
+#-------------------------------------------
+
+
 sub toBeThreaded($@)
 {   my ($self, $folder) = (shift, shift);
     return $self unless exists $self->{MBTM_folders}{$folder->name};
@@ -204,12 +237,18 @@ sub toBeThreaded($@)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub toBeUnthreaded($@)
 {   my ($self, $folder) = (shift, shift);
     return $self unless exists $self->{MBTM_folders}{$folder->name};
     $self->outThread($_) foreach @_;
     $self;
 }
+
+#-------------------------------------------
+
 
 sub inThread($)
 {   my ($self, $message) = @_;
@@ -296,6 +335,9 @@ sub _process_delayed_message($$)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub outThread($)
 {   my ($self, $message) = @_;
     my $msgid = $message->messageId;
@@ -307,10 +349,16 @@ sub outThread($)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub createDummy($)
 {   my ($self, $msgid) = @_;
     $self->{MBTM_ids}{$msgid} = $self->{MBTM_thread_type}->new
             (msgid => $msgid, dummy_type => $self->{MBTM_dummy_type});
 }
+
+#-------------------------------------------
+
 
 1;

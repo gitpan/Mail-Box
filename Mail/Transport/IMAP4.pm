@@ -1,9 +1,12 @@
+
 use strict;
 use warnings;
 
 package Mail::Transport::IMAP4;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Transport::Receive';
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -18,6 +21,9 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
+
 sub url()
 {   my $self = shift;
     my ($host, $port, $user, $pwd) = $self->remoteHost;
@@ -25,11 +31,17 @@ sub url()
     "imap4://$user:$pwd\@$host:$port$name";
 }
 
+#------------------------------------------
+
+
 sub ids(;@)
 {   my $self = shift;
     return unless $self->socket;
     wantarray ? @{$self->{MTP_n2uidl}} : $self->{MTP_n2uidl};
 }
+
+#------------------------------------------
+
 
 sub messages()
 {   my $self = shift;
@@ -40,7 +52,13 @@ sub messages()
     $self->{MTP_messages};
 }
 
+#------------------------------------------
+
+
 sub folderSize() { shift->{MTP_total} }
+
+#------------------------------------------
+
 
 sub header($;$)
 {   my ($self, $uidl) = (shift, shift);
@@ -52,6 +70,9 @@ sub header($;$)
 
     $self->sendList($socket, "TOP $n $bodylines\n");
 }
+
+#------------------------------------------
+
 
 sub message($;$)
 {   my ($self, $uidl) = @_;
@@ -72,6 +93,9 @@ sub message($;$)
     $message;
 }
 
+#------------------------------------------
+
+
 sub messageSize($)
 {   my ($self, $uidl) = @_;
     return unless $uidl;
@@ -84,7 +108,7 @@ sub messageSize($)
         foreach (@$raw)
         {   m#^(\d+) (\d+)#;
             $n2length[$1] = $2;
-        }
+        }   
         $self->{MTP_n2length} = $list = \@n2length;
     }
 
@@ -92,19 +116,32 @@ sub messageSize($)
     $list->[$n];
 }
 
+#------------------------------------------
+
+
 sub deleted($@)
 {   my $dele = shift->{MTP_dele} ||= {};
     (shift) ? @$dele{ @_ } = () : delete @$dele{ @_ };
 }
+
+
+#------------------------------------------
+
 
 sub deleteFetched()
 {   my $self = shift;
     $self->deleted(1, keys %{$self->{MTP_fetched}});
 }
 
+#------------------------------------------
+
+
 sub disconnect()
 {   my $self = shift;
 }
+
+#------------------------------------------
+
 
 sub fetched(;$)
 {   my $self = shift;
@@ -112,7 +149,16 @@ sub fetched(;$)
     $self->{MTP_fetched};
 }
 
+#------------------------------------------
+
+
 sub id2n($;$) { shift->{MTP_uidl2n}{shift()} }
+
+#------------------------------------------
+
+
+#------------------------------------------
+
 
 sub socket(;$)
 {   my $self = shift;
@@ -134,11 +180,14 @@ sub socket(;$)
     $self->{MTP_socket} = $socket;
 }
 
+#------------------------------------------
+
+
 sub send($$)
 {   my $self = shift;
     my $socket = shift;
     my $response;
-
+   
     if(eval {print $socket @_})
     {   $response = <$socket>;
         $self->log(ERROR => "Cannot read IMAP4 from socket: $!")
@@ -149,6 +198,9 @@ sub send($$)
     }
     $response;
 }
+
+#------------------------------------------
+
 
 sub sendList($$)
 {   my $self     = shift;
@@ -168,13 +220,11 @@ sub sendList($$)
     \@list;
 }
 
-sub DESTROY()
-{   my $self = shift;
-    $self->SUPER::DESTROY;
-    $self->disconnect if $self->{MTP_socket}; # only do if not already done
-}
+#------------------------------------------
 
 sub OK($;$) { substr(shift || '', 0, 3) eq '+OK' }
+
+#------------------------------------------
 
 sub _connection(;$)
 {   my $self = shift;
@@ -199,6 +249,8 @@ sub _connection(;$)
     return $socket if $socket;
 }
 
+#------------------------------------------
+
 sub _reconnectok
 {   my $self = shift;
 
@@ -206,6 +258,9 @@ sub _reconnectok
 
     0;
 }
+
+#------------------------------------------
+
 
 sub login(;$)
 {   my $self = shift;
@@ -270,6 +325,8 @@ sub login(;$)
     }
     $socket;
 }
+
+#------------------------------------------
 
 sub _status($;$)
 {   my ($self,$socket) = @_;
@@ -337,6 +394,9 @@ sub _status($;$)
     1;
 }
 
+#------------------------------------------
+
+
 sub askSubfolderSeparator()
 {   my $self = shift;
 
@@ -348,9 +408,12 @@ sub askSubfolderSeparator()
     $self->notImplemented;
 }
 
+#------------------------------------------
+
+
 sub askSubfoldersOf($)
 {   my ($self, $name) = @_;
-
+    
     # $imap->send(LIST "$name" %)
     # receives multiple lines
     #     * LIST (.*?) NAME
@@ -358,6 +421,9 @@ sub askSubfoldersOf($)
 
     $self->notImplemented;
 }
+
+#------------------------------------------
+
 
 my %systemflags =             # all other flags should be passed unharmed
  ( '\Seen'     => 'seen'
@@ -374,11 +440,23 @@ sub getLabel($$)
     $self->notImplemented;
 }
 
+#------------------------------------------
+
+
 sub setFlags($@)
 {   my ($self, $id) = (shift, shift);
     my @flags = @_;  # etc
 
     $self->notImplemented;
+}
+
+#------------------------------------------
+
+
+sub DESTROY()
+{   my $self = shift;
+    $self->SUPER::DESTROY;
+    $self->disconnect if $self->{MTP_socket}; # only do if not already done
 }
 
 1;

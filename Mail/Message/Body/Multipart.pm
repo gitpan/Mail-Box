@@ -2,13 +2,17 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Multipart;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
 use Mail::Message::Part;
 
 use IO::Lines;
+
+
+#------------------------------------------
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -34,11 +38,11 @@ sub init($)
     my $preamble = $args->{preamble};
     $preamble    = Mail::Message::Body->new(data => $preamble)
        if defined $preamble && ! ref $preamble;
-
+    
     my $epilogue = $args->{epilogue};
     $epilogue    = Mail::Message::Body->new(data => $epilogue)
        if defined $epilogue && ! ref $epilogue;
-
+    
     if($based)
     {   $self->boundary($args->{boundary} || $based->boundary);
         $self->{MMBM_preamble}
@@ -62,10 +66,16 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
 sub isMultipart() {1}
+
+#------------------------------------------
 
 # A multipart body is never binary itself.  The parts may be.
 sub isBinary() {0}
+
+#------------------------------------------
 
 sub clone()
 {   my $self     = shift;
@@ -82,6 +92,8 @@ sub clone()
 
 }
 
+#------------------------------------------
+
 sub nrLines()
 {   my $self   = shift;
     my $nr     = 1;     # trailing boundary
@@ -91,6 +103,8 @@ sub nrLines()
     if(my $epilogue = $self->epilogue) { $nr += $epilogue->nrLines }
     $nr;
 }
+
+#------------------------------------------
 
 sub size()
 {   my $self   = shift;
@@ -105,7 +119,11 @@ sub size()
     $bytes;
 }
 
+#------------------------------------------
+
 sub string() { join '', shift->lines }
+
+#------------------------------------------
 
 sub lines()
 {   my $self     = shift;
@@ -127,6 +145,8 @@ sub lines()
     wantarray ? @lines : \@lines;
 }
 
+#------------------------------------------
+
 sub file()                    # It may be possible to speed-improve the next
 {   my $self   = shift;       # code, which first produces a full print of
     my @lines;                # the message in memory...
@@ -135,6 +155,8 @@ sub file()                    # It may be possible to speed-improve the next
     $dump->seek(0,0);
     $dump;
 }
+
+#------------------------------------------
 
 sub print(;$)
 {   my $self = shift;
@@ -155,6 +177,8 @@ sub print(;$)
     $self;
 }
 
+#------------------------------------------
+
 sub printEscapedFrom($)
 {   my ($self, $out) = @_;
 
@@ -172,6 +196,87 @@ sub printEscapedFrom($)
 
     $self;
 }
+
+#------------------------------------------
+
+sub check()
+{   my $self = shift;
+    $self->foreachComponent( sub {$_[1]->check} );
+}
+
+#------------------------------------------
+
+sub encode(@)
+{   my ($self, %args) = @_;
+    $self->foreachComponent( sub {$_[1]->encode(%args)} );
+}
+
+#------------------------------------------
+
+sub encoded()
+{   my $self = shift;
+    $self->foreachComponent( sub {$_[1]->encoded} );
+}
+
+#------------------------------------------
+
+sub read($$$$)
+{   my ($self, $parser, $head, $bodytype) = @_;
+
+    my $boundary = $self->boundary;
+
+    $parser->pushSeparator("--$boundary");
+    my @msgopts  = ($self->logSettings);
+
+    my @sloppyopts = 
+      ( mime_type         => 'text/plain'
+      , transfer_encoding => ($head->get('Content-Transfer-Encoding') || undef)
+      );
+
+    # Get preamble.
+    my $headtype = ref $head;
+
+    my $begin    = $parser->filePosition;
+    my $preamble = Mail::Message::Body::Lines->new(@msgopts, @sloppyopts)
+       ->read($parser, $head);
+
+    $self->{MMBM_preamble} = $preamble if defined $preamble;
+
+    # Get the parts.
+
+    my @parts;
+    while(my $sep = $parser->readSeparator)
+    {   last if $sep eq "--$boundary--\n";
+
+        my $part = Mail::Message::Part->new
+         ( @msgopts
+         , container => $self
+         );
+
+        last unless $part->readFromParser($parser, $bodytype);
+        push @parts, $part;
+    }
+    $self->{MMBM_parts} = \@parts;
+
+    # Get epilogue
+
+    $parser->popSeparator;
+    my $epilogue = Mail::Message::Body::Lines->new(@msgopts, @sloppyopts)
+        ->read($parser, $head);
+
+    $self->{MMBM_epilogue} = $epilogue if defined $epilogue;
+    my $end = defined $epilogue ? ($epilogue->fileLocation)[1]
+            : @parts            ? ($parts[-1]->fileLocation)[1]
+            : defined $preamble ? ($preamble->fileLocation)[1]
+            :                      $begin;
+
+    $self->fileLocation($begin, $end);
+
+    $self;
+}
+
+#------------------------------------------
+
 
 sub foreachComponent($)
 {   my ($self, $code) = @_;
@@ -224,9 +329,42 @@ sub foreachComponent($)
     $constructed;
 }
 
+#------------------------------------------
+
+
+sub attach(@)
+{   my $self  = shift;
+    my $new   = ref($self)->new
+      ( based_on => $self
+      , parts    => [$self->parts, @_]
+      );
+}
+
+#-------------------------------------------
+
+
+sub stripSignature(@)
+{   my $self  = shift;
+
+    my @allparts = $self->parts;
+    my @parts    = grep {$_->body->mimeType->isSignature} @allparts;
+
+    @allparts==@parts ? $self
+    : (ref $self)->new(based_on => $self, parts => \@parts);
+}
+
+#------------------------------------------
+
+
 sub preamble() {shift->{MMBM_preamble}}
 
+#------------------------------------------
+
+
 sub epilogue() {shift->{MMBM_epilogue}}
+
+#------------------------------------------
+
 
 sub parts(;$)
 {   my $self  = shift;
@@ -243,7 +381,13 @@ sub parts(;$)
     : ($self->log(ERROR => "Unknown criterium $what to select parts."), return ());
 }
 
+#-------------------------------------------
+
+
 sub part($) { shift->{MMBM_parts}[shift] }
+
+#-------------------------------------------
+
 
 my $unique_boundary = time;
 
@@ -260,92 +404,7 @@ sub boundary(;$)
     $self->type->attribute(boundary => $boundary);
 }
 
-sub check()
-{   my $self = shift;
-    $self->foreachComponent( sub {$_[1]->check} );
-}
+#-------------------------------------------
 
-sub encode(@)
-{   my ($self, %args) = @_;
-    $self->foreachComponent( sub {$_[1]->encode(%args)} );
-}
-
-sub encoded()
-{   my $self = shift;
-    $self->foreachComponent( sub {$_[1]->encoded} );
-}
-
-sub attach(@)
-{   my $self  = shift;
-    my $new   = ref($self)->new
-      ( based_on => $self
-      , parts    => [$self->parts, @_]
-      );
-}
-
-sub stripSignature(@)
-{   my $self  = shift;
-
-    my @allparts = $self->parts;
-    my @parts    = grep {$_->body->mimeType->isSignature} @allparts;
-
-    @allparts==@parts ? $self
-    : (ref $self)->new(based_on => $self, parts => \@parts);
-}
-
-sub read($$$$)
-{   my ($self, $parser, $head, $bodytype) = @_;
-
-    my $boundary = $self->boundary;
-
-    $parser->pushSeparator("--$boundary");
-    my @msgopts  = ($self->logSettings);
-
-    my @sloppyopts =
-      ( mime_type         => 'text/plain'
-      , transfer_encoding => ($head->get('Content-Transfer-Encoding') || undef)
-      );
-
-    # Get preamble.
-    my $headtype = ref $head;
-
-    my $begin    = $parser->filePosition;
-    my $preamble = Mail::Message::Body::Lines->new(@msgopts, @sloppyopts)
-       ->read($parser, $head);
-
-    $self->{MMBM_preamble} = $preamble if defined $preamble;
-
-    # Get the parts.
-
-    my @parts;
-    while(my $sep = $parser->readSeparator)
-    {   last if $sep eq "--$boundary--\n";
-
-        my $part = Mail::Message::Part->new
-         ( @msgopts
-         , container => $self
-         );
-
-        last unless $part->readFromParser($parser, $bodytype);
-        push @parts, $part;
-    }
-    $self->{MMBM_parts} = \@parts;
-
-    # Get epilogue
-
-    $parser->popSeparator;
-    my $epilogue = Mail::Message::Body::Lines->new(@msgopts, @sloppyopts)
-        ->read($parser, $head);
-
-    $self->{MMBM_epilogue} = $epilogue if defined $epilogue;
-    my $end = defined $epilogue ? ($epilogue->fileLocation)[1]
-            : @parts            ? ($parts[-1]->fileLocation)[1]
-            : defined $preamble ? ($preamble->fileLocation)[1]
-            :                      $begin;
-
-    $self->fileLocation($begin, $end);
-
-    $self;
-}
 
 1;

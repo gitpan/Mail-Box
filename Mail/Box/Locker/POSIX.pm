@@ -1,14 +1,21 @@
+
 use strict;
 
 package Mail::Box::Locker::POSIX;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Locker';
 
 use POSIX;
 use Fcntl;
 use IO::File;
 
+
+#-------------------------------------------
+
 sub name() {'POSIX'}
+
+#-------------------------------------------
 
 sub _try_lock($)
 {   my ($self, $file) = @_;
@@ -22,6 +29,9 @@ sub _unlock($)
     delete $self->{MBL_has_lock};
     $self;
 }
+
+#-------------------------------------------
+
 
 sub lock()
 {   my $self  = shift;
@@ -58,6 +68,9 @@ sub lock()
     return 0;
 }
 
+#-------------------------------------------
+
+
 sub isLocked()
 {   my $self     = shift;
     my $filename = $self->filename;
@@ -76,6 +89,8 @@ sub isLocked()
     1;
 }
 
+#-------------------------------------------
+
 sub unlock()
 {   my $self = shift;
 
@@ -84,5 +99,7 @@ sub unlock()
 
     $self;
 }
+
+#-------------------------------------------
 
 1;

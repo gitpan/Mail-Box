@@ -2,13 +2,15 @@ use strict;
 use warnings;
 
 package Mail::Message::Field::Attribute;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 
 use Mail::Reporter;
 use 5.007003;
 use Encode ();
 
 use Carp;
+
 
 sub new($$@)
 {   my ($class, $attr) = (shift, shift);
@@ -34,7 +36,13 @@ sub new($$@)
     $self;
 }
 
+#------------------------------------------
+
+
 sub name() { shift->{MMFF_name} }
+
+#------------------------------------------
+
 
 sub value(;$)
 {   my $self = shift;
@@ -42,9 +50,12 @@ sub value(;$)
     {   delete $self->{MMFF_cont};
         return $self->{MMFF_value} = shift;
     }
-
+      
     exists $self->{MMFF_value} ? $self->{MMFF_value} : $self->decode;
 }
+
+#------------------------------------------
+
 
 sub addComponent($)
 {   my ($self, $component) = @_;
@@ -63,9 +74,18 @@ sub addComponent($)
     $component;
 }
 
+#------------------------------------------
+
+
 sub charset() { shift->{MMFF_charset} }
 
+#------------------------------------------
+
+
 sub language() { shift->{MMFF_language} }
+
+#------------------------------------------
+
 
 sub string()
 {   my $self = shift;
@@ -76,6 +96,9 @@ sub string()
     local $" = "; ";
     "; @$cont";
 }
+
+#------------------------------------------
+
 
 sub encode()
 {   my $self  = shift;
@@ -127,7 +150,7 @@ sub encode()
             last unless length $value;
             $pre = $name . '*' . @lines . '=';
         }
-
+            
     }
     else
     {   # Single string only
@@ -137,6 +160,9 @@ sub encode()
     $lines[0] =~ s/\*0// if @lines==1;
     $self->{MMFF_cont} = \@lines;
 }
+
+#------------------------------------------
+
 
 sub decode()
 {   my $self  = shift;
@@ -166,15 +192,21 @@ sub decode()
     $self->{MMFF_value} = $value;
 }
 
+#------------------------------------------
+
+
 sub mergeComponent($)
 {   my ($self, $comp) = @_;
     my $cont  = $self->{MMFF_cont}
-       or croak "Too late to merge: value already changed.";
+       or croak "ERROR: Too late to merge: value already changed.";
 
     defined $_ && $self->addComponent($_)
         foreach @{$comp->{MMFF_cont}};
 
     $self;
 }
+
+#------------------------------------------
+
 
 1;

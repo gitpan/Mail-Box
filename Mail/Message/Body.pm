@@ -2,7 +2,8 @@ use strict;
 use warnings;
 
 package Mail::Message::Body;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use Mail::Message::Field;
@@ -12,14 +13,19 @@ use Mail::Message::Body::File;
 use Carp;
 use Scalar::Util 'weaken';
 
+
+use MIME::Types;
+my $mime_types = MIME::Types->new;
+
+
 use overload bool  => sub {1}   # $body->print if $body
            , '""'  => 'string_unless_carp'
            , '@{}' => 'lines'
            , '=='  => sub {$_[0]->{MMB_seqnr}==$_[1]->{MMB_seqnr}}
            , '!='  => sub {$_[0]->{MMB_seqnr}!=$_[1]->{MMB_seqnr}};
 
-use MIME::Types;
-my $mime_types = MIME::Types->new;
+#------------------------------------------
+
 
 my $body_count = 0;  # to be able to compare bodies for equivalence.
 
@@ -139,34 +145,13 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
+
 sub clone() {shift->notImplemented}
 
-sub message(;$)
-{   my $self = shift;
-    if(@_)
-    {   $self->{MMB_message} = shift;
-        weaken($self->{MMB_message});
-    }
-    $self->{MMB_message};
-}
+#------------------------------------------
 
-sub modified(;$)
-{  my $self = shift;
-   return $self->isModified unless @_;  # compat 2.036
-   $self->{MMB_modified} = shift;
-}
-
-sub isModified() {  shift->{MMB_modified} }
-
-sub print(;$) {shift->notImplemented}
-
-sub printEscapedFrom($) {shift->notImplemented}
-
-sub isDelayed() {0}
-
-sub isMultipart() {0}
-
-sub isNested() {0}
 
 sub decoded(@)
 {   my $self = shift;
@@ -178,45 +163,8 @@ sub decoded(@)
      );
 }
 
-sub type() { shift->{MMB_type} }
+#------------------------------------------
 
-sub mimeType()
-{   my $self = shift;
-    return $self->{MMB_mime} if exists $self->{MMB_mime};
-
-    my $type = $self->{MMB_type}->body;
-
-    $self->{MMB_mime}
-       = $mime_types->type($type) || MIME::Type->new(type => $type);
-}
-
-sub charset() { shift->type->attribute('charset') }
-
-sub transferEncoding(;$)
-{   my $self = shift;
-    return $self->{MMB_transfer} unless @_;
-
-    my $set = shift;
-    $self->{MMB_transfer} = ref $set ? $set
-       : Mail::Message::Field->new('Content-Transfer-Encoding' => $set);
-}
-
-sub disposition(;$)
-{   my $self = shift;
-
-    if(@_)
-    {   my $disp = shift;
-        $self->{MMB_disposition} = ref $disp ? $disp
-          : Mail::Message::Field->new('Content-Disposition' => $disp);
-    }
-
-    $self->{MMB_disposition};
-}
-
-sub checked(;$)
-{   my $self = shift;
-    @_ ? $self->{MMB_checked} = shift : $self->{MMB_checked};
-}
 
 sub eol(;$)
 {   my $self = shift;
@@ -247,9 +195,103 @@ sub eol(;$)
       );
 }
 
+#------------------------------------------
+
+
+sub message(;$)
+{   my $self = shift;
+    if(@_)
+    {   $self->{MMB_message} = shift;
+        weaken($self->{MMB_message});
+    }
+    $self->{MMB_message};
+}
+
+#------------------------------------------
+
+
+sub isDelayed() {0}
+
+#------------------------------------------
+
+
+sub isMultipart() {0}
+
+#------------------------------------------
+
+
+sub isNested() {0}
+
+#------------------------------------------
+
+
+sub type() { shift->{MMB_type} }
+
+#------------------------------------------
+
+
+sub mimeType()
+{   my $self = shift;
+    return $self->{MMB_mime} if exists $self->{MMB_mime};
+
+    my $type = $self->{MMB_type}->body;
+
+    $self->{MMB_mime}
+       = $mime_types->type($type) || MIME::Type->new(type => $type);
+}
+
+#------------------------------------------
+
+
+sub charset() { shift->type->attribute('charset') }
+
+#------------------------------------------
+
+
+sub transferEncoding(;$)
+{   my $self = shift;
+    return $self->{MMB_transfer} unless @_;
+
+    my $set = shift;
+    $self->{MMB_transfer} = ref $set ? $set
+       : Mail::Message::Field->new('Content-Transfer-Encoding' => $set);
+}
+
+#------------------------------------------
+
+
+sub disposition(;$)
+{   my $self = shift;
+
+    if(@_)
+    {   my $disp = shift;
+        $self->{MMB_disposition} = ref $disp ? $disp
+          : Mail::Message::Field->new('Content-Disposition' => $disp);
+    }
+
+    $self->{MMB_disposition};
+}
+
+#------------------------------------------
+
+
+sub checked(;$)
+{   my $self = shift;
+    @_ ? $self->{MMB_checked} = shift : $self->{MMB_checked};
+}
+
+#------------------------------------------
+
+
 sub nrLines(@)  {shift->notImplemented}
 
+#------------------------------------------
+
+
 sub size(@)  {shift->notImplemented}
+
+#------------------------------------------
+
 
 sub string() {shift->notImplemented}
 
@@ -261,9 +303,71 @@ sub string_unless_carp()
     "$class object";
 }
 
+#------------------------------------------
+
+
 sub lines() {shift->notImplemented}
 
+#------------------------------------------
+
+
 sub file(;$) {shift->notImplemented}
+
+#------------------------------------------
+
+
+sub print(;$) {shift->notImplemented}
+
+#------------------------------------------
+
+
+sub printEscapedFrom($) {shift->notImplemented}
+
+#------------------------------------------
+
+
+sub read(@) {shift->notImplemented}
+
+#------------------------------------------
+
+
+sub modified(;$)
+{  my $self = shift;
+   return $self->isModified unless @_;  # compat 2.036
+   $self->{MMB_modified} = shift;
+}
+
+#------------------------------------------
+
+
+sub isModified() {  shift->{MMB_modified} }
+
+#------------------------------------------
+
+
+sub fileLocation(;@) {
+    my $self = shift;
+    return @$self{ qw/MMB_begin MMB_end/ } unless @_;
+    @$self{ qw/MMB_begin MMB_end/ } = @_;
+}
+
+#------------------------------------------
+
+
+sub moveLocation($)
+{   my ($self, $dist) = @_;
+    $self->{MMB_begin} -= $dist;
+    $self->{MMB_end}   -= $dist;
+    $self;
+}
+
+#------------------------------------------
+
+
+sub load() {shift}
+
+#------------------------------------------
+
 
 my @in_encode = qw/check encode encoded eol isBinary isText unify/;
 my %in_module = map { ($_ => 'encode') } @in_encode;
@@ -282,23 +386,8 @@ sub AUTOLOAD(@)
 
     # Try parental AUTOLOAD
     Mail::Reporter->$call(@_);
-}
+}   
 
-sub read(@) {shift->notImplemented}
-
-sub fileLocation(;@) {
-    my $self = shift;
-    return @$self{ qw/MMB_begin MMB_end/ } unless @_;
-    @$self{ qw/MMB_begin MMB_end/ } = @_;
-}
-
-sub moveLocation($)
-{   my ($self, $dist) = @_;
-    $self->{MMB_begin} -= $dist;
-    $self->{MMB_end}   -= $dist;
-    $self;
-}
-
-sub load() {shift}
+#------------------------------------------
 
 1;

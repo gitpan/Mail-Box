@@ -1,10 +1,13 @@
+
 use strict;
 package Mail::Box::File::Message;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Message';
 
 use POSIX 'SEEK_SET';
 use Carp;
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -16,12 +19,17 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
 sub coerce($)
 {   my ($self, $message) = @_;
     return $message if $message->isa(__PACKAGE__);
 
     $self->SUPER::coerce($message)->labelsToStatus;
 }
+
+#-------------------------------------------
+
 
 sub write(;$)
 {   my $self  = shift;
@@ -34,12 +42,16 @@ sub write(;$)
     $self;
 }
 
+#-------------------------------------------
+
 sub clone()
 {   my $self  = shift;
     my $clone = $self->SUPER::clone;
     $clone->{MBMM_from_line} = $self->{MBMM_from_line};
     $clone;
 }
+
+#-------------------------------------------
 
 sub head(;$$)
 {   my $self  = shift;
@@ -51,6 +63,8 @@ sub head(;$$)
     $head;
 }
 
+#-------------------------------------------
+
 sub label(@)
 {   my $self   = shift;
     my $return = $self->SUPER::label(@_);
@@ -58,12 +72,18 @@ sub label(@)
     $return;
 }
 
+#-------------------------------------------
+
+
 sub fromLine(;$)
 {   my $self = shift;
 
     $self->{MBMM_from_line} = shift if @_;
     $self->{MBMM_from_line} ||= $self->head->createFromLine;
 }
+
+#------------------------------------------
+
 
 sub readFromParser($)
 {   my ($self, $parser) = @_;
@@ -77,7 +97,12 @@ sub readFromParser($)
     $self;
 }
 
+#-------------------------------------------
+
 sub loadHead() { shift->head }
+
+#-------------------------------------------
+
 
 sub loadBody()
 {   my $self     = shift;
@@ -102,6 +127,9 @@ sub loadBody()
     $newbody;
 }
 
+#-------------------------------------------
+
+
 sub fileLocation()
 {   my $self = shift;
 
@@ -109,6 +137,9 @@ sub fileLocation()
      ? ($self->{MBMM_begin}, ($self->body->fileLocation)[1])
      : $self->{MBMM_begin};
 }
+
+#------------------------------------------
+
 
 sub moveLocation($)
 {   my ($self, $dist) = @_;
@@ -118,5 +149,7 @@ sub moveLocation($)
     $self->body->moveLocation($dist);
     $self;
 }
+
+#-------------------------------------------
 
 1;

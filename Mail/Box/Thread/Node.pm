@@ -1,9 +1,12 @@
+
 use strict;
 package Mail::Box::Thread::Node;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use Carp;
+
 
 sub new(@)
 {   my ($class, %args) = @_;
@@ -27,6 +30,9 @@ sub init($)
     $self->{MBTN_dummy_type} = $args->{dummy_type};
     $self;
 }
+
+#-------------------------------------------
+
 
 sub message()
 {   my $self = shift;
@@ -53,9 +59,12 @@ sub message()
     $messages[0];
 }
 
+#-------------------------------------------
+
+
 sub addMessage($)
 {   my ($self, $message) = @_;
-
+    
     return $self->{MBTN_messages} = [ $message ]
         if $self->isDummy;
 
@@ -63,13 +72,38 @@ sub addMessage($)
     $message;
 }
 
+#-------------------------------------------
+
+
 sub isDummy()
 {   my $self = shift;
     !defined $self->{MBTN_messages} || $self->{MBTN_messages}[0]->isDummy;
 }
 
+#-------------------------------------------
+
+
 sub messageId() { shift->{MBTN_msgid} }
 sub messageID() { shift->messageID } # compatibility
+
+#-------------------------------------------
+
+
+sub expand(;$)
+{   my $self = shift;
+    return $self->message->label('folded') || 0
+        unless @_;
+
+    my $fold = not shift;
+    $_->label(folded => $fold) foreach $self->message;
+    $fold;
+}
+
+sub folded(;$)    # compatibility <2.0
+{  @_ == 1 ? shift->expand : shift->expand(not shift) }
+
+#-------------------------------------------
+
 
 sub repliedTo()
 {   my $self = shift;
@@ -78,6 +112,9 @@ sub repliedTo()
          ? ($self->{MBTN_parent}, $self->{MBTN_quality})
          : $self->{MBTN_parent};
 }
+
+#-------------------------------------------
+
 
 sub follows($$)
 {   my ($self, $thread, $how) = @_;
@@ -102,7 +139,7 @@ sub follows($$)
         $self->{MBTN_quality} = $how;
         return $self;
     }
-
+    
     return $self if $quality eq 'REPLY';
 
     if($how eq 'REFERENCE' || ($how eq 'GUESS' && $quality ne 'REFERENCE'))
@@ -113,16 +150,25 @@ sub follows($$)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub followedBy(@)
 {   my $self = shift;
     $self->{MBTN_followUps}{$_->messageId} = $_ foreach @_;
     $self;
 }
 
+#-------------------------------------------
+
+
 sub followUps()
 {   my $self    = shift;
     $self->{MBTN_followUps} ? values %{$self->{MBTN_followUps}} : ();
 }
+
+#-------------------------------------------
+
 
 sub sortedFollowUps()
 {   my $self    = shift;
@@ -133,18 +179,11 @@ sub sortedFollowUps()
     map { $value{$_} } sort {$compare->($a, $b)} keys %value;
 }
 
-sub expand(;$)
-{   my $self = shift;
-    return $self->message->label('folded') || 0
-        unless @_;
+#-------------------------------------------
 
-    my $fold = not shift;
-    $_->label(folded => $fold) foreach $self->message;
-    $fold;
-}
 
-sub folded(;$)    # compatibility <2.0
-{  @_ == 1 ? shift->expand : shift->expand(not shift) }
+#-------------------------------------------
+
 
 sub threadToString(;$$$)   # two undocumented parameters for layout args
 {   my $self    = shift;
@@ -183,6 +222,9 @@ sub threadToString(;$$$)   # two undocumented parameters for layout args
     join '', @out;
 }
 
+#-------------------------------------------
+
+
 sub startTimeEstimate()
 {   my $self = shift;
 
@@ -200,6 +242,9 @@ sub startTimeEstimate()
     $earliest;
 }
 
+#-------------------------------------------
+
+
 sub endTimeEstimate()
 {   my $self = shift;
 
@@ -216,6 +261,9 @@ sub endTimeEstimate()
     $latest;
 }
 
+#-------------------------------------------
+
+
 sub recurse($)
 {   my ($self, $code) = @_;
 
@@ -226,6 +274,9 @@ sub recurse($)
 
     $self;
 }
+
+#-------------------------------------------
+
 
 sub totalSize()
 {   my $self  = shift;
@@ -241,6 +292,9 @@ sub totalSize()
     $total;
 }
 
+#-------------------------------------------
+
+
 sub numberOfMessages()
 {   my $self  = shift;
     my $total = 0;
@@ -249,6 +303,9 @@ sub numberOfMessages()
 }
 
 sub nrMessages() {shift->numberOfMessages}  # compatibility
+
+#-------------------------------------------
+
 
 sub threadMessages()
 {   my $self = shift;
@@ -264,11 +321,19 @@ sub threadMessages()
     @messages;
 }
 
+
+#-------------------------------------------
+
+
 sub ids()
 {   my $self = shift;
     my @ids;
     $self->recurse( sub {push @ids, shift->messageId} );
     @ids;
 }
+
+#-------------------------------------------
+
+
 
 1;

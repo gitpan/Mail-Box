@@ -1,18 +1,26 @@
+
 use strict;
 use warnings;
 
 package Mail::Message::TransferEnc::Base64;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::TransferEnc';
 
 use MIME::Base64;
 
+
 sub name() { 'base64' }
+
+#------------------------------------------
 
 sub check($@)
 {   my ($self, $body, %args) = @_;
     $body;
 }
+
+#------------------------------------------
+
 
 sub decode($@)
 {   my ($self, $body, %args) = @_;
@@ -26,7 +34,7 @@ sub decode($@)
     {   $body->transferEncoding('none');
         return $body;
     }
-
+ 
     my $bodytype
       = defined $args{result_type} ? $args{result_type}
       : $body->isBinary            ? 'Mail::Message::Body::File'
@@ -54,6 +62,8 @@ sub _decode_from_lines($)
     join '', map { decode_base64($_) } $body->lines;
 }
 
+#------------------------------------------
+
 sub encode($@)
 {   my ($self, $body, %args) = @_;
 
@@ -66,5 +76,7 @@ sub encode($@)
      , data              => encode_base64($body->string)
      );
 }
+
+#------------------------------------------
 
 1;

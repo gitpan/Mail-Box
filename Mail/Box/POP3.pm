@@ -1,5 +1,7 @@
+
 package Mail::Box::POP3;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Net';
 
 use strict;
@@ -13,6 +15,7 @@ use File::Spec;
 use File::Basename;
 use Carp;
 
+
 sub init($)
 {   my ($self, $args) = @_;
 
@@ -20,13 +23,18 @@ sub init($)
 
     $self->SUPER::init($args);
 
-    $self->{MBP_client}    = $args->{pop_client};
+    $self->{MBP_client}    = $args->{pop_client}; 
     $self->{MBP_auth}      = $args->{authenticate} || 'AUTO';
 
     $self;
 }
 
+#-------------------------------------------
+
+
 sub create($@) { undef }         # fails
+
+#-------------------------------------------
 
 sub foundIn(@)
 {   my $self = shift;
@@ -37,6 +45,9 @@ sub foundIn(@)
     || (exists $options{folder} && $options{folder} =~ m/^pop/);
 }
 
+#-------------------------------------------
+
+
 sub addMessage($)
 {   my ($self, $message) = @_;
 
@@ -45,6 +56,9 @@ sub addMessage($)
 
     undef;
 }
+
+#-------------------------------------------
+
 
 sub addMessages(@)
 {   my $self = shift;
@@ -56,7 +70,11 @@ sub addMessages(@)
     ();
 }
 
+#-------------------------------------------
+
 sub type() {'pop3'}
+
+#-------------------------------------------
 
 sub close()
 {   my $self = shift;
@@ -68,6 +86,9 @@ sub close()
     $self->SUPER::close;
 }
 
+#-------------------------------------------
+
+
 sub delete()
 {   my $self = shift;
     $self->log(WARNING => "A POP3 folder cannot be deleted: it will be emptied.");
@@ -76,11 +97,23 @@ sub delete()
     $self;
 }
 
+#-------------------------------------------
+
+
 sub listSubFolders(@) { () }     # no
+
+#-------------------------------------------
+
 
 sub openSubFolder($@) { undef }  # fails
 
+#-------------------------------------------
+
+
 sub update() {shift->notImplemented}
+
+#-------------------------------------------
+
 
 sub popClient()
 {   my $self = shift;
@@ -105,6 +138,8 @@ sub popClient()
     $self->{MBP_client} = $client;
 }
 
+#-------------------------------------------
+
 sub readMessages(@)
 {   my ($self, %args) = @_;
 
@@ -128,6 +163,9 @@ sub readMessages(@)
 
     $self;
 }
+ 
+#-------------------------------------------
+
 
 sub getHead($)
 {   my ($self, $message) = @_;
@@ -157,6 +195,9 @@ sub getHead($)
     $self->log(PROGRESS => "Loaded head of $uidl.");
     $head;
 }
+
+#-------------------------------------------
+
 
 sub getHeadAndBody($)
 {   my ($self, $message) = @_;
@@ -195,6 +236,9 @@ sub getHeadAndBody($)
     ($head, $body);
 }
 
+#-------------------------------------------
+
+
 sub writeMessages($@)
 {   my ($self, $args) = @_;
 
@@ -205,5 +249,7 @@ sub writeMessages($@)
 
     $self;
 }
+
+#-------------------------------------------
 
 1;

@@ -1,6 +1,8 @@
+
 use strict;
 package Mail::Box::MH;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Dir';
 
 use Mail::Box::MH::Index;
@@ -11,6 +13,7 @@ use Carp;
 use IO::File;
 use File::Spec;
 use File::Basename;
+
 
 my $default_folder_dir = exists $ENV{HOME} ? "$ENV{HOME}/.mh" : '.';
 
@@ -52,8 +55,12 @@ sub init($)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub create($@)
-{   my ($class, $name, %args) = @_;
+{   my ($thingy, $name, %args) = @_;
+    my $class     = ref $thingy      || $thingy;
     my $folderdir = $args{folderdir} || $default_folder_dir;
     my $directory = $class->folderToDirectory($name, $folderdir);
 
@@ -68,6 +75,8 @@ sub create($@)
         return;
     }
 }
+
+#-------------------------------------------
 
 sub foundIn($@)
 {   my $class = shift;
@@ -93,7 +102,11 @@ sub foundIn($@)
     0;
 }
 
+#-------------------------------------------
+
 sub type() {'mh'}
+
+#-------------------------------------------
 
 sub listSubFolders(@)
 {   my ($class, %args) = @_;
@@ -161,6 +174,8 @@ sub listSubFolders(@)
     grep { $class->foundIn(File::Spec->catfile($dir,$_)) } @dirs;
 }
 
+#-------------------------------------------
+
 sub openSubFolder($@)
 {   my ($self, $name) = (shift, shift);
 
@@ -172,6 +187,50 @@ sub openSubFolder($@)
 
     $self->SUPER::openSubFolder($name, @_);
 }
+
+#-------------------------------------------
+
+
+sub appendMessages(@)
+{   my $class  = shift;
+    my %args   = @_;
+
+    my @messages = exists $args{message} ? $args{message}
+                 : exists $args{messages} ? @{$args{messages}}
+                 : return ();
+
+    my $self     = $class->new(@_, access => 'a')
+        or return ();
+
+    my $directory= $self->directory;
+    return unless -d $directory;
+
+    my $locker   = $self->locker;
+    unless($locker->lock)
+    {   $self->log(ERROR => "Cannot append message without lock on $self.");
+        return;
+    }
+
+    my $msgnr    = $self->highestMessageNumber +1;
+
+    foreach my $message (@messages)
+    {   my $filename = File::Spec->catfile($directory,$msgnr);
+        $message->create($filename)
+          or $self->log(ERROR => "Unable to write message for $self to $filename: $!\n");
+
+        $msgnr++;
+    }
+ 
+    my $labels   = $self->labels->append(@messages);
+
+    $locker->unlock;
+    $self->close;
+
+    @messages;
+}
+
+#-------------------------------------------
+
 
 sub highestMessageNumber()
 {   my $self = shift;
@@ -188,6 +247,9 @@ sub highestMessageNumber()
     $messages[-1];
 }
 
+#-------------------------------------------
+
+
 sub index()
 {   my $self  = shift;
     return () unless $self->{MBM_keep_index};
@@ -200,6 +262,9 @@ sub index()
 
 }
 
+#-------------------------------------------
+
+
 sub labels()
 {   my $self   = shift;
     return $self->{MBM_labels} if defined $self->{MBM_labels};
@@ -209,6 +274,8 @@ sub labels()
       , $self->logSettings
       )
 }
+
+#-------------------------------------------
 
 sub readMessageFilenames
 {   my ($self, $dirname) = @_;
@@ -223,6 +290,8 @@ sub readMessageFilenames
 
     @msgnrs;
 }
+
+#-------------------------------------------
 
 sub readMessages(@)
 {   my ($self, %args) = @_;
@@ -275,6 +344,9 @@ sub readMessages(@)
     $self->{MBM_highest_msgnr}  = $msgnrs[-1];
     $self;
 }
+ 
+#-------------------------------------------
+
 
 sub writeMessages($)
 {   my ($self, $args) = @_;
@@ -332,42 +404,9 @@ sub writeMessages($)
     $self;
 }
 
-sub appendMessages(@)
-{   my $class  = shift;
-    my %args   = @_;
+#-------------------------------------------
 
-    my @messages = exists $args{message} ? $args{message}
-                 : exists $args{messages} ? @{$args{messages}}
-                 : return ();
+#-------------------------------------------
 
-    my $self     = $class->new(@_, access => 'a')
-        or return ();
-
-    my $directory= $self->directory;
-    return unless -d $directory;
-
-    my $locker   = $self->locker;
-    unless($locker->lock)
-    {   $self->log(ERROR => "Cannot append message without lock on $self.");
-        return;
-    }
-
-    my $msgnr    = $self->highestMessageNumber +1;
-
-    foreach my $message (@messages)
-    {   my $filename = File::Spec->catfile($directory,$msgnr);
-        $message->create($filename)
-          or $self->log(ERROR => "Unable to write message for $self to $filename: $!\n");
-
-        $msgnr++;
-    }
-
-    my $labels   = $self->labels->append(@messages);
-
-    $locker->unlock;
-    $self->close;
-
-    @messages;
-}
 
 1;

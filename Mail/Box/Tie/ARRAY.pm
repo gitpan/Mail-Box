@@ -1,8 +1,11 @@
+
 use strict;
 package Mail::Box::Tie::ARRAY;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 
 use Carp;
+
 
 sub TIEARRAY(@)
 {   my ($class, $folder) = @_;
@@ -12,32 +15,51 @@ sub TIEARRAY(@)
     bless { MBT_folder => $folder }, $class;
 }
 
+#-------------------------------------------
+
+
 sub FETCH($)
 {   my ($self, $index) = @_;
     my $msg = $self->{MBT_folder}->message($index);
     $msg->isDeleted ? undef : $msg;
 }
 
+#-------------------------------------------
+
+
 sub STORE($$)
 {   my ($self, $index, $msg) = @_;
     my $folder = $self->{MBT_folder};
 
     croak "Cannot simply replace messages in a folder: use delete old, then push new."
-        if $index != $folder->messages;
+        unless $index == $folder->messages;
 
     $folder->addMessages($msg);
     $msg;
 }
 
+#-------------------------------------------
+
+
 sub FETCHSIZE()  { scalar shift->{MBT_folder}->messages }
+
+#-------------------------------------------
+
 
 sub PUSH(@)
 {   my $folder = shift->{MBT_folder};
     $folder->addMessages(@_);
     scalar $folder->messages;
 }
+ 
+
+#-------------------------------------------
+
 
 sub DELETE($) { shift->{MBT_folder}->message(shift)->delete }
+
+#-------------------------------------------
+
 
 sub STORESIZE($)
 {   my $folder = shift->{MBT_folder};
@@ -47,5 +69,8 @@ sub STORESIZE($)
 }
 
 # DESTROY is implemented in Mail::Box
+
+#-------------------------------------------
+
 
 1;

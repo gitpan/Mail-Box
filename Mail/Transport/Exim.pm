@@ -2,10 +2,12 @@ use strict;
 use warnings;
 
 package Mail::Transport::Exim;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Transport::Send';
 
 use Carp;
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -22,6 +24,9 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
+
 sub trySend($@)
 {   my ($self, $message, %args) = @_;
 
@@ -31,7 +36,7 @@ sub trySend($@)
 
     my $program = $self->{MTS_program};
     if(open(MAILER, '|-')==0)
-    {   { exec $program, '-f', $from, @to; }  # {} to avoid warning
+    {   { exec $program, '-i', '-f', $from, @to; }  # {} to avoid warning
         $self->log(NOTICE => "Errors when opening pipe to $program: $!");
         return 0;
     }
@@ -46,5 +51,7 @@ sub trySend($@)
 
     1;
 }
+
+#------------------------------------------
 
 1;

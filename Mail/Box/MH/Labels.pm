@@ -1,7 +1,9 @@
+
 use strict;
 
 package Mail::Box::MH::Labels;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Subset;
@@ -9,6 +11,10 @@ use Mail::Message::Head::Subset;
 use IO::File;
 use File::Copy;
 use Carp;
+
+
+#-------------------------------------------
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -19,12 +25,21 @@ sub init($)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub filename() {shift->{MBML_filename}}
+
+#-------------------------------------------
+
 
 sub get($)
 {   my ($self, $msgnr) = @_;
     $self->{MBML_labels}[$msgnr];
 }
+
+#-------------------------------------------
+
 
 sub read()
 {   my $self = shift;
@@ -63,6 +78,9 @@ sub read()
     $self;
 }
 
+#-------------------------------------------
+
+
 sub write(@)
 {   my $self     = shift;
     my $filename = $self->filename;
@@ -79,6 +97,9 @@ sub write(@)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub append(@)
 {   my $self     = shift;
     my $filename = $self->filename;
@@ -88,6 +109,9 @@ sub append(@)
     $out->close;
     $self;
 }
+
+#-------------------------------------------
+
 
 sub print($@)
 {   my ($self, $out) = (shift, shift);
@@ -131,5 +155,8 @@ sub print($@)
 
     $self;
 }
+
+#-------------------------------------------
+
 
 1;

@@ -2,13 +2,15 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Lines;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
 use IO::Lines;
 
 use Carp;
+
 
 sub _data_from_filename(@)
 {   my ($self, $filename) = @_;
@@ -48,13 +50,18 @@ sub _data_from_lines(@)
     $self;
 }
 
+#------------------------------------------
+
 sub clone()
 {   my $self  = shift;
     ref($self)->new(data => [ $self->lines ], based_on => $self);
 }
 
+#------------------------------------------
+
 sub nrLines() { scalar @{shift->{MMBL_array}} }
 
+#------------------------------------------
 # Optimized to be computed only once.
 
 sub size()
@@ -66,17 +73,27 @@ sub size()
     $self->{MMBL_size} = $size;
 }
 
+#------------------------------------------
+
 sub string() { join '', @{shift->{MMBL_array}} }
+
+#------------------------------------------
 
 sub lines()  { wantarray ? @{shift->{MMBL_array}} : shift->{MMBL_array} }
 
+#------------------------------------------
+
 sub file() { IO::Lines->new(shift->{MMBL_array}) }
+
+#------------------------------------------
 
 sub print(;$)
 {   my $self = shift;
     my $fh   = shift || select;
     $fh->print(@{$self->{MMBL_array}});
 }
+
+#------------------------------------------
 
 sub printEscapedFrom($)
 {   my ($self, $fh) = @_;
@@ -87,6 +104,8 @@ sub printEscapedFrom($)
     }
 }
 
+#------------------------------------------
+
 sub read($$;$@)
 {   my ($self, $parser, $head, $bodytype) = splice @_, 0, 4;
     my @lines = $parser->bodyAsList(@_);
@@ -96,5 +115,7 @@ sub read($$;$@)
     $self->{MMBL_array} = \@lines;
     $self;
 }
+
+#------------------------------------------
 
 1;

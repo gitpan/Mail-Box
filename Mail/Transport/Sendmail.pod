@@ -3,17 +3,20 @@
 
 Mail::Transport::Sendmail - transmit messages using external Sendmail program
 
-=head1 CLASS INHERITANCE
+
+=head1 INHERITANCE
 
  Mail::Transport::Sendmail
    is a Mail::Transport::Send
    is a Mail::Transport
    is a Mail::Reporter
 
+
 =head1 SYNOPSIS
 
  my $sender = Mail::Transport::Sendmail->new(...);
  $sender->send($message);
+
 
 =head1 DESCRIPTION
 
@@ -25,201 +28,268 @@ Some people use Postfix as MTA.  Postfix can be installed as replacement
 for Sendmail: is provides a program with the same name and options.  So,
 this module supports postfix as well.
 
+
+
 =head1 METHODS
 
-=head2 Initiation
+
+=head2 Constructors
+
+
+Mail::Transport::Sendmail-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-=item B<new> OPTIONS
+ Option      Defined in       Default       
+ executable  L<Mail::Transport>  C<undef>      
+ hostname    L<Mail::Transport>  C<'localhost'>
+ interval    L<Mail::Transport>  C<30>         
+ log         L<Mail::Reporter>  C<'WARNINGS'> 
+ password    L<Mail::Transport>  undef         
+ port        L<Mail::Transport>  undef         
+ proxy       L<Mail::Transport>  undef         
+ retry       L<Mail::Transport>  <false>       
+ timeout     L<Mail::Transport>  C<120>        
+ trace       L<Mail::Reporter>  C<'WARNINGS'> 
+ username    L<Mail::Transport>  undef         
+ via         L<Mail::Transport>  C<'sendmail'> 
 
-(Class method)
+. executable FILENAME
 
- OPTION               DEFAULT
- executable           C<undef>
- hostname             'localhost'
- interval             30
- log                  'WARNINGS'
- password             undef
- port                 undef
- proxy                undef
- retry                <false>
- timeout              120
- trace                'WARNINGS'
- username             undef
- via                  'sendmail'
+. hostname HOSTNAME|ARRAY-OF-HOSTNAMES
+
+. interval SECONDS
+
+. log LEVEL
+
+. password STRING
+
+. port INTEGER
+
+. proxy PATH
+
+. retry NUMBER|undef
+
+. timeout SECONDS
+
+. trace LEVEL
+
+. username STRING
+
+. via CLASS|NAME
+
+=back
+
+=head2 Sending mail
+
+
+$obj-E<gt>B<destinations>(MESSAGE, [ADDRESS|ARRAY-OF-ADDRESSES])
 
 =over 4
 
-=item B<executable> =E<gt> FILENAME
-
-See Mail::Transport::new(executable)
-
-=item B<hostname> =E<gt> HOSTNAME|ARRAY-OF-HOSTNAMES
-
-See Mail::Transport::new(hostname)
-
-=item B<interval> =E<gt> SECONDS
-
-See Mail::Transport::new(interval)
-
-=item B<log> =E<gt> LEVEL
-
-See Mail::Reporter::new(log)
-
-=item B<password> =E<gt> STRING
-
-See Mail::Transport::new(password)
-
-=item B<port> =E<gt> INTEGER
-
-See Mail::Transport::new(port)
-
-=item B<proxy> =E<gt> PATH
-
-See Mail::Transport::new(proxy)
-
-=item B<retry> =E<gt> NUMBER|undef
-
-See Mail::Transport::new(retry)
-
-=item B<timeout> =E<gt> SECONDS
-
-See Mail::Transport::new(timeout)
-
-=item B<trace> =E<gt> LEVEL
-
-See Mail::Reporter::new(trace)
-
-=item B<username> =E<gt> STRING
-
-See Mail::Transport::new(username)
-
-=item B<via> =E<gt> CLASS|NAME
-
-See Mail::Transport::new(via)
+See L<Mail::Transport::Send/"Sending mail">
 
 =back
 
-=back
-
-=head2 Server Connection
+$obj-E<gt>B<putContent>(MESSAGE, FILEHANDLE, OPTIONS)
 
 =over 4
 
-=item B<findBinary> NAME [, DIRECTORIES]
-
-See Mail::Transport::findBinary()
-
-=item B<remoteHost> 
-
-See Mail::Transport::remoteHost()
-
-=item B<retry> 
-
-See Mail::Transport::retry()
+See L<Mail::Transport::Send/"Sending mail">
 
 =back
 
-=head2 Sending Mail
+$obj-E<gt>B<send>(MESSAGE, OPTIONS)
 
 =over 4
 
-=item B<destinations> MESSAGE, [ADDRESS|ARRAY-OF-ADDRESSES]
-
-See Mail::Transport::Send::destinations()
-
-=item B<putContent> MESSAGE, FILEHANDLE, OPTIONS
-
-See Mail::Transport::Send::putContent()
-
-=item B<send> MESSAGE, OPTIONS
-
-See Mail::Transport::Send::send()
-
-=item B<trySend> MESSAGE, OPTION
+See L<Mail::Transport::Send/"Sending mail">
 
 =back
 
-=head2 Logging and Tracing
+$obj-E<gt>B<trySend>(MESSAGE, OPTION)
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL]
-
-See Mail::Reporter::defaultTrace()
-
-=item B<errors> 
-
-See Mail::Reporter::errors()
-
-=item B<log> [LEVEL [,STRINGS]]
-
-See Mail::Reporter::log()
-
-=item B<report> [LEVEL]
-
-See Mail::Reporter::report()
-
-=item B<reportAll> [LEVEL]
-
-See Mail::Reporter::reportAll()
-
-=item B<trace> [LEVEL]
-
-See Mail::Reporter::trace()
-
-=item B<warnings> 
-
-See Mail::Reporter::warnings()
-
 =back
 
-=head2 Other Methods
+=head2 Server connection
+
+
+$obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
 
 =over 4
 
-=item B<AUTOLOAD> 
-
-See Mail::Reporter::AUTOLOAD()
-
-=item B<DESTROY> 
-
-See Mail::Reporter::DESTROY()
-
-=item B<inGlobalDestruction> 
-
-See Mail::Reporter::inGlobalDestruction()
-
-=item B<logPriority> LEVEL
-
-See Mail::Reporter::logPriority()
-
-=item B<logSettings> 
-
-See Mail::Reporter::logSettings()
-
-=item B<notImplemented> 
-
-See Mail::Reporter::notImplemented()
+See L<Mail::Transport/"Server connection">
 
 =back
 
-=head1 SEE ALSO
+$obj-E<gt>B<remoteHost>
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
+=over 4
 
-=head1 AUTHOR
+See L<Mail::Transport/"Server connection">
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
+=back
 
-=head1 VERSION
+$obj-E<gt>B<retry>
 
-This code is beta, version 2.040.
+=over 4
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+See L<Mail::Transport/"Server connection">
+
+=back
+
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Transport::Sendmail-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<errors>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Transport::Sendmail-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Transport::Sendmail-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Errors when closing sendmail mailer $program: $!
+
+The was no problem starting the sendmail mail transfer agent, but for
+some specific reason the message could not be handled correctly.
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

@@ -1,22 +1,31 @@
+
 use strict;
 use warnings;
 
 package Mail::Message::TransferEnc::EightBit;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::TransferEnc';
 
+
 sub name() { '8bit' }
+
+#------------------------------------------
 
 sub check($@)
 {   my ($self, $body, %args) = @_;
     $body;
 }
 
+#------------------------------------------
+
 sub decode($@)
 {   my ($self, $body, %args) = @_;
     $body->transferEncoding('none');
     $body;
 }
+
+#------------------------------------------
 
 sub encode($@)
 {   my ($self, $body, %args) = @_;
@@ -47,5 +56,7 @@ sub encode($@)
      , data              => \@lines
      );
 }
+
+#------------------------------------------
 
 1;

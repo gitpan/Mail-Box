@@ -2,21 +2,26 @@ use strict;
 use warnings;
 
 package Mail::Message;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
 use Mail::Message::Head::Complete;
+use Mail::Message::Construct;
 
 use Mail::Message::Body::Lines;
 use Mail::Message::Body::Multipart;
 use Mail::Message::Body::Nested;
 
 use Carp;
-use IO::ScalarArray;
+
 
 our $crlf_platform;
 BEGIN { $crlf_platform = $^O =~ m/win32|cygwin/i }
+
+#------------------------------------------
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -53,6 +58,9 @@ sub init($)
     $self->labels(@{$args->{labels}}) if $args->{labels};
     $self;
 }
+
+#------------------------------------------
+
 
 my $mail_internet_converter;
 my $mime_entity_converter;
@@ -97,50 +105,55 @@ sub coerce($)
     bless $message, $class;
 }
 
+#------------------------------------------
+
+
+sub clone()
+{   my $self  = shift;
+
+    # First clone body, which may trigger head load as well.  If head is
+    # triggered first, then it may be decided to be lazy on the body at
+    # moment.  And then the body would be triggered.
+
+    my $clone = Mail::Message->new
+     ( body  => $self->body->clone
+     , head  => $self->head->clone
+     , $self->logSettings
+     );
+
+    my %labels = %{$self->{MM_labels}};
+    $clone->{MM_labels} = \%labels;
+    $clone;
+}
+
+#------------------------------------------
+
+
 sub messageId() { $_[0]->{MM_message_id} || $_[0]->takeMessageId}
 sub messageID() {shift->messageId}   # compatibility
 
-sub modified(;$)
-{   my $self = shift;
+#------------------------------------------
 
-    return $self->isModified unless @_;  # compatibility 2.036
-
-    my $flag = shift;
-    $self->{MM_modified} = $flag;
-    my $head = $self->head;
-    $head->modified($flag) if $head;
-    my $body = $self->body;
-    $body->modified($flag) if $body;
-
-    $flag;
-}
-
-sub isModified()
-{   my $self = shift;
-    return 1 if $self->{MM_modified};
-
-    my $head = $self->head;
-    if($head && $head->isModified)
-    {   $self->{MM_modified}++;
-        return 1;
-    }
-
-    my $body = $self->body;
-    if($body && $body->isModified)
-    {   $self->{MM_modified}++;
-        return 1;
-    }
-
-    0;
-}
 
 sub container() { undef } # overridden by Mail::Message::Part
 
+#------------------------------------------
+
+
 sub isPart() { 0 } # overridden by Mail::Message::Part
+
+#------------------------------------------
+
 
 sub toplevel() { shift } # overridden by Mail::Message::Part
 
+#------------------------------------------
+
+
 sub isDummy() { 0 }
+
+#------------------------------------------
+
 
 sub print(;$)
 {   my $self = shift;
@@ -151,6 +164,9 @@ sub print(;$)
     $self;
 }
 
+#------------------------------------------
+
+
 sub write(;$)
 {   my $self = shift;
     my $out  = shift || select;
@@ -159,6 +175,9 @@ sub write(;$)
     $self->body->print($out);
     $self;
 }
+
+#------------------------------------------
+
 
 my $default_mailer;
 
@@ -178,28 +197,16 @@ sub send(@)
     $mailer->send($self, @options);
 }
 
+#------------------------------------------
+
+
 sub size()
 {   my $self = shift;
     $self->head->size + $self->body->size;
 }
 
-sub clone()
-{   my $self  = shift;
+#------------------------------------------
 
-    # First clone body, which may trigger head load as well.  If head is
-    # triggered first, then it may be decided to be lazy on the body at
-    # moment.  And then the body would be triggered.
-
-    my $clone = Mail::Message->new
-     ( body  => $self->body->clone
-     , head  => $self->head->clone
-     , $self->logSettings
-     );
-
-    my %labels = %{$self->{MM_labels}};
-    $clone->{MM_labels} = \%labels;
-    $clone;
-}
 
 sub head(;$)
 {   my $self = shift;
@@ -227,12 +234,21 @@ sub head(;$)
     $head;
 }
 
+#------------------------------------------
+
+
 sub get($)
 {   my $field = shift->head->get(shift) || return undef;
     $field->body;
 }
 
+#-------------------------------------------
+
+
 sub from() { map {$_->addresses} shift->head->get('From') }
+
+#-------------------------------------------
+
 
 sub sender()
 {   my $self   = shift;
@@ -247,34 +263,65 @@ sub sender()
     ($sender->addresses)[0];                 # first specified address
 }
 
+#-------------------------------------------
+
+
 sub to() { map {$_->addresses} shift->head->get('To') }
+
+#-------------------------------------------
+
 
 sub cc() { map {$_->addresses} shift->head->get('Cc') }
 
+#-------------------------------------------
+
+
 sub bcc() { map {$_->addresses} shift->head->get('Bcc') }
+
+#-------------------------------------------
+
 
 sub date() { shift->head->get('Date') }
 
+#-------------------------------------------
+
+
 sub destinations()
 {   my $self = shift;
-    my %to = map { ($_->address => $_) } $self->to, $self->cc, $self->bcc;
+    my %to = map { (lc($_->address) => $_) }
+                  $self->to, $self->cc, $self->bcc;
     values %to;
 }
+
+#-------------------------------------------
+
 
 sub subject()
 {   my $subject = shift->get('subject');
     defined $subject ? $subject : '';
 }
 
+#-------------------------------------------
+
+
 sub guessTimestamp() {shift->head->guessTimestamp}
 
+#-------------------------------------------
+
+
 sub timestamp() {shift->head->timestamp}
+
+#------------------------------------------
+
 
 sub nrLines()
 {   my $self = shift;
     $self->head->nrLines + $self->body->nrLines;
 }
 
+#-------------------------------------------
+
+  
 my @bodydata_in_header = qw/Content-Type Content-Transfer-Encoding
     Content-Length Content-Disposition Lines/;
 
@@ -330,6 +377,9 @@ sub body(;$@)
     $self->{MM_body} = $body;
 }
 
+#------------------------------------------
+
+
 sub decoded(@)
 {   my ($self, %args) = @_;
 
@@ -342,12 +392,26 @@ sub decoded(@)
     $decoded;
 }
 
+#------------------------------------------
+
+
 sub encode(@)
 {   my $body = shift->body->load;
     $body ? $body->encode(@_) : undef;
 }
 
+#-------------------------------------------
+
+
 sub isMultipart() {shift->head->isMultipart}
+
+#-------------------------------------------
+
+
+sub isNested() {shift->body->isNested}
+
+#-------------------------------------------
+
 
 sub parts(;$)
 {   my $self    = shift;
@@ -371,6 +435,49 @@ sub parts(;$)
 
 sub isDeleted() {0} # needed for parts('ACTIVE'|'DELETED') on non-folder messages.
 
+#------------------------------------------
+
+
+sub modified(;$)
+{   my $self = shift;
+
+    return $self->isModified unless @_;  # compatibility 2.036
+
+    my $flag = shift;
+    $self->{MM_modified} = $flag;
+    my $head = $self->head;
+    $head->modified($flag) if $head;
+    my $body = $self->body;
+    $body->modified($flag) if $body;
+
+    $flag;
+}
+
+#------------------------------------------
+
+
+sub isModified()
+{   my $self = shift;
+    return 1 if $self->{MM_modified};
+
+    my $head = $self->head;
+    if($head && $head->isModified)
+    {   $self->{MM_modified}++;
+        return 1;
+    }
+
+    my $body = $self->body;
+    if($body && $body->isModified)
+    {   $self->{MM_modified}++;
+        return 1;
+    }
+
+    0;
+}
+
+#------------------------------------------
+
+
 sub label($;$)
 {   my $self   = shift;
     return $self->{MM_labels}{$_[0]} unless @_ > 1;
@@ -381,10 +488,16 @@ sub label($;$)
     $return;
 }
 
+#------------------------------------------
+
+
 sub labels()
 {   my $self = shift;
     wantarray ? keys %{$self->{MM_labels}} : $self->{MM_labels};
 }
+
+#------------------------------------------
+
 
 sub labelsToStatus()
 {   my $self    = shift;
@@ -411,6 +524,9 @@ sub labelsToStatus()
     $self;
 }
 
+#-------------------------------------------
+
+
 sub statusToLabels()
 {   my $self    = shift;
     my $head    = $self->head;
@@ -428,23 +544,16 @@ sub statusToLabels()
     $self;
 }
 
+#------------------------------------------
+
+
+#------------------------------------------
 # All next routines try to create compatibility with release < 2.0
 sub isParsed()   { not shift->isDelayed }
 sub headIsRead() { not shift->head->isa('Mail::Message::Delayed') }
 
-sub AUTOLOAD(@)
-{   my $self  = shift;
-    our $AUTOLOAD;
-    (my $call = $AUTOLOAD) =~ s/.*\:\://g;
-    require Mail::Message::Construct;
+#------------------------------------------
 
-    no strict 'refs';
-    return $self->$call(@_) if $self->can($call);
-
-    our @ISA;                    # produce error via Mail::Reporter
-    $call = "${ISA[0]}::$call";
-    $self->$call(@_);
-}
 
 sub readFromParser($;$)
 {   my ($self, $parser, $bodytype) = @_;
@@ -464,6 +573,9 @@ sub readFromParser($;$)
     $self;
 }
 
+#------------------------------------------
+
+
 sub readHead($;$)
 {   my ($self, $parser) = (shift, shift);
 
@@ -477,6 +589,9 @@ sub readHead($;$)
       , $self->logSettings
       )->read($parser);
 }
+
+#------------------------------------------
+
 
 my $mpbody = 'Mail::Message::Body::Multipart';
 my $nbody  = 'Mail::Message::Body::Nested';
@@ -529,6 +644,9 @@ sub readBody($$;$$)
       ) or return;
 }
 
+#------------------------------------------
+
+
 sub storeBody($)
 {   my ($self, $body) = @_;
     $self->{MM_body} = $body;
@@ -536,10 +654,16 @@ sub storeBody($)
     $body;
 }
 
+#-------------------------------------------
+
+
 sub isDelayed()
 {    my $body = shift->body;
      !$body || $body->isDelayed;
 }
+
+#------------------------------------------
+
 
 sub takeMessageId(;$)
 {   my $self  = shift;
@@ -549,12 +673,15 @@ sub takeMessageId(;$)
     {   $msgid = $1;
         $msgid =~ s/\s//gs;
     }
-
+ 
     $msgid = $self->head->createMessageId
         unless length $msgid;
 
     $self->{MM_message_id} = $msgid;
 }
+
+#------------------------------------------
+
 
 sub DESTROY()
 {   my $self = shift;
@@ -564,5 +691,8 @@ sub DESTROY()
     $self->head(undef);
     $self->body(undef);
 }
+
+#------------------------------------------
+
 
 1;

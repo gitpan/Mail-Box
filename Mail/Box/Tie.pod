@@ -3,6 +3,10 @@
 
 Mail::Box::Tie - access an existing message-folder as an array or hash
 
+
+=head1 INHERITANCE
+
+
 =head1 SYNOPSIS
 
 As an array:
@@ -18,10 +22,11 @@ or as hash:
  tie my(%inbox), Mail::Box::Tie => $folder;    # deprecated
  print $inbox{'<12379.124879@example.com>'};
 
+
 =head1 DESCRIPTION
 
-The use of Mail::Box::Tie is deprecated, because it is succeeded by two
-separate modules: Mail::Box::Tie::ARRAY and Mail::Box::Tie::HASH.
+The use of C<Mail::Box::Tie> is B<deprecated>, because it is succeeded by two
+separate modules: L<Mail::Box::Tie::ARRAY|Mail::Box::Tie::ARRAY> and L<Mail::Box::Tie::HASH|Mail::Box::Tie::HASH>.
 However, this module still works.
 
 Folders certainly look like an array of messages, so why not just
@@ -30,23 +35,30 @@ message-ids are (give relations): why not access them from a hash
 based on this message-id?  Programs using one of these ties will
 look simpler than programs using the more traditional method calls.
 
+
+
 =head1 METHODS
 
-=head1 SEE ALSO
 
-A good start to read is Mail::Box-Overview.
-More documentation and a mailinglist are available from the project's
-website at L<http://perl.overmeer.net/mailbox/>.
 
-=head1 AUTHOR
 
-Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
-with the help of many.  See the ChangeLog for details.
 
-=head1 VERSION
 
-This code is beta, version 2.040.
 
-Copyright (c) 2001-2003 by the authors. All rights reserved.
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+
+
+=head1 REFERENCES
+
+See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Module version 2.041.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

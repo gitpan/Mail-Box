@@ -2,9 +2,11 @@ use strict;
 use warnings;
 
 package Mail::Box::Parser;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Reporter';
 use Carp;
+
 
 sub new(@)
 {   my $class = shift;
@@ -30,6 +32,143 @@ sub init(@)
 
     $self->start(file => $args->{file});
 }
+
+#------------------------------------------
+
+
+sub start(@)
+{   my $self = shift;
+    my %args = (@_, filename => $self->filename, mode => $self->{MBP_mode});
+
+    $self->openFile(\%args)
+        or return;
+
+    $self->takeFileInfo;
+
+    $self->log(PROGRESS => "Opened folder $args{filename} to be parsed");
+    $self;
+}
+
+#------------------------------------------
+
+
+sub stop()
+{   my $self     = shift;
+
+    my $filename = $self->filename;
+
+    $self->log(WARNING => "File $filename changed during access.")
+       if $self->fileChanged;
+
+    $self->log(NOTICE  => "Close parser for file $filename");
+    $self->closeFile;
+}
+
+#------------------------------------------
+
+
+sub restart()
+{   my $self     = shift;
+    my $filename = $self->filename;
+
+    $self->closeFile or return;
+
+    $self->openFile( {filename => $filename, mode => $self->{MBP_mode}} )
+        or return;
+
+    $self->takeFileInfo;
+    $self->log(NOTICE  => "Restarted parser for file $filename");
+    $self;
+}
+
+#------------------------------------------
+
+
+sub fileChanged()
+{   my $self = shift;
+    my ($size, $mtime) = (stat $self->filename)[7,9];
+    return 0 unless $size;
+
+      $size != $self->{MBP_size} ? 0
+    : !defined $mtime            ? 0
+    : $mtime != $self->{MBP_mtime};
+}
+    
+#------------------------------------------
+
+
+sub filename() {shift->{MBP_filename}}
+
+#------------------------------------------
+
+
+sub filePosition(;$) {shift->NotImplemented}
+
+#------------------------------------------
+
+
+sub pushSeparator($) {shift->notImplemented}
+
+#------------------------------------------
+
+
+sub popSeparator($) {shift->notImplemented}
+
+#------------------------------------------
+
+
+sub readSeparator($) {shift->notImplemented}
+
+#------------------------------------------
+
+
+sub readHeader()    {shift->notImplemented}
+
+#------------------------------------------
+
+
+sub bodyAsString() {shift->notImplemented}
+
+#------------------------------------------
+
+
+sub bodyAsList() {shift->notImplemented}
+
+#------------------------------------------
+
+
+sub bodyAsFile() {shift->notImplemented}
+
+#------------------------------------------
+
+
+sub bodyDelayed() {shift->notImplemented}
+
+#------------------------------------------
+
+
+sub lineSeparator() {shift->{MBP_linesep}}
+
+#------------------------------------------
+
+
+sub openFile(@) {shift->notImplemented}
+
+#------------------------------------------
+
+
+sub closeFile(@) {shift->notImplemented}
+
+#------------------------------------------
+
+
+sub takeFileInfo()
+{   my $self     = shift;
+    @$self{ qw/MBP_size MBP_mtime/ } = (stat $self->filename)[7,9];
+}
+
+#------------------------------------------
+
 
 my $parser_type;
 
@@ -60,90 +199,15 @@ sub defaultParserType(;$)
     $parser_type = 'Mail::Box::Parser::Perl';
 }
 
-sub start(@)
-{   my $self = shift;
-    my %args = (@_, filename => $self->filename, mode => $self->{MBP_mode});
+#------------------------------------------
 
-    $self->openFile(\%args)
-        or return;
-
-    $self->takeFileInfo;
-
-    $self->log(PROGRESS => "Opened folder $args{filename} to be parsed");
-    $self;
-}
-
-sub stop()
-{   my $self     = shift;
-
-    my $filename = $self->filename;
-
-    $self->log(WARNING => "File $filename changed during access.")
-       if $self->fileChanged;
-
-    $self->log(NOTICE  => "Close parser for file $filename");
-    $self->closeFile;
-}
-
-sub restart()
-{   my $self     = shift;
-    my $filename = $self->filename;
-
-    $self->closeFile or return;
-
-    $self->openFile( {filename => $filename, mode => $self->{MBP_mode}} )
-        or return;
-
-    $self->takeFileInfo;
-    $self->log(NOTICE  => "Restarted parser for file $filename");
-    $self;
-}
-
-sub takeFileInfo()
-{   my $self     = shift;
-    @$self{ qw/MBP_size MBP_mtime/ } = (stat $self->filename)[7,9];
-}
-
-sub fileChanged()
-{   my $self = shift;
-    my ($size, $mtime) = (stat $self->filename)[7,9];
-    return 0 unless $size;
-
-      $size != $self->{MBP_size} ? 0
-    : !defined $mtime            ? 0
-    : $mtime != $self->{MBP_mtime};
-}
-
-sub filename() {shift->{MBP_filename}}
-
-sub filePosition(;$) {shift->NotImplemented}
-
-sub pushSeparator($) {shift->notImplemented}
-
-sub popSeparator($) {shift->notImplemented}
-
-sub readSeparator($) {shift->notImplemented}
-
-sub readHeader()    {shift->notImplemented}
-
-sub bodyAsString() {shift->notImplemented}
-
-sub bodyAsList() {shift->notImplemented}
-
-sub bodyAsFile() {shift->notImplemented}
-
-sub bodyDelayed() {shift->notImplemented}
-
-sub lineSeparator() {shift->{MBP_linesep}}
-
-sub openFile(@) {shift->notImplemented}
-
-sub closeFile(@) {shift->notImplemented}
 
 sub DESTROY
 {   my $self = shift;
     $self->stop;
     $self->SUPER::DESTROY;
 }
+
+#------------------------------------------
 
 1;

@@ -2,10 +2,12 @@ use strict;
 use warnings;
 
 package Mail::Transport::Mailx;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Transport::Send';
 
 use Carp;
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -29,6 +31,9 @@ sub init($)
     $self;
 }
 
+#------------------------------------------
+
+
 sub _try_send_bsdish($$)
 {   my ($self, $message, $args) = @_;
 
@@ -51,7 +56,7 @@ sub _try_send_bsdish($$)
         $self->log(NOTICE => "Cannot start contact to $program: $!");
         return 0;
     }
-
+ 
     $self->putContent($message, \*MAILER, body_only => 1);
 
     my $msgid = $message->messageId;
@@ -76,7 +81,7 @@ sub trySend($@)
     {   $self->log(NOTICE => "Cannot start contact to $program: $!");
         return 0;
     }
-
+ 
     $self->putContent($message, \*MAILER);
 
     unless(close MAILER)
@@ -86,5 +91,7 @@ sub trySend($@)
 
     1;
 }
+
+#------------------------------------------
 
 1;

@@ -1,11 +1,16 @@
+
 package Mail::Box::Search::Grep;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Box::Search';
 
 use strict;
 use warnings;
 
 use Carp;
+
+#-------------------------------------------
+
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -34,18 +39,22 @@ sub init($)
        or croak "No match pattern specified.\n";
     $self->{MBSG_match_check}
      = !ref $match             ? sub { index("$_[1]", $match) >= $[ }
-     :  ref $match eq 'Regexp' ? sub { "$_[1]" =~ $match }
+     :  ref $match eq 'Regexp' ? sub { "$_[1]" =~ $match } 
      :  ref $match eq 'CODE'   ? $match
      : croak "Illegal match pattern $match.";
 
     $self;
 }
 
+#-------------------------------------------
+
 sub search(@)
 {   my ($self, $object, %args) = @_;
     delete $self->{MBSG_last_printed};
     $self->SUPER::search($object, %args);
 }
+
+#-------------------------------------------
 
 sub inHead(@)
 {   my ($self, $part, $head, $args) = @_;
@@ -67,6 +76,9 @@ sub inHead(@)
 
     $matched;
 }
+
+
+#-------------------------------------------
 
 sub inBody(@)
 {   my ($self, $part, $body, $args) = @_;
@@ -91,6 +103,11 @@ sub inBody(@)
     $matched;
 }
 
+#-------------------------------------------
+
+
+#-------------------------------------------
+
 sub printMatch($;$)
 {   my $self = shift;
     my ($out, $match) = @_==2 ? @_ : (select, shift);
@@ -99,6 +116,9 @@ sub printMatch($;$)
     ? $self->printMatchedHead($out, $match)
     : $self->printMatchedBody($out, $match)
 }
+
+#-------------------------------------------
+
 
 sub printMatchedHead($$)
 {   my ($self, $out, $match) = @_;
@@ -119,6 +139,9 @@ sub printMatchedHead($$)
     $self;
 }
 
+#-------------------------------------------
+
+
 sub printMatchedBody($$)
 {   my ($self, $out, $match) = @_;
     my $message = $match->{message};
@@ -136,5 +159,7 @@ sub printMatchedBody($$)
     $out->print(sprintf "$inpart %2d: %s", $match->{linenr}, $match->{line});
     $self;
 }
+
+#-------------------------------------------
 
 1;

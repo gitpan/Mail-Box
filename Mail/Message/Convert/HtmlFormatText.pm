@@ -2,13 +2,15 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::HtmlFormatText;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 use base 'Mail::Message::Convert';
 
 use Mail::Message::Body::String;
 
 use HTML::TreeBuilder;
 use HTML::FormatText;
+
 
 sub init($)
 {   my ($self, $args)  = @_;
@@ -19,9 +21,12 @@ sub init($)
      ( leftmargin  => (defined $args->{leftmargin}  ? $args->{leftmargin}  : 3)
      , rightmargin => (defined $args->{rightmargin} ? $args->{rightmargin} : 72)
      );
-
+      
     $self;
 }
+
+#------------------------------------------
+
 
 sub format($)
 {   my ($self, $body) = @_;
@@ -36,5 +41,7 @@ sub format($)
       , data     => [ $self->{MMCH_formatter}->format($tree) ]
       );
 }
+
+#------------------------------------------
 
 1;

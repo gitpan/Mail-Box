@@ -1,6 +1,8 @@
+
 use strict;
 package Mail::Box::Dir;
-our $VERSION = 2.040;  # Part of Mail::Box
+use vars '$VERSION';
+$VERSION = '2.041';
 
 use base 'Mail::Box';
 
@@ -18,6 +20,7 @@ use Carp;
 use File::Copy;
 use File::Spec;
 use File::Basename;
+
 
 sub init($)
 {   my ($self, $args)    = @_;
@@ -58,15 +61,28 @@ sub init($)
     $self;
 }
 
+#-------------------------------------------
+
 sub organization() { 'DIRECTORY' }
 
+#-------------------------------------------
+
+
 sub directory() { shift->{MBD_directory} }
+
+#-------------------------------------------
+
 
 sub folderToDirectory($$)
 {   my ($class, $name, $folderdir) = @_;
     $name =~ /^=(.*)/ ? File::Spec->catfile($folderdir,$1) : $name;
 }
 
+#-------------------------------------------
+
+
 sub readMessageFilenames() {shift->notImplemented}
+
+#-------------------------------------------
 
 1;
