@@ -22,7 +22,7 @@ Mail::Message::Field is extended by
  print $field->comment;
  print $field->content;  # body & comment
  $field->print(\*OUT);
- print $field->toString;
+ print $field->string;
  print "$field\n";
  print $field->attribute('charset') || 'us-ascii';
 
@@ -264,6 +264,12 @@ lines.  The FILEHANDLE defaults to the selected handle.
 
 Returns the number of bytes needed to display this header-line.
 
+=item B<string> [WRAP] X<string>
+
+Returns the field as string.  By default, this returns the same as
+folded(). However, the optional WRAP will cause to re-fold to take
+place (without changing the folding stored inside the field).
+
 =item B<stripCFWS> [STRING] X<stripCFWS>
 
 (Class or Instance method) Remove the I<comments> and I<folding white
@@ -297,12 +303,6 @@ See also Mail::Message::printUndisclosed()
 
 Returns the value which is related to this field as integer.  A check is
 performed whether this is right.
-
-=item B<toString> [WRAP] X<toString>
-
-Returns the field as string.  By default, this returns the same as
-folded(). However, the optional WRAP will cause to re-fold to take
-place (without changing the folding stored inside the field).
 
 =item B<unfolded_body> [BODY, [WRAP]] X<unfolded_body>
 
@@ -463,7 +463,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.033.
+This code is beta, version 2.034.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

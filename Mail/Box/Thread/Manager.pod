@@ -220,7 +220,7 @@ Examples:
 
  my $threads = $mgr->threads(folder => $inbox);
  my $thread  = $threads->thread($inbox->message(3));
- print $thread->toString;
+ print $thread->string;
 
 =item B<threadStart> MESSAGE X<threadStart>
 
@@ -427,7 +427,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.033.
+This code is beta, version 2.034.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

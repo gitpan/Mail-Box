@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Box::Locker::DotLock;
-our $VERSION = 2.033;  # Part of Mail::Box
+our $VERSION = 2.034;  # Part of Mail::Box
 use base 'Mail::Box::Locker';
 
 use IO::File;
@@ -12,7 +12,7 @@ sub init($)
 {   my ($self, $args) = @_;
 
     unless($args->{file})
-    {   my $folder = $args->{folder};
+    {   my $folder = $args->{folder} or confess;
         my $org    = $folder->organization;
 
         $args->{file}

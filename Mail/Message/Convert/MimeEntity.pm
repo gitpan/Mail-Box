@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::MimeEntity;
-our $VERSION = 2.033;  # Part of Mail::Box
+our $VERSION = 2.034;  # Part of Mail::Box
 use base 'Mail::Message::Convert';
 
 use Mail::Message::Head::Complete;
@@ -39,7 +39,7 @@ sub export($$)
     my $me_head = MIME::Head->new;
     my $head    = $message->head;
     foreach my $name ($head->names)
-    {   $me_head->add(undef, $_->toString."\n")
+    {   $me_head->add(undef, $_->string."\n")
             foreach $head->get($name);
     }
 

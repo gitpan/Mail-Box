@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::SMTP;
-our $VERSION = 2.033;  # Part of Mail::Box
+our $VERSION = 2.034;  # Part of Mail::Box
 use base 'Mail::Transport::Send';
 
 use Net::SMTP;
@@ -162,7 +162,7 @@ sub destinations($;$)
     }
     elsif(my @rgs = $message->head->resentGroups)
     {   @to = $rgs[0]->destinations;
-        $self->log(ERROR => "Resent group does not defined destinations"), return ()
+        $self->log(ERROR => "Resent group does not define destinations"), return ()
             unless @to;
     }
     else

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Parser;
-our $VERSION = 2.033;  # Part of Mail::Box
+our $VERSION = 2.034;  # Part of Mail::Box
 use base 'Mail::Reporter';
 use Carp;
 
@@ -50,7 +50,8 @@ sub defaultParserType(;$)
 
     # Try to use C-based parser.
     eval 'require Mail::Box::Parser::C';
-# warn "C-PARSER errors $@\n" if $@;
+#   warn "C-PARSER errors $@\n" if $@;
+
     return $parser_type = 'Mail::Box::Parser::C'
         unless $@;
 

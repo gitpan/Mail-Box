@@ -3,7 +3,7 @@ use strict;
 # file Mail::Message::Construct extends functionalities from Mail::Message
 
 package Mail::Message;
-our $VERSION = 2.033;  # Part of Mail::Box
+our $VERSION = 2.034;  # Part of Mail::Box
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -61,6 +61,7 @@ sub read($@)
     $head->set('Message-ID' => $self->messageId)
         unless $head->get('Message-ID');
 
+    $self->statusToLabels;
     $self;
 }
 
@@ -431,10 +432,10 @@ sub forwardPrelude()
     my $cc    = $head->get('cc');
     my $date  = $head->get('date');
 
-    push @lines, $from->toString if defined $from;
-    push @lines,   $to->toString if defined $to;
-    push @lines,   $cc->toString if defined $cc;
-    push @lines, $date->toString if defined $date;
+    push @lines, $from->string if defined $from;
+    push @lines,   $to->string if defined $to;
+    push @lines,   $cc->string if defined $cc;
+    push @lines, $date->string if defined $date;
     push @lines, "\n";
 
     \@lines;
@@ -558,7 +559,10 @@ sub bounce(@)
     $bounce;
 }
 
-sub string() { join '', shift->lines }
+sub string()
+{   my $self = shift;
+    $self->head->string . $self->body->string;
+}
 
 sub lines()
 {   my $self = shift;

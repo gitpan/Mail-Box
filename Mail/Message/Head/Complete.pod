@@ -299,17 +299,17 @@ the trailing newline).  On systems which use CRLF as line separator,
 the number of lines in the header (see nlLines()) must be added to
 find the actual size in the file.
 
+=item B<string>  X<string>
+
+Returns the whole header as one scalar (in scalar context) or list
+of lines (list context).  Triggers completion.
+
 =item B<timestamp>  X<timestamp>
 
 Will return a good indication of about when the message was send, with as
 little guessing as possible.  The timestamp is encoded as C<time> is
 on your system (see perldoc -f time), and as such usable for the C<gmtime>
 and C<localtime> methods.
-
-=item B<toString>  X<toString>
-
-Returns the whole header as one scalar (in scalar context) or list
-of lines (list context).  Triggers completion.
 
 =back
 
@@ -447,7 +447,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.033.
+This code is beta, version 2.034.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

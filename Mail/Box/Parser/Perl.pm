@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Parser::Perl;
-our $VERSION = 2.033;  # Part of Mail::Box
+our $VERSION = 2.034;  # Part of Mail::Box
 use base 'Mail::Box::Parser';
 
 use Mail::Message::Field;
@@ -54,7 +54,7 @@ LINE:
 
         unless(defined $body)
         {   $self->log(WARNING =>
-                "Unexpected end of header in :".$self->filename.":\n $line");
+                "Unexpected end of header in ".$self->filename.":\n $line");
 
             $file->seek(-length $line, 1);
             last LINE;

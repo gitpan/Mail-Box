@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Box::Locker::Multi;
-our $VERSION = 2.033;  # Part of Mail::Box
+our $VERSION = 2.034;  # Part of Mail::Box
 use base 'Mail::Box::Locker';
 
 use IO::File;

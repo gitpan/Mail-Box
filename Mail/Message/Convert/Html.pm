@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::Html;
-our $VERSION = 2.033;  # Part of Mail::Box
+our $VERSION = 2.034;  # Part of Mail::Box
 use base 'Mail::Message::Convert';
 
 use Carp;

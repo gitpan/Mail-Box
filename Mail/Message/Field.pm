@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Field;
-our $VERSION = 2.033;  # Part of Mail::Box
+our $VERSION = 2.034;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -140,7 +140,8 @@ sub print(;$)
     $fh->print($self->folded);
 }
 
-sub toString(;$)
+sub toString(;$) {my $self = shift;$self->string(@_)}
+sub string(;$)
 {   my $self  = shift;
     return $self->folded unless @_;
 
@@ -267,6 +268,7 @@ sub fold($$;$)
     my $wrap = shift || $default_wrap_length;
 
     $line    =~ s/\ns*/ /gms;            # Remove accidental folding
+    return " \n" unless length $line;    # empty field
 
     my @folded;
     while(1)

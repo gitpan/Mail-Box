@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::MailInternet;
-our $VERSION = 2.033;  # Part of Mail::Box
+our $VERSION = 2.034;  # Part of Mail::Box
 use base 'Mail::Message::Convert';
 
 use Mail::Internet;
@@ -23,7 +23,7 @@ sub export($@)
 
     my $head    = $message->head;
     foreach my $name ($head->names)
-    {   $mi_head->add(undef, $_->toString)
+    {   $mi_head->add(undef, $_->string)
             foreach $head->get($name);
     }
 

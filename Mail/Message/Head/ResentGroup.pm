@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Message::Head::ResentGroup;
-our $VERSION = 2.033;  # Part of Mail::Box
+our $VERSION = 2.034;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Scalar::Util 'weaken';
@@ -9,8 +9,8 @@ use Mail::Message::Field::Fast;
 
 use Sys::Hostname;
 
-my @ordered_field_names = qw/return_path received date from sender to
-  cc bcc message_id/;
+my @ordered_field_names = qw/return_path delivered_to received date from
+  sender to cc bcc message_id/;
 
 sub new(@)
 {   my $class = shift;
@@ -58,7 +58,7 @@ sub set($$)
     if(@_==1) { $field = shift }
     else
     {   my ($fn, $value) = @_;
-        $name  = $fn =~ m!^(received|return\-path|resent\-\w*)$!i ? $fn
+        $name  = $fn =~ m!^(received|return\-path|delivered\-to|resent\-\w*)$!i ? $fn
                : "Resent-$fn";
 
         $field = Mail::Message::Field::Fast->new($name, $value);
@@ -71,6 +71,8 @@ sub set($$)
 }
 
 sub returnPath() { shift->{MMHR_return_path} }
+
+sub deliveredTo() { shift->{MMHR_delivered_to} }
 
 sub received() { shift->{MMHR_received} }
 

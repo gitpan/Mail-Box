@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Head;
-our $VERSION = 2.033;  # Part of Mail::Box
+our $VERSION = 2.034;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Complete;
@@ -103,6 +103,7 @@ sub knownNames() { keys %{shift->{MMH_fields}} }
 # To satisfy overload in static resolving.
 
 sub toString() { shift->load->toString }
+sub string()   { shift->load->string }
 
 sub string_unless_carp()
 {   my $self = shift;

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box;
-our $VERSION = 2.033;  # Part of Mail::Box
+our $VERSION = 2.034;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -117,7 +117,7 @@ sub init($)
           , method   => $args->{lock_type}
           , timeout  => $args->{lock_timeout}
           , wait     => $args->{lock_wait}
-          , file     => $args->{lockfile} || $args->{lock_file}
+          , file     => ($args->{lockfile} || $args->{lock_file})
           );
 
     $self;
@@ -253,7 +253,6 @@ ERROR
     }
 
     $self->storeMessage($coerced);
-    $self->{MB_modified}++;
     $coerced;
 }
 

@@ -13,7 +13,7 @@ Mail::Message::Head::ResentGroup
 
 
  my $rg = Mail::Message::Head::ResentGroup->new(head => $head,
-    From => 'me@home.nl', To => 'You@tux.aq');
+              From => 'me@home.nl', To => 'You@tux.aq');
  $head->addResentGroup($rg);
 
  my $rg = $head->addResentGroup(From => 'me');
@@ -50,9 +50,11 @@ capitization of what is specified.
  Bcc                  undef
  Cc                   undef
  Date                 <now>
+ Delivered-To         undef
  From                 <required>
  Message-ID           <uniquely created>
  Received             <required>
+ Return-Path          undef
  Sender               undef
  To                   undef
  head                 <required>
@@ -71,6 +73,8 @@ When this resent-group is dispatched by the resender of the message. Like
 the C<Date> field, it is not the date and time that the message was
 actually transported.
 
+=item B<Delivered-To> =E<gt> STRING|FIELD X<new(Delivered-To)>
+
 =item B<From> =E<gt> STRING|OBJECT|OBJECTS X<new(From)>
 
 =item B<Message-ID> =E<gt> STRING|FIELD X<new(Message-ID)>
@@ -82,6 +86,8 @@ must contain a message id.
 
 The C<Received> field is the starting line for a resent group of header
 lines, therefore it is obligatory.
+
+=item B<Return-Path> =E<gt> STRING|FIELD X<new(Return-Path)>
 
 =item B<Sender> =E<gt> STRING|OBJECT X<new(Sender)>
 
@@ -142,6 +148,10 @@ Returns the C<Resent-Date> field, or C<undef> if it was not defined.
 
 The timestamp as stored within the C<Resent-Date> field converted to
 local system time.
+
+=item B<deliveredTo>  X<deliveredTo>
+
+The field which describes the C<Delivered-To> of this resent group.
 
 =item B<destinations>  X<destinations>
 
@@ -222,8 +232,8 @@ some improvement.
 
 Returns the fields in the order as should appear in header according
 to rfc2822.  For the C<Resent-> fields of the group, the order is
-not that important, but the C<Return-Path> and C<Received> must come
-first.  Only fields mentioned in the RFC are returned.
+not that important, but the C<Return-Path>, C<Delivered-To>, and C<Received>
+must come first.  Only fields mentioned in the RFC are returned.
 
 =item B<print> [FILEHANDLE] X<print>
 
@@ -306,7 +316,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.033.
+This code is beta, version 2.034.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

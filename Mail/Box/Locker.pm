@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Box::Locker;
-our $VERSION = 2.033;  # Part of Mail::Box
+our $VERSION = 2.034;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -22,6 +22,8 @@ sub new(@)
 
     return $class->SUPER::new(@_)
         unless $class eq __PACKAGE__;
+
+    # Try to figure out which locking method we really want (bootstrap)
 
     my %args   = @_;
     my $method = defined $args{method} ? uc $args{method} : 'DOTLOCK';

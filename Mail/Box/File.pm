@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::File;
-our $VERSION = 2.033;  # Part of Mail::Box
+our $VERSION = 2.034;  # Part of Mail::Box
 use base 'Mail::Box';
 
 use Mail::Box::File::Message;
@@ -371,7 +371,7 @@ sub appendMessages(@)
       : exists $args{messages} ? @{$args{messages}}
       :                          return ();
 
-    my $folder   = $class->new(@_, access => 'a')
+    my $folder   = $class->new(lock_type => 'NONE', @_, access => 'a')
        or return ();
 
     my $filename = $folder->filename;
