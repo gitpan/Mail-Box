@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Multipart;
-our $VERSION = 2.023;  # Part of Mail::Box
+our $VERSION = 2.024;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;

@@ -7,6 +7,7 @@ Mail::Box::Mbox::Message - one message in a Mbox folder
 =head1 CLASS INHERITANCE
 
 Mail::Box::Mbox::Message
+   is a Mail::Box::File::Message
    is a Mail::Box::Message
    is a Mail::Message
    is a Mail::Reporter
@@ -20,9 +21,7 @@ Mail::Box::Mbox::Message
 =head1 DESCRIPTION
 
 
-Maintain one message in an Mbox folder.  See the Mail::Message
-documentation for exceptions and extensions to messages which are
-Mbox-specific on this page.
+Maintain one message in an Mbox folder.
 
 =head1 METHODS
 
@@ -31,8 +30,6 @@ Mbox-specific on this page.
 =over 4
 
 =item B<new> OPTIONS X<new>
-
-Messages in file-based folders use the following options for creation:
 
  OPTION               DEFAULT
  body                 undef
@@ -72,10 +69,9 @@ See Mail::Message::new(field_type)
 
 See Mail::Box::Message::new(folder)
 
-=item B<from_line> =E<gt> STRING X<new(from_line)>
+=item B<from_line> =E<gt> STRING
 
-The line which begins each message in the file. Some people detest
-this line, but this is just how things were invented...
+See Mail::Box::File::Message::new(from_line)
 
 =item B<head> =E<gt> OBJECT
 
@@ -117,7 +113,7 @@ See Mail::Message::new(trusted)
 
 =over 4
 
-=item B<bounce> OPTIONS
+=item B<bounce> RG-OBJECT|OPTIONS
 
 See Mail::Message::Construct::bounce()
 
@@ -203,12 +199,9 @@ See Mail::Box::Message::moveTo()
 
 See Mail::Message::parent()
 
-=item B<print> [FILEHANDLE] X<print>
+=item B<print> [FILEHANDLE]
 
-Write one message to a file handle.  Unmodified messages are taken
-from the folder-file where they were stored.  Modified messages
-are written to memory.  Specify a FILEHANDLE to write to
-(defaults to the selected handle).
+See Mail::Box::File::Message::print()
 
 =item B<send> [MAILER], OPTIONS
 
@@ -366,21 +359,13 @@ See Mail::Message::labels()
 
 See Mail::Message::DESTROY()
 
-=item B<fileLocation>  X<fileLocation>
+=item B<fileLocation> 
 
-Returns the location of the whole message including the from-line.  In
-LIST context, both begin and end are returned.  In SCALAR context, only
-the begin is passed back.
+See Mail::Box::File::Message::fileLocation()
 
-=item B<fromLine> [LINE] X<fromLine>
+=item B<fromLine> [LINE]
 
-Many people detest file-style folders because they store messages all in
-one file, where a line starting with C<From > leads the header.  If we
-receive a message from a file-based folder, we store that line.  If we write
-to such a file, but there is no such line stored, then we try to generate
-one.
-
-If LINE is provided, then the starting line is set to this value.
+See Mail::Box::File::Message::fromLine()
 
 =item B<isDelayed> 
 
@@ -390,17 +375,17 @@ See Mail::Message::isDelayed()
 
 See Mail::Message::labelsToStatus()
 
-=item B<loadBody>  X<loadBody>
+=item B<loadBody> 
 
-=item B<moveLocation> DISTANCE X<moveLocation>
+See Mail::Box::File::Message::loadBody()
 
-The message is relocated in the file, being moved over DISTANCE bytes.
-Setting a new location will update the according information in the header
-and body.
+=item B<moveLocation> DISTANCE
 
-=item B<read> PARSER X<read>
+See Mail::Box::File::Message::moveLocation()
 
-Read one message from a Mbox folder, including the message separator.
+=item B<read> PARSER
+
+See Mail::Box::File::Message::read()
 
 =item B<readFromParser> PARSER, [BODYTYPE]
 
@@ -512,7 +497,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.023.
+This code is beta, version 2.024.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

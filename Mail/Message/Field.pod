@@ -110,17 +110,6 @@ As user of the object, there is not visible difference.
 
 =over 4
 
-=item B<consume> LINE | (NAME,BODY|OBJECTS) X<consume>
-
-(Class method)
-Accepts a whole field LINE, or a pair with the field's NAME and BODY. In
-the latter case, the BODY data may be specified as array of OBJECTS which
-are stringified.  Returned is a nicely formatted pair of two strings: the
-field's name and a folded body.
-
-This method is called by new(), and usually not be an application
-program.
-
 =item B<new> DATA X<new>
 
 See Mail::Message::Field::Fast::new() or Mail::Message::Field::Flex::new().
@@ -274,10 +263,11 @@ lines.  The FILEHANDLE defaults to the selected handle.
 
 Returns the number of bytes needed to display this header-line.
 
-=item B<stripCFWS> STRING X<stripCFWS>
+=item B<stripCFWS> [STRING] X<stripCFWS>
 
-(Class method) Remove the I<comments> and I<folding white spaces> from
-the string.
+(Class or Instance method) Remove the I<comments> and I<folding white
+spaces> from the STRING.  Without string and only as instance method, the
+unfolded_body() is being stripped and returned.
 
 =item B<toDate> [TIME] X<toDate>
 
@@ -345,6 +335,17 @@ Examples:
 =head2 Reading and Writing [internals]
 
 =over 4
+
+=item B<consume> LINE | (NAME,BODY|OBJECTS) X<consume>
+
+(Class method)
+Accepts a whole field LINE, or a pair with the field's NAME and BODY. In
+the latter case, the BODY data may be specified as array of OBJECTS which
+are stringified.  Returned is a nicely formatted pair of two strings: the
+field's name and a folded body.
+
+This method is called by new(), and usually not be an application
+program.
 
 =item B<defaultWrapLength> [LENGTH] X<defaultWrapLength>
 
@@ -460,7 +461,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.023.
+This code is beta, version 2.024.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

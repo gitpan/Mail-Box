@@ -3,7 +3,7 @@ use strict;
 # file Mail::Message::Construct extends functionalities from Mail::Message
 
 package Mail::Message;
-our $VERSION = 2.023;  # Part of Mail::Box
+our $VERSION = 2.024;  # Part of Mail::Box
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -216,7 +216,6 @@ sub reply(@)
     my $newhead = $reply->head;
     $newhead->set(Cc  => $cc)  if $cc;
     $newhead->set(Bcc => $args{Bcc}) if $args{Bcc};
-    $newhead->set('Message-ID'  => $msgid || $newhead->createMessageId);
 
     # Ready
 
@@ -409,7 +408,6 @@ sub forward(@)
     $newhead->set(Cc   => $args{Cc}  ) if $args{Cc};
     $newhead->set(Bcc  => $args{Bcc} ) if $args{Bcc};
     $newhead->set(Date => $args{Date}) if $args{Date};
-    $newhead->set('Message-ID' => $msgid || $newhead->createMessageId);
 
     # Ready
 
@@ -452,10 +450,21 @@ sub build(@)
 {   my $class = shift;
 
     my $head  = Mail::Message::Head::Complete->new;
-    my @parts = @_ % 2 ? shift : ();
+    my @parts
+      = ! ref $_[0] ? ()
+      : $_[0]->isa('Mail::Message')       ? shift
+      : $_[0]->isa('Mail::Message::Body') ? shift
+      :               ();
 
+    my @headerlines;
     while(@_)
-    {   my ($key, $value) = (shift, shift);
+    {   my $key = shift;
+        if(ref $key && $key->isa('Mail::Message::Field'))
+        {   push @headerlines, $key;
+            next;
+        }
+
+        my $value = shift;
         if($key eq 'data')
         {   push @parts, Mail::Message::Body->new(data => $value) }
         elsif($key eq 'file')
@@ -463,19 +472,18 @@ sub build(@)
         elsif($key eq 'attach')
         {   push @parts, ref $value eq 'ARRAY' ? @$value : $value }
         elsif($key =~ m/^[A-Z]/)
-        {   $head->add($key => $value) }
+        {   push @headerlines, $key, $value }
         else
         {   croak "Skipped unknown key $key in build." }
     }
 
     my $message = $class->new(head => $head);
-    my $body    = @parts==1 ? $parts[0]
+    my $body
+       = @parts==0 ? Mail::Message::Body::Lines->new()
+       : @parts==1 ? $parts[0]
        : Mail::Message::Body::Multipart->new(parts => \@parts);
 
-    $message->body($body->check);
-    $message->statusToLabels;
-
-    $message;
+    $class->buildFromBody($body, @headerlines);
 }
 
 sub buildFromBody(@)
@@ -488,12 +496,6 @@ sub buildFromBody(@)
         else          {$head->add(shift, shift)}
     }
 
-    carp "From and To fields are obligatory"
-        unless defined $head->get('From') && defined $head->get('To');
-
-    $head->set(Date => Mail::Message::Field->toDate(localtime))
-        unless defined $head->get('Date');
-
     my $message = $class->new
      ( head => $head
      , @log
@@ -501,30 +503,21 @@ sub buildFromBody(@)
 
     $message->body($body->check);
     $message->statusToLabels;
+
+    # be sure the mesasge-id is actually stored in the header.
+    $head->add('Message-Id' => '<'.$message->messageId.'>')
+        unless defined $head->get('message-id');
+
+    $head->add(Date => Mail::Message::Field->toDate)
+        unless defined $head->get('Date');
+
     $message;
 }
 
 sub bounce(@)
-{   my ($self, %args) = @_;
-
+{   my $self   = shift;
     my $bounce = $self->clone;
-    my $head   = $bounce->head;
-
-    my $date   = $args{Date} || Mail::Message::Field->toDate(localtime);
-
-    $head->add('Resent-From' => $args{From}) if $args{From};
-    $head->add('Resent-To'   => $args{To}  ) if $args{To};
-    $head->add('Resent-Cc'   => $args{Cc}  ) if $args{Cc};
-    $head->add('Resent-Bcc'  => $args{Bcc} ) if $args{Bcc};
-    $head->add('Resent-Date' => $date);
-    $head->add('Resent-Reply-To' => $args{'Reply-To'}) if $args{'Reply-To'};
-
-    unless(defined $head->get('Resent-Message-ID'))
-    {   my $msgid  = $args{'Message-ID'} || $head->createMessageId;
-        $msgid = "<$msgid>" unless $msgid =~ m/\<.*\>/;
-        $head->add('Resent-Message-ID' => $msgid);
-    }
-
+    $bounce->head->addResentGroup(@_);
     $bounce;
 }
 

@@ -45,7 +45,7 @@ Create a UNIX-grep like search filter.
  decode               <true>
  delayed              <true>
  deleted              <false>
- details              undef
+ deliver              undef
  field                undef
  in                   <$field ? 'HEAD' : 'BODY'>
  label                undef
@@ -74,7 +74,7 @@ See Mail::Box::Search::new(delayed)
 
 See Mail::Box::Search::new(deleted)
 
-=item B<details> =E<gt> undef|REF-ARRAY|CODE|'PRINT'|'DELETE' X<new(details)>
+=item B<deliver> =E<gt> undef|CODE|'DELETE'|LABEL|'PRINT'|REF-ARRAY X<new(deliver)>
 
 Store the details about where the match was found.  The search may take
 much longer when this feature is enabled.
@@ -270,7 +270,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.023.
+This code is beta, version 2.024.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -11,6 +11,7 @@ Mail::Box::Search
 
 Mail::Box::Search is extended by
    Mail::Box::Search::Grep
+   Mail::Box::Search::SpamAssassin
 
 =head1 SYNOPSIS
 
@@ -19,7 +20,7 @@ Mail::Box::Search is extended by
  my $mgr    = Mail::Box::Manager->new;
  my $folder = $mgr->open('Inbox');
 
- my $filter = Mail::Box::Search::Grep->new;
+ my $filter = Mail::Box::Search::[something]->new;
  my @msgs   = $filter->search($folder, ...);
  if($filter->search($message)) {...}
 
@@ -39,9 +40,12 @@ Currently implemented searches:
 Match header or body against a regular expression in a UNIX C<grep> like
 fashion.
 
-=back
+=item Mail::Box::Search::SpamAssassin
 
-A Mail::Box::Search::Spam is high on the wishlist.
+Try to detect spam, using Mail::SpamAssassin.  This package is under
+development.
+
+=back
 
 =head1 METHODS
 
@@ -58,7 +62,7 @@ Create a filter.
  decode               <true>
  delayed              <true>
  deleted              <false>
- details              undef
+ deliver              undef
  in                   'BODY;
  label                undef
  limit                0
@@ -90,14 +94,13 @@ In most cases, you will not be interested in results which are
 found in messages flagged to be deleted.  However, with this option
 you can specify you want them to be searched too.
 
-=item B<details> =E<gt> undef|'PRINT'|'DELETE'|REF-ARRAY|CODE X<new(details)>
+=item B<deliver> =E<gt> undef|CODE|'DELETE'|LABEL X<new(deliver)>
 
 The exact functionality of this parameter differs per search method, so
 read the applicable man-page.  In any case C<undef> means that details
 are not collected for this search, which is the fastest search.
 
-C<PRINT> will cause a call to a standard printing routine per line
-found.  C<DELETE> will flag the message to be flagged for deletion.
+C<DELETE> will flag the message to be flagged for deletion.
 You may also specify your own CODE reference.  With an reference
 to an array, the information about the matches is collected as a list
 of hashes, one hash per match.
@@ -182,7 +185,7 @@ Examples:
 
  my $grep = Mail::Box::Search::Grep->new
   ( match   => 'My Name Is Nobody'
-  , details => 'PRINT'
+  , deliver => 'PRINT'
   );
 
  $grep->search($folder);
@@ -205,8 +208,8 @@ Search this message PART for matches.
 
 =item B<printMatch> [FILEHANDLE], HASH X<printMatch>
 
-Print the information about the match (see C<details> option in the
-search() method) in some understandable way.  If no file handle
+Print the information about the match (see search(deliver)) in
+some understandable way.  If no file handle
 is specified, the output will go to the selected filehandle (see
 C<perldoc -f select>).
 
@@ -288,7 +291,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.023.
+This code is beta, version 2.024.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

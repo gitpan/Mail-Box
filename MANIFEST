@@ -10,6 +10,10 @@ Mail/Box/Dir.pm
 Mail/Box/Dir.pod
 Mail/Box/Dir/Message.pm
 Mail/Box/Dir/Message.pod
+Mail/Box/File.pm
+Mail/Box/File.pod
+Mail/Box/File/Message.pm
+Mail/Box/File/Message.pod
 Mail/Box/Locker.pm
 Mail/Box/Locker.pod
 Mail/Box/Locker/DotLock.pm
@@ -58,6 +62,8 @@ Mail/Box/Search.pm
 Mail/Box/Search.pod
 Mail/Box/Search/Grep.pm
 Mail/Box/Search/Grep.pod
+Mail/Box/Search/SpamAssassin.pm
+Mail/Box/Search/SpamAssassin.pod
 Mail/Box/Thread/Manager.pm
 Mail/Box/Thread/Manager.pod
 Mail/Box/Thread/Node.pm

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Field;
-our $VERSION = 2.023;  # Part of Mail::Box
+our $VERSION = 2.024;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -29,47 +29,6 @@ sub new(@)
         return Mail::Message::Field::Fast->new(@_);
     }
     $class->SUPER::new(@_);
-}
-
-sub consume($;$)
-{   my $self = shift;
-    my ($name, $body) = defined $_[1] ? @_ : split(/\s*\:\s*/, (shift), 2);
-
-    Mail::Reporter->log(WARNING => "Illegal character in field name: $name")
-       if $name =~ m/[^\041-\071\073-\176]/;
-
-    #
-    # Compose the body.
-    #
-
-    if(ref $body)                 # Objects
-    {   my @objs = ref $body eq 'ARRAY' ? @$body
-                 : defined $body        ? ($body)
-                 :                        ();
-
-        # Skip field when no objects are specified.
-        return () unless @objs;
-
-        # Format the addresses
-        my @addrs = map {ref $_ && $_->isa('Mail::Address') ? $_->format : "$_"}             @objs;
-
-        $body = $self->fold($name, join(', ', @addrs));
-    }
-    elsif($body !~ s/\n+$/\n/g)   # Added by user...
-    {   $body = $self->fold($name, $body);
-    }
-    else                          # Created by parser
-    {   # correct erroneous wrap-seperators (dos files under UNIX)
-        $body =~ s/[\012\015]+/\n/g;
-        $body = ' '.$body unless substr($body, 0, 1) eq ' ';
-
-        if($body eq "\n")
-        {   Mail::Reporter->log(WARNING => "Empty field: $name\n");
-            return ();
-        }
-    }
-
-    ($name, $body);
 }
 
 BEGIN {
@@ -196,7 +155,9 @@ sub toDate($)
 }
 
 sub stripCFWS($)
-{   my $string = $_[1];
+{   my $thing  = shift;
+    my $string = @_ ? shift : $thing->unfolded_body;
+
     for($string)
     {  s/(?: \(
                  ( [^()]*
@@ -228,7 +189,51 @@ sub nrLines() { my @l = shift->folded_body; scalar @l }
 sub size() {length shift->toString}
 
 sub toDisclose()
-{   shift->name =~ m!^((x-)?status|(resent-)?bcc)$!;
+{   shift->name !~ m!^(?: (?:x-)?status
+                      |   (?:resent-)?bcc
+                      |   Content-Length
+                      ) $!x;
+}
+
+sub consume($;$)
+{   my $self = shift;
+    my ($name, $body) = defined $_[1] ? @_ : split(/\s*\:\s*/, (shift), 2);
+
+    Mail::Reporter->log(WARNING => "Illegal character in field name: $name")
+       if $name =~ m/[^\041-\071\073-\176]/;
+
+    #
+    # Compose the body.
+    #
+
+    if(ref $body)                 # Objects
+    {   my @objs = ref $body eq 'ARRAY' ? @$body
+                 : defined $body        ? ($body)
+                 :                        ();
+
+        # Skip field when no objects are specified.
+        return () unless @objs;
+
+        # Format the addresses
+        my @addrs = map {ref $_ && $_->isa('Mail::Address') ? $_->format : "$_"}             @objs;
+
+        $body = $self->fold($name, join(', ', @addrs));
+    }
+    elsif($body !~ s/\n+$/\n/g)   # Added by user...
+    {   $body = $self->fold($name, $body);
+    }
+    else                          # Created by parser
+    {   # correct erroneous wrap-seperators (dos files under UNIX)
+        $body =~ s/[\012\015]+/\n/g;
+        $body = ' '.$body unless substr($body, 0, 1) eq ' ';
+
+        if($body eq "\n")
+        {   Mail::Reporter->log(WARNING => "Empty field: $name\n");
+            return ();
+        }
+    }
+
+    ($name, $body);
 }
 
 sub setWrapLength(;$)

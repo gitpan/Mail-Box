@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Head::Complete;
-our $VERSION = 2.023;  # Part of Mail::Box
+our $VERSION = 2.024;  # Part of Mail::Box
 use base 'Mail::Message::Head';
 
 use Mail::Box::Parser;
@@ -297,8 +297,23 @@ sub createFromLine()
     "From $sender ".(gmtime $stamp)."\n";
 }
 
-my $unique_id = time;
+my $unique_id     = time;
 
-sub createMessageId() { 'mailbox-'.$unique_id++ }
+sub createMessageId() { shift->messageIdPrefix . '-' . $unique_id++ }
+
+our $unique_prefix;
+
+sub messageIdPrefix(;$)
+{   my $self = shift;
+    return $unique_prefix if !@_ && defined $unique_prefix;
+
+    my $prefix = shift;
+    unless(defined $prefix)
+    {   require Sys::Hostname;
+        $prefix = 'mailbox-'.Sys::Hostname::hostname().'-'.$$;
+    }
+
+    $unique_prefix = $prefix;
+}
 
 1;

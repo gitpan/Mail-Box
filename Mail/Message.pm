@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message;
-our $VERSION = 2.023;  # Part of Mail::Box
+our $VERSION = 2.024;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -297,7 +297,7 @@ sub body(;$@)
     $head->set('Content-Length' => $body->size)
        unless $body->isMultipart;  # too slow
 
-    $head->set('Lines'          => $body->nrLines);
+    $head->set(Lines => $body->nrLines);
     $head->set($body->transferEncoding);
     $head->set($body->disposition);
 
