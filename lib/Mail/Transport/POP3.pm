@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Transport::POP3;
 use vars '$VERSION';
-$VERSION = '2.059';
+$VERSION = '2.060';
 use base 'Mail::Transport::Receive';
 
 use IO::Socket  ();
@@ -308,9 +308,8 @@ sub login(;$)
     if($authenticate eq 'AUTO' || $authenticate eq 'APOP')
     {   if($welcome =~ m#^\+OK .*(<\d+\.\d+\@[^>]+>)#)
         {   my $md5 = Digest::MD5::md5_hex($1.$password);
-            my $response = $self->send($socket, "APOP $username $md5$CRLF")
-	        or return;
-            $connected = OK($response);
+            my $response = $self->send($socket, "APOP $username $md5$CRLF");
+            $connected = OK($response) if $response;
         }
     }
 

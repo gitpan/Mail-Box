@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport::Exim;
 use vars '$VERSION';
-$VERSION = '2.059';
+$VERSION = '2.060';
 use base 'Mail::Transport::Send';
 
 use Carp;
@@ -39,7 +39,7 @@ sub trySend($@)
     if(open(MAILER, '|-')==0)
     {   { exec $program, '-i', '-f', $from, @to; }  # {} to avoid warning
         $self->log(NOTICE => "Errors when opening pipe to $program: $!");
-        return 0;
+        exit 1;
     }
 
     $self->putContent($message, \*MAILER, undisclosed => 1);

@@ -3,10 +3,11 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.059';
+$VERSION = '2.060';
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Field;
+use Carp         qw/croak/;
 
 
 sub bounce(@)
@@ -19,18 +20,21 @@ sub bounce(@)
          return $bounce;
     }
 
-    my @rgs    = $head->resentGroups;  # No groups yet, then require Received
+    my @rgs    = $head->resentGroups;
     my $rg     = $rgs[0];
 
     if(defined $rg)
-    {   $rg->delete;     # Remove group to re-add it later: others field order
-        while(@_)        #  in header would be disturbed.
+    {   $rg->delete;     # Remove group to re-add it later: otherwise
+        while(@_)        #   field order in header would be disturbed.
         {   my $field = shift;
             ref $field ? $rg->set($field) : $rg->set($field, shift);
         }
     }
-    else
+    elsif(@_)
     {   $rg = Mail::Message::Head::ResentGroup->new(@_);
+    }
+    else
+    {   croak "ERROR: bounce requires To, Cc, or Bcc";
     }
  
     #

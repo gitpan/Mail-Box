@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field;
 use vars '$VERSION';
-$VERSION = '2.059';
+$VERSION = '2.060';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -304,7 +304,7 @@ sub toDate(@)
     my $time   = strftime($format, @time);
 
     # for C libs which do not (GNU compliantly) support %z
-    $time =~ s/ (\%z|[A-Z]+)$/_tz_offset($1)/e;
+    $time =~ s/ (\%z|[A-Z ]+)$/_tz_offset($1)/e;
 
     $time; 
 }

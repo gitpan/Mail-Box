@@ -856,6 +856,14 @@ Reply-To or References field, however it did not find the header and
 body of the message yet.  Use L<isDummy()|Mail::Message/"The message"> to check whether the thread
 node returned a dummy or not.
 
+I<Error:> bounce requires To, Cc, or Bcc
+
+The message L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> method forwards a received message off to someone
+else without modification; you must specified it's new destination.
+If you have the urge not to specify any destination, you probably
+are looking for L<reply()|Mail::Message::Construct::Reply/"Constructing a message">. When you wish to modify the content, use
+L<forward()|Mail::Message::Construct::Forward/"Constructing a message">.
+
 I<Error:> forwardAttach requires a preamble object
 
 
@@ -879,7 +887,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.059.
+Distribution version 2.060.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

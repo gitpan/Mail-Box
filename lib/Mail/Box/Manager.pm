@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Box::Manager;
 use vars '$VERSION';
-$VERSION = '2.059';
+$VERSION = '2.060';
 use base 'Mail::Reporter';
 
 use Mail::Box;
@@ -125,6 +125,7 @@ sub open(@)
 {   my $self = shift;
     my $name = @_ % 2 ? shift : undef;
     my %args = @_;
+    $args{authentication} ||= 'AUTO';
 
     $name    = defined $args{folder} ? $args{folder} : ($ENV{MAIL} || '')
         unless defined $name;
@@ -524,10 +525,11 @@ sub decodeFolderURL($)
     $username ||= $ENV{USER} || $ENV{LOGNAME};
 
     $password ||= '';        # decode password from url
-    $password =~ s/\+/ /g;
-    $password =~ s/\%([A-Fa-f0-9]{2})/chr hex $1/ge;
+    $password   =~ s/\+/ /g;
+    $password   =~ s/\%([A-Fa-f0-9]{2})/chr hex $1/ge;
 
     $hostname ||= 'localhost';
+
     $path     ||= '=';
 
     ( type        => $type,     folder      => $path

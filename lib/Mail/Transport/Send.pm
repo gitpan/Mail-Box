@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport::Send;
 use vars '$VERSION';
-$VERSION = '2.059';
+$VERSION = '2.060';
 use base 'Mail::Transport';
 
 use Carp;
@@ -13,7 +13,8 @@ use Errno 'EAGAIN';
 
 sub new(@)
 {   my $class = shift;
-    return $class->SUPER::new(@_) if $class ne __PACKAGE__;
+    return $class->SUPER::new(@_)
+       if $class ne __PACKAGE__;
 
     require Mail::Transport::Sendmail;
     Mail::Transport::Sendmail->new(@_);

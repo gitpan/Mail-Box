@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Head::Complete;
 use vars '$VERSION';
-$VERSION = '2.059';
+$VERSION = '2.060';
 use base 'Mail::Message::Head';
 
 use Mail::Box::Parser;
@@ -511,7 +511,7 @@ sub createFromLine()
 
     my $from   = $self->get('from') || '';
     my $stamp  = $self->timestamp;
-    my $sender = $from =~ m/\<.*?\>/ ? $& : 'unknown';
+    my $sender = $from =~ m/(\<.*?\>)/ ? $1 : 'unknown';
     "From $sender ".(gmtime $stamp)."\n";
 }
 

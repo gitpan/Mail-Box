@@ -7,13 +7,13 @@ Mail::Message - general message object
 =head1 INHERITANCE
 
  Mail::Message has extra code in
-   Mail::Message::Construct::Bounce
    Mail::Message::Construct
-   Mail::Message::Construct::Forward
-   Mail::Message::Construct::Build
-   Mail::Message::Construct::Read
    Mail::Message::Construct::Rebuild
    Mail::Message::Construct::Text
+   Mail::Message::Construct::Forward
+   Mail::Message::Construct::Bounce
+   Mail::Message::Construct::Read
+   Mail::Message::Construct::Build
    Mail::Message::Construct::Reply
 
  Mail::Message
@@ -1425,6 +1425,14 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+I<Error:> bounce requires To, Cc, or Bcc
+
+The message L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> method forwards a received message off to someone
+else without modification; you must specified it's new destination.
+If you have the urge not to specify any destination, you probably
+are looking for L<reply()|Mail::Message::Construct::Reply/"Constructing a message">. When you wish to modify the content, use
+L<forward()|Mail::Message::Construct::Forward/"Constructing a message">.
+
 I<Error:> forwardAttach requires a preamble object
 
 
@@ -1652,7 +1660,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.059.
+Distribution version 2.060.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

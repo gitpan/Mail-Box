@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.059';
+$VERSION = '2.060';
 use base 'Mail::Transport::Receive';
 
 use Digest::HMAC_MD5;   # only availability check for CRAM_MD5
@@ -36,8 +36,8 @@ sub init($)
     {   $imap = $self->createImapClient($imap) or return undef;
     }
  
-    $self->imapClient($imap);
-    $self->login or return undef;
+    $self->imapClient($imap) or return undef;
+    $self->login             or return undef;
 }
 
 #------------------------------------------
@@ -65,22 +65,37 @@ sub authentication(@)
         $ntml_installed = ! $@;
     }
 
+    # What the client wants to use to login
+
     if(@types == 1 && $types[0] eq 'AUTO')
     {   @types = ('CRAM-MD5', ($ntml_installed ? 'NTLM' : ()), 'PLAIN');
     }
 
-    my @auth;
+    my @clientside;
     foreach my $auth (@types)
-    {   push @auth,
-             ref $auth eq 'ARRAY' ? $auth
+    {   push @clientside
+           , ref $auth eq 'ARRAY' ? $auth
            : $auth eq 'NTLM'      ? [NTLM  => \&Authen::NTLM::ntlm ]
            :                        [$auth => undef];
     }
 
-    $self->log(WARNING => 'module Authen::NTLM is not installed')
-        if grep { !ref $_ &&  $_ eq 'NTLM' } @auth;
+    my %clientside = map { ($_->[0] => $_) } @clientside;;
+
+    # What does the server support? in its order of preference.
+
+    my $imap = $self->imapClient or return ();
+    my @serverside = map { m/^AUTH=(\w+)/ ? uc($1) : () }
+                        $imap->capability;
+
+    my @auth;
+    if(@serverside)  # server list auth capabilities
+    {   @auth = map { $clientside{$_->[0]} ? delete $clientside{$_->[0]} : () }
+             @serverside;
+    }
+    @auth = @clientside unless @auth;  # fallback to client's preference
 
     $self->{MTI_auth} = \@auth;
+    @auth;
 }
 
 #------------------------------------------

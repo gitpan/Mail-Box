@@ -244,11 +244,23 @@ may also have additional options for the folder type.  For a
 description of the folder options, see the options to the constructor
 L<Mail::Box::new()|Mail::Box/"Constructors"> for each type of mail box.
 
- Option     Defined in       Default                 
- create                      <false>                 
- folder                      C<$ENV{MAIL}>           
- folderdir                   C<'.'>                  
- type                        <first, usually C<mbox>>
+ Option        Defined in       Default                 
+ authenticate                   C<'AUTO'>               
+ create                         <false>                 
+ folder                         C<$ENV{MAIL}>           
+ folderdir                      C<'.'>                  
+ type                           <first, usually C<mbox>>
+
+. authenticate TYPE|ARRAY-OF-TYPES|'AUTO'
+
+=over 4
+
+The TYPE of authentication to be used, or a list of TYPES which the
+client prefers.  The server may provide preferences as well, and that
+order will be kept.  This option is only supported by a small subset of
+folder types, especially by POP and IMAP.
+
+=back
 
 . create BOOLEAN
 
@@ -784,7 +796,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.059.
+Distribution version 2.060.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -4,6 +4,11 @@
 Mail::Message::Field::Attribute - one attribute of a full field
 
 
+=head1 INHERITANCE
+
+ Mail::Message::Field::Attribute
+   is a Mail::Reporter
+
 
 =head1 SYNOPSIS
 
@@ -58,6 +63,8 @@ base-class.
  Option             Defined in       Default      
  charset                             C<'us-ascii'>
  language                            undef        
+ log                L<Mail::Reporter>  C<'WARNINGS'>
+ trace              L<Mail::Reporter>  C<'WARNINGS'>
  use_continuations                   <true>       
 
 . charset STRING
@@ -81,6 +88,10 @@ names are defined by RFC2130.  This module has only limited support for
 this feature.
 
 =back
+
+. log LEVEL
+
+. trace LEVEL
 
 . use_continuations BOOLEAN
 
@@ -209,6 +220,127 @@ is required by the field parsing.
 This class does not extend L<Mail::Reporter|Mail::Reporter> for obvious performance
 reasons: there is no logging or tracing available.
 
+$obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<addReport>(OBJECT)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+
+Mail::Message::Field::Attribute-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<errors>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Message::Field::Attribute-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Message::Field::Attribute-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
 
 
 =head1 DIAGNOSTICS
@@ -218,6 +350,14 @@ I<Warning:> Illegal character in parameter name '$name'
 The specified parameter name contains characters which are not permitted by
 the RFCs.  You can better change the name into something which is accepted,
 or risk applications to corrupt or ignore the message.
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
 
 I<Error:> Too late to merge: value already changed.
 
@@ -233,7 +373,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.059.
+Distribution version 2.060.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

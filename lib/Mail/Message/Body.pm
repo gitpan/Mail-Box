@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.059';
+$VERSION = '2.060';
 use base 'Mail::Reporter';
 
 use Mail::Message::Field;
@@ -11,7 +11,8 @@ use Mail::Message::Body::Lines;
 use Mail::Message::Body::File;
 
 use Carp;
-use Scalar::Util 'weaken';
+use Scalar::Util     'weaken';
+use File::Basename   'basename';
 
 use MIME::Types;
 my $mime_types = MIME::Types->new;
@@ -93,12 +94,10 @@ sub init($)
       = @$args{ qw/mime_type transfer_encoding disposition charset/ };
 
     if(defined $filename)
-    {   unless(defined $disp)
-        {   $disp = Mail::Message::Field->new
-              ('Content-Disposition' => (-T $filename ? 'inline':'attachment'));
-            (my $abbrev = $filename) =~ s!.*[/\\]!!;
-            $disp->attribute(filename => $abbrev);
-        }
+    {   $disp = Mail::Message::Field->new
+           ('Content-Disposition' => (-T $filename ? 'inline':'attachment')
+           , filename => basename($filename)
+           ) unless defined $disp;
 
         unless(defined $mime)
         {   $mime = $mime_types->mimeTypeOf($filename);
@@ -184,7 +183,7 @@ sub eol(;$)
     elsif($eol eq 'LF')    {s/[\015\012]+$/\012/     foreach @$lines}
     elsif($eol eq 'CRLF')  {s/[\015\012]+$/\015\012/ foreach @$lines}
     else
-    {   carp "Unknown line terminator $eol ignored.";
+    {   $self->log(WARNING => "Unknown line terminator $eol ignored.");
         return $self->eol('NATIVE');
     }
 

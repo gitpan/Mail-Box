@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport::Mailx;
 use vars '$VERSION';
-$VERSION = '2.059';
+$VERSION = '2.060';
 use base 'Mail::Transport::Send';
 
 use Carp;
@@ -54,7 +54,7 @@ sub _try_send_bsdish($$)
     {   close STDOUT;
         { exec $program, @options, @to }
         $self->log(NOTICE => "Cannot start contact to $program: $!");
-        return 0;
+        exit 1;
     }
  
     $self->putContent($message, \*MAILER, body_only => 1);

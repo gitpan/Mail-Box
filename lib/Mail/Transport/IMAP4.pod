@@ -190,22 +190,19 @@ a challange callback (which may be C<undef>).
 The settings are used by L<login()|Mail::Transport::IMAP4/"Protocol [internals]"> to get server access.  The initial
 value origins from L<new(authenticate)|Mail::Transport::IMAP4/"METHODS">, but may be changed later.
 
-Available basic TYPES are C<CRAM-MD5> and C<PLAIN>.  The latter is sending
-username and password in plain text, and is therefore tried as last
-resort.
+Available basic TYPES are C<CRAM-MD5>, C<NTLM>, and C<PLAIN>.  With
+C<AUTO>, all available types will be tried.  When the Authen::NTLM
+is not installed, the C<NTLM> option will silently be skipped.  Be warned
+that, because of C<PLAIN>, erroneous username/password combinations will
+be passed readible as last attempt!
 
 The C<NTLM> authentication requires Authen::NTLM to be installed.  Other
 methods may be added later.  Besides, you may also specify a CODE
 reference which implements some authentication.
 
-When C<AUTO> is given, then C<CRAM-MD5>, C<NTLM> and C<PLAIN> are tried,
-in that specific order.  When the Authen::NTLM is not installed it
-will silently be skipped.  Be warned that, because of C<PLAIN>, erroneous
-username/password combinations will be passed readible as last attempt!
-
 An ARRAY as TYPE can be used to specify both mechanism as callback.  When
 no array is used, callback of the pair is set to C<undef>.  See
-L<Mail::IMAPCleint/authenticate> for the gory details.
+L<Mail::IMAPClient/authenticate> for the gory details.
 
 I<Example:> 
 
@@ -591,7 +588,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.059.
+Distribution version 2.060.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

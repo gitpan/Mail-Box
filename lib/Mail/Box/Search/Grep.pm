@@ -1,7 +1,7 @@
 
 package Mail::Box::Search::Grep;
 use vars '$VERSION';
-$VERSION = '2.059';
+$VERSION = '2.060';
 use base 'Mail::Box::Search';
 
 use strict;
