@@ -7,7 +7,7 @@ use base 'Mail::Box::Parser';
 use List::Util 'sum';
 use FileHandle;
 
-our $VERSION = 2.00_17;
+our $VERSION = 2.00_18;
 
 =head1 NAME
 
@@ -33,7 +33,7 @@ The general methods for C<Mail::Box::Parser::Perl> objects:
 
   MBP bodyAsFile FILEHANDLE [,CHA...   MBP new [OPTIONS]
   MBP bodyAsList [,CHARS [,LINES]]     MBP popSeparator
-  MBP bodyAsString [,CHARS [,LINES]]   MBP pushSeparator STRING
+  MBP bodyAsString [,CHARS [,LINES]]   MBP pushSeparator STRING|REGEXP
   MBP bodyDelayed [,CHARS [,LINES]]    MBP readHeader WRAP
   MBP defaultParserType [CLASS]        MBP readSeparator OPTIONS
    MR errors                            MR report [LEVEL]
@@ -166,12 +166,15 @@ sub _read_header_line()
 
     return () if !defined $line || $line eq "\n";
 
-    my ($name, $body) = split /\:\s*/, $line, 2;
+    # Tassilo proved that this is farmost the fastest way to
+    # take a header line appart.
+    my $name = substr $line, 0, index($line, ': ');
+    my $body = substr $line, index($line, ': ')+2;
 
     unless(defined $body)
     {   $self->log(WARNING => "Unexpected end of header:\n  $line");
 
-        while($line !~ m/\:/ )
+        until(index $line, ': ')
         {   $line = $self->_get_one_line;
             return () unless defined $line;
             ($name, $body) = split /\:\s*/, $line, 2;
@@ -181,9 +184,6 @@ sub _read_header_line()
 
     $self->log(WARNING => "Blanks stripped after header fieldname: $name.")
         if $name =~ s/\s+$//;
-
-    $self->log(WARNING => "Field $name is empty.")
-        if $body eq "\n";
 
     # Do unfolding
 
@@ -207,6 +207,9 @@ sub _read_header_line()
     {   s/\s+/ /g;
         s/ $//;
     }
+
+    $self->log(WARNING => "Field $name is empty.")
+        if $body eq "\n";
 
     ($name, $body);
 }
@@ -288,7 +291,7 @@ sub _is_good_end(;$)
     return 1 unless defined $line;
 
     substr($line, 0, length $sep) eq $sep
-    && ($sep !~ m/^From / || $line =~ m/ (19[789]\d|20[01]\d)/ );
+    && ($sep !~ m/^From / || $line =~ m/ (19[789]|20[01])\d\b/ );
 }
 
 #------------------------------------------
@@ -446,7 +449,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_17.
+This code is beta, version 2.00_18.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox;
 use base 'Mail::Box';
 
-our $VERSION = 2.00_17;
+our $VERSION = 2.00_18;
 
 use Mail::Box::Mbox::Message;
 
@@ -185,14 +185,16 @@ smaller files in memory.
 my $default_folder_dir = exists $ENV{HOME} ? $ENV{HOME} . '/Mail' : '.';
 my $default_extension  = '.d';
 
+sub _default_body_type($$)
+{   my $size = shift->guessBodySize || 0;
+    'Mail::Message::Body::'.($size > 10000 ? 'File' : 'Lines');
+}
+
 sub init($)
 {   my ($self, $args) = @_;
     $args->{folderdir}        ||= $default_folder_dir;
     $args->{organization}     ||= 'FILE';
-    $args->{body_type}          =
-      sub { my $size = $_[1] || 0;
-            'Mail::Message::Body::'.($size > 10000 ? 'File' : 'Lines');
-      };
+    $args->{body_type}        ||= \&_default_body_type;
 
     $self->SUPER::init($args);
 
@@ -891,7 +893,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_17.
+This code is beta, version 2.00_18.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

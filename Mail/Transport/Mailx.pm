@@ -6,7 +6,7 @@ use base 'Mail::Transport';
 
 use Carp;
 
-our $VERSION = 2.00_17;
+our $VERSION = 2.00_18;
 
 =head1 NAME
 
@@ -48,7 +48,7 @@ The extra methods for extension writers:
 
    MR AUTOLOAD                          MR inGlobalDestruction
    MR DESTROY                           MR logPriority LEVEL
-   MT findBinary NAME                   MR logSettings
+   MT findBinary NAME [, DIRECTOR...    MR logSettings
 
 Methods prefixed with an abbreviation are described in the following
 manual-pages:
@@ -68,6 +68,7 @@ manual-pages:
 
  OPTION       DESCRIBED IN       DEFAULT
  log          Mail::Reporter     'WARNINGS'
+ proxy        Mail::Transport    undef
  trace        Mail::Reporter     'WARNINGS'
  via          Mail::Transport    <unused>
 
@@ -78,17 +79,13 @@ sub init($)
 
     $self->SUPER::init($args);
 
-    my ($command, $program);
-    foreach ( qw/mailx mail/ )
-    {   if($program = $self->findBinary($_))
-        {   $command = $_;
-            last;
-        }
-    }
+    $self->{MTM_program}
+      = $args->{proxy}
+     || $self->findBinary('mailx')
+     || $self->findBinary('Mail')
+     || $self->findBinary('mail')
+     || return;
 
-    return undef unless defined $program;
-
-    $self->{MTM_program} = $program;
     $self;
 }
 
@@ -190,7 +187,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_17.
+This code is beta, version 2.00_18.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

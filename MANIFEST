@@ -5,6 +5,7 @@ Mail/Box/Locker/DotLock.pm
 Mail/Box/Locker/Flock.pm
 Mail/Box/Locker/Multi.pm
 Mail/Box/Locker/NFS.pm
+Mail/Box/Locker/POSIX.pm
 Mail/Box/Locker.pm
 Mail/Box/Manager.pm
 Mail/Box/Mbox/Message.pm
@@ -56,6 +57,7 @@ Mail/Reporter.pm
 Mail/Transport.pm
 Mail/Transport/Mailx.pm
 Mail/Transport/Sendmail.pm
+Mail/Transport/Qmail.pm
 Makefile.PL
 MANIFEST
 README
@@ -120,9 +122,10 @@ t/56bounce.t
 t/60mgr.t
 t/61threads.t
 t/70dotlock.t
-t/71flock.t
-t/72nfslock.t
-t/73multi.t
+t/70flock.t
+t/70posix.t
+t/70nfslock.t
+t/70multi.t
 t/82tieary.t
 t/83tiehash.t
 t/90mailint.t

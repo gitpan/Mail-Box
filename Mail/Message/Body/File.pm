@@ -6,7 +6,7 @@ use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
 
-our $VERSION = 2.00_17;
+our $VERSION = 2.00_18;
 
 use Carp;
 use IO::File;
@@ -120,11 +120,11 @@ sub lines()
     open IN, '<', $file
         or die "Cannot read from $file: $!\n";
 
-    my @return = <IN>;
+    my @r = <IN>;
     close IN;
 
-    $self->{MMBF_nrlines} = @return;
-    wantarray ? @return : \@return;
+    $self->{MMBF_nrlines} = @r;
+    wantarray ? @r: \@r;
 }
 
 #------------------------------------------
@@ -344,7 +344,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_17.
+This code is beta, version 2.00_18.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

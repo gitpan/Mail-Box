@@ -1,19 +1,21 @@
 
 use strict;
 
-package Mail::Box::Locker::DotLock;
+package Mail::Box::Locker::POSIX;
 use base 'Mail::Box::Locker';
 
+use POSIX;
+use Fcntl;
 use IO::File;
-use Carp;
+use FileHandle;
 
 =head1 NAME
 
-Mail::Box::Locker::DotLock - lock a folder with a seperate file
+Mail::Box::Locker::POSIX - lock a folder using kernel file-locking
 
 =head1 CLASS HIERARCHY
 
- Mail::Box::Locker::DotLock
+ Mail::Box::Locker::POSIX
  is a Mail::Box::Locker
  is a Mail::Reporter
 
@@ -23,12 +25,14 @@ Mail::Box::Locker::DotLock - lock a folder with a seperate file
 
 =head1 DESCRIPTION
 
-The C<::DotLock> object lock the folder by creating a file with the
-same name as the folder, extended by C<.lock>.
+This locker object is created by the folder to get an exclusive lock on
+the file which contains the data using the kernel's POSIX facilities.  This
+lock is created on a separate file-handle to the folder file, so not the
+handle which is reading.  Not all platforms support POSIX locking.
 
 =head1 METHOD INDEX
 
-The general methods for C<Mail::Box::Locker::DotLock> objects:
+The general methods for C<Mail::Box::Locker::POSIX> objects:
 
   MBL DESTROY                          MBL name
    MR errors                           MBL new OPTIONS
@@ -56,34 +60,19 @@ manual-pages:
 
 #-------------------------------------------
 
-sub name() {'DOTLOCK'}
+sub name() {'POSIX'}
 
 #-------------------------------------------
 
 sub _try_lock($)
-{   my ($self, $lockfile) = @_;
-    my $flags    = $^O eq 'MSWin32'
-                 ?  O_CREAT|O_EXCL|O_WRONLY
-                 :  O_CREAT|O_EXCL|O_WRONLY|O_NONBLOCK;
-
-    my $lock     = IO::File->new($lockfile, $flags, 0600)
-        or return 0;
-
-    close $lock;
-    1;
+{   my ($self, $file) = @_;
+    $? = fcntl($file->fileno, F_SETLK, pack('s @256', F_WRLCK)) || 0;
+    $?==0;
 }
 
-#-------------------------------------------
-
-sub unlock()
-{   my $self = shift;
-    return $self unless $self->{MBL_has_lock};
-
-    my $lock = $self->filename;
-
-    unlink $lock
-        or warn "Couldn't remove lockfile $lock: $!\n";
-
+sub _unlock($)
+{   my ($self, $file) = @_;
+    fcntl($file->fileno, F_SETLK, pack('s @256', F_UNLCK));
     delete $self->{MBL_has_lock};
     $self;
 }
@@ -94,20 +83,28 @@ sub lock()
 {   my $self  = shift;
     return 1 if $self->hasLock;
 
-    my $lockfile = $self->filename;
-    my $end   = $self->{MBL_timeout} eq 'NOTIMEOUT' ? -1 : $self->{MBL_timeout};
-    my $timer = 0;
+    my $filename = $self->filename;
 
-    while($timer < $end)
-    {   return $self->{MBL_has_lock} = 1
-           if $self->_try_lock($lockfile);
+    my $file   = FileHandle->new($filename, 'r+');
+    unless(defined $file)
+    {   $self->log(ERROR => "Unable to open lockfile $filename");
+        return 0;
+    }
 
-        if(   -e $lockfile
-           && -A $lockfile > ($self->{MBL_timeout}/86400)
-           && unlink $lockfile
-          )
-        {   warn "Removed expired lockfile $lockfile.\n";
-            redo;
+    my $end    = $self->{MBL_timeout} eq 'NOTIMEOUT' ? 0 : $self->{MBL_timeout};
+    my $timer  = 0;
+
+    while($timer != $end)
+    {   if($self->_try_lock($file))
+        {   $self->{MBL_has_lock}    = 1;
+            $self->{MBLF_filehandle} = $file;
+            return 1;
+        }
+
+        if($? != EAGAIN)
+        {   $self->log(ERROR =>
+                  "Will never get a lock at ".$self->{MBL_folder}->name.": $!");
+            return 0;
         }
 
         sleep 1;
@@ -121,9 +118,30 @@ sub lock()
 
 sub isLocked()
 {   my $self     = shift;
-    $self->_try_lock($self->filename) or return 0;
-    $self->unlock;
+    my $filename = $self->filename;
+
+    my $file     = FileHandle->new($filename, "r");
+    unless($file)
+    {   $self->log(ERROR => "Unable to open lockfile $filename");
+        return 0;
+    }
+
+    $self->_try_lock($file) or return 0;
+    $self->_unlock($file);
+    $file->close;
+
     1;
+}
+
+#-------------------------------------------
+
+sub unlock()
+{   my $self = shift;
+
+    $self->_unlock(delete $self->{MBLF_filehandle})
+       if $self->hasLock;
+
+    $self;
 }
 
 #-------------------------------------------

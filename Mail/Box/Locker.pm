@@ -4,7 +4,7 @@ use strict;
 package Mail::Box::Locker;
 use base 'Mail::Reporter';
 
-our $VERSION = 2.00_17;
+our $VERSION = 2.00_18;
 
 use Carp;
 use File::Spec;
@@ -115,6 +115,10 @@ provided by the operating system.  However, this does not work on all
 systems, such as network filesystems, and such. This also doesn't work on
 folders based on directories (C<Mail::Box::MH> and derived).
 
+=item 'POSIX' | 'posix'
+
+Use the POSIX standard fcntl locking.
+
 =item 'MULTI' | 'multi'
 
 Try more than one locking method to be used at the same time, probably
@@ -172,6 +176,7 @@ my %lockers =
   , MULTI   => __PACKAGE__ .'::Multi'
   , NFS     => __PACKAGE__ .'::NFS'
   , NONE    => __PACKAGE__
+  , POSIX   => __PACKAGE__ .'::POSIX'
   );
 
 sub new(@)
@@ -363,7 +368,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_17.
+This code is beta, version 2.00_18.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

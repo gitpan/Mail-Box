@@ -7,7 +7,7 @@ use base 'Mail::Message::Body';
 use Mail::Message::Body::Lines;
 use Mail::Message::Part;
 
-our $VERSION = 2.00_17;
+our $VERSION = 2.00_18;
 
 use Carp;
 
@@ -60,7 +60,7 @@ The general methods for C<Mail::Message::Body::Multipart> objects:
   MMB file                              MR reportAll [LEVEL]
  MMBC foreachLine CODE                 MMB size
  MMBE isBinary                         MMB string
-  MMB isDelayed                       MMBC stripSignature OPTIONS
+  MMB isDelayed                            stripSignature OPTIONS
   MMB isMultipart                       MR trace [LEVEL]
   MMB lines                            MMB transferEncoding [STRING|FI...
    MR log [LEVEL [,STRINGS]]           MMB type
@@ -610,7 +610,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_17.
+This code is beta, version 2.00_18.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

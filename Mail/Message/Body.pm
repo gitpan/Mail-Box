@@ -5,8 +5,10 @@ package Mail::Message::Body;
 use base 'Mail::Reporter';
 
 use Mail::Message::Field;
+use Mail::Message::Body::Lines;
+use Mail::Message::Body::File;
 
-our $VERSION = 2.00_17;
+our $VERSION = 2.00_18;
 
 use overload bool  => sub {1}   # $body->print if $body
            , '""'  => 'string'
@@ -298,13 +300,10 @@ sub new(@)
          unless $class eq __PACKAGE__;
 
     my %args  = @_;
-    if(exists $args{file})
-    {   require Mail::Message::Body::File;
-        return Mail::Message::Body::File->new(@_);
-    }
 
-    require Mail::Message::Body::Lines;
-    Mail::Message::Body::Lines->new(@_);
+      exists $args{file}
+    ? Mail::Message::Body::File->new(@_)
+    : Mail::Message::Body::Lines->new(@_);
 }
 
 sub init($)
@@ -397,7 +396,7 @@ sub init($)
     $self->message($args->{message})
         if defined $args->{message};
 
-    $self->{MMB_seqnr}   = $body_count++;
+    $self->{MMB_seqnr} = $body_count++;
     $self;
 }
 
@@ -841,7 +840,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_17.
+This code is beta, version 2.00_18.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

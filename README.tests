@@ -93,8 +93,10 @@ Folder manager:
 
 Locking:
    70dotlock.t         dotlock mechanism
-   71flock.t           locking based on file-handle with flock
-   72nfslock.t         dotlocking over NFS
+   70flock.t           locking based on file-handle with flock
+   70posix.t           locking based on posix fcntl's
+   70nfslock.t         dotlocking over NFS
+   70multi.t           multi-locks in parallel
 
 Ties:
    82tieary.t          accessing folder as array.

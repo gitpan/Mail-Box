@@ -8,7 +8,7 @@ use base 'Mail::Reporter';
 use Mail::Box::Message;
 use Mail::Box::Locker;
 
-our $VERSION = 2.00_17;
+our $VERSION = 2.00_18;
 
 use Carp;
 use Scalar::Util 'weaken';
@@ -66,8 +66,9 @@ Tied-interface:   (See C<Mail::Box::Tie>)
 
 =head1 DESCRIPTION
 
-A C<Mail::Box::Manager> creates C<Mail::Box> objects, so you may want to
-begin there.
+A C<Mail::Box::Manager> creates C<Mail::Box> objects.  But you already
+knew, because you started with the C<Mail::Box-Overview> manual page.
+That is obligatory reading, sorry!
 
 C<Mail::Box> is the base-class for accessing various types of mail-folder
 organizational structures in a uniform way.  The various folder types vary
@@ -137,9 +138,6 @@ sub-class.
  folderdir         Mail::Box          undef
  head_wrap         Mail::Box          72
  extract           Mail::Box          10kb
- lock_file         Mail::Box          foldername.'.lock'
- lock_timeout      Mail::Box          1 hour
- lock_wait         Mail::Box          10 seconds
  log               Mail::Reporter     'WARNINGS'
  remove_when_empty Mail::Box          1
  save_on_exit      Mail::Box          1
@@ -157,6 +155,9 @@ you will not specify these:
  head_type         Mail::Box          'Mail::Message::Head::Complete'
  locker            Mail::Box          undef
  lock_type         Mail::Box          'Mail::Box::Locker::DotLock'
+ lock_file         Mail::Box          foldername.'.lock'
+ lock_timeout      Mail::Box          1 hour
+ lock_wait         Mail::Box          10 seconds
  multipart_type    Mail::Box          'Mail::Message::Body::Multipart'
  manager           Mail::Box          undef
  message_type      Mail::Box          'Mail::Box::Message'
@@ -1525,7 +1526,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_17.
+This code is beta, version 2.00_18.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

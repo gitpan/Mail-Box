@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-package Mail::Transport::Sendmail;
+package Mail::Transport::Qmail;
 use base 'Mail::Transport';
 
 use Carp;
@@ -10,28 +10,27 @@ our $VERSION = 2.00_18;
 
 =head1 NAME
 
-Mail::Transport::Sendmail - transmit messages using external Sendmail program
+Mail::Transport::Qmail - transmit messages using external Qmail program
 
 =head1 CLASS HIERARCHY
 
- Mail::Transport::Sendmail
+ Mail::Transport::Qmail
  is a Mail::Transport
  is a Mail::Reporter
 
 =head1 SYNOPSIS
 
- my $sender = Mail::Transport::Sendmail->new(...);
+ my $sender = Mail::Transport::Qmail->new(...);
  $sender->send($message);
 
 =head1 DESCRIPTION
 
-Implements mail transport using the external C<'Sendmail'> program.
-When instantiated, the mailer will look for the binary in specific system
-directories, and the first verions found is taken.
+Implements mail transport using the external programs C<'qmail-inject'>,
+part of the qmail mail-delivery system.
 
 =head1 METHOD INDEX
 
-The general methods for C<Mail::Transport::Sendmail> objects:
+The general methods for C<Mail::Transport::Qmail> objects:
 
    MR errors                            MR reportAll [LEVEL]
    MR log [LEVEL [,STRINGS]]            MT send MESSAGE, OPTIONS
@@ -75,7 +74,7 @@ sub init($)
 
     $self->{MTM_program}
       = $args->{proxy}
-     || $self->findBinary('sendmail')
+     || $self->findBinary('qmail-inject', '/var/qmail/bin')
      || return;
 
     $self;
@@ -88,7 +87,7 @@ sub trySend($@)
 
     my $program = $self->{MTM_program};
     if(open(MAILER, '|-')==0)
-    {   { exec $program, '-t'; }
+    {   { exec $program; }
         $self->log(NOTICE => "Errors when opening pipe to $program: $!");
         return 0;
     }

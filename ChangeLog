@@ -3,6 +3,21 @@ CHANGELOG of Mail::Box
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
+version 2.00_18: Mon Dec 10 20:33:18 CET 2001
+
+	- Added some requires for package FileHandle.
+
+	- Added Mail::Transport::Qmail (cannot test it, but expect it
+	  to work)
+
+	- Reorganized (and improved the docs) on all Transport modules.
+
+	- Added POSIX fcntl locking.
+
+	- [Tassilo v Parsival] demonstrated the fastest way to split
+	  a header, determined by benchmarking 6 variations on the theme.
+	  Used in Mail::Box::Parser::Perl.pm
+
 version 2.00_17: Sat Dec  8 23:10:06 CET 2001
 
 	- Moved scripts/web/* to scripts/

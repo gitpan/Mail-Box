@@ -6,10 +6,13 @@ use Carp;
 
 =head1 NAME
 
-Mail::Box::Thread::Node - one node in a Mail::Box::Thread::Manager data structure
+Mail::Box::Thread::Node - one node in a message thread
 
 =head1 SYNOPSIS
 
+ my $node = Mail::Box::Thread::Node->new;
+ $node->addMessage($message);
+ ...
 
 =head1 DESCRIPTION
 
@@ -598,7 +601,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_17.
+This code is beta, version 2.00_18.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

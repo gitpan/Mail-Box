@@ -8,7 +8,7 @@ use Carp;
 use File::Spec;
 use Errno 'EAGAIN';
 
-our $VERSION = 2.00_17;
+our $VERSION = 2.00_18;
 
 =head1 NAME
 
@@ -67,7 +67,7 @@ The extra methods for extension writers:
 
    MR AUTOLOAD                          MR inGlobalDestruction
    MR DESTROY                           MR logPriority LEVEL
-      findBinary NAME                   MR logSettings
+      findBinary NAME [, DIRECTOR...    MR logSettings
 
 Prefixed methods are described in   MR = L<Mail::Reporter>.
 
@@ -92,8 +92,15 @@ my %mailers =
  log               Mail::Reporter     'WARNINGS'
  trace             Mail::Reporter     'WARNINGS'
  via               Mail::Transport    'smtp'
+ proxy             Mail::Transport    undef
 
 =over 4
+
+=item * proxy =E<gt> PATH
+
+The name of the proxy software (the mail handler).  This must be
+the name (preferable the absolute path) of your mail delivery
+software.
 
 =item * via =E<gt> CLASS|NAME
 
@@ -203,22 +210,23 @@ sub trySend($@)
 
 #------------------------------------------
 
-=item findBinary NAME
+=item findBinary NAME [, DIRECTORIES]
 
 Look for a binary with the specified NAME in the directories which
-are defined to be safe.  The name is first stripped of any path
-information to be sure that no tricks are being played.  The full pathname
-is returned.
+are defined to be safe.  The list of standard directories is followed
+by the optional DIRECTORIES.  The full pathname is returned.
+
+You may specify a C<proxy> option, which specifies the absolute name
+of the binary to be used.
 
 =cut
 
 my @safe_directories = qw(/usr/local/bin /usr/bin /bin /sbin /usr/sbin);
 
-sub findBinary($)
-{   my ($self, $name) = @_;
-    $name =~ s!.*/!!;       # basename
+sub findBinary($@)
+{   my ($self, $name) = (shift, shift);
 
-    foreach (@safe_directories)
+    foreach (@safe_directories, @_)
     {   my $fullname = File::Spec->catfile($_, $name);
         return $fullname if -x $fullname;
     }
@@ -242,7 +250,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_17.
+This code is beta, version 2.00_18.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

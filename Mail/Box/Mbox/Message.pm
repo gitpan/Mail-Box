@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox::Message;
 use base 'Mail::Box::Message';
 
-our $VERSION = 2.00_17;
+our $VERSION = 2.00_18;
 
 use POSIX 'SEEK_SET';
 use IO::InnerFile;
@@ -181,7 +181,7 @@ See C<Mail::Message::read()> for more details.
 
 sub read($)
 {   my ($self, $parser) = @_;
-    my ($start, $fromline) = $parser->readSeparator;
+    my ($start, $fromline)  = $parser->readSeparator;
     return unless $fromline;
 
     $self->{MBMM_from_line} = $fromline;
@@ -300,7 +300,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_17.
+This code is beta, version 2.00_18.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
