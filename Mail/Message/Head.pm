@@ -12,7 +12,7 @@ use Carp;
 use Scalar::Util 'weaken';
 use FileHandle;
 
-our $VERSION = 2.004;
+our $VERSION = 2.005;
 
 use overload bool => sub { keys %{shift->{MMH_fields}} };
 
@@ -513,16 +513,16 @@ passes the PARSER as an argument.  Do not call this method yourself!
 sub read($)
 {   my ($self, $parser) = @_;
 
-    my $quad  = [ $parser->readHeader($self->{MMH_wrap_length}) ];
-    @$self{ qw/MMH_begin MMH_end/ } = splice @$quad, 0, 2;
+    my @fields    = $parser->readHeader($self->{MMH_wrap_length});
+    @$self{ qw/MMH_begin MMH_end/ } = (shift @fields, shift @fields);
 
     $parser->defaultParserType(ref $parser);
 
     my $known     = $self->{MMH_fields};
     my $fieldtype = $self->{MMH_field_type} || 'Mail::Message::Field::Fast';
 
-    while(@$quad)
-    {   my $field = $fieldtype->newNoCheck(splice @$quad, 0, 4);
+    foreach (@fields)
+    {   my $field = $fieldtype->newNoCheck( @$_ );
         my $name  = $field->name;
 
         push @{$self->{MMH_order}}, $name
@@ -847,7 +847,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.004.
+This code is beta, version 2.005.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::MH;
 
 use base 'Mail::Box';
-our $VERSION = 2.004;
+our $VERSION = 2.005;
 
 use Mail::Box::MH::Index;
 use Mail::Box::MH::Message;
@@ -80,7 +80,8 @@ The extra methods for extension writers:
    MR inGlobalDestruction               MB timespan2seconds TIME
       index                             MB toBeThreaded MESSAGES
       labels                            MB toBeUnthreaded MESSAGES
-   MR logPriority LEVEL                 MB write OPTIONS
+   MB lineSeparator [STRING|'CR'|...    MB write OPTIONS
+   MR logPriority LEVEL                    writeMessages [OPTIONS]
 
 Methods prefixed with an abbreviation are described in the following
 manual-pages:
@@ -854,7 +855,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.004.
+This code is beta, version 2.005.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

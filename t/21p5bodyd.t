@@ -85,7 +85,7 @@ while(1)
 
     $body = Mail::Message::Body::Delayed->new(message => \$message)
         ->read($parser, $head, undef, $cl, $li);
-    $ok++ if $body;
+    $ok++ if defined $body;
 
     my $size  = $body->guessSize;
 

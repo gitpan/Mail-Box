@@ -8,7 +8,7 @@ use Mail::Message::Field;
 use List::Util 'sum';
 use FileHandle;
 
-our $VERSION = 2.004;
+our $VERSION = 2.005;
 
 =head1 NAME
 
@@ -40,7 +40,7 @@ The general methods for C<Mail::Box::Parser::Perl> objects:
    MR errors                            MR report [LEVEL]
   MBP filePosition [POSITION]           MR reportAll [LEVEL]
   MBP foldHeaderLine LINE, LENGTH      MBP start OPTIONS
-  MBP inDosmode                        MBP stop
+  MBP lineSeparator                    MBP stop
    MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
 
 The extra methods for extension writers:
@@ -68,13 +68,23 @@ sub init(@)
     my $filename = $args->{filename};
     my $file     = FileHandle->new($filename, $self->{MBP_mode});
     return unless $file;
-    binmode $file;
+    binmode $file, ':raw';
 
     $self->{MBPP_file}       = $file;
     $self->{MBPP_filename}   = $filename;
     $self->{MBPP_seperator}  = $args->{seperator} || undef;
-    $self->{MBPP_dosmode}    = 1;
     $self->{MBPP_separators} = [];
+    $self->{MBPP_trusted}    = $args->{trusted};
+
+    # Prepare the first line.
+    $self->{MBPP_start_line} = 0;
+
+    my $line  = $file->getline || return $self;
+    $line     =~ s/[\012\015]+$/\n/;
+    $self->{MBP_linesep}     = $1;
+    $file->seek(0, 0);
+
+    binmode ':crlf';
 
     $self->log(PROGRESS => "Opened folder from file $filename.");
 
@@ -89,6 +99,7 @@ sub closeFile()
     $file->close;
 
     delete $self->{MBPP_separators};
+    delete $self->{MBPP_strip_gt};
     $self;
 }
 
@@ -112,76 +123,50 @@ sub popSeparator()
     
 #------------------------------------------
 
-sub _get_one_line()
-{   my $self = shift;
-    return delete $self->{MBPP_keep_line}
-        if exists $self->{MBPP_keep_line};
-
-    my $file = $self->{MBPP_file};
-
-    $self->{MBPP_start_line} = tell $file;
-    my $line = $file->getline || return;
-
-    if($self->{MBPP_dosmode})
-    {   if($line =~ s/\r\n$/\n/) {;}
-        elsif($line !~ /\n$/)    {$line .= "\n"}
-        else                     {delete $self->{MBPP_dosmode}}
-    }
-
-    $line;
-}
-
-#------------------------------------------
-
 sub filePosition(;$)
 {   my $self = shift;
-    
-    if(@_)
-    {   delete $self->{MBPP_keep_line};
-        seek $self->{MBPP_file}, shift, 0;
-    }
-    else
-    {     exists $self->{MBPP_keep_line}
-        ? $self->{MBPP_start_line}
-        : tell $self->{MBPP_file};
-    }
+    @_ ? seek($self->{MBPP_file}, shift, 0) : tell $self->{MBPP_file};
 }
+
+my $empty = qr/^[\015\012]*$/;
 
 #------------------------------------------
 
-sub readHeader($$$)
-{   my ($self, $wrap, $trust) = @_;
-    my @ret = ($self->filePosition, undef);
-    $trust = 1;
+sub readHeader($)
+{   my ($self, $wrap) = @_;
+    my $trust = $self->{MBPP_trusted};
+    my $file  = $self->{MBPP_file};
+
+    my $start = $file->tell;
+    my @ret   = ($start, undef);
+    my $line  = $file->getline;
 
 LINE:
-    while(my $line = $self->_get_one_line)
-    {   last if !defined $line || $line eq "\n";
-
+    while(defined $line)
+    {   last if $line =~ $empty;
         my ($name, $body) = split /\:\s*/, $line, 2;
 
         unless(defined $body)
         {   $self->log(WARNING => "Unexpected end of header:\n  $line");
-            $self->{MBPP_keep_line} = $line;
+            $file->seek(-length $line, 1);
             last LINE;
         }
-    
+
         # Do unfolding
     
-        while(1)
-        {   my $newline = $self->_get_one_line;
-    
-            if( $newline eq "\n" || $newline !~ m/^\s/ )
-            {   $self->{MBPP_keep_line} = $newline;
-                last;
-            }
-    
-            $body .= $newline;
-            $line .= $newline;
+        my @body    = $line;
+        while($line = $file->getline)
+        {   last unless $line =~ m/^[ \t]/;
+
+            $body .= $line;
+            push @body, $line;
         }
     
+        $body =~ s/\015?\012?$//;
+
         unless($trust)
-        {
+        {   for($body) {s/\s+/ /gs; s/ $//s};
+
             $self->log(WARNING =>
                 "Blanks stripped after header fieldname: $name.")
                     if $name =~ s/\s+$//;
@@ -190,21 +175,19 @@ LINE:
                 unless length $body;
         }
 
-        for($body)
-        {   s/\s+/ /g;
-            s/\s+$//;
-        }
-    
-        my ($comment, $folded);
-        if(Mail::Message::Field->isStructured($name))
-        {   ($body, $comment) = split /\s*\;\s*/, $body, 2;
-            $self->foldHeaderLine($line, $wrap);
-        }
+        if(exists $Mail::Message::Field::_structured{lc $name})
+        {   my $folded = $trust ? \@body
+             : $self->foldHeaderLine("$name: $body", $wrap);
 
-        push @ret, $name, $body, $comment, $folded;
+            ($body, my $comment) = split /\s*\;\s*/, $body, 2;
+            push @ret, [ $name, $body, $comment, $folded ];
+        }
+        else
+        {   push @ret, [ $name, $body ];
+        }
     }
 
-    $ret[1]  = $self->filePosition;
+    $ret[1]  = $file->tell;
     @ret;
 }
 
@@ -220,7 +203,8 @@ sub foldHeaderLine($$)
         s/\s+$//g;
         if(length $_ < $wrap)
         {   (my $folded = $original) =~ s/\s*$/\n/;
-            return $folded;
+            @lines = ($folded);
+            last;
         }
 
         while(1)
@@ -255,33 +239,27 @@ sub foldHeaderLine($$)
         push @lines, "$_\n" if length $_;
     }
 
-    @lines;
+    \@lines;
 }
 
 #------------------------------------------
 
-sub inDosmode() {shift->{MBPP_dosmode}}
-
-#------------------------------------------
-
-sub _is_good_end(;$)
+sub _is_good_end($)
 {   my ($self, $where) = @_;
 
     # No seps, then when have to trust it.
     my $sep = $self->{MBPP_separators}[0];
     return 1 unless defined $sep;
 
-    my $here = $self->filePosition;
-    if(defined $where)
-    {   seek $self->{MBPP_file}, $where, 0;
-        delete $self->{MBPP_keep_line};
-    }
+    my $file = $self->{MBPP_file};
+    my $here = $file->tell;
+    $file->seek($where, 0);
 
-    # Found first non-empty line on specified location.
-    my $line = $self->_get_one_line;
-    $line    = $self->_get_one_line while defined $line && $line eq "\n";
+    # Find first non-empty line on specified location.
+    my $line = $file->getline;
+    $line    = $file->getline while defined $line && $line =~ $empty;
 
-    seek $self->{MBPP_file}, $here, 0;
+    $file->seek($here, 0);
     return 1 unless defined $line;
 
     substr($line, 0, length $sep) eq $sep
@@ -293,17 +271,21 @@ sub _is_good_end(;$)
 sub readSeparator()
 {   my $self = shift;
 
-    my $sep = $self->{MBPP_separators}[0];
+    my $sep   = $self->{MBPP_separators}[0];
     return () unless defined $sep;
 
-    my $line = $self->_get_one_line;
-    $line    = $self->_get_one_line while defined $line && $line eq "\n";
+    my $file  = $self->{MBPP_file};
+    my $start = $file->tell;
+
+    my $line  = $file->getline;
+    $line     = $file->getline while defined $line && $line =~ $empty;
     return () unless defined $line;
 
-    return ($self->{MBPP_start_line}, $line)
+    $line     =~ s/[\012\015\s]+$/\n/g;
+    return ($start, $line)
         if substr($line, 0, length $sep) eq $sep;
 
-    $self->{MBPP_keep_line} = $line;
+    $file->seek($start, 0);
     ();
 }
 
@@ -311,39 +293,53 @@ sub readSeparator()
 
 sub _read_stripped_lines(;$$)
 {   my ($self, $exp_chars, $exp_lines) = @_;
-    $exp_lines    = -1 unless defined $exp_lines;
-    my @seps      = @{$self->{MBPP_separators}};
+    $exp_lines  = -1 unless defined $exp_lines;
+    my @seps    = @{$self->{MBPP_separators}};
 
-    my @lines     = ();
+    my $file    = $self->{MBPP_file};
+    my @lines   = ();
 
-    if(@seps)
-    {   my $line = $self->_get_one_line;
+    if(@seps && $self->{MBPP_trusted})
+    {   my $sep  = $seps[0];
+        my $l    = length $sep;
 
-  LINE: while(defined $line)
+        while(my $line = $file->getline)
         {
-            foreach my $sep (@seps)
-            {   last LINE
-                   if substr($line, 0, length $sep) eq $sep
-                   && ($sep !~ m/^From / || $line =~ m/ (19[789]\d|20[01]\d)/ );
+            if(substr($line, 0, $l) eq $sep
+              && ($sep !~ m/^From / || $line =~ m/ (19[789]\d|20[01]\d)/ ))
+            {   $file->seek(-length $line, 1);
+                last;
             }
 
             push @lines, $line;
-            $line = $self->_get_one_line;
         }
-
-        $self->{MBPP_keep_line} = $line if defined $line;
-
-        if($exp_lines > 0 )
-             { pop @lines while @lines > $exp_lines && $lines[-1] eq "\n" }
-        else { pop @lines    if @lines              && $lines[-1] eq "\n" }
     }
-    else
-    {   # File without separators.
-        while(@lines < $exp_lines)
-        {   my $line = $self->_get_one_line || last;
+    elsif(@seps)
+    {   
+
+  LINE: while(my $line = $file->getline)
+        {
+            foreach my $sep (@seps)
+            {   if(substr($line, 0, length $sep) eq $sep
+                   && ($sep !~ m/^From / || $line =~ m/ (19[789]\d|20[01]\d)/ ))
+                {   $file->seek(-length $line, 1);
+                    last LINE;
+                }
+            }
+
+            $line =~ s/\015?$//;
             push @lines, $line;
         }
     }
+    else
+    {   # File without separators.
+        binmode ':crlf';
+        @lines = $file->getlines;
+    }
+
+    if($exp_lines > 0 )
+         { pop @lines while @lines > $exp_lines && $lines[-1] =~ $empty }
+    else { pop @lines    if @lines              && $lines[-1] =~ $empty }
 
     map { s/^\>(\>*From\s)/$1/ } @lines
         if $self->{MBPP_strip_gt};
@@ -356,10 +352,11 @@ sub _read_stripped_lines(;$$)
 sub _take_scalar($$)
 {   my ($self, $begin, $end) = @_;
     my $file = $self->{MBPP_file};
-    seek $file, $begin, 0;
+    $file->seek($begin, 0);
 
     my $return;
-    read $file, $return, $begin-$end;
+    $file->read($return, $end-$begin);
+    $return =~ s/\015?//g;
     $return;
 }
 
@@ -367,21 +364,24 @@ sub _take_scalar($$)
 
 sub bodyAsString(;$$)
 {   my ($self, $exp_chars, $exp_lines) = @_;
-    my $begin = $self->filePosition;
+    my $file  = $self->{MBPP_file};
+    my $begin = $file->tell;
 
-    if(!$self->{MBPP_dosmode} && !$self->{MBPP_strip_gt}
-       && defined $exp_chars && $exp_chars>=0)
+    if(defined $exp_chars && $exp_chars>=0)
     {   # Get at once may be successful
         my $end = $begin + $exp_chars;
 
-        return ($begin, $self->_take_scalar($begin, $end))
-            if $self->_is_good_end($end);
+        if($self->_is_good_end($end))
+        {   my $body = $self->_take_scalar($begin, $end);
+            $body =~ s/^\>(\>*From\s)/$1/gm if $self->{MBPP_strip_gt};
+            return ($begin, $file->tell, $self->_take_scalar($begin, $end))
+        }
     }
 
     my $lines = $self->_read_stripped_lines($exp_chars, $exp_lines);
     return () unless @$lines;
 
-    return ($begin, $self->filePosition, join('', @$lines));
+    return ($begin, $file->tell, join('', @$lines));
 }
 
 
@@ -389,36 +389,39 @@ sub bodyAsString(;$$)
 
 sub bodyAsList(;$$)
 {   my ($self, $exp_chars, $exp_lines) = @_;
-    my $begin = $self->filePosition;
+    my $file  = $self->{MBPP_file};
+    my $begin = $file->tell;
 
     my $lines = $self->_read_stripped_lines($exp_chars, $exp_lines);
-    @$lines ? ($begin, $self->filePosition, @$lines) : ();
+    @$lines ? ($begin, $file->tell, @$lines) : ();
 }
 
 #------------------------------------------
 
 sub bodyAsFile($;$$)
 {   my ($self, $out, $exp_chars, $exp_lines) = @_;
-    my $begin = $self->filePosition;
+    my $file  = $self->{MBPP_file};
+    my $begin = $file->tell;
 
     my $lines = $self->_read_stripped_lines($exp_chars, $exp_lines);
     return () unless @$lines;
 
     $out->print($_) foreach @$lines;
-    ($begin, $self->filePosition, scalar @$lines);
+    ($begin, $file->tell, scalar @$lines);
 }
 
 #------------------------------------------
 
 sub bodyDelayed(;$$)
 {   my ($self, $exp_chars, $exp_lines) = @_;
-    my $begin = $self->filePosition;
+    my $file  = $self->{MBPP_file};
+    my $begin = $file->tell;
 
     if(defined $exp_chars)
     {   my $end = $begin + $exp_chars;
 
         if($self->_is_good_end($end))
-        {   seek $self->{MBPP_file}, $begin+$exp_chars, 0;
+        {   $file->seek($end, 0);
             return ($begin, $end, $exp_chars, $exp_lines);
         }
     }
@@ -426,7 +429,7 @@ sub bodyDelayed(;$$)
     my $lines = $self->_read_stripped_lines($exp_chars, $exp_lines);
     return () unless @$lines;
 
-    ($begin, $self->filePosition, sum(map {length} @$lines), scalar @$lines);
+    ($begin, $file->tell, sum(map {length} @$lines), scalar @$lines);
 }
 
 #------------------------------------------
@@ -443,7 +446,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.004.
+This code is beta, version 2.005.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

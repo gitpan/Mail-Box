@@ -7,7 +7,7 @@ use base 'Mail::Message::Body';
 use Mail::Message::Body::Lines;
 use Mail::Message::Part;
 
-our $VERSION = 2.004;
+our $VERSION = 2.005;
 
 use Carp;
 
@@ -550,7 +550,7 @@ sub read($$)
     my $preamble = Mail::Message::Body::Lines->new(@msgopts, @sloppyopts)
        ->read($parser, $head);
 
-    $self->{MMBM_preamble} = $preamble if $preamble->size;
+    $self->{MMBM_preamble} = $preamble if defined $preamble;
 
     # Get the parts.
 
@@ -572,7 +572,7 @@ sub read($$)
     my $epilogue = Mail::Message::Body::Lines->new(@msgopts, @sloppyopts)
       ->read($parser, $head);
 
-    $self->{MMBM_epilogue} = $epilogue if $epilogue->size;
+    $self->{MMBM_epilogue} = $epilogue if defined $epilogue;
     $self->{MMB_end}       = $parser->filePosition;
 
     $self;
@@ -611,7 +611,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.004.
+This code is beta, version 2.005.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

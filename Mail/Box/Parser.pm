@@ -5,7 +5,7 @@ package Mail::Box::Parser;
 use base 'Mail::Reporter';
 use Carp;
 
-our $VERSION = 2.004;
+our $VERSION = 2.005;
 
 =head1 NAME
 
@@ -57,7 +57,7 @@ The general methods for C<Mail::Box::Parser> objects:
    MR errors                            MR report [LEVEL]
       filePosition [POSITION]           MR reportAll [LEVEL]
       foldHeaderLine LINE, LENGTH          start OPTIONS
-      inDosmode                            stop
+      lineSeparator                        stop
    MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
 
 The extra methods for extension writers:
@@ -331,8 +331,9 @@ Try to read one message-body from the file.  Optionally, the predicted number
 of CHARacterS and/or LINES to be read can be supplied.  These values may be
 C<undef> and may be wrong.
 
-The return is a list of two scalars, the first the location in the file
-where the body starts, and the second the string containing the body.
+The return is a list of three scalars, the location in the file
+where the body starts, where the body ends, and the string containing the
+whole body.
 
 =cut
 
@@ -347,8 +348,8 @@ of CHARacterS and/or LINES to be read can be supplied.  These values may be
 C<undef> and may be wrong.
 
 The return is a list of scalars, each containing one line (including
-line terminator), preceeded by the location in the file where this
-body started.
+line terminator), preceeded by two integers representing the location
+in the file where this body started and ended.
 
 =cut
 
@@ -363,8 +364,8 @@ it to the specified file-handle.  Optionally, the predicted number
 of CHARacterS and/or LINES to be read can be supplied.  These values may be
 C<undef> and may be wrong.
 
-The return is a list of two scalars: the location of the body and the
-number of lines in the body.
+The return is a list of three scalars: the location of the body (begin
+and end) and the number of lines in the body.
 
 =cut
 
@@ -378,8 +379,9 @@ Try to read one message-body from the file, but the data is skipped.
 Optionally, the predicted number of CHARacterS and/or LINES to be skipped
 can be supplied.  These values may be C<undef> and may be wrong.
 
-The return is a list of three scalars: the location of the body, the
-size of the body, and the number of lines in the body.
+The return is a list of four scalars: the location of the body (begin and
+end), the size of the body, and the number of lines in the body.  The
+number of lines may be C<undef>.
 
 =cut
 
@@ -387,15 +389,16 @@ sub bodyDelayed() {shift->notImplemented}
 
 #------------------------------------------
 
-=item inDosmode
+=item lineSeparator
 
-Returns whether the source file contains CR-LF as line-trailers, which
-means we handle DOS/Windows files on a UNIX platform.  This value is
-only valid if at least one line of input is read.
+Returns the character or characters which are used to separate lines
+in the folder file.  This is based on the first line of the file.
+UNIX systems use a single LF to separate lines.  Windows uses a CR and
+a LF.  Mac uses CR.
 
 =cut
 
-sub inDosmode()   {shift->notImplemented}
+sub lineSeparator() {shift->{MBP_linesep}}
 
 #------------------------------------------
 
@@ -441,7 +444,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.004.
+This code is beta, version 2.005.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

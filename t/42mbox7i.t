@@ -35,6 +35,7 @@ my $folder = new Mail::Box::Mbox
   , extract      => 'LAZY'
   , access       => 'rw'
   , log          => 'NOTICES'
+#, trace => 'NOTICES'
   );
 
 die "Couldn't read $src: $!\n"

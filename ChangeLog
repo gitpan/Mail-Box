@@ -1,9 +1,40 @@
-CHANGELOG of Mail::Box
+CHANGELOG of Mail::Box version 2
 
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
-version 2.004:
+version 2.005: Sun Dec 30 14:25:22 CET 2001
+
+	Fixes:
+
+	- Because of a bug related to weak references in the 5.6.0
+	  Perl core, 5.6.1 is required now...
+
+	Improvements:
+
+	- Rewrote Mail::Box::Parser::Perl, to avoid use of unget_line.
+	  At the same time, the detection of the folder's line mode is
+	  simplified.  However, not seek is sparsely used... maybe as
+	  next improvement this could be avoided as well.
+
+	- The performance is improved considerably when the folder
+	  is trusted.  However, a little slowdown can be experienced
+	  for untrusted folders, because better CRLF handling.
+
+	- $mboxmsg->fileLocation returns only begin message in scalar
+	  context.
+
+	- readHeader returns ref-array for each field i.s.o. four
+	  elements in a list.
+
+	- Mail::Box::Parser::inDosmode is now called
+	  Mail::Box::Parser::lineSeparator.  Although a start has been
+	  made to support Windows and non-native folders, it is not
+	  fully implemented yet.
+
+	- Updated the Mail::Box::Parser manual-page.
+
+version 2.004: Sun Dec 16 22:53:06 CET 2001
 
 	Fixes:
 

@@ -7,7 +7,7 @@ use base 'Mail::Message::Body';
 use Mail::Box::Parser;
 use IO::Lines;
 
-our $VERSION = 2.004;
+our $VERSION = 2.005;
 
 use Carp;
 
@@ -194,8 +194,11 @@ sub _data_from_lines(@_)
 
 sub read($$;$@)
 {   my ($self, $parser, $head, $bodytype) = splice @_, 0, 4;
-    $self->{MMBL_array} = [ $parser->bodyAsList(@_) ];
-    @$self{ qw/MMB_begin MMB_end/ } = splice @{$self->{MMBL_array}}, 0, 2;
+    my @lines = $parser->bodyAsList(@_);
+    return undef unless @lines;
+
+    @$self{ qw/MMB_begin MMB_end/ } = (shift @lines, shift @lines);
+    $self->{MMBL_array} = \@lines;
     $self;
 }
 
@@ -222,7 +225,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.004.
+This code is beta, version 2.005.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

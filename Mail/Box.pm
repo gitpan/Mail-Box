@@ -8,7 +8,7 @@ use base 'Mail::Reporter';
 use Mail::Box::Message;
 use Mail::Box::Locker;
 
-our $VERSION = 2.004;
+our $VERSION = 2.005;
 
 use Carp;
 use Scalar::Util 'weaken';
@@ -112,8 +112,9 @@ The extra methods for extension writers:
       folderdir [DIR]                      storeMessage MESSAGE
       foundIn [FOLDERNAME], OPTIONS        timespan2seconds TIME
    MR inGlobalDestruction                  toBeThreaded MESSAGES
-   MR logPriority LEVEL                    toBeUnthreaded MESSAGES
-   MR logSettings                          write OPTIONS
+      lineSeparator [STRING|'CR'|...       toBeUnthreaded MESSAGES
+   MR logPriority LEVEL                    write OPTIONS
+   MR logSettings                          writeMessages
 
 Prefixed methods are described in   MR = L<Mail::Reporter>.
 
@@ -417,6 +418,7 @@ sub init($)
     $self->{MB_save_on_exit} = $args->{save_on_exit}      || 1;
     $self->{MB_organization} = $args->{organization}      || 'FILE';
     $self->{MB_head_wrap}    = $args->{head_wrap} if defined $args->{head_wrap};
+    $self->{MB_linesep}      = "\n";
 
     my $folderdir = $self->folderdir($args->{folderdir});
     $self->{MB_trusted}      = exists $args->{trusted} ? $args->{trusted}
@@ -1112,6 +1114,38 @@ sub storeMessage($)
 
 #-------------------------------------------
 
+=item lineSeparator [STRING|'CR'|'LF'|'CRLF']
+
+Returns the character or characters used to separate lines in the folder
+file, optionally after setting it to STRING, or one of the constants.
+The first line of the folder sets the default.
+
+UNIX uses a LF character, Mac a CR, and Windows both a CR and a LF.  Each
+separator will be represented by a "\n" within your program.  However,
+when processing platform foreign folders, complications appear.  Think about
+the C<Size> field in the header.
+
+When the separator is changed, the whole folder me be rewritten.  Although,
+that may not be required.
+
+=cut
+
+my %seps = (CR => "\015", LF => "\012", CRLF => "\015\012");
+
+sub lineSeparator(;$)
+{   my $self = shift;
+    return $self->{MB_linesep} unless @_;
+
+   my $sep   = shift;
+   $sep = $seps{$sep} if exists $seps{$sep};
+
+   $self->{MB_linesep} = $sep;
+   $_->lineSeparator($sep) foreach $self->messages;
+   $sep;
+}
+
+#-------------------------------------------
+
 =item write OPTIONS
 
 Write the data to disk.  The folder is returned if successful. To write to a
@@ -1536,7 +1570,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.004.
+This code is beta, version 2.005.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox::Message;
 use base 'Mail::Box::Message';
 
-our $VERSION = 2.004;
+our $VERSION = 2.005;
 
 use POSIX 'SEEK_SET';
 use IO::InnerFile;
@@ -65,17 +65,16 @@ The general methods for C<Mail::Box::Mbox::Message> objects:
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                             loadBody
-   MM DESTROY                           MR logPriority LEVEL
-   MM body [BODY]                       MR logSettings
-   MM clone                                moveLocation DISTANCE
-   MM coerce MESSAGE                    MR notImplemented
-  MBM diskDelete                           parser
+   MR AUTOLOAD                          MM labels
+   MM DESTROY                              loadBody
+   MM body [BODY]                       MR logPriority LEVEL
+   MM clone                             MR logSettings
+   MM coerce MESSAGE                       moveLocation DISTANCE
+  MBM diskDelete                        MR notImplemented
       fileLocation                         read PARSER
    MM head [HEAD, [LABELS]]            MBM readBody PARSER, HEAD [, BO...
    MR inGlobalDestruction               MM readHead PARSER [,CLASS]
    MM isDelayed                         MM storeBody BODY
-   MM labels                            MM takeMessageId [STRING]
 
 Methods prefixed with an abbreviation are described in the following
 manual-pages:
@@ -217,17 +216,6 @@ sub clone()
 
 #-------------------------------------------
 
-=item parser
-
-Returns the parser when there are still delayed parts of this message,
-or C<undef> when all message parts are already read into real structures.
-
-=cut
-
-sub parser() {shift->{MBMM_parser}}
-
-#-------------------------------------------
-
 sub loadHead() { shift->head }
 
 #-------------------------------------------
@@ -244,7 +232,7 @@ sub loadBody()
 #confess unless defined $body;
     return $body unless $body->isDelayed;
 
-    my $parser   = $self->parser;
+    my $parser   = delete $self->{MBMM_parser};
     my ($begin, $end) = $body->fileLocation;
     $parser->filePosition($begin);
 
@@ -257,7 +245,6 @@ sub loadBody()
     $self->log(PROGRESS => 'Loaded delayed body.');
     $self->storeBody($newbody);
 
-    delete $self->{MBMM_parser};
     $newbody;
 }
 
@@ -265,13 +252,17 @@ sub loadBody()
 
 =item fileLocation
 
-Return the location of the whole message including the from-line.
+Returns the location of the whole message including the from-line.  In
+LIST context, both begin and end are returned.  In SCALAR context, only
+the begin is passed back.
 
 =cut
 
 sub fileLocation()
 {   my $self = shift;
-    ($self->{MBMM_begin}, ($self->body->fileLocation)[1]);
+    wantarray
+     ? ($self->{MBMM_begin}, ($self->body->fileLocation)[1])
+     : $self->{MBMM_begin};
 }
 
 #------------------------------------------
@@ -311,7 +302,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.004.
+This code is beta, version 2.005.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -1,5 +1,5 @@
 
-This file lists the things to do before v2.01 beta can come out.
+This file lists the things to do before v2.100 beta can come out.
 
 Obligatory:
 
@@ -8,7 +8,10 @@ Obligatory:
   test of scripts/
   Mail::Message::Body::Multipart::file()
   test $msg->body(undef);
-  test trusted folders
+
+  Processing folders with non-platform-native line separators.
+  Mail::Message->lineSeparator("\015\012");
+  Mail::Transport::SMTP
 
 Optional:
 

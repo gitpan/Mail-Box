@@ -9,7 +9,7 @@ use Mail::Message::Head::Complete;
 
 use Carp;
 
-our $VERSION = 2.004;
+our $VERSION = 2.005;
 
 =head1 NAME
 
@@ -242,7 +242,9 @@ Is equivalent to:
 =cut
 
 sub get($)
-{   my $field = shift->head->get(shift) || return;
+{
+warn "BAD: ",$_[0]->seqnr if $_[0]->isa('Mail::Box::Message') && ! defined $_[0]->head;
+    my $field = shift->head->get(shift) || return;
     $field->body;
 }
 
@@ -825,10 +827,14 @@ which returns a body-class based on the header.
 sub read($;$)
 {   my ($self, $parser, $bodytype) = @_;
 
-    my $head = $self->readHead($parser) or return;
-    $self->head($head);
+    my $head = $self->readHead($parser)
+       or return;
 
-    $self->{MM_body} = $self->readBody($parser, $head, $bodytype);
+    my $body = $self->readBody($parser, $head, $bodytype)
+       or return;
+
+    $self->head($head);
+    $self->storeBody($body);
     $self;
 }
 
@@ -1223,7 +1229,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.004.
+This code is beta, version 2.005.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

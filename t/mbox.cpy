@@ -1,9 +1,18 @@
 From magick-owner@unca-don.wizards.dupont.com Wed Feb  9 22:02 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id WAA23694 for <markov@ATComputing.nl>; Wed, 9 Feb 2000 22:02:24 +0100 (MET)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id WAA01128 for <markov@ATComputing.nl>; Wed, 9 Feb 2000 22:02:24 +0100
-Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1) id xma001126; Wed, 9 Feb 00 22:02:01 +0100
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id QAA21962; Wed, 9 Feb 2000 16:00:43 -0500
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id PAA29389 for magick-outgoing; Wed, 9 Feb 2000 15:38:42 -0500 (EST)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id WAA23694
+	for <markov@ATComputing.nl>; Wed, 9 Feb 2000 22:02:24 +0100 (MET)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id WAA01128
+	for <markov@ATComputing.nl>; Wed, 9 Feb 2000 22:02:24 +0100
+Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1)
+	id xma001126; Wed, 9 Feb 00 22:02:01 +0100
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id QAA21962;
+	Wed, 9 Feb 2000 16:00:43 -0500
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id PAA29389
+	for magick-outgoing; Wed, 9 Feb 2000 15:38:42 -0500 (EST)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Date: Wed, 9 Feb 2000 15:44:05 -0500
 From: William Park <parkw@better.net>
@@ -11,7 +20,8 @@ To: Mark Sappol <Mark_Sappol@ipicorp.com>
 Cc: "magick@wizards.dupont.com" <magick@wizards.dupont.com>
 Subject: Re: File Conversion From HTML to PS and TIFF
 Message-ID: <20000209154405.C265@better.net>
-Mail-Followup-To: Mark Sappol <Mark_Sappol@ipicorp.com>, "magick@wizards.dupont.com" <magick@wizards.dupont.com>
+Mail-Followup-To: Mark Sappol <Mark_Sappol@ipicorp.com>,
+	"magick@wizards.dupont.com" <magick@wizards.dupont.com>
 References: <38A11D0E.A2064062@ipicorp.com>
 Mime-Version: 1.0
 X-Mailer: Mutt 1.0pre3i
@@ -59,11 +69,20 @@ Include the following command in the body of your message:
 ***********************************************************************
 
 From magick-owner@unca-don.wizards.dupont.com Wed Feb  9 23:15 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id XAA24500 for <markov@ATComputing.nl>; Wed, 9 Feb 2000 23:15:56 +0100 (MET)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id XAA01235 for <markov@ATComputing.nl>; Wed, 9 Feb 2000 23:15:55 +0100
-Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1) id xma001233; Wed, 9 Feb 00 23:15:42 +0100
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id RAA04724; Wed, 9 Feb 2000 17:13:49 -0500
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id QAA29779 for magick-outgoing; Wed, 9 Feb 2000 16:56:19 -0500 (EST)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id XAA24500
+	for <markov@ATComputing.nl>; Wed, 9 Feb 2000 23:15:56 +0100 (MET)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id XAA01235
+	for <markov@ATComputing.nl>; Wed, 9 Feb 2000 23:15:55 +0100
+Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1)
+	id xma001233; Wed, 9 Feb 00 23:15:42 +0100
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id RAA04724;
+	Wed, 9 Feb 2000 17:13:49 -0500
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id QAA29779
+	for magick-outgoing; Wed, 9 Feb 2000 16:56:19 -0500 (EST)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Message-Id: <200002092200.RAA19561@mailfw3.ford.com>
 Date: Wed, 09 Feb 2000 17:00:14 -0500
@@ -73,7 +92,8 @@ X-Mailer: Mozilla 4.7C-CCK-MCD cf47 [en] (X11; I; SunOS 5.6 sun4u)
 X-Accept-Language: en, en-GB, de, fr, ja, ko, zh
 Mime-Version: 1.0
 To: Jeffrey Krzysztow <jeffrey.krzysztow@pvii.com>
-Cc: William Park <parkw@better.net>, Mark Sappol <Mark_Sappol@ipicorp.com>, "magick@wizards.dupont.com" <magick@wizards.dupont.com>
+Cc: William Park <parkw@better.net>, Mark Sappol <Mark_Sappol@ipicorp.com>,
+        "magick@wizards.dupont.com" <magick@wizards.dupont.com>
 Subject: Re: File Conversion From HTML to PS and TIFF
 References: <38A11D0E.A2064062@ipicorp.com> <20000209154405.C265@better.net> <38A1DBE7.9D3718C9@pvii.com>
 Content-Transfer-Encoding: 7bit
@@ -147,11 +167,20 @@ Include the following command in the body of your message:
 ***********************************************************************
 
 From magick-owner@unca-don.wizards.dupont.com Wed Feb  9 23:15 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id XAA24495 for <markov@ATComputing.nl>; Wed, 9 Feb 2000 23:15:26 +0100 (MET)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id XAA01230 for <markov@ATComputing.nl>; Wed, 9 Feb 2000 23:15:25 +0100
-Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1) id xma001228; Wed, 9 Feb 00 23:15:21 +0100
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id RAA04756; Wed, 9 Feb 2000 17:13:55 -0500
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id QAA29764 for magick-outgoing; Wed, 9 Feb 2000 16:55:37 -0500 (EST)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id XAA24495
+	for <markov@ATComputing.nl>; Wed, 9 Feb 2000 23:15:26 +0100 (MET)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id XAA01230
+	for <markov@ATComputing.nl>; Wed, 9 Feb 2000 23:15:25 +0100
+Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1)
+	id xma001228; Wed, 9 Feb 00 23:15:21 +0100
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id RAA04756;
+	Wed, 9 Feb 2000 17:13:55 -0500
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id QAA29764
+	for magick-outgoing; Wed, 9 Feb 2000 16:55:37 -0500 (EST)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Message-ID: <38A1E3B0.F148D74A@websidestory.com>
 Date: Wed, 09 Feb 2000 14:01:20 -0800
@@ -160,7 +189,8 @@ X-Mailer: Mozilla 4.7 [en] (X11; U; Linux 2.2.5-15 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
 To: Jeffrey Krzysztow <jeffrey.krzysztow@pvii.com>
-CC: William Park <parkw@better.net>, Mark Sappol <Mark_Sappol@ipicorp.com>, "magick@wizards.dupont.com" <magick@wizards.dupont.com>
+CC: William Park <parkw@better.net>, Mark Sappol <Mark_Sappol@ipicorp.com>,
+        "magick@wizards.dupont.com" <magick@wizards.dupont.com>
 Subject: Re: File Conversion From HTML to PS and TIFF
 References: <38A11D0E.A2064062@ipicorp.com> <20000209154405.C265@better.net> <38A1DBE7.9D3718C9@pvii.com>
 Content-Transfer-Encoding: 7bit
@@ -237,11 +267,20 @@ Include the following command in the body of your message:
 ***********************************************************************
 
 From magick-owner@unca-don.wizards.dupont.com Wed Feb 23 17:28 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id RAA20894 for <markov@ATComputing.nl>; Wed, 23 Feb 2000 17:28:05 +0100 (MET)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id RAA21883 for <markov@ATComputing.nl>; Wed, 23 Feb 2000 17:28:04 +0100
-Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1) id xma021881; Wed, 23 Feb 00 17:27:46 +0100
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id LAA28560; Wed, 23 Feb 2000 11:25:57 -0500
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id KAA09345 for magick-outgoing; Wed, 23 Feb 2000 10:53:09 -0500 (EST)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id RAA20894
+	for <markov@ATComputing.nl>; Wed, 23 Feb 2000 17:28:05 +0100 (MET)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id RAA21883
+	for <markov@ATComputing.nl>; Wed, 23 Feb 2000 17:28:04 +0100
+Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1)
+	id xma021881; Wed, 23 Feb 00 17:27:46 +0100
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id LAA28560;
+	Wed, 23 Feb 2000 11:25:57 -0500
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id KAA09345
+	for magick-outgoing; Wed, 23 Feb 2000 10:53:09 -0500 (EST)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Message-ID: <177E035AF8BDD311858B00A0C9D8E324886A3B@EMAILSRVR_KPR>
 From: Steve Sapovits <SapovitsS@globalsportsinc.com>
@@ -302,11 +341,20 @@ Include the following command in the body of your message:
 ***********************************************************************
 
 From magick-owner@unca-don.wizards.dupont.com Wed Feb 23 20:13 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id UAA24120 for <markov@ATComputing.nl>; Wed, 23 Feb 2000 20:13:38 +0100 (MET)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id UAA22110 for <markov@ATComputing.nl>; Wed, 23 Feb 2000 20:13:38 +0100
-Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1) id xma022108; Wed, 23 Feb 00 20:13:37 +0100
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id OAA00687; Wed, 23 Feb 2000 14:11:56 -0500
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id NAA10192 for magick-outgoing; Wed, 23 Feb 2000 13:26:44 -0500 (EST)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id UAA24120
+	for <markov@ATComputing.nl>; Wed, 23 Feb 2000 20:13:38 +0100 (MET)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id UAA22110
+	for <markov@ATComputing.nl>; Wed, 23 Feb 2000 20:13:38 +0100
+Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1)
+	id xma022108; Wed, 23 Feb 00 20:13:37 +0100
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id OAA00687;
+	Wed, 23 Feb 2000 14:11:56 -0500
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id NAA10192
+	for magick-outgoing; Wed, 23 Feb 2000 13:26:44 -0500 (EST)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Message-ID: <177E035AF8BDD311858B00A0C9D8E324886AB2@EMAILSRVR_KPR>
 From: Steve Sapovits <SapovitsS@globalsportsinc.com>
@@ -398,11 +446,20 @@ Include the following command in the body of your message:
 ***********************************************************************
 
 From magick-owner@unca-don.wizards.dupont.com Thu Feb 24 18:17 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id SAA21506 for <markov@ATComputing.nl>; Thu, 24 Feb 2000 18:17:36 +0100 (MET)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id SAA23500 for <markov@ATComputing.nl>; Thu, 24 Feb 2000 18:17:35 +0100
-Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1) id xma023498; Thu, 24 Feb 00 18:17:21 +0100
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id MAA27594; Thu, 24 Feb 2000 12:14:53 -0500
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id LAA16076 for magick-outgoing; Thu, 24 Feb 2000 11:52:40 -0500 (EST)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id SAA21506
+	for <markov@ATComputing.nl>; Thu, 24 Feb 2000 18:17:36 +0100 (MET)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id SAA23500
+	for <markov@ATComputing.nl>; Thu, 24 Feb 2000 18:17:35 +0100
+Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1)
+	id xma023498; Thu, 24 Feb 00 18:17:21 +0100
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id MAA27594;
+	Thu, 24 Feb 2000 12:14:53 -0500
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id LAA16076
+	for magick-outgoing; Thu, 24 Feb 2000 11:52:40 -0500 (EST)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Message-ID: <8100014B48DAD111AA4100805F9F3FC903A0E5B9@host60.corbis.com>
 From: Bill Radcliffe <BillR@corbis.com>
@@ -415,7 +472,8 @@ X-Mailer: Internet Mail Service (5.5.2448.0)
 Sender: owner-magick@wizards.dupont.com
 Precedence: bulk
 Reply-To: Bill Radcliffe <BillR@corbis.com>
-Content-Type: text/plain; charset="ISO-8859-1"
+Content-Type: text/plain;
+	charset="ISO-8859-1"
 Status: RO
 Content-Length: 5643
 Lines: 161
@@ -583,11 +641,20 @@ Include the following command in the body of your message:
 ***********************************************************************
 
 From magick-owner@unca-don.wizards.dupont.com Thu Feb 24 20:21 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id UAA23276 for <markov@ATComputing.nl>; Thu, 24 Feb 2000 20:21:08 +0100 (MET)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id UAA23679 for <markov@ATComputing.nl>; Thu, 24 Feb 2000 20:21:08 +0100
-Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1) id xma023676; Thu, 24 Feb 00 20:20:57 +0100
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id OAA10625; Thu, 24 Feb 2000 14:17:28 -0500
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id NAA16562 for magick-outgoing; Thu, 24 Feb 2000 13:40:21 -0500 (EST)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id UAA23276
+	for <markov@ATComputing.nl>; Thu, 24 Feb 2000 20:21:08 +0100 (MET)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id UAA23679
+	for <markov@ATComputing.nl>; Thu, 24 Feb 2000 20:21:08 +0100
+Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1)
+	id xma023676; Thu, 24 Feb 00 20:20:57 +0100
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id OAA10625;
+	Thu, 24 Feb 2000 14:17:28 -0500
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id NAA16562
+	for magick-outgoing; Thu, 24 Feb 2000 13:40:21 -0500 (EST)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Message-ID: <8100014B48DAD111AA4100805F9F3FC903A0E5BF@host60.corbis.com>
 From: Bill Radcliffe <BillR@corbis.com>
@@ -600,7 +667,8 @@ X-Mailer: Internet Mail Service (5.5.2448.0)
 Sender: owner-magick@wizards.dupont.com
 Precedence: bulk
 Reply-To: Bill Radcliffe <BillR@corbis.com>
-Content-Type: text/plain; charset="ISO-8859-1"
+Content-Type: text/plain;
+	charset="ISO-8859-1"
 Status: RO
 Content-Length: 7382
 Lines: 206
@@ -864,15 +932,25 @@ AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
 
 From magick-owner@unca-don.wizards.dupont.com Thu Mar 30 19:09 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id TAA14579 for <markov@ATComputing.nl>; Thu, 30 Mar 2000 19:09:10 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id TAA31447 for <markov@ATComputing.nl>; Thu, 30 Mar 2000 19:09:10 +0200
-Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1) id xma031440; Thu, 30 Mar 00 19:08:51 +0200
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id MAA10121; Thu, 30 Mar 2000 12:04:52 -0500
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id LAA03360 for magick-outgoing; Thu, 30 Mar 2000 11:44:20 -0500 (EST)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id TAA14579
+	for <markov@ATComputing.nl>; Thu, 30 Mar 2000 19:09:10 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id TAA31447
+	for <markov@ATComputing.nl>; Thu, 30 Mar 2000 19:09:10 +0200
+Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1)
+	id xma031440; Thu, 30 Mar 00 19:08:51 +0200
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id MAA10121;
+	Thu, 30 Mar 2000 12:04:52 -0500
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id LAA03360
+	for magick-outgoing; Thu, 30 Mar 2000 11:44:20 -0500 (EST)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Message-ID: <8100014B48DAD111AA4100805F9F3FC903A0E75D@host60.corbis.com>
 From: Bill Radcliffe <BillR@corbis.com>
-To: "'Ivo'" <ivo.penzar@infolink-software.com>, magick@wizards.dupont.com, tiff@olympiakos.com
+To: "'Ivo'" <ivo.penzar@infolink-software.com>, magick@wizards.dupont.com,
+        tiff@olympiakos.com
 Subject: RE: jpeg2000 question
 Date: Thu, 30 Mar 2000 08:46:50 -0800
 MIME-Version: 1.0
@@ -993,11 +1071,20 @@ AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
 
 From magick-owner@unca-don.wizards.dupont.com Fri Mar 31 01:39 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id BAA16135 for <markov@ATComputing.nl>; Fri, 31 Mar 2000 01:39:18 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id BAA31743 for <markov@ATComputing.nl>; Fri, 31 Mar 2000 01:39:18 +0200
-Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1) id xma031741; Fri, 31 Mar 00 01:39:12 +0200
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id SAA08310; Thu, 30 Mar 2000 18:37:29 -0500
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id SAA05154 for magick-outgoing; Thu, 30 Mar 2000 18:24:04 -0500 (EST)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id BAA16135
+	for <markov@ATComputing.nl>; Fri, 31 Mar 2000 01:39:18 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id BAA31743
+	for <markov@ATComputing.nl>; Fri, 31 Mar 2000 01:39:18 +0200
+Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1)
+	id xma031741; Fri, 31 Mar 00 01:39:12 +0200
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id SAA08310;
+	Thu, 30 Mar 2000 18:37:29 -0500
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id SAA05154
+	for magick-outgoing; Thu, 30 Mar 2000 18:24:04 -0500 (EST)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 From: "Carl Knoos" <cknoos@atg.com>
 To: <magick@wizards.dupont.com>
@@ -1015,7 +1102,8 @@ X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
 Sender: owner-magick@wizards.dupont.com
 Precedence: bulk
 Reply-To: "Carl Knoos" <cknoos@atg.com>
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Status: RO
 X-Status: A
 Content-Length: 1270
@@ -1070,19 +1158,33 @@ Include the following command in the body of your message:
 ***********************************************************************
 
 From magick-owner@unca-don.wizards.dupont.com Fri Mar 31 02:25 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id CAA16260 for <markov@ATComputing.nl>; Fri, 31 Mar 2000 02:25:19 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id CAA31781 for <markov@ATComputing.nl>; Fri, 31 Mar 2000 02:25:19 +0200
-Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1) id xma031779; Fri, 31 Mar 00 02:25:12 +0200
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id TAA21824; Thu, 30 Mar 2000 19:23:29 -0500
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id TAA05326 for magick-outgoing; Thu, 30 Mar 2000 19:16:20 -0500 (EST) <10F4E7B8292FD311B34400A0C978B70532A61B@a254.117.208.207.ded23. interaccess.com>
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id CAA16260
+	for <markov@ATComputing.nl>; Fri, 31 Mar 2000 02:25:19 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id CAA31781
+	for <markov@ATComputing.nl>; Fri, 31 Mar 2000 02:25:19 +0200
+Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1)
+	id xma031779; Fri, 31 Mar 00 02:25:12 +0200
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id TAA21824;
+	Thu, 30 Mar 2000 19:23:29 -0500
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id TAA05326
+	for magick-outgoing; Thu, 30 Mar 2000 19:16:20 -0500 (EST)
+	<10F4E7B8292FD311B34400A0C978B70532A61B@a254.117.208.207.ded23.
+	interaccess.com>
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Mime-Version: 1.0
 X-Sender: leonardr@mail1.netreach.net
 Message-Id: <a04310102b5099e5b4e3f@[207.29.200.50]>
-In-Reply-To:  <10F4E7B8292FD311B34400A0C978B70532A61B@a254.117.208.207.ded23.interaccess.com>
-References:  <10F4E7B8292FD311B34400A0C978B70532A61B@a254.117.208.207.ded23.interaccess.com>
+In-Reply-To: 
+ <10F4E7B8292FD311B34400A0C978B70532A61B@a254.117.208.207.ded23.interaccess.com>
+References: 
+ <10F4E7B8292FD311B34400A0C978B70532A61B@a254.117.208.207.ded23.interaccess.com>
 Date: Thu, 30 Mar 2000 19:15:48 -0500
-To: Joseph Korabelnikov <jkorabelnikov@coolemail.com> magick@wizards.dupont.com
+To: Joseph Korabelnikov <jkorabelnikov@coolemail.com>
+        magick@wizards.dupont.com
 From: Leonard Rosenthol <leonardr@lazerware.com>
 Subject: Re: Convert HTM, HTML files to the .jpg format
 X-MIME-Autoconverted: from quoted-printable to 8bit by unca-don.wizards.dupont.com id TAA05323
@@ -1171,10 +1273,17 @@ AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
 
 From cknoos@atg.com Sat Apr  1 22:42 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id WAA04105 for <markov@ATComputing.nl>; Sat, 1 Apr 2000 22:42:15 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id WAA01429 for <markov@ATComputing.nl>; Sat, 1 Apr 2000 22:42:14 +0200
-Received: from art.atg.com(205.181.94.1) by ns.ATComputing.nl via smap (V2.1) id xma001427; Sat, 1 Apr 00 22:42:05 +0200
-Received: from donkeykong (donkey-kong.atg.com [205.181.107.218]) by art.atg.com (8.9.1/8.9.1) with SMTP id PAA24854 for <markov@ATComputing.nl>; Sat, 1 Apr 2000 15:42:29 -0500 (EST)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id WAA04105
+	for <markov@ATComputing.nl>; Sat, 1 Apr 2000 22:42:15 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id WAA01429
+	for <markov@ATComputing.nl>; Sat, 1 Apr 2000 22:42:14 +0200
+Received: from art.atg.com(205.181.94.1) by ns.ATComputing.nl via smap (V2.1)
+	id xma001427; Sat, 1 Apr 00 22:42:05 +0200
+Received: from donkeykong (donkey-kong.atg.com [205.181.107.218])
+	by art.atg.com (8.9.1/8.9.1) with SMTP id PAA24854
+	for <markov@ATComputing.nl>; Sat, 1 Apr 2000 15:42:29 -0500 (EST)
 From: "Carl Knoos" <cknoos@atg.com>
 To: "Mark Overmeer" <markov@ATComputing.nl>
 Subject: RE: Problem resizing images through perl script
@@ -1188,7 +1297,8 @@ X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
 X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
 Importance: Normal
 In-Reply-To: <20000331170117.B2095@atcmpg.ATComputing.nl>
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Status: RO
 X-Status: A
 Content-Length: 1865
@@ -1300,11 +1410,20 @@ AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
 
 From magick-owner@unca-don.wizards.dupont.com Tue May  9 15:11 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id PAA15311 for <markov@ATComputing.nl>; Tue, 9 May 2000 15:11:14 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id PAA24539 for <markov@ATComputing.nl>; Tue, 9 May 2000 15:11:13 +0200
-Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1) id xma024537; Tue, 9 May 00 15:11:01 +0200
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id JAA17934; Tue, 9 May 2000 09:09:29 -0400
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id IAA13522 for magick-outgoing; Tue, 9 May 2000 08:42:00 -0400 (EDT)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id PAA15311
+	for <markov@ATComputing.nl>; Tue, 9 May 2000 15:11:14 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id PAA24539
+	for <markov@ATComputing.nl>; Tue, 9 May 2000 15:11:13 +0200
+Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1)
+	id xma024537; Tue, 9 May 00 15:11:01 +0200
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id JAA17934;
+	Tue, 9 May 2000 09:09:29 -0400
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id IAA13522
+	for magick-outgoing; Tue, 9 May 2000 08:42:00 -0400 (EDT)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Message-ID: <3917FC90.8B8B0CF@gmx.net>
 Date: Tue, 09 May 2000 13:54:56 +0200
@@ -1345,11 +1464,20 @@ Include the following command in the body of your message:
 ***********************************************************************
 
 From magick-owner@unca-don.wizards.dupont.com Wed May 17 16:07 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id QAA15770 for <markov@ATComputing.nl>; Wed, 17 May 2000 16:07:07 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id QAA04359 for <markov@ATComputing.nl>; Wed, 17 May 2000 16:07:06 +0200
-Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1) id xma004357; Wed, 17 May 00 16:06:40 +0200
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id KAA02079; Wed, 17 May 2000 10:05:01 -0400
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id JAA23880 for magick-outgoing; Wed, 17 May 2000 09:41:41 -0400 (EDT)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id QAA15770
+	for <markov@ATComputing.nl>; Wed, 17 May 2000 16:07:07 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id QAA04359
+	for <markov@ATComputing.nl>; Wed, 17 May 2000 16:07:06 +0200
+Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1)
+	id xma004357; Wed, 17 May 00 16:06:40 +0200
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id KAA02079;
+	Wed, 17 May 2000 10:05:01 -0400
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id JAA23880
+	for magick-outgoing; Wed, 17 May 2000 09:41:41 -0400 (EDT)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Date: Wed, 17 May 2000 08:46:17 -0500 (CDT)
 From: Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
@@ -1423,10 +1551,17 @@ Include the following command in the body of your message:
 ***********************************************************************
 
 From magick-bugs@simple.dallas.tx.us Wed Jun 14 16:54 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id QAA25632 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 16:54:28 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id QAA12167 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 16:54:27 +0200
-Received: from ns.simplesystems.org(204.252.75.242) by ns.ATComputing.nl via smap (V2.1) id xma012165; Wed, 14 Jun 00 16:54:12 +0200
-Received: from localhost (localhost [127.0.0.1]) by ns.simplesystems.org (8.9.3/8.9.3) with ESMTP id JAA14556 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 09:54:08 -0500 (CDT)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id QAA25632
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 16:54:28 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id QAA12167
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 16:54:27 +0200
+Received: from ns.simplesystems.org(204.252.75.242) by ns.ATComputing.nl via smap (V2.1)
+	id xma012165; Wed, 14 Jun 00 16:54:12 +0200
+Received: from localhost (localhost [127.0.0.1])
+	by ns.simplesystems.org (8.9.3/8.9.3) with ESMTP id JAA14556
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 09:54:08 -0500 (CDT)
 From: magick-bugs@simple.dallas.tx.us
 Date: Wed, 14 Jun 2000 09:54:08 -0500 (CDT)
 Message-Id: <200006141454.JAA14556@ns.simplesystems.org>
@@ -1501,11 +1636,20 @@ AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
 
 From cristy@mystic.es.dupont.com Wed Jun 14 17:23 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id RAA27207 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 17:23:28 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id RAA12199 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 17:23:27 +0200
-Received: from gatekeeper.es.dupont.com(192.26.233.2) by ns.ATComputing.nl via smap (V2.1) id xma012197; Wed, 14 Jun 00 17:23:08 +0200
-Received: from mystic.es.dupont.com (mystic.es.dupont.com [138.196.253.24]) by gatekeeper.es.dupont.com (8.9.3/8.9.3) with ESMTP id LAA26619 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 11:23:06 -0400 (EDT)
-Received: (from cristy@localhost) by mystic.es.dupont.com (8.10.0.Beta12/8.10.0.Beta12) id e5EFrBI08173 for markov@ATComputing.nl; Wed, 14 Jun 2000 11:53:11 -0400 (EDT)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id RAA27207
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 17:23:28 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id RAA12199
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 17:23:27 +0200
+Received: from gatekeeper.es.dupont.com(192.26.233.2) by ns.ATComputing.nl via smap (V2.1)
+	id xma012197; Wed, 14 Jun 00 17:23:08 +0200
+Received: from mystic.es.dupont.com (mystic.es.dupont.com [138.196.253.24])
+	by gatekeeper.es.dupont.com (8.9.3/8.9.3) with ESMTP id LAA26619
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 11:23:06 -0400 (EDT)
+Received: (from cristy@localhost)
+	by mystic.es.dupont.com (8.10.0.Beta12/8.10.0.Beta12) id e5EFrBI08173
+	for markov@ATComputing.nl; Wed, 14 Jun 2000 11:53:11 -0400 (EDT)
 Date: Wed, 14 Jun 2000 11:53:11 -0400 (EDT)
 From: Cristy <cristy@mystic.es.dupont.com>
 Message-ID: <8172.960997992@mystic>
@@ -1572,11 +1716,20 @@ AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
 
 From cristy@mystic.es.dupont.com Wed Jun 14 17:46 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id RAA27475 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 17:46:29 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id RAA12244 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 17:46:28 +0200
-Received: from gatekeeper.es.dupont.com(192.26.233.2) by ns.ATComputing.nl via smap (V2.1) id xma012242; Wed, 14 Jun 00 17:45:59 +0200
-Received: from mystic.es.dupont.com (mystic.es.dupont.com [138.196.253.24]) by gatekeeper.es.dupont.com (8.9.3/8.9.3) with ESMTP id LAA26733 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 11:45:58 -0400 (EDT)
-Received: (from cristy@localhost) by mystic.es.dupont.com (8.10.0.Beta12/8.10.0.Beta12) id e5EGG3x19487 for markov@ATComputing.nl; Wed, 14 Jun 2000 12:16:03 -0400 (EDT)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id RAA27475
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 17:46:29 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id RAA12244
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 17:46:28 +0200
+Received: from gatekeeper.es.dupont.com(192.26.233.2) by ns.ATComputing.nl via smap (V2.1)
+	id xma012242; Wed, 14 Jun 00 17:45:59 +0200
+Received: from mystic.es.dupont.com (mystic.es.dupont.com [138.196.253.24])
+	by gatekeeper.es.dupont.com (8.9.3/8.9.3) with ESMTP id LAA26733
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 11:45:58 -0400 (EDT)
+Received: (from cristy@localhost)
+	by mystic.es.dupont.com (8.10.0.Beta12/8.10.0.Beta12) id e5EGG3x19487
+	for markov@ATComputing.nl; Wed, 14 Jun 2000 12:16:03 -0400 (EDT)
 Date: Wed, 14 Jun 2000 12:16:03 -0400 (EDT)
 From: Cristy <cristy@mystic.es.dupont.com>
 Message-Id: <200006141616.e5EGG3x19487@mystic.es.dupont.com>
@@ -1594,11 +1747,20 @@ There is alot that is not clear in the docs.  We're writing a book due
 out next year to fix these sorts of problems.
 
 From cristy@mystic.es.dupont.com Wed Jun 14 17:56 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id RAA27517 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 17:55:59 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id RAA12254 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 17:55:58 +0200
-Received: from gatekeeper.es.dupont.com(192.26.233.2) by ns.ATComputing.nl via smap (V2.1) id xma012252; Wed, 14 Jun 00 17:55:29 +0200
-Received: from mystic.es.dupont.com (mystic.es.dupont.com [138.196.253.24]) by gatekeeper.es.dupont.com (8.9.3/8.9.3) with ESMTP id LAA26777 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 11:55:28 -0400 (EDT)
-Received: (from cristy@localhost) by mystic.es.dupont.com (8.10.0.Beta12/8.10.0.Beta12) id e5EGPYM19527 for markov@ATComputing.nl; Wed, 14 Jun 2000 12:25:34 -0400 (EDT)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id RAA27517
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 17:55:59 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id RAA12254
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 17:55:58 +0200
+Received: from gatekeeper.es.dupont.com(192.26.233.2) by ns.ATComputing.nl via smap (V2.1)
+	id xma012252; Wed, 14 Jun 00 17:55:29 +0200
+Received: from mystic.es.dupont.com (mystic.es.dupont.com [138.196.253.24])
+	by gatekeeper.es.dupont.com (8.9.3/8.9.3) with ESMTP id LAA26777
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 11:55:28 -0400 (EDT)
+Received: (from cristy@localhost)
+	by mystic.es.dupont.com (8.10.0.Beta12/8.10.0.Beta12) id e5EGPYM19527
+	for markov@ATComputing.nl; Wed, 14 Jun 2000 12:25:34 -0400 (EDT)
 Date: Wed, 14 Jun 2000 12:25:34 -0400 (EDT)
 From: Cristy <cristy@mystic.es.dupont.com>
 Message-Id: <200006141625.e5EGPYM19527@mystic.es.dupont.com>
@@ -1776,11 +1938,20 @@ DelIS3rSlF50AQAAOw==
 
 --5vNYLRcllDrimb99--
 From cristy@mystic.es.dupont.com Wed Jun 14 18:05 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id SAA28005 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 18:04:59 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id SAA12271 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 18:04:58 +0200
-Received: from gatekeeper.es.dupont.com(192.26.233.2) by ns.ATComputing.nl via smap (V2.1) id xma012267; Wed, 14 Jun 00 18:04:36 +0200
-Received: from mystic.es.dupont.com (mystic.es.dupont.com [138.196.253.24]) by gatekeeper.es.dupont.com (8.9.3/8.9.3) with ESMTP id MAA26846 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 12:04:35 -0400 (EDT)
-Received: (from cristy@localhost) by mystic.es.dupont.com (8.10.0.Beta12/8.10.0.Beta12) id e5EGYfI19547 for markov@ATComputing.nl; Wed, 14 Jun 2000 12:34:41 -0400 (EDT)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id SAA28005
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 18:04:59 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id SAA12271
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 18:04:58 +0200
+Received: from gatekeeper.es.dupont.com(192.26.233.2) by ns.ATComputing.nl via smap (V2.1)
+	id xma012267; Wed, 14 Jun 00 18:04:36 +0200
+Received: from mystic.es.dupont.com (mystic.es.dupont.com [138.196.253.24])
+	by gatekeeper.es.dupont.com (8.9.3/8.9.3) with ESMTP id MAA26846
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 12:04:35 -0400 (EDT)
+Received: (from cristy@localhost)
+	by mystic.es.dupont.com (8.10.0.Beta12/8.10.0.Beta12) id e5EGYfI19547
+	for markov@ATComputing.nl; Wed, 14 Jun 2000 12:34:41 -0400 (EDT)
 Date: Wed, 14 Jun 2000 12:34:41 -0400 (EDT)
 From: Cristy <cristy@mystic.es.dupont.com>
 Message-Id: <200006141634.e5EGYfI19547@mystic.es.dupont.com>
@@ -1808,11 +1979,20 @@ Are you using ImageMagick 5.2.0?  When I used the script I sent the
 text color was indeed yellow.
 
 From cristy@eplrx7.es.dupont.com Wed Jun 14 18:05 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id SAA28006 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 18:04:59 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id SAA12272 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 18:04:58 +0200
-Received: from gatekeeper.es.dupont.com(192.26.233.2) by ns.ATComputing.nl via smap (V2.1) id xma012268; Wed, 14 Jun 00 18:04:47 +0200
-Received: from eplrx7.es.dupont.com (eplrx7.es.dupont.com [138.196.252.7]) by gatekeeper.es.dupont.com (8.9.3/8.9.3) with ESMTP id MAA26850 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 12:04:46 -0400 (EDT)
-Received: from fantasia.es.dupont.com (fantasia.es.dupont.com [138.196.253.22]) by eplrx7.es.dupont.com (8.9.3/8.9.3) with ESMTP id MAA06403 for <markov@ATComputing.nl>; Wed, 14 Jun 2000 12:04:45 -0400 (EDT)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id SAA28006
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 18:04:59 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id SAA12272
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 18:04:58 +0200
+Received: from gatekeeper.es.dupont.com(192.26.233.2) by ns.ATComputing.nl via smap (V2.1)
+	id xma012268; Wed, 14 Jun 00 18:04:47 +0200
+Received: from eplrx7.es.dupont.com (eplrx7.es.dupont.com [138.196.252.7])
+	by gatekeeper.es.dupont.com (8.9.3/8.9.3) with ESMTP id MAA26850
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 12:04:46 -0400 (EDT)
+Received: from fantasia.es.dupont.com (fantasia.es.dupont.com [138.196.253.22])
+	by eplrx7.es.dupont.com (8.9.3/8.9.3) with ESMTP id MAA06403
+	for <markov@ATComputing.nl>; Wed, 14 Jun 2000 12:04:45 -0400 (EDT)
 Received: by fantasia.es.dupont.com (8.9.3+Sun) id MAA01601; Wed, 14 Jun 2000 12:03:33 -0400 (EDT)
 From: Cristy <cristy@eplrx7.es.dupont.com>
 Date: Wed, 14 Jun 2000 12:03:33 -0400 (EDT)
@@ -1859,11 +2039,20 @@ dGVtKCJkaXNwbGF5IHRlc3QuZ2lmIik7Cg==
 
 -----
 From magick-owner@unca-don.wizards.dupont.com Thu Jun 29 18:01 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id SAA10314 for <markov@ATComputing.nl>; Thu, 29 Jun 2000 18:01:15 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id SAA00740 for <markov@ATComputing.nl>; Thu, 29 Jun 2000 18:01:14 +0200
-Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1) id xma000732; Thu, 29 Jun 00 18:01:07 +0200
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id MAA07078; Thu, 29 Jun 2000 12:00:36 -0400
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id LAA10740 for magick-outgoing; Thu, 29 Jun 2000 11:48:25 -0400 (EDT)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id SAA10314
+	for <markov@ATComputing.nl>; Thu, 29 Jun 2000 18:01:15 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id SAA00740
+	for <markov@ATComputing.nl>; Thu, 29 Jun 2000 18:01:14 +0200
+Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1)
+	id xma000732; Thu, 29 Jun 00 18:01:07 +0200
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id MAA07078;
+	Thu, 29 Jun 2000 12:00:36 -0400
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id LAA10740
+	for magick-outgoing; Thu, 29 Jun 2000 11:48:25 -0400 (EDT)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Message-ID: <395B7519.F40670B@northrim.net>
 Date: Thu, 29 Jun 2000 10:11:05 -0600
@@ -1929,11 +2118,20 @@ AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
 
 From magick-owner@unca-don.wizards.dupont.com Sun Jul  2 02:40 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id CAA01634 for <markov@ATComputing.nl>; Sun, 2 Jul 2000 02:40:25 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id CAA03454 for <markov@ATComputing.nl>; Sun, 2 Jul 2000 02:40:24 +0200
-Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1) id xma003450; Sun, 2 Jul 00 02:40:07 +0200
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id UAA32165; Sat, 1 Jul 2000 20:39:55 -0400
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id UAA16952 for magick-outgoing; Sat, 1 Jul 2000 20:30:03 -0400 (EDT)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id CAA01634
+	for <markov@ATComputing.nl>; Sun, 2 Jul 2000 02:40:25 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id CAA03454
+	for <markov@ATComputing.nl>; Sun, 2 Jul 2000 02:40:24 +0200
+Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1)
+	id xma003450; Sun, 2 Jul 00 02:40:07 +0200
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id UAA32165;
+	Sat, 1 Jul 2000 20:39:55 -0400
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id UAA16952
+	for magick-outgoing; Sat, 1 Jul 2000 20:30:03 -0400 (EDT)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Message-ID: <395E8F1F.B804FCB7@interak.com>
 Date: Sat, 01 Jul 2000 16:38:55 -0800
@@ -1998,11 +2196,20 @@ Include the following command in the body of your message:
 ***********************************************************************
 
 From magick-owner@unca-don.wizards.dupont.com Mon Jul  3 16:12 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id QAA28389 for <markov@ATComputing.nl>; Mon, 3 Jul 2000 16:12:41 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id QAA05092 for <markov@ATComputing.nl>; Mon, 3 Jul 2000 16:12:40 +0200
-Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1) id xma005088; Mon, 3 Jul 00 16:12:32 +0200
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id KAA12560; Mon, 3 Jul 2000 10:12:03 -0400
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id KAA20768 for magick-outgoing; Mon, 3 Jul 2000 10:01:07 -0400 (EDT)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id QAA28389
+	for <markov@ATComputing.nl>; Mon, 3 Jul 2000 16:12:41 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id QAA05092
+	for <markov@ATComputing.nl>; Mon, 3 Jul 2000 16:12:40 +0200
+Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1)
+	id xma005088; Mon, 3 Jul 00 16:12:32 +0200
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id KAA12560;
+	Mon, 3 Jul 2000 10:12:03 -0400
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id KAA20768
+	for magick-outgoing; Mon, 3 Jul 2000 10:01:07 -0400 (EDT)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Message-ID: <395BACF9.CFA6970@interak.com>
 Date: Thu, 29 Jun 2000 12:09:30 -0800
@@ -2068,11 +2275,20 @@ Include the following command in the body of your message:
 ***********************************************************************
 
 From magick-owner@unca-don.wizards.dupont.com Fri Jul  7 09:27 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id JAA27505 for <markov@ATComputing.nl>; Fri, 7 Jul 2000 09:27:32 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id JAA11016 for <markov@ATComputing.nl>; Fri, 7 Jul 2000 09:27:31 +0200
-Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1) id xma011014; Fri, 7 Jul 00 09:27:21 +0200
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id DAA06530; Fri, 7 Jul 2000 03:26:27 -0400
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id DAA06369 for magick-outgoing; Fri, 7 Jul 2000 03:15:15 -0400 (EDT)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id JAA27505
+	for <markov@ATComputing.nl>; Fri, 7 Jul 2000 09:27:32 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id JAA11016
+	for <markov@ATComputing.nl>; Fri, 7 Jul 2000 09:27:31 +0200
+Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1)
+	id xma011014; Fri, 7 Jul 00 09:27:21 +0200
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id DAA06530;
+	Fri, 7 Jul 2000 03:26:27 -0400
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id DAA06369
+	for magick-outgoing; Fri, 7 Jul 2000 03:15:15 -0400 (EDT)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Date: Fri, 7 Jul 2000 17:24:12 +1000
 From: Martien Verbruggen <mgjv@comdyn.com.au>
@@ -2132,11 +2348,20 @@ Include the following command in the body of your message:
 ***********************************************************************
 
 From magick-owner@unca-don.wizards.dupont.com Fri Jul  7 17:55 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id RAA13560 for <markov@ATComputing.nl>; Fri, 7 Jul 2000 17:55:42 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id RAA15121 for <markov@ATComputing.nl>; Fri, 7 Jul 2000 17:55:42 +0200
-Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1) id xma015105; Fri, 7 Jul 00 17:55:27 +0200
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id LAA24776; Fri, 7 Jul 2000 11:54:30 -0400
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id LAA07897 for magick-outgoing; Fri, 7 Jul 2000 11:44:52 -0400 (EDT)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id RAA13560
+	for <markov@ATComputing.nl>; Fri, 7 Jul 2000 17:55:42 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id RAA15121
+	for <markov@ATComputing.nl>; Fri, 7 Jul 2000 17:55:42 +0200
+Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1)
+	id xma015105; Fri, 7 Jul 00 17:55:27 +0200
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id LAA24776;
+	Fri, 7 Jul 2000 11:54:30 -0400
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id LAA07897
+	for magick-outgoing; Fri, 7 Jul 2000 11:44:52 -0400 (EDT)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Date: Fri, 7 Jul 2000 12:23:40 -0400 (EDT)
 From: Cristy <cristy@mystic.es.dupont.com>
@@ -2199,10 +2424,17 @@ Lines: 1
 subscribe magick-developer
 
 From Majordomo-Owner@imagemagick.org Sat Jul  8 10:27 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id KAA01750 for <markov@ATComputing.nl>; Sat, 8 Jul 2000 10:27:39 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id KAA25253 for <markov@ATComputing.nl>; Sat, 8 Jul 2000 10:27:38 +0200
-Received: from magick.imagemagick.org(38.220.172.2) by ns.ATComputing.nl via smap (V2.1) id xma025238; Sat, 8 Jul 00 10:27:26 +0200
-Received: (from majordomo@localhost) by imagemagick.org (8.9.3/8.9.3) id EAA15589; Sat, 8 Jul 2000 04:55:40 -0400
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id KAA01750
+	for <markov@ATComputing.nl>; Sat, 8 Jul 2000 10:27:39 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id KAA25253
+	for <markov@ATComputing.nl>; Sat, 8 Jul 2000 10:27:38 +0200
+Received: from magick.imagemagick.org(38.220.172.2) by ns.ATComputing.nl via smap (V2.1)
+	id xma025238; Sat, 8 Jul 00 10:27:26 +0200
+Received: (from majordomo@localhost)
+	by imagemagick.org (8.9.3/8.9.3) id EAA15589;
+	Sat, 8 Jul 2000 04:55:40 -0400
 Date: Sat, 8 Jul 2000 04:55:40 -0400
 Message-Id: <200007080855.EAA15589@imagemagick.org>
 X-Authentication-Warning: magick.imagemagick.org: majordomo set sender to Majordomo-Owner@imagemagick.org using -f
@@ -2243,10 +2475,17 @@ Thanks!
 Majordomo@imagemagick.org
 
 From owner-magick@imagemagick.org Sat Jul  8 13:53 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id NAA02564 for <markov@ATComputing.nl>; Sat, 8 Jul 2000 13:53:33 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id NAA00576 for <markov@ATComputing.nl>; Sat, 8 Jul 2000 13:53:28 +0200
-Received: from magick.imagemagick.org(38.220.172.2) by ns.ATComputing.nl via smap (V2.1) id xma000568; Sat, 8 Jul 00 13:53:23 +0200
-Received: (from majordomo@localhost) by imagemagick.org (8.9.3/8.9.3) id IAA16219; Sat, 8 Jul 2000 08:21:42 -0400
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id NAA02564
+	for <markov@ATComputing.nl>; Sat, 8 Jul 2000 13:53:33 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id NAA00576
+	for <markov@ATComputing.nl>; Sat, 8 Jul 2000 13:53:28 +0200
+Received: from magick.imagemagick.org(38.220.172.2) by ns.ATComputing.nl via smap (V2.1)
+	id xma000568; Sat, 8 Jul 00 13:53:23 +0200
+Received: (from majordomo@localhost)
+	by imagemagick.org (8.9.3/8.9.3) id IAA16219;
+	Sat, 8 Jul 2000 08:21:42 -0400
 Date: Sat, 8 Jul 2000 08:21:42 -0400
 Message-Id: <200007081221.IAA16219@imagemagick.org>
 X-Authentication-Warning: magick.imagemagick.org: majordomo set sender to owner-magick@imagemagick.org using -f
@@ -2606,11 +2845,20 @@ AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
 
 From magick-owner@unca-don.wizards.dupont.com Mon Jul 24 18:24 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id SAA27465 for <markov@ATComputing.nl>; Mon, 24 Jul 2000 18:24:10 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id SAA20827 for <markov@ATComputing.nl>; Mon, 24 Jul 2000 18:24:09 +0200
-Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1) id xma020823; Mon, 24 Jul 00 18:23:51 +0200
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id MAA20883; Mon, 24 Jul 2000 12:23:50 -0400
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id MAA01738 for magick-outgoing; Mon, 24 Jul 2000 12:07:32 -0400 (EDT)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id SAA27465
+	for <markov@ATComputing.nl>; Mon, 24 Jul 2000 18:24:10 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id SAA20827
+	for <markov@ATComputing.nl>; Mon, 24 Jul 2000 18:24:09 +0200
+Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1)
+	id xma020823; Mon, 24 Jul 00 18:23:51 +0200
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id MAA20883;
+	Mon, 24 Jul 2000 12:23:50 -0400
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id MAA01738
+	for magick-outgoing; Mon, 24 Jul 2000 12:07:32 -0400 (EDT)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Message-ID: <397C6C6B.989E4BB2@catchword.com>
 Date: Mon, 24 Jul 2000 17:18:51 +0100
@@ -2711,10 +2959,17 @@ AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
 
 From chris.wareham@catchword.com Wed Jul 26 13:46 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id NAA29434 for <markov@ATComputing.nl>; Wed, 26 Jul 2000 13:46:33 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id NAA24001 for <markov@ATComputing.nl>; Wed, 26 Jul 2000 13:46:32 +0200
-Received: from figaro.catchword.co.uk(194.129.29.1) by ns.ATComputing.nl via smap (V2.1) id xma023999; Wed, 26 Jul 00 13:46:13 +0200
-Received: from catchword.com (valkyrie.catchword.co.uk [194.129.29.105]) by figaro.catchword.co.uk (8.9.2/8.9.2) with ESMTP id LAA10217 for <markov@ATComputing.nl>; Wed, 26 Jul 2000 11:49:37 GMT
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id NAA29434
+	for <markov@ATComputing.nl>; Wed, 26 Jul 2000 13:46:33 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id NAA24001
+	for <markov@ATComputing.nl>; Wed, 26 Jul 2000 13:46:32 +0200
+Received: from figaro.catchword.co.uk(194.129.29.1) by ns.ATComputing.nl via smap (V2.1)
+	id xma023999; Wed, 26 Jul 00 13:46:13 +0200
+Received: from catchword.com (valkyrie.catchword.co.uk [194.129.29.105])
+	by figaro.catchword.co.uk (8.9.2/8.9.2) with ESMTP id LAA10217
+	for <markov@ATComputing.nl>; Wed, 26 Jul 2000 11:49:37 GMT
 Sender: cwareham@figaro.catchword.co.uk
 Message-ID: <397ECFEF.598EE285@catchword.com>
 Date: Wed, 26 Jul 2000 12:47:59 +0100
@@ -2800,11 +3055,20 @@ AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
 
 From magick-owner@unca-don.wizards.dupont.com Tue Aug  1 22:37 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id WAA14913 for <markov@ATComputing.nl>; Tue, 1 Aug 2000 22:37:13 +0200 (MET DST)
-Received: (from nobody@localhost) by ns.ATComputing.nl (8.8.8/8.8.8) id WAA04892 for <markov@ATComputing.nl>; Tue, 1 Aug 2000 22:37:12 +0200
-Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1) id xma004890; Tue, 1 Aug 00 22:37:04 +0200
-Received: from unca-don.wizards.dupont.com ([204.183.81.133]) by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id QAA28454; Tue, 1 Aug 2000 16:36:07 -0400
-Received: (from majordomo@localhost) by unca-don.wizards.dupont.com (8.9.3/8.9.3) id PAA24962 for magick-outgoing; Tue, 1 Aug 2000 15:46:55 -0400 (EDT)
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id WAA14913
+	for <markov@ATComputing.nl>; Tue, 1 Aug 2000 22:37:13 +0200 (MET DST)
+Received: (from nobody@localhost)
+	by ns.ATComputing.nl (8.8.8/8.8.8) id WAA04892
+	for <markov@ATComputing.nl>; Tue, 1 Aug 2000 22:37:12 +0200
+Received: from viper.oldcity.dca.net(216.158.38.4) by ns.ATComputing.nl via smap (V2.1)
+	id xma004890; Tue, 1 Aug 00 22:37:04 +0200
+Received: from unca-don.wizards.dupont.com ([204.183.81.133])
+	by viper.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id QAA28454;
+	Tue, 1 Aug 2000 16:36:07 -0400
+Received: (from majordomo@localhost)
+	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id PAA24962
+	for magick-outgoing; Tue, 1 Aug 2000 15:46:55 -0400 (EDT)
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Message-Id: <4.3.1.0.20000801154753.00ae3ed0@mindspring.com>
 X-Sender: blburch@mindspring.com
@@ -2880,9 +3144,15 @@ Include the following command in the body of your message:
 ***********************************************************************
 
 From magick-owner@imagemagick.org Wed Oct  4 19:56 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25]) by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id TAA26427 for <markov@ATComputing.nl>; Wed, 4 Oct 2000 19:56:00 +0200 (MET DST)
-Received: from imagemagick.org (magick.imagemagick.org [38.220.172.2]) by ns.ATComputing.nl (Postfix) with ESMTP id 84B2DED32 for <markov@ATComputing.nl>; Wed, 4 Oct 2000 19:55:58 +0200 (CEST)
-Received: (from majordomo@localhost) by imagemagick.org (8.11.0.Beta3/8.9.3) id e94IMj420302 for magick-developer-outgoing; Wed, 4 Oct 2000 14:22:45 -0400
+Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id TAA26427
+	for <markov@ATComputing.nl>; Wed, 4 Oct 2000 19:56:00 +0200 (MET DST)
+Received: from imagemagick.org (magick.imagemagick.org [38.220.172.2])
+	by ns.ATComputing.nl (Postfix) with ESMTP id 84B2DED32
+	for <markov@ATComputing.nl>; Wed,  4 Oct 2000 19:55:58 +0200 (CEST)
+Received: (from majordomo@localhost)
+	by imagemagick.org (8.11.0.Beta3/8.9.3) id e94IMj420302
+	for magick-developer-outgoing; Wed, 4 Oct 2000 14:22:45 -0400
 X-Authentication-Warning: magick.imagemagick.org: majordomo set sender to owner-magick@imagemagick.org using -f
 From: cristy@mystic.es.dupont.com
 Date: Wed, 4 Oct 2000 14:22:35 -0400 (EDT)

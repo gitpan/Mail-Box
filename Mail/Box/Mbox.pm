@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox;
 use base 'Mail::Box';
 
-our $VERSION = 2.004;
+our $VERSION = 2.005;
 
 use Mail::Box::Mbox::Message;
 
@@ -74,8 +74,9 @@ The extra methods for extension writers:
    MB folderdir [DIR]                   MB storeMessage MESSAGE
       foundIn [FOLDERNAME] [,OPTI...    MB timespan2seconds TIME
    MR inGlobalDestruction               MB toBeThreaded MESSAGES
-   MR logPriority LEVEL                 MB toBeUnthreaded MESSAGES
-   MR logSettings                          write OPTIONS
+   MB lineSeparator [STRING|'CR'|...    MB toBeUnthreaded MESSAGES
+   MR logPriority LEVEL                    write OPTIONS
+   MR logSettings                       MB writeMessages
 
 Methods prefixed with an abbreviation are described in the following
 manual-pages:
@@ -436,8 +437,9 @@ sub parser()
        = Mail::Box::Parser->new
        ( filename  => $source
        , mode      => $access
+       , trusted   => $self->{MB_trusted}
        , $self->logSettings
-       ) or return undef;
+       ) or return;
 
     $parser->pushSeparator('From ');
     $parser;
@@ -598,13 +600,11 @@ sub _write_new($)
     my @messages = @{$args->{messages}};
     foreach my $message (@messages)
     {   my  $newbegin  = $new->tell;
-        my ($oldbegin) = $message->fileLocation;
-
         $message->print($new);
         $message->modified(0);
     }
 
-    $self->log(PROGRESS => "Written new folder $self with ".@messages, ".");
+    $self->log(PROGRESS => "Written new folder $self with ".@messages,"msgs.");
     $new->close;
     1;
 }
@@ -627,8 +627,8 @@ sub _write_replace($)
 
     foreach my $message ( @{$args->{messages}} )
     {
-        my  $newbegin  = $new->tell;
-        my ($oldbegin) = $message->fileLocation;
+        my $newbegin = $new->tell;
+        my $oldbegin = $message->fileLocation;
 
         if($message->modified)
         {   $message->print($new);
@@ -642,9 +642,11 @@ sub _write_replace($)
         {   my ($begin, $end) = $message->fileLocation;
             seek FILE, $begin, 0;
             my $whole;
+
             my $size = read FILE, $whole, $end-$begin;
             $self->log(ERROR => 'File too short to get write message.')
                if $size != $end-$begin;
+
             $new->print($whole);
             $message->moveLocation($newbegin - $oldbegin);
             $kept++;
@@ -655,7 +657,7 @@ sub _write_replace($)
     CORE::close FILE;
 
     if(move $tmpnew, $filename)
-    {   $self->log(PROGRESS => "Folder $self replaced ($kept, $reprint)");
+    {    $self->log(PROGRESS => "Folder $self replaced ($kept, $reprint)");
     }
     else
     {   $self->log(WARNING =>
@@ -674,11 +676,11 @@ sub _write_inplace($)
 
     my @messages = @{$args->{messages}};
 
-    my ($msgnr, $kept, $last) = (0, 0);
+    my ($msgnr, $kept) = (0, 0);
     while(@messages)
     {   my $next = $messages[0];
         last if $next->modified || $next->seqnr!=$msgnr++;
-        $last    = shift @messages;
+        shift @messages;
         $kept++;
     }
 
@@ -695,25 +697,25 @@ sub _write_inplace($)
 
     return 0 unless open FILE, $mode, $filename;
 
-    my $end = defined $last ? ($last->fileLocation)[1] : 0;
-
-    unless(truncate FILE, $end)
-    {   CORE::close FILE;
+    # Chop the folder after the messages which do not have to change.
+    my $keepend  = $messages[0]->fileLocation;
+    unless(truncate FILE, $keepend)
+    {   CORE::close FILE;  # truncate impossible: try replace writing
         return 0;
     }
+    seek FILE, 0, 2;       # go to end
 
-    seek FILE, 0, 2;  # end
-
+    # Print the messages which have to move.
     my $printed = @messages;
     foreach my $message (@messages)
-    {   my $newbegin = tell FILE;
+    {   my $oldbegin = $message->fileLocation;
+        my $newbegin = tell FILE;
         $message->print(\*FILE);
-        $message->moveLocation($newbegin - ($message->fileLocation)[0]);
+        $message->moveLocation($newbegin - $oldbegin);
     }
 
     CORE::close FILE;
-    $self->log(PROGRESS => "Folder $self updated in-place ($kept, ",
-       scalar @messages, ")");
+    $self->log(PROGRESS => "Folder $self updated in-place ($kept, $printed)");
 
     1;
 }
@@ -895,7 +897,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.004.
+This code is beta, version 2.005.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
