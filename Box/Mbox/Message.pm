@@ -177,8 +177,8 @@ location should be not used after this.
 
 sub migrate($)
 {   my ($self, $out) = @_;
-    my $newbegin = tell $out;
     $out->print($self->fromLine);
+    my $newbegin = tell $out;
     $self->print($out);
     $self->{MBM_begin} = $newbegin;
     $self;
@@ -306,8 +306,8 @@ sub load($)
     my $if       = IO::InnerFile->new($file, $self->{MBM_begin}, $self->size)
                 || return 0;
 
-    $folder->fileClose unless $was_open;
     my $message = $folder->parser->parse($if);
+    $folder->fileClose unless $was_open;
 
     # A pitty that we have to copy data now...
     @$self{ keys %$message } = values %$message;

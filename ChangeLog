@@ -3,15 +3,23 @@ CHANGELOG of Mail::Box
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
-version 1.113:
+version 1.114: Fri Jun 22 10:21:01 MEST 2001
 
-	* Patch blessing in $folder->parts.
+	* Fixed copying messages file-to-file, which resulted in errors
+	  on delayloading reading parts.  Thanks to Jim Tseng for his
+	  detailed description of the circumstances.
+
+version 1.113: Thu Jun 21 11:00:00 MEST 2001
+
+	* Patch blessing in $folder->parts.  Thanks to Jens Wiesecke for
+	  helping me tracking down the problem.
 
 version 1.112:
 
 	* Changed the detection of "From"-lines again... each Mbox-
           type package formats the line differently.  I hope they
-	  all share the inclusion of a year, as minimum.
+	  all share the inclusion of a year, as minimum.  Is everyone
+	  happy now?
 
 version 1.111: Sat Apr 28 16:15:52 CEST 2001
 
