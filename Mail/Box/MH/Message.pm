@@ -67,17 +67,18 @@ The general methods for C<Mail::Box::MH::Message> objects:
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MM labelsToStatus
-   MM DESTROY                         MBDM loadHead
-   MM body [BODY]                       MR logPriority LEVEL
-   MM clone                             MR logSettings
-  MBM coerce MESSAGE                    MR notImplemented
- MBDM create FILENAME                 MBDM parser
-  MBM diskDelete                       MBM readBody PARSER, HEAD [, BO...
-   MM head [HEAD]                       MM readFromParser PARSER, [BOD...
-   MR inGlobalDestruction               MM readHead PARSER [,CLASS]
-   MM isDelayed                         MM statusToLabels
-   MM labels                            MM storeBody BODY
+   MR AUTOLOAD                        MBDM loadHead
+   MM DESTROY                           MR logPriority LEVEL
+   MM body [BODY]                       MR logSettings
+   MM clone                             MR notImplemented
+  MBM coerce MESSAGE                  MBDM parser
+ MBDM create FILENAME                  MBM readBody PARSER, HEAD [, BO...
+  MBM diskDelete                        MM readFromParser PARSER, [BOD...
+   MM head [HEAD]                       MM readHead PARSER [,CLASS]
+   MR inGlobalDestruction               MM statusToLabels
+   MM isDelayed                         MM storeBody BODY
+   MM labels                            MM takeMessageId [STRING]
+   MM labelsToStatus
 
 =head1 METHODS
 
@@ -142,7 +143,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

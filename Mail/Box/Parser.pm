@@ -5,7 +5,7 @@ package Mail::Box::Parser;
 use base 'Mail::Reporter';
 use Carp;
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 =head1 NAME
 
@@ -52,16 +52,17 @@ L<Mail::Reporter> (MR).
 
 The general methods for C<Mail::Box::Parser> objects:
 
-      bodyAsFile FILEHANDLE [,CHA...       new [OPTIONS]
-      bodyAsList [,CHARS [,LINES]]         popSeparator
-      bodyAsString [,CHARS [,LINES]]       pushSeparator STRING|REGEXP
-      bodyDelayed [,CHARS [,LINES]]        readHeader WRAP
-      defaultParserType [CLASS]            readSeparator OPTIONS
-   MR errors                            MR report [LEVEL]
-      filePosition [POSITION]           MR reportAll [LEVEL]
-      foldHeaderLine LINE, LENGTH          start OPTIONS
-      lineSeparator                        stop
-   MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
+      bodyAsFile FILEHANDLE [,CHA...       popSeparator
+      bodyAsList [,CHARS [,LINES]]         pushSeparator STRING|REGEXP
+      bodyAsString [,CHARS [,LINES]]       readHeader WRAP
+      bodyDelayed [,CHARS [,LINES]]        readSeparator OPTIONS
+      defaultParserType [CLASS]         MR report [LEVEL]
+   MR errors                            MR reportAll [LEVEL]
+      filePosition [POSITION]              start OPTIONS
+      foldHeaderLine LINE, LENGTH          stop
+      lineSeparator                     MR trace [LEVEL]
+   MR log [LEVEL [,STRINGS]]            MR warnings
+      new [OPTIONS]
 
 The extra methods for extension writers:
 
@@ -454,7 +455,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

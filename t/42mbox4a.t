@@ -8,7 +8,7 @@ use Test;
 use strict;
 use warnings;
 
-use lib qw(. t /home/markov/MailBox2/fake);
+use lib qw(. t);
 use Mail::Box::Manager;
 use Mail::Message::Construct;
 use Tools;
@@ -16,7 +16,7 @@ use Tools;
 use File::Compare;
 use File::Copy;
 
-BEGIN {plan tests => 21}
+BEGIN {plan tests => 29}
 
 #
 # We will work with a copy of the original to avoid that we write
@@ -66,8 +66,10 @@ my $msg = Mail::Message->build
   , data    => [ "a short message\n", "of two lines.\n" ]
   );
 
-$mgr->appendMessage("=$cpyfn", $msg);
+my @appended = $mgr->appendMessage("=$cpyfn", $msg);
 ok($folder->messages==46);
+ok(@appended==1);
+ok($appended[0]->isa('Mail::Box::Message'));
 
 ok($mgr->openFolders==1);
 $mgr->close($folder);
@@ -82,11 +84,12 @@ my $msg2 = Mail::Message->build
 
 my $old_size = -s $cpy;
 
-$mgr->appendMessage($cpy, $msg2
+@appended = $mgr->appendMessage($cpy, $msg2
   , lock_type => 'NONE'
   , extract   => 'LAZY'
   , access    => 'rw'
   );
+ok(@appended==1);
 
 ok($mgr->openFolders==0);
 ok($old_size != -s $cpy);
@@ -102,7 +105,7 @@ my $sec = $mgr->open
   ( folder    => '=empty'
   , folderdir => 't'
   , @fopts
-  , create => 1
+  , create    => 1
   );
 
 ok($folder);
@@ -113,14 +116,20 @@ ok($mgr->openFolders==2);
 
 my $move = $folder->message(1);
 ok(defined $move);
-$mgr->moveMessage($sec, $move);
+
+my @moved = $mgr->moveMessage($sec, $move);
+ok(@moved==1);
+ok($moved[0]->isa('Mail::Box::Message'));
+ok($moved[0]->folder->name eq $sec->name);
 
 ok($move->deleted);
 ok($folder->messages==47);
 ok($sec->messages==1);
 
-my $copy = $folder->message(2);
-$mgr->copyMessage($sec, $copy);
+my $copy   = $folder->message(2);
+my @copied = $mgr->copyMessage($sec, $copy);
+ok(@copied==1);
+ok($copied[0]->isa('Mail::Box::Message'));
 ok(!$copy->deleted);
 ok($folder->messages==47);
 ok($sec->messages==2);

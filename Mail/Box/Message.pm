@@ -7,7 +7,7 @@ use base 'Mail::Message';
 use Date::Parse;
 use Scalar::Util 'weaken';
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 =head1 NAME
 
@@ -48,32 +48,33 @@ L<Mail::Message> (MM), L<Mail::Reporter> (MR), L<Mail::Message::Construct> (MMC)
 
 The general methods for C<Mail::Box::Message> objects:
 
-   MM bcc                              MMC lines
-  MMC bounce OPTIONS                    MR log [LEVEL [,STRINGS]]
-  MMC build [MESSAGE|BODY], CONTENT     MM messageId
-  MMC buildFromBody BODY, HEADERS       MM modified [BOOL]
-   MM cc                                   new OPTIONS
-      copyTo FOLDER                     MM nrLines
-   MM date                              MM parent
-   MM decoded OPTIONS                   MM parts
-      delete                            MM print [FILEHANDLE]
-      deleted [BOOL]                   MMC printStructure [INDENT]
-   MM destinations                     MMC read FILEHANDLE|SCALAR|REF-...
-   MM encode OPTIONS                   MMC reply OPTIONS
-   MR errors                           MMC replyPrelude [STRING|FIELD|...
-  MMC file                             MMC replySubject STRING
-      folder [FOLDER]                   MR report [LEVEL]
-  MMC forward OPTIONS                   MR reportAll [LEVEL]
-  MMC forwardPostlude                   MM send [MAILER], OPTIONS
-  MMC forwardPrelude                       seqnr [INTEGER]
-  MMC forwardSubject STRING                shortString
-   MM from                              MM size
-   MM get FIELD                        MMC string
-   MM guessTimestamp                    MM subject
-   MM isDummy                           MM timestamp
-   MM isMultipart                       MM to
-   MM isPart                            MM toplevel
-   MM label LABEL [,VALUE [LABEL,...    MR trace [LEVEL]
+   MM bcc                               MR log [LEVEL [,STRINGS]]
+  MMC bounce OPTIONS                    MM messageId
+  MMC build [MESSAGE|BODY], CONTENT     MM modified [BOOL]
+  MMC buildFromBody BODY, HEADERS          new OPTIONS
+   MM cc                                MM nrLines
+      copyTo FOLDER                     MM parent
+   MM date                              MM parts
+   MM decoded OPTIONS                   MM print [FILEHANDLE]
+      delete                           MMC printStructure [INDENT]
+      deleted [BOOL]                   MMC read FILEHANDLE|SCALAR|REF-...
+   MM destinations                     MMC reply OPTIONS
+   MM encode OPTIONS                   MMC replyPrelude [STRING|FIELD|...
+   MR errors                           MMC replySubject STRING
+  MMC file                              MR report [LEVEL]
+      folder [FOLDER]                   MR reportAll [LEVEL]
+  MMC forward OPTIONS                   MM send [MAILER], OPTIONS
+  MMC forwardPostlude                      seqnr [INTEGER]
+  MMC forwardPrelude                       shortString
+  MMC forwardSubject STRING             MM size
+   MM from                             MMC string
+   MM get FIELD                         MM subject
+   MM guessTimestamp                    MM timestamp
+   MM isDummy                           MM to
+   MM isMultipart                       MM toplevel
+   MM isPart                            MR trace [LEVEL]
+   MM label LABEL [,VALUE [LABEL,...    MR warnings
+  MMC lines
 
 The extra methods for extension writers:
 
@@ -272,7 +273,7 @@ sub shortString()
 =item copyTo FOLDER
 
 Copy the message to the indicated opened FOLDER, without deleting the
-original.
+original.  The coerced message (the copy) is returned.
 
 Example:
 
@@ -284,7 +285,6 @@ Example:
 sub copyTo($)
 {   my ($self, $folder) = @_;
     $folder->addMessage($self->clone);
-    $self;
 }
 
 #-------------------------------------------
@@ -425,7 +425,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

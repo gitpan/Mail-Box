@@ -8,7 +8,7 @@ use lib '.';
 
 my ($src, $dest) = @ARGV;
 my $verbose = 0;
-my $version = '2.015';
+my $version = '2.016';
 my $email   = 'mailbox@overmeer.net';
 
 require $src;
@@ -193,7 +193,7 @@ sub build_table($$)
 
     my @sets = sort keys %sets;
     my @lines;
-    my @left  = @sets{splice @sets, 0, @sets/2};
+    my @left  = @sets{splice @sets, 0, @sets/2 + @sets%2};
     my @right = @sets{@sets};
 
     while(@left)

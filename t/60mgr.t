@@ -8,7 +8,7 @@ use Test;
 use strict;
 use warnings;
 
-use lib qw(. t /home/markov/MailBox2/fake);
+use lib qw(. t);
 use Tools;
 use Mail::Box::Manager;
 
@@ -64,7 +64,10 @@ ok(@notices==1);
 
 my @warnings = $manager->report('WARNINGS');
 ok(@warnings==1);
-ok($warnings[-1] eq "Folder t/create does not exist.\n");
+ok($warnings[-1] eq "Folder t/create does not exist (mbox).\n");
+
+$manager->log('WARNINGS');  # back to default reporting.
+$manager->trace('WARNINGS');
 
 my $p = $manager->open
   ( folder       => $new
@@ -72,10 +75,11 @@ my $p = $manager->open
   , lock_type    => 'NONE'
   , type         => 'mbox'
   , create       => 1
+  , access       => 'w'
   );
 
-ok(-f $new);
 ok(defined $p);
+ok(-f $new);
 ok(-z $new);
 
 unlink $new;

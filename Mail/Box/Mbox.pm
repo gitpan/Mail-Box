@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox;
 use base 'Mail::Box';
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 use Mail::Box::Mbox::Message;
 
@@ -15,10 +15,11 @@ use Mail::Message::Body::Multipart;
 use Mail::Message::Head;
 
 use Carp;
-use FileHandle;
 use File::Copy;
 use File::Spec;
+use File::Basename;
 use POSIX ':unistd_h';
+use IO::File;
 
 =head1 NAME
 
@@ -56,14 +57,15 @@ The general methods for C<Mail::Box::Mbox> objects:
    MB addMessages MESSAGE [, MESS...    MB message INDEX [,MESSAGE]
    MB allMessageIds                     MB messageId MESSAGE-ID [,MESS...
    MB close OPTIONS                     MB messages
-      create FOLDERNAME, ARGS           MB modified [BOOLEAN]
-   MB current [NUMBER|MESSAGE|MES...    MB name
-   MB delete                               new OPTIONS
-   MR errors                            MB openSubFolder NAME [,OPTIONS]
-      filename                          MR report [LEVEL]
-   MB find MESSAGE-ID                   MR reportAll [LEVEL]
-      listSubFolders [OPTIONS]          MR trace [LEVEL]
-   MB locker                            MR warnings
+   MB copyTo FOLDER, OPTIONS            MB modified [BOOLEAN]
+      create FOLDERNAME, ARGS           MB name
+   MB current [NUMBER|MESSAGE|MES...       new OPTIONS
+   MB delete                            MB openSubFolder NAME [,OPTIONS]
+   MR errors                            MR report [LEVEL]
+      filename                          MR reportAll [LEVEL]
+   MB find MESSAGE-ID                   MR trace [LEVEL]
+      listSubFolders [OPTIONS]          MR warnings
+   MB locker                            MB writable
 
 The extra methods for extension writers:
 
@@ -81,6 +83,7 @@ The extra methods for extension writers:
    MR logPriority LEVEL                 MB updateMessages OPTIONS
    MR logSettings                          write OPTIONS
    MR notImplemented                    MB writeMessages
+   MB openRelatedFolder OPTIONS
 
 =head1 METHODS
 
@@ -207,6 +210,8 @@ sub init($)
            , $sub_extension
            );
 
+    return unless -e $filename;
+
     $self->{MBM_policy}        = $args->{write_policy};
 
     my $lockdir   = $filename;
@@ -220,24 +225,15 @@ sub init($)
 
     # Check if we can write to the folder, if we need to.
 
-    if($self->writeable && ! -w $filename)
-    {   if(-e $filename)
-        {   warn "Folder $filename is write-protected.\n";
-            $self->{MB_access} = 'r';
-        }
-        else
-        {   my $create = FileHandle->new($filename, 'w');
-            unless($create)
-            {   warn "Cannot create folder $filename: $!\n";
-                return;
-            }
-            $create->close;
-        }
+    if($self->writable && ! -w $filename)
+    {   $self->log(WARNING => "Folder $filename is write-protected.");
+        $self->{MB_access} = 'r';
     }
 
-      $self->{MB_access} !~ m/r/ ? $self
-    : $self->parser              ? $self
-    : undef;
+    # Start parser if reading is required.
+
+    return $self unless $self->{MB_access} =~ m/r/;
+    $self->parser ? $self : undef;
 }
 
 #-------------------------------------------
@@ -307,17 +303,24 @@ sub create($@)
 
     return $class if -f $filename;
 
+    my $dir       = dirname $filename;
+    $class->log(ERROR => "Cannot create directory $dir for $name"), return
+        unless -d $dir || mkdir $dir, 0755;
+
     if(-d $filename)
-    {   # sub-dir found, start simulate sub-folders.
+    {   # sub-dir found, start simulating sub-folders.  The sub-folder dir
+        # is moved to make place for this real folder.
         move $filename, $filename . $extension;
     }
 
-    unless(open CREATE, ">$filename")
+    if(my $create = IO::File->new($filename, 'w'))
+    {   $create->close;
+    }
+    else
     {   warn "Cannot create folder $name: $!\n";
         return;
     }
 
-    CORE::close CREATE;
     $class;
 }
 
@@ -404,7 +407,7 @@ sub listSubFolders(@)
 
 sub openSubFolder($@)
 {   my ($self, $name) = (shift, shift);
-    $self->openRelatedFolder(@_, folder => $self->name . '/' .$name);
+    $self->openRelatedFolder(@_, folder => "$self/$name");
 }
 
 #-------------------------------------------
@@ -607,7 +610,7 @@ sub _write_new($)
 {   my ($self, $args) = @_;
 
     my $filename = $self->filename;
-    my $new      = FileHandle->new($filename, 'w');
+    my $new      = IO::File->new($filename, 'w');
     return 0 unless defined $new;
 
     my @messages = @{$args->{messages}};
@@ -632,7 +635,7 @@ sub _write_replace($)
 
     my $filename = $self->filename;
     my $tmpnew   = $self->tmpNewFolder($filename);
-    my $new      = FileHandle->new($tmpnew, 'w');
+    my $new      = IO::File->new($tmpnew, 'w');
     return 0 unless defined $new;
     return 0 unless open FILE, '<', $filename;
 
@@ -747,27 +750,28 @@ sub appendMessages(@)
     my $folder   = $class->new(@_, access => 'a');
     my $filename = $folder->filename;
 
-    my $out      = FileHandle->new($filename, 'a');
+    my $out      = IO::File->new($filename, 'a');
     unless($out)
     {   $class->log(ERROR => "Cannot append to $filename: $!");
-        return;
+        return ();
     }
 
     my $msgtype = 'Mail::Box::Mbox::Message';
+    my @coerced;
 
     foreach my $msg (@messages)
-    {   my $message
+    {   my $coerced
            = $msg->isa($msgtype) ? $msg
            : $msg->can('clone')  ? $msgtype->coerce($msg->clone)
            :                       $msgtype->coerce($msg);
 
-        $message->print($out);
+        $coerced->print($out);
+        push @coerced, $coerced;
     }
 
     $out->close;
     $folder->close;
-
-    $class;
+    @coerced;
 }
 
 #-------------------------------------------
@@ -811,7 +815,7 @@ sub foundIn($@)
     return 0 unless -f $filename;
     return 1 if -z $filename;      # empty folder is ok
 
-    my $file = FileHandle->new($filename, 'r') or return 0;
+    my $file = IO::File->new($filename, 'r') or return 0;
     local $_;                      # Save external $_
     while(<$file>)
     {   next if /^\s*$/;
@@ -832,20 +836,20 @@ FOLDERDIR value to replace a leading C<=>.
 
 sub folderToFilename($$$)
 {   my ($class, $name, $folderdir, $extension) = @_;
-    $name =~ s#^=#$folderdir/#;
+    return $name if File::Spec->file_name_is_absolute($name);
+
     my @parts = split m!/!, $name;
     my $real  = shift @parts;
+    if(@parts)
+    {   my $file  = pop @parts;
 
-    while(@parts)
-    {   my $next         = shift @parts;
-        my $real_next    = File::Spec->catfile($real, $next);
-        my $realext_next = File::Spec->catfile($real.$extension, $next);
-        $real = -e $real_next               ? $real_next
-              : -e $realext_next            ? $realext_next
-              : -e $realext_next.$extension ? $realext_next
-              : -d "$real$extension"        ? $realext_next
-              :                               $real_next;
+        $real = File::Spec->catdir($real.(-d $real ? '' : $extension), $_) 
+           foreach @parts;
+
+        $real = File::Spec->catfile($real.(-d $real ? '' : $extension), $file);
     }
+
+    $real =~ s#^=#$folderdir/#;
     $real;
 }
 
@@ -919,7 +923,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

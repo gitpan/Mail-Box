@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::MH;
 use base 'Mail::Box::Dir';
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 use Mail::Box::MH::Index;
 use Mail::Box::MH::Message;
@@ -50,18 +50,19 @@ The general methods for C<Mail::Box::MH> objects:
    MB addMessages MESSAGE [, MESS...    MB message INDEX [,MESSAGE]
    MB allMessageIds                     MB messageId MESSAGE-ID [,MESS...
    MB close OPTIONS                     MB messages
-   MB create FOLDERNAME [, OPTIONS]     MB modified [BOOLEAN]
-   MB current [NUMBER|MESSAGE|MES...    MB name
-   MB delete                               new OPTIONS
-  MBD directory                         MB openSubFolder NAME [,OPTIONS]
-   MR errors                            MR report [LEVEL]
-   MB find MESSAGE-ID                   MR reportAll [LEVEL]
-   MB listSubFolders OPTIONS            MR trace [LEVEL]
-   MB locker                            MR warnings
+   MB copyTo FOLDER, OPTIONS            MB modified [BOOLEAN]
+   MB create FOLDERNAME [, OPTIONS]     MB name
+   MB current [NUMBER|MESSAGE|MES...       new OPTIONS
+   MB delete                            MB openSubFolder NAME [,OPTIONS]
+  MBD directory                         MR report [LEVEL]
+   MR errors                            MR reportAll [LEVEL]
+   MB find MESSAGE-ID                   MR trace [LEVEL]
+   MB listSubFolders OPTIONS            MR warnings
+   MB locker                            MB writable
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MR notImplemented
+   MR AUTOLOAD                          MB openRelatedFolder OPTIONS
    MB DESTROY                           MB organization
    MB appendMessages OPTIONS            MB read OPTIONS
    MB clone OPTIONS                    MBD readAllHeaders
@@ -77,6 +78,7 @@ The extra methods for extension writers:
    MB lineSeparator [STRING|'CR'|...    MB updateMessages OPTIONS
    MR logPriority LEVEL                 MB write OPTIONS
    MR logSettings                          writeMessages [OPTIONS]
+   MR notImplemented
 
 =head1 METHODS
 
@@ -302,14 +304,14 @@ sub listSubFolders(@)
 
 sub openSubFolder($@)
 {   my ($self, $name) = (shift, shift);
-    my $dir = $self->directory . '/' . $name;
 
-    unless(-d $dir || mkdir $dir, 0755)
+    my $subdir = File::Spec->catfile($self->directory, $name);
+    unless(-d $subdir || mkdir $subdir, 0755)
     {   warn "Cannot create subfolder $name for $self: $!\n";
         return;
     }
 
-    $self->openRelatedFolder(@_, folder => $dir);
+    $self->openRelatedFolder(@_, folder => "$self/$name");
 }
 
 #-------------------------------------------
@@ -682,7 +684,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -4,7 +4,7 @@ use strict;
 package Mail::Box::Locker;
 use base 'Mail::Reporter';
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 use Carp;
 use File::Spec;
@@ -85,6 +85,7 @@ options given to the folder class.
 
  OPTIONS        DESCRIBED IN               DEFAULT
  file           Mail::Box::Locker          undef
+ folder         Mail::Box::Locker          <obligatory>
  log            Mail::Reporter             'WARNINGS'
  method         Mail::Box::Locker          'DOTLOCK'
  expires        Mail::Box::Locker          1 hour
@@ -153,6 +154,10 @@ How long can a lock exist?  If a different e-mail program leaves a stale
 lock, then this lock will be removed automatically after the specified
 number of seconds.
 
+=item * folder =E<gt> FOLDER
+
+Which folder is locked.
+
 =item * timeout =E<gt> SECONDS|'NOTIMEOUT'
 
 How long to wait while trying to acquire the lock. The lock request will
@@ -207,7 +212,9 @@ sub init($)
 
     $self->SUPER::init($args);
 
-    $self->{MBL_folder}   = $args->{folder};
+    $self->{MBL_folder}   = $args->{folder}
+        or croak "No folder specified to be locked.\n";
+
     weaken($self->{MBL_folder});
 
     $self->{MBL_expires}  = $args->{expires}   || 3600;  # one hour
@@ -374,7 +381,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

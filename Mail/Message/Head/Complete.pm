@@ -9,7 +9,7 @@ use Mail::Box::Parser;
 use Carp;
 use Date::Parse;
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 use overload qq("") => 'toString';
 
@@ -376,7 +376,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

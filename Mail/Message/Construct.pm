@@ -5,7 +5,7 @@ use strict;
 
 package Mail::Message;
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -44,13 +44,14 @@ package is autoloaded to supply that functionality.
 
 The general methods for C<Mail::Message::Construct> objects:
 
-      bounce OPTIONS                       forwardSubject STRING
-      build [MESSAGE|BODY], CONTENT        lines
-      buildFromBody BODY, HEADERS          printStructure [INDENT]
-      file                                 read FILEHANDLE|SCALAR|REF-...
-      forward OPTIONS                      reply OPTIONS
-      forwardPostlude                      replyPrelude [STRING|FIELD|...
-      forwardPrelude                       replySubject STRING
+      bounce OPTIONS                       lines
+      build [MESSAGE|BODY], CONTENT        printStructure [INDENT]
+      buildFromBody BODY, HEADERS          read FILEHANDLE|SCALAR|REF-...
+      file                                 reply OPTIONS
+      forward OPTIONS                      replyPrelude [STRING|FIELD|...
+      forwardPostlude                      replySubject STRING
+      forwardPrelude                       string
+      forwardSubject STRING
 
 =head1 METHODS
 
@@ -1239,7 +1240,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

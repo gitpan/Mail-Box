@@ -8,7 +8,7 @@ use Test;
 use strict;
 use warnings;
 
-use lib qw(. t /home/markov/MailBox2/fake);
+use lib qw(. t);
 
 BEGIN {plan tests => 21}
 

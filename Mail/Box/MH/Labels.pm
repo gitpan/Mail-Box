@@ -4,7 +4,7 @@ use strict;
 package Mail::Box::MH::Labels;
 use base 'Mail::Reporter';
 
-our $VERSION = '2.015';
+our $VERSION = '2.016';
 use Mail::Message::Head::Subset;
 
 use FileHandle;
@@ -72,9 +72,10 @@ L<Mail::Reporter> (MR).
 
 The general methods for C<Mail::Box::MH::Labels> objects:
 
-   MR errors                            MR report [LEVEL]
-   MR log [LEVEL [,STRINGS]]            MR reportAll [LEVEL]
-   MR new OPTIONS                       MR trace [LEVEL]
+   MR errors                            MR reportAll [LEVEL]
+   MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
+   MR new OPTIONS                       MR warnings
+   MR report [LEVEL]
 
 The extra methods for extension writers:
 
@@ -312,7 +313,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

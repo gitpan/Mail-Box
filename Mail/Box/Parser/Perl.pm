@@ -8,7 +8,7 @@ use Mail::Message::Field;
 use List::Util 'sum';
 use FileHandle;
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 =head1 NAME
 
@@ -35,16 +35,17 @@ L<Mail::Reporter> (MR), L<Mail::Box::Parser> (MBP).
 
 The general methods for C<Mail::Box::Parser::Perl> objects:
 
-  MBP bodyAsFile FILEHANDLE [,CHA...   MBP new [OPTIONS]
-  MBP bodyAsList [,CHARS [,LINES]]     MBP popSeparator
-  MBP bodyAsString [,CHARS [,LINES]]   MBP pushSeparator STRING|REGEXP
-  MBP bodyDelayed [,CHARS [,LINES]]    MBP readHeader WRAP
-  MBP defaultParserType [CLASS]        MBP readSeparator OPTIONS
-   MR errors                            MR report [LEVEL]
-  MBP filePosition [POSITION]           MR reportAll [LEVEL]
-  MBP foldHeaderLine LINE, LENGTH      MBP start OPTIONS
-  MBP lineSeparator                    MBP stop
-   MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
+  MBP bodyAsFile FILEHANDLE [,CHA...   MBP popSeparator
+  MBP bodyAsList [,CHARS [,LINES]]     MBP pushSeparator STRING|REGEXP
+  MBP bodyAsString [,CHARS [,LINES]]   MBP readHeader WRAP
+  MBP bodyDelayed [,CHARS [,LINES]]    MBP readSeparator OPTIONS
+  MBP defaultParserType [CLASS]         MR report [LEVEL]
+   MR errors                            MR reportAll [LEVEL]
+  MBP filePosition [POSITION]          MBP start OPTIONS
+  MBP foldHeaderLine LINE, LENGTH      MBP stop
+  MBP lineSeparator                     MR trace [LEVEL]
+   MR log [LEVEL [,STRINGS]]            MR warnings
+  MBP new [OPTIONS]
 
 The extra methods for extension writers:
 
@@ -313,7 +314,7 @@ sub _read_stripped_lines(;$$)
         {
             if(substr($line, 0, $l) eq $sep
               && ($sep !~ m/^From / || $line =~ m/ (19[789]\d|20[01]\d)/ ))
-            {   $file->seek(-length $line, 1);
+            {   $file->seek(-length($line), 1);
                 last;
             }
 
@@ -449,7 +450,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

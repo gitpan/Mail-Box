@@ -226,9 +226,10 @@ sub removeFolder(@)
         next unless exists $self->{MBTM_folders}{$name};
 
         delete $self->{MBTM_folders}{$name};
-        foreach ($folder->messages)
-        {   $self->outThread($_) unless $_->headIsDelayed;
-        }
+
+        $_->headIsRead && $self->outThread($_)
+            foreach $folder->messages;
+
         $self->{MBTM_cleanup_needed} = 1;
     }
 
@@ -686,7 +687,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

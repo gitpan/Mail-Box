@@ -5,7 +5,7 @@ use warnings;
 package Mail::Message::Convert;
 use base 'Mail::Reporter';
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 =head1 NAME
 
@@ -68,15 +68,17 @@ L<Mail::Reporter> (MR).
 
 The general methods for C<Mail::Message::Convert> objects:
 
-   MR errors                            MR report [LEVEL]
-   MR log [LEVEL [,STRINGS]]            MR reportAll [LEVEL]
-      new OPTIONS                       MR trace [LEVEL]
+   MR errors                            MR reportAll [LEVEL]
+   MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
+      new OPTIONS                       MR warnings
+   MR report [LEVEL]
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MR logPriority LEVEL
-   MR DESTROY                           MR logSettings
-   MR inGlobalDestruction               MR notImplemented
+   MR AUTOLOAD                          MR logSettings
+   MR DESTROY                           MR notImplemented
+   MR inGlobalDestruction                  selectedFields HEAD
+   MR logPriority LEVEL
 
 =head1 METHODS
 
@@ -164,7 +166,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

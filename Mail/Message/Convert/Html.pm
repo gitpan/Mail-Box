@@ -4,7 +4,7 @@ use warnings;
 package Mail::Message::Convert::Html;
 use base 'Mail::Message::Convert';
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 use Carp;
 
 =head1 NAME
@@ -40,11 +40,12 @@ L<Mail::Reporter> (MR), L<Mail::Message::Convert> (MMC).
 
 The general methods for C<Mail::Message::Convert::Html> objects:
 
-   MR errors                               new OPTIONS
-      fieldToHtml FIELD, [SUBJECT]      MR report [LEVEL]
-      headToHtmlHead HEAD, META         MR reportAll [LEVEL]
-      headToHtmlTable HEAD, [TABL...       textToHtml LINES
-   MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
+   MR errors                            MR report [LEVEL]
+      fieldToHtml FIELD, [SUBJECT]      MR reportAll [LEVEL]
+      headToHtmlHead HEAD, META            textToHtml LINES
+      headToHtmlTable HEAD, [TABL...    MR trace [LEVEL]
+   MR log [LEVEL [,STRINGS]]            MR warnings
+      new OPTIONS
 
 The extra methods for extension writers:
 
@@ -319,7 +320,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

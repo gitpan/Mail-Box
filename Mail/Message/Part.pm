@@ -4,7 +4,7 @@ use warnings;
 package Mail::Message::Part;
 use base 'Mail::Message';
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 use Carp;
 
@@ -47,42 +47,44 @@ L<Mail::Message> (MM), L<Mail::Reporter> (MR), L<Mail::Message::Construct> (MMC)
 
 The general methods for C<Mail::Message::Part> objects:
 
-   MM bcc                              MMC lines
-  MMC bounce OPTIONS                    MR log [LEVEL [,STRINGS]]
-  MMC build [MESSAGE|BODY], CONTENT     MM messageId
-      buildFromBody BODY, MULTIPA...    MM modified [BOOL]
-   MM cc                                   new OPTIONS
-   MM date                              MM nrLines
-   MM decoded OPTIONS                   MM parent
-      delete                            MM parts
-      deleted [BOOLEAN]                 MM print [FILEHANDLE]
-   MM destinations                     MMC printStructure [INDENT]
-   MM encode OPTIONS                   MMC read FILEHANDLE|SCALAR|REF-...
-   MR errors                           MMC reply OPTIONS
-  MMC file                             MMC replyPrelude [STRING|FIELD|...
-  MMC forward OPTIONS                  MMC replySubject STRING
-  MMC forwardPostlude                   MR report [LEVEL]
-  MMC forwardPrelude                    MR reportAll [LEVEL]
-  MMC forwardSubject STRING             MM send [MAILER], OPTIONS
-   MM from                              MM size
-   MM get FIELD                        MMC string
-   MM guessTimestamp                    MM subject
-   MM isDummy                           MM timestamp
-   MM isMultipart                       MM to
-   MM isPart                            MM toplevel
-   MM label LABEL [,VALUE [LABEL,...    MR trace [LEVEL]
+   MM bcc                               MR log [LEVEL [,STRINGS]]
+  MMC bounce OPTIONS                    MM messageId
+  MMC build [MESSAGE|BODY], CONTENT     MM modified [BOOL]
+      buildFromBody BODY, MULTIPA...       new OPTIONS
+   MM cc                                MM nrLines
+   MM date                              MM parent
+   MM decoded OPTIONS                   MM parts
+      delete                            MM print [FILEHANDLE]
+      deleted [BOOLEAN]                MMC printStructure [INDENT]
+   MM destinations                     MMC read FILEHANDLE|SCALAR|REF-...
+   MM encode OPTIONS                   MMC reply OPTIONS
+   MR errors                           MMC replyPrelude [STRING|FIELD|...
+  MMC file                             MMC replySubject STRING
+  MMC forward OPTIONS                   MR report [LEVEL]
+  MMC forwardPostlude                   MR reportAll [LEVEL]
+  MMC forwardPrelude                    MM send [MAILER], OPTIONS
+  MMC forwardSubject STRING             MM size
+   MM from                             MMC string
+   MM get FIELD                         MM subject
+   MM guessTimestamp                    MM timestamp
+   MM isDummy                           MM to
+   MM isMultipart                       MM toplevel
+   MM isPart                            MR trace [LEVEL]
+   MM label LABEL [,VALUE [LABEL,...    MR warnings
+  MMC lines
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MM labelsToStatus
-   MM DESTROY                           MR logPriority LEVEL
-   MM body [BODY]                       MR logSettings
-      clone                             MR notImplemented
-      coerce BODY|MESSAGE, MULTIPART    MM readBody PARSER, HEAD [, BO...
-   MM head [HEAD]                       MM readFromParser PARSER, [BOD...
-   MR inGlobalDestruction               MM readHead PARSER [,CLASS]
-   MM isDelayed                         MM statusToLabels
-   MM labels                            MM storeBody BODY
+   MR AUTOLOAD                          MR logPriority LEVEL
+   MM DESTROY                           MR logSettings
+   MM body [BODY]                       MR notImplemented
+      clone                             MM readBody PARSER, HEAD [, BO...
+      coerce BODY|MESSAGE, MULTIPART    MM readFromParser PARSER, [BOD...
+   MM head [HEAD]                       MM readHead PARSER [,CLASS]
+   MR inGlobalDestruction               MM statusToLabels
+   MM isDelayed                         MM storeBody BODY
+   MM labels                            MM takeMessageId [STRING]
+   MM labelsToStatus
 
 =head1 METHODS
 
@@ -263,7 +265,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Tie::ARRAY;
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 use Carp;
 
@@ -53,9 +53,10 @@ Examples what you I<cannot> do:
 
 The general methods for C<Mail::Box::Tie::ARRAY> objects:
 
-      DELETE                               PUSH [MESSAGES]
-      FETCH INDEX                          STORE INDEX, MESSAGE
-      FETCHSIZE                            STORESIZE LENGTH
+      DELETE                               STORE INDEX, MESSAGE
+      FETCH INDEX                          STORESIZE LENGTH
+      FETCHSIZE                            tie ...
+      PUSH [MESSAGES]
 
 =head1 METHODS
 
@@ -225,7 +226,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -10,7 +10,7 @@ use Mail::Box::Parser;
 use Carp;
 use Mail::Address;
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 our %_structured;  # not to be used directly: call isStructured!
 
 use overload qq("") => sub { $_[0]->body }
@@ -94,12 +94,13 @@ As user of the object, there is not visible difference.
 
 The general methods for C<Mail::Message::Field> objects:
 
-      addresses                            name
-      attribute NAME [, VALUE]             new ...
-      body                                 print [FILEHANDLE]
-      comment [STRING]                     toDate TIME
-      content                              toInt
-      folded [ARRAY-OF-LINES]              toString
+      addresses                            new ...
+      attribute NAME [, VALUE]             print [FILEHANDLE]
+      body                                 toDate TIME
+      comment [STRING]                     toInt
+      content                              toString
+      folded [ARRAY-OF-LINES]              wellformedName ...
+      name
 
 The extra methods for extension writers:
 
@@ -283,7 +284,7 @@ sub attribute($;$)
     {   my $value   = shift;
         my $comment = $self->comment;
         if(defined $comment)
-        {   unless($comment =~ s/\b$name=(['"]?)[^'"]*\1/$name=$1$value$1/)
+        {   unless($comment =~ s/\b$name=(['"]?)[^'"]*\1/$name=$1$value$1/i )
             {   $comment .= qq(; $name="$value");
             }
         }
@@ -295,7 +296,7 @@ sub attribute($;$)
     }
 
     my $comment = $self->comment or return;
-    $comment =~ m/\b$name=(['"]?)([^'"]*)\1/;
+    $comment =~ m/\b$name=(['"]?)([^'"]*)\1/i ;
     $2;
 }
 
@@ -511,7 +512,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

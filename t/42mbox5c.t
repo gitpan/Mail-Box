@@ -8,7 +8,7 @@ use Test;
 use strict;
 use warnings;
 
-use lib qw(. t /home/markov/MailBox2/fake);
+use lib qw(. t);
 
 use Mail::Box::Mbox;
 use Mail::Message::Construct;
@@ -98,8 +98,7 @@ ok(cmplists [ sort Mail::Box::Mbox->listSubFolders
   );
 
 ok(cmplists [ sort Mail::Box::Mbox->listSubFolders
-                     ( folderdir  => File::Spec->catfile($top, "f4")
-                     ) ]
+                     ( folder => File::Spec->catfile($top, "f4")) ]
           , [ qw/f4f1 f4f2 f4f3/ ]
   );
 

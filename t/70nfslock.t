@@ -8,12 +8,14 @@ use Test;
 use strict;
 use warnings;
 
-use lib qw(. t /home/markov/MailBox2/fake);
+use lib qw(. t);
 
 use Tools;
 use Mail::Box::Locker::NFS;
 
 use File::Spec;
+
+my $fakefolder = bless {MB_foldername=> 'this'}, 'Mail::Box';
 
 BEGIN {plan tests => 7}
 
@@ -25,6 +27,7 @@ my $locker = Mail::Box::Locker->new
  , timeout => 1
  , wait    => 1
  , file    => $lockfile
+ , folder  => $fakefolder
  );
 
 ok($locker);

@@ -5,7 +5,7 @@ use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 use Carp;
 use File::Copy;
@@ -48,15 +48,16 @@ The general methods for C<Mail::Box::Maildir> objects:
    MB addMessages MESSAGE [, MESS...    MR log [LEVEL [,STRINGS]]
    MB allMessageIds                     MB message INDEX [,MESSAGE]
    MB close OPTIONS                     MB messageId MESSAGE-ID [,MESS...
-   MB create FOLDERNAME [, OPTIONS]     MB messages
-      createDirs FOLDERDIR              MB modified [BOOLEAN]
-   MB current [NUMBER|MESSAGE|MES...    MB name
-   MB delete                               new OPTIONS
-  MBD directory                         MB openSubFolder NAME [,OPTIONS]
-   MR errors                            MR report [LEVEL]
-   MB find MESSAGE-ID                   MR reportAll [LEVEL]
-      folderIsEmpty FOLDERDIR           MR trace [LEVEL]
-   MB listSubFolders OPTIONS            MR warnings
+   MB copyTo FOLDER, OPTIONS            MB messages
+   MB create FOLDERNAME [, OPTIONS]     MB modified [BOOLEAN]
+      createDirs FOLDERDIR              MB name
+   MB current [NUMBER|MESSAGE|MES...       new OPTIONS
+   MB delete                            MB openSubFolder NAME [,OPTIONS]
+  MBD directory                         MR report [LEVEL]
+   MR errors                            MR reportAll [LEVEL]
+   MB find MESSAGE-ID                   MR trace [LEVEL]
+      folderIsEmpty FOLDERDIR           MR warnings
+   MB listSubFolders OPTIONS            MB writable
 
 The extra methods for extension writers:
 
@@ -74,6 +75,7 @@ The extra methods for extension writers:
    MR logPriority LEVEL                 MB update OPTIONS
    MR logSettings                       MB updateMessages OPTIONS
    MR notImplemented                    MB write OPTIONS
+   MB openRelatedFolder OPTIONS            writeMessages [OPTIONS]
 
 =head1 METHODS
 
@@ -612,7 +614,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -3,6 +3,57 @@ CHANGELOG of Mail::Box version 2
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
+NOTE: The number of changes and fixes for each release seem large, but
+      usually limited to areas which are under development.  Mail::Box
+      is a huge module, so there is always a lot of activity.
+
+version 2.016: Tue Jun 25 16:24:54 CEST 2002
+
+	Fixes:
+
+	- [Edward Wildgoose] was very persist in pushing me to test
+	  return codes in Mail::Transport::SMTP.  Late transport failures
+	  are reported back now.
+
+	- [Jeff Squyres] attribures in header fields must be matched
+	  case-insensitive.
+
+	- $folder->writeable --> $folder->writable, but old method
+	  kept for backwards compatibility.
+
+	- [Andreas Piper] AIX also requires r+ on a file to get locking
+	  via FLOCK to work.  I made the detection 'compile-time'.
+
+	- The folder to be locked was optional, but used in error messages.
+	  Now if is not optional anymore, thanks to [Andreas Piper]
+
+	- Simulated sub-folders in Mbox were not correctly automagically
+	  created.
+
+	Improvements:
+
+	- Document fixes in Mail/Transport/SMTP.pm by [Liz Mattijsen]
+
+	- Recursive copying of whole folders, which may include
+	  conversions with Mail::Box::copyTo() with tests in t/66copyto.t
+
+	- Interface change:
+            $mgr->addMessages,   $folder->addMessage,
+            $mgr->appendMessage, $folder->appendMessage,
+            $mgr->moveMessage,   $folder->copyMessage,
+            $message->copyTo
+	  now all return the coerced message(s), because that is much
+	  more useful than the message which are passed into the
+	  method call, the folder, or the class.
+
+	- Much stricter handling of folder closing and folder deletion:
+	  when a manager is used, folders are removed before global
+	  cleamup commences.
+
+	- Mail::Box::Manager::registerType is not requiring all known
+	  folder types anymore.  This means that adding folder types
+	  is without cost now: they are compiled only when used.
+
 version 2.015: Tue Jun 18 19:41:45 CEST 2002
 
 	Fixes:

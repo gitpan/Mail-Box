@@ -9,7 +9,7 @@ use Mail::Box::Message;
 use Mail::Box::Locker;
 use File::Spec;
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 use Carp;
 use Scalar::Util 'weaken';
@@ -119,14 +119,15 @@ The general methods for C<Mail::Box> objects:
       addMessages MESSAGE [, MESS...       messageId MESSAGE-ID [,MESS...
       allMessageIds                        messages
       close OPTIONS                        modified [BOOLEAN]
-      create FOLDERNAME [, OPTIONS]        name
-      current [NUMBER|MESSAGE|MES...       new OPTIONS
-      delete                               openSubFolder NAME [,OPTIONS]
-   MR errors                            MR report [LEVEL]
-      find MESSAGE-ID                   MR reportAll [LEVEL]
-      listSubFolders OPTIONS            MR trace [LEVEL]
-      locker                            MR warnings
-   MR log [LEVEL [,STRINGS]]               writeable
+      copyTo FOLDER, OPTIONS               name
+      create FOLDERNAME [, OPTIONS]        new OPTIONS
+      current [NUMBER|MESSAGE|MES...       openSubFolder NAME [,OPTIONS]
+      delete                            MR report [LEVEL]
+   MR errors                            MR reportAll [LEVEL]
+      find MESSAGE-ID                   MR trace [LEVEL]
+      listSubFolders OPTIONS            MR warnings
+      locker                               writable
+   MR log [LEVEL [,STRINGS]]
 
 The extra methods for extension writers:
 
@@ -143,6 +144,7 @@ The extra methods for extension writers:
    MR logPriority LEVEL                    updateMessages OPTIONS
    MR logSettings                          write OPTIONS
    MR notImplemented                       writeMessages
+      openRelatedFolder OPTIONS
 
 =head1 METHODS
 
@@ -574,12 +576,14 @@ sub close(@)
         : $args{write} eq 'NEVER'                            ? 0
         :                                                      0;
 
-    if($write && !$force && !$self->writeable)
+    if($write && !$force && !$self->writable)
     {   $self->log(WARNING => "Changes not written to read-only folder $self");
         return 1;
     }
 
-    my $rc = $write ? $self->write(force => $force) : 1;
+    my $rc;
+    if($write)   { $self->write(force => $force) }
+    else         { $self->{MB_messages} = []     }
 
     $self->{MB_locker}->unlock;
     $rc;
@@ -609,8 +613,8 @@ data if the system crashes or if there are software problems.
 
 Examples:
 
-   my $folder = Mail::Box::File->new(folder => 'InBox');
-   $folder->delete;
+ my $folder = Mail::Box::Mbox->new(folder => 'InBox');
+ $folder->delete;
 
 =cut
 
@@ -618,29 +622,25 @@ sub delete()
 {   my $self = shift;
 
     # Extra protection: do not remove read-only folders.
-    unless($self->writeable)
-    {   warn "Folder $self is opened read-only, so not removed.\n";
+    unless($self->writable)
+    {   $self->log(ERROR => "Folder $self not deleted: not writable.");
+        $self->close(write => 'NEVER');
         return;
     }
 
     # Sub-directories need to be removed first.
     foreach ($self->listSubFolders)
-    {   my $sub = $self->openSubFolder($_);
-        next unless $sub;
+    {   my $sub = $self->openRelatedFolder(folder => "$self/$_",access => 'rw');
+        next unless defined $sub;
         $sub->delete;
-        $sub->close;
     }
 
-    # A lock may protect destruction from interference.
-    my $locker = $self->locker;
-    $locker->lock if $locker;
     $_->delete foreach $self->messages;
+
     $self->{MB_remove_empty} = 1;
+    $self->close(write => 'ALWAYS');
 
-    my $rc = $self->write(keep_deleted => 0);
-    $locker->unlock if $locker;
-
-    $rc;
+    $self;
 }
 
 #-------------------------------------------
@@ -659,15 +659,6 @@ Example:
 
 sub openSubFolder(@) {shift->notImplemented}
 
-sub openRelatedFolder(@)
-{   my $self    = shift;
-    my @options = (@{$self->{MB_init_options}}, @_);
-
-    $self->{MB_manager}
-    ?  $self->{MB_manager}->open(@options)
-    :  (ref $self)->new(@options);
-}
-
 #-------------------------------------------
 
 =item name
@@ -685,17 +676,18 @@ sub name() {shift->{MB_foldername}}
 
 #-------------------------------------------
 
-=item writeable
+=item writable
 
-Checks whether the current folder is writeable.
+Checks whether the current folder is writable.
 
 Example:
 
-    $folder->addMessage($msg) if $folder->writeable;
+    $folder->addMessage($msg) if $folder->writable;
 
 =cut
 
-sub writeable() {shift->{MB_access} =~ /w|a/ }
+sub writable()  {shift->{MB_access} =~ /w|a/ }
+sub writeable() {shift->writable}  # compatibility [typo]
 sub readable()  {1}  # compatibility
 
 #-------------------------------------------
@@ -933,8 +925,7 @@ ERROR
 
 sub addMessages(@)
 {   my $self = shift;
-    $self->addMessage($_) foreach @_;
-    $self;
+    map {$self->addMessage($_)} @_;
 }
 
 #-------------------------------------------
@@ -991,6 +982,139 @@ sub create($@) {shift->notImplemented}
 
 #-------------------------------------------
 
+=item copyTo FOLDER, OPTIONS
+
+Copy the folder's messages to a new folder.  The new folder may be of
+a different type.
+
+=over 4
+
+=item * delete_copied =E<gt> BOOLEAN
+
+Flag the messages from the source folder to be deleted, just after it
+was copied.  The deletion will only take effect when the originating
+folder is closed.  By default, copying will not delete the original.
+
+=item * select =E<gt> CODE|'DELETED'|'ALL'|'ACTIVE'|'SPAM'
+
+Which messages are to be copied. C<ALL> will include the message which
+are flagged to be deleted.  C<DELETED> will only copy the messages which
+are flagged for deletion.  By default the C<ACTIVE> messages (not to be
+deleted) are taken. With C<SPAM>, all messages which are labeled 'spam'
+are selected.  Deletion flags will not be set on the copies.
+
+You may specify your own CODE, which is called for each message in the
+source folder, with that message as first argument.  When the CODE
+returns true, the message is taken otherwise ignored.
+
+=item * subfolders =E<gt> BOOLEAN|'FLATTEN'|'RECURSE'
+
+How to handle sub-folders.  When false (0 or C<undef>), sub-folders
+are simply ignored.  With 'FLATTEN', messages from sub-folders are
+included in the main copy.  'RECURSE' recursively copies the
+sub-folders as well.  By default, when the destination folder
+supports sub-folders 'RECURSE' is used, otherwise 'FLATTEN'.  A value
+of true will select the default.
+
+=back
+
+Example:
+
+ my $mgr  = Mail::Box::Manager->new;
+ my $imap = $mgr->open(type => 'imap', host => ...);
+ my $mh   = $mgr->open(type => 'mh', folder => '/tmp/mh',
+     create => 1, access => 'w');
+
+ $imap->copyTo($mh, delete_copied => 1);
+ $mh->close; $imap->close;
+
+=cut
+
+sub copyTo($@)
+{   my ($self, $to, %args) = @_;
+
+    my $select = $args{select} || 'ACTIVE';
+    unless(ref $select)
+    {   $select
+           = $select eq 'ACTIVE'  ? sub { not $_[0]->deleted }
+           : $select eq 'DELETED' ? sub { $_[0]->deleted }
+           : $select eq 'ALL'     ? sub {1}
+           : $select eq 'SPAM'    ? sub { $_[0]->label('spam') }
+           : croak "copyTo flag 'select' does not understand $select";
+    }
+
+    my $subfolders  = exists $args{subfolders} ? $args{subfolders} : 1;
+    my $can_recurse
+       = $to->can('openSubFolder') ne Mail::Box->can('openSubFolder');
+
+    my ($flatten, $recurse)
+       = $subfolders eq 'FLATTEN' ? (1, 0)
+       : $subfolders eq 'RECURSE' ? (0, 1)
+       : !$subfolders             ? (0, 0)
+       : $can_recurse             ? (0, 1)
+       :                            (1, 0);
+
+    my $delete = $args{delete_copied} || 0;
+
+    $self->_copy_to($to, $select, $flatten, $recurse, $delete);
+}
+
+# Interface may change without warning.
+sub _copy_to($@)
+{   my ($self, $to, @options) = @_;
+    my ($select, $flatten, $recurse, $delete) = @options;
+
+    $self->log(ERROR => "Destination folder $to is not writable."), return
+        unless $to->writable;
+
+    $self->log(PROGRESS => "Copying messages from $self to $to.");
+
+    # Take messages from this folder.
+    foreach my $msg ($self->messages)
+    {   next unless $select->($msg);
+        $msg->copyTo($to) or return;
+        $msg->delete if $delete;
+    }
+
+    return $self unless $flatten || $recurse;
+
+    # Take subfolders
+    foreach ($self->listSubFolders)
+    {   my $subfolder = $self->openSubFolder($_);
+        $self->log(ERROR => "Unable to open subfolder $_"), return
+            unless defined $subfolder;
+
+        if($flatten)   # flatten
+        {    unless($subfolder->_copy_to($to, @options))
+             {   $subfolder->close;
+                 return;
+             }
+        }
+        else           # recurse
+        {    my $subto = $to->openSubFolder($_, create => 1, access => 'w');
+             unless($subto)
+             {   $self->log(ERROR => "Unable to create subfolder $_ to $to");
+                 $subfolder->close;
+                 return;
+             }
+
+             unless($subfolder->_copy_to($subto, @options))
+             {   $subfolder->close;
+                 $subto->close;
+                 return;
+             }
+
+             $subto->close;
+        }
+
+        $subfolder->close;
+    }
+
+    $self;
+}
+
+#-------------------------------------------
+
 =item listSubFolders OPTIONS
 
 (Class and Instance method)
@@ -1038,7 +1162,7 @@ Examples:
 
 =cut
 
-sub listSubFolders(@) {shift->notImplemented}
+sub listSubFolders(@) { () }
 
 #-------------------------------------------
 
@@ -1318,7 +1442,7 @@ remove them for real.
 sub write(@)
 {   my ($self, %args) = @_;
 
-    unless($args{force} || $self->writeable)
+    unless($args{force} || $self->writable)
     {   $self->log(ERROR => "Folder $self is opened read-only.\n");
         return;
     }
@@ -1345,7 +1469,7 @@ sub write(@)
         }
     }
 
-    $self->{MB_messages} = \@keep unless @keep==@messages;
+    $self->{MB_messages} = \@keep;
 
     if(@keep!=@messages || $self->modified)
     {   $args{messages} = \@keep;
@@ -1541,6 +1665,26 @@ sub foundIn($@)
 
 #-------------------------------------------
 
+=item openRelatedFolder OPTIONS
+
+Open a folder (usually a sub-folder) with the same options as this one.  If
+there is a folder manager in use, it will be informed about this new folder.
+OPTIONS overrule the options which where used for the folder this method
+is called upon.
+
+=cut
+
+sub openRelatedFolder(@)
+{   my $self    = shift;
+    my @options = (@{$self->{MB_init_options}}, @_);
+
+    $self->{MB_manager}
+    ?  $self->{MB_manager}->open(@options)
+    :  (ref $self)->new(@options);
+}
+
+#-------------------------------------------
+
 =item toBeThreaded MESSAGES
 
 =item toBeUnthreaded MESSAGES
@@ -1725,7 +1869,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -6,7 +6,7 @@ use base 'Mail::Transport';
 
 use Carp;
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 =head1 NAME
 
@@ -36,10 +36,11 @@ L<Mail::Reporter> (MR), L<Mail::Transport> (MT).
 
 The general methods for C<Mail::Transport::Sendmail> objects:
 
-   MR errors                            MR reportAll [LEVEL]
-   MR log [LEVEL [,STRINGS]]            MT send MESSAGE, OPTIONS
-      new OPTIONS                       MR trace [LEVEL]
-   MR report [LEVEL]                    MT trySend MESSAGE, OPTIONS
+   MR errors                            MT send MESSAGE, OPTIONS
+   MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
+      new OPTIONS                       MT trySend MESSAGE, OPTIONS
+   MR report [LEVEL]                    MR warnings
+   MR reportAll [LEVEL]
 
 The extra methods for extension writers:
 
@@ -130,7 +131,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

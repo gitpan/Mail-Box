@@ -4,7 +4,7 @@ use strict;
 package Mail::Box::Message::Dummy;
 use base 'Mail::Box::Message';
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 use Carp;
 
@@ -43,32 +43,33 @@ L<Mail::Message> (MM), L<Mail::Reporter> (MR), L<Mail::Box::Message> (MBM), L<Ma
 
 The general methods for C<Mail::Box::Message::Dummy> objects:
 
-   MM bcc                              MMC lines
-  MMC bounce OPTIONS                    MR log [LEVEL [,STRINGS]]
-  MMC build [MESSAGE|BODY], CONTENT     MM messageId
-  MMC buildFromBody BODY, HEADERS       MM modified [BOOL]
-   MM cc                               MBM new OPTIONS
-  MBM copyTo FOLDER                     MM nrLines
-   MM date                              MM parent
-   MM decoded OPTIONS                   MM parts
-  MBM delete                            MM print [FILEHANDLE]
-  MBM deleted [BOOL]                   MMC printStructure [INDENT]
-   MM destinations                     MMC read FILEHANDLE|SCALAR|REF-...
-   MM encode OPTIONS                   MMC reply OPTIONS
-   MR errors                           MMC replyPrelude [STRING|FIELD|...
-  MMC file                             MMC replySubject STRING
-  MBM folder [FOLDER]                   MR report [LEVEL]
-  MMC forward OPTIONS                   MR reportAll [LEVEL]
-  MMC forwardPostlude                   MM send [MAILER], OPTIONS
-  MMC forwardPrelude                   MBM seqnr [INTEGER]
-  MMC forwardSubject STRING            MBM shortString
-   MM from                              MM size
-   MM get FIELD                        MMC string
-   MM guessTimestamp                    MM subject
-   MM isDummy                           MM timestamp
-   MM isMultipart                       MM to
-   MM isPart                            MM toplevel
-   MM label LABEL [,VALUE [LABEL,...    MR trace [LEVEL]
+   MM bcc                               MR log [LEVEL [,STRINGS]]
+  MMC bounce OPTIONS                    MM messageId
+  MMC build [MESSAGE|BODY], CONTENT     MM modified [BOOL]
+  MMC buildFromBody BODY, HEADERS      MBM new OPTIONS
+   MM cc                                MM nrLines
+  MBM copyTo FOLDER                     MM parent
+   MM date                              MM parts
+   MM decoded OPTIONS                   MM print [FILEHANDLE]
+  MBM delete                           MMC printStructure [INDENT]
+  MBM deleted [BOOL]                   MMC read FILEHANDLE|SCALAR|REF-...
+   MM destinations                     MMC reply OPTIONS
+   MM encode OPTIONS                   MMC replyPrelude [STRING|FIELD|...
+   MR errors                           MMC replySubject STRING
+  MMC file                              MR report [LEVEL]
+  MBM folder [FOLDER]                   MR reportAll [LEVEL]
+  MMC forward OPTIONS                   MM send [MAILER], OPTIONS
+  MMC forwardPostlude                  MBM seqnr [INTEGER]
+  MMC forwardPrelude                   MBM shortString
+  MMC forwardSubject STRING             MM size
+   MM from                             MMC string
+   MM get FIELD                         MM subject
+   MM guessTimestamp                    MM timestamp
+   MM isDummy                           MM to
+   MM isMultipart                       MM toplevel
+   MM isPart                            MR trace [LEVEL]
+   MM label LABEL [,VALUE [LABEL,...    MR warnings
+  MMC lines
 
 The extra methods for extension writers:
 
@@ -138,7 +139,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

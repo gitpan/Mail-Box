@@ -14,7 +14,7 @@ use Mail::Message::Body::Nested;
 use Carp;
 use IO::ScalarArray;
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 =head1 NAME
 
@@ -61,41 +61,43 @@ L<Mail::Reporter> (MR), L<Mail::Message::Construct> (MMC).
 
 The general methods for C<Mail::Message> objects:
 
-      bcc                               MR log [LEVEL [,STRINGS]]
-  MMC bounce OPTIONS                       messageId
-  MMC build [MESSAGE|BODY], CONTENT        modified [BOOL]
-  MMC buildFromBody BODY, HEADERS          new OPTIONS
-      cc                                   nrLines
-      date                                 parent
-      decoded OPTIONS                      parts
-      destinations                         print [FILEHANDLE]
-      encode OPTIONS                   MMC printStructure [INDENT]
-   MR errors                           MMC read FILEHANDLE|SCALAR|REF-...
-  MMC file                             MMC reply OPTIONS
-  MMC forward OPTIONS                  MMC replyPrelude [STRING|FIELD|...
-  MMC forwardPostlude                  MMC replySubject STRING
-  MMC forwardPrelude                    MR report [LEVEL]
-  MMC forwardSubject STRING             MR reportAll [LEVEL]
-      from                                 send [MAILER], OPTIONS
-      get FIELD                            size
-      guessTimestamp                   MMC string
-      isDummy                              subject
-      isMultipart                          timestamp
-      isPart                               to
-      label LABEL [,VALUE [LABEL,...       toplevel
-  MMC lines                             MR trace [LEVEL]
+      bcc                                  messageId
+  MMC bounce OPTIONS                       modified [BOOL]
+  MMC build [MESSAGE|BODY], CONTENT        new OPTIONS
+  MMC buildFromBody BODY, HEADERS          nrLines
+      cc                                   parent
+      date                                 parts
+      decoded OPTIONS                      print [FILEHANDLE]
+      destinations                     MMC printStructure [INDENT]
+      encode OPTIONS                   MMC read FILEHANDLE|SCALAR|REF-...
+   MR errors                           MMC reply OPTIONS
+  MMC file                             MMC replyPrelude [STRING|FIELD|...
+  MMC forward OPTIONS                  MMC replySubject STRING
+  MMC forwardPostlude                   MR report [LEVEL]
+  MMC forwardPrelude                    MR reportAll [LEVEL]
+  MMC forwardSubject STRING                send [MAILER], OPTIONS
+      from                                 size
+      get FIELD                        MMC string
+      guessTimestamp                       subject
+      isDummy                              timestamp
+      isMultipart                          to
+      isPart                               toplevel
+      label LABEL [,VALUE [LABEL,...    MR trace [LEVEL]
+  MMC lines                             MR warnings
+   MR log [LEVEL [,STRINGS]]
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                             labelsToStatus
-      DESTROY                           MR logPriority LEVEL
-      body [BODY]                       MR logSettings
-      clone                             MR notImplemented
-      coerce MESSAGE                       readBody PARSER, HEAD [, BO...
-      head [HEAD]                          readFromParser PARSER, [BOD...
-   MR inGlobalDestruction                  readHead PARSER [,CLASS]
-      isDelayed                            statusToLabels
-      labels                               storeBody BODY
+   MR AUTOLOAD                          MR logPriority LEVEL
+      DESTROY                           MR logSettings
+      body [BODY]                       MR notImplemented
+      clone                                readBody PARSER, HEAD [, BO...
+      coerce MESSAGE                       readFromParser PARSER, [BOD...
+      head [HEAD]                          readHead PARSER [,CLASS]
+   MR inGlobalDestruction                  statusToLabels
+      isDelayed                            storeBody BODY
+      labels                               takeMessageId [STRING]
+      labelsToStatus
 
 =head1 METHODS
 
@@ -1095,7 +1097,7 @@ Angles (if present) are removed from the id.
 
 sub takeMessageId(;$)
 {   my $self  = shift;
-    my $msgid = @_ ? shift : ($self->get('Message-ID') || '');
+    my $msgid = (@_ ? shift : $self->get('Message-ID')) || '';
 
     if($msgid =~ m/\<([^>]*)\>/s)
     {   $msgid = $1;
@@ -1307,7 +1309,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

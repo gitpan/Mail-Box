@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Dir;
 
 use base 'Mail::Box';
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 use Mail::Box::Dir::Message;
 
@@ -61,14 +61,15 @@ The general methods for C<Mail::Box::Dir> objects:
    MB addMessages MESSAGE [, MESS...    MB message INDEX [,MESSAGE]
    MB allMessageIds                     MB messageId MESSAGE-ID [,MESS...
    MB close OPTIONS                     MB messages
-   MB create FOLDERNAME [, OPTIONS]     MB modified [BOOLEAN]
-   MB current [NUMBER|MESSAGE|MES...    MB name
-   MB delete                               new OPTIONS
-      directory                         MB openSubFolder NAME [,OPTIONS]
-   MR errors                            MR report [LEVEL]
-   MB find MESSAGE-ID                   MR reportAll [LEVEL]
-   MB listSubFolders OPTIONS            MR trace [LEVEL]
-   MB locker                            MR warnings
+   MB copyTo FOLDER, OPTIONS            MB modified [BOOLEAN]
+   MB create FOLDERNAME [, OPTIONS]     MB name
+   MB current [NUMBER|MESSAGE|MES...       new OPTIONS
+   MB delete                            MB openSubFolder NAME [,OPTIONS]
+      directory                         MR report [LEVEL]
+   MR errors                            MR reportAll [LEVEL]
+   MB find MESSAGE-ID                   MR trace [LEVEL]
+   MB listSubFolders OPTIONS            MR warnings
+   MB locker                            MB writable
 
 The extra methods for extension writers:
 
@@ -86,6 +87,7 @@ The extra methods for extension writers:
    MR logPriority LEVEL                 MB update OPTIONS
    MR logSettings                       MB updateMessages OPTIONS
    MR notImplemented                    MB write OPTIONS
+   MB openRelatedFolder OPTIONS         MB writeMessages
 
 =head1 METHODS
 
@@ -166,7 +168,7 @@ sub init($)
 
     # Check if we can write to the folder, if we need to.
 
-    if($self->writeable && -e $directory && ! -w $directory)
+    if($self->writable && -e $directory && ! -w $directory)
     {   warn "Folder $directory is write-protected.\n";
         $self->{MB_access} = 'r';
     }
@@ -295,7 +297,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

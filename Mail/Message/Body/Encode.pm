@@ -10,7 +10,7 @@ use Carp;
 use MIME::Types;
 my MIME::Types $mime_types;
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 =head1 NAME
 
@@ -69,12 +69,14 @@ manual page losts the transfer encodings which are supported.
 
 The general methods for C<Mail::Message::Body::Encode> objects:
 
-      check                                encoded
-      encode OPTIONS                       isBinary
+      check                                isBinary
+      encode OPTIONS                       isText
+      encoded
 
 The extra methods for extension writers:
 
-      addTransferEncHandler NAME,...       getTransferEncHandler TYPE
+      addTransferEncHandler NAME,...       unify BODY
+      getTransferEncHandler TYPE
 
 =head1 METHODS
 
@@ -406,7 +408,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

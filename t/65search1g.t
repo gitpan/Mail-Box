@@ -8,7 +8,7 @@ use Test;
 use strict;
 use warnings;
 
-use lib qw(. t /home/markov/MailBox2/fake);
+use lib qw(. t);
 use Tools;
 use Mail::Box::Manager;
 use Mail::Box::Search::Grep;
@@ -322,4 +322,5 @@ t/mbox.cpy, message 19:
 p  12:       , pointsize => $poinsize
 EXPECTED
 
+$folder->close(write => 'NEVER');
 undef $grep12;

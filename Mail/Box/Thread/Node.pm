@@ -32,15 +32,16 @@ same node.
 
 The general methods for C<Mail::Box::Thread::Node> objects:
 
-      addMessage MESSAGE                   messageId
-      endTimeEstimate                      new OPTIONS
-      expand [BOOL]                        numberOfMessages
-      followUps                            recurse CODE-REF
-      followedBy THREADS                   repliedTo
-      follows THREAD, QUALITY              sortedFollowUps [PREPARE [,...
-      ids                                  startTimeEstimate
-      isDummy                              threadMessages
-      message                              threadToString [CODE]
+      addMessage MESSAGE                   new OPTIONS
+      endTimeEstimate                      numberOfMessages
+      expand [BOOL]                        recurse CODE-REF
+      followUps                            repliedTo
+      followedBy THREADS                   sortedFollowUps [PREPARE [,...
+      follows THREAD, QUALITY              startTimeEstimate
+      ids                                  threadMessages
+      isDummy                              threadToString [CODE]
+      message                              totalSize
+      messageId
 
 =head1 METHODS
 
@@ -632,7 +633,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

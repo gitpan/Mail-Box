@@ -68,6 +68,7 @@ sub name() {'MULTI'}
 
  OPTIONS        DESCRIBED IN               DEFAULT
  file           Mail::Box::Locker          undef
+ folder         Mail::Box::Locker          <obligatory>
  log            Mail::Reporter             'WARNINGS'
  method         Mail::Box::Locker          <not used>
  expires        Mail::Box::Locker          1 hour
@@ -198,7 +199,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

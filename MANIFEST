@@ -136,6 +136,7 @@ t/57forw1f.t
 t/60mgr.t
 t/61threads.t
 t/65search1g.t
+t/66copyto.t
 t/70dotlock.t
 t/70flock.t
 t/70posix.t

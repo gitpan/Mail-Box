@@ -8,7 +8,7 @@ use Test;
 use strict;
 use warnings;
 
-use lib qw(. t /home/markov/MailBox2/fake);
+use lib qw(. t);
 use Mail::Box::Maildir;
 use Tools;
 
@@ -91,4 +91,5 @@ ok(!$msg12->label('replied'));
 ok($msg12->filename =~ m/:2,$/);
 
 ok(!$msg12->modified);
+
 clean_dir $mdsrc;

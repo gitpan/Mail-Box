@@ -99,8 +99,9 @@ Folder manager:
    60mgr.t             locating/opening/closing folders.
    61threads.t         thread detection and processing.
 
-Searching:
-   65search1g.t        search grep
+Folder trucs:
+   65search1g.t        search folder grep-like
+   66copyto.t          copy folders
 
 Locking:
    70dotlock.t         dotlock mechanism

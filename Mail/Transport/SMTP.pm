@@ -7,7 +7,7 @@ use base 'Mail::Transport';
 #use Mail::Transport::SMTP::Server;
 use Net::SMTP;
 
-our $VERSION = 2.015;
+our $VERSION = 2.016;
 
 =head1 NAME
 
@@ -31,8 +31,8 @@ Mail::Transport::SMTP - transmit messages without external program
 USE WITH CARE! THIS MODULE IS VERY NEW, SO MAY CONTAIN BUGS
 
 This module implements transport of C<Mail::Message> objects by negotiating
-to the destination host directly, without help of C<sendmail>, C<mail>, or
-other programs on the local host.
+to the destination host directly by using the SMTP protocol, without help of
+C<sendmail>, C<mail>, or other programs on the local host.
 
 =head1 METHOD INDEX
 
@@ -41,11 +41,12 @@ L<Mail::Reporter> (MR), L<Mail::Transport> (MT).
 
 The general methods for C<Mail::Transport::SMTP> objects:
 
-      contactAnyServer                  MR reportAll [LEVEL]
-   MR errors                            MT send MESSAGE, OPTIONS
-   MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
-      new OPTIONS                          tryConnectTo HOST, OPTIONS
-   MR report [LEVEL]                    MT trySend MESSAGE, OPTIONS
+      contactAnyServer                  MT send MESSAGE, OPTIONS
+   MR errors                            MR trace [LEVEL]
+   MR log [LEVEL [,STRINGS]]               tryConnectTo HOST, OPTIONS
+      new OPTIONS                       MT trySend MESSAGE, OPTIONS
+   MR report [LEVEL]                    MR warnings
+   MR reportAll [LEVEL]
 
 The extra methods for extension writers:
 
@@ -77,7 +78,7 @@ The extra methods for extension writers:
 
 =item debug =E<gt> BOOLEAN
 
-Simulate transmission: the SMTP protocol output will be send to your
+Simulate transmission: the SMTP protocol output will be sent to your
 screen.
 
 =item helo_domain =E<gt> HOST
@@ -85,8 +86,8 @@ screen.
 The fully qualified name of the sender's host (your system) which
 is used for the greeting message to the receiver.  If not specified,
 L<Net::Config> or else L<Net::Domain> are questioned to find it.
-When even those are nor working, the domain is taken from the
-C<From> line of the message.
+When even these do not supply a valid name, the name of the domain in the
+C<From> line of the message is assumed.
 
 =item proxy =E<gt> HOST|ARRAY-OF-HOSTS
 
@@ -96,7 +97,8 @@ is specified, the first host which can be contacted will be used.
 
 =item timeout =E<gt> SECONDS
 
-The number of sections to wait maximally for contacting the server.
+The number of seconds to wait for a valid response from the server before
+failing.
 
 =back
 
@@ -162,10 +164,11 @@ sub trySend($)
     my $bodydata = $message->body->file;
     $server->datasend($_) while <$bodydata>;
 
-    $server->dataend;
-    $server->quit;
+    my $success = $server->dataend;
+    my $error   = $success ? 0 : $server->code;
 
-    1;
+    $server->quit;
+    wantarray ? ($success, $error) : $success;
 }
 
 #------------------------------------------
@@ -224,7 +227,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

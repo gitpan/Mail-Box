@@ -53,17 +53,19 @@ L<Mail::Reporter> (MR).
 
 The general methods for C<Mail::Box::Search> objects:
 
-   MR errors                            MR report [LEVEL]
-   MR log [LEVEL [,STRINGS]]            MR reportAll [LEVEL]
-      new OPTIONS                          search FOLDER|THREAD|MESSAG...
-      printMatch [FILEHANDLE], HASH     MR trace [LEVEL]
+   MR errors                            MR reportAll [LEVEL]
+   MR log [LEVEL [,STRINGS]]               search FOLDER|THREAD|MESSAG...
+      new OPTIONS                       MR trace [LEVEL]
+      printMatch [FILEHANDLE], HASH     MR warnings
+   MR report [LEVEL]
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                             inHead PART, HEAD
-   MR DESTROY                           MR logPriority LEVEL
-      inBody PART, BODY                 MR logSettings
-   MR inGlobalDestruction               MR notImplemented
+   MR AUTOLOAD                          MR logPriority LEVEL
+   MR DESTROY                           MR logSettings
+      inBody PART, BODY                 MR notImplemented
+   MR inGlobalDestruction                  searchPart PART
+      inHead PART, HEAD
 
 =head1 METHODS
 
@@ -394,7 +396,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

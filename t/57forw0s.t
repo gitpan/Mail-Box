@@ -7,7 +7,7 @@ use Test;
 use strict;
 use warnings;
 
-use lib qw(. t /home/markov/MailBox2/fake);
+use lib qw(. t);
 
 use Tools;
 use Mail::Message::Construct;

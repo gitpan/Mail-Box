@@ -75,17 +75,18 @@ The general methods for C<Mail::Box::Dir::Message> objects:
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MM labelsToStatus
-   MM DESTROY                              loadHead
-   MM body [BODY]                       MR logPriority LEVEL
-   MM clone                             MR logSettings
-  MBM coerce MESSAGE                    MR notImplemented
-      create FILENAME                      parser
-  MBM diskDelete                       MBM readBody PARSER, HEAD [, BO...
-   MM head [HEAD]                       MM readFromParser PARSER, [BOD...
-   MR inGlobalDestruction               MM readHead PARSER [,CLASS]
-   MM isDelayed                         MM statusToLabels
-   MM labels                            MM storeBody BODY
+   MR AUTOLOAD                             loadHead
+   MM DESTROY                           MR logPriority LEVEL
+   MM body [BODY]                       MR logSettings
+   MM clone                             MR notImplemented
+  MBM coerce MESSAGE                       parser
+      create FILENAME                  MBM readBody PARSER, HEAD [, BO...
+  MBM diskDelete                        MM readFromParser PARSER, [BOD...
+   MM head [HEAD]                       MM readHead PARSER [,CLASS]
+   MR inGlobalDestruction               MM statusToLabels
+   MM isDelayed                         MM storeBody BODY
+   MM labels                            MM takeMessageId [STRING]
+   MM labelsToStatus
 
 =head1 METHODS
 
@@ -180,7 +181,9 @@ sub filename(;$)
 sub diskDelete()
 {   my $self = shift;
     $self->SUPER::diskDelete;
-    unlink $self->filename;
+
+    my $filename = $self->filename;
+    unlink $filename if $filename;
     $self;
 }
 
@@ -311,10 +314,12 @@ sub create($)
     $newfile->close;
 
     # Accept the new data
+# maildir produces warning where not expected...
 #   $self->log(WARNING => "Failed to remove $old: $!")
 #       if $old && !unlink $old;
 
     unlink $old if $old;
+
     $self->log(ERROR => "Failed to move $new to $filename: $!"), return
          unless move($new, $filename);
 
@@ -342,7 +347,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.015.
+This code is beta, version 2.016.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
