@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body::Lines;
 use vars '$VERSION';
-$VERSION = '2.058';
+$VERSION = '2.059';
 use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;

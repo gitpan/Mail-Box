@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field::Structured;
 use vars '$VERSION';
-$VERSION = '2.058';
+$VERSION = '2.059';
 use base 'Mail::Message::Field::Full';
 
 use Mail::Message::Field::Attribute;
@@ -80,8 +80,8 @@ sub parse($)
     $self->datum($datum);
 
     my $found = '';
-    until($string eq '')
-    {   if($string =~ s/^\;\s*// && length $found)
+    while($string =~ m/\S/)
+    {   if($string =~ s/^\s*\;\s*// && length $found)
         {   my $attr = Mail::Message::Field::Attribute->new($found);
             $self->attribute($attr);
             $found = '';

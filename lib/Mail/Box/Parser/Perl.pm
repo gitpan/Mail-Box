@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Box::Parser::Perl;
 use vars '$VERSION';
-$VERSION = '2.058';
+$VERSION = '2.059';
 use base 'Mail::Box::Parser';
 
 use Mail::Message::Field;

@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Dir;
 use vars '$VERSION';
-$VERSION = '2.058';
+$VERSION = '2.059';
 
 use base 'Mail::Box';
 
@@ -31,12 +31,13 @@ sub init($)
         unless $self->SUPER::init($args);
 
     my $class            = ref $self;
-    my $directory        = $self->directory;
+    my $directory        = $self->{MBD_directory}
+        = $args->{directory} || $self->directory;
 
        if(-d $directory) {;}
     elsif($args->{create} && $class->create($directory, %$args)) {;}
     else
-    {   $self->log(PROGRESS => "$class: No directory $directory.");
+    {   $self->log(NOTICE => "No directory $directory for folder of $class");
         return undef;
     }
 
@@ -53,7 +54,7 @@ sub init($)
     # Check if we can write to the folder, if we need to.
 
     if($self->writable && -e $directory && ! -w $directory)
-    {   $self->log(WARNING => "Folder directory $directory is write-protected.");
+    {   $self->log(WARNING=> "Folder directory $directory is write-protected.");
         $self->{MB_access} = 'r';
     }
 
@@ -75,7 +76,7 @@ sub directory()
 }
 
 #-------------------------------------------
-                                                                                
+
 sub nameOfSubFolder($;$)
 {   my ($thing, $name) = (shift, shift);
     my $parent = @_ ? shift : ref $thing ? $thing->directory : undef;

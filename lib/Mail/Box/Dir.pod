@@ -92,6 +92,7 @@ Mail::Box::Dir-E<gt>B<new>(OPTIONS)
  body_type          L<Mail::Box>     L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>        
  coerce_options     L<Mail::Box>     C<[]>                                                           
  create             L<Mail::Box>     <false>                                                         
+ directory                           <derived from folder name>                                      
  extract            L<Mail::Box>     C<10240>                                                        
  field_type         L<Mail::Box>     undef                                                           
  fix_headers        L<Mail::Box>     <false>                                                         
@@ -123,6 +124,15 @@ Mail::Box::Dir-E<gt>B<new>(OPTIONS)
 . coerce_options ARRAY
 
 . create BOOLEAN
+
+. directory DIRECTORY
+
+=over 4
+
+For rare folder types, the directory name may differ from the folder
+name.
+
+=back
 
 . extract INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
 
@@ -778,6 +788,9 @@ then an C<@>, and then a domain name.  This is made to avoid the creation
 of two messages with the same id.  The warning emerges when the C<@> is
 missing from the string.
 
+I<Warning:> No directory $name for folder of $class
+
+
 I<Error:> Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
@@ -811,7 +824,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.058.
+Distribution version 2.059.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

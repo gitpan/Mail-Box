@@ -7,14 +7,14 @@ Mail::Message - general message object
 =head1 INHERITANCE
 
  Mail::Message has extra code in
-   Mail::Message::Construct::Read
-   Mail::Message::Construct::Forward
    Mail::Message::Construct::Bounce
    Mail::Message::Construct
-   Mail::Message::Construct::Reply
+   Mail::Message::Construct::Forward
    Mail::Message::Construct::Build
-   Mail::Message::Construct::Text
+   Mail::Message::Construct::Read
    Mail::Message::Construct::Rebuild
+   Mail::Message::Construct::Text
+   Mail::Message::Construct::Reply
 
  Mail::Message
    is a Mail::Reporter
@@ -1060,7 +1060,7 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 
 =back
 
-$obj-E<gt>B<printStructure>([FILEHANDLE][, INDENT])
+$obj-E<gt>B<printStructure>([FILEHANDLE|undef],[INDENT])
 
 =over 4
 
@@ -1652,7 +1652,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.058.
+Distribution version 2.059.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

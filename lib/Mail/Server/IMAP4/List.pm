@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Server::IMAP4::List;
 use vars '$VERSION';
-$VERSION = '2.058';
+$VERSION = '2.059';
 
 
 sub new($)
@@ -15,7 +15,6 @@ sub new($)
     my $user = $self->{MSIL_user}  = $args{user};
     $self->{MSIL_folders} = $args{folders};
     $self->{MSIL_inbox}   = $args{inbox};
-
     $self->{MSIL_delim}   = exists $args{delimiter} ? $args{delimiter} : '/';
     $self;
 }
@@ -38,7 +37,7 @@ sub user() { shift->{MSIL_user} }
 
 sub folders()
 {   my $self = shift;
-    $self->{MSIL_folders} || $self->user->folders;
+    $self->{MSIL_folders} || $self->user->topfolder;
 }
 
 #------------------------------------------

@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.058';
+$VERSION = '2.059';
 
 use IO::Lines;
 
@@ -41,8 +41,16 @@ sub file()
 
 sub printStructure(;$$)
 {   my $self    = shift;
-    my $indent  = @_ && !ref $_[-1] && substr($_[-1], -1, 1) eq ' ' ? pop : '';
+
+    my $indent
+      = @_==2                       ? pop
+      : defined $_[0] && !ref $_[0] ? shift
+      :                               '';
+
     my $fh      = @_ ? shift : select;
+
+    my $buffer;   # only filled if filehandle==undef
+    open $fh, '>', \$buffer unless defined $fh;
 
     my $subject = $self->get('Subject') || '';
     $subject    = ": $subject" if length $subject;
@@ -61,6 +69,7 @@ sub printStructure(;$$)
       :                      ();
 
     $_->printStructure($fh, $indent.'   ') foreach @parts;
+    $buffer;
 }
     
 

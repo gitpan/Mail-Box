@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Box::Manager;
 use vars '$VERSION';
-$VERSION = '2.058';
+$VERSION = '2.059';
 use base 'Mail::Reporter';
 
 use Mail::Box;
@@ -238,7 +238,6 @@ sub open(@)
 
     push @defaults, manager => $self;
     my $folder = $class->new(@defaults, %args);
-
     unless(defined $folder)
     {   $self->log(WARNING =>
            "Folder does not exist, failed opening $folder_type folder $name.")

@@ -51,16 +51,6 @@ See L<Mail::Message/"Constructors">
 
 =back
 
-Mail::Message::Replace::MailInternet-E<gt>B<coerce>(MESSAGE)
-
-=over 4
-
-Coerce (adapt type) of the specified MESSAGE (anything
-L<Mail::Message::coerce()|Mail::Message/"Internals"> accepts) into an Mail::Internet simulating
-object.
-
-=back
-
 $obj-E<gt>B<dup>
 
 =over 4
@@ -1047,7 +1037,7 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 
 =back
 
-$obj-E<gt>B<printStructure>([FILEHANDLE][, INDENT])
+$obj-E<gt>B<printStructure>([FILEHANDLE|undef],[INDENT])
 
 =over 4
 
@@ -1063,6 +1053,20 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 
 =back
 
+=head2 The nasty bits
+
+
+$obj-E<gt>B<isa>(CLASS)
+
+Mail::Message::Replace::MailInternet-E<gt>B<isa>(CLASS)
+
+=over 4
+
+Of course, the C<isa()> class inheritance check should not see our
+nasty trick.
+
+=back
+
 =head2 Internals
 
 
@@ -1071,6 +1075,16 @@ $obj-E<gt>B<clonedFrom>
 =over 4
 
 See L<Mail::Message/"Internals">
+
+=back
+
+Mail::Message::Replace::MailInternet-E<gt>B<coerce>(MESSAGE)
+
+=over 4
+
+Coerce (adapt type) of the specified MESSAGE (anything
+L<Mail::Message::coerce()|Mail::Message/"Internals"> accepts) into an Mail::Internet simulating
+object.
 
 =back
 
@@ -1280,20 +1294,6 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-=head2 The nasty bits
-
-
-$obj-E<gt>B<isa>(CLASS)
-
-Mail::Message::Replace::MailInternet-E<gt>B<isa>(CLASS)
-
-=over 4
-
-Of course, the C<isa()> class inheritance check should not see our
-nasty trick.
-
-=back
-
 
 
 =head1 DIAGNOSTICS
@@ -1317,7 +1317,7 @@ I<Error:> Only build() Mail::Message's; they are not in a folder yet
 You may wish to construct a message to be stored in a some kind
 of folder, but you need to do that in two steps.  First, create a
 normal L<Mail::Message|Mail::Message>, and then add it to the folder.  During this
-L<Mail::Box::addMessage()|Mail::Box/"The folder"> process, the message will get L<coerce()|Mail::Message::Replace::MailInternet/"Constructors">-d
+L<Mail::Box::addMessage()|Mail::Box/"The folder"> process, the message will get L<coerce()|Mail::Message::Replace::MailInternet/"Internals">-d
 into the right message type, adding storage information and the like.
 
 I<Error:> Package $package does not implement $method.
@@ -1351,7 +1351,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.058.
+Distribution version 2.059.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

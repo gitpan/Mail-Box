@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Server::IMAP4::Search;
 use vars '$VERSION';
-$VERSION = '2.058';
+$VERSION = '2.059';
 use base 'Mail::Box::Search';
 
 

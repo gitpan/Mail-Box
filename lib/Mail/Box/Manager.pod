@@ -219,29 +219,6 @@ cleanup).
 
 =back
 
-$obj-E<gt>B<delete>(FOLDERNAME, OPTIONS)
-
-=over 4
-
-Remove the named folder.  The OPTIONS are the same as those for L<open()|Mail::Box::Manager/"Manage open folders">.
-
-The deletion of a folder can take some time.  Dependent on the type of
-folder, the folder must be read first.  For some folder-types this will
-be fast.
-
- Option     Defined in  Default           
- recursive              <folder's default>
-
-. recursive BOOLEAN
-
-=over 4
-
-Some folder can only be recursively deleted, other have more flexibility.
-
-=back
-
-=back
-
 $obj-E<gt>B<isOpenFolder>(FOLDER)
 
 =over 4
@@ -349,6 +326,32 @@ $obj-E<gt>B<openFolders>
 =over 4
 
 Returns a list of all open folders.
+
+=back
+
+=head2 Manage existing folders
+
+
+$obj-E<gt>B<delete>(FOLDERNAME, OPTIONS)
+
+=over 4
+
+Remove the named folder.  The OPTIONS are the same as those for L<open()|Mail::Box::Manager/"Manage open folders">.
+
+The deletion of a folder can take some time.  Dependent on the type of
+folder, the folder must be read first.  For some folder-types this will
+be fast.
+
+ Option     Defined in  Default           
+ recursive              <folder's default>
+
+. recursive BOOLEAN
+
+=over 4
+
+Some folder can only be recursively deleted, other have more flexibility.
+
+=back
 
 =back
 
@@ -781,7 +784,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.058.
+Distribution version 2.059.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.058';
+$VERSION = '2.059';
 use base 'Mail::Transport::Receive';
 
 use Digest::HMAC_MD5;   # only availability check for CRAM_MD5
@@ -261,7 +261,7 @@ while(my ($k, $v) = each %flags2labels)
 sub getFlags($$)
 {   my ($self, $id) = @_;
     my $imap   = $self->imapClient or return ();
-    my $labels = $self->flagsToLabels($imap->flags($id));
+    my $labels = $self->flagsToLabels(SET => $imap->flags($id));
 
     # Add default values for missing flags
     foreach  my $s (values %flags2labels)
@@ -270,6 +270,11 @@ sub getFlags($$)
 
     $labels;
 }
+
+#------------------------------------------
+
+
+sub listFlags() { keys %flags2labels }
 
 #------------------------------------------
 
@@ -323,24 +328,34 @@ sub labelsToFlags(@)
         }
     }
 
-    join " ", @set;
+    join " ", sort @set;
 }
 
 #------------------------------------------
 
 
-sub flagsToLabels(@)
-{   my $thing   = shift;
-
-    # Process the list
+sub flagsToLabels($@)
+{   my ($thing, $what) = (shift, shift);
     my %labels;
+
+    my $clear = $what eq 'CLEAR';
+
     foreach my $f (@_)
     {   if(my $lab = $flags2labels{$f})
-        {   $labels{$lab->[0]} = $lab->[1];
+        {   $labels{$lab->[0]} = $clear ? not($lab->[1]) : $lab->[1];
         }
         else
         {   (my $lab = $f) =~ s,^\\,,;
             $labels{$lab}++;
+        }
+    }
+
+    if($what eq 'REPLACE')
+    {   my %found = map { ($_ => 1) } @_;
+        foreach my $f (keys %flags2labels)
+        {   next if $found{$f};
+            my $lab = $flags2labels{$f};
+            $labels{$lab->[0]} = not $lab->[1];
         }
     }
 

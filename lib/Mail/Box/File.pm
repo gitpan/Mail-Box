@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::File;
 use vars '$VERSION';
-$VERSION = '2.058';
+$VERSION = '2.059';
 use base 'Mail::Box';
 
 use Mail::Box::File::Message;
@@ -310,7 +310,7 @@ sub messageCreateOptions(@)
 
 sub moveAwaySubFolder($$)
 {   my ($self, $dir, $extension) = @_;
-    $self->log("ERROR: Cannot move away sub-folder $dir")
+    $self->log(ERROR => "Cannot move away sub-folder $dir")
        unless move $dir, $dir.$extension;
     $self;
 }

@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::Manage::User;
 use vars '$VERSION';
-$VERSION = '2.058';
+$VERSION = '2.059';
 use base 'Mail::Box::Manager';
 
 use Mail::Box::Collection     ();
@@ -70,7 +70,7 @@ sub topfolder() { shift->{MBMU_topfolder} }
 #-------------------------------------------
 
 
-sub folder($$)
+sub folder($)
 {   my ($self, $name) = @_;
     my $top  = $self->topfolder or return ();
     my @path = split $self->{MBMU_delim}, $name;
@@ -88,7 +88,7 @@ sub folderCollection($)
 
     my @path = split $self->{MBMU_delim}, $name;
     unless(shift @path eq $top->name)
-    {   $self->log("ERROR: folder name $name not under top.");
+    {   $self->log(ERROR => "Folder name $name not under top.");
         return ();
     }
 

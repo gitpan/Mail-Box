@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.058';
+$VERSION = '2.059';
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -215,7 +215,8 @@ sub head(;$)
 
 
 sub get($)
-{   my $field = shift->head->get(shift) || return undef;
+{   my $self  = shift;
+    my $field = $self->head->get(shift) || return undef;
     $field->body;
 }
 

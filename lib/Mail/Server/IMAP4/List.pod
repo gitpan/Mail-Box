@@ -107,10 +107,10 @@ I<Example:> setting-up an IMAP4 delimeter
      wantarray ? ($delim, $root) : $delim;
  }
 
- my $imap = Mail::Server::IMAP4::List->new(delimiter => \&delim, ...);
- print $imap->delimiter('abc/xyz');      # returns a / (slash) and ''
- print $imap->delimiter('#news.feed');   # returns a . (dot)   and $news.
- print $imap->delimiter('');             # returns default delimiter
+ my $list = Mail::Server::IMAP4::List->new(delimiter => \&delim, ...);
+ print $list->delimiter('abc/xyz');      # returns a / (slash) and ''
+ print $list->delimiter('#news.feed');   # returns a . (dot)   and $news.
+ print $list->delimiter('');             # returns default delimiter
 
 =back
 
@@ -188,7 +188,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.058.
+Distribution version 2.059.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

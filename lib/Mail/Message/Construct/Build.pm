@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.058';
+$VERSION = '2.059';
 
 use Mail::Message::Head::Complete  ();
 use Mail::Message::Body::Lines     ();
@@ -72,7 +72,8 @@ sub build(@)
         elsif($key =~ m/^[A-Z]/)
         {   push @headerlines, $key, $value }
         else
-        {   croak "Skipped unknown key $key in build." } 
+        {   $class->log(WARNING => "Skipped unknown key $key in build");
+        }
 
         push @parts, grep {defined $_} @data if @data;
     }

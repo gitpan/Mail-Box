@@ -72,6 +72,7 @@ Mail::Box::Maildir-E<gt>B<new>(OPTIONS)
  body_type          L<Mail::Box>     L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>        
  coerce_options     L<Mail::Box>     C<[]>                                                           
  create             L<Mail::Box>     <false>                                                         
+ directory          L<Mail::Box::Dir>  <derived from folder name>                                      
  extract            L<Mail::Box>     C<10240>                                                        
  field_type         L<Mail::Box>     undef                                                           
  fix_headers        L<Mail::Box>     <false>                                                         
@@ -114,6 +115,8 @@ to call L<acceptMessages()|Mail::Box::Maildir/"Internals"> or L<Mail::Box::Maild
 . coerce_options ARRAY
 
 . create BOOLEAN
+
+. directory DIRECTORY
 
 . extract INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
 
@@ -880,7 +883,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.058.
+Distribution version 2.059.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

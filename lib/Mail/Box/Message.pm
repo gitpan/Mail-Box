@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::Message;
 use vars '$VERSION';
-$VERSION = '2.058';
+$VERSION = '2.059';
 use base 'Mail::Message';
 
 use Date::Parse;
@@ -106,7 +106,7 @@ sub readBody($$;$)
 
     unless($getbodytype)
     {   my $folder   = $self->{MBM_folder};
-        $getbodytype = sub {$folder->determineBodyType(@_)};
+        $getbodytype = sub {$folder->determineBodyType(@_)} if defined $folder;
     }
 
     $self->SUPER::readBody($parser, $head, $getbodytype);

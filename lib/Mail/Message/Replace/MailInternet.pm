@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Message::Replace::MailInternet;
 use vars '$VERSION';
-$VERSION = '2.058';
+$VERSION = '2.059';
 use base 'Mail::Message';
 
 use Mail::Box::FastScalar;
@@ -94,9 +94,6 @@ sub processRawData($$$)
     $parser->stop;
     $self;
 }
-
-
-sub coerce() { confess }
 
 
 sub dup()
@@ -357,6 +354,9 @@ sub isa($)
     return 1 if $class eq 'Mail::Internet';
     $thing->SUPER::isa($class);
 }
+
+
+sub coerce() { confess }
 
 
 1;

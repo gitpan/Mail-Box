@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.058';
+$VERSION = '2.059';
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -494,6 +494,8 @@ sub messageId($;$)
     }
 
     $self->{MB_msgid}{$msgid} = $message;
+    weaken($self->{MB_msgid}{$msgid});
+    $message;
 }
 
 sub messageID(@) {shift->messageId(@_)} # compatibility
