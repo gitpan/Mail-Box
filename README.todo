@@ -1,14 +1,9 @@
 
 TODO:
 
-This program was originally written in December 2000.  Then a total
-redesign was made, which was released in December 2001.  Hence this module
-is quite recent, so please check for a new version: new programs often
-get many changes in their first months.
-
-The file TODO.v2 lists lacks of the current implementation, which must
-be resolved to declare the implementation as beta.  In this file, more
-long-term plans are listed.
+This program was written in December 2000.  This is quite recent, so
+please check for a new version: new programs often get many changes
+in their first months.
 
 Plans for the (near?) future:
 * Thread lint
@@ -50,4 +45,7 @@ Plans for the (near?) future:
 
   For the message-folders, only foundIn() should be kept outside the
   loading mechanism.
+
+* Basic message reading and writing in C
+  This will boost performance.  Actually, I'm working on it: read PLANS.
 

@@ -51,6 +51,7 @@ On Wed, Feb 09, 2000 at 07:53:50AM +0000, Mark Sappol wrote:
 > Mark
 
 You can convert .html to .ps using Netscape.  You can do this manually
+B
 by clicking mouse, or through '-remote' command line option.  For
 example,
     netscape -remote "openURL(http://sexybabes.for.you/)" \
@@ -1298,8 +1299,9 @@ Received: from unca-don.wizards.dupont.com ([204.183.81.133])
 Received: (from majordomo@localhost)
 	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id TAA05326
 	for magick-outgoing; Thu, 30 Mar 2000 19:16:20 -0500 (EST)
-	<10F4E7B8292FD311B34400A0C978B70532A61B@a254.117.208.207.ded23.
-	interaccess.com>
+ <10F4E7B8292FD311B34400A0C978B70532A61B@a254.117.208.207.ded23.interaccess .com>
+ <10F4E7B8292FD311B34400A0C978B70532A61B@a254.117.208.207.ded23.interaccess
+ .com>
 X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
 Mime-Version: 1.0
 X-Sender: leonardr@mail1.netreach.net
@@ -1979,8 +1981,9 @@ Content-Type: multipart/mixed; boundary="5vNYLRcllDrimb99"
 X-Mailer: Mutt 1.0pre4i
 In-Reply-To: <200006141634.e5EGYfI19547@mystic.es.dupont.com>; from cristy@mystic.es.dupont.com on Wed, Jun 14, 2000 at 12:34:41PM -0400
 Status: RO
-Content-Length: 4505
-Lines: 82
+Content-Length: 4506
+Lines: 83
+
 
 --5vNYLRcllDrimb99
 Content-Type: text/plain; charset=us-ascii
