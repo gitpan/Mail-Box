@@ -3,7 +3,8 @@ use strict;
 
 package Mail::Box::Locker::DotLock;
 use Mail::Box::Locker;
-our @ISA = 'Mail::Box::Locker';
+use vars '@ISA';
+@ISA = 'Mail::Box::Locker';
 
 use IO::File;
 use Carp;

@@ -3,7 +3,24 @@ CHANGELOG of Mail::Box
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
-version 1.313:
+version 1.314: Thu Jul 12 22:41:56 CEST 2001
+
+	* Added initial Mail::Message::Body to the distribution.
+
+	* Removed `our' from Box/Locker/*.pm, so perl 5.005 should
+	  be supported again.  Thanks to [Alex <Bunya@iile.ru>]
+
+	* eval catches problems with message-parts. [Tassilo von Parseval]
+
+	* Documentation on code arg of threadToString, on request by
+	  [Tassilo von Parseval]
+
+	* Include File::Spec in t/17threads.t [Jost Krieger]
+
+	* Return of flock in Mail::Box::Locker::File.pm check whether it
+	  ever will return a result. Found by [Jost Krieger]
+
+version 1.313: Sun Jul  8 19:29:34 CEST 2001
 
 	* Started a FAQ
 

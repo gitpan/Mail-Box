@@ -960,7 +960,7 @@ sub folded(;$)
 
 #-------------------------------------------
 
-=item threadToString
+=item threadToString [CODE]
 
 Translate a thread into a string.  The string will contain at least one
 line for each message which was found, but tries to fold dummies.
@@ -984,9 +984,14 @@ may result in
 The `*' represents a lacking message.  The `[3]' presents a folded thread with
 three messages.
 
+The optional CODE argument is a reference to a routine which will be called
+for each message in the thread.  The routine will be called with the
+message as first argument.  The default shows the subject of the message.
+In the example above, this routine is called seven times.
+
 =cut
 
-sub threadToString(;$$$)
+sub threadToString(;$$$)   # two undocumented parameters for layout args
 {   my $self    = shift;
     my $code    = shift || sub {shift->head->get('subject')};
     my ($first, $other) = (shift || '', shift || '');
@@ -1150,7 +1155,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 1.313
+This code is beta, version 1.314
 
 =cut
 

@@ -3,7 +3,7 @@ package Mail::Message;
 use strict;
 use warnings;
 
-our $VERSION = '1.313';
+our $VERSION = '1.314';
 
 use Mail::Box;
 

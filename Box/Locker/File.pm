@@ -3,10 +3,12 @@ use strict;
 
 package Mail::Box::Locker::File;
 use Mail::Box::Locker;
-our @ISA = 'Mail::Box::Locker';
+use vars '@ISA';
+@ISA = 'Mail::Box::Locker';
 
 use Fcntl         qw/:DEFAULT :flock/;
 use IO::File;
+use Errno         qw/EAGAIN/;
 
 # For documentation, see Mail::Box::Locker
 
@@ -34,6 +36,11 @@ sub lock()
     {   if($self->_try_lock($file))
         {   $self->{MBL_has_lock} = 1;
             return 1;
+        }
+
+        if($! != EAGAIN)
+        {   warn "Will never get a lock at ".$self->{MBL_folder}->name.": $!\n";
+            return 0;
         }
 
         sleep 1;

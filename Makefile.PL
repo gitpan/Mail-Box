@@ -10,5 +10,6 @@ WriteMakefile(
                     , Date::Parse    => 0.0
 		    , File::Spec     => 0.0
                     , IO::Scalar     => 0.0
+		    , Errno          => 0.0
                     }
 );

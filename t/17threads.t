@@ -6,6 +6,7 @@
 use Test;
 use strict;
 use lib '..';
+use File::Spec;
 
 BEGIN {plan tests => 1}
 
