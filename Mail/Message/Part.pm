@@ -4,7 +4,7 @@ use warnings;
 package Mail::Message::Part;
 use base 'Mail::Message';
 
-our $VERSION = 2.003;
+our $VERSION = 2.004;
 
 use Carp;
 
@@ -44,23 +44,27 @@ into mail-folder-specific variants.
 
 The general methods for C<Mail::Message::Part> objects:
 
-  MMC bounce OPTIONS                       new OPTIONS
-  MMC build [MESSAGE|BODY], CONTENT     MM nrLines
-      buildFromBody BODY, MULTIPA...    MM parent
+   MM bcc                               MR log [LEVEL [,STRINGS]]
+  MMC bounce OPTIONS                    MM messageId
+  MMC build [MESSAGE|BODY], CONTENT     MM modified [BOOL]
+      buildFromBody BODY, MULTIPA...       new OPTIONS
+   MM cc                                MM nrLines
+   MM date                              MM parent
    MM decoded OPTIONS                   MM parts
    MM destinations                      MM print [FILEHANDLE]
    MM encode OPTIONS                    MM printUndisclosed [FILEHANDLE]
-   MR errors                           MMC quotePrelude [STRING|FIELD]
-   MM from|to|cc|bcc|date              MMC reply OPTIONS
-   MM get FIELD                        MMC replySubject STRING
-   MM guessTimestamp                    MR report [LEVEL]
-   MM isDummy                           MR reportAll [LEVEL]
-   MM isMultipart                       MM send [MAILER], OPTIONS
-   MM isPart                            MM size
-   MM label LABEL [,VALUE]              MM subject
-   MR log [LEVEL [,STRINGS]]            MM timestamp
-   MM messageId                         MM toplevel
-   MM modified [BOOL]                   MR trace [LEVEL]
+   MR errors                           MMC reply OPTIONS
+  MMC forward OPTIONS                  MMC replyPrelude [STRING|FIELD|...
+  MMC forwardPostlude                  MMC replySubject STRING
+  MMC forwardPrelude                    MR report [LEVEL]
+  MMC forwardSubject STRING             MR reportAll [LEVEL]
+   MM from                              MM send [MAILER], OPTIONS
+   MM get FIELD                         MM size
+   MM guessTimestamp                    MM subject
+   MM isDummy                           MM timestamp
+   MM isMultipart                       MM to
+   MM isPart                            MM toplevel
+   MM label LABEL [,VALUE]              MR trace [LEVEL]
 
 The extra methods for extension writers:
 
@@ -230,7 +234,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.003.
+This code is beta, version 2.004.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -9,7 +9,7 @@ use Mail::Message::Head::Complete;
 
 use Carp;
 
-our $VERSION = 2.003;
+our $VERSION = 2.004;
 
 =head1 NAME
 
@@ -51,23 +51,27 @@ header- and C<decoded()> to get the intented content of a message.
 
 The general methods for C<Mail::Message> objects:
 
-  MMC bounce OPTIONS                       new OPTIONS
-  MMC build [MESSAGE|BODY], CONTENT        nrLines
-  MMC buildFromBody BODY, HEADERS          parent
+      bcc                               MR log [LEVEL [,STRINGS]]
+  MMC bounce OPTIONS                       messageId
+  MMC build [MESSAGE|BODY], CONTENT        modified [BOOL]
+  MMC buildFromBody BODY, HEADERS          new OPTIONS
+      cc                                   nrLines
+      date                                 parent
       decoded OPTIONS                      parts
       destinations                         print [FILEHANDLE]
       encode OPTIONS                       printUndisclosed [FILEHANDLE]
-   MR errors                           MMC quotePrelude [STRING|FIELD]
-      from|to|cc|bcc|date              MMC reply OPTIONS
-      get FIELD                        MMC replySubject STRING
-      guessTimestamp                    MR report [LEVEL]
-      isDummy                           MR reportAll [LEVEL]
-      isMultipart                          send [MAILER], OPTIONS
-      isPart                               size
-      label LABEL [,VALUE]                 subject
-   MR log [LEVEL [,STRINGS]]               timestamp
-      messageId                            toplevel
-      modified [BOOL]                   MR trace [LEVEL]
+   MR errors                           MMC reply OPTIONS
+  MMC forward OPTIONS                  MMC replyPrelude [STRING|FIELD|...
+  MMC forwardPostlude                  MMC replySubject STRING
+  MMC forwardPrelude                    MR report [LEVEL]
+  MMC forwardSubject STRING             MR reportAll [LEVEL]
+      from                                 send [MAILER], OPTIONS
+      get FIELD                            size
+      guessTimestamp                       subject
+      isDummy                              timestamp
+      isMultipart                          to
+      isPart                               toplevel
+      label LABEL [,VALUE]              MR trace [LEVEL]
 
 The extra methods for extension writers:
 
@@ -244,7 +248,38 @@ sub get($)
 
 #-------------------------------------------
 
-=item from|to|cc|bcc|date
+=item from
+
+Returns the address of the sender.  This can only be one address.  Of this
+is a bounced message, the C<Mail::Address> representation of the C<Resent-From>
+line is returned.  Otherwise, the C<From> line is scanned.  If that line is
+not present, the C<Sender> line is probed.  Otherwise, C<undef> is returned.
+
+Example:
+
+ my $from = $message->from;
+
+=cut
+
+sub from()
+{   my $head = shift->head;
+    my $from
+      = $head->isResent
+      ? $head->get('Resent-From')
+      : ($head->get('From') || $head->get('Sender'));
+
+    defined $from ? ($from->addresses)[0] : undef;
+}
+
+#-------------------------------------------
+
+=item to
+
+=item cc
+
+=item bcc
+
+=item date
 
 Returns the addresses which are defined for the indicated header-lines.
 Most methods return a list of C<Mail::Message> objects, except
@@ -258,16 +293,10 @@ counterparts.  Only the last C<Resent-> line can be used.
 
 Examples:
 
- my $from = $message->from;
  my @to   = $message->to;
+ my $date = $message->date;
 
 =cut
-
-sub from()
-{   my $head = shift->head;
-    my $from = $head->isResent ? $head->get('Resent-From') : $head->get('From');
-    defined $from ? ($from->addresses)[0] : undef;
-}
 
 sub to()
 {   my $head = shift->head;
@@ -322,11 +351,11 @@ sub destinations()
 
 Returns the message's subject, just as short-cut for writing
 
- $message->get('subject') || 'no subject'
+ $message->get('subject')
 
 =cut
 
-sub subject() {shift->get('subject') || 'no subject'}
+sub subject() {shift->get('subject') || ''}
 
 #-------------------------------------------
 
@@ -1194,7 +1223,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.003.
+This code is beta, version 2.004.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

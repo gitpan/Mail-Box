@@ -12,7 +12,7 @@ use Carp;
 use Scalar::Util 'weaken';
 use FileHandle;
 
-our $VERSION = 2.003;
+our $VERSION = 2.004;
 
 use overload bool => sub { keys %{shift->{MMH_fields}} };
 
@@ -700,7 +700,7 @@ message-threads.
 
 my $unique_id = time;
 
-sub createMessageId() { '<mailbox-'.$unique_id++.'>' }
+sub createMessageId() { 'mailbox-'.$unique_id++ }
 
 #------------------------------------------
 
@@ -847,7 +847,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.003.
+This code is beta, version 2.004.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -5,7 +5,7 @@ use strict;
 
 package Mail::Message;
 
-our $VERSION = 2.003;
+our $VERSION = 2.004;
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -27,7 +27,7 @@ Mail::Message::Construct - extends the functionality of a Mail::Message
  my $message = Mail::Message->buildFromBody($body);
 
  my Mail::Message $reply = $message->reply;
- my $quoted  = $message->quotePrelude($head->get('From'));
+ my $quoted  = $message->replyPrelude($head->get('From'));
 
 =head1 DESCRIPTION
 
@@ -40,9 +40,11 @@ package is autoloaded to supply that functionality.
 
 The general methods for C<Mail::Message::Construct> objects:
 
-      bounce OPTIONS                       quotePrelude [STRING|FIELD]
-      build [MESSAGE|BODY], CONTENT        reply OPTIONS
-      buildFromBody BODY, HEADERS          replySubject STRING
+      bounce OPTIONS                       forwardPrelude
+      build [MESSAGE|BODY], CONTENT        forwardSubject STRING
+      buildFromBody BODY, HEADERS          reply OPTIONS
+      forward OPTIONS                      replyPrelude [STRING|FIELD|...
+      forwardPostlude                      replySubject STRING
 
 =head1 METHODS
 
@@ -59,8 +61,7 @@ message will be taken.  A message-id will be assigned.  Some header lines
 will be updated to facilitate message-thread detection
 (see C<Mail::Box::Thread::Manager>).
 
-In case you C<reply> on a multipart message, it will answer on the first
-message-part.  You may also reply explicitly on a single message-part.
+You may reply to a whole message or a message part.
 
  OPTIONS         DESCRIBED IN              DEFAULT
  Bcc             Mail::Message::Construct  undef
@@ -72,7 +73,6 @@ message-part.  You may also reply explicitly on a single message-part.
 
  body            Mail::Message::Construct  undef
  group_reply     Mail::Message::Construct  1
- head            Mail::Message::Construct  <new Mail::Message::Head>
  include         Mail::Message::Construct  'INLINE'
  message_type    Mail::Message::Construct  'Mail::Message'
  postlude        Mail::Message::Construct  undef
@@ -86,10 +86,9 @@ The OPTIONS are:
 
 =item * body =E<gt> BODY
 
-Specifies the body of the message which is the reply.  Not used when
-C<include> is C<'INLINE'>.  Adviced in other cases: prepare the body
-of the reply before the reply is called.  It will avoid needless
-copying within C<Mail::Message>.
+Specifies the body of the message which is the reply.  Adviced in other
+cases: prepare the body of the reply before the reply is called.  It will
+avoid needless copying within C<Mail::Message>.
 
 =item * group_reply =E<gt> BOOLEAN
 
@@ -117,14 +116,13 @@ the correct folder message type when it is added to that folder.
 Passed to C<stripSignature> on the body as parameter C<max_lines>.  Only
 effective for single-part messages.
 
-=item * prelude =E<gt> BODY
+=item * prelude =E<gt> BODY|LINES
 
 The line(s) which will be added before the quoted reply lines.  If nothing
-is specified, the result of the C<quotePrelude()> method (as described below)
-is taken.  When C<undef> is specified, no prelude will be added.  Create
-a BODY for the lines first.
+is specified, the result of the C<replyPrelude()> method (as described below)
+is taken.  When C<undef> is specified, no prelude will be added.
 
-=item * postlude =E<gt> BODY
+=item * postlude =E<gt> BODY|LINES
 
 The line(s) which to be added after the quoted reply lines.  Create a
 body for it first.  This should not include the signature, which has its
@@ -213,11 +211,13 @@ sub reply(@)
 
     my $include  = $args{include}   || 'INLINE';
     my $strip    = !exists $args{strip_signature} || $args{strip_signature};
-    my $body     = $self->body;
+    my $body     = defined $args{body} ? $args{body} : $self->body;
 
     if($include eq 'NO')
-    {   $body = defined $args{body} ? $args{body} : (ref $self)->new(data =>
-              ["\n[The original message is not included]\n\n"]);
+    {   # Throw away real body.
+        $body    = (ref $self)->new
+           (data => ["\n[The original message is not included]\n\n"])
+               unless defined $args{body};
     }
     elsif($include eq 'INLINE' || $include eq 'ATTACH')
     {   my @stripopts =
@@ -263,40 +263,34 @@ sub reply(@)
     my $mainhead = $self->toplevel->head;
 
     # Where it comes from
-    my $from;
-    unless($from = $args{From})
-    {   $from = $mainhead->get('To');  # Me, with the alias known by the user.
-        $from = $from->body if $from;
+    my $from = $args{From};
+    unless(defined $from)
+    {   my @from = $self->to;
+        $from    = \@from if @from;
     }
 
     # To whom to send
-    my $to;
-    unless($to = $args{To})
-    {   $to = $mainhead->get('reply-to') || $mainhead->get('from')
-              || $mainhead->get('sender');
-        $to = $to->body if $to;
+    my $to = $args{To};
+    unless(defined $to)
+    {   my $reply = $mainhead->get('reply-to');
+        $to       = [ $reply->addresses ] if defined $reply;
     }
-    return undef unless $to;
+    $to  ||= $self->from || return;
 
     # Add Cc
-    my $cc;
-    if(!($cc = $args{Cc}) && $args{group_reply})
-    {   $cc = $mainhead->get('cc');
-        $cc = $cc->body if $cc;
+    my $cc = $args{Cc};
+    if(!defined $cc && $args{group_reply})
+    {   my @cc = $self->cc;
+        $cc    = [ $self->cc ] if @cc;
     }
 
     # Add Bcc
     my $bcc = $args{Bcc};
 
     # Create a subject
-    my $subject;
-    if(exists $args{Subject} && ! ref $args{Subject})
-    {   $subject       = $args{Subject}; }
-    else
-    {   my $rawsubject = $mainhead->get('subject') || 'your mail';
-        my $make       = $args{Subject} || \&replySubject;
-        $subject       = $make->($rawsubject);
-    }
+    my $subject = $args{Subject};
+    if(!defined $subject) { $subject = $self->replySubject($subject) }
+    elsif(ref $subject)   { $subject = $subject->($subject) }
 
     # Create a nice message-id
     my $msgid   = $args{'Message-ID'};
@@ -310,7 +304,7 @@ sub reply(@)
     my $prelude
       = defined $args{prelude} ? $args{prelude}
       : exists $args{prelude}  ? undef
-      :                          [ $self->quotePrelude($to) ];
+      :                          [ $self->replyPrelude($to) ];
 
     $prelude     = Mail::Message::Body->new(data => $prelude)
         if defined $prelude && ! blessed $prelude;
@@ -362,7 +356,7 @@ sub reply(@)
     my $newhead = $reply->head;
     $newhead->set(Cc  => $cc)  if $cc;
     $newhead->set(Bcc => $args{Bcc}) if $args{Bcc};
-    $newhead->set('Message-Id'  => $msgid || $newhead->createMessageId);
+    $newhead->set('Message-ID'  => $msgid || $newhead->createMessageId);
 
     # Ready
 
@@ -375,6 +369,7 @@ sub reply(@)
 
 =item replySubject STRING
 
+(Class or Instance method)
 Create a subject for a message which is a reply for this one.  This routine
 tries to count the level of reply in subject field, and transform it into
 a standard form.  Please contribute improvements.
@@ -391,7 +386,8 @@ a standard form.  Please contribute improvements.
 # tests in t/35reply1rs.t
 
 sub replySubject($)
-{   my $subject  = shift;
+{   my ($thing, $subject) = @_;
+    $subject     = 'your mail' unless defined $subject && length $subject;
     my @subject  = split /\:/, $subject;
     my $re_count = 1;
 
@@ -407,7 +403,7 @@ sub replySubject($)
         }
     }
 
-    # String multiple Re's from the end.
+    # Strip multiple Re's from the end.
 
     if(@subject)
     {   for($subject[-1])
@@ -428,7 +424,7 @@ sub replySubject($)
 
 #------------------------------------------
 
-=item quotePrelude [STRING|FIELD]
+=item replyPrelude [STRING|FIELD|ADDRESS]
 
 Produces a list of lines (usually only one), which will preceed the
 quoted body of the message.  STRING must comply to the RFC822 email
@@ -443,18 +439,368 @@ An characteristic example of the output is
 
 =cut
 
-sub quotePrelude($)
-{   my ($self, $user) = @_;
+sub replyPrelude($)
+{   my ($self, $who) = @_;
  
-    $user = $user->body
-       if ref $user && $user->isa('Mail::Message::Field');
+    my $user
+     = !ref $who                         ? (Mail::Address->parse($who))[0]
+     : $who->isa('Mail::Message::Field') ? ($who->addresses)[0]
+     :                                     $who;
 
-    my @addresses = $user ? Mail::Address->parse($user) : ();
-    my $address   = $addresses[0];
-    my $from      = $address ? $address->name : 'an unknown person';
+    my $from      = ref $user && $user->isa('Mail::Address')
+     ? $user->name : 'someone';
 
     my $time      = gmtime $self->timestamp;
     "On $time, $from wrote:\n";
+}
+
+#------------------------------------------
+
+=item forward OPTIONS
+
+Forward the content of this message.  The body of the message to be forwarded
+is encapsulated in some accompanying text (if you have no wish for that, than
+C<bounce> is your choice).
+
+You may forward a whole message, but also message parts.
+
+ OPTIONS         DESCRIBED IN              DEFAULT
+ Bcc             Mail::Message::Construct  undef
+ Cc              Mail::Message::Construct  undef
+ From            Mail::Message::Construct  <'to' in current>
+ Message-ID      Mail::Message::Construct  <uniquely generated>
+ Subject         Mail::Message::Construct  <see forwardSubject>
+ To              Mail::Message::Construct  <obligatory>
+
+ body            Mail::Message::Construct  undef
+ include         Mail::Message::Construct  'INLINE'
+ message_type    Mail::Message::Construct  'Mail::Message'
+ postlude        Mail::Message::Construct  undef
+ prelude         Mail::Message::Construct  undef
+ quote           Mail::Message::Construct  undef
+ strip_signature Mail::Message::Construct  qr/^--\s/
+
+The OPTIONS are:
+
+=over 4
+
+=item * include =E<gt> 'INLINE'|'ATTACH'
+
+Must the message where this is a reply to be included in the message?
+With 'INLINE' a forward body is composed. 'ATTACH' will create a multi-part
+body, where the original message is added after the specified body.  It is
+only possible to inline textual messages, therefore binary or multi-part
+messages will always be inclosed as attachment.
+
+=item * message_type =E<gt> CLASS
+
+Create a message with the requested type.  By default, it will be a
+C<Mail::Message>.  This is correct, because it will be coerced into
+the correct folder message type when it is added to that folder.
+
+=item * max_signature =E<gt> INTEGER
+
+Passed to C<stripSignature> on the body as parameter C<max_lines>.  Only
+effective for single-part messages.
+
+=item * prelude =E<gt> BODY
+
+The line(s) which will be added before the quoted forwarded lines.  If nothing
+is specified, the result of the C<forwardPrelude()> method (as described
+below) is used.  When C<undef> is specified, no prelude
+will be added.
+
+=item * postlude =E<gt> BODY
+
+The line(s) which to be added after the quoted reply lines.  Create a
+body for it first.  This should not include the signature, which has its
+own option.  The signature will be added after the postlude when the
+forwarded message is INLINEd.
+
+=item * quote =E<gt> CODE|STRING
+
+Mangle the lines of an C<INLINE>d reply with CODE, or by prepending a
+STRING to each line.  The routine specified by CODE is called when the
+line is in C<$_>.
+
+By default, nothing is added before each line.  This option is processed
+after the body has been decoded.
+
+=item * signature =E<gt> BODY|MESSAGE
+
+The signature to be added in case of a multi-part forward.  The mime-type
+of the signature body should indicate this is a used as such.  However,
+in INLINE mode, the body will be taken, a line containing C<'--'> added
+before it, and added behind the epilogue.
+
+=item * strip_signature =E<gt> REGEXP|STRING|CODE
+
+Remove the signature of the sender.  The value of this paramter is passed
+to the body's C<stripSignature> method (see C<Mail::Message::Body>)
+as C<pattern> unless the source text is not included.  The signature is
+stripped from the message before quoting.
+
+When a multi-part body is encountered, and the message is included to
+ATTACH, the parts which look like signatures will be removed.  If only
+one message remains, it will be the added as single attachment, otherwise
+a nested multipart will be the result.  The value of this option does not
+matter, as long as it is present.  See C<Mail::Message::Body::Multipart>.
+
+=back
+
+You may wish to overrule some of the default settings for the
+reply immediately (or you may do later with C<set()> on the header).
+To overrule use
+
+=over 4
+
+=item * To =E<gt> ADDRESSES
+
+The destination of your message. Obligatory.  The ADDRESSES may be
+specified as string, a C<Mail::Address> object, or as array of
+C<Mail::Address> objects.
+
+=item * From =E<gt> ADDRESSES
+
+Your identification, by default taken from the C<To> field of the
+source message.
+
+=item * Bcc =E<gt> ADDRESSES
+
+Receivers of blind carbon copies: their names will not be published to
+other message receivers.
+
+=item * Cc =E<gt> ADDRESSES
+
+The carbon-copy receivers, by default noone.
+
+=item * Date =E<gt> DATE
+
+The date to be used in the message sent.
+
+=item * Message-ID =E<gt> STRING
+
+Supply a STRING as specific message-id for the reply.  By default, one is
+generated for you.  If there are no angles around your id, they will be
+added.
+
+=item * Subject =E<gt> STRING|CODE
+
+Force the subject line to the specific STRING, or the result of the
+subroutine specified by CODE.  The subroutine will be called passing
+the subject of the original message as only argument.  By default,
+the C<forwardSubject> method (described below) is used.
+
+=back
+
+=cut
+
+# tests in t/57forw1f.t
+
+sub forward(@)
+{   my ($self, %args) = @_;
+
+    my $include  = $args{include} || 'INLINE';
+    my $strip    = !exists $args{strip_signature} || $args{strip_signature};
+    my $body     = defined $args{body} ? $args{body} : $self->body;
+
+    unless($include eq 'INLINE' || $include eq 'ATTACH')
+    {   $self->log(ERROR => "Cannot include source as $include.");
+        return;
+    }
+
+    my @stripopts =
+     ( pattern     => $args{strip_signature}
+     , max_lines   => $args{max_signature}
+     );
+
+    my $decoded  = $body->decoded;
+    $body        = $strip ? $decoded->stripSignature(@stripopts) : $decoded;
+
+    if($body->isMultipart && $body->parts==1)
+    {   $decoded = $body->part(0)->decoded;
+        $body    = $strip ? $decoded->stripSignature(@stripopts) : $decoded;
+    }
+
+    if($include eq 'INLINE' && $body->isMultipart)
+    {    $include = 'ATTACH' }
+    elsif($include eq 'INLINE' && $body->isBinary)
+    {   $include = 'ATTACH';
+        $body    = Mail::Message::Body::Multipart->new(parts => [$body]);
+    }
+
+    if($include eq 'INLINE')
+    {   if(defined(my $quote = $args{quote}))
+        {   my $quoting = ref $quote ? $quote : sub {$quote . $_};
+            $body = $body->foreachLine($quoting);
+        }
+    }
+
+    #
+    # Collect header info
+    #
+
+    my $mainhead = $self->toplevel->head;
+
+    # Where it comes from
+    my $from = $args{From};
+    unless(defined $from)
+    {   my @from = $self->to;
+        $from    = \@from if @from;
+    }
+
+    # To whom to send
+    my $to = $args{To}
+      or croak "No address to forwarded to";
+
+    # Create a subject
+    my $subject = $args{Subject};
+    if(!defined $subject) { $subject = $self->forwardSubject($subject) }
+    elsif(ref $subject)   { $subject = $subject->($subject) }
+
+    # Create a nice message-id
+    my $msgid   = $args{'Message-ID'} || $mainhead->createMessageId;
+    $msgid      = "<$msgid>" if $msgid && $msgid !~ /^\s*\<.*\>\s*$/;
+
+    # Thread information
+    my $origid  = '<'.$self->messageId.'>';
+    my $refs    = $mainhead->get('references');
+
+    # Prelude
+    my $prelude = exists $args{prelude} ? $args{prelude}
+       : $self->forwardPrelude;
+
+    $prelude     = Mail::Message::Body->new(data => $prelude)
+        if defined $prelude && ! blessed $prelude;
+ 
+    # Postlude
+    my $postlude = exists $args{postlude} ? $args{postlude}
+       : $self->forwardPostlude;
+
+    $postlude    = Mail::Message::Body->new(data => $postlude)
+        if defined $postlude && ! blessed $postlude;
+
+    #
+    # Create the message.
+    #
+
+    my $total;
+    if($include eq 'INLINE')
+    {   my $signature = $args{signature};
+        $signature = $signature->body
+           if defined $signature && $signature->isa('Mail::Message');
+
+        $total = $body->concatenate
+          ( $prelude, $body, $postlude
+          , (defined $signature ? "--\n" : undef), $signature
+          );
+    }
+    if($include eq 'ATTACH')
+    {
+         my $intro = $prelude->concatenate
+           ( $prelude
+           , [ "\n", "[Your message is attached]\n" ]
+           , $postlude
+           );
+
+        $total = Mail::Message::Body::Multipart->new
+         ( parts => [ $intro, $body, $args{signature} ]
+        );
+    }
+
+    my $msgtype = $args{message_type} || 'Mail::Message';
+
+    my $reply   = $msgtype->buildFromBody
+      ( $total
+      , From        => $from || '(undisclosed)'
+      , To          => $to
+      , Subject     => $subject
+      , References  => ($refs ? "$origid $refs" : $origid)
+      );
+
+    my $newhead = $reply->head;
+    $newhead->set(Cc   => $args{Cc}  ) if $args{Cc};
+    $newhead->set(Bcc  => $args{Bcc} ) if $args{Bcc};
+    $newhead->set(Date => $args{Date}) if $args{Date};
+    $newhead->set('Message-ID' => $msgid || $newhead->createMessageId);
+
+    # Ready
+
+    $self->log(PROGRESS => 'Forward created from '.$origid);
+    $reply;
+}
+
+#------------------------------------------
+
+=item forwardSubject STRING
+
+Create a subject for a message which is a forward from this one.  This routine
+tries to count the level of reply in subject field, and transform it into
+a standard form.  Please contribute improvements.
+
+  subject                 --> Forw: subject
+  Re: subject             --> Forw: Re: subject
+  Re[X]: subject          --> Forw: Re[X]: subject
+                          --> Forwarded
+
+=cut
+
+# tests in t/57forw0s.t
+
+sub forwardSubject($)
+{   my ($self, $subject) = @_;
+    defined $subject && length $subject ? "Forw: $subject" : "Forwarded";
+}
+
+#------------------------------------------
+
+=item forwardPrelude
+
+Create a few lines to be included before the forwarded message
+content.  The return is an array of lines. Some example output is:
+
+ ---- BEGIN forwarded message
+ From: him@somewhere.else.nl (Original Sender)
+ To: me@example.com (Me the receiver)
+ Cc: the.rest@world.net
+ Date: Wed, 9 Feb 2000 15:44:05 -0500
+ <blank line>
+
+=cut
+
+sub forwardPrelude()
+{   my $head  = shift->head;
+
+    my @lines = "---- BEGIN forwarded message\n";
+    my $r     = $head->isResent ? 'resent-' : '';
+    my $from  = $head->get($r.'from');
+    my $to    = $head->get($r.'to');
+    my $cc    = $head->get($r.'cc');
+    my $date  = $head->get($r.'date');
+
+    push @lines, $from->toString if defined $from;
+    push @lines,   $to->toString if defined $to;
+    push @lines,   $cc->toString if defined $cc;
+    push @lines, $date->toString if defined $date;
+    push @lines, "\n";
+
+    \@lines;
+}
+
+#------------------------------------------
+
+=item forwardPostlude
+
+Added after the forwarded message.  The output is:
+
+ ---- END forwarded message
+
+=cut
+
+sub forwardPostlude()
+{   my $self = shift;
+    my @lines = ("---- END forwarded message\n");
+    \@lines;
 }
 
 #------------------------------------------
@@ -715,7 +1061,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.003.
+This code is beta, version 2.004.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

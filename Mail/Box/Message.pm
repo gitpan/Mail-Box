@@ -7,7 +7,7 @@ use base 'Mail::Message';
 use Date::Parse;
 use Scalar::Util 'weaken';
 
-our $VERSION = 2.003;
+our $VERSION = 2.004;
 
 =head1 NAME
 
@@ -45,26 +45,30 @@ L<details about the implementation|/"IMPLEMENTATION">, but first the use.
 
 The general methods for C<Mail::Box::Message> objects:
 
-  MMC bounce OPTIONS                    MM modified [BOOL]
-  MMC build [MESSAGE|BODY], CONTENT        new OPTIONS
-  MMC buildFromBody BODY, HEADERS       MM nrLines
-      copyTo FOLDER                     MM parent
+   MM bcc                               MM label LABEL [,VALUE]
+  MMC bounce OPTIONS                    MR log [LEVEL [,STRINGS]]
+  MMC build [MESSAGE|BODY], CONTENT     MM messageId
+  MMC buildFromBody BODY, HEADERS       MM modified [BOOL]
+   MM cc                                   new OPTIONS
+      copyTo FOLDER                     MM nrLines
+   MM date                              MM parent
    MM decoded OPTIONS                   MM parts
       delete                            MM print [FILEHANDLE]
       deleted [BOOL]                    MM printUndisclosed [FILEHANDLE]
-   MM destinations                     MMC quotePrelude [STRING|FIELD]
-   MM encode OPTIONS                   MMC reply OPTIONS
+   MM destinations                     MMC reply OPTIONS
+   MM encode OPTIONS                   MMC replyPrelude [STRING|FIELD|...
    MR errors                           MMC replySubject STRING
       folder [FOLDER]                   MR report [LEVEL]
-   MM from|to|cc|bcc|date               MR reportAll [LEVEL]
-   MM get FIELD                         MM send [MAILER], OPTIONS
-   MM guessTimestamp                       seqnr [INTEGER]
-   MM isDummy                              shortString
-   MM isMultipart                       MM size
-   MM isPart                            MM subject
-   MM label LABEL [,VALUE]              MM timestamp
-   MR log [LEVEL [,STRINGS]]            MM toplevel
-   MM messageId                         MR trace [LEVEL]
+  MMC forward OPTIONS                   MR reportAll [LEVEL]
+  MMC forwardPostlude                   MM send [MAILER], OPTIONS
+  MMC forwardPrelude                       seqnr [INTEGER]
+  MMC forwardSubject STRING                shortString
+   MM from                              MM size
+   MM get FIELD                         MM subject
+   MM guessTimestamp                    MM timestamp
+   MM isDummy                           MM to
+   MM isMultipart                       MM toplevel
+   MM isPart                            MR trace [LEVEL]
 
 The extra methods for extension writers:
 
@@ -398,7 +402,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.003.
+This code is beta, version 2.004.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

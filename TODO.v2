@@ -3,7 +3,6 @@ This file lists the things to do before v2.01 beta can come out.
 
 Obligatory:
 
-  Mail::Message::Construct::forward()
   reading from file without seek.
 
   test of scripts/

@@ -3,6 +3,26 @@ CHANGELOG of Mail::Box
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
+version 2.004:
+
+	Fixes:
+
+	- I didn't know yet, but you can do things like:
+	    $reply->head->add(To => $orig->head->get('From'));
+	  because of stringification ;)
+
+	- $message->from also may return the content of the Sender header.
+
+	- Mail::Message::Construct::quotePrelude renamed to
+	  ::replyPrelude, which is more consequent.
+
+	New:
+
+	- Added Mail::Message::Construct::forward() and ::forwardSubject.
+	  With tests in t/57*
+
+	- Replies are even more flexible now.
+
 version 2.003: Sat Dec 15 00:47:50 CET 2001
 
 	Fixes:

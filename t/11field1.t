@@ -9,7 +9,7 @@ use Test;
 use strict;
 use lib qw(. t /home/markov/MailBox2/fake);
 
-BEGIN {plan tests => 52}
+BEGIN {plan tests => 53}
 
 use Mail::Message::Field::Fast;
 use Mail::Address;
@@ -105,6 +105,9 @@ my $r  = Mail::Message::Field::Fast->new(Cc => $mb[0]);
 ok($r->toString eq "Cc: me\@localhost\n");
 $r     = Mail::Message::Field::Fast->new(Cc => \@mb);
 ok($r->toString eq "Cc: me\@localhost, you\@somewhere.nl\n");
+
+my $r2 = Mail::Message::Field::Fast->new(Bcc => $r);
+ok($r2->toString eq "Bcc: me\@localhost, you\@somewhere.nl\n");
 
 #
 # Checking attributes

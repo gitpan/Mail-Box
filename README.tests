@@ -86,7 +86,8 @@ Message construction   Mail::Message::Construct
    55reply0s.t         create a reply subject
    55reply1r.t         create singlepart message replies
    56bounce.t          bounce
-                       forward
+   57forw0s.t          create a forward subject
+   57forw1f.t          create singlepart message forwards
 
 Folder manager:
    60mgr.t             locating/opening/closing folders.
