@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Nested;
-our $VERSION = 2.032;  # Part of Mail::Box
+our $VERSION = 2.033;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -85,8 +85,8 @@ sub forNested($)
     return $self if $new_body == $body;
 
     my $new_nested  = Mail::Message::Part->new
-       ( head   => $nested->head->clone
-       , parent => undef
+       ( head      => $nested->head->clone
+       , container => undef
        );
 
     $new_nested->body($new_body);
@@ -96,7 +96,7 @@ sub forNested($)
       , nested   => $new_nested
       );
 
-    $new_nested->parent($created);
+    $new_nested->container($created);
     $created;
 }
 

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Part;
-our $VERSION = 2.032;  # Part of Mail::Box
+our $VERSION = 2.033;  # Part of Mail::Box
 use base 'Mail::Message';
 
 use Carp;
@@ -11,15 +11,15 @@ sub init($)
 {   my ($self, $args) = @_;
     $self->SUPER::init($args);
 
-    confess "No parent specified for part.\n"
-        unless exists $args->{parent};
+    confess "No container specified for part.\n"
+        unless exists $args->{container};
 
-    $self->{MMP_parent} = $args->{parent};
+    $self->{MMP_container} = $args->{container};
     $self;
 }
 
 sub buildFromBody($$;@)
-{   my ($class, $body, $parent) = (shift, shift, shift);
+{   my ($class, $body, $container) = (shift, shift, shift);
     my @log     = $body->logSettings;
 
     my $head    = Mail::Message::Head::Complete->new(@log);
@@ -29,8 +29,8 @@ sub buildFromBody($$;@)
     }
 
     my $part = $class->new
-     ( head   => $head
-     , parent => $parent
+     ( head      => $head
+     , container => $container
      , @log
      );
 
@@ -40,15 +40,16 @@ sub buildFromBody($$;@)
 }
 
 sub coerce($@)
-{   my ($class, $thing, $parent) = (shift, shift, shift);
+{   my ($class, $thing, $container) = (shift, shift, shift);
 
-    return $class->buildFromBody($thing, $parent, @_)
+    return $class->buildFromBody($thing, $container, @_)
         if $thing->isa('Mail::Message::Body');
 
     my $message = $thing->isa('Mail::Box::Message') ? $thing->clone : $thing;
 
     my $part = $class->SUPER::coerce($message);
-    $part->{MMP_parent} = $parent;
+
+    $part->{MMP_container} = $container;
     $part;
 }
 
@@ -62,13 +63,35 @@ sub deleted(;$)
     $self->{MMP_deleted} = shift;
 }
 
-sub parent(;$)
+sub container(;$)
 {   my $self = shift;
-    @_ ? $self->{MMP_parent} = shift : $self->{MMP_parent};
+    @_ ? $self->{MMP_container} = shift : $self->{MMP_container};
 }
 
-sub toplevel() { shift->parent->toplevel }
+sub toplevel()
+{   my $body = shift->container or return;
+    my $msg  = $body->message   or return;
+    $msg->toplevel;
+}
 
 sub isPart() { 1 }
+
+sub readFromParser($;$)
+{   my ($self, $parser, $bodytype) = @_;
+
+    my $head = $self->readHead($parser)
+            || Mail::Message::Head::Complete->new
+                 ( message     => $self
+                 , field_type  => $self->{MM_field_type}
+                 , $self->logSettings
+                 );
+
+    my $body = $self->readBody($parser, $head, $bodytype)
+            || Mail::Message::Body::Lines->new(data => []);
+
+    $self->head($head);
+    $self->storeBody($body);
+    $self;
+}
 
 1;

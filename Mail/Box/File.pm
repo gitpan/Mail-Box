@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::File;
-our $VERSION = 2.032;  # Part of Mail::Box
+our $VERSION = 2.033;  # Part of Mail::Box
 use base 'Mail::Box';
 
 use Mail::Box::File::Message;
@@ -34,13 +34,20 @@ sub init($)
 
     $self->SUPER::init($args);
 
+    my $class = ref $self;
+
     my $filename         = $self->{MBF_filename}
-       = $self->folderToFilename
+       = $class->folderToFilename
            ( $self->name
            , $self->folderdir
            );
 
-    return unless -e $filename;
+       if(-e $filename) {;}    # Folder already exists
+    elsif(   $args->{create} && $class->create($args->{folder}, %$args)) {;}
+    else
+    {   $self->log(PROGRESS => "$class: Folder $filename does not exist.");
+        return;
+    }
 
     $self->{MBF_policy}  = $args->{write_policy};
 
@@ -75,27 +82,29 @@ sub init($)
 
     # Start parser if reading is required.
 
-    return $self unless $self->{MB_access} =~ m/r/;
-    $self->parser ? $self : undef;
+      $self->{MB_access} !~ m/r/ ? $self
+    : $self->parser              ? $self
+    :                              undef;
 }
 
 sub create($@)
 {   my ($class, $name, %args) = @_;
     my $folderdir = $args{folderdir} || $default_folder_dir;
-    my $subext    = $args{subfolder_extension};
+    my $subext    = $args{subfolder_extension};    # not always available
     my $filename  = $class->folderToFilename($name, $folderdir, $subext);
 
     return $class if -f $filename;
 
     my $dir       = dirname $filename;
-    $class->log(ERROR => "Cannot create directory $dir for $name"), return
+    $class->log(ERROR => "Cannot create directory $dir for $name."), return
         unless -d $dir || mkdir $dir, 0755;
 
     $class->dirToSubfolder($filename, $subext)
         if -d $filename && defined $subext;
 
     if(my $create = IO::File->new($filename, 'w'))
-    {   $create->close or return;
+    {   $class->log(PROGRESS => "Created folder $name.");
+        $create->close or return;
     }
     else
     {   $class->log(WARNING => "Cannot create folder $name: $!\n");
@@ -362,7 +371,9 @@ sub appendMessages(@)
       : exists $args{messages} ? @{$args{messages}}
       :                          return ();
 
-    my $folder   = $class->new(@_, access => 'a');
+    my $folder   = $class->new(@_, access => 'a')
+       or return ();
+
     my $filename = $folder->filename;
 
     my $out      = IO::File->new($filename, 'a');

@@ -28,7 +28,7 @@ Mail::Message::Part
 
 
 A Mail::Message::Part object contains a message which is included in
-an other message.  For instance I<attachments> are I<parts>.
+the body of an other message.  For instance I<attachments> are I<parts>.
 
 READ Mail::Message FIRST.  A part is a special message: it has a
 reference to its parent message, and will usually not be sub-classed
@@ -47,13 +47,13 @@ Create a message part.
  OPTION               DEFAULT
  body                 undef
  body_type            'Mail::Message::Body::Lines'
+ container            <obligatory>
  field_type           undef
  head                 undef
  head_type            'Mail::Message::Head::Complete'
  log                  'WARNINGS'
  messageId            undef
  modified             <false>
- parent               <obligatory>
  trace                'WARNINGS'
  trusted              <false>
 
@@ -66,6 +66,12 @@ See Mail::Message::new(body)
 =item B<body_type> =E<gt> CLASS
 
 See Mail::Message::new(body_type)
+
+=item B<container> =E<gt> BODY X<new(container)>
+
+Reference to the parental Mail::Message::Body object where this
+part is a member of.  That object may be a Mail::Message::Body::Multipart
+or a Mail::Message::Body::Nested.
 
 =item B<field_type> =E<gt> CLASS
 
@@ -91,11 +97,6 @@ See Mail::Message::new(messageId)
 
 See Mail::Message::new(modified)
 
-=item B<parent> =E<gt> MESSAGE X<new(parent)>
-
-Reference to the parental Mail::Message object where this
-part is a member of.  That object may be a part itself.
-
 =item B<trace> =E<gt> LEVEL
 
 See Mail::Reporter::new(trace)
@@ -120,17 +121,18 @@ See Mail::Message::Construct::bounce()
 
 See Mail::Message::Construct::build()
 
-=item B<buildFromBody> BODY, PARENT, HEADERS X<buildFromBody>
+=item B<buildFromBody> BODY, CONTAINER, HEADERS X<buildFromBody>
 
 (Class method) 
-Shape a message around a BODY.  Bodies have information about their
+Shape a message part around a BODY.  Bodies have information about their
 content in them, which is used to construct a header for the message.
 Next to that, more HEADERS can be specified.  No headers are obligatory.
 No extra headers are fabricated automatically.
 
 Examples:
 
- my $part = Mail::Message::Part $body, $parent;
+ my $multi = Mail::Message::Body::Multipart->new;
+ my $part  = Mail::Message::Part->buildFromBody($body, $multi);
 
 =item B<coerce> BODY|MESSAGE, MULTIPART, HEADERS X<coerce>
 
@@ -183,6 +185,10 @@ See Mail::Message::Construct::replySubject()
 
 See Mail::Message::clone()
 
+=item B<container> 
+
+See Mail::Message::container()
+
 =item B<delete>  X<delete>
 
 Do not print or send this part of the message anymore.
@@ -207,10 +213,6 @@ See Mail::Message::messageId()
 =item B<modified> [BOOLEAN]
 
 See Mail::Message::modified()
-
-=item B<parent> 
-
-See Mail::Message::parent()
 
 =item B<print> [FILEHANDLE]
 
@@ -471,7 +473,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.032.
+This code is beta, version 2.033.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

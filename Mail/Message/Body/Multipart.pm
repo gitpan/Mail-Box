@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Multipart;
-our $VERSION = 2.032;  # Part of Mail::Box
+our $VERSION = 2.033;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -175,23 +175,24 @@ sub foreachComponent($)
     foreach (@new_bodies)
     {   my ($part, $body) = @$_;
         my $new_part = Mail::Message::Part->new
-           ( head   => $part->head->clone,
-             parent => $self->message
+           ( head      => $part->head->clone,
+             container => undef
            );
         $new_part->body($body);
         push @new_parts, $new_part;
     }
 
-#   my $encoded =
-    (ref $self)->new
+    my $constructed = (ref $self)->new
       ( preamble => $new_preamble
       , parts    => \@new_parts
       , epilogue => $new_epilogue
       , based_on => $self
       );
 
-#   $_->parent($encoded) foreach @new_parts;
-#   $encoded;
+    $_->container($constructed)
+       foreach @new_parts;
+
+    $constructed;
 }
 
 sub preamble() {shift->{MMBM_preamble}}
@@ -293,7 +294,7 @@ sub read($$$$)
 
         my $part = Mail::Message::Part->new
          ( @msgopts
-         , parent => $self->message
+         , container => $self
          );
 
         last unless $part->readFromParser($parser, $bodytype);

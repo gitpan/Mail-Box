@@ -163,6 +163,10 @@ See Mail::Message::Construct::replySubject()
 
 See Mail::Message::clone()
 
+=item B<container> 
+
+See Mail::Message::container()
+
 =item B<isDummy> 
 
 See Mail::Message::isDummy()
@@ -178,10 +182,6 @@ See Mail::Message::messageId()
 =item B<modified> [BOOLEAN]
 
 See Mail::Message::modified()
-
-=item B<parent> 
-
-See Mail::Message::parent()
 
 =item B<print> [FILEHANDLE]
 
@@ -442,7 +442,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.032.
+This code is beta, version 2.033.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -117,9 +117,9 @@ See Mail::Box::new(head_type)
 
 =item B<index> =E<gt> OBJECT X<new(index)>
 
-You may specify an OBJECT of a type which extends C<Mail::Box::MH::Index>
-(at least implements the C<get()> method), as alternative for an index file
-reader as created by C<Mail::Box::MH>.
+You may specify an OBJECT of a type which extends Mail::Box::MH::Index
+(at least implements the C<get> method), as alternative for an index file
+reader as created by Mail::Box::MH.
 
 =item B<index_filename> =E<gt> FILENAME X<new(index_filename)>
 
@@ -144,8 +144,8 @@ thousands of messages.
 
 =item B<labels> =E<gt> OBJECT X<new(labels)>
 
-You may specify an OBJECT of a type which extends C<Mail::Box::MH::Labels>
-(at least implements the C<get()> method), as alternative for labels file
+You may specify an OBJECT of a type which extends Mail::Box::MH::Labels
+(at least implements the C<get> method), as alternative for labels file
 reader as created by C<Mail::Box::MH>.
 
 =item B<labels_filename> =E<gt> FILENAME X<new(labels_filename)>
@@ -601,7 +601,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.032.
+This code is beta, version 2.033.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

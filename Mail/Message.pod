@@ -271,6 +271,27 @@ Examples:
 
  $copy = $msg->clone;
 
+=item B<container>  X<container>
+
+If the message is a part of another message, C<container> returns the
+reference to the containing body.
+
+Examples:
+
+ my Mail::Message $msg = ...
+ return unless $msg->body->isMultipart;
+ my $part   = $msg->body->part(2);
+
+ return unless $part->body->isMultipart;
+ my $nested = $part->body->part(3);
+
+ $nested->container;  # returns $msg->body
+ $nested->toplevel;   # returns $msg
+ $msg->container;     # returns undef
+ $msg->toplevel;      # returns $msg
+ $msg->isPart;        # returns false
+ $part->isPart;       # returns true
+
 =item B<isDummy>  X<isDummy>
 
 Dummy messages are used to fill holes in linked-list and such, where only
@@ -284,7 +305,6 @@ return C<false>.
 
 Returns true if the message is a part of another message.  This is
 the case for Mail::Message::Part extensions of Mail::Message.
-See parent() for examples.
 
 =item B<messageId>  X<messageId>
 
@@ -297,28 +317,6 @@ Returns (optionally after setting) whether this message is flagged as
 being modified.  The modification flag is set C<true> when header lines
 are changed, the header or body replaced by a new one, or when labels
 are modified.
-
-=item B<parent>  X<parent>
-
-If the message is a part of another message, C<parent> returns the reference
-to the containing message. C<parent> returns C<undef> if the message is not a
-part, but rather the main message.
-
-Examples:
-
- my Mail::Message $msg = ...
- return unless $msg->body->isMultipart;
- my $part   = $msg->body->part(2);
-
- return unless $part->body->isMultipart;
- my $nested = $part->body->part(3);
-
- $nested->parent;     # returns $part
- $nested->toplevel;   # returns $msg
- $msg->parent;        # returns undef
- $msg->toplevel;      # returns $msg
- $msg->isPart;        # returns false
- $part->isPart;       # returns true
 
 =item B<print> [FILEHANDLE] X<print>
 
@@ -360,8 +358,7 @@ than this method returns.
 =item B<toplevel>  X<toplevel>
 
 Returns a reference to the main message, which will be the current
-message if the message is not part of
-another message.  See parent() for examples.
+message if the message is not part of another message.
 
 =back
 
@@ -818,7 +815,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.032.
+This code is beta, version 2.033.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

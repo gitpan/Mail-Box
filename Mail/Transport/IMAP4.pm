@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::IMAP4;
-our $VERSION = 2.032;  # Part of Mail::Box
+our $VERSION = 2.033;  # Part of Mail::Box
 use base 'Mail::Transport::Receive';
 
 sub init($)

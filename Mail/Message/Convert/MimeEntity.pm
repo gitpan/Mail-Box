@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::MimeEntity;
-our $VERSION = 2.032;  # Part of Mail::Box
+our $VERSION = 2.033;  # Part of Mail::Box
 use base 'Mail::Message::Convert';
 
 use Mail::Message::Head::Complete;
@@ -50,7 +50,7 @@ sub export($$)
 }
 
 sub from($;$)
-{   my ($self, $me, $parent) = @_;
+{   my ($self, $me, $container) = @_;
 
     croak "Converting from MIME::Entity but got a ".ref($me).'.'
         unless $me->isa('MIME::Entity');
@@ -70,8 +70,8 @@ sub from($;$)
     {   $head->add($name, $_) foreach $me_head->get($name);
     }
 
-    my $message = defined $parent
-      ? Mail::Message::Part->new(head => $head, parent => $parent)
+    my $message = defined $container
+      ? Mail::Message::Part->new(head => $head, container => $container)
       : Mail::Message->new(head => $head);
 
     if($me->is_multipart)

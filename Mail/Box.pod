@@ -281,13 +281,17 @@ and must be readable. The file or directory of the mailbox need not exist if it
 is opened for reading and writing (C<"rw">).  Write-permission is checked when
 opening an existing mailbox.
 
+The folder name can be preceded by a C<"=">, to indicate that it is named
+relative to the directory specified in new(folderdir).  Otherwise, it is
+taken as relative or absolute path.
+
 =item B<folderdir> =E<gt> DIRECTORY X<new(folderdir)>
 
 Where are folders to be found by default?  A folder-name may be preceded by
 a equals-sign (C<=>, a C<mutt> convension) to explicitly state that the folder
 is located below the default directory.  For example: in case
-C<folderdir =E<gt> '/tmp'> and C<folder =E<gt> '=abc'>, the name of the folder-file
-is C<'/tmp/abc'>.  Each folder type has already some default set.
+C<folderdir =E<gt> '/tmp'> and C<folder =E<gt> '=abc'>, the name of the
+folder-file is C<'/tmp/abc'>.  Each folder type has already some default set.
 
 =item B<head_delayed_type> =E<gt> CLASS X<new(head_delayed_type)>
 
@@ -1129,7 +1133,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.032.
+This code is beta, version 2.033.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

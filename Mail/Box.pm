@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box;
-our $VERSION = 2.032;  # Part of Mail::Box
+our $VERSION = 2.033;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -302,7 +302,7 @@ sub _copy_to($@)
     # Take subfolders
   SUBFOLDER:
     foreach ($self->listSubFolders)
-    {   my $subfolder = $self->openSubFolder($_);
+    {   my $subfolder = $self->openSubFolder($_, access => 'r');
         $self->log(ERROR => "Unable to open subfolder $_"), return
             unless defined $subfolder;
 

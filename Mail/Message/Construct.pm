@@ -3,7 +3,7 @@ use strict;
 # file Mail::Message::Construct extends functionalities from Mail::Message
 
 package Mail::Message;
-our $VERSION = 2.032;  # Part of Mail::Box
+our $VERSION = 2.033;  # Part of Mail::Box
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -478,6 +478,7 @@ sub build(@)
     }
 
     my $message = $class->new(head => $head);
+
     my $body
        = @parts==0 ? Mail::Message::Body::Lines->new()
        : @parts==1 ? $parts[0]

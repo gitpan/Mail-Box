@@ -286,10 +286,10 @@ Examples:
  my $outbox = $mgr->open(folder => 'Outbox');
  $mgr->copyMessage($outbox, $drafts->message(0));
 
- $mgr->copyMessage('Trash', $drafts->message(1), $drafts->message(2),
+ $mgr->copyMessage('=Trash', $drafts->message(1), $drafts->message(2),
     folderdir => '/tmp', create => 1);
 
- $mgr->copyMessage($drafts->message(1), folder => 'Drafts'
+ $mgr->copyMessage($drafts->message(1), folder => '=Drafts'
     folderdir => '/tmp', create => 1);
 
 =item B<delete> FOLDERNAME [,OPTIONS] X<delete>
@@ -420,7 +420,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.032.
+This code is beta, version 2.033.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

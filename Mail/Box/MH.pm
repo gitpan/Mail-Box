@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::MH;
-our $VERSION = 2.032;  # Part of Mail::Box
+our $VERSION = 2.033;  # Part of Mail::Box
 use base 'Mail::Box::Dir';
 
 use Mail::Box::MH::Index;
@@ -58,12 +58,15 @@ sub create($@)
     my $directory = $class->folderToDirectory($name, $folderdir);
 
     return $class if -d $directory;
-    unless(mkdir $directory, 0700)
-    {   warn "Cannot create directory $directory: $!\n";
+
+    if(mkdir $directory, 0700)
+    {   $class->log(PROGRESS => "Created folder $name.\n");
+        return $class;
+    }
+    else
+    {   $class->log(WARNING => "Cannot create folder $name: $!\n");
         return;
     }
-
-    $class;
 }
 
 sub foundIn($@)
@@ -336,7 +339,9 @@ sub appendMessages(@)
                  : exists $args{messages} ? @{$args{messages}}
                  : return ();
 
-    my $self     = $class->new(@_, access => 'a');
+    my $self     = $class->new(@_, access => 'a')
+        or return ();
+
     my $directory= $self->directory;
     return unless -d $directory;
 

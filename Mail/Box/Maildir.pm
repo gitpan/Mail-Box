@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Maildir;
-our $VERSION = 2.032;  # Part of Mail::Box
+our $VERSION = 2.033;  # Part of Mail::Box
 use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
@@ -32,7 +32,15 @@ sub create($@)
 {   my ($class, $name, %args) = @_;
     my $folderdir = $args{folderdir} || $default_folder_dir;
     my $directory = $class->folderToDirectory($name, $folderdir);
-    $class->createDirs($directory);
+
+    if($class->createDirs($directory))
+    {   $class->log(PROGRESS => "Created folder $name.");
+        return $class;
+    }
+    else
+    {   $class->log(WARNING => "Cannot create folder $name.");
+        return undef;
+    }
 }
 
 sub foundIn($@)

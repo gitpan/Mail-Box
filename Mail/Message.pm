@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message;
-our $VERSION = 2.032;  # Part of Mail::Box
+our $VERSION = 2.033;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -88,8 +88,8 @@ sub coerce($)
     }
 
     else
-    {   confess "Cannot coerce ".ref($message)." objects into "
-              . __PACKAGE__." objects.\n";
+    {   my $what = ref $message ? 'a'.ref($message).' object' : 'text';
+        confess "Cannot coerce $what into a ". __PACKAGE__." object.\n";
     }
 
     $message->{MM_modified}  ||= 0;
@@ -129,7 +129,7 @@ sub modified(;$)
     0;
 }
 
-sub parent() { undef } # overridden by Mail::Message::Part
+sub container() { undef } # overridden by Mail::Message::Part
 
 sub isPart() { 0 } # overridden by Mail::Message::Part
 
@@ -392,7 +392,11 @@ sub readFromParser($;$)
 {   my ($self, $parser, $bodytype) = @_;
 
     my $head = $self->readHead($parser)
-       or return;
+            || Mail::Message::Head::Complete->new
+                 ( message     => $self
+                 , field_type  => $self->{MM_field_type}
+                 , $self->logSettings
+                 );
 
     my $body = $self->readBody($parser, $head, $bodytype)
        or return;
