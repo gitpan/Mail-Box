@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body::String;
 use vars '$VERSION';
-$VERSION = '2.057';
+$VERSION = '2.058';
 use base 'Mail::Message::Body';
 
 use Carp;
@@ -36,9 +36,16 @@ sub _data_from_filename(@)
 
 sub _data_from_filehandle(@)
 {   my ($self, $fh) = @_;
-    my @lines = $fh->getlines;
-    $self->{MMBS_nrlines} = @lines;
-    $self->{MMBS_scalar}  = join '', @lines;
+    if(ref $fh eq 'Mail::Box::FastScalar')
+    {   my $lines = $fh->getlines;
+        $self->{MMBS_nrlines} = @$lines;
+        $self->{MMBS_scalar}  = join '', @$lines;
+    }
+    else
+    {    my @lines = $fh->getlines;
+         $self->{MMBS_nrlines} = @lines;
+         $self->{MMBS_scalar}  = join '', @lines;
+    }
     $self;
 }
 

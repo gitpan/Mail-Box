@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Dir;
 use vars '$VERSION';
-$VERSION = '2.057';
+$VERSION = '2.058';
 
 use base 'Mail::Box';
 
@@ -31,8 +31,7 @@ sub init($)
         unless $self->SUPER::init($args);
 
     my $class            = ref $self;
-    my $directory        = $self->{MBD_directory}
-       = $class->folderToDirectory($self->name, $self->folderdir);
+    my $directory        = $self->directory;
 
        if(-d $directory) {;}
     elsif($args->{create} && $class->create($directory, %$args)) {;}
@@ -68,7 +67,12 @@ sub organization() { 'DIRECTORY' }
 #-------------------------------------------
 
 
-sub directory() { shift->{MBD_directory} }
+sub directory()
+{   my $self = shift;
+
+    $self->{MBD_directory}
+       ||= $self->folderToDirectory($self->name, $self->folderdir);
+}
 
 #-------------------------------------------
                                                                                 

@@ -1,7 +1,7 @@
 
 package Mail::Box::POP3;
 use vars '$VERSION';
-$VERSION = '2.057';
+$VERSION = '2.058';
 use base 'Mail::Box::Net';
 
 use strict;
@@ -20,6 +20,7 @@ sub init($)
 {   my ($self, $args) = @_;
 
     $args->{server_port} ||= 110;
+    $args->{folder}      ||= 'inbox';
 
     $self->SUPER::init($args);
 
@@ -76,14 +77,15 @@ sub type() {'pop3'}
 
 #-------------------------------------------
 
-sub close()
+sub close(@)
 {   my $self = shift;
 
-    if(my $pop = delete $self->{MBP_client})
-    {   $pop->disconnect;
-    }
+    $self->SUPER::close(@_);
 
-    $self->SUPER::close;
+    my $pop = delete $self->{MBP_client};
+    $pop->disconnect if defined $pop;
+
+    $self;
 }
 
 #-------------------------------------------

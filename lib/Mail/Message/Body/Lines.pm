@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body::Lines;
 use vars '$VERSION';
-$VERSION = '2.057';
+$VERSION = '2.058';
 use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
@@ -31,7 +31,8 @@ sub _data_from_filename(@)
 
 sub _data_from_filehandle(@)
 {   my ($self, $fh) = @_;
-    $self->{MMBL_array} = [ $fh->getlines ];
+    $self->{MMBL_array} =
+       ref $fh eq 'Mail::Box::FastScalar' ? $fh->getlines : [ $fh->getlines ];
     $self
 }
 
@@ -120,11 +121,11 @@ sub printEscapedFrom($)
 
 sub read($$;$@)
 {   my ($self, $parser, $head, $bodytype) = splice @_, 0, 4;
-    my @lines = $parser->bodyAsList(@_);
-    return undef unless @lines;
+    my ($begin, $end, $lines) = $parser->bodyAsList(@_);
+    $lines or return undef;
 
-    $self->fileLocation(shift @lines, shift @lines);
-    $self->{MMBL_array} = \@lines;
+    $self->fileLocation($begin, $end);
+    $self->{MMBL_array} = $lines;
     $self;
 }
 

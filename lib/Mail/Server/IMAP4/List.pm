@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Server::IMAP4::List;
 use vars '$VERSION';
-$VERSION = '2.057';
+$VERSION = '2.058';
 
 
 sub new($)

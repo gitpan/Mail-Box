@@ -1100,6 +1100,15 @@ I<Example:>
 
 =back
 
+$obj-E<gt>B<nrMessages>(OPTIONS)
+
+=over 4
+
+Simply calls L<messages()|Mail::Box/"The messages"> in scalar context to return a count instead
+of the messages itself.  Some people seem to understand this better.
+
+=back
+
 $obj-E<gt>B<scanForMessages>(MESSAGE, MESSAGE-IDS, TIMESPAN, WINDOW)
 
 =over 4
@@ -1900,7 +1909,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.057.
+Distribution version 2.058.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

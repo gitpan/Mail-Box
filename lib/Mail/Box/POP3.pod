@@ -79,7 +79,7 @@ for user, password, pop-server and server-port.
  extract            L<Mail::Box>     C<10240>                                                        
  field_type         L<Mail::Box>     undef                                                           
  fix_headers        L<Mail::Box>     <false>                                                         
- folder             L<Mail::Box>     C<'/'>                                                          
+ folder             L<Mail::Box>     <not applicable>                                                
  folderdir          L<Mail::Box>     <not used>                                                      
  head_delayed_type  L<Mail::Box>     L<Mail::Message::Head::Delayed|Mail::Message::Head::Delayed>    
  head_type          L<Mail::Box>     L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>  
@@ -407,6 +407,14 @@ See L<Mail::Box/"The messages">
 =back
 
 $obj-E<gt>B<messages>(['ALL',RANGE,'ACTIVE','DELETED',LABEL,!LABEL,FILTER])
+
+=over 4
+
+See L<Mail::Box/"The messages">
+
+=back
+
+$obj-E<gt>B<nrMessages>(OPTIONS)
 
 =over 4
 
@@ -915,7 +923,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.057.
+Distribution version 2.058.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

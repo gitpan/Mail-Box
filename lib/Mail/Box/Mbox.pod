@@ -371,6 +371,14 @@ See L<Mail::Box/"The messages">
 
 =back
 
+$obj-E<gt>B<nrMessages>(OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"The messages">
+
+=back
+
 $obj-E<gt>B<scanForMessages>(MESSAGE, MESSAGE-IDS, TIMESPAN, WINDOW)
 
 =over 4
@@ -925,7 +933,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.057.
+Distribution version 2.058.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

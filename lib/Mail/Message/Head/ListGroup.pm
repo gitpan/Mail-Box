@@ -1,7 +1,7 @@
 
 package Mail::Message::Head::ListGroup;
 use vars '$VERSION';
-$VERSION = '2.057';
+$VERSION = '2.058';
 use base 'Mail::Message::Head::FieldGroup';
 
 use strict;

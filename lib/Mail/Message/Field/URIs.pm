@@ -2,7 +2,7 @@ use warnings;
 
 package Mail::Message::Field::URIs;
 use vars '$VERSION';
-$VERSION = '2.057';
+$VERSION = '2.058';
 use base 'Mail::Message::Field::Structured';
 use Carp 'confess';
 

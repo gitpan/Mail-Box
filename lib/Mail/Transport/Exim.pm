@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport::Exim;
 use vars '$VERSION';
-$VERSION = '2.057';
+$VERSION = '2.058';
 use base 'Mail::Transport::Send';
 
 use Carp;
@@ -32,7 +32,7 @@ sub trySend($@)
 {   my ($self, $message, %args) = @_;
 
     my $from = $args{from} || $message->sender;
-    $from    = $from->address if $from->isa('Mail::Address');
+    $from    = $from->address if ref $from && $from->isa('Mail::Address');
     my @to   = map {$_->address} $self->destinations($message, $args{to});
 
     my $program = $self->{MTS_program};

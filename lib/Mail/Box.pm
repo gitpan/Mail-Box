@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.057';
+$VERSION = '2.058';
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -338,7 +338,8 @@ sub close(@)
 
     # Inform manager that the folder is closed.
     my $manager = delete $self->{MB_manager};
-    $manager->close($self) if defined $manager && !$args{close_by_manager};
+    $manager->close($self, close_by_self =>1)
+        if defined $manager && !$args{close_by_manager};
 
     my $write;
     for($args{write} || 'MODIFIED')
@@ -363,7 +364,7 @@ Suggestion: \$folder->close(write => 'NEVER')");
                );
 
     $self->locker->unlock;
-    $self->{MB_messages} = [];    # Boom!
+    $self->{MB_messages} = [];                  # Boom!
     $rc;
 }
 
@@ -552,6 +553,11 @@ sub messages($;$)
 
     grep {$action->($_)} @{$self->{MB_messages}};
 }
+
+#-------------------------------------------
+
+
+sub nrMessages(@) { scalar shift->messages(@_) }
 
 #-------------------------------------------
 

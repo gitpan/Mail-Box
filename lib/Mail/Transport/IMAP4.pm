@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.057';
+$VERSION = '2.058';
 use base 'Mail::Transport::Receive';
 
 use Digest::HMAC_MD5;   # only availability check for CRAM_MD5

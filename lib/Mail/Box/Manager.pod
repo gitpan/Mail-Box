@@ -189,6 +189,18 @@ The folder's messages will also be withdrawn from the known message threads.
 You may also close the folder directly. The manager will be informed
 about this event and take appropriate actions.
 
+ Option         Defined in  Default
+ close_by_self              <false>
+
+. close_by_self BOOLEAN
+
+=over 4
+
+Used internally to avoid confusion about how the close was started.  Do
+not change this.
+
+=back
+
 I<Example:> 
 
  my $inbox = $mgr->open('inbox');
@@ -622,9 +634,6 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Don't know which folder I should open: no name
-
-
 I<Error:> Folder $name is already open.
 
 You cannot ask the manager for a folder which is already open. In some
@@ -772,7 +781,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.057.
+Distribution version 2.058.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

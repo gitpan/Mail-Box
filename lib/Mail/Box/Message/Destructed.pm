@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Box::Message::Destructed;
 use vars '$VERSION';
-$VERSION = '2.057';
+$VERSION = '2.058';
 use base 'Mail::Box::Message';
 
 use Carp;

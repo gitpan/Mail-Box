@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport;
 use vars '$VERSION';
-$VERSION = '2.057';
+$VERSION = '2.058';
 use base 'Mail::Reporter';
 
 use Carp;

@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message::Head::Subset;
 use vars '$VERSION';
-$VERSION = '2.057';
+$VERSION = '2.058';
 use base 'Mail::Message::Head';
 
 use Object::Realize::Later

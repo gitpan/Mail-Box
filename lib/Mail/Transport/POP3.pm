@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Transport::POP3;
 use vars '$VERSION';
-$VERSION = '2.057';
+$VERSION = '2.058';
 use base 'Mail::Transport::Receive';
 
 use IO::Socket  ();
@@ -184,7 +184,7 @@ sub socket(;$)
 {   my $self = shift;
 
     my $socket = $self->_connection;
-    return $socket if $socket;
+    return $socket if defined $socket;
 
     if(exists $self->{MTP_nouidl})
     {   $self->log(ERROR =>
@@ -256,7 +256,9 @@ sub OK($;$) { substr(shift || '', 0, 3) eq '+OK' }
 
 sub _connection(;$)
 {   my $self = shift;
-    my $socket = $self->{MTP_socket} or return undef;
+
+    my $socket = $self->{MTP_socket};
+    defined $socket or return undef;
 
     # Check if we (still) got a connection
     eval {print $socket "NOOP$CRLF"};

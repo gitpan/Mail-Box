@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::Manage::User;
 use vars '$VERSION';
-$VERSION = '2.057';
+$VERSION = '2.058';
 use base 'Mail::Box::Manager';
 
 use Mail::Box::Collection     ();
@@ -103,9 +103,7 @@ sub folderCollection($)
 # This feature is thoroughly tested in the Mail::Box::Netzwert distribution
 
 sub create($@)
-#{   my ($self, $name, %args) = @_;
-{   my ($self, $name) = (shift, shift);
-    my %args = @_;
+{   my ($self, $name, %args) = @_;
     my ($dir, $base) = $self->folderCollection($name);
 
     unless(defined $dir)
@@ -139,8 +137,10 @@ sub create($@)
         return undef;
     }
 
-    $self->defaultFolderType->create($id->location, %args)
-        or return undef;
+    if(!defined $args{create_real} || $args{create_real})
+    {   $self->defaultFolderType->create($id->location, %args)
+           or return undef;
+    }
 
     $id;
 }

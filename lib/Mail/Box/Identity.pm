@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Box::Identity;
 use vars '$VERSION';
-$VERSION = '2.057';
+$VERSION = '2.058';
 use base qw/User::Identity::Item Mail::Reporter/;
 
 use Mail::Box::Collection;
@@ -130,7 +130,7 @@ sub inferiors(;$)
 
 #-------------------------------------------
                                                                                 
-                                                                                
+
 sub deleted(;$)
 {   my $self = shift;
     @_ ? ($self->{MBI_deleted} = shift) : $self->{MBI_deleted};
@@ -187,6 +187,20 @@ sub folder(@)
     my $subs = $self->subfolders  or return undef;
     my $nest = $subs->find(shift) or return undef;
     $nest->folder(@_);
+}
+
+#-------------------------------------------
+
+
+sub open(@)
+{   my $self = shift;
+    my $mgr  = $self->manager;
+
+    $mgr->open
+      ( $self->fullname
+      , type => $self->folderType
+      , @_
+      );
 }
 
 #-------------------------------------------

@@ -236,9 +236,19 @@ The OPTIONS are passed to L<Mail::Box::create()|Mail::Box/"Internals"> of your d
 type, except for the options intended for this method itself.
 
  Option         Defined in       Default
+ create_real                     <true> 
  create_supers                   <false>
  deleted                         <false>
  id_options                      []     
+
+. create_real BOOLEAN
+
+=over 4
+
+When this option is false, the pysical folder will not be created, but
+only the administration is updated.
+
+=back
 
 . create_supers BOOLEAN
 
@@ -542,9 +552,6 @@ I<Error:> Cannot rename $name to $new: higher levels missing
 Unless you set L<create(create_supers)|Mail::Box::Manage::User/"Manage existing folders">, all higher level folders must
 exist before this new one can be created.
 
-I<Error:> Don't know which folder I should open: no name
-
-
 I<Error:> Folder $name is already open.
 
 You cannot ask the manager for a folder which is already open. In some
@@ -635,7 +642,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.057.
+Distribution version 2.058.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
