@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.041';
+$VERSION = '2.042';
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -84,7 +84,7 @@ sub buildFromBody(@)
     $message->body($body);
     $message->statusToLabels;
 
-    # be sure the mesasge-id is actually stored in the header.
+    # be sure the message-id is actually stored in the header.
     $head->add('Message-Id' => '<'.$message->messageId.'>')
         unless defined $head->get('message-id');
 

@@ -102,6 +102,13 @@ remote system.  After the connection to a POP server is made, the
 messages can be looked at and removed as if they are on the local
 system.
 
+=item * L<Mail::Box::Dbx|Mail::Box::Dbx>
+
+Dbx files are created by Outlook Express. Using the external (optional)
+Mail::Transport::Dbx module, you can read these folders.  Writing and
+deletion of messages is not supported. Read access is enough to do
+folder conversions, for instance.
+
 =back
 
 Other folder types are on the (long) wishlist to get implemented.  Please,
@@ -740,7 +747,7 @@ folder is closed.
 
 =over 4
 
-Which messages are to be copied. See messages(description)
+Which messages are to be copied. See the description of L<messages()|"The messages">
 about how this works.
 
 =back
@@ -1185,7 +1192,7 @@ I<Example:>
 
 =back
 
-$obj-E<gt>B<nameOfSubfolder>(NAME)
+$obj-E<gt>B<nameOfSubFolder>(NAME)
 
 =over 4
 
@@ -1631,7 +1638,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.041.
+Module version 2.042.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -415,7 +415,7 @@ See L<Mail::Box/"Sub-folders">
 
 =back
 
-$obj-E<gt>B<nameOfSubfolder>(NAME)
+$obj-E<gt>B<nameOfSubFolder>(NAME)
 
 =over 4
 
@@ -750,7 +750,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.041.
+Module version 2.042.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -3,14 +3,14 @@ use warnings;
 
 package Mail::Message::Head::Complete;
 use vars '$VERSION';
-$VERSION = '2.041';
+$VERSION = '2.042';
 use base 'Mail::Message::Head';
 
 use Mail::Box::Parser;
+require Mail::Message::Head::Partial;
 
-use Carp;
 use Scalar::Util 'weaken';
-use List::Util 'sum';
+use List::Util   'sum';
 
 
 sub clone(;@)
@@ -208,6 +208,30 @@ sub removeField($)
     $self->log(WARNING => "Cannot remove field $name from header: not found.");
 
     return;
+}
+
+#------------------------------------------
+
+
+sub removeFields(@)
+{   my $self = shift;
+    (bless $self, 'Mail::Message::Head::Partial')->removeFields(@_);
+}
+   
+#------------------------------------------
+
+
+sub removeFieldsExcept(@)
+{   my $self = shift;
+    (bless $self, 'Mail::Message::Head::Partial')->removeFieldsExcept(@_);
+}
+
+#------------------------------------------
+
+
+sub removeResentGroups(@)
+{   my $self = shift;
+    (bless $self, 'Mail::Message::Head::Partial')->removeResentGroups(@_);
 }
 
 #------------------------------------------

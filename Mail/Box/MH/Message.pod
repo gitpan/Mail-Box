@@ -169,30 +169,6 @@ See L<Mail::Message/"The Message">
 
 =back
 
-$obj-E<gt>B<copyTo>(FOLDER)
-
-=over 4
-
-See L<Mail::Box::Message/"The Message">
-
-=back
-
-$obj-E<gt>B<filename>([FILENAME])
-
-=over 4
-
-See L<Mail::Box::Dir::Message/"The Message">
-
-=back
-
-$obj-E<gt>B<folder>([FOLDER])
-
-=over 4
-
-See L<Mail::Box::Message/"The Message">
-
-=back
-
 $obj-E<gt>B<isDummy>
 
 =over 4
@@ -217,14 +193,6 @@ See L<Mail::Message/"The Message">
 
 =back
 
-$obj-E<gt>B<moveTo>(FOLDER)
-
-=over 4
-
-See L<Mail::Box::Message/"The Message">
-
-=back
-
 $obj-E<gt>B<print>([FILEHANDLE])
 
 =over 4
@@ -238,19 +206,6 @@ $obj-E<gt>B<send>([MAILER], OPTIONS)
 =over 4
 
 See L<Mail::Message/"The Message">
-
-=back
-
-$obj-E<gt>B<seqnr>([INTEGER])
-
-=over 4
-
-The order of this message in the folder, counted from zero.  Do not
-change the number (unless you understand the implications).
-
-WARNING:  This sequence number has nothing to do with the message's
-filename, which in case of MH folders are also numbers!  If you need
-that one, use the File::Basename subroutine basename of the filename.
 
 =back
 
@@ -433,6 +388,54 @@ $obj-E<gt>B<parts>(['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER])
 =over 4
 
 See L<Mail::Message/"The body">
+
+=back
+
+=head2 The message
+
+
+$obj-E<gt>B<copyTo>(FOLDER)
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<filename>([FILENAME])
+
+=over 4
+
+See L<Mail::Box::Dir::Message/"The message">
+
+=back
+
+$obj-E<gt>B<folder>([FOLDER])
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<moveTo>(FOLDER)
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<seqnr>([INTEGER])
+
+=over 4
+
+The order of this message in the folder, counted from zero.  Do not
+change the number (unless you understand the implications).
+
+WARNING:  This sequence number has nothing to do with the message's
+filename, which in case of MH folders are also numbers!  If you need
+that one, use the File::Basename subroutine basename of the filename.
 
 =back
 
@@ -849,7 +852,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.041.
+Module version 2.042.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

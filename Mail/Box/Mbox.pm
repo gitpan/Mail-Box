@@ -2,20 +2,19 @@
 use strict;
 package Mail::Box::Mbox;
 use vars '$VERSION';
-$VERSION = '2.041';
+$VERSION = '2.042';
 use base 'Mail::Box::File';
 
 use Mail::Box::Mbox::Message;
-use File::Copy 'move';
 
 
-my $default_folder_dir    = exists $ENV{HOME} ? $ENV{HOME} . '/Mail' : '.';
-my $default_sub_extension = '.d';
+our $default_folder_dir    = exists $ENV{HOME} ? $ENV{HOME} . '/Mail' : '.';
+our $default_sub_extension = '.d';
 
 sub init($)
 {   my ($self, $args) = @_;
 
-    $self->{MBM_sub_ext}    # required for SUPER::init
+    $self->{MBM_sub_ext}    # required during init
         = $args->{subfolder_extension} || $default_sub_extension;
 
     $self->SUPER::init($args);
@@ -156,19 +155,8 @@ sub listSubFolders(@)
 #-------------------------------------------
 
 
-sub dirToSubfolder($$)
-{   my ($self, $dir, $extension) = @_;
-    $extension ||= $default_sub_extension;
-
-    move $dir, $dir.$extension;
-}
-
-#-------------------------------------------
-
-
 sub folderToFilename($$;$)
 {   my ($thingy, $name, $folderdir, $extension) = @_;
-    return $name if File::Spec->file_name_is_absolute($name);
 
     $extension ||=
           ref $thingy ? $thingy->{MBM_sub_ext} : $default_sub_extension;

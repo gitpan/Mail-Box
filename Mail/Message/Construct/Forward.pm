@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.041';
+$VERSION = '2.042';
 
 use Mail::Message::Body::Multipart;
 use Mail::Address;
@@ -70,9 +70,11 @@ sub forward(@)
        unless $to;
 
     # Create a subject
-    my $subject = $args{Subject};
-    if(!defined $subject) { $subject = $self->forwardSubject($subject) }
-    elsif(ref $subject)   { $subject = $subject->($subject) }
+    my $srcsub  = $args{Subject};
+    my $subject
+     = ! defined $srcsub ? $self->forwardSubject($self->subject)
+     : ref $srcsub       ? $srcsub->($self->subject)
+     :                     $srcsub;
 
     # Create a nice message-id
     my $msgid   = $args{'Message-ID'} || $mainhead->createMessageId;
@@ -131,7 +133,7 @@ sub forward(@)
       , From        => $from || '(undisclosed)'
       , To          => $to
       , Subject     => $subject
-      , References  => ($refs ? "$origid $refs" : $origid)
+      , References  => ($refs ? "$refs $origid" : $origid)
       );
 
     my $newhead = $reply->head;

@@ -250,30 +250,6 @@ See L<Mail::Message/"The Message">
 
 =back
 
-$obj-E<gt>B<copyTo>(FOLDER)
-
-=over 4
-
-Copy the message to the indicated opened FOLDER, without deleting the
-original.  The coerced message (the copy in the desitnation folder) is
-returned.
-
-I<Example:> 
-
- my $draft = $mgr->open(folder => 'Draft');
- $message->copyTo($draft);
-
-=back
-
-$obj-E<gt>B<folder>([FOLDER])
-
-=over 4
-
-In with folder did we detect this message/dummy?  This is a reference
-to the folder-object.
-
-=back
-
 $obj-E<gt>B<isDummy>
 
 =over 4
@@ -298,18 +274,6 @@ See L<Mail::Message/"The Message">
 
 =back
 
-$obj-E<gt>B<moveTo>(FOLDER)
-
-=over 4
-
-Move the message from this folder to the FOLDER specified.  This will
-create a copy using L<clone()|"Constructors"> first, and flag this original message
-to be deleted.  So until the source folder is closed, two copies of
-the message stay in memory.  The newly created message (part of the
-destination folder) is returned.
-
-=back
-
 $obj-E<gt>B<print>([FILEHANDLE])
 
 =over 4
@@ -323,15 +287,6 @@ $obj-E<gt>B<send>([MAILER], OPTIONS)
 =over 4
 
 See L<Mail::Message/"The Message">
-
-=back
-
-$obj-E<gt>B<seqnr>([INTEGER])
-
-=over 4
-
-Get the number of this message is the current folder.  It starts counting
-from zero.  Do not change the number.
 
 =back
 
@@ -514,6 +469,54 @@ $obj-E<gt>B<parts>(['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER])
 =over 4
 
 See L<Mail::Message/"The body">
+
+=back
+
+=head2 The message
+
+
+$obj-E<gt>B<copyTo>(FOLDER)
+
+=over 4
+
+Copy the message to the indicated opened FOLDER, without deleting the
+original.  The coerced message (the copy in the desitnation folder) is
+returned.
+
+I<Example:> 
+
+ my $draft = $mgr->open(folder => 'Draft');
+ $message->copyTo($draft);
+
+=back
+
+$obj-E<gt>B<folder>([FOLDER])
+
+=over 4
+
+In with folder did we detect this message/dummy?  This is a reference
+to the folder-object.
+
+=back
+
+$obj-E<gt>B<moveTo>(FOLDER)
+
+=over 4
+
+Move the message from this folder to the FOLDER specified.  This will
+create a copy using L<clone()|"Constructors"> first, and flag this original message
+to be deleted.  So until the source folder is closed, two copies of
+the message stay in memory.  The newly created message (part of the
+destination folder) is returned.
+
+=back
+
+$obj-E<gt>B<seqnr>([INTEGER])
+
+=over 4
+
+Get the number of this message is the current folder.  It starts counting
+from zero.  Do not change the number.
 
 =back
 
@@ -908,7 +911,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.041.
+Module version 2.042.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

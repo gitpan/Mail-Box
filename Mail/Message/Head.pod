@@ -56,6 +56,15 @@ may be caused as result of reading a fast index file, as described in
 L<Mail::Box::MH::Index|Mail::Box::MH::Index>.  The object is automatically transformed
 into a L<Mail::Message::Head::Complete|Mail::Message::Head::Complete> when all header lines must be known.
 
+=item * L<Mail::Message::Head::Partial|Mail::Message::Head::Partial>
+
+A partial header is like a subset header: probably the header is incomplete.
+The means that you are not sure whether a L<get()|"Access to the header"> for a field fails because
+the field is not a part of the message or that it fails because it is not
+yet known to the program.  Where the subset header knows where to get the
+other fields, the partial header does not know it.  It cannot hide its
+imperfection.
+
 =item * L<Mail::Message::Head::Delayed|Mail::Message::Head::Delayed>
 
 In this case, there is no single field known.  Access to this header will
@@ -519,7 +528,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.041.
+Module version 2.042.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -10,6 +10,9 @@ Mail::Message::Head::Complete - the header of one message
    is a Mail::Message::Head
    is a Mail::Reporter
 
+ Mail::Message::Head::Complete is extended by
+   Mail::Message::Head::Partial
+
  Mail::Message::Head::Complete is realized by
    Mail::Message::Head::Delayed
    Mail::Message::Head::Subset
@@ -309,10 +312,44 @@ $obj-E<gt>B<removeField>(FIELD)
 
 =over 4
 
-Remove the specified FIELD from the header.  This is useful when there
-are possible more than one fields with the same name, and you need to
-remove exactly one of them.  Also have a look at L<delete()|"Access to the header">, L<reset()|"Access to the header">,
-and L<set()|"Access to the header">.
+Remove the specified FIELD object from the header.  This is useful when
+there are possible more than one fields with the same name, and you
+need to remove exactly one of them.  Also have a look at L<delete()|"Access to the header">,
+L<reset()|"Access to the header">, and L<set()|"Access to the header">.
+
+See also L<Mail::Message::Head::Partial::removeFields()|"Access to the header"> (mind the 's'
+at the end of the name), which accepts a string or regular expression
+as argument to select the fields to be removed.
+
+=back
+
+$obj-E<gt>B<removeFields>(STRING|REGEXP, [STRING|REGEXP, ...])
+
+=over 4
+
+The header object is turned into a L<Mail::Message::Head::Partial|Mail::Message::Head::Partial> object
+which has a set of fields removed.  Read about the implications and the
+possibilities in L<Mail::Message::Head::Partial::removeFields()|"Access to the header">.
+
+=back
+
+$obj-E<gt>B<removeFieldsExcept>(STRING|REGEXP, [STRING|REGEXP, ...])
+
+=over 4
+
+The header object is turned into a L<Mail::Message::Head::Partial|Mail::Message::Head::Partial> object
+which has a set of fields removed.  Read about the implications and the
+possibilities in L<Mail::Message::Head::Partial::removeFieldsExcept()|"Access to the header">.
+
+=back
+
+$obj-E<gt>B<removeResentGroups>
+
+=over 4
+
+Removes all resent groups at once.  The header object is turned into
+a L<Mail::Message::Head::Partial|Mail::Message::Head::Partial> object.  Read about the implications and the
+possibilities in L<Mail::Message::Head::Partial::removeResentGroups()|"Access to the header">.
 
 =back
 
@@ -661,7 +698,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.041.
+Module version 2.042.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

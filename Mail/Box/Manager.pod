@@ -14,7 +14,6 @@ Mail::Box::Manager - manage a set of folders
 
  use Mail::Box::Manager;
  my $mgr     = new Mail::Box::Manager;
- $mgr->registerType(mbox => 'Mail::Box::Mbox');
 
  # Create folder objects.
  my $folder   = $mgr->open(folder => $ENV{MAIL});
@@ -32,6 +31,8 @@ Mail::Box::Manager - manage a set of folders
  foreach my $thread ($threads->all)
  {   $thread->print;
  }
+
+ $mgr->registerType(mbox => 'Mail::Box::MyType');
 
 
 =head1 DESCRIPTION
@@ -626,7 +627,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.041.
+Module version 2.042.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

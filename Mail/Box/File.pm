@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::File;
 use vars '$VERSION';
-$VERSION = '2.041';
+$VERSION = '2.042';
 use base 'Mail::Box';
 
 use Mail::Box::File::Message;
@@ -35,7 +35,7 @@ sub init($)
     $args->{body_type} ||= \&_default_body_type;
     $args->{lock_file} ||= '--';   # to be resolved later
 
-    $self->SUPER::init($args);
+    return unless defined $self->SUPER::init($args);
 
     my $class = ref $self;
 
@@ -103,10 +103,15 @@ sub create($@)
     return $class if -f $filename;
 
     my $dir       = dirname $filename;
+    if(-f $dir && defined $subext)
+    {   $dir      .= $subext;
+        $filename  = File::Spec->catfile($dir, basename $filename);
+    }
+
     $class->log(ERROR => "Cannot create directory $dir for folder $name: $!"),return
         unless -d $dir || mkdir $dir, 0755;
 
-    $class->dirToSubfolder($filename, $subext)
+    $class->moveAwaySubFolder($filename, $subext)
         if -d $filename && defined $subext;
 
     if(my $create = IO::File->new($filename, 'w'))
@@ -151,13 +156,6 @@ sub close(@)
     if(my $parser = delete $self->{MBF_parser}) { $parser->stop }
 
     $rc;
-}
-
-#-------------------------------------------
-
-sub openSubFolder($@)
-{   my ($self, $name) = (shift, shift);
-    $self->openRelatedFolder(@_, folder => "$self/$name");
 }
 
 #-------------------------------------------
@@ -261,10 +259,19 @@ sub readMessages(@)
         $self->storeMessage($message);
     }
 
-    # Release the folder.
     $self;
 }
  
+#-------------------------------------------
+
+
+sub moveAwaySubFolder($$)
+{   my ($self, $dir, $extension) = @_;
+    $self->log("ERROR: Cannot move away sub-folder $dir")
+       unless move $dir, $dir.$extension;
+    $self;
+}
+
 #-------------------------------------------
 
 

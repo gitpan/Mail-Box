@@ -167,30 +167,6 @@ See L<Mail::Message/"The Message">
 
 =back
 
-$obj-E<gt>B<copyTo>(FOLDER)
-
-=over 4
-
-See L<Mail::Box::Message/"The Message">
-
-=back
-
-$obj-E<gt>B<folder>([FOLDER])
-
-=over 4
-
-See L<Mail::Box::Message/"The Message">
-
-=back
-
-$obj-E<gt>B<fromLine>([LINE])
-
-=over 4
-
-See L<Mail::Box::File::Message/"The Message">
-
-=back
-
 $obj-E<gt>B<isDummy>
 
 =over 4
@@ -215,14 +191,6 @@ See L<Mail::Message/"The Message">
 
 =back
 
-$obj-E<gt>B<moveTo>(FOLDER)
-
-=over 4
-
-See L<Mail::Box::Message/"The Message">
-
-=back
-
 $obj-E<gt>B<print>([FILEHANDLE])
 
 =over 4
@@ -236,14 +204,6 @@ $obj-E<gt>B<send>([MAILER], OPTIONS)
 =over 4
 
 See L<Mail::Message/"The Message">
-
-=back
-
-$obj-E<gt>B<seqnr>([INTEGER])
-
-=over 4
-
-See L<Mail::Box::Message/"The Message">
 
 =back
 
@@ -426,6 +386,49 @@ $obj-E<gt>B<parts>(['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER])
 =over 4
 
 See L<Mail::Message/"The body">
+
+=back
+
+=head2 The message
+
+
+$obj-E<gt>B<copyTo>(FOLDER)
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<folder>([FOLDER])
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<fromLine>([LINE])
+
+=over 4
+
+See L<Mail::Box::File::Message/"The message">
+
+=back
+
+$obj-E<gt>B<moveTo>(FOLDER)
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<seqnr>([INTEGER])
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
 
 =back
 
@@ -806,7 +809,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.041.
+Module version 2.042.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

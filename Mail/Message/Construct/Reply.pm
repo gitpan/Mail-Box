@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.041';
+$VERSION = '2.042';
 
 use Mail::Message::Body::Multipart;
 use Mail::Address;
@@ -161,7 +161,7 @@ sub reply(@)
       , To      => $to
       , Subject => $subject
       , 'In-Reply-To' => $origid
-      , References    => ($refs ? "$origid $refs" : $origid)
+      , References    => ($refs ? "$refs $origid" : $origid)
       );
 
     my $newhead = $reply->head;

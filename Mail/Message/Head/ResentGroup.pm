@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message::Head::ResentGroup;
 use vars '$VERSION';
-$VERSION = '2.041';
+$VERSION = '2.042';
 use base 'Mail::Reporter';
 
 use Scalar::Util 'weaken';
@@ -48,9 +48,6 @@ sub init($$)
 #------------------------------------------
 
 
-#------------------------------------------
-
-
 sub delete()
 {   my $self   = shift;
     my $head   = $self->{MMHR_head};
@@ -60,6 +57,8 @@ sub delete()
     $head->removeField($_) foreach @fields;
     $self;
 }
+
+#------------------------------------------
 
 
 sub orderedFields()
@@ -79,6 +78,9 @@ sub print(;$)
 #------------------------------------------
 
 
+our $resent_field_names
+   = qr/^(received|return\-path|delivered\-to|resent\-\w*)$/i;
+
 sub set($$)
 {   my $self  = shift;
 
@@ -86,9 +88,7 @@ sub set($$)
     if(@_==1) { $field = shift }
     else
     {   my ($fn, $value) = @_;
-        $name  = $fn =~ m!^(received|return\-path|delivered\-to|resent\-\w*)$!i ? $fn
-               : "Resent-$fn";
-
+        $name  = $fn =~ $resent_field_names ? $fn : "Resent-$fn";
         $field = Mail::Message::Field::Fast->new($name, $value);
     }
 

@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Maildir;
 use vars '$VERSION';
-$VERSION = '2.041';
+$VERSION = '2.042';
 use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
@@ -114,9 +114,16 @@ sub listSubFolders(@)
 
 #-------------------------------------------
 
+sub nameOfSubFolder($)
+{   my ($self, $name) = @_;
+    File::Spec->catfile($self->directory, $name);
+}
+
+#-------------------------------------------
+
 sub openSubFolder($@)
 {   my ($self, $name) = (shift, shift);
-    $self->createDirs(File::Spec->catfile($self->directory, $name));
+    $self->createDirs($self->nameOfSubFolder($name));
     $self->SUPER::openSubFolder($name, @_);
 }
 

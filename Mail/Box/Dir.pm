@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Dir;
 use vars '$VERSION';
-$VERSION = '2.041';
+$VERSION = '2.042';
 
 use base 'Mail::Box';
 

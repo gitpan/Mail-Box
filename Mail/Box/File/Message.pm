@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::File::Message;
 use vars '$VERSION';
-$VERSION = '2.041';
+$VERSION = '2.042';
 use base 'Mail::Box::Message';
 
 use POSIX 'SEEK_SET';
@@ -49,27 +49,6 @@ sub clone()
     my $clone = $self->SUPER::clone;
     $clone->{MBMM_from_line} = $self->{MBMM_from_line};
     $clone;
-}
-
-#-------------------------------------------
-
-sub head(;$$)
-{   my $self  = shift;
-    return $self->SUPER::head unless @_;
-
-    my ($head, $labels) = @_;
-    $self->SUPER::head($head, $labels);
-    $self->statusToLabels if $head && !$head->isDelayed;
-    $head;
-}
-
-#-------------------------------------------
-
-sub label(@)
-{   my $self   = shift;
-    my $return = $self->SUPER::label(@_);
-    $self->labelsToStatus if @_ > 1;
-    $return;
 }
 
 #-------------------------------------------

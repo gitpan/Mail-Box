@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Head;
 use vars '$VERSION';
-$VERSION = '2.041';
+$VERSION = '2.042';
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Complete;
@@ -39,7 +39,7 @@ sub new(@)
 
     $class->SUPER::new(@_);
 }
-      
+ 
 sub init($)
 {   my ($self, $args) = @_;
 

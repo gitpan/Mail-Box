@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field;
 use vars '$VERSION';
-$VERSION = '2.041';
+$VERSION = '2.042';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -271,10 +271,10 @@ sub toInt()
 my @weekday = qw/Sun Mon Tue Wed Thu Fri Sat Sun/;
 my @month   = qw/Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec/;
 
-sub toDate($)
+sub toDate(@)
 {   my $class = shift;
     use POSIX 'strftime';
-    my @time  = @_ ? localtime(shift) : localtime;
+    my @time  = @_== 0 ? localtime() : @_==1 ? localtime(shift) : @_;
     strftime "$weekday[$time[6]], %d $month[$time[4]] %Y %H:%M:%S %z", @time;
 }
 

@@ -73,17 +73,18 @@ $obj-E<gt>B<clone>
 
 =over 4
 
-Create a copy of this message.  Returned is a Mail::Message object.
+Create a copy of this message.  Returned is a L<Mail::Message|Mail::Message> object.
 The head and body, the log and trace levels are taken.  Labels are
 copied with the message, but the delete and modified flags are not.
  
-BE WARNED: the clone of any kind of message (or a message part) will B<always
-be a Mail::Message> object.  For example, a Mail::Box::Message's clone is
-detached from the folder of its original.  When you use Mail::Box::addMessage()
-with the cloned message at hand, then the clone will automatically
-be coerced into the right message type to be added.
+BE WARNED: the clone of any kind of message (or a message part)
+will B<always> be a L<Mail::Message|Mail::Message> object.  For example, a
+Mail::Box::Message's clone is detached from the folder of its original.
+When you use L<Mail::Box::addMessage()|"The folder"> with the cloned message at hand,
+then the clone will automatically be coerced into the right message type
+to be added.
 
-See also copyTo() and moveTo().
+See also L<Mail::Box::Message::copyTo()|"The message"> and L<Mail::Box::Message::moveTo()|"The message">.
 
 I<Example:> 
 
@@ -1202,7 +1203,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.041.
+Module version 2.042.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

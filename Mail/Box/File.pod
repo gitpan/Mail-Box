@@ -11,6 +11,7 @@ Mail::Box::File - handle file-based folders
    is a Mail::Reporter
 
  Mail::Box::File is extended by
+   Mail::Box::Dbx
    Mail::Box::Mbox
 
 
@@ -437,7 +438,7 @@ See L<Mail::Box/"Sub-folders">
 
 =back
 
-$obj-E<gt>B<nameOfSubfolder>(NAME)
+$obj-E<gt>B<nameOfSubFolder>(NAME)
 
 =over 4
 
@@ -505,6 +506,16 @@ $obj-E<gt>B<locker>
 =over 4
 
 See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<moveAwaySubFolder>(DIRECTORY, EXTENSION)
+
+=over 4
+
+The DIRECTORY is renamed by appending the EXTENSION, which defaults to C<".d">,
+to make place for a folder file on that specific location.  C<false> is
+returned if this failed.
 
 =back
 
@@ -792,6 +803,9 @@ I<Error:> Cannot get a lock on $type folder $self.
 A lock is required to get access to the folder.  If no locking is needed,
 specify the NONE lock type.
 
+I<Error:> Cannot move away sub-folder $dir
+
+
 I<Warning:> Cannot remove folder $name file $filename: $!
 
 Writing an empty folder will usually cause that folder to be removed,
@@ -891,11 +905,18 @@ error messages to indicate the real problem.
 =head1 DETAILS
 
 
-=head2 How file-based folders work
+=head2 How file based folders work
 
-File-based folders store many messages in one file (let's call this a
-`file-based' folder, in comparison to a `directory-based' folder types
-like MH and Maildir).
+File based folders maintain a folder (a set of messages) in one
+single file.  The advantage is that your folder has only one
+single name, which speeds-up access to all messages at once.
+
+The disadvantage over directory based folder (see L<Mail::Box::Dir|Mail::Box::Dir>)
+is that you have to construct some means to keep all message apart,
+for instance by adding a message separator, and this will cause
+problems.  Where access to all messages at once is faster in file
+based folders, access to a single message is (much) slower, because
+the whole folder must be read.
 
 
 
@@ -907,7 +928,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.041.
+Module version 2.042.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

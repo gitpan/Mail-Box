@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.041';
+$VERSION = '2.042';
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -59,7 +59,7 @@ USAGE
 sub init($)
 {   my ($self, $args) = @_;
 
-    $self->SUPER::init($args);
+    return unless defined $self->SUPER::init($args);
 
     my $class      = ref $self;
     my $foldername = $args->{folder} || $ENV{MAIL};
@@ -281,10 +281,11 @@ sub _copy_to($@)
     return $self unless $flatten || $recurse;
 
     # Take subfolders
+
   SUBFOLDER:
-    foreach ($self->listSubFolders)
+    foreach ($self->listSubFolders(check => 1))
     {   my $subfolder = $self->openSubFolder($_, access => 'r');
-        $self->log(ERROR => "Unable to open subfolder $_"), return
+        $self->log(ERROR => "Unable to open subfolder $_"), next
             unless defined $subfolder;
 
         if($flatten)   # flatten
@@ -419,7 +420,7 @@ sub isModified()
     return 1 if $self->{MB_modified};
 
     foreach (@{$self->{MB_messages}})
-    {    return $self->{MB_modified} = 1
+    {   return $self->{MB_modified} = 1
             if $_->isDeleted || $_->isModified;
     }
 
@@ -624,14 +625,15 @@ sub openRelatedFolder(@)
 
 
 sub openSubFolder($@)
-{   my ($self, $name) = (shift, shift);
-    $self->openRelatedFolder(@_, folder => "$self/$name");
+{   my $self    = shift;
+    my $name    = $self->nameOfSubFolder(shift);
+    $self->openRelatedFolder(@_, folder => $name);
 }
 
 #-------------------------------------------
 
 
-sub nameOfSubfolder($)
+sub nameOfSubFolder($)
 {   my ($self, $name)= @_;
     "$self/$name";
 }

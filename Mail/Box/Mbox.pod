@@ -77,7 +77,7 @@ Mail::Box::Mbox-E<gt>B<create>(FOLDERNAME, OPTIONS)
 If a directory is found on the location of the folder to be created, this
 STRING is used to extend that directory name with.  This will cause the
 directory to be seen as sub-folder for the created folder.  This argument
-is passed to dirToSubfolder().
+is passed to Mail::Box::Mbox subroutine dirToSubFolder.
 
 =back
 
@@ -259,7 +259,9 @@ Mail::Box::Mbox-E<gt>B<foundIn>([FOLDERNAME], [OPTIONS])
 =over 4
 
 If no FOLDERNAME is specified, then the value of the C<folder> option
-is taken.
+is taken.  A mbox folder is a file which starts with a separator
+line: a line with C<'From '> as first characters.  Blank lines which
+start the file are ignored, which is not for all MUA's acceptable.
 
  Option               Defined in       Default      
  folder                                undef        
@@ -435,7 +437,7 @@ used to detect sub-folders by default.  Otherwise, C<'.d'> is taken.
 
 =back
 
-$obj-E<gt>B<nameOfSubfolder>(NAME)
+$obj-E<gt>B<nameOfSubFolder>(NAME)
 
 =over 4
 
@@ -478,16 +480,6 @@ See L<Mail::Box/"Internals">
 
 =back
 
-$obj-E<gt>B<dirToSubfolder>(DIRECTORY, EXTENSION)
-
-=over 4
-
-The DIRECTORY is renamed by appending the EXTENSION, which defaults to C<".d">,
-to make place for a folder file on that specific location.  C<false> is
-returned if this failed.
-
-=back
-
 $obj-E<gt>B<folderToFilename>(FOLDERNAME, FOLDERDIR, [EXTENSION])
 
 Mail::Box::Mbox-E<gt>B<folderToFilename>(FOLDERNAME, FOLDERDIR, [EXTENSION])
@@ -514,6 +506,14 @@ $obj-E<gt>B<locker>
 =over 4
 
 See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<moveAwaySubFolder>(DIRECTORY, EXTENSION)
+
+=over 4
+
+See L<Mail::Box::File/"Internals">
 
 =back
 
@@ -727,6 +727,9 @@ I<Error:> Cannot append messages to folder file $filename: $!
 Appending messages to a not-opened file-organized folder may fail when the
 operating system does not allow write access to the file at hand.
 
+I<Error:> Cannot move away sub-folder $dir
+
+
 I<Warning:> Cannot remove folder $name file $filename: $!
 
 Writing an empty folder will usually cause that folder to be removed,
@@ -820,7 +823,7 @@ error messages to indicate the real problem.
 =head1 DETAILS
 
 
-=head2 How file-based folders work
+=head2 How file based folders work
 
 
 =head2 How MBOX folders work
@@ -865,7 +868,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.041.
+Module version 2.042.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
