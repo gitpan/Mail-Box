@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -56,8 +56,8 @@ sub init($)
 
     $self->{MB_foldername}   = $foldername;
     $self->{MB_init_options} = $args->{init_options};
-    $self->{MB_coerce_opts}  = $args->{coerce_options}    || [];
-    $self->{MB_access}       = $args->{access}            || 'r';
+    $self->{MB_coerce_opts}  = $args->{coerce_options} || [];
+    $self->{MB_access}       = $args->{access}         || 'r';
     $self->{MB_remove_empty}
          = defined $args->{remove_when_empty} ? $args->{remove_when_empty} : 1;
 
@@ -65,6 +65,7 @@ sub init($)
          = defined $args->{save_on_exit} ? $args->{save_on_exit} : 1;
 
     $self->{MB_messages}     = [];
+    $self->{MB_msgid}        = {};
     $self->{MB_organization} = $args->{organization}      || 'FILE';
     $self->{MB_linesep}      = "\n";
     $self->{MB_keep_dups}    = !$self->writable || $args->{keep_dups};
@@ -109,18 +110,16 @@ sub init($)
     # Create a locker.
     #
 
-    my $locker;
-    if($locker = $args->{locker}) {;}
-    else
-    {   $locker = Mail::Box::Locker->new
-            ( folder   => $self
-            , method   => $args->{lock_type}
-            , timeout  => $args->{lock_timeout}
-            , wait     => $args->{lock_wait}
-            , file     => $args->{lockfile} || $args->{lock_file}
-            );
-    }
-    $self->{MB_locker} = $locker;
+    $self->{MB_locker}
+      = $args->{locker}
+      || Mail::Box::Locker->new
+          ( folder   => $self
+          , method   => $args->{lock_type}
+          , timeout  => $args->{lock_timeout}
+          , wait     => $args->{lock_wait}
+          , file     => $args->{lockfile} || $args->{lock_file}
+          );
+
     $self;
 }
 
@@ -144,6 +143,13 @@ sub folderdir(;$)
 sub foundIn($@) { shift->notImplemented }
 
 sub name() {shift->{MB_foldername}}
+
+sub type() {shift->notImplemented}
+
+sub url()
+{   my $self = shift;
+    $self->type . ':' . $self->name;
+}
 
 sub writable()  {shift->{MB_access} =~ /w|a/ }
 sub writeable() {shift->writable}  # compatibility [typo]
@@ -405,7 +411,7 @@ sub messageId($;$)
 
 sub messageID(@) {shift->messageId(@_)} # compatibility
 
-sub find
+sub find($)
 {   my ($self, $msgid) = (shift, shift);
     my $msgids = $self->{MB_msgid};
 
@@ -414,8 +420,9 @@ sub find
         $msgid =~ s/\s//gs;
     }
 
-    return $msgids->{$msgid} if exists $msgids->{$msgid};
-    $self->scanForMessages(undef, $msgid, 'EVER', 'ALL');
+    $self->scanForMessages(undef, $msgid, 'EVER', 'ALL')
+        unless exists $msgids->{$msgid};
+
     $msgids->{$msgid};
 }
 
@@ -467,7 +474,14 @@ sub current(;$)
 
 sub scanForMessages($$$$)
 {   my ($self, $startid, $msgids, $moment, $window) = @_;
-    return $self unless $self->messages;  # empty folder.
+
+    # Set-up msgid-list
+    my %search = map {($_, 1)} ref $msgids ? @$msgids : $msgids;
+    return () unless keys %search;
+
+    # do not run on empty folder
+    my $nr_messages = $self->messages
+        or return keys %search;
 
     # Set-up window-bound.
     my $bound;
@@ -476,25 +490,22 @@ sub scanForMessages($$$$)
     }
     elsif(defined $startid)
     {   my $startmsg = $self->messageId($startid);
-        $bound = $startmsg->nr - $window if $startmsg;
+        $bound = $startmsg->seqnr - $window if $startmsg;
         $bound = 0 if $bound < 0;
     }
 
-    my $last = ($self->{MBM_last} || $self->messages) -1;
-    return $self if $bound >= $last;
+    my $last = ($self->{MBM_last} || $nr_messages) -1;
+    return keys %search if defined $bound && $bound > $last;
 
     # Set-up time-bound
     my $after = $moment eq 'EVER' ? 0 : $moment;
 
-    # Set-up msgid-list
-    my %search = map {($_, 1)} ref $msgids ? @$msgids : $msgids;
-
     while(!defined $bound || $last >= $bound)
     {   my $message = $self->message($last);
-        my $msgid   = $message->messageId;  # triggers load of head
+        my $msgid   = $message->messageId; # triggers load
 
-        if(delete $search{$msgid})
-        {   last unless keys %search;
+        if(delete $search{$msgid})  # where we looking for this one?
+        {    last unless keys %search;
         }
 
         last if $message->timestamp < $after;

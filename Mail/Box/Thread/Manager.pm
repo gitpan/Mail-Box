@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Thread::Manager;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -121,7 +121,7 @@ sub threadStart($)
         }
 
         foreach ($self->folders)
-        {   last unless defined $_->scanForMessages
+        {   last unless $_->scanForMessages
               ( $thread->messageId
               , $parent->messageId
               , $thread->message->timestamp - $self->{MBTM_timespan}
@@ -138,19 +138,13 @@ sub threadStart($)
 
 sub all()
 {   my $self = shift;
-
-    $_->scanForMessages(undef, 'not-existing', 'EVER', 'ALL')
-        foreach $self->folders;
-
+    $_->find('not-existing') for $self->folders;
     $self->known;
 }
 
 sub sortedAll(@)
 {   my $self = shift;
-
-    $_->scanForMessages(undef, 'not-existing', 'EVER', 'ALL')
-        foreach $self->folders;
-
+    $_->find('not-existing') for $self->folders;
     $self->sortedKnown(@_);
 }
 

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Field::Fast;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 use base 'Mail::Message::Field';
 
 use Carp;
@@ -65,7 +65,7 @@ sub folded_body($)
     if(@_==2) { $self->[1] = $body }
     else      { $body = $self->[1] }
 
-    wantarray ? split(m!(?<=\n)!, $body) : $body;
+    wantarray ? (split m/^/, $body) : $body;
 }
 
 # For performance only

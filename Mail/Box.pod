@@ -330,8 +330,8 @@ SECONDS to wait before failing on opening this folder.
 
 =item B<locker> =E<gt> OBJECT X<new(locker)>
 
-An OBJECT which extends Mail::Box::Locker, and will handle
-folder locking replacing the default lock behavior.
+An OBJECT which extends Mail::Box::Locker, and will handle folder locking
+replacing the default lock behavior.
 
 =item B<log> =E<gt> LEVEL
 
@@ -542,6 +542,11 @@ Examples:
 Returns how the folder is organized: as one C<'FILE'> with many messages,
 a C<'DIRECTORY'> with one message per file, or by a C<'REMOTE'> server.
 
+=item B<type>  X<type>
+
+Returns a name for the type of mail box.  This can be C<mbox>, C<mh>,
+C<maildir>, or C<pop3>.
+
 =item B<update> OPTIONS X<update>
 
 Read new messages from the folder, which where received after opening
@@ -552,6 +557,18 @@ failsafe) and incorporates them in the open folder administration.
 
 The OPTIONS are extra values which are passed to the
 updateMessages() method which is doing the actual work here.
+
+=item B<url>  X<url>
+
+Represent the folder as a URL (Universal Resource Locator) string.  You may
+pass such a URL as folder name to Mail::Box::Manager::open().
+
+Examples:
+
+ print $folder->url;
+ # may result in
+ #   mbox:/var/mail/markov   or
+ #   pop3://user:password@pop.aol.com:101
 
 =item B<writable>  X<writable>
 
@@ -735,10 +752,15 @@ Examples:
 =item B<scanForMessages> MESSAGE, MESSAGE-IDS, TIMESTAMP, WINDOW X<scanForMessages>
 
 The MESSAGE which is known contains references to messages before
-it which are not found yet.  But those messages can be in the same
-folder.  Scan back in this folder for the MESSAGE-IDS (which may be
+it in the message thread, but which are not found yet because of the
+lazy extraction if messages from file.  The folder is Scanned from
+back to front, in search for the MESSAGE-IDS (which may be
 one string or a reference to an array of strings).  The TIMESTAMP
-and WINDOW (see options in new()) limit the search.
+and WINDOW (see option descriptions in new()) may limit the search.
+
+This method returns the message-ids which were not found during the
+scan.  Be warned that a message-id could already be known and therefore
+not found: check that first.
 
 =back
 
@@ -1063,12 +1085,13 @@ website at L<http://perl.overmeer.net/mailbox/>.
 
 =head1 AUTHOR
 
-Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
+with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.026.
+This code is beta, version 2.027.
 
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

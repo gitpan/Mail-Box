@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Nested;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -84,13 +84,20 @@ sub forNested($)
 
     return $self if $new_body == $body;
 
-    my $new_nested  = Mail::Message->new(head => $nested->head->clone);
+    my $new_nested  = Mail::Message::Part->new
+       ( head   => $nested->head->clone
+       , parent => undef
+       );
+
     $new_nested->body($new_body);
 
-    (ref $self)->new
+    my $created = (ref $self)->new
       ( based_on => $self
       , nested   => $new_nested
       );
+
+    $new_nested->parent($created);
+    $created;
 }
 
 sub check() { shift->forNested( sub {$_[1]->check} ) }
@@ -113,5 +120,7 @@ sub read($$$$)
     $self->{MMBN_nested} = $cooked;
     $self;
 }
+
+sub fileLocation(;$$) { shift->{MMBN_nested}->fileLocation(@_) }
 
 1;

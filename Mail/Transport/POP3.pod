@@ -20,8 +20,10 @@ Mail::Transport::POP3
 =head1 DESCRIPTION
 
 
-Receive messages via the POP3 protocol.  This object handles the contact
-with one POP3 server, and recovers broken connections automatically.
+Receive messages via the POP3 protocol from one remote server, as specified
+in rfc1939.  This object hides much of the complications in the protocol and
+recovers broken connections automatically.  Although it is part of the
+Mail::Box module, this object can be used separately.
 
 =head1 METHODS
 
@@ -31,8 +33,13 @@ with one POP3 server, and recovers broken connections automatically.
 
 =item B<new> OPTIONS X<new>
 
+Create a new pop3 server connection.  One object can only handle one
+connection: for a single user to one single server.  If the server
+could not be reached, or when the login fails, this instantiating C<new>
+will return C<undef>.
+
  OPTION               DEFAULT
- authenticate         'LOGIN'
+ authenticate         'AUTO'
  hostname             'localhost'
  interval             30
  log                  'WARNINGS'
@@ -47,9 +54,12 @@ with one POP3 server, and recovers broken connections automatically.
 
 =over 4
 
-=item B<authenticate> =E<gt> 'LOGIN'|'APOP' X<new(authenticate)>
+=item B<authenticate> =E<gt> 'LOGIN'|'APOP'|'AUTO' X<new(authenticate)>
 
-Use the old LOGIN authentication (unencrypted, default) or the newer APOP.
+Authenthication method.  The standard defines two methods, named LOGIN and
+APOP.  The first sends the username and password in plain text to the server
+to get permission, the latter encrypts this data using MD5.  When AUTO is
+used, first APOP is tried, and then LOGIN.
 
 =item B<hostname> =E<gt> HOSTNAME|ARRAY-OF-HOSTNAMES
 
@@ -97,6 +107,10 @@ See Mail::Transport::new(via)
 
 =back
 
+=item B<url>  X<url>
+
+Represent this pop3 connection as URL.
+
 =back
 
 =head2 Server Connection
@@ -121,65 +135,132 @@ See Mail::Transport::retry()
 
 =over 4
 
-=item B<contactServer>  X<contactServer>
+=item B<receive> [UNIQUE-MESSAGE-ID]
 
-Contact the server if the connection was lost, or has not been made yet.
-When connecting fails, C<undef> is returned.  If the contact to the server
-was still present, or could be established, an IO::Socket::INET is returned.
+See Mail::Transport::Receive::receive()
 
-=item B<delete> UIDLS X<delete>
+=back
 
-Flag the specified message(s) to be deleted on the remote server.  The deletion
-will take place on the moment that the connection is lost, whether this
-is on purpose or not.
+=head2 Exchanging Information
+
+=over 4
+
+=item B<deleteFetched>  X<deleteFetched>
+
+Mark all messages that have been fetched with message() for deletion.  See
+fetched().
+
+=item B<deleted> BOOLEAN, ID's X<deleted>
+
+Either mark the specified message(s) to be deleted on the remote server or
+unmark them for deletion (if the first parameter is false).  Deletion of
+messages will take place B<only> when the connection is specifically
+disconnected or the last reference to the object goes out of scope.
 
 =item B<disconnect>  X<disconnect>
 
-Break contact with the server, if that still exists.
+Break contact with the server, if that (still) exists.  Returns true if
+successful.  Please note that even if the disconnect was not successful,
+all knowledge of messages etc. will be removed from the object: the object
+basically has reverted to the state in which it was before anything was done
+with the mail box.
 
-=item B<header> UIDL, [BODYLINES] X<header>
+=item B<fetched>  X<fetched>
+
+Returns a reference to a list of ID's that have been fetched using the
+message() method.  This can be used to update a database of messages that
+were fetched (but maybe not yet deleted) from the mailbox.
+
+Please note that if the POP3 server did not support the UIDL command, this
+method will always return undef because it is not possibly to reliably
+identify messages between sessions (other than looking at the contents of
+the messages themselves).
+
+See also deleteFetched().
+
+=item B<folderSize>  X<folderSize>
+
+Returns the total number of octets used by the mailbox on the remote server.
+
+=item B<header> ID, [BODYLINES] X<header>
 
 Returns a reference to an array which contains the header of the message
-with the specified UIDL.  The optional integer BODYLINES specifies the
-number of lines from the body which are wanted: by default all.
+with the specified ID.  C<undef> is returned if something has gone wrong.
+
+The optional integer BODYLINES specifies the number of lines from the body
+which should be added, by default none.
 
 Examples:
 
  my $ref_lines = $pop3->header($uidl);
  print @$ref_lines;
 
-=item B<messages>  X<messages>
+=item B<id2n> ID X<id2n>
 
-Returns a list of all uidl's which are known by the server on this moment.
-
-=item B<receive> [UNIQUE-MESSAGE-ID]
-
-See Mail::Transport::Receive::receive()
-
-=item B<size> UIDL X<size>
-
-Returns the size of the message which is indicated by the UIDL, in octets.
-If the message is remotely deleted, this will return C<undef>.
-
-=item B<stat>  X<stat>
-
-Returns the I<maildrop> of the pop server; a list of two elements: the
-number of messages followed by the total folder size in octets.
-
-Examples:
-
- my ($nr_messages, $total_size) = $pop3->stat;
-
-=item B<uidl2seqnr> UIDL X<uidl2seqnr>
-
-Translates the unique UIDL of a message into a sequence number which
+Translates the unique ID of a message into a sequence number which
 represents the message as long a this connection to the POP3 server
 exists.  When the message has been deleted for some reason, C<undef>
 is returned.
 
-=item B<url>  X<url>
+=item B<ids>  X<ids>
 
-Represent this pop3 connection as URL.
+Returns a list (in list context) or a reference to a list (in scalar context)
+of all ID's which are known by the server on this moment.
+
+=item B<message> ID X<message>
+
+Returns a reference to an array which contains the lines of the
+message with the specified ID.  Returns C<undef> if something has gone
+wrong.
+
+Examples:
+
+ my $ref_lines = $pop3->message($uidl);
+ print @$ref_lines;
+
+=item B<messageSize> ID X<messageSize>
+
+Returns the size of the message which is indicated by the ID, in octets.
+If the message has been deleted on the remote server, this will return
+C<undef>.
+
+=item B<messages>  X<messages>
+
+Returns (in scalar context only) the number of messages that are known
+to exist in the mailbox.
+
+=back
+
+=head2 Protocol [internals]
+
+=over 4
+
+=item B<send> SOCKET, data X<send>
+
+Send data to the indicated socket and return the first line read from
+that socket.  Logs an error if either writing to or reading from socket failed.
+
+This method does B<not> attempt to reconnect or anything: if reading or
+writing the socket fails, something is very definitely wrong.
+
+=item B<sendList> SOCKET, COMMAND X<sendList>
+
+Sends the indicated COMMAND to the specified socket, and retrieves the
+response.  It returns a reference to an array with all the lines that
+were reveived after the first C<+OK> line and before the end-of-message
+delimiter (a single dot on a line).  Returns C<undef>
+whenever something has gone wrong.
+
+=item B<socket>  X<socket>
+
+Returns a connection to the POP3 server.  If there was no connection yet,
+it will be created transparently.  If the connection with the POP3 server
+was lost, it will be reconnected and the assures that internal
+state information (STAT and UIDL) is up-to-date in the object.
+
+If the contact to the server was still present, or could be established,
+an IO::Socket::INET object is returned.  Else, C<undef> is returned and
+no further actions should be tried on the object.
 
 =back
 
@@ -255,12 +336,13 @@ website at L<http://perl.overmeer.net/mailbox/>.
 
 =head1 AUTHOR
 
-Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+Written by Liz Mattijsen (L<liz@dijkmat.nl|mailto:liz@dijkmat.nl>) and Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
+with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.026.
+This code is beta, version 2.027.
 
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

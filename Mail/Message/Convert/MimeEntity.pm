@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::MimeEntity;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 use base 'Mail::Message::Convert';
 
 use Mail::Message::Head::Complete;

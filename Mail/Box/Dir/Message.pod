@@ -398,6 +398,10 @@ message is printed to the file.  If the FILENAME already exists for
 this message, nothing is done.  In any case, the new FILENAME is set
 as well.
 
+=item B<diskDelete> 
+
+See Mail::Box::Message::diskDelete()
+
 =item B<isDelayed> 
 
 See Mail::Message::isDelayed()
@@ -419,6 +423,10 @@ is needed.
 =item B<parser>  X<parser>
 
 Create and return a parser for this message (-file).
+
+=item B<readBody> PARSER, HEAD [, BODYTYPE]
+
+See Mail::Box::Message::readBody()
 
 =item B<readFromParser> PARSER, [BODYTYPE]
 
@@ -450,10 +458,6 @@ See Mail::Message::takeMessageId()
 
 See Mail::Reporter::defaultTrace()
 
-=item B<diskDelete> 
-
-See Mail::Box::Message::diskDelete()
-
 =item B<errors> 
 
 See Mail::Reporter::errors()
@@ -465,10 +469,6 @@ See Mail::Reporter::log()
 =item B<printStructure> [FILEHANDLE][, INDENT]
 
 See Mail::Message::Construct::printStructure()
-
-=item B<readBody> PARSER, HEAD [, BODYTYPE]
-
-See Mail::Box::Message::readBody()
 
 =item B<report> [LEVEL]
 
@@ -526,12 +526,13 @@ website at L<http://perl.overmeer.net/mailbox/>.
 
 =head1 AUTHOR
 
-Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
+with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.026.
+This code is beta, version 2.027.
 
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

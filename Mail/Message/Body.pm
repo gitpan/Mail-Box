@@ -2,22 +2,21 @@ use strict;
 use warnings;
 
 package Mail::Message::Body;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Field;
 use Mail::Message::Body::Lines;
 use Mail::Message::Body::File;
 
+use Carp;
+use Scalar::Util 'weaken';
+
 use overload bool  => sub {1}   # $body->print if $body
            , '""'  => 'string_unless_carp'
            , '@{}' => 'lines'
            , '=='  => sub {$_[0]->{MMB_seqnr}==$_[1]->{MMB_seqnr}}
            , '!='  => sub {$_[0]->{MMB_seqnr}!=$_[1]->{MMB_seqnr}};
-
-use Carp;
-use Scalar::Util 'weaken';
-use FileHandle;
 
 use MIME::Types;
 my $mime_types = MIME::Types->new;
@@ -68,7 +67,7 @@ sub init($)
     elsif(defined(my $data = $args->{data}))
     {
         if(!ref $data)
-        {   $self->_data_from_lines( [split /(?<=\n)/, $data] ) }
+        {   $self->_data_from_lines( [split /^/, $data] ) }
         elsif(ref $data eq 'ARRAY')
         {   $self->_data_from_lines($data) or return }
         else

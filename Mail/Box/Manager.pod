@@ -179,7 +179,8 @@ The URL format is composed as
 Like real URLs, all fields are optional and have smart defaults, as long
 as the string starts with a known folder type.  Far
 from all folder types support all these options, but at least they are
-all split-out.
+always split-out.  Be warned that special characters in the password should
+be properly url-encoded.
 
 When you specify anything which does not match the URL format, it is
 passed directly to the C<new> method of the folder which is opened.
@@ -414,12 +415,13 @@ website at L<http://perl.overmeer.net/mailbox/>.
 
 =head1 AUTHOR
 
-Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
+with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.026.
+This code is beta, version 2.027.
 
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

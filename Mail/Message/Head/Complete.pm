@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Head::Complete;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 use base 'Mail::Message::Head';
 
 use Mail::Box::Parser;

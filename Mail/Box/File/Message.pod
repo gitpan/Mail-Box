@@ -367,6 +367,10 @@ See Mail::Message::labels()
 
 See Mail::Message::DESTROY()
 
+=item B<diskDelete> 
+
+See Mail::Box::Message::diskDelete()
+
 =item B<fileLocation>  X<fileLocation>
 
 Returns the location of the whole message including the from-line.  In
@@ -403,6 +407,10 @@ and body.
 
 Read one message from a Mbox folder, including the message separator.
 
+=item B<readBody> PARSER, HEAD [, BODYTYPE]
+
+See Mail::Box::Message::readBody()
+
 =item B<readFromParser> PARSER, [BODYTYPE]
 
 See Mail::Message::readFromParser()
@@ -433,10 +441,6 @@ See Mail::Message::takeMessageId()
 
 See Mail::Reporter::defaultTrace()
 
-=item B<diskDelete> 
-
-See Mail::Box::Message::diskDelete()
-
 =item B<errors> 
 
 See Mail::Reporter::errors()
@@ -448,10 +452,6 @@ See Mail::Reporter::log()
 =item B<printStructure> [FILEHANDLE][, INDENT]
 
 See Mail::Message::Construct::printStructure()
-
-=item B<readBody> PARSER, HEAD [, BODYTYPE]
-
-See Mail::Box::Message::readBody()
 
 =item B<report> [LEVEL]
 
@@ -509,12 +509,13 @@ website at L<http://perl.overmeer.net/mailbox/>.
 
 =head1 AUTHOR
 
-Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
+with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.026.
+This code is beta, version 2.027.
 
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

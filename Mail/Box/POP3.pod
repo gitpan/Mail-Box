@@ -20,15 +20,11 @@ Mail::Box::POP3
 =head1 DESCRIPTION
 
 
-WARNING: THE POP3 IMPLEMENTATION IS UNDER CONSTRUCTION: IT WILL *NOT*
-WORK AT ALL!!!!
-
-This documentation describes how POP3 mailboxes work, and what you
-can do with the POP3 folder object C<Mail::Box::POP3>.
-Please read C<Mail::Box-Overview> and C<Mail::Box> first.
-
-L<The internal organization and details|/"IMPLEMENTATION"> are found
-at the bottom of this manual-page.
+Maintain a folder which has its messages stored on a remote server.  The
+communication between the client application and the server is implemented
+using the POP3 protocol.  This class uses Mail::Transport::POP3 to
+hide the transport of information, and focusses solely on the correct
+handling of messages within a POP3 folder.
 
 =head1 METHODS
 
@@ -45,21 +41,21 @@ pop-server and server-port.
 
  OPTION               DEFAULT
  access               'r'
- authenticate         'LOGIN'
+ authenticate         'AUTO'
  body_delayed_type    'Mail::Message::Body::Delayed'
  body_type            'Mail::Message::Body::Lines'
  coerce_options       []
  create               <false>
  extract              10240
  field_type           undef
- folder               $ENV{MAIL}
+ folder               <username@server_name>
  folderdir            undef
  head_delayed_type    'Mail::Message::Head::Delayed'
  head_type            'Mail::Message::Head::Complete'
  keep_dups            <false>
  lock_file            <not used>
  lock_timeout         <not used>
- lock_type            <not used>
+ lock_type            'NONE'
  lock_wait            <not used>
  locker               undef
  log                  'WARNINGS'
@@ -82,12 +78,13 @@ pop-server and server-port.
 
 See Mail::Box::new(access)
 
-=item B<authenticate> =E<gt> 'LOGIN'|'APOP' X<new(authenticate)>
+=item B<authenticate> =E<gt> 'LOGIN'|'APOP'|'AUTO' X<new(authenticate)>
 
 POP3 can use two methods of authentication: the old LOGIN protocol, which
 transmits a username and password in plain text, and the newer APOP
 protocol which uses MD5 encryption.  APOP is therefore much better, however
-not always supported by the server.
+not always supported by the server.  With AUTO, first APOP is tried and
+if that fails LOGIN.
 
 =item B<body_delayed_type> =E<gt> CLASS
 
@@ -176,7 +173,7 @@ See Mail::Box::Net::new(password)
 =item B<pop_client> =E<gt> OBJECT X<new(pop_client)>
 
 You may want to specify your own pop-client object.  The object
-which is passed must extend C<Mail::Transport::POP3>.
+which is passed must extend Mail::Transport::POP3.
 
 =item B<remove_when_empty> =E<gt> BOOLEAN
 
@@ -267,9 +264,17 @@ See Mail::Box::name()
 
 See Mail::Box::organization()
 
+=item B<type> 
+
+See Mail::Box::type()
+
 =item B<update> OPTIONS
 
 See Mail::Box::update()
+
+=item B<url> 
+
+See Mail::Box::url()
 
 =item B<writable> 
 
@@ -502,12 +507,13 @@ website at L<http://perl.overmeer.net/mailbox/>.
 
 =head1 AUTHOR
 
-Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+Written by Liz Mattijsen (L<liz@dijkmat.nl|mailto:liz@dijkmat.nl>) and Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
+with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.026.
+This code is beta, version 2.027.
 
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

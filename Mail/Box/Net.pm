@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Net;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 
 use base 'Mail::Box';
 
@@ -21,9 +21,11 @@ use File::Spec;
 use File::Basename;
 
 sub init($)
-{   my ($self, $args)    = @_;
+{   my ($self, $args)     = @_;
 
-    $args->{body_type} ||= 'Mail::Message::Body::Lines';
+    $args->{lock_type}  ||= 'NONE';
+    $args->{body_type}  ||= 'Mail::Message::Body::Lines';
+    $args->{folder}     ||= '/';
 
     $self->SUPER::init($args);
 
@@ -36,5 +38,29 @@ sub init($)
 }
 
 sub organization() { 'REMOTE' }
+
+sub url()
+{   my $self = shift;
+
+    my ($user, $pass, $host, $port)
+       = @$self{ qw/MBN_username MBN_password MBN_hostname MBN_port/ };
+
+    my $perm = '';
+    $perm    = $user if defined $user;
+    if(defined $pass)
+    {   $pass  =~ s/(\W)/sprintf "%%%02X", ord $1/ge;
+        $perm .= ':'.$pass;
+    }
+
+    $perm   .= '@'       if length $perm;
+
+    my $loc  = $host;
+    $loc    .= ':'.$port if length $port;
+
+    my $name = $self->name;
+    $loc    .= '/'.$name if $name ne '/';
+
+    $self->type . '://' . $perm . $loc;
+}
 
 1;

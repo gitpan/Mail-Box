@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Tie::ARRAY;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 
 use Carp;
 

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Part;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 use base 'Mail::Message';
 
 use Carp;
@@ -11,9 +11,10 @@ sub init($)
 {   my ($self, $args) = @_;
     $self->SUPER::init($args);
 
-    $self->{MMP_parent} = $args->{parent}
-        or confess "No parent specified for part.\n";
+    confess "No parent specified for part.\n"
+        unless exists $args->{parent};
 
+    $self->{MMP_parent} = $args->{parent};
     $self;
 }
 
@@ -61,7 +62,10 @@ sub deleted(;$)
     $self->{MMP_deleted} = shift;
 }
 
-sub parent() { shift->{MMP_parent} }
+sub parent(;$)
+{   my $self = shift;
+    @_ ? $self->{MMP_parent} = shift : $self->{MMP_parent};
+}
 
 sub toplevel() { shift->parent->toplevel }
 

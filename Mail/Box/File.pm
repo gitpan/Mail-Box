@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::File;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 use base 'Mail::Box';
 
 use Mail::Box::File::Message;
@@ -132,8 +132,6 @@ sub foundIn($@)
 
 sub filename() { shift->{MBF_filename} }
 
-#head2 Closing folders
-
 sub close(@)
 {   my $self = $_[0];            # be careful, we want to set the calling
     undef $_[0];                 #    ref to undef, as the SUPER does.
@@ -142,10 +140,6 @@ sub close(@)
     $self->parserClose;
     $self->SUPER::close(@_);
 }
-
-#head2 The messages
-
-sub scanForMessages(@) {shift}
 
 sub listSubFolders(@)
 {   my ($thingy, %args)  = @_;
@@ -230,11 +224,11 @@ sub parser()
 
     my $parser = $self->{MBM_parser}
        = Mail::Box::Parser->new
-       ( filename  => $source
-       , mode      => $access
-       , trusted   => $self->{MB_trusted}
-       , $self->logSettings
-       ) or return;
+        ( filename  => $source
+        , mode      => $access
+        , trusted   => $self->{MB_trusted}
+        , $self->logSettings
+        ) or return;
 
     $parser->pushSeparator('From ');
     $parser;
@@ -322,8 +316,7 @@ sub _write_new($)
 
     my @messages = @{$args->{messages}};
     foreach my $message (@messages)
-    {   my  $newbegin  = $new->tell;
-        $message->print($new);
+    {   $message->print($new);
         $message->modified(0);
     }
 
@@ -368,10 +361,13 @@ sub _write_replace($)
 
             my $need = $end-$begin;
             my $size = read FILE, $whole, $need;
-            $self->log(ERROR => 'File too short to get write message.')
+            $self->log(ERROR => "File too short to get write message "
+                                . $message->seqnr, " ($size, $need)")
                if $size != $need;
 
             $new->print($whole);
+            $new->print("\n");
+
             $message->moveLocation($newbegin - $oldbegin);
             $kept++;
         }
@@ -423,7 +419,7 @@ sub _write_inplace($)
 
     return 0 unless open FILE, $mode, $filename;
 
-    # Chop the folder after the messages which do not have to change.
+    # Chop the folder after the messages which does not have to change.
     my $keepend  = $messages[0]->fileLocation;
     unless(truncate FILE, $keepend)
     {   CORE::close FILE;  # truncate impossible: try replace writing

@@ -2,11 +2,12 @@ use strict;
 use warnings;
 
 package Mail::Box::Dir::Message;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 use base 'Mail::Box::Message';
 
-use File::Copy;
 use Carp;
+use IO::File;
+use File::Copy qw/move/;
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -27,8 +28,12 @@ sub print(;$)
 
     my $filename = $self->filename;
     if($filename && -r $filename)
-    {   copy($filename, $out);
-        return $self;
+    {   if(my $in = IO::File->new($filename, "r"))
+        {    local $_;
+             $out->print($_) while <$in>;
+             $in->close;
+             return $self;
+        }
     }
 
     $self->SUPER::print($out);

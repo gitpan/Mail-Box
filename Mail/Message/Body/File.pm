@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::File;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
@@ -11,8 +11,6 @@ use Carp;
 use IO::File;
 use POSIX 'tmpnam';
 use File::Copy;
-
-my $crlf_platform = $^O =~ m/mswin|cygwin/;
 
 sub _data_from_filename(@)
 {   my ($self, $filename) = @_;
@@ -138,8 +136,7 @@ sub size()
 
     return $self->{MMBF_size} if exists $self->{MMBF_size};
 
-    $self->{MMBF_size} = (-s $self->tempFilename)
-       - ( $crlf_platform ? $self->nrLines : 0 );
+    $self->{MMBF_size} = -s $self->tempFilename;
 }
 
 sub string()

@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::MH;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 use base 'Mail::Box::Dir';
 
 use Mail::Box::MH::Index;
@@ -89,6 +89,8 @@ sub foundIn($@)
     closedir DIR;
     0;
 }
+
+sub type() {'mh'}
 
 sub listSubFolders(@)
 {   my ($class, %args) = @_;

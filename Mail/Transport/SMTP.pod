@@ -60,7 +60,7 @@ screen.
 
 The fully qualified name of the sender's host (your system) which
 is used for the greeting message to the receiver.  If not specified,
-L<Net::Config> or else L<Net::Domain> are questioned to find it.
+Net::Config or else Net::Domain are questioned to find it.
 When even these do not supply a valid name, the name of the domain in the
 C<From> line of the message is assumed.
 
@@ -143,7 +143,7 @@ See Mail::Transport::retry()
 
 Creates the connection to the SMTP server.  When more than one hostname
 was specified, the first which accepts a connection is taken.  An
-L<IO::Socket::INET> object is returned.
+IO::Socket::INET object is returned.
 
 =item B<destinations> MESSAGE, [ADDRESS|ARRAY-OF-ADDRESSES] X<destinations>
 
@@ -167,7 +167,7 @@ See Mail::Transport::Send::send()
 =item B<tryConnectTo> HOST, OPTIONS X<tryConnectTo>
 
 Try to establish a connection to deliver SMTP to the specified HOST.  The
-OPTIONS are passed to the C<new> method of L<Net::SMTP>.
+OPTIONS are passed to the C<new> method of Net::SMTP.
 
 =item B<trySend> MESSAGE, OPTIONS X<trySend>
 
@@ -275,12 +275,13 @@ website at L<http://perl.overmeer.net/mailbox/>.
 
 =head1 AUTHOR
 
-Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
+with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.026.
+This code is beta, version 2.027.
 
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

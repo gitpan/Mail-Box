@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Delayed;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Object::Realize::Later
@@ -22,6 +22,7 @@ sub init($)
 {   my ($self, $args) = @_;
     $self->SUPER::init($args);
 
+    $self->{MMB_seqnr}    = -1;  # for overloaded body comparison
     $self->{MMBD_message} = $args->{message}
         or croak "A message must be specified to a delayed body.";
 

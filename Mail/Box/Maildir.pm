@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Maildir;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
@@ -44,6 +44,8 @@ sub foundIn($@)
 
     -d File::Spec->catdir($directory, 'cur');
 }
+
+sub type() {'maildir'}
 
 sub listSubFolders(@)
 {   my ($class, %args) = @_;

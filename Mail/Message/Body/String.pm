@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::String;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Carp;
@@ -73,18 +73,12 @@ sub nrLines()
     $self->{MMBS_nrlines} = $nrlines;
 }
 
-sub size()
-{   my $self = shift;
-
-    for($self->{MMBS_scalar})
-    {   return (length) + ( $self->eol eq 'CRLF' ? tr/\n/\n/ : 0);
-    }
-}
+sub size() { length shift->{MMBS_scalar} }
 
 sub string() { shift->{MMBS_scalar} }
 
 sub lines()
-{   my @lines = split /(?<=\n)/, shift->{MMBS_scalar};
+{   my @lines = split /^/, shift->{MMBS_scalar};
     wantarray ? @lines : \@lines;
 }
 

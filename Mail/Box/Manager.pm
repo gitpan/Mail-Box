@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Manager;
-our $VERSION = 2.026;  # Part of Mail::Box
+our $VERSION = 2.027;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Box;
@@ -93,7 +93,11 @@ sub decodeFolderURL($)
                       !x;
 
     $username ||= $ENV{USER} || $ENV{LOGNAME};
-    $password ||= '';
+
+    $password ||= '';        # decode password from url
+    $password =~ s/\+/ /g;
+    $password =~ s/\%([A-Fa-f0-9]{2})/chr hex $1/ge;
+
     $hostname ||= 'localhost';
     $path     ||= '=';
 

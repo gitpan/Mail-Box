@@ -404,6 +404,12 @@ See Mail::Message::labels()
 
 See Mail::Message::DESTROY()
 
+=item B<diskDelete>  X<diskDelete>
+
+Remove a message from disk.  This is not from the folder, but everything
+else, like parts of the message which are stored externally from the
+folder.
+
 =item B<isDelayed> 
 
 See Mail::Message::isDelayed()
@@ -411,6 +417,17 @@ See Mail::Message::isDelayed()
 =item B<labelsToStatus> 
 
 See Mail::Message::labelsToStatus()
+
+=item B<readBody> PARSER, HEAD [, BODYTYPE] X<readBody>
+
+Read the body of one message.  The PARSER gives access to the folder file.
+The HEAD has been read with readHead().  The optional BODYTYPE supplies
+the class name of the body to be created, or a code reference to a
+routine which can produce a body type based on the head (passed as
+first argument).
+
+By default, the BODYTYPE will call Mail::Box::determineBodyType()
+where the message will be added to.
 
 =item B<readFromParser> PARSER, [BODYTYPE]
 
@@ -442,12 +459,6 @@ See Mail::Message::takeMessageId()
 
 See Mail::Reporter::defaultTrace()
 
-=item B<diskDelete>  X<diskDelete>
-
-Remove a message from disk.  This is not from the folder, but everything
-else, like parts of the message which are stored externally from the
-folder.
-
 =item B<errors> 
 
 See Mail::Reporter::errors()
@@ -459,17 +470,6 @@ See Mail::Reporter::log()
 =item B<printStructure> [FILEHANDLE][, INDENT]
 
 See Mail::Message::Construct::printStructure()
-
-=item B<readBody> PARSER, HEAD [, BODYTYPE] X<readBody>
-
-Read the body of one message.  The PARSER gives access to the folder file.
-The HEAD has been read with readHead().  The optional BODYTYPE supplies
-the class name of the body to be created, or a code reference to a
-routine which can produce a body type based on the head (passed as
-first argument).
-
-By default, the BODYTYPE will call Mail::Box::determineBodyType()
-where the message will be added to.
 
 =item B<report> [LEVEL]
 
@@ -528,12 +528,13 @@ website at L<http://perl.overmeer.net/mailbox/>.
 
 =head1 AUTHOR
 
-Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
+with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.026.
+This code is beta, version 2.027.
 
-Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
