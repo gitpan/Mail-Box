@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Field;
-our $VERSION = 2.037;  # Part of Mail::Box
+our $VERSION = 2.038;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -224,6 +224,11 @@ sub toDisclose()
                       ) $!x;
 }
 
+#=notice Empty field: $name
+#Empty fields are not allowed, however sometimes found in messages constructed
+#by broken applications.  You probably want to ignore this message unless you
+#wrote this broken application yourself.
+
 sub consume($;$)
 {   my $self = shift;
     my ($name, $body) = defined $_[1] ? @_ : split(/\s*\:\s*/, (shift), 2);
@@ -254,12 +259,10 @@ sub consume($;$)
     else                          # Created by parser
     {   # correct erroneous wrap-seperators (dos files under UNIX)
         $body =~ s/[\012\015]+/\n/g;
-        $body =~ s/^\s*/ /;  # start with one blank, folding kept unchanged
+        $body =~ s/^[ \t]*/ /;  # start with one blank, folding kept unchanged
 
-        if($body eq "\n")
-        {   $self->log(WARNING => "Empty field: $name\n");
-            return ();
-        }
+        $self->log(NOTICE => "Empty field: $name\n")
+           if $body eq " \n";
     }
 
     ($name, $body);

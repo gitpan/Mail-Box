@@ -1,5 +1,5 @@
 package Mail::Box::POP3;
-our $VERSION = 2.037;  # Part of Mail::Box
+our $VERSION = 2.038;  # Part of Mail::Box
 use base 'Mail::Box::Net';
 
 use strict;

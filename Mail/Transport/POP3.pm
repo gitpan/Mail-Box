@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::POP3;
-our $VERSION = 2.037;  # Part of Mail::Box
+our $VERSION = 2.038;  # Part of Mail::Box
 use base 'Mail::Transport::Receive';
 
 use IO::Socket  ();
@@ -67,9 +67,9 @@ sub message($;$)
     # Some POP3 servers add a trailing empty line
     pop @$message if @$message && $message->[-1] =~ m/^[\012\015]*$/;
 
-    return if exists $self->{MTP_nouidl};
+    $self->{MTP_fetched}{$uidl} = undef   # mark this ID as fetched
+        unless exists $self->{MTP_nouidl};
 
-    $self->{MTP_fetched}{$uidl} = undef; # mark this ID as fetched
     $message;
 }
 

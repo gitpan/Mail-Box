@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::POP3::Message;
-our $VERSION = 2.037;  # Part of Mail::Box
+our $VERSION = 2.038;  # Part of Mail::Box
 use base 'Mail::Box::Net::Message';
 
 use File::Copy;
@@ -26,12 +26,20 @@ sub size($)
     $self->folder->popClient->messageSize($self->unique);
 }
 
+sub delete()
+{   my $self = shift;
+    $self->folder->popClient->deleted(1, $self->unique);
+    $self->SUPER::delete;
+}
+
 sub deleted(;$)
 {   my $self   = shift;
     return $self->SUPER::deleted unless @_;
 
     my $set    = shift;
-    $self->folder->popClient->deleted($set, $self->unique);
+    $self->folder->popClient->deleted(0, $self->unique)
+       unless $set;
+
     $self->SUPER::deleted($set);
 }
 

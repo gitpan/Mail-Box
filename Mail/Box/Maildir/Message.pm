@@ -1,5 +1,5 @@
 package Mail::Box::Maildir::Message;
-our $VERSION = 2.037;  # Part of Mail::Box
+our $VERSION = 2.038;  # Part of Mail::Box
 use base 'Mail::Box::Dir::Message';
 
 use strict;

@@ -10,6 +10,21 @@ NOTE: The number of changes and fixes for each release seem large, but
 wat als appendMessage faalt?
 filehandle als bron folder?
 
+version 2.038: Wed Feb 26 16:20:03 CET 2003
+
+	Fixes:
+
+	- It was not possible to remove POP3 messages with $msg->delete
+	  noticed [Jason Woodward]
+
+	- An empty header field could still be a cause of problems.  They
+	  were removed from the header, with a warning.  Now changed the
+	  warning into a notice message, and the fields are kept.  A fix
+	  and test by [Marty Pauley]
+
+	- POP3 messages where not readible when the server does not support
+	  UIDLs.  Silly bug, solved by [Andreas Fitzner].
+ 
 version 2.037: Sun Feb 23 14:53:50 CET 2003
 
 	Fixes:
