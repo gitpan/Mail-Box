@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::File;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Box';
 
 use Mail::Box::File::Message;
@@ -45,7 +45,7 @@ sub init($)
        if(-e $filename) {;}    # Folder already exists
     elsif(   $args->{create} && $class->create($args->{folder}, %$args)) {;}
     else
-    {   $self->log(PROGRESS => "$class: Folder $filename does not exist.");
+    {   $self->log(PROGRESS => "File $filename for folder $self does not exist.");
         return;
     }
 
@@ -69,14 +69,14 @@ sub init($)
     }
 
     unless($locker->lock)
-    {   $self->log(WARNING => "Couldn't get a lock on folder $self.");
+    {   $self->log(ERROR => "Cannot get a lock on $class folder $self.");
         return;
     }
 
     # Check if we can write to the folder, if we need to.
 
     if($self->writable && ! -w $filename)
-    {   $self->log(WARNING => "Folder $filename is write-protected.");
+    {   $self->log(WARNING => "Folder $self file $filename is write-protected.");
         $self->{MB_access} = 'r';
     }
 
@@ -96,7 +96,7 @@ sub create($@)
     return $class if -f $filename;
 
     my $dir       = dirname $filename;
-    $class->log(ERROR => "Cannot create directory $dir for $name."), return
+    $class->log(ERROR => "Cannot create directory $dir for folder $name: $!"),return
         unless -d $dir || mkdir $dir, 0755;
 
     $class->dirToSubfolder($filename, $subext)
@@ -107,7 +107,7 @@ sub create($@)
         $create->close or return;
     }
     else
-    {   $class->log(WARNING => "Cannot create folder $name: $!\n");
+    {   $class->log(WARNING => "Cannot create folder file $name: $!\n");
         return;
     }
 
@@ -205,10 +205,8 @@ sub writeMessages($)
 
     my $filename = $self->filename;
     if( ! @{$args->{messages}} && $self->{MB_remove_empty})
-    {   unless(unlink $filename)
-        {   $self->log(WARNING =>
-               "Couldn't remove folder $self (file $filename): $!");
-        }
+    {   $self->log(WARNING => "Cannot remove folder $self file $filename: $!")
+             unless unlink $filename;
         return $self;
     }
 
@@ -228,8 +226,6 @@ sub writeMessages($)
     }
 
     $self->parser->restart;
-    $_->modified(0) foreach @{$args->{messages}};
-
     $self;
 }
 
@@ -240,7 +236,7 @@ sub _write_new($)
     my $new      = IO::File->new($filename, 'w');
     return 0 unless defined $new;
 
-    $_->print($new) foreach @{$args->{messages}};
+    $_->write($new) foreach @{$args->{messages}};
 
     $new->close or return 0;
 
@@ -270,8 +266,8 @@ sub _write_replace($)
         my $newbegin = $new->tell;
         my $oldbegin = $message->fileLocation;
 
-        if($message->modified)
-        {   $message->print($new);
+        if($message->isModified)
+        {   $message->write($new);
             $message->moveLocation($newbegin - $oldbegin)
                if defined $oldbegin;
             $reprint++;
@@ -302,7 +298,7 @@ sub _write_replace($)
     unlink $filename;
     unless(move $tmpnew, $filename)
     {   $self->log(WARNING =>
-            "Could not replace $filename by $tmpnew, to update $self: $!");
+            "Cannot replace $filename by $tmpnew, to update folder $self: $!");
 
         unlink $tmpnew;
         return 0;
@@ -319,12 +315,13 @@ sub _write_inplace($)
 {   my ($self, $args) = @_;
 
     my @messages = @{$args->{messages}};
+    my $last;
 
     my ($msgnr, $kept) = (0, 0);
     while(@messages)
     {   my $next = $messages[0];
-        last if $next->modified || $next->seqnr!=$msgnr++;
-        shift @messages;
+        last if $next->isModified || $next->seqnr!=$msgnr++;
+        $last    = shift @messages;
         $kept++;
     }
 
@@ -335,26 +332,36 @@ sub _write_inplace($)
 
     $_->body->load foreach @messages;
 
-    my $mode     = $^O =~ m/^Win/i ? 'a' : '+<';
+    my $mode     = $^O eq 'MSWin32' ? 'a' : '+<';
     my $filename = $self->filename;
 
     my $old      = IO::File->new($filename, $mode) or return 0;
 
     # Chop the folder after the messages which does not have to change.
 
-    my $keepend  = $messages[0]->fileLocation;
-    unless($old->truncate($keepend))
-    {   $old->close;  # truncate impossible: try replace writing
+    my $end = defined $last ? ($last->fileLocation)[1] : 0;
+    unless($old->truncate($end))
+    {   # truncate impossible: try replace writing
+        $old->close;
         return 0;
     }
-    $old->seek(0, 2);       # go to end
+
+    unless(@messages)
+    {   # All further messages only are flagged to be deleted
+        $old->close or return 0;
+        $self->log(PROGRESS => "Folder $self shortened in-place ($kept kept)");
+        return 1;
+    }
+
+    # go to the end of the truncated output file.
+    $old->seek(0, 2);
 
     # Print the messages which have to move.
     my $printed = @messages;
     foreach my $message (@messages)
     {   my $oldbegin = $message->fileLocation;
         my $newbegin = $old->tell;
-        $message->print($old);
+        $message->write($old);
         $message->moveLocation($newbegin - $oldbegin);
     }
 
@@ -379,7 +386,7 @@ sub appendMessages(@)
 
     my $out      = IO::File->new($filename, 'a');
     unless($out)
-    {   $class->log(ERROR => "Cannot append to $filename: $!");
+    {   $class->log(ERROR => "Cannot append messages to folder file $filename: $!");
         return ();
     }
 
@@ -392,7 +399,7 @@ sub appendMessages(@)
            : $msg->can('clone')  ? $msgtype->coerce($msg->clone)
            :                       $msgtype->coerce($msg);
 
-        $coerced->print($out);
+        $coerced->write($out);
         push @coerced, $coerced;
     }
 

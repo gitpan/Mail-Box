@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Head::Complete;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Message::Head';
 
 use Mail::Box::Parser;
@@ -126,8 +126,7 @@ sub removeField($)
     {    return delete $known->{$name};
     }
 
-    $self->log(WARNING =>
-        "Could not remove field $name from header: not found.");
+    $self->log(WARNING => "Cannot remove field $name from header: not found.");
 
     return;
 }

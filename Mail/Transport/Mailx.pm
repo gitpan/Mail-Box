@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::Mailx;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Transport::Send';
 
 use Carp;
@@ -58,8 +58,7 @@ sub _try_send_bsdish($$)
 
     if(close MAILER) { $self->log(PROGRESS => "Message $msgid send.") }
     else
-    {   $self->log(NOTICE =>
-            "Sending message $msgid via $program failed: $! ($?)");
+    {   $self->log(ERROR => "Sending via mailx mailer $program failed: $! ($?)");
         return 0;
     }
 
@@ -81,7 +80,7 @@ sub trySend($@)
     $self->putContent($message, \*MAILER);
 
     unless(close MAILER)
-    {   $self->log(NOTICE => "Sending via $program failed: $! ($?)");
+    {   $self->log(ERROR => "Sending via mailx mailer $program failed: $! ($?)");
         return 0;
     }
 

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::POP3;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Transport::Receive';
 
 use IO::Socket  ();
@@ -35,7 +35,7 @@ sub ids(;@)
 sub messages()
 {   my $self = shift;
 
-    $self->log(INTERNAL => "Cannot get the messages via pop3 this way."), return ()
+    $self->log(ERROR =>"Cannot get the messages of pop3 via messages()."), return ()
        if wantarray;
 
     $self->{MTP_messages};
@@ -146,9 +146,14 @@ sub socket(;$)
     my $socket = $self->_connection;
     return $socket if $socket;
 
-    return unless $self->_reconnectok;
-    return unless $socket = $self->_login;
-    return unless $self->_status( $socket );
+    if(exists $self->{MTP_nouidl})
+    {   $self->log(ERROR =>
+           "Can not re-connect reliably to server which doesn't support UIDL");
+        return;
+    }
+
+    return unless $socket = $self->login;
+    return unless $self->status( $socket );
 
 # Save socket in the object and return it
 
@@ -162,11 +167,11 @@ sub send($$)
 
     if(eval {print $socket @_})
     {   $response = <$socket>;
-        $self->log(ERROR => "Could not read from socket: $!")
-	 unless defined $response;
+        $self->log(ERROR => "Cannot read POP3 from socket: $!")
+           unless defined $response;
     }
     else
-    {   $self->log(ERROR => "Could not write to socket: $@");
+    {   $self->log(ERROR => "Cannot write POP3 to socket: $@");
     }
     $response;
 }
@@ -220,18 +225,7 @@ sub _connection(;$)
     return $socket if $socket;
 }
 
-sub _reconnectok
-{   my $self = shift;
-
-# See if we are allowed to reconnect
-
-    return 1 unless exists $self->{MTP_nouidl};
-    $self->log(ERROR =>
-     "Can not re-connect reliably to server which doesn't support UIDL");
-    0;
-}
-
-sub _login(;$)
+sub login(;$)
 {   my $self = shift;
 
 # Check if we can make a TCP/IP connection
@@ -239,14 +233,14 @@ sub _login(;$)
     local $_; # make sure we don't spoil it for the outside world
     my ($interval, $retries, $timeout) = $self->retry;
     my ($host, $port, $username, $password) = $self->remoteHost;
-    unless($username and $password)
-    {   $self->log(ERROR => "Must have specified username and password");
+    unless($username && $password)
+    {   $self->log(ERROR => "POP3 requires a username and password.");
         return;
     }
 
     my $socket = eval {IO::Socket::INET->new("$host:$port")};
     unless($socket)
-    {   $self->log(ERROR => "Could not connect to $host:$port: $!");
+    {   $self->log(ERROR => "Cannot connect to $host:$port for POP3: $!");
         return;
     }
 
@@ -257,7 +251,7 @@ sub _login(;$)
     my $welcome = <$socket>;
     unless(OK($welcome))
     {   $self->log(ERROR =>
-           "Server at $host:$port does not seem to be talking POP3");
+           "Server at $host:$port does not seem to be talking POP3.");
         return;
     }
 
@@ -267,7 +261,7 @@ sub _login(;$)
     {   if($welcome =~ m#^\+OK (<\d+\.\d+\@[^>]+>)#)
         {   my $md5 = Digest::MD5::md5_hex($1.$password);
             my $response = $self->send($socket, "APOP $username $md5\n")
-	     or return;
+	        or return;
             $connected = OK($response);
         }
     }
@@ -295,7 +289,7 @@ sub _login(;$)
     $socket;
 }
 
-sub _status($;$)
+sub status($;$)
 {   my ($self,$socket) = @_;
 
 # Check if we can do a STAT
@@ -307,7 +301,7 @@ sub _status($;$)
     else
     {   delete $self->{MTP_messages};
         delete $self->{MTP_size};
-        $self->log(ERROR => "Could not do a STAT");
+        $self->log(ERROR => "POP3 Could not do a STAT");
         return;
     }
 

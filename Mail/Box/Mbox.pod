@@ -1,24 +1,21 @@
 
 =head1 NAME
 
-
 Mail::Box::Mbox - handle folders in Mbox format
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::Mbox
+ Mail::Box::Mbox
    is a Mail::Box::File
    is a Mail::Box
    is a Mail::Reporter
 
 =head1 SYNOPSIS
 
-
  use Mail::Box::Mbox;
  my $folder = Mail::Box::Mbox->new(folder => $ENV{MAIL}, ...);
 
 =head1 DESCRIPTION
-
 
 This documentation describes how Mbox mailboxes work, and also describes
 what you can do with the Mbox folder object Mail::Box::Mbox.
@@ -29,7 +26,9 @@ what you can do with the Mbox folder object Mail::Box::Mbox.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  access               'r'
@@ -164,7 +163,7 @@ See Mail::Box::new(remove_when_empty)
 
 See Mail::Box::new(save_on_exit)
 
-=item B<subfolder_extension> =E<gt> STRING X<new(subfolder_extension)>
+=item B<subfolder_extension> =E<gt> STRING
 
 Mbox folders do not support sub-folders.  However, this module can
 simulate sub-directories if the user wants it to.  When a subfolder of
@@ -195,7 +194,7 @@ See Mail::Box::File::new(write_policy)
 
 See Mail::Box::clone()
 
-=item B<create> FOLDERNAME, OPTIONS X<create>
+=item B<create> FOLDERNAME, OPTIONS
 
  OPTION               DEFAULT
  folderdir            undef
@@ -207,7 +206,7 @@ See Mail::Box::clone()
 
 See Mail::Box::create(folderdir)
 
-=item B<subfolder_extension> =E<gt> STRING X<create(subfolder_extension)>
+=item B<subfolder_extension> =E<gt> STRING
 
 If a directory is found on the location of the folder to be created, this
 STRING is used to extend that directory name with.  This will cause the
@@ -220,7 +219,7 @@ is passed to dirToSubfolder().
 
 See Mail::Box::folderdir()
 
-=item B<foundIn> [FOLDERNAME], [OPTIONS] X<foundIn>
+=item B<foundIn> [FOLDERNAME], [OPTIONS]
 
 If no FOLDERNAME is specified, then the C<folder> option is taken.
 
@@ -231,13 +230,13 @@ If no FOLDERNAME is specified, then the C<folder> option is taken.
 
 =over 4
 
-=item B<folder> =E<gt> FOLDERNAME X<foundIn(folder)>
+=item B<folder> =E<gt> FOLDERNAME
 
 =item B<folderdir> =E<gt> DIRECTORY
 
 See Mail::Box::foundIn(folderdir)
 
-=item B<subfolder_extension> =E<gt> STRING X<foundIn(subfolder_extension)>
+=item B<subfolder_extension> =E<gt> STRING
 
 =back
 
@@ -262,6 +261,10 @@ See Mail::Box::copyTo()
 =item B<filename> 
 
 See Mail::Box::File::filename()
+
+=item B<isModified> 
+
+See Mail::Box::isModified()
 
 =item B<modified> [BOOLEAN]
 
@@ -349,7 +352,7 @@ See Mail::Box::scanForMessages()
 
 =over 4
 
-=item B<listSubFolders> OPTIONS X<listSubFolders>
+=item B<listSubFolders> OPTIONS
 
  OPTION               DEFAULT
  check                <false>
@@ -376,7 +379,7 @@ See Mail::Box::listSubFolders(folderdir)
 
 See Mail::Box::listSubFolders(skip_empty)
 
-=item B<subfolder_extension> =E<gt> STRING X<listSubFolders(subfolder_extension)>
+=item B<subfolder_extension> =E<gt> STRING
 
 When the method is called on an open folder, the extension defined by it is
 used to detect sub-folders by default.  Otherwise, C<'.d'> is taken.
@@ -417,7 +420,7 @@ See Mail::Box::toBeUnthreaded()
 
 =item B<appendMessages> OPTIONS
 
-See Mail::Box::appendMessages()
+See Mail::Box::File::appendMessages()
 
 =item B<coerce> MESSAGE
 
@@ -427,15 +430,16 @@ See Mail::Box::coerce()
 
 See Mail::Box::determineBodyType()
 
-=item B<dirToSubfolder> DIRECTORY, EXTENSION X<dirToSubfolder>
+=item B<dirToSubfolder> DIRECTORY, EXTENSION
 
 The DIRECTORY is renamed by appending the EXTENSION, which defaults to C<".d">,
 to make place for a folder file on that specific location.  C<false> is
 returned if this failed.
 
-=item B<folderToFilename> FOLDERNAME, FOLDERDIR, [EXTENSION] X<folderToFilename>
+=item B<folderToFilename> FOLDERNAME, FOLDERDIR, [EXTENSION]
 
-(Class or instance method)  Translate a folder name into a filename, using the
+(Class or Instance method) 
+Translate a folder name into a filename, using the
 FOLDERDIR value to replace a leading C<=>.  If no EXTENSION is specified and
 this method is called as instance method, new(subfolder_extension) is used.
 Otherwise, the extension default to C<'.d'>.
@@ -544,7 +548,6 @@ See Mail::Box::timespan2seconds()
 
 =head1 IMPLEMENTATION
 
-
 =head2 How MBOX folders work
 
 MBOX folders store many messages in one file.  Each message begins with a
@@ -590,7 +593,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -1,17 +1,15 @@
 
 =head1 NAME
 
-
 Mail::Message::Convert::HtmlFormatText - Convert HTML into Text
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Convert::HtmlFormatText
+ Mail::Message::Convert::HtmlFormatText
    is a Mail::Message::Convert
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  use Mail::Message::Convert::HtmlFormatText;
  my $af = Mail::Message::Convert::HtmlFormatText->new;
@@ -19,7 +17,6 @@ Mail::Message::Convert::HtmlFormatText
  my $plain_body = $af->format($body);
 
 =head1 DESCRIPTION
-
 
 Convert HTML/XHTML message body objects into plain text bodies
 using HTML::FormatText.
@@ -30,7 +27,9 @@ using HTML::FormatText.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  fields               <see description>
@@ -45,7 +44,7 @@ using HTML::FormatText.
 
 See Mail::Message::Convert::new(fields)
 
-=item B<leftmargin> =E<gt> INTEGER X<new(leftmargin)>
+=item B<leftmargin> =E<gt> INTEGER
 
 The column of the left margin, passed to the formatter.
 
@@ -53,7 +52,7 @@ The column of the left margin, passed to the formatter.
 
 See Mail::Reporter::new(log)
 
-=item B<rightmargin> =E<gt> INTEGER X<new(rightmargin)>
+=item B<rightmargin> =E<gt> INTEGER
 
 The column of the right margin, passed to the formatter.
 
@@ -69,7 +68,7 @@ See Mail::Reporter::new(trace)
 
 =over 4
 
-=item B<format> BODY X<format>
+=item B<format> BODY
 
 Pass an html/xhtml encoded body, and a plain text body is returned.
 Characters are translated into Latin1.
@@ -157,7 +156,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

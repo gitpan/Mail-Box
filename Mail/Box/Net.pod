@@ -1,26 +1,23 @@
 
 =head1 NAME
 
-
 Mail::Box::Net - handle folders which are stored remote.
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::Net
+ Mail::Box::Net
    is a Mail::Box
    is a Mail::Reporter
 
-Mail::Box::Net is extended by
+ Mail::Box::Net is extended by
    Mail::Box::IMAP4
    Mail::Box::POP3
 
 =head1 SYNOPSIS
 
-
  # Do not instantiate this object yourself
 
 =head1 DESCRIPTION
-
 
 At the moment, this object is extended by
 
@@ -40,7 +37,9 @@ UNDER DEVELOPMENT
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  access               'r'
@@ -164,7 +163,7 @@ See Mail::Box::new(message_type)
 
 See Mail::Box::new(multipart_type)
 
-=item B<password> =E<gt> STRING X<new(password)>
+=item B<password> =E<gt> STRING
 
 The password which is required to contact the remote server.
 
@@ -176,11 +175,11 @@ See Mail::Box::new(remove_when_empty)
 
 See Mail::Box::new(save_on_exit)
 
-=item B<server_name> =E<gt> HOSTNAME X<new(server_name)>
+=item B<server_name> =E<gt> HOSTNAME
 
 The name of the host which contains the remote mail server.
 
-=item B<server_port> =E<gt> INTEGER X<new(server_port)>
+=item B<server_port> =E<gt> INTEGER
 
 Port number in use by the server application.
 
@@ -192,7 +191,7 @@ See Mail::Reporter::new(trace)
 
 See Mail::Box::new(trusted)
 
-=item B<username> =E<gt> STRING X<new(username)>
+=item B<username> =E<gt> STRING
 
 The username which is to be used for the remote server.
 
@@ -208,7 +207,7 @@ The username which is to be used for the remote server.
 
 See Mail::Box::clone()
 
-=item B<create> FOLDER, OPTIONS X<create>
+=item B<create> FOLDER, OPTIONS
 
 Create a new folder on the remote server.
 
@@ -223,7 +222,7 @@ See Mail::Box::create(folderdir)
 
 =back
 
-=item B<folderdir> [DIRECTORY] X<folderdir>
+=item B<folderdir> [DIRECTORY]
 
 Not applicatable for folders on a remote server, so will always return
 the C<undef>.
@@ -249,6 +248,10 @@ See Mail::Box::addMessages()
 =item B<copyTo> FOLDER, OPTIONS
 
 See Mail::Box::copyTo()
+
+=item B<isModified> 
+
+See Mail::Box::isModified()
 
 =item B<modified> [BOOLEAN]
 
@@ -495,7 +498,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

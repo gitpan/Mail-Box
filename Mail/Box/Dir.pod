@@ -1,37 +1,32 @@
 
 =head1 NAME
 
-
 Mail::Box::Dir - handle folders with a file per message.
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::Dir
+ Mail::Box::Dir
    is a Mail::Box
    is a Mail::Reporter
 
-Mail::Box::Dir is extended by
+ Mail::Box::Dir is extended by
    Mail::Box::MH
    Mail::Box::Maildir
 
 =head1 SYNOPSIS
 
-
  # Do not instantiate this object
 
 =head1 DESCRIPTION
 
-
-This documentation describes how directory organized mailboxes work.
-Please read C<Mail::Box-Overview> first.
-
+This documentation describes the way directory organized mailboxes work.
 At the moment, this object is extended by
 
 =over 4
 
-=item * MH
+=item * Mail::Box::MH
 
-=item * Maildir
+=item * Mail::Box::Maildir
 
 =back
 
@@ -41,7 +36,9 @@ At the moment, this object is extended by
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  access               'r'
@@ -219,6 +216,10 @@ See Mail::Box::addMessages()
 
 See Mail::Box::copyTo()
 
+=item B<isModified> 
+
+See Mail::Box::isModified()
+
 =item B<modified> [BOOLEAN]
 
 See Mail::Box::modified()
@@ -357,7 +358,7 @@ See Mail::Box::coerce()
 
 See Mail::Box::determineBodyType()
 
-=item B<directory>  X<directory>
+=item B<directory> 
 
 Returns the directory related to this folder.
 
@@ -365,7 +366,7 @@ Examples:
 
  print $folder->directory;
 
-=item B<folderToDirectory> FOLDERNAME, FOLDERDIR X<folderToDirectory>
+=item B<folderToDirectory> FOLDERNAME, FOLDERDIR
 
 (class method)  Translate a foldername into a filename, with use of the
 FOLDERDIR to replace a leading C<=>.
@@ -382,7 +383,7 @@ See Mail::Box::locker()
 
 See Mail::Box::read()
 
-=item B<readMessageFilenames> DIRECTORY X<readMessageFilenames>
+=item B<readMessageFilenames> DIRECTORY
 
 Returns a list of all filenames which are found in this folder
 directory and represent a message.  The filenames are returned as
@@ -483,7 +484,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -1,14 +1,11 @@
 
 =head1 NAME
 
-
-Mail::Reporter - manage errors and traces for various Mail::* modules
+Mail::Reporter - base-class and error reporter for Mail::Box
 
 =head1 CLASS INHERITANCE
 
-Mail::Reporter
-
-Mail::Reporter is extended by
+ Mail::Reporter is extended by
    Mail::Box
    Mail::Box::Locker
    Mail::Box::MH::Index
@@ -32,7 +29,6 @@ Mail::Reporter is extended by
 
 =head1 SYNOPSIS
 
-
  $folder->log(WARNING => 'go away');
  print $folder->trace;        # current level
  $folder->trace('PROGRESS');  # set level
@@ -40,7 +36,6 @@ Mail::Reporter is extended by
  print $folder->report('PROGRESS');
 
 =head1 DESCRIPTION
-
 
 Read C<Mail::Box-Overview> first.  There are a few objects which produce
 error messages, but which will not break the program.  For instance, an
@@ -51,7 +46,6 @@ produce errors, and can be configured for each mailbox, mail message,
 and mail manager separately.
 
 =head1 METHODS
-
 The C<Mail::Reporter> class is the base for nearly all other
 objects.  It can store and report problems, and contains the general
 constructor new().
@@ -60,8 +54,9 @@ constructor new().
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
 
+(Class method) 
 This error container is also the base constructor for all modules, (as long
 as there is no need for an other base object)  The constructor always accepts
 the following OPTIONS related to error reports.
@@ -72,7 +67,7 @@ the following OPTIONS related to error reports.
 
 =over 4
 
-=item B<log> =E<gt> LEVEL X<new(log)>
+=item B<log> =E<gt> LEVEL
 
 Log messages which have a priority higher or equal to the specified
 level are stored internally and can be retrieved later.  The global
@@ -85,7 +80,7 @@ errors to be logged.
 By the way: C<ERROR> is an alias for C<ERRORS>, as C<WARNING> is an alias
 for C<WARNINGS>, and C<NOTICE> for C<NOTICES>.
 
-=item B<trace> =E<gt> LEVEL X<new(trace)>
+=item B<trace> =E<gt> LEVEL
 
 Trace messages which have a level higher or equal to the specified level
 are directly printed using warn.  The global default for this option can
@@ -99,9 +94,9 @@ be changed with defaultTrace().
 
 =over 4
 
-=item B<defaultTrace> [LEVEL, [LEVEL] X<defaultTrace>
+=item B<defaultTrace> [LEVEL, [LEVEL]
 
-(Class method)
+(Class or Instance method) 
 Reports the default trace and log LEVEL which is used for object as list
 of two elements.  When not explicitly set, both are set to C<WARNINGS>.
 Two values are returned: the first is the log level, the second represents
@@ -123,15 +118,15 @@ Examples:
  print $l;     # prints "WARNING"  (no S!)
  print $l+0;   # prints "4"
 
-=item B<errors>  X<errors>
+=item B<errors> 
 
 Equivalent to
 
  $folder->report('ERRORS')
 
-=item B<log> [LEVEL [,STRINGS]] X<log>
+=item B<log> [LEVEL [,STRINGS]]
 
-(Class or Instance method)
+(Class or Instance method) 
 As instance method this function has three different purposes.  Without
 any argument, it returns one scalar containing the number which is internally
 used to represent the current log level, and the textual representation of
@@ -161,7 +156,7 @@ Examples:
 
  Mail::Message->log(ERROR => 'Unknown');
 
-=item B<report> [LEVEL] X<report>
+=item B<report> [LEVEL]
 
 Get logged reports, as list of strings.  If a LEVEL is specified, the log
 for that level is returned.
@@ -185,7 +180,7 @@ Examples:
     print "$level report: $text";
  }
 
-=item B<reportAll> [LEVEL] X<reportAll>
+=item B<reportAll> [LEVEL]
 
 Report all messages which were produced by this object and all the objects
 which are maintained by this object.  This will return a list of triplets,
@@ -206,14 +201,14 @@ Examples:
     }
  }
 
-=item B<trace> [LEVEL] X<trace>
+=item B<trace> [LEVEL]
 
 Change the trace LEVEL of the object. When no arguments are specified, the
 current level is returned only.  It will be returned in one scalar which
 contains both the number which is internally used to represent the level,
 and the string which represents it.  See logPriority().
 
-=item B<warnings>  X<warnings>
+=item B<warnings> 
 
 Equivalent to
 
@@ -225,22 +220,23 @@ Equivalent to
 
 =over 4
 
-=item B<AUTOLOAD>  X<AUTOLOAD>
+=item B<AUTOLOAD> 
 
 produce a nice warning if the sub-classes cannot resolve a method.
 
-=item B<DESTROY>  X<DESTROY>
+=item B<DESTROY> 
 
 Cleanup.
 
-=item B<inGlobalDestruction>  X<inGlobalDestruction>
+=item B<inGlobalDestruction> 
 
-Returns whether the program is breaking down.  This is used in DESTROY,
+Returns whether the program is breaking down.  This is used in DESTROY(),
 where during global destructions references cannot be used.
 
-=item B<logPriority> LEVEL X<logPriority>
+=item B<logPriority> LEVEL
 
-(Class and instance method)  One error level (log or trace) has more
+(Class or Instance method) 
+One error level (log or trace) has more
 than one representation: a numeric value and one or more strings.  For
 instance, 4, 'WARNING', and 'WARNINGS' are all the same.  You can specify
 any of these, and in return you get a dualvar (see Scalar::Util::dualvar())
@@ -258,7 +254,7 @@ Examples:
  print $r + 0;  # prints 4
  if($r < Mail::Reporter->logPriority('ERROR')) {..} # true
 
-=item B<logSettings>  X<logSettings>
+=item B<logSettings> 
 
 Returns a list of (key => value) pairs which can be used to initiate
 a new object with the same log-settings as this one.
@@ -267,9 +263,9 @@ Examples:
 
  $head->new($folder->logSettings);
 
-=item B<notImplemented>  X<notImplemented>
+=item B<notImplemented> 
 
-A special case of the above log(), which logs a C<INTERNAL>-error
+A special case of log(), which logs a C<INTERNAL>-error
 and then croaks.  This is used by extension writers.
 
 =back
@@ -287,7 +283,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

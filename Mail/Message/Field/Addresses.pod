@@ -1,18 +1,16 @@
 
 =head1 NAME
 
-
 Mail::Message::Field::Addresses - Fields with e-mail addresses
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Field::Addresses
+ Mail::Message::Field::Addresses
    is a Mail::Message::Field::Full
    is a Mail::Message::Field
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  my $f = Mail::Message::Field->new(Cc => 'Mail::Box <mailbox@overmeer.net>');
 
@@ -25,7 +23,6 @@ Mail::Message::Field::Addresses
    );
 
 =head1 DESCRIPTION
-
 
 All header fields which contain e-mail addresses only.  Not all address
 fields have the same possibilities, but they are all parsed the same:
@@ -45,7 +42,9 @@ kind of field, you will be warned.
 
 See Mail::Message::Field::Full::from()
 
-=item B<new> DATA X<new>
+=item B<new> DATA
+
+(Class method)
 
  OPTION               DEFAULT
  attributes           C<not accepted>
@@ -100,7 +99,7 @@ See Mail::Reporter::new(trace)
 
 Examples:
 
-=item B<parse> STRING X<parse>
+=item B<parse> STRING
 
 Parse the supplied address string, and store the found data in this
 object.
@@ -111,7 +110,7 @@ object.
 
 =over 4
 
-=item B<addAddress> [ADDRESS], OPTIONS X<addAddress>
+=item B<addAddress> [ADDRESS], OPTIONS
 
 Add an ADDRESS to the field.  The addresses are organized in groups.  If no
 group is specified, the default group is taken to store the address in.  If
@@ -124,11 +123,11 @@ Mail::Message::Field::Address::new().
 
 =over 4
 
-=item B<group> =E<gt> STRING X<addAddress(group)>
+=item B<group> =E<gt> STRING
 
 =back
 
-=item B<addAttribute> ... X<addAttribute>
+=item B<addAttribute> ...
 
 Attributes are not supported for address fields.
 
@@ -136,11 +135,11 @@ Attributes are not supported for address fields.
 
 See Mail::Message::Field::Full::addComment()
 
-=item B<addExtra> ... X<addExtra>
+=item B<addExtra> ...
 
 Extras are not permitted in address fields.
 
-=item B<addGroup> GROUP|OPTIONS X<addGroup>
+=item B<addGroup> GROUP|OPTIONS
 
 Add a group of addresses to this field.  A GROUP can be specified, which
 is a Mail::Message::Field::AddrGroup object, or one is created for you
@@ -151,7 +150,7 @@ using the OPTIONS.  The group is returned.
 
 =over 4
 
-=item B<name> =E<gt> STRING X<addGroup(name)>
+=item B<name> =E<gt> STRING
 
 =back
 
@@ -159,7 +158,7 @@ using the OPTIONS.  The group is returned.
 
 See Mail::Message::Field::Full::addPhrase()
 
-=item B<addresses>  X<addresses>
+=item B<addresses> 
 
 Returns a list with all addresses defined in any group of addresses:
 all addresses which are specified on the line.  The addresses are
@@ -177,13 +176,13 @@ See Mail::Message::Field::Full::attributes()
 
 See Mail::Message::Field::clone()
 
-=item B<consumeAddress> STRING X<consumeAddress>
+=item B<consumeAddress> STRING
 
 Try to destilate address information from the STRING.   Returned are
 an address B<object> and the left-over string.  If no address was found,
 the first returned value is C<undef>.
 
-=item B<consumeDomain> STRING X<consumeDomain>
+=item B<consumeDomain> STRING
 
 Try to get a valid domain representation from STRING.  Returned are the
 domain string as found (or C<undef>) and the rest of the string.
@@ -196,17 +195,17 @@ See Mail::Message::Field::Full::createComment()
 
 See Mail::Message::Field::Full::createPhrase()
 
-=item B<group> NAME X<group>
+=item B<group> NAME
 
 Returns the group of addresses with the specified NAME, or C<undef>
 if it does not exist.  If NAME is C<undef>, then the default groep
 is returned.
 
-=item B<groupNames>  X<groupNames>
+=item B<groupNames> 
 
 Returns a list with all group names which are defined.
 
-=item B<groups>  X<groups>
+=item B<groups> 
 
 Returns all address groups which are defined in this field.  Each
 element is a Mail::Message::Field::AddrGroup object.
@@ -426,7 +425,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

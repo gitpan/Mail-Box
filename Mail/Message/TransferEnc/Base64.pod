@@ -1,24 +1,21 @@
 
 =head1 NAME
 
-
 Mail::Message::TransferEnc::Base64 - encode/decode base64 message bodies
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::TransferEnc::Base64
+ Mail::Message::TransferEnc::Base64
    is a Mail::Message::TransferEnc
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  my Mail::Message $msg = ...;
  my $decoded = $msg->decoded;
  my $encoded = $msg->encode(transfer => 'base64');
 
 =head1 DESCRIPTION
-
 
 Encode or decode message bodies with base64.  The e-mail protocol and
 user agents can not handle binary data.  Therefore, binary data -but
@@ -38,7 +35,9 @@ four bytes.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  log                  'WARNINGS'
@@ -84,9 +83,18 @@ See Mail::Message::TransferEnc::name()
 
 See Mail::Message::TransferEnc::check()
 
-=item B<decode> BODY [, OPTIONS]
+=item B<decode> BODY, OPTIONS
 
-See Mail::Message::TransferEnc::decode()
+ OPTION               DEFAULT
+ result_type          <type of source body>
+
+=over 4
+
+=item B<result_type> =E<gt> CLASS
+
+See Mail::Message::TransferEnc::decode(result_type)
+
+=back
 
 =item B<encode> BODY, OPTIONS
 
@@ -171,7 +179,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

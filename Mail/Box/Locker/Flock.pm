@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Box::Locker::Flock;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Box::Locker';
 
 use IO::File;
@@ -33,7 +33,8 @@ sub lock()
 
     my $file   = IO::File->new($filename, $lockfile_access_mode);
     unless($file)
-    {   $self->log(ERROR => "Unable to open lockfile $filename: $!");
+    {   $self->log(ERROR =>
+           "Unable to open flock file $filename for $self->{MBL_folder}: $!");
         return 0;
     }
 
@@ -48,7 +49,7 @@ sub lock()
 
         if($! != EAGAIN)
         {   $self->log(ERROR =>
-                  "Will never get a lock at ".$self->{MBL_folder}->name.": $!");
+               "Will never get a flock on $filename for $self->{MBL_folder}: $!");
             last;
         }
 
@@ -65,7 +66,8 @@ sub isLocked()
 
     my $file     = IO::File->new($filename, $lockfile_access_mode);
     unless($file)
-    {   $self->log(ERROR => "Unable to open lockfile $filename: $!");
+    {   $self->log(ERROR =>
+            "Unable to check lock file $filename for $self->{MBL_folder}: $!");
         return 0;
     }
 

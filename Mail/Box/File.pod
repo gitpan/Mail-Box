@@ -1,23 +1,21 @@
 
 =head1 NAME
 
-
 Mail::Box::File - handle file-based folders
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::File
+ Mail::Box::File
    is a Mail::Box
    is a Mail::Reporter
 
-Mail::Box::File is extended by
+ Mail::Box::File is extended by
    Mail::Box::Mbox
 
 =head1 SYNOPSIS
 
 
 =head1 DESCRIPTION
-
 
 Mail::Box::File is the base-class for all file-based folders: folders which
 bundle multiple messages into one single file.  Usually, these messages are
@@ -29,7 +27,24 @@ separated by a special line which indicates the start of the next one.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<create> FOLDERNAME, OPTIONS
+
+(Class method)
+
+ OPTION               DEFAULT
+ folderdir            undef
+
+=over 4
+
+=item B<folderdir> =E<gt> DIRECTORY
+
+See Mail::Box::create(folderdir)
+
+=back
+
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  access               'r'
@@ -71,7 +86,7 @@ See Mail::Box::new(access)
 
 See Mail::Box::new(body_delayed_type)
 
-=item B<body_type> =E<gt> CLASS|CODE X<new(body_type)>
+=item B<body_type> =E<gt> CLASS|CODE
 
 The C<body_type> option for File folders defaults to
 
@@ -124,7 +139,7 @@ See Mail::Box::new(head_type)
 
 See Mail::Box::new(keep_dups)
 
-=item B<lock_extension> =E<gt> FILENAME|STRING X<new(lock_extension)>
+=item B<lock_extension> =E<gt> FILENAME|STRING
 
 When the dotlock locking mechanism is used, the lock is created with a
 hardlink to the folder file.  For Mail::Box::File type of folders, this
@@ -196,7 +211,7 @@ See Mail::Reporter::new(trace)
 
 See Mail::Box::new(trusted)
 
-=item B<write_policy> =E<gt> 'REPLACE'|'INPLACE'|undef X<new(write_policy)>
+=item B<write_policy> =E<gt> 'REPLACE'|'INPLACE'|undef
 
 Sets the default write policy (see write(policy)).  With C<undef>, the best
 policy is autodetected.
@@ -212,10 +227,6 @@ policy is autodetected.
 =item B<clone> OPTIONS
 
 See Mail::Box::clone()
-
-=item B<create> FOLDERNAME, OPTIONS
-
-See Mail::Box::create()
 
 =item B<folderdir> [DIRECTORY]
 
@@ -243,7 +254,7 @@ See Mail::Box::addMessages()
 
 See Mail::Box::copyTo()
 
-=item B<filename>  X<filename>
+=item B<filename> 
 
 Returns the filename for this folder, which may be an absolute or relative
 path to the file.
@@ -251,6 +262,10 @@ path to the file.
 Examples:
 
  print $folder->filename;
+
+=item B<isModified> 
+
+See Mail::Box::isModified()
 
 =item B<modified> [BOOLEAN]
 
@@ -376,7 +391,28 @@ See Mail::Box::toBeUnthreaded()
 
 =item B<appendMessages> OPTIONS
 
-See Mail::Box::appendMessages()
+(Class method)
+
+ OPTION               DEFAULT
+ folder               <obligatory>
+ message              undef
+ messages             undef
+
+=over 4
+
+=item B<folder> =E<gt> FOLDERNAME
+
+See Mail::Box::appendMessages(folder)
+
+=item B<message> =E<gt> MESSAGE
+
+See Mail::Box::appendMessages(message)
+
+=item B<messages> =E<gt> ARRAY-OF-MESSAGES
+
+See Mail::Box::appendMessages(messages)
+
+=back
 
 =item B<coerce> MESSAGE
 
@@ -386,9 +422,10 @@ See Mail::Box::coerce()
 
 See Mail::Box::determineBodyType()
 
-=item B<folderToFilename> FOLDERNAME, FOLDERDIR, [SUBEXT] X<folderToFilename>
+=item B<folderToFilename> FOLDERNAME, FOLDERDIR, [SUBEXT]
 
-(Class or instance method)  Translate a folder name into a filename, using the
+(Class or Instance method) 
+Translate a folder name into a filename, using the
 FOLDERDIR value to replace a leading C<=>.  SUBEXT is only used for MBOX
 folders.
 
@@ -400,7 +437,7 @@ See Mail::Box::lineSeparator()
 
 See Mail::Box::locker()
 
-=item B<parser>  X<parser>
+=item B<parser> 
 
 Create a parser for this mailbox.  The parser stays alive as long as
 the folder is open.
@@ -421,7 +458,7 @@ See Mail::Box::storeMessage()
 
 See Mail::Box::updateMessages()
 
-=item B<write> OPTIONS X<write>
+=item B<write> OPTIONS
 
  OPTION               DEFAULT
  force                <false>
@@ -434,7 +471,7 @@ See Mail::Box::updateMessages()
 
 See Mail::Box::write(force)
 
-=item B<policy> =E<gt> 'REPLACE'|'INPLACE'|undef X<write(policy)>
+=item B<policy> =E<gt> 'REPLACE'|'INPLACE'|undef
 
 In what way will the mail folder be updated.  If not specified during the
 write, the value of the C<write_policy> at folder creation is taken.
@@ -558,7 +595,6 @@ See Mail::Box::timespan2seconds()
 
 =head1 IMPLEMENTATION
 
-
 =head2 How file-based folders work
 
 File-based folders store many messages in one file (let's call this a
@@ -578,7 +614,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

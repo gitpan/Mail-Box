@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::TransferEnc;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 my %encoder =
@@ -17,13 +17,14 @@ sub create($@)
 
     my $encoder = $encoder{lc $type};
     unless($encoder)
-    {   $class->new(@_)->log(WARNING => "No decoder for $type");
+    {   $class->new(@_)->log(WARNING => "No decoder for transfer encoding $type.");
         return;
     }
 
     eval "require $encoder";
     if($@)
-    {   $class->new(@_)->log(WARNING => "Decoder for $type does not work:\n$@");
+    {   $class->new(@_)->log(ERROR =>
+            "Decoder for transfer encoding $type does not work:\n$@");
         return;
     }
 

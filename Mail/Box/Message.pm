@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Message;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Message';
 
 use Date::Parse;
@@ -87,17 +87,17 @@ sub head(;$)
     $new || $old;
 }
 
-sub delete() { shift->deleted(1) }
+sub delete() { shift->{MBM_deleted} ||= time }
 
 sub deleted(;$)
 {   my $self = shift;
-    return $self->{MBM_deleted} unless @_;
 
-    my $delete = shift;
-    return $delete if $delete==$self->{MBM_deleted};
-
-    $self->{MBM_deleted} = ($delete ? time : 0);
+      ! @_      ? $self->isDeleted   # compat 2.036
+    : ! (shift) ? ($self->{MBM_deleted} = undef)
+    :             $self->delete;
 }
+
+sub isDeleted() { shift->{MBM_deleted} }
 
 sub shortSize(;$)
 {   my $self = shift;

@@ -1,24 +1,21 @@
 
 =head1 NAME
 
-
 Mail::Transport::Mailx - transmit messages using external mailx program
 
 =head1 CLASS INHERITANCE
 
-Mail::Transport::Mailx
+ Mail::Transport::Mailx
    is a Mail::Transport::Send
    is a Mail::Transport
    is a Mail::Reporter
 
 =head1 SYNOPSIS
 
-
  my $sender = Mail::Transport::Mailx->new(...);
  $sender->send($message);
 
 =head1 DESCRIPTION
-
 
 Implements mail transport using the external programs C<'mailx'>,
 C<Mail>, or C<'mail'>.  When instantiated, the mailer will look for
@@ -41,7 +38,9 @@ mechanism.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  executable           C<undef>
@@ -92,7 +91,7 @@ See Mail::Transport::new(proxy)
 
 See Mail::Transport::new(retry)
 
-=item B<style> =E<gt> 'BSD'|'RFC822' X<new(style)>
+=item B<style> =E<gt> 'BSD'|'RFC822'
 
 There are two version of the C<mail> program.  The newest accepts
 RFC822 messages, and automagically collect information about where
@@ -153,8 +152,6 @@ See Mail::Transport::Send::putContent()
 See Mail::Transport::Send::send()
 
 =item B<trySend> MESSAGE, OPTIONS
-
-See Mail::Transport::Send::trySend()
 
 =back
 
@@ -235,7 +232,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Tie::HASH;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 
 use Carp;
 
@@ -42,7 +42,7 @@ sub NEXTKEY($)
         return undef if $index >= $nrmsgs;
 
         $msg      = $folder->message($index);
-        last unless $msg->deleted;
+        last unless $msg->isDeleted;
     }
 
     $msg->messageId;
@@ -52,7 +52,7 @@ sub EXISTS($)
 {   my $folder = shift->{MBT_folder};
     my $msgid  = shift;
     my $msg    = $folder->messageId($msgid);
-    defined $msg && ! $msg->deleted;
+    defined $msg && ! $msg->isDeleted;
 }
 
 sub DELETE($)

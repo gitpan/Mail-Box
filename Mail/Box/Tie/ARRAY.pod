@@ -1,11 +1,9 @@
 
 =head1 NAME
 
-
 Mail::Box::Tie::ARRAY - access an existing message folder as array
 
 =head1 SYNOPSIS
-
 
  use Mail::Box::Manager;
  my $mgr    = Mail::Box::Manager->new;
@@ -33,7 +31,6 @@ Mail::Box::Tie::ARRAY - access an existing message folder as array
 
 =head1 DESCRIPTION
 
-
 Certainly when you look at a folder as a list of messages, it is logical to
 access the folder through an array.
 
@@ -51,15 +48,16 @@ Examples what you I<cannot> do:
 
 =over 4
 
-=item B<tie> ARRAY, 'Mail::Box::Tie::ARRAY', FOLDER X<tie>
+=item B<tie> ARRAY, 'Mail::Box::Tie::ARRAY', FOLDER
 
+(not a method) 
 Create the tie on an existing folder.
 
 Examples:
 
  my $mgr   = Mail::Box::Manager->new;
  my $inbox = $mgr->new(folder => $ENV{MAIL});
- tie my(@inbox), ref $inbox, $inbox;
+ tie my(@inbox), 'Mail::Box::Tie::Array', ref $inbox, $inbox;
 
 =back
 
@@ -67,7 +65,7 @@ Examples:
 
 =over 4
 
-=item B<DELETE>  X<DELETE>
+=item B<DELETE> 
 
 Flag a message to be removed.  Be warned that the message stays in
 the folder, and is not removed before the folder is written.
@@ -77,7 +75,7 @@ Examples:
  delete $inbox[5];
  $inbox[5]->delete;   #same
 
-=item B<FETCH> INDEX X<FETCH>
+=item B<FETCH> INDEX
 
 Get the message which is at the indicated location in the list of
 messages contained in this folder.  Deleted messages will be returned
@@ -87,7 +85,7 @@ Examples:
 
  print $inbox[3];
 
-=item B<FETCHSIZE>  X<FETCHSIZE>
+=item B<FETCHSIZE> 
 
 Return the total number of messages in a folder.  This is called when
 the folder-array is used in scalar context, for instance.
@@ -97,7 +95,7 @@ Examples:
  if(@inbox > 10)    # contains more than 10 messages?
  my $nrmsgs = @inbox;
 
-=item B<PUSH> MESSAGES X<PUSH>
+=item B<PUSH> MESSAGES
 
 Add MESSAGES to the end of the folder.
 
@@ -105,7 +103,7 @@ Examples:
 
     push @inbox, $newmsg;
 
-=item B<STORE> INDEX, MESSAGE X<STORE>
+=item B<STORE> INDEX, MESSAGE
 
 Random message replacement is is not permitted--doing so would disturb threads
 etc.  An error occurs if you try to do this. The only thing which is allowed
@@ -117,14 +115,13 @@ Examples:
  $inbox[$#inbox] = $add;
  push @inbox, $add;
 
-=item B<STORESIZE> LENGTH X<STORESIZE>
+=item B<STORESIZE> LENGTH
 
 Sets all messages behind from LENGTH to the end of folder to be deleted.
 
 =back
 
 =head1 IMPLEMENTATION
-
 
 This module implements C<TIEARRAY>, C<FETCH>, C<STORE>, C<FETCHSIZE>,
 C<STORESIZE>, C<DELETE>, C<PUSH>, and C<DESTROY>.
@@ -146,7 +143,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

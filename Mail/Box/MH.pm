@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::MH;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Box::Dir';
 
 use Mail::Box::MH::Index;
@@ -64,7 +64,7 @@ sub create($@)
         return $class;
     }
     else
-    {   $class->log(WARNING => "Cannot create folder $name: $!\n");
+    {   $class->log(ERROR => "Cannot create MH folder $name: $!\n");
         return;
     }
 }
@@ -286,7 +286,7 @@ sub writeMessages($)
     #       is on disk.
 
     my $locker    = $self->locker;
-    $self->log(ERROR => "Cannot write without lock."), return
+    $self->log(ERROR => "Cannot write folder $self without lock."), return
         unless $locker->lock;
 
     my $renumber  = exists $args->{renumber} ? $args->{renumber} : 1;
@@ -348,7 +348,7 @@ sub appendMessages(@)
 
     my $locker   = $self->locker;
     unless($locker->lock)
-    {   $self->log(ERROR => "Cannot append message after $self without lock.");
+    {   $self->log(ERROR => "Cannot append message without lock on $self.");
         return;
     }
 
@@ -357,7 +357,7 @@ sub appendMessages(@)
     foreach my $message (@messages)
     {   my $filename = File::Spec->catfile($directory,$msgnr);
         $message->create($filename)
-          or $self->log(ERROR => "Unable to write message to $filename: $!\n");
+          or $self->log(ERROR => "Unable to write message for $self to $filename: $!\n");
 
         $msgnr++;
     }

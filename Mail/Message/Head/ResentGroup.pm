@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Message::Head::ResentGroup;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Scalar::Util 'weaken';
@@ -32,7 +32,7 @@ sub init($$)
         foreach grep m/^[A-Z]/, keys %$args;
 
     my $head = $self->{MMHR_head} = $args->{head};
-    $self->log(INTERNAL => "Message header required for ResentGroup")
+    $self->log(ERROR => "Message header required for creation of ResentGroup.")
        unless defined $head;
 
     weaken( $self->{MMHR_head} );

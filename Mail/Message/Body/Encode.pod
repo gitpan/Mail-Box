@@ -1,30 +1,28 @@
 
 =head1 NAME
 
-
 Mail::Message::Body::Encode - organize general message encodings
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Body
-  has extra code in Mail::Message::Body::Construct
-  has extra code in Mail::Message::Body::Encode
+ Mail::Message::Body has extra code in
+   Mail::Message::Body::Construct
+   Mail::Message::Body::Encode
 
-Mail::Message::Body
+ Mail::Message::Body
    is a Mail::Reporter
 
-Mail::Message::Body is extended by
+ Mail::Message::Body is extended by
    Mail::Message::Body::File
    Mail::Message::Body::Lines
    Mail::Message::Body::Multipart
    Mail::Message::Body::Nested
    Mail::Message::Body::String
 
-Mail::Message::Body is realized by
+ Mail::Message::Body is realized by
    Mail::Message::Body::Delayed
 
 =head1 SYNOPSIS
-
 
  my Mail::Message $msg = ...;
  my $decoded = $msg->decoded;
@@ -36,7 +34,6 @@ Mail::Message::Body is realized by
  my $encoded = $body->encode(transfer_encoding => '7bit');
 
 =head1 DESCRIPTION
-
 
 Manages the message's body encodings and decodings on request of the
 main program.  This package adds functionality to the Mail::Message::Body
@@ -101,6 +98,10 @@ See Mail::Message::Body::decoded()
 
 See Mail::Message::Body::isDelayed()
 
+=item B<isModified> 
+
+See Mail::Message::Body::isModified()
+
 =item B<isMultipart> 
 
 See Mail::Message::Body::isMultipart()
@@ -113,13 +114,17 @@ See Mail::Message::Body::isNested()
 
 See Mail::Message::Body::message()
 
-=item B<modified> [BOOL]
+=item B<modified> [BOOLEAN]
 
 See Mail::Message::Body::modified()
 
-=item B<print> [FILE]
+=item B<print> [FILEHANDLE]
 
 See Mail::Message::Body::print()
+
+=item B<printEscapedFrom> FILEHANDLE
+
+See Mail::Message::Body::printEscapedFrom()
 
 =back
 
@@ -143,12 +148,12 @@ See Mail::Message::Body::disposition()
 
 See Mail::Message::Body::eol()
 
-=item B<isBinary>  X<isBinary>
+=item B<isBinary> 
 
 Returns true when the un-encoded message is binary data.  This information
 is retrieved from knowledge provided by MIME::Types.
 
-=item B<isText>  X<isText>
+=item B<isText> 
 
 Returns true when the un-encoded message contains printable
 text.
@@ -197,9 +202,9 @@ See Mail::Message::Body::string()
 
 =over 4
 
-=item B<addTransferEncHandler> NAME, CLASS|OBJECT X<addTransferEncHandler>
+=item B<addTransferEncHandler> NAME, CLASS|OBJECT
 
-(Class or instance method)
+(Class or Instance method) 
 Relate the NAMEd transfer encoding to an OBJECTs or object of the specified
 CLASS.  In the latter case, an object of that CLASS will be created on the
 moment that one is needed to do encoding or decoding.
@@ -213,7 +218,7 @@ Why aren't you contributing this class to MailBox?
 
 See Mail::Message::Body::Construct::attach()
 
-=item B<check>  X<check>
+=item B<check> 
 
 Check the content of the body not to include illegal characters.  Which
 characters are considered illegal depends on the encoding of this body.
@@ -227,7 +232,7 @@ defined, then C<undef> is returned.
 
 See Mail::Message::Body::Construct::concatenate()
 
-=item B<encode> OPTIONS X<encode>
+=item B<encode> OPTIONS
 
 Encode (translate) a Mail::Message::Body object into a different format.
 See the DESCRIPTION above.  Options which are not specified will not trigger
@@ -241,25 +246,25 @@ conversions.
 
 =over 4
 
-=item B<charset> =E<gt> STRING X<encode(charset)>
+=item B<charset> =E<gt> STRING
 
-=item B<mime_type> =E<gt> STRING|FIELD X<encode(mime_type)>
+=item B<mime_type> =E<gt> STRING|FIELD
 
 Convert into the specified mime type, which can be specified as STRING
 or FIELD.  The FIELD is a Mail::Message::Field, and the STRING is
 converted in such object before use.
 
-=item B<result_type> =E<gt> CLASS X<encode(result_type)>
+=item B<result_type> =E<gt> CLASS
 
 The type of body to be created when the body is changed to fulfill the request
 on re-coding.  Also the intermediate stages in the translation process (if
 needed) will use this type. CLASS must extend Mail::Message::Body.
 
-=item B<transfer_encoding> =E<gt> STRING|FIELD X<encode(transfer_encoding)>
+=item B<transfer_encoding> =E<gt> STRING|FIELD
 
 =back
 
-=item B<encoded>  X<encoded>
+=item B<encoded> 
 
 Encode the body to a format what is acceptable to transmit or write to
 a folder file.  This returns the body where this method was called
@@ -270,7 +275,7 @@ otherwise.  In either case, the body is checked.
 
 See Mail::Message::Body::Construct::foreachLine()
 
-=item B<getTransferEncHandler> TYPE X<getTransferEncHandler>
+=item B<getTransferEncHandler> TYPE
 
 Get the transfer encoder/decoder which is able to handle TYPE, or return
 undef if there is no such handler.
@@ -279,7 +284,7 @@ undef if there is no such handler.
 
 See Mail::Message::Body::Construct::stripSignature()
 
-=item B<unify> BODY X<unify>
+=item B<unify> BODY
 
 Unify the type of the given BODY objects with the type of the called
 body.  C<undef> is returned when unification is impossible.  If the
@@ -395,7 +400,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

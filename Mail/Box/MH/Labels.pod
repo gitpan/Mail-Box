@@ -1,23 +1,20 @@
 
 =head1 NAME
 
-
 Mail::Box::MH::Labels - process file which maintains message related labels
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::MH::Labels
+ Mail::Box::MH::Labels
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  my $labels = Mail::Box::MH::Labels->new;
  $labels->read(...)
  $labels->write(...)
 
 =head1 DESCRIPTION
-
 
 MH type message folders use one dedicated file per folder-directory to list
 special tags to messages in that folder.  By doing this, mail agents may
@@ -64,7 +61,9 @@ So: label C<unseen> is translated into C<seen> for internal use.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  filename             <required>
@@ -73,7 +72,7 @@ So: label C<unseen> is translated into C<seen> for internal use.
 
 =over 4
 
-=item B<filename> =E<gt> FILENAME X<new(filename)>
+=item B<filename> =E<gt> FILENAME
 
 The FILENAME which is used in each directory to store the headers of all
 mails. The filename must be an absolute path.
@@ -94,11 +93,11 @@ See Mail::Reporter::new(trace)
 
 =over 4
 
-=item B<filename>  X<filename>
+=item B<filename> 
 
 Returns the name of the index file.
 
-=item B<get> MSGNR X<get>
+=item B<get> MSGNR
 
 Look if there is label info for message MSGNR.
 
@@ -108,21 +107,21 @@ Look if there is label info for message MSGNR.
 
 =over 4
 
-=item B<append> MESSAGES X<append>
+=item B<append> MESSAGES
 
 Append the label information about the specified MESSAGES to the end
 of the label file.  The information will not be merged with the
 information already present in the label file.
 
-=item B<print> FILEHANDLE, MESSAGES X<print>
+=item B<print> FILEHANDLE, MESSAGES
 
 Print the labels of the specified messages to the opened file.
 
-=item B<read>  X<read>
+=item B<read> 
 
 Read all label information from file.
 
-=item B<write> MESSAGES X<write>
+=item B<write> MESSAGES
 
 Write the labels related to the specified messages to the label file.
 
@@ -205,7 +204,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

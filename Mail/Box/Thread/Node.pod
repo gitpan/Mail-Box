@@ -1,23 +1,20 @@
 
 =head1 NAME
 
-
 Mail::Box::Thread::Node - one node in a message thread
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::Thread::Node
+ Mail::Box::Thread::Node
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  my $node = Mail::Box::Thread::Node->new;
  $node->addMessage($message);
  ...
 
 =head1 DESCRIPTION
-
 
 The Mail::Box::Thread::Node maintains one node in the linked list of threads.
 Each node contains one message, and a list of its follow-ups.  Next to
@@ -37,7 +34,44 @@ same node.
 
 =item B<new> OPTIONS
 
-See Mail::Reporter::new()
+(Class method) 
+You will not call this method yourself. The Mail::Box::Thread::Manager
+object will use it to construct Mail::Box::Thread::Node objects.
+Either a C<message> or a C<messageId> must be supplied.
+
+ OPTION               DEFAULT
+ dummy_type           undef
+ log                  'WARNINGS'
+ message              undef
+ messageId            undef
+ trace                'WARNINGS'
+
+=over 4
+
+=item B<dummy_type> =E<gt> CLASS
+
+Indicates the class name of dummy messages. Dummy messages are
+placeholders in a Mail::Box::Thread::Manager data structure.
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<message> =E<gt> MESSAGE
+
+The MESSAGE which is stored in this node.  The message
+must be a Mail::Box::Message.
+
+=item B<messageId> =E<gt> MESSAGE-ID
+
+The MESSAGE-ID for the message which is stored in this node.  Only
+specify it when you don't have the message yet.
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=back
 
 =back
 
@@ -45,18 +79,18 @@ See Mail::Reporter::new()
 
 =over 4
 
-=item B<addMessage> MESSAGE X<addMessage>
+=item B<addMessage> MESSAGE
 
 Add one message to the thread node.  If the node contains a dummy, then
 the dummy is replaced. Otherwise, the messages is added to the end of the
 list.
 
-=item B<isDummy>  X<isDummy>
+=item B<isDummy> 
 
 Returns true if the message is a dummy. A dummy is a "hole" in a thread
 which has follow-ups but does not have a message.
 
-=item B<message>  X<message>
+=item B<message> 
 
 Get the message which is stored in this thread node.  NOTE: the same
 message may be located in many folders at the same time, and these
@@ -82,7 +116,7 @@ Examples:
 
  print "Subject is ", $node->message->subject, ".\n";
 
-=item B<messageId>  X<messageId>
+=item B<messageId> 
 
 Return the message-id related to this thread node.  Each of the messages
 listed in this node will have the same ID.
@@ -93,18 +127,18 @@ listed in this node will have the same ID.
 
 =over 4
 
-=item B<expand> [BOOLEAN] X<expand>
+=item B<expand> [BOOLEAN]
 
 Returns whether this (part of the) folder has to be shown expanded or not.
 This is simply done by a label, which means that most folder types can
 store this.
 
-=item B<followUps>  X<followUps>
+=item B<followUps> 
 
 Returns the list of follow-ups to this thread node.  This list
 may contain parsed, not-parsed, and dummy messages.
 
-=item B<followedBy> THREADS X<followedBy>
+=item B<followedBy> THREADS
 
 Register that the THREADS are follow-ups to this message. These
 follow-ups need not be related to each other in any way other than
@@ -113,7 +147,7 @@ sharing the same parent.
 Defining the same relation more than once will not cause information to
 be duplicated.
 
-=item B<follows> THREAD, QUALITY X<follows>
+=item B<follows> THREAD, QUALITY
 
 Register that the current thread is a reply to the specified THREAD. The
 QUALITY of the relation is specified by the second argument.  The THREAD
@@ -125,7 +159,7 @@ specified, later calls to the follow method will have no effect. If
 C<follows> is called with a QUALITY that matches the current quality, the
 new thread overrides the previous.
 
-=item B<repliedTo>  X<repliedTo>
+=item B<repliedTo> 
 
 Returns the message(s) to which the message in this node replies. In
 scalar context, this method will return the message to which the message
@@ -172,7 +206,7 @@ Examples:
  my ($question, $quality) = $answer->repliedTo;
  if($question && $quality eq 'REPLY') { ... };
 
-=item B<sortedFollowUps> [PREPARE [,COMPARE]] X<sortedFollowUps>
+=item B<sortedFollowUps> [PREPARE [,COMPARE]]
 
 Returns the list of followUps(), but sorted.  By default
 sorting is based on the estimated time of the reply. See
@@ -184,12 +218,12 @@ startTimeEstimate().
 
 =over 4
 
-=item B<endTimeEstimate>  X<endTimeEstimate>
+=item B<endTimeEstimate> 
 
 Returns a guess as to when the thread has ended (although you never
 know for sure whether there fill follow messages in the future).
 
-=item B<ids>  X<ids>
+=item B<ids> 
 
 Returns all the ids in the thread starting at the current thread node.
 
@@ -198,19 +232,19 @@ Examples:
  $newfolder->addMessages($folder->ids($thread->ids));
  $folder->delete($thread->ids);
 
-=item B<numberOfMessages>  X<numberOfMessages>
+=item B<numberOfMessages> 
 
 Number of messages in the thread starting at the current thread node, but
 not counting the dummies.
 
-=item B<recurse> CODE-REF X<recurse>
+=item B<recurse> CODE-REF
 
 Execute a function for all sub-threads.  If the subroutine returns true,
 sub-threads are visited recursively. Otherwise, the current branch
 traversal is aborted. The routine is called with the thread-node as the
 only argument.
 
-=item B<startTimeEstimate>  X<startTimeEstimate>
+=item B<startTimeEstimate> 
 
 Returns a guess as to when the thread was started.  Each message contains
 various date specifications (each with various uncertainties resulting
@@ -219,7 +253,7 @@ is used as the timestamp for the message. If the node contains a dummy
 message the lowest timestamp of the replies is returned. Otherwise the
 estimated timestamp of the node's message is returned.
 
-=item B<threadMessages>  X<threadMessages>
+=item B<threadMessages> 
 
 Returns all the messages in the thread starting at the current thread
 node.  This list will not include dummies.
@@ -228,7 +262,7 @@ Examples:
 
  my @t = $folder->message(3)->threadStart->threadMessages;
 
-=item B<threadToString> [CODE] X<threadToString>
+=item B<threadToString> [CODE]
 
 Translate a thread into a string. The string will contain at least one
 line for each message which was found, but tries to fold dummies.  This
@@ -266,7 +300,7 @@ presents a folded thread with three messages.
       length $subject ? $subject : '<no subject>';
    }
 
-=item B<totalSize>  X<totalSize>
+=item B<totalSize> 
 
 Returns the sum of the size of all the messages in the thread.
 
@@ -349,7 +383,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

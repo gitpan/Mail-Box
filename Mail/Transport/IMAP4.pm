@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::IMAP4;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Transport::Receive';
 
 sub init($)
@@ -34,7 +34,7 @@ sub ids(;@)
 sub messages()
 {   my $self = shift;
 
-    $self->log(INTERNAL => "Cannot get the messages via pop3 this way."), return ()
+    $self->log(ERROR =>"Cannot get the messages of imap4 via messages()."), return ()
        if wantarray;
 
     $self->{MTP_messages};
@@ -120,8 +120,13 @@ sub socket(;$)
     my $socket = $self->_connection;
     return $socket if $socket;
 
-    return unless $self->_reconnectok;
-    return unless $socket = $self->_login;
+    unless(exists $self->{MTP_nouidl})
+    {   $self->log(ERROR =>
+           "Can not re-connect reliably to server which doesn't support UIDL");
+        return;
+    }
+
+    return unless $socket = $self->login;
     return unless $self->_status( $socket );
 
 # Save socket in the object and return it
@@ -136,11 +141,11 @@ sub send($$)
 
     if(eval {print $socket @_})
     {   $response = <$socket>;
-        $self->log(ERROR => "Could not read from socket: $!")
-	 unless defined $response;
+        $self->log(ERROR => "Cannot read IMAP4 from socket: $!")
+	   unless defined $response;
     }
     else
-    {   $self->log(ERROR => "Could not write to socket: $@");
+    {   $self->log(ERROR => "Cannot write IMAP4 to socket: $@");
     }
     $response;
 }
@@ -199,13 +204,10 @@ sub _reconnectok
 
 # See if we are allowed to reconnect
 
-    return 1 unless exists $self->{MTP_nouidl};
-    $self->log(ERROR =>
-     "Can not re-connect reliably to server which doesn't support UIDL");
     0;
 }
 
-sub _login(;$)
+sub login(;$)
 {   my $self = shift;
 
 # Check if we can make a TCP/IP connection
@@ -214,13 +216,13 @@ sub _login(;$)
     my ($interval, $retries, $timeout) = $self->retry;
     my ($host, $port, $username, $password) = $self->remoteHost;
     unless($username and $password)
-    {   $self->log(ERROR => "Must have specified username and password");
+    {   $self->log(ERROR => "IMAP4 requires a username and password");
         return;
     }
 
     my $socket = eval {IO::Socket::INET->new("$host:$port")};
     unless($socket)
-    {   $self->log(ERROR => "Could not connect to $host:$port: $!");
+    {   $self->log(ERROR => "Cannot connect to $host:$port for IMAP4: $!");
         return;
     }
 

@@ -1,22 +1,20 @@
 
 =head1 NAME
 
-
 Mail::Box::Message - manage one message within a mail-folder
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::Message
+ Mail::Box::Message
    is a Mail::Message
    is a Mail::Reporter
 
-Mail::Box::Message is extended by
+ Mail::Box::Message is extended by
    Mail::Box::Dir::Message
    Mail::Box::File::Message
    Mail::Box::Net::Message
 
 =head1 SYNOPSIS
-
 
  # Usually these message objects are created indirectly
  use Mail::Box::Manager;
@@ -27,7 +25,6 @@ Mail::Box::Message is extended by
  $msg->size;   # and much more
 
 =head1 DESCRIPTION
-
 
 These pages do only describe methods which relate to folders.  If you
 access the knowledge of a message, then read Mail::Message.
@@ -42,7 +39,9 @@ from stage, the message's body and head objects may change.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  body                 undef
@@ -65,13 +64,13 @@ from stage, the message's body and head objects may change.
 
 See Mail::Message::new(body)
 
-=item B<body_type> =E<gt> CODE|CLASS X<new(body_type)>
+=item B<body_type> =E<gt> CODE|CLASS
 
 If the body of a message is used delay-loaded, the message must what type
 of message to become when it finally gets parsed.  The folder which is
 delaying the load must specify the algorithm to determine that type.
 
-=item B<deleted> =E<gt> BOOLEAN X<new(deleted)>
+=item B<deleted> =E<gt> BOOLEAN
 
 Is the file deleted from the start?
 
@@ -79,7 +78,7 @@ Is the file deleted from the start?
 
 See Mail::Message::new(field_type)
 
-=item B<folder> =E<gt> FOLDER X<new(folder)>
+=item B<folder> =E<gt> FOLDER
 
 (obligatory) The folder where this message appeared in.  The argument is
 an instance of (a sub-class of) a Mail::Box.
@@ -104,7 +103,7 @@ See Mail::Message::new(messageId)
 
 See Mail::Message::new(modified)
 
-=item B<size> =E<gt> INTEGER X<new(size)>
+=item B<size> =E<gt> INTEGER
 
 The size of the message, which includes head and body, but without the
 message separators which may be used by the folder type.
@@ -137,7 +136,7 @@ See Mail::Message::Construct::build()
 
 See Mail::Message::Construct::buildFromBody()
 
-=item B<coerce> MESSAGE X<coerce>
+=item B<coerce> MESSAGE
 
 Coerce a message to be included in a folder.  The folder itself
 is not specified, but the type of the message is transformed correctly.
@@ -190,7 +189,7 @@ See Mail::Message::clone()
 
 See Mail::Message::container()
 
-=item B<copyTo> FOLDER X<copyTo>
+=item B<copyTo> FOLDER
 
 Copy the message to the indicated opened FOLDER, without deleting the
 original.  The coerced message (the copy in the desitnation folder) is
@@ -201,7 +200,7 @@ Examples:
  my $draft = $mgr->open(folder => 'Draft');
  $message->copyTo($draft);
 
-=item B<folder> [FOLDER] X<folder>
+=item B<folder> [FOLDER]
 
 In with folder did we detect this message/dummy?  This is a reference
 to the folder-object.
@@ -209,6 +208,10 @@ to the folder-object.
 =item B<isDummy> 
 
 See Mail::Message::isDummy()
+
+=item B<isModified> 
+
+See Mail::Message::isModified()
 
 =item B<isPart> 
 
@@ -222,7 +225,7 @@ See Mail::Message::messageId()
 
 See Mail::Message::modified()
 
-=item B<moveTo> FOLDER X<moveTo>
+=item B<moveTo> FOLDER
 
 Move the message from this folder to the FOLDER specified.  This will
 create a copy (using clone()) first, and flag this original message
@@ -238,7 +241,7 @@ See Mail::Message::print()
 
 See Mail::Message::send()
 
-=item B<seqnr> [INTEGER] X<seqnr>
+=item B<seqnr> [INTEGER]
 
 Get the number of this message is the current folder.  It starts counting
 from zero.  Do not change the number.
@@ -250,6 +253,10 @@ See Mail::Message::size()
 =item B<toplevel> 
 
 See Mail::Message::toplevel()
+
+=item B<write> [FILEHANDLE]
+
+See Mail::Message::write()
 
 =back
 
@@ -365,26 +372,48 @@ See Mail::Message::Construct::string()
 
 =over 4
 
-=item B<delete>  X<delete>
+=item B<delete> 
 
 Flag the message to be deleted.  The real deletion only takes place on
-a synchronization of the folder.
+a synchronization of the folder.  See deleted().
+
+The time stamp of the moment of deletion is stored as value.  When the same
+message is deleted more than once, the first time stamp will stay.
 
 Examples:
 
  $message->delete;
+ $message->deleted(1);  # exactly the same
  delete $message;
 
-=item B<deleted> [BOOLEAN] X<deleted>
+=item B<deleted> [BOOLEAN]
 
-Check or set the deleted flag for this message.  This method returns
-undef (not deleted, false) or the time of deletion (true).  With a
-BOOL argument, the status is changed first.
+Set the delete flag for this message.  Without argument, the method returns
+the same is the isDeleted() method, which is prefered.  When a true value
+is given, delete() is called.
 
 Examples:
 
- if($message->deleted) {...}
- $message->deleted(0);        # undelete
+ $message->deleted(1);          # delete
+ $message->delete;              # delete (prefered)
+
+ $message->deleted(0);          # undelete
+
+ if($message->deleted) {...}    # check
+ if($message->isDeleted) {...}  # check (prefered)
+
+=item B<isDeleted> 
+
+Returns the moment (as the time function returns) when the message was
+flagged for deletion, or C<undef> when the message is not deleted.
+
+Examples:
+
+ next if $message->isDeleted;
+
+ if(my $when = $message->isDeleted) {
+    print scalar localtime $when;
+ }
 
 =item B<label> LABEL [,VALUE [LABEL, VALUE] ]
 
@@ -393,6 +422,14 @@ See Mail::Message::label()
 =item B<labels> 
 
 See Mail::Message::labels()
+
+=item B<labelsToStatus> 
+
+See Mail::Message::labelsToStatus()
+
+=item B<statusToLabels> 
+
+See Mail::Message::statusToLabels()
 
 =back
 
@@ -404,7 +441,7 @@ See Mail::Message::labels()
 
 See Mail::Message::DESTROY()
 
-=item B<diskDelete>  X<diskDelete>
+=item B<diskDelete> 
 
 Remove a message from disk.  This is not from the folder, but everything
 else, like parts of the message which are stored externally from the
@@ -414,11 +451,7 @@ folder.
 
 See Mail::Message::isDelayed()
 
-=item B<labelsToStatus> 
-
-See Mail::Message::labelsToStatus()
-
-=item B<readBody> PARSER, HEAD [, BODYTYPE] X<readBody>
+=item B<readBody> PARSER, HEAD [, BODYTYPE]
 
 Read the body of one message.  The PARSER gives access to the folder file.
 The HEAD has been read with readHead().  The optional BODYTYPE supplies
@@ -436,10 +469,6 @@ See Mail::Message::readFromParser()
 =item B<readHead> PARSER [,CLASS]
 
 See Mail::Message::readHead()
-
-=item B<statusToLabels> 
-
-See Mail::Message::statusToLabels()
 
 =item B<storeBody> BODY
 
@@ -479,7 +508,7 @@ See Mail::Reporter::report()
 
 See Mail::Reporter::reportAll()
 
-=item B<shortString>  X<shortString>
+=item B<shortString> 
 
 Convert the message header to a short string, representing the most
 important facts (for debugging purposes only).
@@ -533,7 +562,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -50,7 +50,7 @@ sub init($)
     my $class      = ref $self;
     my $foldername = $args->{folder} || $ENV{MAIL};
     unless($foldername)
-    {   $self->log(ERROR => "No folder specified: specify the folder option or set the MAIL environment variable.");
+    {   $self->log(ERROR => "No folder name specified.");
         return;
     }
 
@@ -168,7 +168,7 @@ sub write(@)
     if($args{save_deleted}) {@keep = $self->messages }
     else
     {   foreach ($self->messages)
-        {   if($_->deleted)
+        {   if($_->isDeleted)
             {   push @destroy, $_;
                 $_->diskDelete;
             }
@@ -176,7 +176,7 @@ sub write(@)
         }
     }
 
-    unless(@destroy || $self->modified)
+    unless(@destroy || $self->isModified)
     {   $self->log(PROGRESS => "Folder $self not changed, so not updated.");
         return $self;
     }
@@ -212,14 +212,25 @@ sub update(@)
 
 sub organization() { shift->notImplemented }
 
-sub modified($)
+sub modified(;$)
+{   my $self = shift;
+    return $self->isModified unless @_;   # compat 2.036
+
+    return
+      if $self->{MB_modified} = shift;    # force modified flag
+
+    # unmodify all messages
+    $_->modified(0) foreach $self->messages;
+    0;
+}
+
+sub isModified()
 {   my $self     = shift;
-    return $self->{MB_modified} = shift if @_;
     return 1 if $self->{MB_modified};
 
     foreach (@{$self->{MB_messages}})
     {    return $self->{MB_modified} = 1
-            if $_->deleted || $_->modified;
+            if $_->isDeleted || $_->isModified;
     }
 
     0;
@@ -294,7 +305,7 @@ sub _copy_to($@)
     # Take messages from this folder.
     foreach my $msg ($self->messages($select))
     {   if($msg->copyTo($to)) { $msg->delete if $delete }
-        else { $self->log(ERROR => "Copy failed.") }
+        else { $self->log(ERROR => "Copying failed for one message.") }
     }
 
     return $self unless $flatten || $recurse;
@@ -349,7 +360,7 @@ sub close(@)
 
     my $write;
     for($args{write} || 'MODIFIED')
-    {   $write = $_ eq 'MODIFIED' ? $self->modified
+    {   $write = $_ eq 'MODIFIED' ? $self->isModified
                : $_ eq 'ALWAYS'   ? 1
                : $_ eq 'NEVER'    ? 0
                : croak "Unknown value to folder->close(write => $_).";
@@ -413,6 +424,9 @@ sub messageId($;$)
     if($msgid =~ m/\<([^>]+)\>/s )
     {   $msgid = $1;
         $msgid =~ s/\s//gs;
+
+        $self->log(WARNING => "Message-id '$msgid' does not contain a domain.")
+            unless index($msgid, '@') >= 0;
     }
 
     return $self->{MB_msgid}{$msgid} unless @_;
@@ -440,7 +454,7 @@ sub messageId($;$)
         return $message->delete
             if $subj1 eq $subj2 && $to1 eq $to2;
 
-        $self->log(NOTICE => "Different message with id $msgid.");
+        $self->log(WARNING => "Different messages with id $msgid.");
         $msgid = $message->takeMessageId(undef);
     }
 
@@ -483,8 +497,8 @@ sub messages($;$)
     my $what = shift;
     my $action
       = ref $what eq 'CODE'? $what
-      : $what eq 'DELETED' ? sub {$_[0]->deleted}
-      : $what eq 'ACTIVE'  ? sub {not $_[0]->deleted}
+      : $what eq 'DELETED' ? sub {$_[0]->isDeleted}
+      : $what eq 'ACTIVE'  ? sub {not $_[0]->isDeleted}
       : $what eq 'ALL'     ? sub {1}
       : $what =~ s/^\!//   ? sub {not $_[0]->label($what)}
       :                      sub {$_[0]->label($what)};
@@ -695,7 +709,7 @@ sub timespan2seconds($)
         :                $1 * 604800;  # week
     }
     else
-    {   carp "Invalid timespan '$_' specified.\n";
+    {   $_[0]->log(ERROR => "Invalid timespan '$_' specified.\n");
         undef;
     }
 }

@@ -1,24 +1,22 @@
 
 =head1 NAME
 
-
 Mail::Message::Construct - extends the functionality of a Mail::Message
 
 =head1 CLASS INHERITANCE
 
-Mail::Message
-  has extra code in Mail::Message::Construct
+ Mail::Message has extra code in
+   Mail::Message::Construct
 
-Mail::Message
+ Mail::Message
    is a Mail::Reporter
 
-Mail::Message is extended by
+ Mail::Message is extended by
    Mail::Box::Message
    Mail::Message::Dummy
    Mail::Message::Part
 
 =head1 SYNOPSIS
-
 
  my $msg1 = Mail::Message->read(\*STDIN);
  my $msg2 = Mail::Message->read(\@lines);
@@ -32,7 +30,6 @@ Mail::Message is extended by
  my $quoted  = $message->replyPrelude($head->get('From'));
 
 =head1 DESCRIPTION
-
 
 Read C<Mail::Box-Overview> and C<Mail::Message> first.
 
@@ -55,7 +52,7 @@ See Mail::Message::new()
 
 =over 4
 
-=item B<bounce> [RG-OBJECT|OPTIONS] X<bounce>
+=item B<bounce> [RG-OBJECT|OPTIONS]
 
 The program calling this method considers itself as an intermediate step
 in the message delivery process; it therefore leaves a resent group
@@ -82,9 +79,10 @@ Examples:
     Received => 'from ... by ...');
  $msg->bounce($rg)->send;
 
-=item B<build> [MESSAGE|BODY], CONTENT X<build>
+=item B<build> [MESSAGE|BODY], CONTENT
 
-(Class method) Simplified message object builder.  In case a MESSAGE is
+(Class method) 
+Simplified message object builder.  In case a MESSAGE is
 specified, a new message is created with the same body to start with, but
 new headers.  A BODY may be specified as well.  However, there are more
 ways to add data simply.
@@ -107,14 +105,14 @@ been constructed.  Together, they produce your message.
 
 =over 4
 
-=item B<attach> =E<gt> BODY|MESSAGE|ARRAY-OF-BODY X<build(attach)>
+=item B<attach> =E<gt> BODY|MESSAGE|ARRAY-OF-BODY
 
 One attachment to the message.  Each attachment can be full MESSAGE or a BODY.
 
  attach => $folder->message(3)->decoded  # body
  attach => $folder->message(3)           # message
 
-=item B<data> =E<gt> STRING|ARRAY-OF-LINES X<build(data)>
+=item B<data> =E<gt> STRING|ARRAY-OF-LINES
 
 The text for one part, specified as one STRING, or an ARRAY of lines.  Each
 line, including the last, must be terminated by a newline.  This argument
@@ -127,7 +125,7 @@ construct one.
  line 2
  TEXT
 
-=item B<file> =E<gt> FILENAME|FILEHANDLE|IOHANDLE X<build(file)>
+=item B<file> =E<gt> FILENAME|FILEHANDLE|IOHANDLE
 
 Create a body where the data is read from the specified FILENAME,
 FILEHANDLE, or object of type C<IO::Handle>.  Also this body is used
@@ -139,11 +137,11 @@ to create a C<Mail::Message::Body>.
  file => \*MYINPUTFILE                   # file handle
  file => $in                             # IO::Handle
 
-=item B<files> =E<gt> ARRAY-OF-FILE X<build(files)>
+=item B<files> =E<gt> ARRAY-OF-FILE
 
 See option file, but then an array reference collection more of them.
 
-=item B<head> =E<gt> HEAD X<build(head)>
+=item B<head> =E<gt> HEAD
 
 Start with a prepared header, otherwise one is created.
 
@@ -163,9 +161,9 @@ Examples:
   , attach => $signature
   );
 
-=item B<buildFromBody> BODY, [HEAD], HEADERS X<buildFromBody>
+=item B<buildFromBody> BODY, [HEAD], HEADERS
 
-(Class method)
+(Class method) 
 Shape a message around a BODY.  Bodies have information about their
 content in them, which is used to construct a header for the message.
 You may specify a HEAD object which is pre-initialized, or one is
@@ -202,7 +200,7 @@ Examples:
 
 See Mail::Message::coerce()
 
-=item B<forward> OPTIONS X<forward>
+=item B<forward> OPTIONS
 
 Forward the content of this message.  The body of the message to be forwarded
 is encapsulated in some accompanying text (if you have no wish for that, than
@@ -232,49 +230,49 @@ reply immediately, or you may do that later with C<set> on the header.
 
 =over 4
 
-=item B<Bcc> =E<gt> ADDRESSES X<forward(Bcc)>
+=item B<Bcc> =E<gt> ADDRESSES
 
 Receivers of blind carbon copies: their names will not be published to
 other message receivers.
 
-=item B<Cc> =E<gt> ADDRESSES X<forward(Cc)>
+=item B<Cc> =E<gt> ADDRESSES
 
 The carbon-copy receivers, by default none.
 
-=item B<Date> =E<gt> DATE X<forward(Date)>
+=item B<Date> =E<gt> DATE
 
 The date to be used in the message sent.
 
-=item B<From> =E<gt> ADDRESSES X<forward(From)>
+=item B<From> =E<gt> ADDRESSES
 
 Your identification, by default taken from the C<To> field of the
 source message.
 
-=item B<Message-ID> =E<gt> STRING X<forward(Message-ID)>
+=item B<Message-ID> =E<gt> STRING
 
 Supply a STRING as specific message-id for the reply.  By default, one is
 generated for you.  If there are no angles around your id, they will be
 added.
 
-=item B<Subject> =E<gt> STRING|CODE X<forward(Subject)>
+=item B<Subject> =E<gt> STRING|CODE
 
 Force the subject line to the specific STRING, or the result of the
 subroutine specified by CODE.  The subroutine will be called passing
 the subject of the original message as only argument.  By default,
 the forwardSubject() method is used.
 
-=item B<To> =E<gt> ADDRESSES X<forward(To)>
+=item B<To> =E<gt> ADDRESSES
 
 The destination of your message. Obligatory.  The ADDRESSES may be
 specified as string, a C<Mail::Address> object, or as array of
 C<Mail::Address> objects.
 
-=item B<body> =E<gt> OBJECT X<forward(body)>
+=item B<body> =E<gt> OBJECT
 
 If you specify a fully prepared body OBJECT, it will be used as forwarded
 message contents.  In this case, only the headers are constructed for you.
 
-=item B<include> =E<gt> 'INLINE'|'ATTACH' X<forward(include)>
+=item B<include> =E<gt> 'INLINE'|'ATTACH'
 
 Must the message where this is a reply to be included in the message?
 With 'INLINE' a forward body is composed. 'ATTACH' will create a multi-part
@@ -282,32 +280,32 @@ body, where the original message is added after the specified body.  It is
 only possible to inline textual messages, therefore binary or multi-part
 messages will always be enclosed as attachment.
 
-=item B<max_signature> =E<gt> INTEGER X<forward(max_signature)>
+=item B<max_signature> =E<gt> INTEGER
 
 Passed to C<stripSignature> on the body as parameter C<max_lines>.  Only
 effective for single-part messages.
 
-=item B<message_type> =E<gt> CLASS X<forward(message_type)>
+=item B<message_type> =E<gt> CLASS
 
 Create a message with the requested type.  By default, it will be a
 C<Mail::Message>.  This is correct, because it will be coerced into
 the correct folder message type when it is added to that folder.
 
-=item B<postlude> =E<gt> BODY X<forward(postlude)>
+=item B<postlude> =E<gt> BODY
 
 The line(s) which to be added after the quoted reply lines.  Create a
 body for it first.  This should not include the signature, which has its
 own option.  The signature will be added after the postlude when the
 forwarded message is INLINEd.
 
-=item B<prelude> =E<gt> BODY X<forward(prelude)>
+=item B<prelude> =E<gt> BODY
 
 The line(s) which will be added before the quoted forwarded lines.  If nothing
 is specified, the result of the forwardPrelude() method (as described
 below) is used.  When C<undef> is specified, no prelude
 will be added.
 
-=item B<quote> =E<gt> CODE|STRING X<forward(quote)>
+=item B<quote> =E<gt> CODE|STRING
 
 Mangle the lines of an C<INLINE>d reply with CODE, or by prepending a
 STRING to each line.  The routine specified by CODE is called when the
@@ -316,14 +314,14 @@ line is in C<$_>.
 By default, nothing is added before each line.  This option is processed
 after the body has been decoded.
 
-=item B<signature> =E<gt> BODY|MESSAGE X<forward(signature)>
+=item B<signature> =E<gt> BODY|MESSAGE
 
 The signature to be added in case of a multi-part forward.  The mime-type
 of the signature body should indicate this is a used as such.  However,
 in INLINE mode, the body will be taken, a line containing C<'-- '> added
 before it, and added behind the epilogue.
 
-=item B<strip_signature> =E<gt> REGEXP|STRING|CODE X<forward(strip_signature)>
+=item B<strip_signature> =E<gt> REGEXP|STRING|CODE
 
 Remove the signature of the sender.  The value of this parameter is passed
 to the body's C<stripSignature> method (see C<Mail::Message::Body>)
@@ -338,7 +336,7 @@ matter, as long as it is present.  See C<Mail::Message::Body::Multipart>.
 
 =back
 
-=item B<forwardPostlude>  X<forwardPostlude>
+=item B<forwardPostlude> 
 
 Added after the forwarded message.
 
@@ -346,7 +344,7 @@ Examples:
 
  ---- END forwarded message
 
-=item B<forwardPrelude>  X<forwardPrelude>
+=item B<forwardPrelude> 
 
 Create a few lines to be included before the forwarded message
 content.  The return is an array of lines.
@@ -360,7 +358,7 @@ Examples:
  Date: Wed, 9 Feb 2000 15:44:05 -0500
  <blank line>
 
-=item B<forwardSubject> STRING X<forwardSubject>
+=item B<forwardSubject> STRING
 
 Create a subject for a message which is a forward from this one.  This routine
 tries to count the level of reply in subject field, and transform it into
@@ -373,12 +371,12 @@ Examples:
  Re[X]: subject          --> Forw: Re[X]: subject
  <blank>                 --> Forwarded
 
-=item B<read> FILEHANDLE|SCALAR|REF-SCALAR|ARRAY-OF-LINES, OPTIONS X<read>
+=item B<read> FILEHANDLE|SCALAR|REF-SCALAR|ARRAY-OF-LINES, OPTIONS
 
-(Class method)
+(Class method) 
 Read a message from a FILEHANDLE, SCALAR, a reference to a SCALAR, or
-an array of LINES.  The OPTIONS are passed to the C<new()> of the message
-which is created.
+a reference to an array of LINES.  The OPTIONS are passed to the C<new()>
+of the message which is created.
 
 Please have a look at build() and buildFromBody()
 before thinking about this C<read> method.
@@ -400,7 +398,7 @@ Examples:
  Hi, greetings!
  MSG
 
-=item B<reply> OPTIONS X<reply>
+=item B<reply> OPTIONS
 
 Start a reply to this message.  Some of the header-lines of the original
 message will be taken.  A message-id will be assigned.  Some header lines
@@ -434,42 +432,42 @@ a Mail::Address object, or as array of Mail::Address objects.
 
 =over 4
 
-=item B<Bcc> =E<gt> ADDRESSES X<reply(Bcc)>
+=item B<Bcc> =E<gt> ADDRESSES
 
 Receivers of blind carbon copies: their names will not be published to
 other message receivers.
 
-=item B<Cc> =E<gt> ADDRESSES X<reply(Cc)>
+=item B<Cc> =E<gt> ADDRESSES
 
 The carbon-copy receivers, by default a copy of the C<Cc> field of
 the source message.
 
-=item B<From> =E<gt> ADDRESSES X<reply(From)>
+=item B<From> =E<gt> ADDRESSES
 
 Your identification, by default taken from the C<To> field of the
 source message.
 
-=item B<Message-ID> =E<gt> STRING X<reply(Message-ID)>
+=item B<Message-ID> =E<gt> STRING
 
 Supply a STRING as specific message-id for the reply.  By default, one is
 generated for you.  If there are no angles around your id, they will be
 added.
 
-=item B<Subject> =E<gt> STRING|CODE X<reply(Subject)>
+=item B<Subject> =E<gt> STRING|CODE
 
 Force the subject line to the specific STRING, or the result of the
 subroutine specified by CODE.  The subroutine will be called passing
 the subject of the original message as only argument.  By default,
 the C<replySubject> method (described below) is used.
 
-=item B<To> =E<gt> ADDRESSES X<reply(To)>
+=item B<To> =E<gt> ADDRESSES
 
 The destination of your message.  By default taken from the C<Reply-To>
 field in the source message.  If that field is not present, the C<Sender>
 field is taken.  If that field is not present as well, the C<From> line
 is scanned.  If they all fail, C<undef> is returned.
 
-=item B<body> =E<gt> BODY X<reply(body)>
+=item B<body> =E<gt> BODY
 
 Usually, the reply method can create a nice, sufficient message from the
 source message's body.  In case you like more complicated reformatting,
@@ -477,13 +475,13 @@ you may also create a body yourself first, and pass this on to this
 C<reply> method. Some of the other options to this method will be ingored
 in this case.
 
-=item B<group_reply> =E<gt> BOOLEAN X<reply(group_reply)>
+=item B<group_reply> =E<gt> BOOLEAN
 
 Will the people listed in the C<Cc> headers (those who received the
 message where you reply to now) also receive this message as carbon
 copy?
 
-=item B<include> =E<gt> 'NO'|'INLINE'|'ATTACH' X<reply(include)>
+=item B<include> =E<gt> 'NO'|'INLINE'|'ATTACH'
 
 Must the message where this is a reply to be included in the message?
 If 'NO' then not.  With 'INLINE' a reply body is composed. 'ATTACH'
@@ -492,31 +490,31 @@ after the specified body.  It is only possible to inline textual
 messages, therefore binary or multipart messages will always be
 enclosed as attachment.
 
-=item B<max_signature> =E<gt> INTEGER X<reply(max_signature)>
+=item B<max_signature> =E<gt> INTEGER
 
 Passed to C<stripSignature> on the body as parameter C<max_lines>.  Only
 effective for single-part messages.
 
-=item B<message_type> =E<gt> CLASS X<reply(message_type)>
+=item B<message_type> =E<gt> CLASS
 
 Create a message with the requested type.  By default, it will be a
 Mail::Message.  This is correct, because it will be coerced into
 the correct folder message type when it is added to that folder.
 
-=item B<postlude> =E<gt> BODY|LINES X<reply(postlude)>
+=item B<postlude> =E<gt> BODY|LINES
 
 The line(s) which to be added after the quoted reply lines.  Create a
 body for it first.  This should not include the signature, which has its
 own option.  The signature will be added after the postlude when the
 reply is INLINEd.
 
-=item B<prelude> =E<gt> BODY|LINES X<reply(prelude)>
+=item B<prelude> =E<gt> BODY|LINES
 
 The line(s) which will be added before the quoted reply lines.  If nothing
 is specified, the result of the replyPrelude() method
 is taken.  When C<undef> is specified, no prelude will be added.
 
-=item B<quote> =E<gt> CODE|STRING X<reply(quote)>
+=item B<quote> =E<gt> CODE|STRING
 
 Mangle the lines of an C<INLINE>d reply with CODE, or by prepending a
 STRING to each line.  The routine specified by CODE is called when the
@@ -525,14 +523,14 @@ line is in C<$_>.
 By default, C<'E<gt> '> is added before each line.  Specify C<undef> to
 disable quoting.  This option is processed after the body has been decoded.
 
-=item B<signature> =E<gt> BODY|MESSAGE X<reply(signature)>
+=item B<signature> =E<gt> BODY|MESSAGE
 
 The signature to be added in case of a multi-part reply.  The mime-type
 of the signature body should indicate this is a used as such.  However,
 in INLINE mode, the body will be taken, a line containing C<'-- '> added
 before it, and added behind the epilogue.
 
-=item B<strip_signature> =E<gt> REGEXP|STRING|CODE X<reply(strip_signature)>
+=item B<strip_signature> =E<gt> REGEXP|STRING|CODE
 
 Remove the signature of the sender.  The value of this parameter is passed
 to the body's C<stripSignature> method (see C<Mail::Message::Body>)
@@ -557,7 +555,7 @@ Examples:
    , group_reply     => 1
    );
 
-=item B<replyPrelude> [STRING|FIELD|ADDRESS] X<replyPrelude>
+=item B<replyPrelude> [STRING|FIELD|ADDRESS]
 
 Produces a list of lines (usually only one), which will preceded the
 quoted body of the message.  STRING must comply to the RFC822 email
@@ -570,9 +568,9 @@ An characteristic example of the output is
 
  On Thu Oct 13 04:54:34 1995, him@example.com wrote:
 
-=item B<replySubject> STRING X<replySubject>
+=item B<replySubject> STRING
 
-(Class or Instance method)
+(Class or Instance method) 
 Create a subject for a message which is a reply for this one.  This routine
 tries to count the level of reply in subject field, and transform it into
 a standard form.  Please contribute improvements.
@@ -604,6 +602,10 @@ See Mail::Message::container()
 
 See Mail::Message::isDummy()
 
+=item B<isModified> 
+
+See Mail::Message::isModified()
+
 =item B<isPart> 
 
 See Mail::Message::isPart()
@@ -631,6 +633,10 @@ See Mail::Message::size()
 =item B<toplevel> 
 
 See Mail::Message::toplevel()
+
+=item B<write> [FILEHANDLE]
+
+See Mail::Message::write()
 
 =back
 
@@ -728,17 +734,17 @@ See Mail::Message::parts()
 
 =over 4
 
-=item B<file>  X<file>
+=item B<file> 
 
 Returns the message as file-handle.
 
-=item B<lines>  X<lines>
+=item B<lines> 
 
 Returns the whole message as set of lines.  In LIST context, copies of the
 lines are returned.  In SCALAR context, a reference to an array of lines
 is returned.
 
-=item B<string>  X<string>
+=item B<string> 
 
 Returns the whole message as string.
 
@@ -756,6 +762,14 @@ See Mail::Message::label()
 
 See Mail::Message::labels()
 
+=item B<labelsToStatus> 
+
+See Mail::Message::labelsToStatus()
+
+=item B<statusToLabels> 
+
+See Mail::Message::statusToLabels()
+
 =back
 
 =head2 Reading and Writing [internals]
@@ -770,10 +784,6 @@ See Mail::Message::DESTROY()
 
 See Mail::Message::isDelayed()
 
-=item B<labelsToStatus> 
-
-See Mail::Message::labelsToStatus()
-
 =item B<readBody> PARSER, HEAD [, BODYTYPE]
 
 See Mail::Message::readBody()
@@ -785,10 +795,6 @@ See Mail::Message::readFromParser()
 =item B<readHead> PARSER [,CLASS]
 
 See Mail::Message::readHead()
-
-=item B<statusToLabels> 
-
-See Mail::Message::statusToLabels()
 
 =item B<storeBody> BODY
 
@@ -816,7 +822,7 @@ See Mail::Reporter::errors()
 
 See Mail::Reporter::log()
 
-=item B<printStructure> [FILEHANDLE][, INDENT] X<printStructure>
+=item B<printStructure> [FILEHANDLE][, INDENT]
 
 Print the structure of a message to the selected filehandle.
 The message's subject and the types of all composing parts are
@@ -896,7 +902,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -1,12 +1,11 @@
 
 =head1 NAME
 
-
 Mail::Box::Parser::Perl - reading messages from file using Perl
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::Parser::Perl
+ Mail::Box::Parser::Perl
    is a Mail::Box::Parser
    is a Mail::Reporter
 
@@ -14,7 +13,6 @@ Mail::Box::Parser::Perl
 
 
 =head1 DESCRIPTION
-
 
 The Mail::Box::Parser::Perl implements parsing of messages in Perl.
 This may be a little slower than the C<C> based parser, but will also
@@ -26,7 +24,9 @@ work on platforms where no C compiler is available.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  file                 undef
@@ -47,7 +47,7 @@ See Mail::Box::Parser::new(file)
 
 See Mail::Box::Parser::new(filename)
 
-=item B<fix_header_errors> =E<gt> BOOLEAN X<new(fix_header_errors)>
+=item B<fix_header_errors> =E<gt> BOOLEAN
 
 When header errors are detected, the parsing of the header will
 be stopped.  Other header lines will become part of the body of
@@ -66,7 +66,7 @@ See Mail::Box::Parser::new(mode)
 
 See Mail::Reporter::new(trace)
 
-=item B<trusted> =E<gt> BOOLEAN X<new(trusted)>
+=item B<trusted> =E<gt> BOOLEAN
 
 Is the input from the file to be trusted, or does it require extra
 tests.  Related to Mail::Box::new(trusted).
@@ -133,7 +133,7 @@ See Mail::Box::Parser::bodyDelayed()
 
 See Mail::Box::Parser::filePosition()
 
-=item B<fixHeaderErrors> [BOOLEAN] X<fixHeaderErrors>
+=item B<fixHeaderErrors> [BOOLEAN]
 
 If set to C<true>, parsing of a header will not stop on an error, but
 attempt to add the erroneous this line to previous field.  Without BOOLEAN,
@@ -157,8 +157,6 @@ See Mail::Box::Parser::popSeparator()
 See Mail::Box::Parser::pushSeparator()
 
 =item B<readHeader> 
-
-See Mail::Box::Parser::readHeader()
 
 =item B<readSeparator> OPTIONS
 
@@ -257,7 +255,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

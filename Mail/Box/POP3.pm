@@ -1,5 +1,5 @@
 package Mail::Box::POP3;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Box::Net';
 
 use strict;
@@ -49,7 +49,8 @@ sub addMessage($)
 sub addMessages(@)
 {   my $self = shift;
 
-    $self->log(ERROR => "You cannot write messages to a pop server")
+    # error message described in addMessage()
+    $self->log(ERROR => "You cannot write messages to a pop server (yet)")
         if @_;
 
     ();
@@ -68,7 +69,7 @@ sub close()
 
 sub delete()
 {   my $self = shift;
-    $self->log(NOTICE => "You cannot delete a POP3 folder remotely.");
+    $self->log(WARNING => "A POP3 folder cannot be deleted: it will be emptied.");
 
     $_->deleted(1) foreach $self->messages;
     $self;
@@ -97,7 +98,7 @@ sub popClient()
       , authenticate => $self->{MBP_auth}
       );
 
-    $self->log(ERROR => "Cannot create POP3 client ".$self->url)
+    $self->log(ERROR => "Cannot create POP3 client for $self.")
        unless defined $client;
 
     $self->{MBP_client} = $client;
@@ -136,8 +137,8 @@ sub getHead($)
 
     unless(defined $lines)
     {   $lines = [];
-        $self->log(WARNING  => "Message $uidl disappeared.");
-     }
+        $self->log(WARNING  => "Message $uidl disappeared from POP3 server $self.");
+    }
 
     my $parser = Mail::Box::Parser::Perl->new   # not parseable by C parser
      ( filename  => "$pop"
@@ -165,7 +166,7 @@ sub getHeadAndBody($)
 
     unless(defined $lines)
     {   $lines = [];
-        $self->log(WARNING  => "Message $uidl disappeared.");
+        $self->log(WARNING  => "Message $uidl disappeared from POP3 server $self.");
      }
 
     my $parser = Mail::Box::Parser::Perl->new   # not parseable by C parser
@@ -175,14 +176,14 @@ sub getHeadAndBody($)
 
     my $head = $message->readHead($parser);
     unless(defined $head)
-    {   $self->log(WARNING => "Cannot find head back for $uidl");
+    {   $self->log(ERROR => "Cannot find head back for $uidl on POP3 server $self.");
         $parser->stop;
         return undef;
     }
 
     my $body = $message->readBody($parser, $head);
     unless(defined $body)
-    {   $self->log(ERROR => "Cannot read body for $uidl");
+    {   $self->log(ERROR => "Cannot read body for $uidl on POP3 server $self.");
         $parser->stop;
         return undef;
     }
@@ -196,9 +197,9 @@ sub getHeadAndBody($)
 sub writeMessages($@)
 {   my ($self, $args) = @_;
 
-    if(my $modifications = grep {$_->modified} @{$args->{messages}})
+    if(my $modifications = grep {$_->isModified} @{$args->{messages}})
     {   $self->log(WARNING =>
-           "Update of $modifications messages ignored for pop3 folder $self.");
+           "Update of $modifications messages ignored for POP3 folder $self.");
     }
 
     $self;

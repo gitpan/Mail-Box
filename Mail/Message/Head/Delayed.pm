@@ -1,12 +1,11 @@
 use strict;
 
 package Mail::Message::Head::Delayed;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Message::Head';
 
 use Object::Realize::Later
     becomes          => 'Mail::Message::Head::Complete',
-    warn_realization => 0,
     realize          => 'load',
     believe_caller   => 1;
 
@@ -28,22 +27,14 @@ sub init($$)
     $self;
 }
 
-sub message(;$)
-{   my $self = shift;
-    if(@_)
-    {   $self->{MMHD_message} = shift;
-        weaken($self->{MMHD_message});
-    }
-
-    $self->{MMHD_message};
-}
-
 sub isDelayed() {1}
 
 sub modified(;$)
 {   return 0 if @_==1 || !$_[1];
     shift->forceRealize->modified(1);
 }
+
+sub isModified() { 0 }
 
 sub get($;$)
 {   my $self = shift;

@@ -1,12 +1,11 @@
 
 =head1 NAME
 
-
 Mail::Message::Field::Address - One e-mail address
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Field::Address
+ Mail::Message::Field::Address
    is a Mail::Reporter
 
 =head1 SYNOPSIS
@@ -21,11 +20,13 @@ Mail::Message::Field::Address
 
 =over 4
 
-=item B<address>  X<address>
+=item B<address> 
 
-=item B<name>  X<name>
+=item B<name> 
 
-=item B<new> DATA X<new>
+=item B<new> DATA
+
+(Class method)
 
  OPTION               DEFAULT
  address              undef
@@ -40,23 +41,23 @@ Mail::Message::Field::Address
 
 =over 4
 
-=item B<address> =E<gt> STRING X<new(address)>
+=item B<address> =E<gt> STRING
 
-=item B<comment> =E<gt> STRING X<new(comment)>
+=item B<comment> =E<gt> STRING
 
-=item B<domain> =E<gt> STRING X<new(domain)>
+=item B<domain> =E<gt> STRING
 
-=item B<domcomment> =E<gt> STRING X<new(domcomment)>
+=item B<domcomment> =E<gt> STRING
 
-=item B<local> =E<gt> STRING X<new(local)>
+=item B<local> =E<gt> STRING
 
-=item B<loccomment> =E<gt> STRING X<new(loccomment)>
+=item B<loccomment> =E<gt> STRING
 
 =item B<log> =E<gt> LEVEL
 
 See Mail::Reporter::new(log)
 
-=item B<name> =E<gt> STRING X<new(name)>
+=item B<name> =E<gt> STRING
 
 =item B<trace> =E<gt> LEVEL
 
@@ -66,7 +67,7 @@ See Mail::Reporter::new(trace)
 
 Examples:
 
-=item B<string>  X<string>
+=item B<string> 
 
 =back
 
@@ -147,7 +148,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

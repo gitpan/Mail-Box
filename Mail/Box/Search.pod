@@ -1,21 +1,19 @@
 
 =head1 NAME
 
-
 Mail::Box::Search - select messages within a mail box
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::Search
+ Mail::Box::Search
    is a Mail::Reporter
 
-Mail::Box::Search is extended by
+ Mail::Box::Search is extended by
    Mail::Box::Search::Grep
    Mail::Box::Search::IMAP
    Mail::Box::Search::SpamAssassin
 
 =head1 SYNOPSIS
-
 
  use Mail::Box::Manager;
  my $mgr    = Mail::Box::Manager->new;
@@ -26,7 +24,6 @@ Mail::Box::Search is extended by
  if($filter->search($message)) {...}
 
 =head1 DESCRIPTION
-
 
 This Mail::Box::Search class is the base class for various message scan
 algorithms.  The selected messages can be labeled.  Boolean operations on
@@ -60,8 +57,9 @@ UNDER CONSTRUCTION till Mail::Transport::IMAP4 is complete.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
 
+(Class method) 
 Create a filter.
 
  OPTION               DEFAULT
@@ -80,28 +78,28 @@ Create a filter.
 
 =over 4
 
-=item B<binaries> =E<gt> BOOLEAN X<new(binaries)>
+=item B<binaries> =E<gt> BOOLEAN
 
 Whether to include binary bodies in the search.
 
-=item B<decode> =E<gt> BOOLEAN X<new(decode)>
+=item B<decode> =E<gt> BOOLEAN
 
 Decode the messages before the search takes place.  Even plain text messages
 can be encoded, for instance as C<quoted-printable>, which may disturb the
 results.  However, decoding will slow-down the search.
 
-=item B<delayed> =E<gt> BOOLEAN X<new(delayed)>
+=item B<delayed> =E<gt> BOOLEAN
 
 Include the delayed messages (which will be parsed) in the search.  If you
 set this to false, you may find fewer hits.
 
-=item B<deleted> =E<gt> BOOLEAN X<new(deleted)>
+=item B<deleted> =E<gt> BOOLEAN
 
 In most cases, you will not be interested in results which are
 found in messages flagged to be deleted.  However, with this option
 you can specify you want them to be searched too.
 
-=item B<deliver> =E<gt> undef|CODE|'DELETE' X<new(deliver)>
+=item B<deliver> =E<gt> undef|CODE|'DELETE'
 
 The exact functionality of this parameter differs per search method, so
 read the applicable man-page.  In any case C<undef> means that details
@@ -112,17 +110,17 @@ You may also specify your own CODE reference.  With an reference
 to an array, the information about the matches is collected as a list
 of hashes, one hash per match.
 
-=item B<in> =E<gt> 'HEAD'|'BODY'|'MESSAGE' X<new(in)>
+=item B<in> =E<gt> 'HEAD'|'BODY'|'MESSAGE'
 
 Where to look for the match.
 
-=item B<label> =E<gt> STRING X<new(label)>
+=item B<label> =E<gt> STRING
 
 Mark all selected messages with the specified STRING.  If this field is
 not specified, the message will not get a label; search() also returns
 a list of selected messages.
 
-=item B<limit> =E<gt> NUMBER X<new(limit)>
+=item B<limit> =E<gt> NUMBER
 
 Limit the search to the specified NUMBER of messages.  When the NUMBER
 is positive, the search starts at the first message in the folder or
@@ -133,7 +131,7 @@ is set to zero, there is no limit.
 
 See Mail::Reporter::new(log)
 
-=item B<logical> =E<gt> 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT' X<new(logical)>
+=item B<logical> =E<gt> 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT'
 
 Only applicable in combination with a C<label>.
 How to handle the existing labels.  In case of C<REPLACE>, messages
@@ -148,7 +146,7 @@ details output will still contain the places where the the match was
 found, however those messages will complementary set of messages will
 be labeled and returned.
 
-=item B<multiparts> =E<gt> BOOLEAN X<new(multiparts)>
+=item B<multiparts> =E<gt> BOOLEAN
 
 Are multiparts to be included in the search results?  Some MUA have
 problems handling details received from the search.  When this flag
@@ -167,17 +165,17 @@ See Mail::Reporter::new(trace)
 
 =over 4
 
-=item B<inBody> PART, BODY X<inBody>
+=item B<inBody> PART, BODY
 
 Tests whether body contains the requesting information.  See the
 specific search module for its parameters.
 
-=item B<inHead> PART, HEAD X<inHead>
+=item B<inHead> PART, HEAD
 
 Tests whether header contains the requesting information.  See the
 specific search module for its parameters.
 
-=item B<search> FOLDER|THREAD|MESSAGE|ARRAY-OF-MESSAGES X<search>
+=item B<search> FOLDER|THREAD|MESSAGE|ARRAY-OF-MESSAGES
 
 Check which messages from the FOLDER (Mail::Box) match the
 search parameters.  The matched messages are returned as list.  You
@@ -203,7 +201,7 @@ Examples:
  my $thread  = $message->threadStart;
  $grep->search($thread);
 
-=item B<searchPart> PART X<searchPart>
+=item B<searchPart> PART
 
 Search this message PART for matches.
 
@@ -213,7 +211,7 @@ Search this message PART for matches.
 
 =over 4
 
-=item B<printMatch> [FILEHANDLE], HASH X<printMatch>
+=item B<printMatch> [FILEHANDLE], HASH
 
 Print the information about the match (see search(deliver)) in
 some understandable way.  If no file handle
@@ -299,7 +297,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

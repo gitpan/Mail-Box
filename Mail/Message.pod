@@ -1,24 +1,22 @@
 
 =head1 NAME
 
-
 Mail::Message - general message object
 
 =head1 CLASS INHERITANCE
 
-Mail::Message
-  has extra code in Mail::Message::Construct
+ Mail::Message has extra code in
+   Mail::Message::Construct
 
-Mail::Message
+ Mail::Message
    is a Mail::Reporter
 
-Mail::Message is extended by
+ Mail::Message is extended by
    Mail::Box::Message
    Mail::Message::Dummy
    Mail::Message::Part
 
 =head1 SYNOPSIS
-
 
  use Mail::Box::Manager;
  my $mgr    = Mail::Box::Manager->new;
@@ -37,7 +35,6 @@ Mail::Message is extended by
  $msg->decoded->print($outfile);
 
 =head1 DESCRIPTION
-
 
 A Mail::Message object is a container for MIME-encoded message information,
 as defined by RFC2822.  Everything what is not specificly related to storing
@@ -89,7 +86,9 @@ I<delayed loading>.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  body                 undef
@@ -105,25 +104,25 @@ I<delayed loading>.
 
 =over 4
 
-=item B<body> =E<gt> OBJECT X<new(body)>
+=item B<body> =E<gt> OBJECT
 
 Instantiate the message with a body which has been created somewhere
 before the message is constructed.  The OBJECT must be a sub-class
 of Mail::Message::Body.  See also body() and storeBody().
 
-=item B<body_type> =E<gt> CLASS X<new(body_type)>
+=item B<body_type> =E<gt> CLASS
 
 Default type of body to be created for readBody().
 
-=item B<field_type> =E<gt> CLASS X<new(field_type)>
+=item B<field_type> =E<gt> CLASS
 
-=item B<head> =E<gt> OBJECT X<new(head)>
+=item B<head> =E<gt> OBJECT
 
 Instantiate the message with a head which has been created somewhere
 before the message is constructed.  The OBJECT must be a (sub-)class
 of Mail::Message::Head. See also head().
 
-=item B<head_type> =E<gt> CLASS X<new(head_type)>
+=item B<head_type> =E<gt> CLASS
 
 Default type of head to be created for readHead().
 
@@ -131,13 +130,13 @@ Default type of head to be created for readHead().
 
 See Mail::Reporter::new(log)
 
-=item B<messageId> =E<gt> STRING X<new(messageId)>
+=item B<messageId> =E<gt> STRING
 
 The id on which this message can be recognized.  If none specified and
 not defined in the header --but one is needed-- there will be one assigned
 to the message to be able to pass unique message-ids between objects.
 
-=item B<modified> =E<gt> BOOLEAN X<new(modified)>
+=item B<modified> =E<gt> BOOLEAN
 
 Flags this message as being modified from the beginning on.  Usually,
 modification is auto-detected, but there may be reasons to be extra
@@ -147,7 +146,7 @@ explicit.
 
 See Mail::Reporter::new(trace)
 
-=item B<trusted> =E<gt> BOOLEAN X<new(trusted)>
+=item B<trusted> =E<gt> BOOLEAN
 
 Is this message from a trusted source?  If not, the content must be
 checked before use.  This checking will be performed when the
@@ -173,9 +172,10 @@ See Mail::Message::Construct::build()
 
 See Mail::Message::Construct::buildFromBody()
 
-=item B<coerce> MESSAGE X<coerce>
+=item B<coerce> MESSAGE
 
-(Class method) Coerce a MESSAGE into a Mail::Message.  In some
+(Class method) 
+Coerce a MESSAGE into a Mail::Message.  In some
 occasions, for instance where you add a message to a folder, this
 coercion is automatically called to ensure that the correct message
 type is stored.
@@ -253,7 +253,7 @@ See Mail::Message::Construct::replySubject()
 
 =over 4
 
-=item B<clone>  X<clone>
+=item B<clone> 
 
 Create a copy of this message.  Returned is a Mail::Message object.
 The head and body, the log and trace levels are taken.  Labels are
@@ -271,7 +271,7 @@ Examples:
 
  $copy = $msg->clone;
 
-=item B<container>  X<container>
+=item B<container> 
 
 If the message is a part of another message, C<container> returns the
 reference to the containing body.
@@ -292,7 +292,7 @@ Examples:
  $msg->isPart;        # returns false
  $part->isPart;       # returns true
 
-=item B<isDummy>  X<isDummy>
+=item B<isDummy> 
 
 Dummy messages are used to fill holes in linked-list and such, where only
 a message-id is known, but not the place of the header of body data.
@@ -301,37 +301,43 @@ This method is also available for Mail::Message::Dummy objects, where
 this will return C<true>.  On any extension of Mail::Message, this will
 return C<false>.
 
-=item B<isPart>  X<isPart>
+=item B<isModified> 
+
+Returns whether this message is flagged as being modified.  Modifications
+are changes in header lines, when a new body is set to the message
+(dangerous), or when labels change.
+
+=item B<isPart> 
 
 Returns true if the message is a part of another message.  This is
 the case for Mail::Message::Part extensions of Mail::Message.
 
-=item B<messageId>  X<messageId>
+=item B<messageId> 
 
 Retrieve the message's id.  Every message has a unique message-id.  This id
 is used mainly for recognizing discussion threads.
 
-=item B<modified> [BOOLEAN] X<modified>
+=item B<modified> [BOOLEAN]
 
 Returns (optionally after setting) whether this message is flagged as
-being modified.  The modification flag is set C<true> when header lines
-are changed, the header or body replaced by a new one, or when labels
-are modified.
+being modified.  See isModified().
 
-=item B<print> [FILEHANDLE] X<print>
+=item B<print> [FILEHANDLE]
 
 Print the message to the FILE-HANDLE, which defaults to the selected
-filehandle.
+filehandle, without the encapsulation sometimes required by a folder
+type, like write() does.
 
 Examples:
 
- $message->print(\*STDERR);
- $message->print;
+ $message->print(\*STDERR);  # to the error output
+ $message->print;            # to the selected file
 
  my $out = IO::File->new('out', 'w');
- $message->print($out);
+ $message->print($out);      # no encapsulation: no folder
+ $message->write($out);      # with encapsulation: is folder.
 
-=item B<send> [MAILER], OPTIONS X<send>
+=item B<send> [MAILER], OPTIONS
 
 Transmit the message to anything outside this Perl program.  MAILER
 is a Mail::Transport::Send object.  When the MAILER is not specified, one
@@ -353,7 +359,7 @@ is short (but little less flexibile) for
 
 See examples/send.pl in the distribution of Mail::Box.
 
-=item B<size>  X<size>
+=item B<size> 
 
 Returns the size of the whole message in bytes.  This does assume that each
 line ending is represented by one character (like UNIX, MacOS, and sometimes
@@ -363,10 +369,21 @@ If you write the message to file on a system which uses CR and LF to end a
 single line (all Windows versions), the result in file will be nrLines() larger
 than this method returns.
 
-=item B<toplevel>  X<toplevel>
+=item B<toplevel> 
 
 Returns a reference to the main message, which will be the current
 message if the message is not part of another message.
+
+=item B<write> [FILEHANDLE]
+
+Write the message to the FILE-HANDLE, which defaults to the selected
+FILEHANDLE, with all surrounding information which is needed to put
+it correctly in a folder file.
+
+In most cases, the result of C<write> will be the same as with print().  The
+main exception is for Mbox folder messages, which will get printed with
+their leading 'From ' line and a trailing blank.  Each line of their body
+which starts with 'From ' will have an E<gt> added in front.
 
 =back
 
@@ -374,7 +391,7 @@ message if the message is not part of another message.
 
 =over 4
 
-=item B<head> [HEAD] X<head>
+=item B<head> [HEAD]
 
 Return (optionally after setting) the HEAD of this message.
 The head must be an (sub-)class of Mail::Message::Head.
@@ -384,7 +401,8 @@ LABELS hash.  They are added later.
 
 Examples:
 
- my $head = $msg->head(new Mail::Message::Head);
+ $msg->head(Mail::Message::Head->new);  # set
+ my $head = $msg->head;                 # get
 
 =back
 
@@ -392,7 +410,7 @@ Examples:
 
 =over 4
 
-=item B<bcc>  X<bcc>
+=item B<bcc> 
 
 Returns the addresses which are specified on the C<Bcc> header line (or lines)
 A list of Mail::Address objects is returned.
@@ -400,14 +418,14 @@ C<Bcc> stands for I<Blind Carbon Copy>: destinations of the message which are
 not listed in the messages actually sent.  So, this field will be empty
 for received messages, but may be present in messages you construct yourself.
 
-=item B<cc>  X<cc>
+=item B<cc> 
 
 Returns the addresses which are specified on the C<Cc> header line (or lines)
 A list of Mail::Address objects is returned.  C<Cc> stands for
 I<Carbon Copy>; the people addressed on this line receive the message
 informational, and are usually not expected to reply on its content.
 
-=item B<date>  X<date>
+=item B<date> 
 
 Returns the last C<Date> header line as string.
 
@@ -415,12 +433,12 @@ Examples:
 
  my $date = $message->date;
 
-=item B<destinations>  X<destinations>
+=item B<destinations> 
 
 Returns a list of Mail::Address objects which contains the combined info
 of active C<To>, C<Cc>, and C<Bcc> addresses.  Doubles are removed.
 
-=item B<from>  X<from>
+=item B<from> 
 
 Returns the address of the sender.  It is possible to have more than
 one address specified in the C<From> field of the message. Therefore a
@@ -434,7 +452,7 @@ Examples:
 
  my @from = $message->from;
 
-=item B<get> FIELD X<get>
+=item B<get> FIELD
 
 Returns the value which is stored in the header FIELD with the specified
 name.  If the field has multiple appearances in the header, only the last
@@ -452,7 +470,7 @@ Is equivalent to:
 
  print $msg->head->get('Content-Type')->body, "\n";
 
-=item B<guessTimestamp>  X<guessTimestamp>
+=item B<guessTimestamp> 
 
 Return an estimate on the time this message was sent.  The data is
 derived from the header, where it can be derived from the C<date> and
@@ -467,11 +485,11 @@ Examples:
 
  print "Receipt ", ($message->timestamp || 'unknown'), "\n";
 
-=item B<nrLines>  X<nrLines>
+=item B<nrLines> 
 
 Returns the number of lines used for the whole message.
 
-=item B<sender>  X<sender>
+=item B<sender> 
 
 Returns exactly one address, which is the originator of this message.
 The returned Mail::Address object is taken from the C<Sender> header
@@ -484,18 +502,20 @@ Examples:
  my $sender = $message->sender;
  print "Reply to: ", $sender->format, "\n" if defined $sender;
 
-=item B<subject>  X<subject>
+=item B<subject> 
 
 Returns the message's subject, or the empty string.
 
 Examples:
 
-=item B<timestamp>  X<timestamp>
+ print $msg->subject;
+
+=item B<timestamp> 
 
 Get a timestamp, doesn't matter how much work it is.  If it is impossible
 to get a time from the header-lines, the current time-of-living is taken.
 
-=item B<to>  X<to>
+=item B<to> 
 
 Returns the addresses which are specified on the C<To> header line (or lines).
 A list of Mail::Address objects is returned.  The people addressed
@@ -512,7 +532,7 @@ Examples:
 
 =over 4
 
-=item B<body> [BODY] X<body>
+=item B<body> [BODY]
 
 Return the body of this message.  BE WARNED that this returns
 you an object which may be encoded: use decoded() to get a body
@@ -545,7 +565,7 @@ Examples:
  my $new       = Mail::Message::Body->new(mime_type => 'text/html');
  my $converted = $msg->body($new);
 
-=item B<decoded> OPTIONS X<decoded>
+=item B<decoded> OPTIONS
 
 Decodes the body of this message, and returns it as a body object.  If there
 was no encoding, the body object as read from file is passed on, however,
@@ -558,13 +578,13 @@ The OPTIONS control how the conversion takes place.
 
 =over 4
 
-=item B<keep> =E<gt> BOOLEAN X<decoded(keep)>
+=item B<keep> =E<gt> BOOLEAN
 
 Controls whether the decoded result will be kept.  If not, the decoding
 may be performed more than once.  However, it will consume extra
 resources...
 
-=item B<result_type> =E<gt> BODYTYPE X<decoded(result_type)>
+=item B<result_type> =E<gt> BODYTYPE
 
 Specifies which kind of body should be used for the final result, and
 eventual intermediate conversion stages.  It is not sure that this
@@ -580,19 +600,19 @@ Examples:
  my $dec = $message->body($message->decoded);
  my $dec = $message->decoded(keep => 1);   # same
 
-=item B<encode> OPTIONS X<encode>
+=item B<encode> OPTIONS
 
 Encode the message to a certain format.  Read the details in the
 dedicated manual page Mail::Message::Body::Encode.  The OPTIONS which
 can be specified here are those of the Mail::Message::Body::encode() method.
 
-=item B<isMultipart>  X<isMultipart>
+=item B<isMultipart> 
 
 Check whether this message is a multipart message (has attachments).  To
 find this out, we need at least the header of the message; there is no
 need to read the body of the message to detect this.
 
-=item B<parts> ['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER] X<parts>
+=item B<parts> ['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER]
 
 Returns the I<parts> of this message. Usually, the term I<part> is used
 with I<multipart> messages: messages which are encapsulated in the body
@@ -644,7 +664,7 @@ See Mail::Message::Construct::string()
 
 =over 4
 
-=item B<label> LABEL [,VALUE [LABEL, VALUE] ] X<label>
+=item B<label> LABEL [,VALUE [LABEL, VALUE] ]
 
 Return the value of the LABEL, optionally after setting it to VALUE.  If
 the VALUE is C<undef> then the label is removed.  You may specify a list
@@ -663,7 +683,7 @@ Examples:
  if($message->label('seen')) {...};
  $message->label(seen => 1);
 
-=item B<labels>  X<labels>
+=item B<labels> 
 
 Returns all known labels.  In SCALAR context, it returns the knowledge
 as reference to a hash.  This is a reference to the original data, but
@@ -673,31 +693,38 @@ changes!
 In LIST context, you get a list of names which are defined.  Be warned
 that they will not all evaluate to true, although most of them will.
 
+=item B<labelsToStatus> 
+
+When the labels were changes, there may be an effect for the
+C<Status> and/or C<X-Status> header-lines.  Whether this update has
+to take place depends on the type of folder.
+
+=item B<statusToLabels> 
+
+Update the labels according the status lines in the header.  Defined values
+for the 'Status' field are C<R> (Read, label 'seen') and C<O> (label 'old').
+Values for the 'X-Status' field are C<A> (Answered, label 'replied') and
+C<F> (label 'flagged').
+
 =back
 
 =head2 Reading and Writing [internals]
 
 =over 4
 
-=item B<DESTROY>  X<DESTROY>
+=item B<DESTROY> 
 
 When a message is to accessible anymore by any user's reference, Perl
 will call DESTROY for final clean-up.  In this case, the head and
 body are released, and de-registered for the folder.  You shall not call
 this yourself!
 
-=item B<isDelayed>  X<isDelayed>
+=item B<isDelayed> 
 
 Check whether the message is delayed (not yet read from file).  Returns
 true or false, dependent on the body type.
 
-=item B<labelsToStatus>  X<labelsToStatus>
-
-When the labels were changes, there may be an effect for the
-C<Status> and/or C<X-Status> header-lines.  Whether this update has
-to take place depends on the type of folder.
-
-=item B<readBody> PARSER, HEAD [, BODYTYPE] X<readBody>
+=item B<readBody> PARSER, HEAD [, BODYTYPE]
 
 Read a body of a message.  The PARSER is the access to the folder's
 file, and the HEAD is already read.  Information from the HEAD is used
@@ -710,7 +737,7 @@ BODYTYPE may be the name of a body class, or a reference
 to a routine which returns the body's class when passed the HEAD as only
 argument.
 
-=item B<readFromParser> PARSER, [BODYTYPE] X<readFromParser>
+=item B<readFromParser> PARSER, [BODYTYPE]
 
 Read one message from file.  The PARSER is opened on the file.  First
 readHeader() is called, and the head is stored in the message.  Then
@@ -720,23 +747,19 @@ the message without decodings being done.
 The optional BODYTYPE may be a body class or a reference to a code
 which returns a body-class based on the header.
 
-=item B<readHead> PARSER [,CLASS] X<readHead>
+=item B<readHead> PARSER [,CLASS]
 
 Read a head into an object of the specified CLASS.  The CLASS defaults to
 the C<head_type> option specified at creation of the message (see new()).
 The PARSER is the access to the folder's file.
 
-=item B<statusToLabels>  X<statusToLabels>
-
-Update the labels according the status lines in the header.
-
-=item B<storeBody> BODY X<storeBody>
+=item B<storeBody> BODY
 
 Where the body() method can be used to set and get a body, with all
 the necessary checks, this method is bluntly adding the specified body
 to the message.  No conversions, not checking.
 
-=item B<takeMessageId> [STRING] X<takeMessageId>
+=item B<takeMessageId> [STRING]
 
 Take the message-id from the STRING, or create one when the C<undef>
 is specified.  If not STRING nor C<undef> is given, the current header
@@ -823,7 +846,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Head;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Complete;
@@ -56,8 +56,11 @@ sub isMultipart()
 
 sub modified(;$)
 {   my $self = shift;
-    @_ ? $self->{MMH_modified} = shift : $self->{MMH_modified};
+    return $self->isModified unless @_;
+    $self->{MMH_modified} = shift;
 }
+
+sub isModified() { shift->{MMH_modified} }
 
 sub isEmpty { scalar keys %{shift->{MMH_fields}} }
 
@@ -75,7 +78,7 @@ sub setField($$) {shift->add(@_)} # compatibility
 
 sub get($;$)
 {   my $known = shift->{MMH_fields};
-    my $value = $known->{lc shift};
+    my $value = $known->{lc(shift)};
     my $index = shift;
 
     if(defined $index)

@@ -1,23 +1,20 @@
 
 =head1 NAME
 
-
 Mail::Box::MH::Index - keep index files for messages.
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::MH::Index
+ Mail::Box::MH::Index
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  my $index = Mail::Box::MH::Index->new;
  $index->read(...)
  $index->write(...)
 
 =head1 DESCRIPTION
-
 
 Message folders which store their data in one single file per message are
 very inefficient for producing subject overviews and for computing message
@@ -39,7 +36,9 @@ of the folder).
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  filename             <obligatory>
@@ -50,12 +49,12 @@ of the folder).
 
 =over 4
 
-=item B<filename> =E<gt> FILENAME X<new(filename)>
+=item B<filename> =E<gt> FILENAME
 
 The FILENAME which is used to store the headers of all the e-mails for
 one folder. This must be an absolute pathname.
 
-=item B<head_type> =E<gt> CLASS X<new(head_type)>
+=item B<head_type> =E<gt> CLASS
 
 The type of headers which will be used to store header information when
 it is read from the index file.  You can not be sure the index contains
@@ -63,7 +62,7 @@ all header line (the mailbox may have been updated without updating
 the index) so this will usually be (an sub-class of)
 Mail::Message::Head::Subset.
 
-=item B<head_wrap> =E<gt> INTEGER X<new(head_wrap)>
+=item B<head_wrap> =E<gt> INTEGER
 
 The preferred number of character in each header line.
 
@@ -83,11 +82,11 @@ See Mail::Reporter::new(trace)
 
 =over 4
 
-=item B<filename>  X<filename>
+=item B<filename> 
 
 Returns the name of the index file.
 
-=item B<get> MSGFILE X<get>
+=item B<get> MSGFILE
 
 Look if there is header info for the specified MSGFILE.  The filename
 represents one message in folder type which are organized as directory.
@@ -95,12 +94,12 @@ This method will return an object of the C<head_type> as specified
 during creation of the index object, or C<undef> if the information
 is not known or not trustworthy -i.e. the file size changed.
 
-=item B<read>  X<read>
+=item B<read> 
 
 Read the index file.  The header objects can after this be requested
 with the get() method.
 
-=item B<write> MESSAGES X<write>
+=item B<write> MESSAGES
 
 Write an index file containing the headers specified MESSAGES
 (Mail::Message objects).
@@ -184,7 +183,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

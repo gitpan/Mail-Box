@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::File::Message;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Box::Message';
 
 use POSIX 'SEEK_SET';
@@ -23,12 +23,13 @@ sub coerce($)
     $self->SUPER::coerce($message)->labelsToStatus;
 }
 
-sub print(;$)
+sub write(;$)
 {   my $self  = shift;
     my $out   = shift || select;
 
     $out->print($self->fromLine);
-    $self->SUPER::print($out);
+    $self->head->print($out);
+    $self->body->printEscapedFrom($out);
     $out->print("\n");
     $self;
 }

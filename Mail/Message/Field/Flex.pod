@@ -1,12 +1,11 @@
 
 =head1 NAME
 
-
 Mail::Message::Field::Flex - one line of a message header
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Field::Flex
+ Mail::Message::Field::Flex
    is a Mail::Message::Field
    is a Mail::Reporter
 
@@ -14,7 +13,6 @@ Mail::Message::Field::Flex
 
 
 =head1 DESCRIPTION
-
 
 This is the flexible implementation of
 a field: it can easily be extended because it stores its data in a hash
@@ -28,8 +26,9 @@ Mail::Message::Field::Fast is faster (as the name predicts).
 
 =over 4
 
-=item B<new> DATA X<new>
+=item B<new> DATA
 
+(Class method) 
 If you stick to this flexible class of header fields, you have a bit
 more facilities than with Mail::Message::Field::Fast.  Amongst it, you
 can specify options with the creation.  Possible arguments:
@@ -56,13 +55,13 @@ of OBJECTS.  See Mail::Message::Field:
 
 =over 4
 
-=item B<attributes> =E<gt> ATTRS X<new(attributes)>
+=item B<attributes> =E<gt> ATTRS
 
 Reference to array with list of key-value pairs representing attributes,
 or reference to a hash containing these pairs.  This is an alternative
 notation for specifying ATTRIBUTES directly as method arguments.
 
-=item B<comment> =E<gt> STRING X<new(comment)>
+=item B<comment> =E<gt> STRING
 
 A pre-formatted list of attributes.
 
@@ -281,7 +280,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

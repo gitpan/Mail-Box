@@ -1,15 +1,14 @@
 
 =head1 NAME
 
-
 Mail::Message::TransferEnc - message transfer encoder/decoder
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::TransferEnc
+ Mail::Message::TransferEnc
    is a Mail::Reporter
 
-Mail::Message::TransferEnc is extended by
+ Mail::Message::TransferEnc is extended by
    Mail::Message::TransferEnc::Base64
    Mail::Message::TransferEnc::Binary
    Mail::Message::TransferEnc::EightBit
@@ -18,13 +17,11 @@ Mail::Message::TransferEnc is extended by
 
 =head1 SYNOPSIS
 
-
  my Mail::Message $msg = ...;
  my $decoded = $msg->decoded;
  my $encoded = $msg->encode(transfer => 'base64');
 
 =head1 DESCRIPTION
-
 
 This class is the base for various encoders and decoders, which are
 used during transport of the message.  This packages, and all which are
@@ -55,7 +52,9 @@ The following coders/decoders are currently available:
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  log                  'WARNINGS'
@@ -79,18 +78,18 @@ See Mail::Reporter::new(trace)
 
 =over 4
 
-=item B<addTransferEncoder> TYPE, CLASS X<addTransferEncoder>
+=item B<addTransferEncoder> TYPE, CLASS
 
-(Class method)
+(Class method) 
 Adds one new encoder to the list known by the Mail::Box suite.  The
 TYPE is found in the message's header in the C<Content-Transfer-Encoding>
 field.
 
-=item B<create> TYPE, OPTIONS X<create>
+=item B<create> TYPE, OPTIONS
 
 Create a new coder/decoder based on the required type.
 
-=item B<name>  X<name>
+=item B<name> 
 
 The name of the encoder.  Case is not significant.
 
@@ -100,7 +99,7 @@ The name of the encoder.  Case is not significant.
 
 =over 4
 
-=item B<check> BODY, OPTIONS X<check>
+=item B<check> BODY, OPTIONS
 
 Check whether the body is correctly encoded.  If so, the body reference is
 returned with the C<checked> flag set.  Otherwise, a new object is created
@@ -111,14 +110,14 @@ and returned.
 
 =over 4
 
-=item B<result_type> =E<gt> CLASS X<check(result_type)>
+=item B<result_type> =E<gt> CLASS
 
 The type of the body to be produced, when the checker decides to return
 modified data.
 
 =back
 
-=item B<decode> BODY [, OPTIONS] X<decode>
+=item B<decode> BODY [, OPTIONS]
 
 Use the encoder to decode the content of BODY.  A new body is returned.
 
@@ -127,14 +126,14 @@ Use the encoder to decode the content of BODY.  A new body is returned.
 
 =over 4
 
-=item B<result_type> =E<gt> CLASS X<decode(result_type)>
+=item B<result_type> =E<gt> CLASS
 
 The type of the body to be produced, when the decoder decides to return
 modified data.
 
 =back
 
-=item B<encode> BODY, OPTIONS X<encode>
+=item B<encode> BODY, OPTIONS
 
 Use the encoder to encode the content of BODY.
 
@@ -143,7 +142,7 @@ Use the encoder to encode the content of BODY.
 
 =over 4
 
-=item B<result_type> =E<gt> CLASS X<encode(result_type)>
+=item B<result_type> =E<gt> CLASS
 
 The type of the body to be produced, when the decoder decides to return
 modified data.
@@ -229,7 +228,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

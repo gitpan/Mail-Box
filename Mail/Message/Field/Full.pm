@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Field::Full;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Message::Field';
 
 use Mail::Message::Field::Attribute;
@@ -95,9 +95,8 @@ sub addAttribute($;@)
     return undef unless $attr;
 
     unless($self->{MMFF_structured})
-    {   $self->log(ERROR
-            => "You can not add an attribute to an unstructured field:\n  "
-               . "Field: ".$self->Name. " Attribute: " .$attr->name);
+    {   $self->log(ERROR => "Attributes cannot be added to unstructured fields:\n"
+               . "  Field: ".$self->Name. " Attribute: " .$attr->name);
         return;
     }
 
@@ -144,9 +143,8 @@ sub addComment($@)
 {   my $self = shift;
 
     unless($self->{MMFF_structured})
-    {   $self->log(ERROR
-            => "You can not add comment to an unstructured field:\n  "
-               . "Field: ".$self->Name. " Comment: @_");
+    {   $self->log(ERROR => "Comments cannot be added to unstructured fields:\n"
+                  . "  Field: ".$self->Name. " Comment: @_");
         return;
     }
 
@@ -164,9 +162,8 @@ sub addExtra($)
 {   my ($self, $extra) = @_;
 
     unless($self->{MMFF_structured})
-    {   $self->log(ERROR
-            => "You can not add extras to an unstructured field:\n  "
-               . "Field: ".$self->Name. " Extra: ".$extra);
+    {   $self->log(ERROR => "Extras cannot be added to unstructured fields:\n"
+               . "  Field: ".$self->Name. " Extra: ".$extra);
         return;
     }
 

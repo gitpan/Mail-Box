@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Lines;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
@@ -16,7 +16,8 @@ sub _data_from_filename(@)
     local *IN;
 
     unless(open IN, '<', $filename)
-    {   $self->log(ERROR => "Unable to read file $filename: $!");
+    {   $self->log(ERROR =>
+             "Unable to read file $filename for message body lines: $!");
         return;
     }
 
@@ -75,6 +76,15 @@ sub print(;$)
 {   my $self = shift;
     my $fh   = shift || select;
     $fh->print(@{$self->{MMBL_array}});
+}
+
+sub printEscapedFrom($)
+{   my ($self, $fh) = @_;
+
+    foreach ( @{$self->{MMBL_array}} )
+    {   s/^(?=\>*From )/>/;
+        $fh->print($_);
+    }
 }
 
 sub read($$;$@)

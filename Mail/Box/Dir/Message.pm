@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Dir::Message;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Box::Message';
 
 use Carp;
@@ -25,7 +25,7 @@ sub print(;$)
     my $out      = shift || select;
 
     return $self->SUPER::print($out)
-        if $self->modified;
+        if $self->isModified;
 
     my $filename = $self->filename;
     if($filename && -r $filename)
@@ -42,6 +42,8 @@ sub print(;$)
     1;
 }
 
+BEGIN { *write = \&print }  # simply alias
+
 sub filename(;$)
 {   my $self = shift;
     @_ ? $self->{MBDM_filename} = shift : $self->{MBDM_filename};
@@ -53,7 +55,7 @@ sub filename(;$)
 sub size()
 {   my $self = shift;
 
-    unless($self->modified)
+    unless($self->isModified)
     {   my $filename = $self->filename;
         if(defined $filename)
         {   my $size = -s $filename;
@@ -150,7 +152,7 @@ sub create($)
 {   my ($self, $filename) = @_;
 
     my $old = $self->filename || '';
-    return $self if $filename eq $old && !$self->modified;
+    return $self if $filename eq $old && !$self->isModified;
 
     # Write the new data to a new file.
 
@@ -159,7 +161,7 @@ sub create($)
     $self->log(ERROR => "Cannot write message to $new: $!"), return
         unless $newfile;
 
-    $self->print($newfile);
+    $self->write($newfile);
     $newfile->close;
 
     # Accept the new data

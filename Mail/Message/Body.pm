@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Field;
@@ -48,7 +48,7 @@ sub init($)
 
     $self->SUPER::init($args);
 
-    $self->{MM_modified} = $args->{modified} || 0;
+    $self->{MMB_modified} = $args->{modified} || 0;
 
     my $filename;
     if(defined(my $file = $args->{file}))
@@ -152,10 +152,15 @@ sub message(;$)
 
 sub modified(;$)
 {  my $self = shift;
-   @_? $self->{MM_modified} = shift : $self->{MM_modified};
+   return $self->isModified unless @_;  # compat 2.036
+   $self->{MMB_modified} = shift;
 }
 
+sub isModified() {  shift->{MMB_modified} }
+
 sub print(;$) {shift->notImplemented}
+
+sub printEscapedFrom($) {shift->notImplemented}
 
 sub isDelayed() {0}
 

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Part;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Message';
 
 use Carp;
@@ -52,15 +52,16 @@ sub coerce($@)
     $part;
 }
 
-sub delete() {shift->deleted(1)}
+sub delete() { shift->{MMP_deleted} ||= time }
 
 sub deleted(;$)
 {   my $self = shift;
-    return $self->{MMP_deleted} unless @_;
-
-    $self->toplevel->modified(1);
-    $self->{MMP_deleted} = shift;
+      ! @_      ? $self->isDeleted   # compat 2.036
+    : ! (shift) ? ($self->{MMP_deleted} = undef)
+    :             $self->delete;
 }
+
+sub isDeleted() { shift->{MMP_deleted} }
 
 sub container(;$)
 {   my $self = shift;
@@ -74,6 +75,12 @@ sub toplevel()
 }
 
 sub isPart() { 1 }
+
+sub printEscapedFrom($)
+{   my ($self, $out) = @_;
+    $self->head->print($out);
+    $self->body->printEscapedFrom($out);
+}
 
 sub readFromParser($;$)
 {   my ($self, $parser, $bodytype) = @_;

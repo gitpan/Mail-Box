@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::String;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Carp;
@@ -18,7 +18,8 @@ sub _data_from_filename(@)
 
     local *IN;
     unless(open IN, '<', $filename)
-    {   $self->log(ERROR => "Unable to read file $filename: $!");
+    {   $self->log(ERROR =>
+            "Unable to read file $filename for message body scalar: $!");
         return;
     }
 
@@ -88,6 +89,14 @@ sub print(;$)
 {   my $self = shift;
     my $fh   = shift || select;
     $fh->print($self->{MMBS_scalar});
+}
+
+sub printEscapedFrom($)
+{   my ($self, $fh) = @_;
+
+    my $text = $self->{MMBS_scalar};
+    $text    =~ s/^(?=\>*From )/>/;
+    $fh->print($text);
 }
 
 sub read($$;$@)

@@ -1,17 +1,15 @@
 
 =head1 NAME
 
-
 Mail::Box::Search::SpamAssassin - select spam messages with Mail::SpamAssassin
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::Search::SpamAssassin
+ Mail::Box::Search::SpamAssassin
    is a Mail::Box::Search
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  use Mail::Box::Manager;
  my $mgr    = Mail::Box::Manager->new;
@@ -30,7 +28,6 @@ Mail::Box::Search::SpamAssassin
  $mgr->moveMessages($folder->messages('spam'), $spamfolder);
 
 =head1 DESCRIPTION
-
 
 I<Spam> means "unsollicited e-mail", and is as name derived from a
 Monty Python scatch.  Although Monty Python is fun, spam is a pain:
@@ -54,13 +51,14 @@ spam-detection already is.
 
 =over 4
 
-=item B<assassinator>  X<assassinator>
+=item B<assassinator> 
 
 Returns the internally maintained assassinator object.  You may want
 to reach this object for complex configuration.
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
 
+(Class method) 
 Create a spam filter.  Internally, a Mail::SpamAssassin object is
 maintained.
 
@@ -111,7 +109,7 @@ See Mail::Box::Search::new(deliver)
 
 See Mail::Box::Search::new(in)
 
-=item B<label> =E<gt> STRING|undef X<new(label)>
+=item B<label> =E<gt> STRING|undef
 
 Mark all selected selected message with the specified STRING.  If this
 option is explicitly set to C<undef>, the label will not be set.
@@ -132,17 +130,17 @@ See Mail::Box::Search::new(logical)
 
 See Mail::Box::Search::new(multiparts)
 
-=item B<rewrite_mail> =E<gt> BOOLEAN X<new(rewrite_mail)>
+=item B<rewrite_mail> =E<gt> BOOLEAN
 
 Add lines to the message header describing the results of the spam
 scan. See Mail::SpamAssassin::PerMessageStatus::rewrite_mail().
 
-=item B<sa_options> =E<gt> HASH_REF X<new(sa_options)>
+=item B<sa_options> =E<gt> HASH_REF
 
 Options to create the internal Mail::SpamAssassin object; see its
 manual page for the available options.
 
-=item B<spam_assassin> =E<gt> OBJECT X<new(spam_assassin)>
+=item B<spam_assassin> =E<gt> OBJECT
 
 Provide a Mail::SpamAssassin object to be used for searching spam.  If
 none is specified, one is created internally.  The object can be
@@ -272,7 +270,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

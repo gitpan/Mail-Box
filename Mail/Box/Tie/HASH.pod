@@ -1,11 +1,9 @@
 
 =head1 NAME
 
-
 Mail::Box::Tie::HASH - access an existing message folder as a hash
 
 =head1 SYNOPSIS
-
 
  tie my(%inbox), 'Mail::Box::Tie::HASH', $folder;
 
@@ -17,7 +15,6 @@ Mail::Box::Tie::HASH - access an existing message folder as a hash
  $inbox{$msg->messageId} = $msg;
 
 =head1 DESCRIPTION
-
 
 Certainly when you look at a folder as being a set of related messages
 based on message-id, it is logical to access the folder through a hash.
@@ -35,8 +32,9 @@ to the message-id.
 
 =over 4
 
-=item B<tie> HASH, 'Mail::Box::Tie::HASH', FOLDER X<tie>
+=item B<tie> HASH, 'Mail::Box::Tie::HASH', FOLDER
 
+(not a method) 
 Connects the FOLDER object to a HASH.
 
 Examples:
@@ -51,7 +49,7 @@ Examples:
 
 =over 4
 
-=item B<DELETE> MESSAGE-ID X<DELETE>
+=item B<DELETE> MESSAGE-ID
 
 Remove the message with the specified MESSAGE-ID.
 
@@ -60,7 +58,7 @@ Examples:
  %inbox = ();
  %inbox = ($msg->messageId, $msg); #before adding msg
 
-=item B<EXISTS> MESSAGE-ID X<EXISTS>
+=item B<EXISTS> MESSAGE-ID
 
 Check whether a message with a certain MESSAGE-ID exists.
 
@@ -68,7 +66,7 @@ Examples:
 
  if(exists $inbox{$msgid}) ...
 
-=item B<FETCH> MESSAGEID X<FETCH>
+=item B<FETCH> MESSAGEID
 
 Get the message with the specified id.  The returned message may be
 a dummy if message thread detection is used.  Returns C<undef> when
@@ -80,7 +78,7 @@ Examples:
  foreach my $msg (values %inbox) ...
 
  while(my ($msgid, $msg) = each %inbox) {
-    $msg->print unless $msg->deleted;
+    $msg->print unless $msg->isDeleted;
  }
 
 =back
@@ -98,7 +96,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

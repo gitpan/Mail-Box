@@ -1,15 +1,14 @@
 
 =head1 NAME
 
-
 Mail::Box::Locker - manage the locking of mail folders
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::Locker
+ Mail::Box::Locker
    is a Mail::Reporter
 
-Mail::Box::Locker is extended by
+ Mail::Box::Locker is extended by
    Mail::Box::Locker::DotLock
    Mail::Box::Locker::Flock
    Mail::Box::Locker::Multi
@@ -17,7 +16,6 @@ Mail::Box::Locker is extended by
    Mail::Box::Locker::POSIX
 
 =head1 SYNOPSIS
-
 
  use Mail::Box::Locker;
  my $locker = new Mail::Box::Locker(folder => $folder);
@@ -33,7 +31,6 @@ Mail::Box::Locker is extended by
 
 =head1 DESCRIPTION
 
-
 Each Mail::Box will create its own Mail::Box::Locker object which will
 handle the locking for it.  You can access of the object directly from
 the folder, as shown in the examples below.
@@ -44,8 +41,9 @@ the folder, as shown in the examples below.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
 
+(Class method) 
 Create a new lock. You may do this directly. However, in most cases the
 lock will not be separately instantiated but will be the second class in
 a multiple inheritance construction with a Mail::Box.
@@ -64,17 +62,17 @@ options given to the folder class.
 
 =over 4
 
-=item B<expires> =E<gt> SECONDS X<new(expires)>
+=item B<expires> =E<gt> SECONDS
 
 How long can a lock exist?  If a different e-mail program leaves a stale
 lock, then this lock will be removed automatically after the specified
 number of seconds.
 
-=item B<file> =E<gt> FILENAME X<new(file)>
+=item B<file> =E<gt> FILENAME
 
 Name of the file to lock.  By default, the name of the folder is taken.
 
-=item B<folder> =E<gt> FOLDER X<new(folder)>
+=item B<folder> =E<gt> FOLDER
 
 Which folder is locked.
 
@@ -82,7 +80,7 @@ Which folder is locked.
 
 See Mail::Reporter::new(log)
 
-=item B<method> =E<gt> METHOD | CLASS X<new(method)>
+=item B<method> =E<gt> METHOD | CLASS
 
 Which kind of locking, specified as one of the following names, or a
 full CLASS name.  Supported METHODs are
@@ -136,7 +134,7 @@ class with this parameter:
  my $locker = Mail::Box::Locker::MyOwn->new;
  $folder->open(locker => $locker);
 
-=item B<timeout> =E<gt> SECONDS|'NOTIMEOUT' X<new(timeout)>
+=item B<timeout> =E<gt> SECONDS|'NOTIMEOUT'
 
 How long to wait while trying to acquire the lock. The lock request will
 fail when the specified number of seconds is reached.  If 'NOTIMEOUT' is
@@ -158,12 +156,12 @@ See Mail::Reporter::new(trace)
 
 =over 4
 
-=item B<DESTROY>  X<DESTROY>
+=item B<DESTROY> 
 
 When the locker is destroyed, for instance when the folder is closed
 or the program ends, the lock will be automatically removed.
 
-=item B<name>  X<name>
+=item B<name> 
 
 Returns the method used to lock the folder. See the new() method for
 details on how to specify the lock method.  The name of the method is
@@ -179,7 +177,7 @@ Examples:
 
 =over 4
 
-=item B<filename> [FILENAME] X<filename>
+=item B<filename> [FILENAME]
 
 Returns the filename which is used to lock the folder, optionally after
 setting it to the specified FILENAME.
@@ -188,11 +186,11 @@ Examples:
 
  print $locker->filename;
 
-=item B<folder>  X<folder>
+=item B<folder> 
 
 Returns the folder object which is locker.
 
-=item B<hasLock>  X<hasLock>
+=item B<hasLock> 
 
 Check whether the folder has the lock.
 
@@ -201,7 +199,7 @@ Examples:
  if($locker->hasLock) {...}
  if($folder->locker->hasLock) {...}
 
-=item B<isLocked>  X<isLocked>
+=item B<isLocked> 
 
 Test if the folder is locked by this or a different application.
 
@@ -210,7 +208,7 @@ Examples:
  if($locker->isLocked) {...}
  if($folder->locker->isLocked) {...}
 
-=item B<lock> FOLDER X<lock>
+=item B<lock> FOLDER
 
 Get a lock on a folder.  This will return false if the lock fails.
 
@@ -219,7 +217,7 @@ Examples:
  die unless $locker->lock;
  if($folder->locker->lock) {...}
 
-=item B<unlock>  X<unlock>
+=item B<unlock> 
 
 Undo the lock on a folder.
 
@@ -303,7 +301,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

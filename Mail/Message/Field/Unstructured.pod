@@ -1,23 +1,20 @@
 
 =head1 NAME
 
-
 Mail::Message::Field::Unstructured - unstructured "Full" field
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Field::Unstructured
+ Mail::Message::Field::Unstructured
    is a Mail::Message::Field::Full
    is a Mail::Message::Field
    is a Mail::Reporter
 
 =head1 SYNOPSIS
 
-
  my $f = Mail::Message::Field::Unstructured->new(Comments => 'hi!');
 
 =head1 DESCRIPTION
-
 
 Unstructured fields do contain information which is not restricted in
 any way.  RFC2822 defines some unstructured fields, but by default all
@@ -34,7 +31,9 @@ comments have no meaning for unstructured fields, but encoding does.
 
 See Mail::Message::Field::Full::from()
 
-=item B<new> DATA X<new>
+=item B<new> DATA
+
+(Class method) 
 
 When the DATA is specified as single line, the content part is considered to
 be correcly (character) encoded and escaped.  Typically, it is a line as
@@ -115,15 +114,15 @@ Examples:
 
 =over 4
 
-=item B<addAttribute> ... X<addAttribute>
+=item B<addAttribute> ...
 
 Attributes are not supported for unstructured fields.
 
-=item B<addComment> ... X<addComment>
+=item B<addComment> ...
 
 Comments are not supported for unstructured fields.
 
-=item B<addExtra> ... X<addExtra>
+=item B<addExtra> ...
 
 Extras are not supported for unstructured fields.
 
@@ -366,7 +365,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -1,22 +1,20 @@
 
 =head1 NAME
 
-
 Mail::Message::Body::Delayed - body of a Mail::Message but not read yet.
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Body::Delayed
-  realizes a Mail::Message::Body which
+ Mail::Message::Body::Delayed realizes a Mail::Message::Body
+
+ Mail::Message::Body::Delayed
    is a Mail::Reporter
 
 =head1 SYNOPSIS
 
-
  See Mail::Message::Body
 
 =head1 DESCRIPTION
-
 
 Message bodies of this type will be replaced by another type the moment you
 access the content.  In this documentation you will find the description of
@@ -28,7 +26,9 @@ how a message body gets delay loaded.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  based_on             undef
@@ -79,7 +79,7 @@ See Mail::Message::Body::new(file)
 
 See Mail::Reporter::new(log)
 
-=item B<message> =E<gt> MESSAGE X<new(message)>
+=item B<message> =E<gt> MESSAGE
 
 The MESSAGE object which contains this delayed body.
 
@@ -115,25 +115,33 @@ See Mail::Message::Body::clone()
 
 See Mail::Message::Body::decoded()
 
-=item B<guessSize>  X<guessSize>
+=item B<guessSize> 
 
-=item B<isDelayed>  X<isDelayed>
+=item B<isDelayed> 
 
-=item B<isMultipart>  X<isMultipart>
+=item B<isModified> 
+
+See Mail::Message::Body::isModified()
+
+=item B<isMultipart> 
 
 =item B<isNested> 
 
 See Mail::Message::Body::isNested()
 
-=item B<message>  X<message>
+=item B<message> 
 
-=item B<modified> [BOOL]
+=item B<modified> [BOOLEAN]
 
 See Mail::Message::Body::modified()
 
-=item B<print> [FILE]
+=item B<print> [FILEHANDLE]
 
 See Mail::Message::Body::print()
+
+=item B<printEscapedFrom> FILEHANDLE
+
+See Mail::Message::Body::printEscapedFrom()
 
 =back
 
@@ -169,7 +177,7 @@ See Mail::Message::Body::Encode::isText()
 
 See Mail::Message::Body::mimeType()
 
-=item B<nrLines>  X<nrLines>
+=item B<nrLines> 
 
 =item B<size> 
 
@@ -257,15 +265,15 @@ See Mail::Message::Body::Encode::unify()
 
 See Mail::Message::Body::AUTOLOAD()
 
-=item B<fileLocation> BEGIN, END X<fileLocation>
+=item B<fileLocation> BEGIN, END
 
-=item B<load>  X<load>
+=item B<load> 
 
 Returns the loaded version of this body.
 
-=item B<moveLocation> DISTANCE X<moveLocation>
+=item B<moveLocation> DISTANCE
 
-=item B<read> PARSER, HEAD, BODYTYPE X<read>
+=item B<read> PARSER, HEAD, BODYTYPE
 
 =back
 
@@ -342,7 +350,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

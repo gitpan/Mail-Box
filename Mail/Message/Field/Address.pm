@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Field::Address;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Field::Full;

@@ -1,17 +1,15 @@
 
 =head1 NAME
 
-
 Mail::Message::Body::Multipart - body of a message with attachments
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Body::Multipart
+ Mail::Message::Body::Multipart
    is a Mail::Message::Body
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  See Mail::Message::Body, plus
 
@@ -25,7 +23,6 @@ Mail::Message::Body::Multipart
 
 =head1 DESCRIPTION
 
-
 The body (content) of a message can be stored in various ways.  In this
 manual-page you find the description of extra functionality you have
 when a message contains attachments (parts).
@@ -36,7 +33,9 @@ when a message contains attachments (parts).
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  based_on             undef
@@ -63,7 +62,7 @@ when a message contains attachments (parts).
 
 See Mail::Message::Body::new(based_on)
 
-=item B<boundary> =E<gt> STRING X<new(boundary)>
+=item B<boundary> =E<gt> STRING
 
 Separator to be used between parts of the message.  This separator must
 be unique in case the message contains nested multiparts (which are not
@@ -89,7 +88,7 @@ See Mail::Message::Body::new(disposition)
 
 See Mail::Message::Body::new(eol)
 
-=item B<epilogue> =E<gt> BODY X<new(epilogue)>
+=item B<epilogue> =E<gt> BODY
 
 The text which is included in the main body after the final boundary.  This
 is usually empty, and has no meaning.
@@ -114,7 +113,7 @@ See Mail::Message::Body::new(mime_type)
 
 See Mail::Message::Body::new(modified)
 
-=item B<parts> =E<gt> ARRAY-OF-(MESSAGES|BODIES) X<new(parts)>
+=item B<parts> =E<gt> ARRAY-OF-(MESSAGES|BODIES)
 
 Specifies an initial list of parts in this body.  These may be full
 MESSAGES, or BODIES which transformed into messages before use.  Each
@@ -124,7 +123,7 @@ C<MIME::Entity> and C<Mail::Internet> objects are acceptable in the
 list, because they are coercible into Mail::Message::Part's.  Values
 of C<undef> will be skipped silently.
 
-=item B<preamble> =E<gt> BODY X<new(preamble)>
+=item B<preamble> =E<gt> BODY
 
 The text which is included in the body before the first part.  It is
 common use to include a text to warn the user that the message is a
@@ -169,6 +168,10 @@ See Mail::Message::Body::decoded()
 
 See Mail::Message::Body::isDelayed()
 
+=item B<isModified> 
+
+See Mail::Message::Body::isModified()
+
 =item B<isMultipart> 
 
 See Mail::Message::Body::isMultipart()
@@ -181,13 +184,17 @@ See Mail::Message::Body::isNested()
 
 See Mail::Message::Body::message()
 
-=item B<modified> [BOOL]
+=item B<modified> [BOOLEAN]
 
 See Mail::Message::Body::modified()
 
-=item B<print> [FILE]
+=item B<print> [FILEHANDLE]
 
 See Mail::Message::Body::print()
+
+=item B<printEscapedFrom> FILEHANDLE
+
+See Mail::Message::Body::printEscapedFrom()
 
 =back
 
@@ -245,23 +252,24 @@ See Mail::Message::Body::type()
 
 =over 4
 
-=item B<boundary> [STRING] X<boundary>
+=item B<boundary> [STRING]
 
 Returns the boundary which is used to separate the parts in this
 body.  If none was read from file, then one will be assigned.  With
 STRING you explicitly set the boundary to be used.
 
-=item B<epilogue>  X<epilogue>
+=item B<epilogue> 
 
-Returns the epilogue (the text after the last message part --attachment),
-The preamble is stored in a BODY object, and its encoding is derived
-from the multipart header.
+Returns the epilogue; the text after the last message part (after the
+last real attachment).
+The epilogue is stored in a BODY object, and its encoding is taken
+from the general multipart header.
 
 =item B<file> 
 
 See Mail::Message::Body::file()
 
-=item B<foreachComponent> CODE X<foreachComponent>
+=item B<foreachComponent> CODE
 
 Execute the CODE for each component of the message: the preamble, the
 epilogue, and each of the parts.
@@ -281,7 +289,7 @@ Examples:
 
 See Mail::Message::Body::lines()
 
-=item B<part> INDEX X<part>
+=item B<part> INDEX
 
 Returns only the part with the specified INDEX.  You may use a negative
 value here, which counts from the back in the list.  Parts which are
@@ -292,7 +300,7 @@ Example:
  $message->body->part(2)->print;
  $body->part(1)->delete;
 
-=item B<parts> ['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER] X<parts>
+=item B<parts> ['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER]
 
 Return all parts by default, or when ALL is specified.  ACTIVE returns
 the parts which are not flagged for deletion, as opposite to DELETED.
@@ -311,10 +319,11 @@ Examples:
      print "Type: ", $part->get('Content-Type');
  }
 
-=item B<preamble>  X<preamble>
+=item B<preamble> 
 
-Returns the preamble (the text before the first message part --attachment),
-The preamble is stored in a BODY object, and its encoding is derived
+Returns the preamble; the text before the first message part (before the
+first real attachment).
+The preamble is stored in a BODY object, and its encoding is taken
 from the multipart header.
 
 =item B<string> 
@@ -331,7 +340,7 @@ See Mail::Message::Body::string()
 
 See Mail::Message::Body::Encode::addTransferEncHandler()
 
-=item B<attach> MESSAGES|BODIES X<attach>
+=item B<attach> MESSAGES|BODIES
 
 Attach a list of MESSAGES to this multipart.  A new body is returned.
 When you specify BODIES, they will first be translated into
@@ -363,7 +372,7 @@ See Mail::Message::Body::Construct::foreachLine()
 
 See Mail::Message::Body::Encode::getTransferEncHandler()
 
-=item B<stripSignature> OPTIONS X<stripSignature>
+=item B<stripSignature> OPTIONS
 
 Removes all parts which contains data usually defined as being signature.
 The C<MIME::Type> module provides this knowledge.  A new multipart is
@@ -497,7 +506,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

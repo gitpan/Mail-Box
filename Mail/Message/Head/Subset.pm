@@ -1,8 +1,7 @@
 use strict;
 
 package Mail::Message::Head::Subset;
-our $VERSION = 2.036;  # Part of Mail::Box
-
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Message::Head';
 
 use Object::Realize::Later
@@ -22,7 +21,7 @@ sub get($;$)
     }
     else
     {   my $value  = $self->SUPER::get(@_);
-        return $value  if $value;
+        return $value  if defined $value;
     }
 
     $self->load->get(@_);
@@ -73,6 +72,6 @@ sub guessTimestamp()
     $self->{MMHS_timestamp} = $stamp;
 }
 
-sub load() {confess;$_[0] = $_[0]->message->loadHead}
+sub load() {$_[0] = $_[0]->message->loadHead}
 
 1;

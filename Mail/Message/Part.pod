@@ -1,17 +1,15 @@
 
 =head1 NAME
 
-
 Mail::Message::Part - a part of a message, but a message by itself.
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Part
+ Mail::Message::Part
    is a Mail::Message
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  my Mail::Message $message = ...;
  if($message->isMultipart) {
@@ -26,7 +24,6 @@ Mail::Message::Part
 
 =head1 DESCRIPTION
 
-
 A Mail::Message::Part object contains a message which is included in
 the body of an other message.  For instance I<attachments> are I<parts>.
 
@@ -40,8 +37,9 @@ into mail-folder-specific variants.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
 
+(Class method) 
 Create a message part.
 
  OPTION               DEFAULT
@@ -67,7 +65,7 @@ See Mail::Message::new(body)
 
 See Mail::Message::new(body_type)
 
-=item B<container> =E<gt> BODY X<new(container)>
+=item B<container> =E<gt> BODY
 
 Reference to the parental Mail::Message::Body object where this
 part is a member of.  That object may be a Mail::Message::Body::Multipart
@@ -121,7 +119,7 @@ See Mail::Message::Construct::bounce()
 
 See Mail::Message::Construct::build()
 
-=item B<buildFromBody> BODY, CONTAINER, HEADERS X<buildFromBody>
+=item B<buildFromBody> BODY, CONTAINER, HEADERS
 
 (Class method) 
 Shape a message part around a BODY.  Bodies have information about their
@@ -134,7 +132,7 @@ Examples:
  my $multi = Mail::Message::Body::Multipart->new;
  my $part  = Mail::Message::Part->buildFromBody($body, $multi);
 
-=item B<coerce> BODY|MESSAGE, MULTIPART, HEADERS X<coerce>
+=item B<coerce> BODY|MESSAGE, MULTIPART, HEADERS
 
 Transforms a BODY or MESSAGE to a real message part.  The MULTIPART refers
 to the parental body.
@@ -189,18 +187,44 @@ See Mail::Message::clone()
 
 See Mail::Message::container()
 
-=item B<delete>  X<delete>
+=item B<delete> 
 
-Do not print or send this part of the message anymore.
+Do not print or send this part of the message anymore.  See deleted().
+The time stamp of the moment of deletion is stored as value.  When the same
+message is deleted more than once, the first time stamp will stay.
 
-=item B<deleted> [BOOLEAN] X<deleted>
+Examples:
 
-Returns whether this part is still in the body or not, optionally
-after setting it to the BOOLEAN.
+ $message->part(2)->delete;
+ $part->deleted(1);
+ delete $part;
+
+=item B<deleted> [BOOLEAN]
+
+Set the delete flag for this part of the multipart message body.  Without
+argument, the method returns the same is the isDeleted() method, which is
+prefered.  When a true value is given, delete() is called.
+
+=item B<isDeleted> 
+
+Returns the moment (as the time function returns) when the message part was
+flagged for deletion, or C<undef> when the part is not deleted.
+
+Examples:
+
+ next if $part->isDeleted;
+
+ if(my $when = $part->isDeleted) {
+    print scalar localtime $when;
+ }
 
 =item B<isDummy> 
 
 See Mail::Message::isDummy()
+
+=item B<isModified> 
+
+See Mail::Message::isModified()
 
 =item B<isPart> 
 
@@ -218,6 +242,11 @@ See Mail::Message::modified()
 
 See Mail::Message::print()
 
+=item B<printEscapedFrom> FILEHANDLE
+
+Prints the message part, but all lines which start with 'From ' will get
+a leading C<gt>.  See Mail::Message::Body::printEscapedFrom().
+
 =item B<send> [MAILER], OPTIONS
 
 See Mail::Message::send()
@@ -229,6 +258,10 @@ See Mail::Message::size()
 =item B<toplevel> 
 
 See Mail::Message::toplevel()
+
+=item B<write> [FILEHANDLE]
+
+See Mail::Message::write()
 
 =back
 
@@ -352,6 +385,14 @@ See Mail::Message::label()
 
 See Mail::Message::labels()
 
+=item B<labelsToStatus> 
+
+See Mail::Message::labelsToStatus()
+
+=item B<statusToLabels> 
+
+See Mail::Message::statusToLabels()
+
 =back
 
 =head2 Reading and Writing [internals]
@@ -366,10 +407,6 @@ See Mail::Message::DESTROY()
 
 See Mail::Message::isDelayed()
 
-=item B<labelsToStatus> 
-
-See Mail::Message::labelsToStatus()
-
 =item B<readBody> PARSER, HEAD [, BODYTYPE]
 
 See Mail::Message::readBody()
@@ -381,10 +418,6 @@ See Mail::Message::readFromParser()
 =item B<readHead> PARSER [,CLASS]
 
 See Mail::Message::readHead()
-
-=item B<statusToLabels> 
-
-See Mail::Message::statusToLabels()
 
 =item B<storeBody> BODY
 
@@ -473,7 +506,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

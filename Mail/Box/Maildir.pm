@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Maildir;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
@@ -34,11 +34,11 @@ sub create($@)
     my $directory = $class->folderToDirectory($name, $folderdir);
 
     if($class->createDirs($directory))
-    {   $class->log(PROGRESS => "Created folder $name.");
+    {   $class->log(PROGRESS => "Created folder Maildir $name.");
         return $class;
     }
     else
-    {   $class->log(WARNING => "Cannot create folder $name.");
+    {   $class->log(ERROR => "Cannot create Maildir folder $name.");
         return undef;
     }
 }
@@ -123,8 +123,8 @@ sub coerce($)
     my $new = File::Spec->catfile($dir, new => $basename);
 
     if($coerced->create($tmp) && $coerced->create($new))
-         {$self->log(PROGRESS => "Added message in $new") }
-    else {$self->log(ERROR    => "Cannot create $new") }
+         {$self->log(PROGRESS => "Added Maildir message in $new") }
+    else {$self->log(ERROR    => "Cannot create Maildir message file $new.") }
 
     $coerced->labelsToFilename unless $is_native;
     $coerced;
@@ -133,19 +133,19 @@ sub coerce($)
 sub createDirs($)
 {   my ($thing, $dir) = @_;
 
-    warn "Cannot create maildir folder directory $dir: $!\n", return
+    $thing->log(ERROR => "Cannot create Maildir folder directory $dir: $!\n"), return
         unless -d $dir || mkdir $dir;
 
     my $tmp = File::Spec->catdir($dir, 'tmp');
-    warn "Cannot create maildir folder subdir $tmp: $!\n", return
+    $thing->log(ERROR => "Cannot create Maildir folder subdir $tmp: $!\n"), return
         unless -d $tmp || mkdir $tmp;
 
     my $new = File::Spec->catdir($dir, 'new');
-    warn "Cannot create maildir folder subdir $new: $!\n", return
+    $thing->log(ERROR => "Cannot create Maildir folder subdir $new: $!\n"), return
         unless -d $new || mkdir $new;
 
     my $cur = File::Spec->catdir($dir, 'cur');
-    warn "Cannot create maildir folder subdir $cur: $!\n", return
+    $thing->log(ERROR =>  "Cannot create Maildir folder subdir $cur: $!\n"), return
         unless -d $cur || mkdir $cur;
 
     $thing;
@@ -293,7 +293,7 @@ sub writeMessages($)
         unless -d $tmpdir || mkdir $tmpdir;
 
     foreach my $message (@messages)
-    {   next unless $message->modified;
+    {   next unless $message->isModified;
 
         my $filename = $message->filename;
         my $basename = (File::Spec->splitpath($filename))[2];
@@ -303,7 +303,7 @@ sub writeMessages($)
            or croak "Cannot create file $newtmp: $!";
 
         $message->labelsToStatus;  # just for fun
-        $message->print($new);
+        $message->write($new);
         $new->close;
 
         unlink $filename;
@@ -356,8 +356,9 @@ sub appendMessages(@)
        my $new = File::Spec->catfile($dir, new => $basename);
 
        if($coerced->create($tmp) && $coerced->create($new))
-            {$self->log(PROGRESS => "Appended message in $new") }
-       else {$self->log(ERROR    => "Cannot append in $new") }
+            {$self->log(PROGRESS => "Appended Maildir message in $new") }
+       else {$self->log(ERROR    =>
+                "Cannot append Maildir message in $new to folder $self.") }
     }
 
     $self->close;

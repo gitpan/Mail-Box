@@ -1,18 +1,17 @@
 
 =head1 NAME
 
-
 Mail::Message::Head::Subset - subset of header information of a message
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Head::Subset
-  realizes a Mail::Message::Head::Complete which
+ Mail::Message::Head::Subset realizes a Mail::Message::Head::Complete
+
+ Mail::Message::Head::Subset
    is a Mail::Message::Head
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  my Mail::Message::Head::Subset $subset = ...;
  $subset->isa('Mail::Message::Head')  # true
@@ -20,7 +19,6 @@ Mail::Message::Head::Subset
  $subset->isDelayed                   # true
 
 =head1 DESCRIPTION
-
 
 Some types of folders contain an index file which lists a few lines of
 information per messages.  Especially when it is costly to read header lines,
@@ -43,7 +41,9 @@ the type of folder).
 
 See Mail::Message::Head::build()
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  field_type           'Mail::Message::Field::Fast'
@@ -94,6 +94,10 @@ See Mail::Message::Head::isDelayed()
 
 See Mail::Message::Head::isEmpty()
 
+=item B<isModified> 
+
+See Mail::Message::Head::isModified()
+
 =item B<isMultipart> 
 
 See Mail::Message::Head::isMultipart()
@@ -142,7 +146,7 @@ See Mail::Message::Head::Complete::set()
 
 See Mail::Message::Head::Complete::addResentGroup()
 
-=item B<count> NAME X<count>
+=item B<count> NAME
 
 Count the number of fields with this NAME.  If the NAME cannot be found,
 the full header get loaded.  In case we find any NAME field, it is
@@ -156,7 +160,7 @@ See Mail::Message::Head::get()
 
 See Mail::Message::Head::Complete::grepNames()
 
-=item B<guessBodySize>  X<guessBodySize>
+=item B<guessBodySize> 
 
 The body size is defined in the C<Content-Length> field.  However, this
 field may not be known.  In that case, a guess is made based on the known
@@ -331,7 +335,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

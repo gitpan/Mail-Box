@@ -1,16 +1,14 @@
 
 =head1 NAME
 
-
 Mail::Box::Manager - manage a set of folders
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::Manager
+ Mail::Box::Manager
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  use Mail::Box::Manager;
  my $mgr     = new Mail::Box::Manager;
@@ -34,7 +32,6 @@ Mail::Box::Manager
 
 =head1 DESCRIPTION
 
-
 The manager keeps track on a set of open folders and a set of message-thread
 supporting objects.  You are not obliged to use this object (you can
 directly create a Mail::Box::Mbox if you prefer), but you will create
@@ -46,7 +43,9 @@ more portable and safer code if you do use it.
 
 =over 4
 
-=item B<new> ARGS X<new>
+=item B<new> ARGS
+
+(Class method)
 
  OPTION               DEFAULT
  default_folder_type  'mbox'
@@ -58,13 +57,13 @@ more portable and safer code if you do use it.
 
 =over 4
 
-=item B<default_folder_type> =E<gt> NAME|CLASS X<new(default_folder_type)>
+=item B<default_folder_type> =E<gt> NAME|CLASS
 
 Specifies the default folder type for newly created folders.  If this
 option is not specified, the most recently registered type is used (see
 C<registerType> and the C<folder_types> option.
 
-=item B<folder_types> =E<gt> NEW-TYPE | ARRAY-OF-NEW-TYPES X<new(folder_types)>
+=item B<folder_types> =E<gt> NEW-TYPE | ARRAY-OF-NEW-TYPES
 
 Add one or more new folder types to the list of known types.  The order is
 important: when you open a file without specifying its type, the
@@ -75,7 +74,7 @@ for options which overrule the usual defaults.
 You may specify folder-specific defaults as OPTIONS.  They override
 the settings of the manager.
 
-=item B<folderdir> =E<gt> DIRECTORY X<new(folderdir)>
+=item B<folderdir> =E<gt> DIRECTORY
 
 The default directory, or directories, where folders are
 located.  C<Mail::Box::Manager> can autodetect the existing folder-types.
@@ -83,7 +82,7 @@ There may be different kinds of folders opened at the same time, and
 messages can be moved between those types, although that may result in
 a loss of information depending on the folder types.
 
-=item B<folderdirs> =E<gt> [ DIRECTORY, ... ] X<new(folderdirs)>
+=item B<folderdirs> =E<gt> [ DIRECTORY, ... ]
 
 =item B<log> =E<gt> LEVEL
 
@@ -101,7 +100,7 @@ See Mail::Reporter::new(trace)
 
 =over 4
 
-=item B<close> FOLDER, OPTIONS X<close>
+=item B<close> FOLDER, OPTIONS
 
 C<close> removes the specified folder from the list of open folders.
 Indirectly it will update the files on disk if needed (depends on
@@ -118,18 +117,18 @@ Examples:
  $mgr->close($inbox);
  $inbox->close;        # alternative
 
-=item B<closeAllFolders> , OPTIONS X<closeAllFolders>
+=item B<closeAllFolders> , OPTIONS
 
 C<closeAllFolders> calls close() for each folder managed by
 this object.  It is called just before the program stops (before global
 cleanup).
 
-=item B<decodeFolderURL> URL X<decodeFolderURL>
+=item B<decodeFolderURL> URL
 
 Try to decompose a folder name which is specified as URL (see open())
 into separate options.
 
-=item B<folderTypes>  X<folderTypes>
+=item B<folderTypes> 
 
 The C<folderTypes> returns the list of currently defined folder types.
 
@@ -137,7 +136,7 @@ Examples:
 
  print join("\n", $manager->folderTypes), "\n";
 
-=item B<isOpenFolder> FOLDER X<isOpenFolder>
+=item B<isOpenFolder> FOLDER
 
 Returns true if the FOLDER is currently open.
 
@@ -145,7 +144,7 @@ Examples:
 
  print "Yes\n" if $mgr->isOpenFolder('Inbox');
 
-=item B<open> [FOLDERNAME], OPTIONS X<open>
+=item B<open> [FOLDERNAME], OPTIONS
 
 Open a folder which name is specified as first parameter or with
 the option flag C<folder>.  The folder type is autodetected unless
@@ -164,12 +163,12 @@ description of the folder options, see the options to the constructor
 
 =over 4
 
-=item B<create> =E<gt> BOOLEAN X<open(create)>
+=item B<create> =E<gt> BOOLEAN
 
 Create the folder if it does not exist. By default, this is not done.
 The C<type> option specifies which type of folder is created.
 
-=item B<folder> =E<gt> NAME|URL X<open(folder)>
+=item B<folder> =E<gt> NAME|URL
 
 Which folder to open, specified by NAME or special URL.
 The URL format is composed as
@@ -185,11 +184,11 @@ be properly url-encoded.
 When you specify anything which does not match the URL format, it is
 passed directly to the C<new> method of the folder which is opened.
 
-=item B<folderdir> =E<gt> DIRECTORY X<open(folderdir)>
+=item B<folderdir> =E<gt> DIRECTORY
 
 The directory where the folders are usually stored.
 
-=item B<type> =E<gt> FOLDERTYPENAME|FOLDERTYPE X<open(type)>
+=item B<type> =E<gt> FOLDERTYPENAME|FOLDERTYPE
 
 Specify the type of the folder.  If you do not specify this option while
 opening a folder for reading, the manager checks all registered folder
@@ -213,11 +212,11 @@ Examples:
    , username    => 'myself', password => 'secret'
    , server_name => 'pop3.server.com', server_port => '120');
 
-=item B<openFolders>  X<openFolders>
+=item B<openFolders> 
 
 Returns a list of all open folders.
 
-=item B<registerType> TYPE, CLASS [,OPTIONS] X<registerType>
+=item B<registerType> TYPE, CLASS [,OPTIONS]
 
 With C<registerType> you can register one TYPE of folders.  The CLASS
 is compiled automatically, so you do not need to C<use> them in your own
@@ -237,7 +236,7 @@ Examples:
 
 =over 4
 
-=item B<appendMessages> [FOLDER|FOLDERNAME,] MESSAGES, OPTIONS X<appendMessages>
+=item B<appendMessages> [FOLDER|FOLDERNAME,] MESSAGES, OPTIONS
 
 Append one or more messages to a folder. You may specify a FOLDERNAME or
 an opened folder as the first argument. When the name is that of an
@@ -262,13 +261,13 @@ the default options for the detected folder type.
 Examples:
 
  $mgr->appendMessages('=send', $message, folderdir => '/');
- $mgr->appendMessages('=received', $inbox->messages);
+ $mgr->appendMessages($received, $inbox->messages);
 
  my @appended = $mgr->appendMessages($inbox->messages,
     folder => 'Drafts');
  $_->label(seen => 1) foreach @appended;
 
-=item B<copyMessage> [FOLDER|FOLDERNAME,] MESSAGES, OPTIONS X<copyMessage>
+=item B<copyMessage> [FOLDER|FOLDERNAME,] MESSAGES, OPTIONS
 
 Copy a message from one folder into another folder.  If the destination
 folder is already opened, the copied message is stored in memory and
@@ -292,7 +291,7 @@ Examples:
  $mgr->copyMessage($drafts->message(1), folder => '=Drafts'
     folderdir => '/tmp', create => 1);
 
-=item B<delete> FOLDERNAME [,OPTIONS] X<delete>
+=item B<delete> FOLDERNAME [,OPTIONS]
 
 Remove the named folder, including all its sub-folders.  The OPTIONS
 are the same as those for open().
@@ -301,7 +300,7 @@ The deletion of a folder can take some time.  Dependent on the type of
 folder, the folder must be read first.  For some folder-types this will
 be fast.
 
-=item B<moveMessage> [FOLDER|FOLDERNAME,] MESSAGES, OPTIONS X<moveMessage>
+=item B<moveMessage> [FOLDER|FOLDERNAME,] MESSAGES, OPTIONS
 
 Move a message from one folder to another.  Be warned that removals from
 a folder only take place when the folder is closed, so the message is only
@@ -320,7 +319,7 @@ is equivalent to
 
 =over 4
 
-=item B<threads> [FOLDERS], OPTIONS X<threads>
+=item B<threads> [FOLDERS], OPTIONS
 
 Create a new object which keeps track of message threads.  You can read
 about the possible options in the Mail::Box::Thread::Manager documentation.
@@ -333,13 +332,17 @@ Examples:
  my $t2 = $mgr->threads($inbox);
  my $t3 = $mgr->threads($inbox, $send);
 
-=item B<toBeThreaded> FOLDER, MESSAGES X<toBeThreaded>
-
-=item B<toBeUnthreaded> FOLDER, MESSAGES X<toBeUnthreaded>
+=item B<toBeThreaded> FOLDER, MESSAGES
 
 Signal to the manager that all thread managers which are using the
 specified folder must be informed that new messages are
-coming in (or going out).
+coming in.
+
+=item B<toBeUnthreaded> FOLDER, MESSAGES
+
+Signal to the manager that all thread managers which are using the
+specified folder must be informed that new messages are
+or going out.
 
 =back
 
@@ -420,7 +423,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

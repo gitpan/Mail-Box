@@ -1,24 +1,21 @@
 
 =head1 NAME
 
-
 Mail::Box::Maildir - handle Maildir folders
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::Maildir
+ Mail::Box::Maildir
    is a Mail::Box::Dir
    is a Mail::Box
    is a Mail::Reporter
 
 =head1 SYNOPSIS
 
-
  use Mail::Box::Maildir;
  my $folder = new Mail::Box::Maildir folder => $ENV{MAIL}, ...;
 
 =head1 DESCRIPTION
-
 
 This documentation describes how Maildir mailboxes work, and what you
 can do with the Maildir folder object C<Mail::Box::Maildir>.
@@ -35,7 +32,9 @@ at the bottom of this manual-page.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  access               'r'
@@ -183,9 +182,20 @@ See Mail::Box::new(trusted)
 
 See Mail::Box::clone()
 
-=item B<create> FOLDERNAME, OPTIONS
+=item B<create> FOLDERNMAE, OPTIONS
 
-See Mail::Box::create()
+(Class method)
+
+ OPTION               DEFAULT
+ folderdir            undef
+
+=over 4
+
+=item B<folderdir> =E<gt> DIRECTORY
+
+See Mail::Box::create(folderdir)
+
+=back
 
 =item B<folderdir> [DIRECTORY]
 
@@ -212,6 +222,10 @@ See Mail::Box::addMessages()
 =item B<copyTo> FOLDER, OPTIONS
 
 See Mail::Box::copyTo()
+
+=item B<isModified> 
+
+See Mail::Box::isModified()
 
 =item B<modified> [BOOLEAN]
 
@@ -339,17 +353,19 @@ See Mail::Box::toBeUnthreaded()
 
 =over 4
 
+=item B<appendMessage> OPTIONS
+
+(Class method)
+
 =item B<appendMessages> OPTIONS
 
 See Mail::Box::appendMessages()
 
 =item B<coerce> MESSAGE
 
-See Mail::Box::coerce()
+=item B<createDirs> FOLDERDIR
 
-=item B<createDirs> FOLDERDIR X<createDirs>
-
-(Instance or class method)
+(Class or Instance method) 
 The FOLDERDIR contains the absolute path of the location where the
 messages are kept.  Maildir folders contain a C<tmp>, C<new>, and
 C<cur> sub-directory within that folder directory as well.  This
@@ -364,7 +380,7 @@ See Mail::Box::determineBodyType()
 
 See Mail::Box::Dir::directory()
 
-=item B<folderIsEmpty> FOLDERDIR X<folderIsEmpty>
+=item B<folderIsEmpty> FOLDERDIR
 
 (Instance or class method)
 Checks whether the folder whose directory is specified as absolute FOLDERDIR
@@ -478,7 +494,6 @@ See Mail::Box::timespan2seconds()
 
 =head1 IMPLEMENTATION
 
-
 The explanation is complicated, but for normal use you should bother
 yourself with all details.
 
@@ -543,7 +558,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

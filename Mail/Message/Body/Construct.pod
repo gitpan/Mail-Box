@@ -1,33 +1,31 @@
 
 =head1 NAME
 
-
 Mail::Message::Body::Construct - adds functionality to Mail::Message::Body
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Body
-  has extra code in Mail::Message::Body::Construct
-  has extra code in Mail::Message::Body::Encode
+ Mail::Message::Body has extra code in
+   Mail::Message::Body::Construct
+   Mail::Message::Body::Encode
 
-Mail::Message::Body
+ Mail::Message::Body
    is a Mail::Reporter
 
-Mail::Message::Body is extended by
+ Mail::Message::Body is extended by
    Mail::Message::Body::File
    Mail::Message::Body::Lines
    Mail::Message::Body::Multipart
    Mail::Message::Body::Nested
    Mail::Message::Body::String
 
-Mail::Message::Body is realized by
+ Mail::Message::Body is realized by
    Mail::Message::Body::Delayed
 
 =head1 SYNOPSIS
 
 
 =head1 DESCRIPTION
-
 
 This package adds complex functionality to the Mail::Message::Body
 class.  This functions less often used, so many programs will not
@@ -61,6 +59,10 @@ See Mail::Message::Body::decoded()
 
 See Mail::Message::Body::isDelayed()
 
+=item B<isModified> 
+
+See Mail::Message::Body::isModified()
+
 =item B<isMultipart> 
 
 See Mail::Message::Body::isMultipart()
@@ -73,13 +75,17 @@ See Mail::Message::Body::isNested()
 
 See Mail::Message::Body::message()
 
-=item B<modified> [BOOL]
+=item B<modified> [BOOLEAN]
 
 See Mail::Message::Body::modified()
 
-=item B<print> [FILE]
+=item B<print> [FILEHANDLE]
 
 See Mail::Message::Body::print()
+
+=item B<printEscapedFrom> FILEHANDLE
+
+See Mail::Message::Body::printEscapedFrom()
 
 =back
 
@@ -159,7 +165,7 @@ See Mail::Message::Body::string()
 
 See Mail::Message::Body::Encode::addTransferEncHandler()
 
-=item B<attach> MESSAGES, OPTIONS X<attach>
+=item B<attach> MESSAGES, OPTIONS
 
 Make a multipart containing this body and the specified MESSAGES. The
 options are passed to the constructor of the multi-part body.  If you
@@ -188,7 +194,7 @@ Examples:
 
 See Mail::Message::Body::Encode::check()
 
-=item B<concatenate> COMPONENTS X<concatenate>
+=item B<concatenate> COMPONENTS
 
 Concatenate a list of elements into one new body.  The encoding is defined by
 the body where this method is called upon (and which does not need to be
@@ -223,7 +229,7 @@ See Mail::Message::Body::Encode::encode()
 
 See Mail::Message::Body::Encode::encoded()
 
-=item B<foreachLine> CODE X<foreachLine>
+=item B<foreachLine> CODE
 
 Create a new body by performing an action on each of its lines.  If none
 of the lines change, the current body will be returned, otherwise a new
@@ -250,7 +256,7 @@ Examples:
 
 See Mail::Message::Body::Encode::getTransferEncHandler()
 
-=item B<stripSignature> OPTIONS X<stripSignature>
+=item B<stripSignature> OPTIONS
 
 Strip the signature from the body.  The body must already be decoded
 otherwise the wrong lines may get stripped.
@@ -273,12 +279,12 @@ returned signature body.
 
 =over 4
 
-=item B<max_lines> =E<gt> INTEGER|undef X<stripSignature(max_lines)>
+=item B<max_lines> =E<gt> INTEGER|undef
 
 The maximum number of lines which can be the length of a signature.
 Specify C<undef> to remove the limit.
 
-=item B<pattern> =E<gt> REGEX|STRING|CODE X<stripSignature(pattern)>
+=item B<pattern> =E<gt> REGEX|STRING|CODE
 
 Which pattern defines the line which indicates the separator between
 the message and the signature.  In case of a STRING, this is matched
@@ -288,7 +294,7 @@ In case of CODE, each line (from last to front) is passed to the
 specified subroutine as first argument.  The subroutine must return
 TRUE when the separator is found.
 
-=item B<result_type> =E<gt> CLASS X<stripSignature(result_type)>
+=item B<result_type> =E<gt> CLASS
 
 The type of body to be created for the stripped body (and maybe also to
 contain the stripped signature)
@@ -407,7 +413,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

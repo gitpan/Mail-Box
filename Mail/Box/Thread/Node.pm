@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Thread::Node;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -47,7 +47,7 @@ sub message()
     return $messages[0] if @messages==1;
 
     foreach (@messages)
-    {   return $_ unless $_->deleted;
+    {   return $_ unless $_->isDeleted;
     }
 
     $messages[0];

@@ -1,12 +1,11 @@
 
 =head1 NAME
 
-
 Mail::Box::MH::Message - one message in a MH-folder
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::MH::Message
+ Mail::Box::MH::Message
    is a Mail::Box::Dir::Message
    is a Mail::Box::Message
    is a Mail::Message
@@ -14,12 +13,10 @@ Mail::Box::MH::Message
 
 =head1 SYNOPSIS
 
-
  my $folder = new Mail::Box::MH ...
  my $message = $folder->message(10);
 
 =head1 DESCRIPTION
-
 
 A Mail::Box::MH::Message represents one message in an MH-folder. Each
 message is stored in a separate file.
@@ -30,7 +27,9 @@ message is stored in a separate file.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  body                 undef
@@ -197,6 +196,10 @@ See Mail::Box::Message::folder()
 
 See Mail::Message::isDummy()
 
+=item B<isModified> 
+
+See Mail::Message::isModified()
+
 =item B<isPart> 
 
 See Mail::Message::isPart()
@@ -221,7 +224,7 @@ See Mail::Message::print()
 
 See Mail::Message::send()
 
-=item B<seqnr> [INTEGER] X<seqnr>
+=item B<seqnr> [INTEGER]
 
 The order of this message in the folder, counted from zero.  Do not
 change the number (unless you understand the implications).
@@ -237,6 +240,10 @@ See Mail::Message::size()
 =item B<toplevel> 
 
 See Mail::Message::toplevel()
+
+=item B<write> [FILEHANDLE]
+
+See Mail::Message::write()
 
 =back
 
@@ -360,6 +367,10 @@ See Mail::Box::Message::delete()
 
 See Mail::Box::Message::deleted()
 
+=item B<isDeleted> 
+
+See Mail::Box::Message::isDeleted()
+
 =item B<label> LABEL [,VALUE [LABEL, VALUE] ]
 
 See Mail::Message::label()
@@ -367,6 +378,14 @@ See Mail::Message::label()
 =item B<labels> 
 
 See Mail::Message::labels()
+
+=item B<labelsToStatus> 
+
+See Mail::Message::labelsToStatus()
+
+=item B<statusToLabels> 
+
+See Mail::Message::statusToLabels()
 
 =back
 
@@ -389,10 +408,6 @@ See Mail::Box::Message::diskDelete()
 =item B<isDelayed> 
 
 See Mail::Message::isDelayed()
-
-=item B<labelsToStatus> 
-
-See Mail::Message::labelsToStatus()
 
 =item B<loadBody> 
 
@@ -417,10 +432,6 @@ See Mail::Message::readFromParser()
 =item B<readHead> PARSER [,CLASS]
 
 See Mail::Message::readHead()
-
-=item B<statusToLabels> 
-
-See Mail::Message::statusToLabels()
 
 =item B<storeBody> BODY
 
@@ -513,7 +524,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

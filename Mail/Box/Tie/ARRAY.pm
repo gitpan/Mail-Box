@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Tie::ARRAY;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 
 use Carp;
 
@@ -15,7 +15,7 @@ sub TIEARRAY(@)
 sub FETCH($)
 {   my ($self, $index) = @_;
     my $msg = $self->{MBT_folder}->message($index);
-    $msg->deleted ? undef : $msg;
+    $msg->isDeleted ? undef : $msg;
 }
 
 sub STORE($$)

@@ -1,17 +1,15 @@
 
 =head1 NAME
 
-
 Mail::Message::Convert::Html - Format messages from or to HTML
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Convert::Html
+ Mail::Message::Convert::Html
    is a Mail::Message::Convert
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  use Mail::Message::Convert::Html;
  my $Html = Mail::Message::Convert::Html->new;
@@ -23,7 +21,6 @@ Mail::Message::Convert::Html
 
 =head1 DESCRIPTION
 
-
 The package contains various translators which handle HTML or XHTML
 without the help of external modules.  There are more HTML related modules,
 which do require extra packages to be installed.
@@ -34,7 +31,9 @@ which do require extra packages to be installed.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  fields               <see description>
@@ -49,7 +48,7 @@ which do require extra packages to be installed.
 
 See Mail::Message::Convert::new(fields)
 
-=item B<head_mailto> =E<gt> BOOLEAN X<new(head_mailto)>
+=item B<head_mailto> =E<gt> BOOLEAN
 
 Whether to replace e-mail addresses in some header lines with links.
 
@@ -57,7 +56,7 @@ Whether to replace e-mail addresses in some header lines with links.
 
 See Mail::Reporter::new(log)
 
-=item B<produce> =E<gt> 'HTML'|'XHTML' X<new(produce)>
+=item B<produce> =E<gt> 'HTML'|'XHTML'
 
 Produce HTML or XHTML output.  The output is slightly different, even
 html browsers will usually accept the XHTML data.
@@ -74,20 +73,20 @@ See Mail::Reporter::new(trace)
 
 =over 4
 
-=item B<fieldContentsToHtml> FIELD, [SUBJECT] X<fieldContentsToHtml>
+=item B<fieldContentsToHtml> FIELD, [SUBJECT]
 
 Format one field from the header to HTML.  When the header line usually
 usually contains e-mail addresses, the line is scanned and valid addresses
 are linked with an C<mailto:> anchor.  The SUBJECT can be specified to
 be included in that link.
 
-=item B<fieldToHtml> FIELD, [SUBJECT] X<fieldToHtml>
+=item B<fieldToHtml> FIELD, [SUBJECT]
 
 Reformat one header line field to HTML.  The FIELD's name
 is printed in bold, followed by the formatted field content,
 which is produced by the C<fieldContentsToHtml> method.
 
-=item B<headToHtmlHead> HEAD, META X<headToHtmlHead>
+=item B<headToHtmlHead> HEAD, META
 
 Translate the selected header lines (fields) to an html page header.  Each
 selected field will get its own meta line with the same name as the line.
@@ -120,7 +119,7 @@ Examples:
  splice @head, -1, 0, '<meta http-equiv=...>';
  print @head;
 
-=item B<headToHtmlTable> HEAD, [TABLE-PARAMS] X<headToHtmlTable>
+=item B<headToHtmlTable> HEAD, [TABLE-PARAMS]
 
 Produce a display of the selected fields of the header (see
 selectedFields()) in a table shape.  The optional
@@ -136,7 +135,7 @@ Examples:
 
 See Mail::Message::Convert::selectedFields()
 
-=item B<textToHtml> LINES X<textToHtml>
+=item B<textToHtml> LINES
 
 Translate one or more LINES from text into HTML.  Each line is taken one
 after the other, and only simple things are translated.  The C<plainToHtml>
@@ -222,7 +221,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

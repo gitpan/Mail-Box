@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Box::Locker::NFS;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Box::Locker';
 
 use IO::File;
@@ -79,7 +79,7 @@ sub lock()
     if(-e $lockfile && -A $lockfile > $expires)
     {   if(unlink $lockfile)
              { $self->log(WARNING => "Removed expired lockfile $lockfile.\n") }
-        else { $self->log(WARNING =>
+        else { $self->log(ERROR =>
                         "Unable to remove expired lockfile $lockfile: $!") }
     }
 

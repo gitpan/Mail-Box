@@ -1,21 +1,19 @@
 
 =head1 NAME
 
-
 Mail::Message::Field - one line of a message header
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Field
+ Mail::Message::Field
    is a Mail::Reporter
 
-Mail::Message::Field is extended by
+ Mail::Message::Field is extended by
    Mail::Message::Field::Fast
    Mail::Message::Field::Flex
    Mail::Message::Field::Full
 
 =head1 SYNOPSIS
-
 
  my $field = Mail::Message::Field->new(From => 'me@example.com');
  print $field->name;
@@ -28,7 +26,6 @@ Mail::Message::Field is extended by
  print $field->attribute('charset') || 'us-ascii';
 
 =head1 DESCRIPTION
-
 
 These objects each store one header line, and facilitates access routines to
 the information hidden in it.  Also, you may want to have a look at the
@@ -112,8 +109,9 @@ As user of the object, there is not visible difference.
 
 =over 4
 
-=item B<new> DATA X<new>
+=item B<new> DATA
 
+(Class method) 
 See Mail::Message::Field::Fast::new(), Mail::Message::Field::Flex::new(),
 and Mail::Message::Field::Full::new().
 By default, a C<Fast> field is produced.
@@ -140,11 +138,11 @@ See Mail::Reporter::new(trace)
 
 =over 4
 
-=item B<clone>  X<clone>
+=item B<clone> 
 
 Create a copy of this field object.
 
-=item B<isStructured>  X<isStructured>
+=item B<isStructured> 
 
 (object method or class method)
 
@@ -155,7 +153,7 @@ Examples:
 
  Mail::Message::Field->isStructured('From');
 
-=item B<length>  X<length>
+=item B<length> 
 
 Returns the total length of the field in characters, which includes the
 field's name, body and folding characters.
@@ -166,11 +164,11 @@ field's name, body and folding characters.
 
 =over 4
 
-=item B<Name>  X<Name>
+=item B<Name> 
 
 Returns the name of this field in original casing.  See name() as well.
 
-=item B<addresses>  X<addresses>
+=item B<addresses> 
 
 Returns a list of Mail::Address objects, which represent the
 e-mail addresses found in this header line.
@@ -180,7 +178,7 @@ Examples:
  my @addr = $message->head->get('to')->addresses;
  my @addr = $message->to;
 
-=item B<attribute> NAME [, VALUE] X<attribute>
+=item B<attribute> NAME [, VALUE]
 
 Get the value of an attribute, optionally after setting it to a new value.
 Attributes are part of some header lines, and hide themselves in the
@@ -196,7 +194,7 @@ Examples:
  print $field->attribute('bitmap') || 'no'  # --> no
  $field->atrribute(filename => '/tmp/xyz'); # sets field
 
-=item B<body>  X<body>
+=item B<body> 
 
 Returns the body of the field.  When this field is structured, it will
 be B<stripped> from everything what is behind the first semi-color (C<;>).
@@ -206,7 +204,7 @@ Whether the field is structured is defined by isStructured().
 This method may be what you want, but usually, the foldedBody() and
 unfoldedBody() are what you are looking for.
 
-=item B<comment> [STRING] X<comment>
+=item B<comment> [STRING]
 
 Returns the unfolded comment (part after a semi-colon) in a structureed
 header-line. optionally after setting it to a new STRING first.
@@ -216,13 +214,13 @@ Whether the field is structured is defined by isStructured().
 The I<comment> part of a header field often contains C<attributes>.  Often
 it is preferred to use attributes() on them.
 
-=item B<dateToTimestamp> STRING X<dateToTimestamp>
+=item B<dateToTimestamp> STRING
 
-(Class method)
+(Class or Instance method) 
 Convert a STRING which represents and RFC compliant time string into
 a timestamp like is produced by the C<time> function.
 
-=item B<folded>  X<folded>
+=item B<folded> 
 
 Returns the folded version of the whole header.  When the header is shorter
 than the wrap length, a list of one line is returned.  Otherwise more
@@ -238,7 +236,7 @@ Examples:
  print $field->folded;
  print scalar $field->folded; # faster
 
-=item B<foldedBody> [BODY] X<foldedBody>
+=item B<foldedBody> [BODY]
 
 Returns the body as a set of lines. In scalar context, this will be one line
 containing newlines.  Be warned about the newlines when you do
@@ -247,34 +245,35 @@ pattern-matching on the result of thie method.
 The optional BODY argument changes the field's body.  The folding of the
 argument must be correct.
 
-=item B<name>  X<name>
+=item B<name> 
 
 Returns the name of this field, with all characters lower-cased for
 ease of comparison.  See Name() as well.
 
-=item B<nrLines>  X<nrLines>
+=item B<nrLines> 
 
 Returns the number of lines needed to display this header-line.
 
-=item B<print> [FILEHANDLE] X<print>
+=item B<print> [FILEHANDLE]
 
 Print the whole header-line to the specified file-handle. One line may
 result in more than one printed line, because of the folding of long
 lines.  The FILEHANDLE defaults to the selected handle.
 
-=item B<size>  X<size>
+=item B<size> 
 
 Returns the number of bytes needed to display this header-line.
 
-=item B<string> [WRAP] X<string>
+=item B<string> [WRAP]
 
 Returns the field as string.  By default, this returns the same as
 folded(). However, the optional WRAP will cause to re-fold to take
 place (without changing the folding stored inside the field).
 
-=item B<stripCFWS> [STRING] X<stripCFWS>
+=item B<stripCFWS> [STRING]
 
-(Class or Instance method) Remove the I<comments> and I<folding white
+(Class or Instance method) 
+Remove the I<comments> and I<folding white
 spaces> from the STRING.  Without string and only as instance method, the
 unfoldedBody() is being stripped and returned.
 
@@ -283,9 +282,10 @@ are defined by the various RFCs as being so.  You don't want parts within
 braces which are in the Subject header line to be removed, to give an
 example.
 
-=item B<toDate> [TIME] X<toDate>
+=item B<toDate> [TIME]
 
-(Class method) Convert a timestamp into a MIME-acceptable date format.  This
+(Class or Instance method) 
+Convert a timestamp into a MIME-acceptable date format.  This
 differs from the default output of C<localtime> in scalar context.  Without
 argument, the C<localtime> is used to get the current time.  Be sure to have
 your timezone set right, especially when this script runs automatically.
@@ -299,19 +299,19 @@ Examples:
  Mail::Message::Field->toDate;  # same
  # returns someting like:  Wed, 28 Aug 2002 10:40:25 +0200
 
-=item B<toDisclose>  X<toDisclose>
+=item B<toDisclose> 
 
 Returns whether this field can be disclosed to other people, for instance
 when sending the message to an other party.  Returns a C<true> or C<false>
 condition.
 See also Mail::Message::printUndisclosed()
 
-=item B<toInt>  X<toInt>
+=item B<toInt> 
 
 Returns the value which is related to this field as integer.  A check is
 performed whether this is right.
 
-=item B<unfoldedBody> [BODY, [WRAP]] X<unfoldedBody>
+=item B<unfoldedBody> [BODY, [WRAP]]
 
 Returns the body as one single line, where all folding information (if
 available) is removed.  This line will also NOT end on a new-line.
@@ -325,7 +325,7 @@ Examples:
  my $body = $field->unfoldedBody;
  print "$field";   # via overloading
 
-=item B<wellformedName> [STRING] X<wellformedName>
+=item B<wellformedName> [STRING]
 
 (Instance method class method)
 As instance method, the current field's name is correctly formatted
@@ -344,9 +344,8 @@ Examples:
 
 =over 4
 
-=item B<consume> LINE | (NAME,BODY|OBJECTS) X<consume>
+=item B<consume> LINE | (NAME,BODY|OBJECTS)
 
-(Class method)
 Accepts a whole field LINE, or a pair with the field's NAME and BODY. In
 the latter case, the BODY data may be specified as array of OBJECTS which
 are stringified.  Returned is a nicely formatted pair of two strings: the
@@ -355,13 +354,13 @@ field's name and a folded body.
 This method is called by new(), and usually not be an application
 program.
 
-=item B<defaultWrapLength> [LENGTH] X<defaultWrapLength>
+=item B<defaultWrapLength> [LENGTH]
 
 Any field from any header for any message will have this default wrapping.
 This is maintained in one global variable.  Without a specified LENGTH,
 the current value is returned.  The default is 78.
 
-=item B<fold> NAME, BODY, [MAXCHARS] X<fold>
+=item B<fold> NAME, BODY, [MAXCHARS]
 
 Make the header field with NAME fold into multiple lines.
 Wrapping is performed by inserting newlines before a blanks in the
@@ -371,7 +370,7 @@ as possible.
 The RFC requests for folding on nice spots, but this request is
 mainly ignored because it would make folding too slow.
 
-=item B<setWrapLength> [LENGTH] X<setWrapLength>
+=item B<setWrapLength> [LENGTH]
 
 Force the wrapping of this field to the specified LENGTH characters. The
 wrapping is performed with fold() and the results stored within
@@ -385,7 +384,7 @@ Examples:
  $field->setWrapLength(99);
  $field->setWrapLength;
 
-=item B<unfold> STRING X<unfold>
+=item B<unfold> STRING
 
 The reverse of fold(): all lines which form the body of a field are
 joined into one by removing all line terminators (even the last).
@@ -470,7 +469,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -1,21 +1,19 @@
 
 =head1 NAME
 
-
 Mail::Message::Field::Full - one line of a message header
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Field::Full
+ Mail::Message::Field::Full
    is a Mail::Message::Field
    is a Mail::Reporter
 
-Mail::Message::Field::Full is extended by
+ Mail::Message::Field::Full is extended by
    Mail::Message::Field::Addresses
    Mail::Message::Field::Unstructured
 
 =head1 SYNOPSIS
-
 
  !! THE IMPLEMENTATION OF THIS MODULE IS NOT COMPLETELY FINISHED YET!!
 
@@ -48,9 +46,8 @@ Mail::Message::Field::Full is extended by
 
 =head1 DESCRIPTION
 
-
 This is the full implementation of a header field: it will be quite slow,
-because header fields can be very complex.  Of course, this class provides
+because header fields can be very complex.  Of course, this class delivers
 the optimal result, but for a quite large penalty in performance and
 memory consumption.
 
@@ -67,9 +64,9 @@ application.
 
 =over 4
 
-=item B<from> FIELD, OPTIONS X<from>
+=item B<from> FIELD, OPTIONS
 
-(Class method)
+(Class method) 
 Convert any FIELD (a Mail::Message::Field object) into a new
 Mail::Message::Field::Full object.  This conversion is done the hard
 way: the string which is produced by the original object is parsed
@@ -90,8 +87,9 @@ Examples:
  my $full = $msg->head->study('subject');       # same
  my $full = $msg->get('subject');               # same
 
-=item B<new> DATA X<new>
+=item B<new> DATA
 
+(Class method) 
 Creating a new field object the correct way is a lot of work, because
 there is so much freedom in the RFCs, but at the same time so many
 restrictions.  Most fields are implemented, but if you have your own
@@ -129,35 +127,35 @@ objects.  Finally, there are some OPTIONS.
 
 =over 4
 
-=item B<attributes> =E<gt> ATTRS X<new(attributes)>
+=item B<attributes> =E<gt> ATTRS
 
 There are various ways to specify these attributes: pass a reference
 to an array which list of key-value pairs representing attributes,
 or reference to a hash containing these pairs, or an array with
 Mail::Message::Field::Attribute objects.
 
-=item B<charset> =E<gt> STRING X<new(charset)>
+=item B<charset> =E<gt> STRING
 
 The body is specified in utf8, and must become 7bits ascii to be
 transmited.  Specify a charset to which the multi-byte
 utf8 is converted before it gets encoded.  See encode(), which does the
 job.
 
-=item B<encoding> =E<gt> 'q'|'Q'|'b'|'B' X<new(encoding)>
+=item B<encoding> =E<gt> 'q'|'Q'|'b'|'B'
 
 Non-ascii characters are encoded using Quoted-Printable ('q' or 'Q') or
 Base64 ('b' or 'B') encoding.
 
-=item B<extra> =E<gt> STRING X<new(extra)>
+=item B<extra> =E<gt> STRING
 
 Text which is appended after the line (preceded by a semicolon).
 
-=item B<force> =E<gt> BOOLEAN X<new(force)>
+=item B<force> =E<gt> BOOLEAN
 
 Enforce encoding in the specified charset, even when it is not needed
 because the body does not contain any non-ascii characters.
 
-=item B<is_structured> =E<gt> BOOLEAN X<new(is_structured)>
+=item B<is_structured> =E<gt> BOOLEAN
 
 If the name of the field is known, than the internals know whether the field
 is structured or not.  If you call the constructor on your own class which is
@@ -168,7 +166,7 @@ For fields which are not known, C<true> means that a
 Mail::Message::Field::Structured will be created.  The C<false> value will
 create a Mail::Message::Field::Unstructured.
 
-=item B<language> =E<gt> STRING X<new(language)>
+=item B<language> =E<gt> STRING
 
 The language used can be specified, however is rarely used my mail clients.
 
@@ -197,7 +195,7 @@ Examples:
 
 =over 4
 
-=item B<addAttribute> OBJECT|(STRING, OPTIONS)|(NAME,VALUE,OPTIONS) X<addAttribute>
+=item B<addAttribute> OBJECT|(STRING, OPTIONS)|(NAME,VALUE,OPTIONS)
 
 Add an attribute to the field.  The attributes are added left-to-right into
 the string representation of the field, although the order of the attributes
@@ -224,24 +222,24 @@ Examples:
  my $attr = Mail::Message::Field::Attribute->new(...);
  $f->addAttribute($attr);
 
-=item B<addComment> COMMENT, OPTIONS X<addComment>
+=item B<addComment> COMMENT, OPTIONS
 
 Creates a comment (see createComment()) and adds it immediately to
 this field.  Empty or undefined COMMENTs are ignored.  The created comment
 is returned.
 
-=item B<addExtra> STRING X<addExtra>
+=item B<addExtra> STRING
 
 Adds a string to the line, which is not an attribute however does start with
 a semi-colon.  Empty or undefined STRINGs are ignored.
 
-=item B<addPhrase> STRING, OPTIONS X<addPhrase>
+=item B<addPhrase> STRING, OPTIONS
 
 Create a phrase (see createPhrase()) and immediately add it to this field.
 Empty or undefined values of STRING are ignored.  The created phrase is
 returned.
 
-=item B<attributes>  X<attributes>
+=item B<attributes> 
 
 Returns a list with all attributes, which are all Mail::Message::Field::Attribute
 objects.  The attributes are not ordered in any way.  The list may be empty.
@@ -251,9 +249,9 @@ Double attributes or continuations are folded into one.
 
 See Mail::Message::Field::clone()
 
-=item B<createComment> STRING, OPTIONS X<createComment>
+=item B<createComment> STRING, OPTIONS
 
-(Class or Instance method)
+(Class or Instance method) 
 Create a comment to become part in a field.  Comments are automatically
 included within parenthesis.  Matching pairs of parenthesis are
 permitted within the STRING.  When a non-matching parenthesis are used,
@@ -264,9 +262,9 @@ Backslashes will stay, except at the end, where it will be doubled.
 The OPTIONS are C<charset>, C<language>, and C<encoding> as always.
 See addComment().  The created comment is returned.
 
-=item B<createPhrase> STRING, OPTIONS X<createPhrase>
+=item B<createPhrase> STRING, OPTIONS
 
-(Class or instance method)
+(Class or Instance method) 
 A phrase is a text which plays a well defined role.  This is the main difference
 with comments, which have do specified meaning.  Some special characters
 in the phrase will cause it to be surrounded with double quotes: do not specify
@@ -313,7 +311,7 @@ See Mail::Message::Field::comment()
 
 See Mail::Message::Field::dateToTimestamp()
 
-=item B<decodedBody> OPTIONS X<decodedBody>
+=item B<decodedBody> OPTIONS
 
 Returns the unfolded body of the field, where encodings are resolved.  The
 returned line will still contain comments and such.  The OPTIONS are passed
@@ -386,21 +384,21 @@ See Mail::Message::Field::wellformedName()
 
 See Mail::Message::Field::consume()
 
-=item B<consumeComment> STRING X<consumeComment>
+=item B<consumeComment> STRING
 
-(Class or Instance method)
+(Class or Instance method) 
 Try to read a comment from the STRING.  When successful, the comment
 without encapsulation parenthesis is returned, together with the rest
 of the string.
 
-=item B<consumeDotAtom> STRING X<consumeDotAtom>
+=item B<consumeDotAtom> STRING
 
 Returns three elemens: the atom-text, the rest string, and the
 concatenated comments.  Both atom and comments can be undef.
 
-=item B<consumePhrase> STRING X<consumePhrase>
+=item B<consumePhrase> STRING
 
-(Class or Instance method)
+(Class or Instance method) 
 Take the STRING, and try to strip-off a valid phrase.  In the obsolete
 phrase syntax, any sequence of words is accepted as phrase (as long as
 certain special characters are not used).  RFC2882 is stricter: only
@@ -415,9 +413,9 @@ Examples:
 
  my ($phrase, $rest) = $field->consumePhrase( q["hi!" <sales@example.com>] );
 
-=item B<decode> STRING, OPTIONS X<decode>
+=item B<decode> STRING, OPTIONS
 
-(Class or Instance method)
+(Class or Instance method) 
 Decode field encoded STRING to an utf8 string.  The input STRING is part of
 a header field, and as such, may contain encoded words in C<=?...?.?...?=>
 format defined by RFC2047.  The STRING may contain multiple encoded parts,
@@ -434,7 +432,7 @@ Be warned: language information, which is defined in RFC2231, is ignored.
 
 =over 4
 
-=item B<is_text> =E<gt> => BOOLEAN X<decode(is_text)>
+=item B<is_text> =E<gt> => BOOLEAN
 
 Encoding on text is slightly more complicated than encoding structured data,
 because it contains blanks.  Visible blanks have to be ignored between two
@@ -452,7 +450,7 @@ Examples:
 
 See Mail::Message::Field::defaultWrapLength()
 
-=item B<encode> STRING, OPTIONS X<encode>
+=item B<encode> STRING, OPTIONS
 
 Encode the (possibly utf8 encoded) STRING to a string which is acceptable
 to the RFC2047 definition of a header: only containing us-ascii characters.
@@ -465,24 +463,24 @@ to the RFC2047 definition of a header: only containing us-ascii characters.
 
 =over 4
 
-=item B<charset> =E<gt> STRING X<encode(charset)>
+=item B<charset> =E<gt> STRING
 
 STRING is an utf8 string which has to be translated into any byte-wise
 character set for transport, because MIME-headers can only contain ascii
 characters.
 
-=item B<encoding> =E<gt> 'q'|'Q'|'b'|'B' X<encode(encoding)>
+=item B<encoding> =E<gt> 'q'|'Q'|'b'|'B'
 
 The character encoding to be used.  With C<q> or C<Q>, quoted-printable
 encoding will be used.  With C<b> or C<B>, base64 encoding will be taken.
 
-=item B<force> =E<gt> BOOLEAN X<encode(force)>
+=item B<force> =E<gt> BOOLEAN
 
 Encode the string, even when it only contains us-ascii characters.  By
 default, this is off because it decreases readibility of the produced
 header fields.
 
-=item B<language> =E<gt> STRING X<encode(language)>
+=item B<language> =E<gt> STRING
 
 RFC2231 defines how to specify language encodings in encoded words.  The
 STRING is a strandard iso language name.
@@ -580,7 +578,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

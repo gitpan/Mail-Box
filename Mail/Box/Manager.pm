@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Manager;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Box;
@@ -101,10 +101,10 @@ sub decodeFolderURL($)
     $hostname ||= 'localhost';
     $path     ||= '=';
 
-    { type        => $type,     folder      => $path
+    ( type        => $type,     folder      => $path
     , username    => $username, password    => $password
     , server_name => $hostname, server_port => $port
-    };
+    );
 }
 
 sub open(@)
@@ -170,7 +170,7 @@ sub open(@)
             }
         }
 
-        $self->log(ERROR=>"Folder type $type is unknown, using autodetect")
+        $self->log(ERROR => "Folder type $type is unknown, using autodetect.")
             unless $folder_type;
     }
 
@@ -218,7 +218,7 @@ sub open(@)
     my $folder = $class->new(@defaults, %args);
 
     unless(defined $folder)
-    {   $self->log(WARNING => "$folder_type: Folder $name does not exist.");
+    {   $self->log(WARNING => "No folder $name of type $folder_type does exist.");
         return;
     }
 
@@ -291,7 +291,7 @@ sub appendMessages(@)
         foreach (@messages)
         {   next unless $_->isa('Mail::Box::Message') && $_->folder;
             $self->log(WARNING =>
-          "Use moveMessage() or copyMessage() to move between opened folders.");
+               "Use moveMessage() or copyMessage() to move between open folders.");
         }
 
         return $folder->addMessages(@messages);
@@ -346,8 +346,9 @@ sub copyMessage(@)
     my @messages;
     while(@_ && ref $_[0])
     {   my $message = shift;
-        croak "Use appendMessage to add messages which are not in a folder."
-           unless $message->isa('Mail::Box::Message');
+        $self->log(ERROR =>
+            "Use appendMessage() to add messages which are not in a folder.")
+                unless $message->isa('Mail::Box::Message');
         push @messages, $message;
     }
 
@@ -399,12 +400,13 @@ sub threads(@)
        :                           $folders
        );
 
-    croak "No folders specified.\n" unless @folders;
+    $self->log(INTERNAL => "No folders specified.\n")
+       unless @folders;
 
     my $threads;
     if(ref $type)
     {   # Already prepared object.
-        confess "You need to pass a $base derived"
+        $self->log(INTERNAL => "You need to pass a $base derived")
             unless $type->isa($base);
         $threads = $type;
     }
@@ -412,8 +414,8 @@ sub threads(@)
     {   # Create an object.  The code is compiled, which safes us the
         # need to compile Mail::Box::Thread::Manager when no threads are needed.
         eval "require $type";
-        croak "Unusable threader $type: $@" if $@;
-        croak "You need to pass a $base derived"
+        $self->log(INTERNAL => "Unusable threader $type: $@") if $@;
+        $self->log(INTERNAL => "You need to pass a $base derived")
             unless $type->isa($base);
 
         $threads = $type->new(manager => $self, %args);

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Parser;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Reporter';
 use Carp;
 
@@ -110,7 +110,7 @@ sub fileChanged()
     return 0 unless $size;
 
       $size != $self->{MBP_size} ? 0
-    : !defined $mtime            ? 1
+    : !defined $mtime            ? 0
     : $mtime != $self->{MBP_mtime};
 }
 

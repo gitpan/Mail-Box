@@ -1,22 +1,19 @@
 
 =head1 NAME
 
-
 Mail::Box::Locker::Flock - lock a folder using kernel file-locking
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::Locker::Flock
+ Mail::Box::Locker::Flock
    is a Mail::Box::Locker
    is a Mail::Reporter
 
 =head1 SYNOPSIS
 
-
  See Mail::Box::Locker
 
 =head1 DESCRIPTION
-
 
 The C<::Flock> object lock the folder by creating an exclusive lock on
 the file using the kernel's C<flock> facilities.  This lock is created
@@ -32,7 +29,9 @@ operating systems do not support C<flock>.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  expires              1 hour
@@ -109,11 +108,7 @@ See Mail::Box::Locker::hasLock()
 
 =item B<isLocked> 
 
-See Mail::Box::Locker::isLocked()
-
-=item B<lock> FOLDER
-
-See Mail::Box::Locker::lock()
+=item B<lock> 
 
 =item B<unlock> 
 
@@ -194,7 +189,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

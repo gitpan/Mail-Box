@@ -1,24 +1,21 @@
 
 =head1 NAME
 
-
 Mail::Box::IMAP4 - handle IMAP4 folders as client
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::IMAP4
+ Mail::Box::IMAP4
    is a Mail::Box::Net
    is a Mail::Box
    is a Mail::Reporter
 
 =head1 SYNOPSIS
 
-
  use Mail::Box::IMAP4;
  my $folder = new Mail::Box::IMAP4 folder => $ENV{MAIL}, ...;
 
 =head1 DESCRIPTION
-
 
 UNDER DEVELOPMENT: CANNOT BE USED YET!
 
@@ -34,8 +31,9 @@ handling of messages within a IMAP4 folder.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
 
+(Class method) 
 For authentications, you
 have three choices: specify a foldername which resembles an URL, or
 specify a pop-client object, or separate options for user, password,
@@ -82,7 +80,7 @@ pop-server and server-port.
 
 See Mail::Box::new(access)
 
-=item B<authenticate> =E<gt> 'KERBEROS_V4'|'GSSAPI'|'SKEY'|'AUTO' X<new(authenticate)>
+=item B<authenticate> =E<gt> 'KERBEROS_V4'|'GSSAPI'|'SKEY'|'AUTO'
 
 IMAP defines various authentications mechanisms.
 See Mail::Transport::IMAP4::new(authenticate).
@@ -131,7 +129,7 @@ See Mail::Box::new(head_delayed_type)
 
 See Mail::Box::new(head_type)
 
-=item B<imap_client> =E<gt> OBJECT X<new(imap_client)>
+=item B<imap_client> =E<gt> OBJECT
 
 You may want to specify your own imap-client object.  The object
 which is passed must extend Mail::Transport::IMAP4.
@@ -196,7 +194,7 @@ See Mail::Box::Net::new(server_name)
 
 See Mail::Box::Net::new(server_port)
 
-=item B<sub_sep> =E<gt> CHARACTER X<new(sub_sep)>
+=item B<sub_sep> =E<gt> CHARACTER
 
 A single character used as sub-folder indicator.  The IMAP protocol is
 able to find-out the right separator itself.
@@ -261,6 +259,10 @@ See Mail::Box::addMessages()
 =item B<copyTo> FOLDER, OPTIONS
 
 See Mail::Box::copyTo()
+
+=item B<isModified> 
+
+See Mail::Box::isModified()
 
 =item B<modified> [BOOLEAN]
 
@@ -400,15 +402,18 @@ See Mail::Box::coerce()
 
 See Mail::Box::determineBodyType()
 
-=item B<getHead> MESSAGE X<getHead>
+=item B<getHead> MESSAGE
 
 Read the header for the specified message from the remote server.
+C<undef> is returned in case the message disappeared.
 
-=item B<getHeadAndBody> MESSAGE X<getHeadAndBody>
+=item B<getHeadAndBody> MESSAGE
 
 Read all data for the specified message from the remote server.
+Return head and body of the mesasge as list, or an empty list
+if the MESSAGE disappeared from the server.
 
-=item B<imapClient>  X<imapClient>
+=item B<imapClient> 
 
 Returns the imap client object: a Mail::Transport::IMAP4 object.
 This does not establish the connection.
@@ -509,7 +514,6 @@ See Mail::Box::timespan2seconds()
 
 =head1 IMPLEMENTATION
 
-
 =head2 How IMAP4 folders work
 
 =head2 This implementation
@@ -527,7 +531,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Reporter;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 
 use Carp;
 use Scalar::Util 'dualvar';
@@ -29,7 +29,7 @@ sub init($)
 }
 
 sub defaultTrace(;$$)
-{   my $self = shift;
+{   my $thing = shift;
 
     if(@_)
     {   my ($log, $trace) = @_==1 ? ($_[0], $_[0]) : @_;
@@ -41,7 +41,7 @@ sub defaultTrace(;$$)
            or croak "Undefined trace level $trace";
     }
 
-    ( $self->logPriority($default_log), $self->logPriority($default_trace) );
+    ( $thing->logPriority($default_log), $thing->logPriority($default_trace) );
 }
 
 sub trace(;$)
@@ -136,7 +136,7 @@ sub notImplemented(@)
     my $package = ref $self || $self;
     my $sub     = (caller 1)[3];
 
-    $self->log(INTERNAL => "$package does not implement $sub.");
+    $self->log(ERROR => "Package $package does not implement $sub.");
     confess "Please warn the author, this shouldn't happen.";
 }
 

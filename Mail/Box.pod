@@ -1,21 +1,19 @@
 
 =head1 NAME
 
-
 Mail::Box - manage a mailbox, a folder with messages
 
 =head1 CLASS INHERITANCE
 
-Mail::Box
+ Mail::Box
    is a Mail::Reporter
 
-Mail::Box is extended by
+ Mail::Box is extended by
    Mail::Box::Dir
    Mail::Box::File
    Mail::Box::Net
 
 =head1 SYNOPSIS
-
 
  use Mail::Box::Manager;
  my $mgr    = Mail::Box::Manager->new;
@@ -46,7 +44,6 @@ Tied-interface:   (See Mail::Box::Tie)
  $inbox{$msgid}->print   # same as $folder->messageId($msgid)->print
 
 =head1 DESCRIPTION
-
 
 A Mail::Box::Manager creates Mail::Box objects.  But you already
 knew, because you started with the Mail::Box-Overview manual page.
@@ -104,9 +101,10 @@ help implementing more of them.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
 
-(Class method) Open a new folder. A list of labeled OPTIONS
+(Class method) 
+Open a new folder. A list of labeled OPTIONS
 for the mailbox can be supplied. Some options pertain to Mail::Box, and
 others are added by sub-classes. The list below describes all the options
 provided by any Mail::Box.
@@ -145,7 +143,7 @@ we want delay-loading.
 
 =over 4
 
-=item B<access> =E<gt> MODE X<new(access)>
+=item B<access> =E<gt> MODE
 
 Access-rights to the folder. MODE can be read-only (C<"r">), append (C<"a">),
 and read-write (C<"rw">).  Folders are opened for read-only (C<"r">)
@@ -158,12 +156,12 @@ open the folder, only read permission on the folder-file is required.
 Be warned: writing a MBOX folder may create a new file to replace the
 old folder.  The permissions and owner of the file get changed by this.
 
-=item B<body_delayed_type> =E<gt> CLASS X<new(body_delayed_type)>
+=item B<body_delayed_type> =E<gt> CLASS
 
 The bodies which are delayed: which will be read from file when it
 is needed, but not before.
 
-=item B<body_type> =E<gt> CLASS|CODE X<new(body_type)>
+=item B<body_type> =E<gt> CLASS|CODE
 
 When messages are read from a folder-file, the headers will be stored in
 a C<head_type> object.  For the body, however, there is a range of
@@ -195,7 +193,7 @@ The default depends on the mail-folder type, although the general default
 is Mail::Message::Body::Lines.  Please check the applicable
 manual pages.
 
-=item B<coerce_options> =E<gt> ARRAY X<new(coerce_options)>
+=item B<coerce_options> =E<gt> ARRAY
 
 Keep configuration information for messages which are coerced into the
 specified folder type, starting with a different folder type (or even
@@ -203,7 +201,7 @@ no folder at all).
 Messages which are coerced are always fully read, so this kind of information
 does not need to be kept here.
 
-=item B<create> =E<gt> BOOLEAN X<new(create)>
+=item B<create> =E<gt> BOOLEAN
 
 Automatically create the folder when it does not exist yet.  This will only
 work when access is granted for writing or appending to the folder.
@@ -211,7 +209,7 @@ work when access is granted for writing or appending to the folder.
 Be careful: you may create a different folder type than you expect unless you
 explicitly specify the C<type> (See Mail::Box::Manager::open(type)).
 
-=item B<extract> =E<gt> INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS' X<new(extract)>
+=item B<extract> =E<gt> INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
 
 Defines when to parse (process) the content of the message.
 When the header of a message is read, you may want to postpone the
@@ -269,19 +267,19 @@ sure you always need all the messages in the folder.
      $header->get('from') =~ m/\bmy\@example.com\b/i;
  }
 
-=item B<field_type> =E<gt> CLASS X<new(field_type)>
+=item B<field_type> =E<gt> CLASS
 
 The type of the fields to be used in a header. Must extend
 Mail::Message::Field.
 
-=item B<fix_headers> =E<gt> BOOLEAN X<new(fix_headers)>
+=item B<fix_headers> =E<gt> BOOLEAN
 
 Broken MIME headers usually stop the parser: all lines not parsed are
 added to the body of the message.  With this flag set, the erroneous line
 is added to the previous header field and parsing is continued.
 See Mail::Box::Parser::Perl(fix_header_errors).
 
-=item B<folder> =E<gt> FOLDERNAME X<new(folder)>
+=item B<folder> =E<gt> FOLDERNAME
 
 Which folder to open (for reading or writing). When used for reading (the
 C<access> option set to C<"r"> or C<"a">) the mailbox should already exist
@@ -293,7 +291,7 @@ The folder name can be preceded by a C<"=">, to indicate that it is named
 relative to the directory specified in new(folderdir).  Otherwise, it is
 taken as relative or absolute path.
 
-=item B<folderdir> =E<gt> DIRECTORY X<new(folderdir)>
+=item B<folderdir> =E<gt> DIRECTORY
 
 Where are folders to be found by default?  A folder-name may be preceded by
 a equals-sign (C<=>, a C<mutt> convension) to explicitly state that the folder
@@ -301,17 +299,17 @@ is located below the default directory.  For example: in case
 C<folderdir =E<gt> '/tmp'> and C<folder =E<gt> '=abc'>, the name of the
 folder-file is C<'/tmp/abc'>.  Each folder type has already some default set.
 
-=item B<head_delayed_type> =E<gt> CLASS X<new(head_delayed_type)>
+=item B<head_delayed_type> =E<gt> CLASS
 
 The headers which are delayed: which will be read from file when it
 is needed, but not before.
 
-=item B<head_type> =E<gt> CLASS X<new(head_type)>
+=item B<head_type> =E<gt> CLASS
 
 The type of header which contains all header information.  Must extend
 Mail::Message::Head::Complete.
 
-=item B<keep_dups> =E<gt> BOOLEAN X<new(keep_dups)>
+=item B<keep_dups> =E<gt> BOOLEAN
 
 Indicates whether or not duplicate messages within the folder should          
 be retained.  A message is considered to be a duplicate if its message-id      
@@ -319,28 +317,28 @@ is the same as a previously parsed message within the same folder. If this
 option is false (the default) such messages are automatically deleted,
 because it is considered useless to store the same message twice.
 
-=item B<lock_file> =E<gt> FILENAME X<new(lock_file)>
+=item B<lock_file> =E<gt> FILENAME
 
 The name of the file which is used to lock.  This must be specified when
 locking is to be used.
 
-=item B<lock_timeout> =E<gt> SECONDS X<new(lock_timeout)>
+=item B<lock_timeout> =E<gt> SECONDS
 
 When the lock file is older than the specified number of SECONDS, it is
 considered a mistake.  The original lock is released, and accepted for
 this folder.
 
-=item B<lock_type> =E<gt> CLASS|STRING X<new(lock_type)>
+=item B<lock_type> =E<gt> CLASS|STRING
 
 The type of the locker object.  This may be the full name of a CLASS
 which extends Mail::Box::Locker, or one of the known locker types
 C<'DotLock'>, C<'File'>, C<'Multi'>, C<'NFS'>, C<'POSIX'>, or C<'NONE'>.
 
-=item B<lock_wait> =E<gt> SECONDS X<new(lock_wait)>
+=item B<lock_wait> =E<gt> SECONDS
 
 SECONDS to wait before failing on opening this folder.
 
-=item B<locker> =E<gt> OBJECT X<new(locker)>
+=item B<locker> =E<gt> OBJECT
 
 An OBJECT which extends Mail::Box::Locker, and will handle folder locking
 replacing the default lock behavior.
@@ -349,29 +347,29 @@ replacing the default lock behavior.
 
 See Mail::Reporter::new(log)
 
-=item B<manager> =E<gt> MANAGER X<new(manager)>
+=item B<manager> =E<gt> MANAGER
 
 A reference to the object which manages this folder -- typically an
 Mail::Box::Manager instance.
 
-=item B<message_type> =E<gt> CLASS X<new(message_type)>
+=item B<message_type> =E<gt> CLASS
 
 What kind of message-objects are stored in this type of folder.  The
 default is Mail::Box::Message (which is a sub-class of Mail::Message).
 The class you offer must be an extension of Mail::Box::Message.
 
-=item B<multipart_type> =E<gt> CLASS X<new(multipart_type)>
+=item B<multipart_type> =E<gt> CLASS
 
 The default type of objects which are to be created for multipart message
 bodies.
 
-=item B<remove_when_empty> =E<gt> BOOLEAN X<new(remove_when_empty)>
+=item B<remove_when_empty> =E<gt> BOOLEAN
 
 Determines whether to remove the folder file or directory
 automatically when the write would result in a folder without
 messages nor sub-folders.
 
-=item B<save_on_exit> =E<gt> BOOLEAN X<new(save_on_exit)>
+=item B<save_on_exit> =E<gt> BOOLEAN
 
 Sets the policy for saving the folder when it is closed.
 A folder can be closed manually (see close()) or in a number of
@@ -381,7 +379,7 @@ implicit ways, including on the moment the program is terminated.
 
 See Mail::Reporter::new(trace)
 
-=item B<trusted> =E<gt> BOOLEAN X<new(trusted)>
+=item B<trusted> =E<gt> BOOLEAN
 
 Flags whether to trust the data in the folder or not.  Folders which
 reside in your C<folderdir> will be trusted by default (even when the
@@ -400,7 +398,7 @@ binary data to the screen, which is a security risk.
 
 =over 4
 
-=item B<clone> OPTIONS X<clone>
+=item B<clone> OPTIONS
 
 Create a new folder, with the same settings as this folder.  One of
 the specified options must be new folder to be opened.  Other options
@@ -410,9 +408,10 @@ Examples:
 
  my $folder2 = $folder->clone(folder => '=jan');
 
-=item B<create> FOLDERNAME, OPTIONS X<create>
+=item B<create> FOLDERNAME, OPTIONS
 
-(Class method) Create a folder.  If the folder already exists, it will
+(Class method) 
+Create a folder.  If the folder already exists, it will
 be left unchanged.  As options, you may specify:
 
  OPTION               DEFAULT
@@ -420,14 +419,14 @@ be left unchanged.  As options, you may specify:
 
 =over 4
 
-=item B<folderdir> =E<gt> DIRECTORY X<create(folderdir)>
+=item B<folderdir> =E<gt> DIRECTORY
 
 When the foldername is preceded by a C<=>, the C<folderdir> directory
 will be searched for the named folder.
 
 =back
 
-=item B<folderdir> [DIRECTORY] X<folderdir>
+=item B<folderdir> [DIRECTORY]
 
 Get or set the DIRECTORY which is used to store mail-folders by default.
 
@@ -436,7 +435,7 @@ Examples:
  print $folder->folderdir;
  $folder->folderdir("$ENV{HOME}/nsmail");
 
-=item B<foundIn> [FOLDERNAME], OPTIONS X<foundIn>
+=item B<foundIn> [FOLDERNAME], OPTIONS
 
 (class method) Determine if the specified folder is of the type handled by the
 folder class. This method is extended by each folder sub-type.
@@ -454,7 +453,7 @@ each folder class will at least support the C<folderdir> option:
 
 =over 4
 
-=item B<folderdir> =E<gt> DIRECTORY X<foundIn(folderdir)>
+=item B<folderdir> =E<gt> DIRECTORY
 
 The location where the folders of this class are stored by default.  If the
 user specifies a name starting with a C<=>, that indicates that the folder is
@@ -473,9 +472,9 @@ Examples:
 
 =over 4
 
-=item B<addMessage> MESSAGE X<addMessage>
+=item B<addMessage> MESSAGE
 
-=item B<addMessages> MESSAGE [, MESSAGE, ...] X<addMessages>
+=item B<addMessages> MESSAGE [, MESSAGE, ...]
 
 Add a message to the folder.  A message is usually a Mail::Box::Message
 object or a sub-class thereof.  The message shall not be in an other folder,
@@ -489,7 +488,7 @@ Examples:
  $folder->addMessage($msg);
  $folder->addMessages($msg1, $msg2, ...);
 
-=item B<copyTo> FOLDER, OPTIONS X<copyTo>
+=item B<copyTo> FOLDER, OPTIONS
 
 Copy the folder's messages to a new folder.  The new folder may be of
 a different type.
@@ -501,18 +500,18 @@ a different type.
 
 =over 4
 
-=item B<delete_copied> =E<gt> BOOLEAN X<copyTo(delete_copied)>
+=item B<delete_copied> =E<gt> BOOLEAN
 
 Flag the messages from the source folder to be deleted, just after it
 was copied.  The deletion will only take effect when the originating
 folder is closed.
 
-=item B<select> =E<gt> 'ACTIVE'|'DELETED'|'ALL'|LABEL|!LABEL|FILTER X<copyTo(select)>
+=item B<select> =E<gt> 'ACTIVE'|'DELETED'|'ALL'|LABEL|!LABEL|FILTER
 
 Which messages are to be copied. See messages(description)
 about how this works.
 
-=item B<subfolders> =E<gt> BOOLEAN|'FLATTEN'|'RECURSE' X<copyTo(subfolders)>
+=item B<subfolders> =E<gt> BOOLEAN|'FLATTEN'|'RECURSE'
 
 How to handle sub-folders.  When false (0 or C<undef>), sub-folders
 are simply ignored.  With 'FLATTEN', messages from sub-folders are
@@ -533,14 +532,17 @@ Examples:
  $imap->copyTo($mh, delete_copied => 1);
  $mh->close; $imap->close;
 
-=item B<modified> [BOOLEAN] X<modified>
+=item B<isModified> 
 
-C<modified> checks if the folder is modified, optionally after setting the
-flag.   A folder is modified when any of the messages is to be deleted, any
-of the messages has changed, or messages are added after the folder was
-read from file.
+Checks if the folder is modified.  A folder is modified when any of the
+messages is to be deleted, any of the messages has changed, or messages
+are added after the folder was read from file.
 
-=item B<name>  X<name>
+=item B<modified> [BOOLEAN]
+
+Sets whether the folder is modified or not.
+
+=item B<name> 
 
 Returns the name of the folder.  What the name represents depends on
 the actual type of mailbox used.
@@ -548,18 +550,19 @@ the actual type of mailbox used.
 Examples:
 
  print $folder->name;
+ print "$folder";       # overloaded stringification
 
-=item B<organization>  X<organization>
+=item B<organization> 
 
 Returns how the folder is organized: as one C<'FILE'> with many messages,
 a C<'DIRECTORY'> with one message per file, or by a C<'REMOTE'> server.
 
-=item B<type>  X<type>
+=item B<type> 
 
 Returns a name for the type of mail box.  This can be C<mbox>, C<mh>,
 C<maildir>, or C<pop3>.
 
-=item B<update> OPTIONS X<update>
+=item B<update> OPTIONS
 
 Read new messages from the folder, which where received after opening
 it.  This is quite dangerous and shouldn't be possible: folders which
@@ -570,7 +573,7 @@ failsafe) and incorporates them in the open folder administration.
 The OPTIONS are extra values which are passed to the
 updateMessages() method which is doing the actual work here.
 
-=item B<url>  X<url>
+=item B<url> 
 
 Represent the folder as a URL (Universal Resource Locator) string.  You may
 pass such a URL as folder name to Mail::Box::Manager::open().
@@ -582,7 +585,7 @@ Examples:
  #   mbox:/var/mail/markov   or
  #   pop3://user:password@pop.aol.com:101
 
-=item B<writable>  X<writable>
+=item B<writable> 
 
 Checks whether the current folder is writable.
 
@@ -590,7 +593,7 @@ Examples:
 
  $folder->addMessage($msg) if $folder->writable;
 
-=item B<write> OPTIONS X<write>
+=item B<write> OPTIONS
 
 Write the data to disk.  The folder (a C<true> value) is returned if
 successful.  Deleted messages are transformed into destroyed messages:
@@ -611,12 +614,12 @@ new folder.
 
 =over 4
 
-=item B<force> =E<gt> BOOLEAN X<write(force)>
+=item B<force> =E<gt> BOOLEAN
 
 Override write-protection by the C<access> option while opening the folder
 (whenever possible, it may still be blocked by the operating system).
 
-=item B<save_deleted> =E<gt> BOOLEAN X<write(save_deleted)>
+=item B<save_deleted> =E<gt> BOOLEAN
 
 Do also write messages which where flagged to be deleted to their folder.  The
 flag for deletion is conserved (when possible), which means that a re-open of
@@ -630,12 +633,12 @@ the folder may remove the messages for real.  See close(save_deleted).
 
 =over 4
 
-=item B<DESTROY>  X<DESTROY>
+=item B<DESTROY> 
 
 This method is called by Perl when an folder-object is no longer accessible
 by the rest of the program.
 
-=item B<close> OPTIONS X<close>
+=item B<close> OPTIONS
 
 Close the folder, which usually implies writing the changes.  This will
 return C<false> when writing is required but fails.  Please do check this
@@ -652,20 +655,20 @@ you may lose data if the system crashes or if there are software problems.
 
 =over 4
 
-=item B<force> =E<gt> BOOLEAN X<close(force)>
+=item B<force> =E<gt> BOOLEAN
 
 Override the C<access> setting specified when the folder was opened. This
 option only has an effect if its value is TRUE. NOTE: Writing to the folder
 may not be permitted by the operating system, in which case even C<force> will
 not help.
 
-=item B<save_deleted> =E<gt> BOOLEAN X<close(save_deleted)>
+=item B<save_deleted> =E<gt> BOOLEAN
 
 Do also write messages which where flagged to be deleted to their folder.  The
 flag for deletion is conserved (when possible), which means that a re-open of
 the folder may remove the messages for real.  See write(save_deleted).
 
-=item B<write> =E<gt> 'ALWAYS'|'NEVER'|'MODIFIED' X<close(write)>
+=item B<write> =E<gt> 'ALWAYS'|'NEVER'|'MODIFIED'
 
 Specifies whether the folder should be written.  As could be expected,
 C<'ALWAYS'> means always (even if there are no changes), C<'NEVER'> means that
@@ -685,7 +688,7 @@ Examples:
  $f->close
      or die "Couldn't write $f: $!\n";
 
-=item B<delete>  X<delete>
+=item B<delete> 
 
 Remove the specified folder file or folder directory (depending on
 the type of folder) from disk.  Of course, THIS IS DANGEROUS: you "may"
@@ -706,7 +709,7 @@ Examples:
 
 =over 4
 
-=item B<current> [NUMBER|MESSAGE|MESSAGE-ID] X<current>
+=item B<current> [NUMBER|MESSAGE|MESSAGE-ID]
 
 Some mail-readers keep the I<current> message, which represents the last
 used message.  This method returns [after setting] the current message.
@@ -719,14 +722,14 @@ Examples:
  $folder->current(0);
  $folder->current($message);
 
-=item B<find> MESSAGE-ID X<find>
+=item B<find> MESSAGE-ID
 
 Like messageId(), this method searches for a message with the
 MESSAGE-ID, returning the corresponding message object.  However, C<find>
 will cause unparsed message in the folder to be parsed until the message-id
 is found.  The folder will be scanned back to front.
 
-=item B<message> INDEX [,MESSAGE] X<message>
+=item B<message> INDEX [,MESSAGE]
 
 Get or set a message with on a certain index.  Messages which are flagged
 for deletion are counted.  Negative indexes start at the end of the folder.
@@ -738,7 +741,7 @@ Examples:
  $folder->message(3, $msg);
  print $folder->message(-1);    # last message.
 
-=item B<messageId> MESSAGE-ID [,MESSAGE] X<messageId>
+=item B<messageId> MESSAGE-ID [,MESSAGE]
 
 With one argument, returns the message in the folder with the specified
 MESSAGE-ID. If a reference to a message object is passed as the optional
@@ -761,7 +764,7 @@ Examples:
  my $msg = $folder->messageId('complex-message.id');
  my $msg = $folder->messageId('garbage <complex-message.id> trash');
 
-=item B<messageIds>  X<messageIds>
+=item B<messageIds> 
 
 Returns a list of I<all> message-ids in the folder, including
 those of messages which are to be deleted.
@@ -775,7 +778,7 @@ Examples:
     $folder->messageId($id)->print;
  }
 
-=item B<messages> ['ALL',RANGE,'ACTIVE','DELETED',LABEL,!LABEL,FILTER] X<messages>
+=item B<messages> ['ALL',RANGE,'ACTIVE','DELETED',LABEL,!LABEL,FILTER]
 
 Returns multiple messages from the folder.  The default is 'ALL'
 which will return (as expected maybe) all the messages in the
@@ -805,7 +808,7 @@ Examples:
 
  my $subset     = $folder->messages(10,-8);
 
- my @not_deleted= grep {not $_->deleted} $folder->messages;
+ my @not_deleted= grep {not $_->isDeleted} $folder->messages;
  my @not_deleted= $folder->messages('ACTIVE'); # same
 
  my $nr_of_msgs = $folder->messages;           # scalar context
@@ -814,7 +817,7 @@ Examples:
  $mgr->moveMessages($spamfolder, $inbox->message('spam'));
  $mgr->moveMessages($archive, $inbox->message('seen'));
 
-=item B<scanForMessages> MESSAGE, MESSAGE-IDS, TIMESTAMP, WINDOW X<scanForMessages>
+=item B<scanForMessages> MESSAGE, MESSAGE-IDS, TIMESTAMP, WINDOW
 
 The MESSAGE which is known contains references to messages before
 it in the message thread, but which are not found yet because of the
@@ -833,9 +836,9 @@ not found: check that first.
 
 =over 4
 
-=item B<listSubFolders> OPTIONS X<listSubFolders>
+=item B<listSubFolders> OPTIONS
 
-(Class and Instance method)
+(Class or Instance method) 
 List the names of all sub-folders to this folder, not recursively
 decending.  Use these names as argument to openSubFolder(), to get
 access to that folder.
@@ -850,19 +853,19 @@ For MBOX folders, sub-folders are simulated.
 
 =over 4
 
-=item B<check> =E<gt> BOOLEAN X<listSubFolders(check)>
+=item B<check> =E<gt> BOOLEAN
 
 Should all returned foldernames be checked to be sure that they are of
 the right type?  Each sub-folder may need to be opened to check this,
 with a folder type dependent penalty (in some cases very expensive).
 
-=item B<folder> =E<gt> FOLDERNAME X<listSubFolders(folder)>
+=item B<folder> =E<gt> FOLDERNAME
 
 The folder whose sub-folders should be listed.
 
-=item B<folderdir> =E<gt> DIRECTORY X<listSubFolders(folderdir)>
+=item B<folderdir> =E<gt> DIRECTORY
 
-=item B<skip_empty> =E<gt> BOOL X<listSubFolders(skip_empty)>
+=item B<skip_empty> =E<gt> BOOL
 
 Shall empty folders (folders which currently do not contain any messages)
 be included?  Empty folders are not useful to open, but may be useful
@@ -878,19 +881,19 @@ Examples:
  my @subs = Mail::Box::Mbox->listSubFolders(folder => '=in/new');
  my @subs = Mail::Box::Mbox->listSubFolders; # toplevel folders.
 
-=item B<nameOfSubfolder> NAME X<nameOfSubfolder>
+=item B<nameOfSubfolder> NAME
 
 Returns the constructed name of the folder with NAME, which is a sub-folder
 of this current one.
 
-=item B<openRelatedFolder> OPTIONS X<openRelatedFolder>
+=item B<openRelatedFolder> OPTIONS
 
 Open a folder (usually a sub-folder) with the same options as this one.  If
 there is a folder manager in use, it will be informed about this new folder.
 OPTIONS overrule the options which where used for the folder this method
 is called upon.
 
-=item B<openSubFolder> NAME, OPTIONS X<openSubFolder>
+=item B<openSubFolder> NAME, OPTIONS
 
 Open (or create, if it does not exist yet) a new subfolder in an
 existing folder.
@@ -906,11 +909,15 @@ Examples:
 
 =over 4
 
-=item B<toBeThreaded> MESSAGES X<toBeThreaded>
+=item B<toBeThreaded> MESSAGES
 
-=item B<toBeUnthreaded> MESSAGES X<toBeUnthreaded>
+The specified message is ready to be removed from a thread.
+This will be passed on to the mail-manager, which keeps an overview on
+which thread-detection objects are floating around.
 
-The specified message is ready to be included in (or remove from) a thread.
+=item B<toBeUnthreaded> MESSAGES
+
+The specified message is ready to be included in a thread.
 This will be passed on to the mail-manager, which keeps an overview on
 which thread-detection objects are floating around.
 
@@ -920,9 +927,10 @@ which thread-detection objects are floating around.
 
 =over 4
 
-=item B<appendMessages> OPTIONS X<appendMessages>
+=item B<appendMessages> OPTIONS
 
-(Class method) Append one or more messages to an unopened folder.
+(Class method) 
+Append one or more messages to an unopened folder.
 Usually, this method is called by the Mail::Box::Manager (its method
 appendMessage()), in which case the correctness of the
 folder type is checked.
@@ -938,15 +946,15 @@ C<folderdir>).
 
 =over 4
 
-=item B<folder> =E<gt> FOLDERNAME X<appendMessages(folder)>
+=item B<folder> =E<gt> FOLDERNAME
 
 The name of the folder to which the messages are to be appended.  The folder
 implementation will avoid opening the folder when possible, because this is
 resource consuming.
 
-=item B<message> =E<gt> MESSAGE X<appendMessages(message)>
+=item B<message> =E<gt> MESSAGE
 
-=item B<messages> =E<gt> ARRAY-OF-MESSAGES X<appendMessages(messages)>
+=item B<messages> =E<gt> ARRAY-OF-MESSAGES
 
 One reference to a MESSAGE or a reference to an ARRAY of MESSAGEs, which may
 be of any type.  The messages will be first coerced into the correct
@@ -968,18 +976,18 @@ better:
  my Mail::Box::Manager $mgr;
  $mgr->appendMessages($message, folder => '=xyz');
 
-=item B<coerce> MESSAGE X<coerce>
+=item B<coerce> MESSAGE
 
 Coerce the MESSAGE to be of the correct type to be placed in the
 folder.  You can specify Mail::Internet and MIME::Entity objects
 here: they will be translated into Mail::Message messages first.
 
-=item B<determineBodyType> MESSAGE, HEAD X<determineBodyType>
+=item B<determineBodyType> MESSAGE, HEAD
 
 Determine which kind of body will be created for this message when
 reading the folder initially.
 
-=item B<lineSeparator> [STRING|'CR'|'LF'|'CRLF'] X<lineSeparator>
+=item B<lineSeparator> [STRING|'CR'|'LF'|'CRLF']
 
 Returns the character or characters used to separate lines in the folder
 file, optionally after setting it to STRING, or one of the constants.
@@ -993,11 +1001,11 @@ the C<Size> field in the header.
 When the separator is changed, the whole folder me be rewritten.  Although,
 that may not be required.
 
-=item B<locker>  X<locker>
+=item B<locker> 
 
 Returns the locking object.
 
-=item B<read> OPTIONS X<read>
+=item B<read> OPTIONS
 
 Read messages from the folder into memory.  The OPTIONS are folder
 specific.  Do not call C<read> yourself: it will be called for you
@@ -1013,7 +1021,7 @@ Examples:
  my $folder = $mgr->open('InBox');             # implies read
  my $folder = Mail::Box::Mbox->new(folder => 'Inbox'); # same
 
-=item B<readMessages> OPTIONS X<readMessages>
+=item B<readMessages> OPTIONS
 
 Called by read() to actually read the messages from one specific
 folder type.  The read() organizes the general activities.
@@ -1023,12 +1031,12 @@ C<message_type>, C<body_delayed_type>, and C<head_delayed_type> as
 defined by the folder at hand.  The defaults are the constructor
 defaults (see new()).
 
-=item B<storeMessage> MESSAGE X<storeMessage>
+=item B<storeMessage> MESSAGE
 
 Store the message in the folder without the checks as performed by
 addMessage().
 
-=item B<updateMessages> OPTIONS X<updateMessages>
+=item B<updateMessages> OPTIONS
 
 Called by update() to read messages which arrived in the folder
 after it was opened.  Sometimes, external applications dump messages
@@ -1041,7 +1049,7 @@ new messages arrive.  These collisions are sparse.
 
 The options are the same as for readMessages().
 
-=item B<writeMessages> OPTIONS X<writeMessages>
+=item B<writeMessages> OPTIONS
 
 Called by write() to actually write the messages from one specific
 folder type.  The C<write> organizes the general activities.  All options
@@ -1053,7 +1061,7 @@ are added by C<write>.
 
 =over 4
 
-=item B<messages> =E<gt> ARRAY X<writeMessages(messages)>
+=item B<messages> =E<gt> ARRAY
 
 The messages to be written, which is a sub-set of all messages in the
 current folder.
@@ -1120,8 +1128,9 @@ See Mail::Reporter::logSettings()
 
 See Mail::Reporter::notImplemented()
 
-=item B<timespan2seconds> TIME X<timespan2seconds>
+=item B<timespan2seconds> TIME
 
+(Class or Instance method) 
 TIME is a string, which starts with a float, and then one of the
 words 'hour', 'hours', 'day', 'days', 'week', or 'weeks'.  For instance:
 '1 hour' or '4 weeks'.
@@ -1141,7 +1150,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -66,7 +66,8 @@ sub encode(@)
     elsif(my $decoder = $self->getTransferEncHandler($trans_was))
     {   $decoded = $decoder->decode($self, result_type => $bodytype) }
     else
-    {   $self->log(WARNING => 'No decoder for $trans_was.');
+    {   $self->log(WARNING =>
+           'No decoder defined for transfer enconding $trans_was.');
         return $self;
     }
 
@@ -75,7 +76,8 @@ sub encode(@)
     elsif(my $encoder = $self->getTransferEncHandler($trans_to))
     {   $encoded = $encoder->encode($decoded, result_type => $bodytype) }
     else
-    {   $self->log(WARNING => 'No encoder for $trans_to.');
+    {   $self->log(WARNING =>
+           'No encoder defined for transfer encoding $trans_to.');
         return $decoded;
     }
 

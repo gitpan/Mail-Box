@@ -1,22 +1,19 @@
 
 =head1 NAME
 
-
 Mail::Box::Locker::Multi - lock a folder in all ways which work
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::Locker::Multi
+ Mail::Box::Locker::Multi
    is a Mail::Box::Locker
    is a Mail::Reporter
 
 =head1 SYNOPSIS
 
-
  See Mail::Box::Locker
 
 =head1 DESCRIPTION
-
 
 The C<::Multi> locker locks a folder in each way it can.  This way, the
 chance is highest that any other program will leave the folder alone
@@ -32,7 +29,9 @@ safer, so that version is preferred.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  expires              1 hour
@@ -74,7 +73,7 @@ See Mail::Box::Locker::new(timeout)
 
 See Mail::Reporter::new(trace)
 
-=item B<use> =E<gt> ARRAY X<new(use)>
+=item B<use> =E<gt> ARRAY
 
 Array of locker types and locker objects to be used to lock one
 folder.  The type names are converted into objects.
@@ -94,7 +93,7 @@ not be excluded from the default list (NFS POSIX Flock).
 
 See Mail::Box::Locker::DESTROY()
 
-=item B<lockers>  X<lockers>
+=item B<lockers> 
 
 Returns a list with all locker objects used by this object.
 
@@ -207,7 +206,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

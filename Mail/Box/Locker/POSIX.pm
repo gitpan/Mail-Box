@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Box::Locker::POSIX;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Box::Locker';
 
 use POSIX;
@@ -31,7 +31,8 @@ sub lock()
 
     my $file   = IO::File->new($filename, 'r+');
     unless(defined $file)
-    {   $self->log(ERROR => "Unable to open lockfile $filename: $!");
+    {   $self->log(ERROR =>
+           "Unable to open POSIX lock file $filename for $self->{MBL_folder}: $!");
         return 0;
     }
 
@@ -46,7 +47,7 @@ sub lock()
 
         if($? != EAGAIN)
         {   $self->log(ERROR =>
-                  "Will never get a lock at ".$self->{MBL_folder}->name.": $!");
+            "Will never get a POSIX lock on $filename for $self->{MBL_folder}: $!");
             last;
         }
 
@@ -63,7 +64,8 @@ sub isLocked()
 
     my $file     = IO::File->new($filename, "r");
     unless($file)
-    {   $self->log(ERROR => "Unable to open lockfile $filename: $!");
+    {   $self->log(ERROR =>
+               "Unable to check lock file $filename for $self->{MBL_folder}: $!");
         return 0;
     }
 

@@ -3,7 +3,7 @@ use strict;
 # file Mail::Message::Construct extends functionalities from Mail::Message
 
 package Mail::Message;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -113,7 +113,7 @@ sub reply(@)
         }
     }
     else
-    {   $self->log(ERROR => "Cannot include source as $include.");
+    {   $self->log(ERROR => "Cannot include reply source as $include.");
         return;
     }
 
@@ -291,7 +291,7 @@ sub forward(@)
     my $body     = defined $args{body} ? $args{body} : $self->body;
 
     unless($include eq 'INLINE' || $include eq 'ATTACH')
-    {   $self->log(ERROR => "Cannot include source as $include.");
+    {   $self->log(ERROR => "Cannot include forward source as $include.");
         return;
     }
 
@@ -337,7 +337,7 @@ sub forward(@)
 
     # To whom to send
     my $to = $args{To};
-    $self->log(ERROR => "No address to forwarded to"), return
+    $self->log(ERROR => "No address to create forwarded to."), return
        unless $to;
 
     # Create a subject
@@ -598,7 +598,7 @@ sub printStructure(;$$)
 
     my $type    = $self->get('Content-Type') || '';
     my $size    = $self->size;
-    my $deleted = $self->can('deleted') && $self->deleted ? ', deleted' : '';
+    my $deleted = $self->can('isDeleted') && $self->isDeleted ? ', deleted' : '';
 
     $fh->print("$indent$type$subject ($size bytes$deleted)\n");
 

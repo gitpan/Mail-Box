@@ -1,18 +1,17 @@
 
 =head1 NAME
 
-
 Mail::Message::Head::Delayed - a not-read header of a Mail::Message
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Head::Delayed
-  realizes a Mail::Message::Head::Complete which
+ Mail::Message::Head::Delayed realizes a Mail::Message::Head::Complete
+
+ Mail::Message::Head::Delayed
    is a Mail::Message::Head
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  my Mail::Message::Head::Delayed $delayed = ...;
  $delayed->isa('Mail::Message::Head')  # true
@@ -20,7 +19,6 @@ Mail::Message::Head::Delayed
  $delayed->isDelayed                   # true
 
 =head1 DESCRIPTION
-
 
 This object is used as place-holder, to be replaced
 by a Mail::Message::Head when someone accesses the header of a message.
@@ -31,11 +29,13 @@ by a Mail::Message::Head when someone accesses the header of a message.
 
 =over 4
 
-=item B<build> FIELDS X<build>
+=item B<build> FIELDS
 
 You cannot create a delayed header with fields.
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  field_type           'Mail::Message::Field::Fast'
@@ -54,9 +54,9 @@ See Mail::Message::Head::new(field_type)
 
 See Mail::Reporter::new(log)
 
-=item B<message> =E<gt> MESSAGE X<new(message)>
+=item B<message> =E<gt> MESSAGE
 
-The message where this header belongs to.
+See Mail::Message::Head::new(message)
 
 =item B<modified> =E<gt> BOOLEAN
 
@@ -85,6 +85,10 @@ See Mail::Message::Head::isDelayed()
 =item B<isEmpty> 
 
 See Mail::Message::Head::isEmpty()
+
+=item B<isModified> 
+
+See Mail::Message::Head::isModified()
 
 =item B<isMultipart> 
 
@@ -138,7 +142,7 @@ See Mail::Message::Head::Complete::addResentGroup()
 
 See Mail::Message::Head::Complete::count()
 
-=item B<get> NAME [,INDEX] X<get>
+=item B<get> NAME [,INDEX]
 
 Get the information about the header line NAME.  Realization will
 take place.
@@ -147,7 +151,7 @@ take place.
 
 See Mail::Message::Head::Complete::grepNames()
 
-=item B<guessBodySize>  X<guessBodySize>
+=item B<guessBodySize> 
 
 On a delayed head, this retuns C<undef>, because when there is no header
 there is also no body.
@@ -157,7 +161,7 @@ Mail::Message::size() usually will give a figure for the whole message
 without much cost.  Subtract a few hundred bytes for the header, and you
 will get a good estimate.
 
-=item B<guessTimeStamp>  X<guessTimeStamp>
+=item B<guessTimeStamp> 
 
 Make a guess about when the message was origanally posted.
 On a delayed head, this returns C<undef>.
@@ -329,7 +333,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

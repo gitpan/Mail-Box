@@ -1,28 +1,25 @@
 
 =head1 NAME
 
-
 Mail::Box::Dir::Message - one message in a directory-organized folder
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::Dir::Message
+ Mail::Box::Dir::Message
    is a Mail::Box::Message
    is a Mail::Message
    is a Mail::Reporter
 
-Mail::Box::Dir::Message is extended by
+ Mail::Box::Dir::Message is extended by
    Mail::Box::MH::Message
    Mail::Box::Maildir::Message
 
 =head1 SYNOPSIS
 
-
  my $folder = new Mail::Box::MH ...
  my $message = $folder->message(10);
 
 =head1 DESCRIPTION
-
 
 A Mail::Box::Dir::Message is a base class for one message in a directory
 organized folder; each message is stored in a separate file.  There are
@@ -49,8 +46,9 @@ which represents one message in a Mail::Box::Maildir folder.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
 
+(Class method) 
 Create a messages in a directory organized folder.
 
  OPTION               DEFAULT
@@ -88,11 +86,11 @@ See Mail::Box::Message::new(deleted)
 
 See Mail::Message::new(field_type)
 
-=item B<filename> =E<gt> FILENAME X<new(filename)>
+=item B<filename> =E<gt> FILENAME
 
 The file where the message is stored in.
 
-=item B<fix_header> =E<gt> BOOLEAN X<new(fix_header)>
+=item B<fix_header> =E<gt> BOOLEAN
 
 See Mail::Box::new(fix_headers).
 
@@ -206,7 +204,7 @@ See Mail::Message::container()
 
 See Mail::Box::Message::copyTo()
 
-=item B<filename> [FILENAME] X<filename>
+=item B<filename> [FILENAME]
 
 Returns the name of the file in which this message is actually stored.  This
 will return C<undef> when the message is not stored in a file.
@@ -218,6 +216,10 @@ See Mail::Box::Message::folder()
 =item B<isDummy> 
 
 See Mail::Message::isDummy()
+
+=item B<isModified> 
+
+See Mail::Message::isModified()
 
 =item B<isPart> 
 
@@ -254,6 +256,10 @@ See Mail::Message::size()
 =item B<toplevel> 
 
 See Mail::Message::toplevel()
+
+=item B<write> [FILEHANDLE]
+
+See Mail::Message::write()
 
 =back
 
@@ -377,6 +383,10 @@ See Mail::Box::Message::delete()
 
 See Mail::Box::Message::deleted()
 
+=item B<isDeleted> 
+
+See Mail::Box::Message::isDeleted()
+
 =item B<label> LABEL [,VALUE [LABEL, VALUE] ]
 
 See Mail::Message::label()
@@ -384,6 +394,14 @@ See Mail::Message::label()
 =item B<labels> 
 
 See Mail::Message::labels()
+
+=item B<labelsToStatus> 
+
+See Mail::Message::labelsToStatus()
+
+=item B<statusToLabels> 
+
+See Mail::Message::statusToLabels()
 
 =back
 
@@ -395,7 +413,7 @@ See Mail::Message::labels()
 
 See Mail::Message::DESTROY()
 
-=item B<create> FILENAME X<create>
+=item B<create> FILENAME
 
 Create the message in the specified file.  If the message already has
 a filename and is not modified, then a move is tried.  Otherwise the
@@ -411,21 +429,17 @@ See Mail::Box::Message::diskDelete()
 
 See Mail::Message::isDelayed()
 
-=item B<labelsToStatus> 
-
-See Mail::Message::labelsToStatus()
-
-=item B<loadBody>  X<loadBody>
+=item B<loadBody> 
 
 This method is called by the autoloader when the body of the message
 is needed.
 
-=item B<loadHead>  X<loadHead>
+=item B<loadHead> 
 
 This method is called by the autoloader when the header of the message
 is needed.
 
-=item B<parser>  X<parser>
+=item B<parser> 
 
 Create and return a parser for this message (-file).
 
@@ -440,10 +454,6 @@ See Mail::Message::readFromParser()
 =item B<readHead> PARSER [,CLASS]
 
 See Mail::Message::readHead()
-
-=item B<statusToLabels> 
-
-See Mail::Message::statusToLabels()
 
 =item B<storeBody> BODY
 
@@ -536,7 +546,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

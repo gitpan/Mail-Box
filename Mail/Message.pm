@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -103,25 +103,30 @@ sub messageID() {shift->messageId}   # compatibility
 sub modified(;$)
 {   my $self = shift;
 
-    if(@_)
-    {   my $flag = shift;
-        $self->{MM_modified} = $flag;
-        my $head = $self->head;
-        $head->modified($flag) if $head;
-        my $body = $self->body;
-        $body->modified($flag) if $body;
-    }
+    return $self->isModified unless @_;  # compatibility 2.036
 
+    my $flag = shift;
+    $self->{MM_modified} = $flag;
+    my $head = $self->head;
+    $head->modified($flag) if $head;
+    my $body = $self->body;
+    $body->modified($flag) if $body;
+
+    $flag;
+}
+
+sub isModified()
+{   my $self = shift;
     return 1 if $self->{MM_modified};
 
     my $head = $self->head;
-    if($head && $head->modified)
+    if($head && $head->isModified)
     {   $self->{MM_modified}++;
         return 1;
     }
 
     my $body = $self->body;
-    if($body && $body->modified)
+    if($body && $body->isModified)
     {   $self->{MM_modified}++;
         return 1;
     }
@@ -146,6 +151,15 @@ sub print(;$)
     $self;
 }
 
+sub write(;$)
+{   my $self = shift;
+    my $out  = shift || select;
+
+    $self->head->print($out);
+    $self->body->print($out);
+    $self;
+}
+
 my $default_mailer;
 
 sub send(@)
@@ -158,7 +172,7 @@ sub send(@)
        : !@options && defined $default_mailer             ? $default_mailer
        : ($default_mailer = Mail::Transport::Send->new(@options));
 
-    $self->log(ERROR => "No mailer found"), return
+    $self->log(ERROR => "No default mailer found to send message."), return
         unless defined $mailer;
 
     $mailer->send($self, @options);
@@ -348,13 +362,14 @@ sub parts(;$)
      :                       $self;
 
       ref $what eq 'CODE' ? (grep {$what->($_)} @parts)
-    : $what eq 'ACTIVE'   ? (grep {not $_->deleted } @parts)
-    : $what eq 'DELETED'  ? (grep { $_->deleted } @parts)
+    : $what eq 'ACTIVE'   ? (grep {not $_->isDeleted } @parts)
+    : $what eq 'DELETED'  ? (grep { $_->isDeleted } @parts)
     : $what eq 'ALL'      ? @parts
     : $recurse            ? @parts
     : confess "Select parts via $what?";
 }
-sub deleted() {0} # needed for parts('ACTIVE'|'DELETED') on non-folder messages.
+
+sub isDeleted() {0} # needed for parts('ACTIVE'|'DELETED') on non-folder messages.
 
 sub label($;$)
 {   my $self   = shift;
@@ -369,6 +384,48 @@ sub label($;$)
 sub labels()
 {   my $self = shift;
     wantarray ? keys %{$self->{MM_labels}} : $self->{MM_labels};
+}
+
+sub labelsToStatus()
+{   my $self    = shift;
+    my $head    = $self->head;
+    my $labels  = $self->labels;
+
+    my $status  = $head->get('status') || '';
+    my $newstatus
+      = $labels->{seen}    ? 'RO'
+      : $labels->{old}     ? 'O'
+      : '';
+
+    $head->set(Status => $newstatus)
+        if $newstatus ne $status;
+
+    my $xstatus = $head->get('x-status') || '';
+    my $newxstatus
+      = ($labels->{replied} ? 'A' : '')
+      . ($labels->{flagged} ? 'F' : '');
+
+    $head->set('X-Status' => $newxstatus)
+        if $newxstatus ne $xstatus;
+
+    $self;
+}
+
+sub statusToLabels()
+{   my $self    = shift;
+    my $head    = $self->head;
+
+    if(my $status  = $head->get('status'))
+    {   $self->{MM_labels}{seen} = ($status  =~ /R/ ? 1 : 0);
+        $self->{MM_labels}{old}  = ($status  =~ /O/ ? 1 : 0);
+    }
+
+    if(my $xstatus = $head->get('x-status'))
+    {   $self->{MM_labels}{replied} = ($xstatus  =~ /A/ ? 1 : 0);
+        $self->{MM_labels}{flagged} = ($xstatus  =~ /F/ ? 1 : 0);
+    }
+
+    $self;
 }
 
 # All next routines try to create compatibility with release < 2.0
@@ -494,48 +551,6 @@ sub takeMessageId(;$)
         unless length $msgid;
 
     $self->{MM_message_id} = $msgid;
-}
-
-sub labelsToStatus()
-{   my $self    = shift;
-    my $head    = $self->head;
-    my $labels  = $self->labels;
-
-    my $status  = $head->get('status') || '';
-    my $newstatus
-      = $labels->{seen}    ? 'RO'
-      : $labels->{old}     ? 'O'
-      : '';
-
-    $head->set(Status => $newstatus)
-        if $newstatus ne $status;
-
-    my $xstatus = $head->get('x-status') || '';
-    my $newxstatus
-      = ($labels->{replied} ? 'A' : '')
-      . ($labels->{flagged} ? 'F' : '');
-
-    $head->set('X-Status' => $newxstatus)
-        if $newxstatus ne $xstatus;
-
-    $self;
-}
-
-sub statusToLabels()
-{   my $self    = shift;
-    my $head    = $self->head;
-
-    if(my $status  = $head->get('status'))
-    {   $self->{MM_labels}{seen} = ($status  =~ /R/ ? 1 : 0);
-        $self->{MM_labels}{old}  = ($status  =~ /O/ ? 1 : 0);
-    }
-
-    if(my $xstatus = $head->get('x-status'))
-    {   $self->{MM_labels}{replied} = ($xstatus  =~ /A/ ? 1 : 0);
-        $self->{MM_labels}{flagged} = ($xstatus  =~ /F/ ? 1 : 0);
-    }
-
-    $self;
 }
 
 sub DESTROY()

@@ -2,13 +2,12 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Multipart;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
 use Mail::Message::Part;
 
-use Carp;
 use IO::Lines;
 
 sub init($)
@@ -23,8 +22,8 @@ sub init($)
         {   next unless defined $raw;
             my $cooked = Mail::Message::Part->coerce($raw, $self);
 
-            croak 'Data not convertible to a message (type is ', ref $raw,")\n"
-                unless defined $cooked;
+            $self->log(ERROR => 'Data not convertible to a message (type is '
+                      , ref $raw,")\n"), next unless defined $cooked;
 
             push @parts, $cooked;
         }
@@ -144,6 +143,24 @@ sub print(;$)
     $self;
 }
 
+sub printEscapedFrom($)
+{   my ($self, $out) = @_;
+
+    my $boundary = $self->boundary;
+    if(my $preamble = $self->preamble) { $preamble->printEscapedFrom($out) }
+
+    foreach my $part ($self->parts('ACTIVE'))
+    {   $out->print("--$boundary\n");
+        $part->printEscapedFrom($out);
+        $out->print("\n");
+    }
+
+    $out->print("--$boundary--\n");
+    if(my $epilogue = $self->epilogue) { $epilogue->printEscapedFrom($out) }
+
+    $self;
+}
+
 sub foreachComponent($)
 {   my ($self, $code) = @_;
     my $changes  = 0;
@@ -208,10 +225,10 @@ sub parts(;$)
 
       $what eq 'RECURSE' ? (map {$_->parts('RECURSE')} @parts)
     : $what eq 'ALL'     ? @parts
-    : $what eq 'DELETED' ? (grep {$_->deleted} @parts)
-    : $what eq 'ACTIVE'  ? (grep {not $_->deleted} @parts)
+    : $what eq 'DELETED' ? (grep {$_->isDeleted} @parts)
+    : $what eq 'ACTIVE'  ? (grep {not $_->isDeleted} @parts)
     : ref $what eq 'CODE'? (grep {$what->($_)} @parts)
-    : confess "Select with what?";
+    : ($self->log(ERROR => "Unknown criterium $what to select parts."), return ());
 }
 
 sub part($) { shift->{MMBM_parts}[shift] }

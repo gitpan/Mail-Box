@@ -1,5 +1,5 @@
 package Mail::Box::IMAP4;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Box::Net';
 
 use strict;
@@ -95,7 +95,7 @@ sub imapClient()
       , authenticate => $self->{MBI_auth}
       );
 
-    $self->log(ERROR => "Cannot create IMAP4 client ".$self->url)
+    $self->log(ERROR => "Cannot create IMAP4 client ".$self->url.'.')
        unless defined $client;
 
     $self->{MBI_client} = $client;
@@ -134,8 +134,8 @@ sub getHead($)
     my $lines = $imap->header($uidl);
 
     unless(defined $lines)
-    {   $lines = [];
-        $self->log(WARNING  => "Message $uidl disappeared.");
+    {   $self->log(WARNING => "Message $uidl disappeared from $self.");
+        return;
      }
 
     my $parser = Mail::Box::Parser::Perl->new   # not parseable by C parser
@@ -162,8 +162,8 @@ sub getHeadAndBody($)
     my $lines = $imap->message($uidl);
 
     unless(defined $lines)
-    {   $lines = [];
-        $self->log(WARNING  => "Message $uidl disappeared.");
+    {   $self->log(WARNING  => "Message $uidl disappeared from $self.");
+        return ();
      }
 
     my $parser = Mail::Box::Parser::Perl->new   # not parseable by C parser
@@ -173,16 +173,16 @@ sub getHeadAndBody($)
 
     my $head = $message->readHead($parser);
     unless(defined $head)
-    {   $self->log(WARNING => "Cannot find head back for $uidl");
+    {   $self->log(WARNING => "Cannot find head back for $uidl in $self.");
         $parser->stop;
-        return undef;
+        return ();
     }
 
     my $body = $message->readBody($parser, $head);
     unless(defined $body)
-    {   $self->log(ERROR => "Cannot read body for $uidl");
+    {   $self->log(WARNING => "Cannot read body for $uidl in $self.");
         $parser->stop;
-        return undef;
+        return ();
     }
 
     $parser->stop;
@@ -194,7 +194,7 @@ sub getHeadAndBody($)
 sub writeMessages($@)
 {   my ($self, $args) = @_;
 
-    if(my $modifications = grep {$_->modified} @{$args->{messages}})
+    if(my $modifications = grep {$_->isModified} @{$args->{messages}})
     {
     }
 

@@ -1,17 +1,15 @@
 
 =head1 NAME
 
-
 Mail::Message::Body::Nested - body of a message which contains a message
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Body::Nested
+ Mail::Message::Body::Nested
    is a Mail::Message::Body
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  See Mail::Message::Body, plus
 
@@ -21,7 +19,6 @@ Mail::Message::Body::Nested
  }
 
 =head1 DESCRIPTION
-
 
 The body (content) of a message can be stored in various ways.  In this
 manual-page you find the description of extra functionality you have
@@ -33,7 +30,9 @@ when a message contains a nested message, like message/rfc822.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  based_on             undef
@@ -97,7 +96,7 @@ See Mail::Message::Body::new(mime_type)
 
 See Mail::Message::Body::new(modified)
 
-=item B<nested> =E<gt> MESSAGE-PART X<new(nested)>
+=item B<nested> =E<gt> MESSAGE-PART
 
 The message which is nested within this one.
 
@@ -137,6 +136,10 @@ See Mail::Message::Body::decoded()
 
 See Mail::Message::Body::isDelayed()
 
+=item B<isModified> 
+
+See Mail::Message::Body::isModified()
+
 =item B<isMultipart> 
 
 See Mail::Message::Body::isMultipart()
@@ -149,13 +152,17 @@ See Mail::Message::Body::isNested()
 
 See Mail::Message::Body::message()
 
-=item B<modified> [BOOL]
+=item B<modified> [BOOLEAN]
 
 See Mail::Message::Body::modified()
 
-=item B<print> [FILE]
+=item B<print> [FILEHANDLE]
 
 See Mail::Message::Body::print()
+
+=item B<printEscapedFrom> FILEHANDLE
+
+See Mail::Message::Body::printEscapedFrom()
 
 =back
 
@@ -217,7 +224,7 @@ See Mail::Message::Body::type()
 
 See Mail::Message::Body::file()
 
-=item B<forNested> CODE X<forNested>
+=item B<forNested> CODE
 
 Execute the CODE for the nested message.  This returns a new body object.
 
@@ -225,7 +232,7 @@ Execute the CODE for the nested message.  This returns a new body object.
 
 See Mail::Message::Body::lines()
 
-=item B<nested>  X<nested>
+=item B<nested> 
 
 Returns the message which is enclosed within this body.
 
@@ -380,7 +387,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Message::Dummy;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Message';
 
 use Carp;
@@ -12,7 +12,7 @@ sub init($)
     @$args{ qw/modified trusted/ } = (0, 1);
     $self->SUPER::init($args);
 
-    $self->log(ERROR => "MessageId is required for a dummy.")
+    $self->log(ERROR => "Message-Id is required for a dummy.")
        unless exists $args->{messageId};
 
     $self;

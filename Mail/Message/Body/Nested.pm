@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Nested;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -73,7 +73,11 @@ sub file()
 sub print(;$)
 {   my $self = shift;
     $self->nested->print(shift || select);
-    $self;
+}
+
+sub printEscapedFrom($)
+{   my $self = shift;
+    $self->nested->printEscapedFrom(shift);
 }
 
 sub forNested($)

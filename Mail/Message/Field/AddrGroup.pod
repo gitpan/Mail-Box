@@ -1,16 +1,14 @@
 
 =head1 NAME
 
-
 Mail::Message::Field::AddrGroup - A group of Mail::Message::Field::Address objects
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Field::AddrGroup
+ Mail::Message::Field::AddrGroup
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  my $g = Mail::Message::Field::AddrGroup->new('name');
 
@@ -29,17 +27,19 @@ Mail::Message::Field::AddrGroup
 
 =over 4
 
-=item B<addAddress> ADDRESS|OPTIONS X<addAddress>
+=item B<addAddress> ADDRESS|OPTIONS
 
-=item B<addresses>  X<addresses>
+=item B<addresses> 
 
 Returns all addresses defined in this group.
 
-=item B<name>  X<name>
+=item B<name> 
 
 Returns the name of this group.
 
-=item B<new> DATA X<new>
+=item B<new> DATA
+
+(Class method)
 
  OPTION               DEFAULT
  log                  'WARNINGS'
@@ -59,7 +59,7 @@ See Mail::Reporter::new(trace)
 
 Examples:
 
-=item B<string>  X<string>
+=item B<string> 
 
 Returns the group as string.
 
@@ -142,7 +142,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

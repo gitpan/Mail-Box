@@ -1,16 +1,15 @@
 
 =head1 NAME
 
-
 Mail::Transport::Send - send a message
 
 =head1 CLASS INHERITANCE
 
-Mail::Transport::Send
+ Mail::Transport::Send
    is a Mail::Transport
    is a Mail::Reporter
 
-Mail::Transport::Send is extended by
+ Mail::Transport::Send is extended by
    Mail::Transport::Exim
    Mail::Transport::Mailx
    Mail::Transport::Qmail
@@ -18,7 +17,6 @@ Mail::Transport::Send is extended by
    Mail::Transport::Sendmail
 
 =head1 SYNOPSIS
-
 
  my $message = Mail::Message->new(...);
 
@@ -30,7 +28,6 @@ Mail::Transport::Send is extended by
  $sender->send($message);
 
 =head1 DESCRIPTION
-
 
 Send a message to the destinations as specified in the header.  The
 C<Mail::Transport::Send> module is capable of autodetecting which of the
@@ -79,7 +76,9 @@ known to have exploitable security breaches.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  executable           C<undef>
@@ -171,7 +170,7 @@ See Mail::Transport::retry()
 
 =over 4
 
-=item B<putContent> MESSAGE, FILEHANDLE, OPTIONS X<putContent>
+=item B<putContent> MESSAGE, FILEHANDLE, OPTIONS
 
 Print the content of the MESSAGE to the FILEHANDLE.
 
@@ -181,18 +180,18 @@ Print the content of the MESSAGE to the FILEHANDLE.
 
 =over 4
 
-=item B<body_only> =E<gt> BOOLEAN X<putContent(body_only)>
+=item B<body_only> =E<gt> BOOLEAN
 
 Print only the body of the message, not the whole.
 
-=item B<undisclosed> =E<gt> BOOLEAN X<putContent(undisclosed)>
+=item B<undisclosed> =E<gt> BOOLEAN
 
 Do not print the C<Bcc> and C<Resent-Bcc> lines.  Default false, which
 means that they are printed.
 
 =back
 
-=item B<send> MESSAGE, OPTIONS X<send>
+=item B<send> MESSAGE, OPTIONS
 
 Transmit the MESSAGE, which may be anything what can be coerced into a
 Mail::Message, so including Mail::Internet and MIME::Entity
@@ -201,7 +200,7 @@ messages.  It returns true when the transmission was successfully completed.
 As OPTIONS, you can specify an C<interval> and a C<retry> count, which
 will overrule the setting at initiation of the transporter object.
 
-=item B<trySend> MESSAGE, OPTIONS X<trySend>
+=item B<trySend> MESSAGE, OPTIONS
 
 Try to send the message. This will return true if successful, and
 false in case some problems where detected.  The C<$?> contains
@@ -286,7 +285,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

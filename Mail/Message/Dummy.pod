@@ -1,12 +1,11 @@
 
 =head1 NAME
 
-
 Mail::Message::Dummy - a placeholder for a missing messages
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Dummy
+ Mail::Message::Dummy
    is a Mail::Message
    is a Mail::Reporter
 
@@ -14,7 +13,6 @@ Mail::Message::Dummy
 
 
 =head1 DESCRIPTION
-
 
 Dummy messages are used by modules which maintain ordered lists of
 messages, usually based on message-id.  A good example is
@@ -33,9 +31,10 @@ dummy message.
 
 =over 4
 
-=item B<new> MESSAGE-ID, OPTIONS X<new>
+=item B<new> MESSAGE-ID, OPTIONS
 
-(Class method) Create a new dummy message to occupy the space for
+(Class method) 
+Create a new dummy message to occupy the space for
 a real message with the specified MESSAGE-ID.
 
  OPTION               DEFAULT
@@ -171,6 +170,10 @@ See Mail::Message::container()
 
 See Mail::Message::isDummy()
 
+=item B<isModified> 
+
+See Mail::Message::isModified()
+
 =item B<isPart> 
 
 See Mail::Message::isPart()
@@ -198,6 +201,10 @@ See Mail::Message::size()
 =item B<toplevel> 
 
 See Mail::Message::toplevel()
+
+=item B<write> [FILEHANDLE]
+
+See Mail::Message::write()
 
 =back
 
@@ -321,6 +328,14 @@ See Mail::Message::label()
 
 See Mail::Message::labels()
 
+=item B<labelsToStatus> 
+
+See Mail::Message::labelsToStatus()
+
+=item B<statusToLabels> 
+
+See Mail::Message::statusToLabels()
+
 =back
 
 =head2 Reading and Writing [internals]
@@ -335,10 +350,6 @@ See Mail::Message::DESTROY()
 
 See Mail::Message::isDelayed()
 
-=item B<labelsToStatus> 
-
-See Mail::Message::labelsToStatus()
-
 =item B<readBody> PARSER, HEAD [, BODYTYPE]
 
 See Mail::Message::readBody()
@@ -350,10 +361,6 @@ See Mail::Message::readFromParser()
 =item B<readHead> PARSER [,CLASS]
 
 See Mail::Message::readHead()
-
-=item B<statusToLabels> 
-
-See Mail::Message::statusToLabels()
 
 =item B<storeBody> BODY
 
@@ -442,7 +449,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

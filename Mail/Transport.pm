@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -62,8 +62,7 @@ sub init($)
     if(my $exec = $args->{executable})
     {   $self->{MT_exec} = $exec;
 
-        $self->log(WARNING
-                    => "Avoid program abuse with an absolute path for $exec.")
+        $self->log(WARNING =>"Avoid program abuse with an absolute path for $exec.")
            unless File::Spec->file_name_is_absolute($exec);
 
         unless(-x $exec)

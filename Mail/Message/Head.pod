@@ -1,21 +1,19 @@
 
 =head1 NAME
 
-
 Mail::Message::Head - the header of one message
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Head
+ Mail::Message::Head
    is a Mail::Reporter
 
-Mail::Message::Head is extended by
+ Mail::Message::Head is extended by
    Mail::Message::Head::Complete
    Mail::Message::Head::Delayed
    Mail::Message::Head::Subset
 
 =head1 SYNOPSIS
-
 
  my $head = Mail::Message::Head->new;
  $head->add('From: me@localhost');
@@ -26,7 +24,6 @@ Mail::Message::Head is extended by
  $head->delete('From');
 
 =head1 DESCRIPTION
-
 
 Mail::Message::Head MIME headers are part of Mail::Message messages,
 which are stored by Mail::Box folders.
@@ -68,7 +65,7 @@ described.  Read about differences in the sub-class specific pages.
 
 =over 4
 
-=item B<build> FIELDS X<build>
+=item B<build> FIELDS
 
 A fast way to construct a header with many lines.  The FIELDS are
 name--content pairs of the header.   A header is created, and each
@@ -83,8 +80,9 @@ Examples:
   , Received => 'two'
   );
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
 
+(Class method) 
 Create a new message header object.  The object will store all the
 fields of a header.  When you get information from the header, it
 will be returned to you as Mail::Message::Field objects, although
@@ -102,7 +100,7 @@ be upgraded to a Mail::Message::Head::Complete --a full head.
 
 =over 4
 
-=item B<field_type> =E<gt> CLASS X<new(field_type)>
+=item B<field_type> =E<gt> CLASS
 
 The type of objects that all the fields will have.  This must be
 an extension of Mail::Message::Field.
@@ -111,13 +109,13 @@ an extension of Mail::Message::Field.
 
 See Mail::Reporter::new(log)
 
-=item B<message> =E<gt> MESSAGE X<new(message)>
+=item B<message> =E<gt> MESSAGE
 
 The MESSAGE where this header belongs to.  Usually, this is not known
 at creation of the header, but sometimes it is.  If not, call the
 message() method later to set it.
 
-=item B<modified> =E<gt> BOOLEAN X<new(modified)>
+=item B<modified> =E<gt> BOOLEAN
 
 =item B<trace> =E<gt> LEVEL
 
@@ -131,39 +129,48 @@ See Mail::Reporter::new(trace)
 
 =over 4
 
-=item B<isDelayed>  X<isDelayed>
+=item B<isDelayed> 
 
 Headers may only be partially read, in which case they are called delayed.
 This method returns true if some header information still needs to be
 read. Returns false if all header data has been read.
 Will never trigger completion.
 
-=item B<isEmpty>  X<isEmpty>
+=item B<isEmpty> 
 
 Are there any fields defined in the current header?  Be warned that
 the header will not be loaded for this: delayed headers will return
 true in any case.
 
-=item B<isMultipart>  X<isMultipart>
+=item B<isModified> 
+
+Returns whether the header has been modified after being read.
+
+Examples:
+
+ if($head->isModified) { ... }
+
+=item B<isMultipart> 
 
 Returns whether the body of the related message is a multipart body.
 May trigger completion.
 
-=item B<message> [MESSAGE] X<message>
+=item B<message> [MESSAGE]
 
 Get (after setting) the message where this header belongs to.
 This does not trigger completion.
 
-=item B<modified> [BOOLEAN] X<modified>
+=item B<modified> [BOOLEAN]
 
-Returns whether the header has been modified after being read, optionally
-after setting that status first.
-This will not trigger completion.
+Sets the modified flag to BOOLEAN.  Without value, the current setting is
+returned, but in that case you can better use isModified().
+Changing this flag will not trigger header completion.
 
 Examples:
 
- if($head->modified) { ... }
  $head->modified(1);
+ if($head->modified) { ... }
+ if($head->isModified) { ... }
 
 =back
 
@@ -171,7 +178,7 @@ Examples:
 
 =over 4
 
-=item B<get> NAME [,INDEX] X<get>
+=item B<get> NAME [,INDEX]
 
 Get the data which is related to the field with the NAME.  The case of the
 characters in NAME does not matter.
@@ -198,13 +205,13 @@ Examples:
  my $sub_scalar = $head->get('Subject');
  print ",@sub_list,$sub_scalar,"     # ,greetings, greetings,
 
-=item B<knownNames>  X<knownNames>
+=item B<knownNames> 
 
 Like names(), but only returns the known header fields, which
 may be less than names() for header types which are partial.
 names() will trigger completion, where C<knownNames> does not.
 
-=item B<printUndisclosed> [FILEHANDLE] X<printUndisclosed>
+=item B<printUndisclosed> [FILEHANDLE]
 
 Like the usual print(), the header lines are printed to the specified
 FILEHANDLE, by default the selected filehandle.  In this case, however,
@@ -216,40 +223,40 @@ C<Bcc> and C<Resent-Bcc> lines are included.
 
 =over 4
 
-=item B<addNoRealize> FIELD X<addNoRealize>
+=item B<addNoRealize> FIELD
 
 Add a field, like add() does, but avoid the loading of a possibly partial
 header.  This method does not test the validity of the argument, nor flag
 the header as changed.  This does not trigger completion.
 
-=item B<addOrderedFields> FIELDS X<addOrderedFields>
+=item B<addOrderedFields> FIELDS
 
-=item B<fileLocation>  X<fileLocation>
+=item B<fileLocation> 
 
 Returns the location of the header in the file, as a pair begin and end.  The
 begin is the first byte of the header.  The end is the first byte after
 the header.
 
-=item B<load>  X<load>
+=item B<load> 
 
 Be sure that the header is loaded.  This returns the loaded header
 object.
 
-=item B<moveLocation> DISTANCE X<moveLocation>
+=item B<moveLocation> DISTANCE
 
 Move the registration of the header in the file.
 
-=item B<orderedFields>  X<orderedFields>
+=item B<orderedFields> 
 
 Retuns the fields ordered the way they were read or added.
 
-=item B<read> PARSER X<read>
+=item B<read> PARSER
 
 Read the header information of one message into this header structure.  This
 method is called by the folder object (some Mail::Box sub-class), which
 passes the PARSER as an argument.  Do not call this method yourself!
 
-=item B<setNoRealize> FIELD X<setNoRealize>
+=item B<setNoRealize> FIELD
 
 Set a field, but avoid the loading of a possibly partial header as set()
 does.  This method does not test the validity of the argument, nor flag the
@@ -334,7 +341,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

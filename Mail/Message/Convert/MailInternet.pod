@@ -1,17 +1,15 @@
 
 =head1 NAME
 
-
 Mail::Message::Convert::MailInternet - translate Mail::Message to Mail::Internet vv
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Convert::MailInternet
+ Mail::Message::Convert::MailInternet
    is a Mail::Message::Convert
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  use Mail::Message::Convert::MailInternet;
  my $convert = Mail::Message::Convert::MailInternet->new;
@@ -29,7 +27,6 @@ Mail::Message::Convert::MailInternet
 
 =head1 DESCRIPTION
 
-
 The Mail::Internet class of message is very popular for all
 kinds of message applications written in Perl.  However, the
 format was developed when e-mail messages where still small and
@@ -42,7 +39,9 @@ this respect.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  fields               <see description>
@@ -71,7 +70,7 @@ See Mail::Reporter::new(trace)
 
 =over 4
 
-=item B<export> MESSAGE, OPTIONS X<export>
+=item B<export> MESSAGE, OPTIONS
 
 Returns a new message object based on the information from
 a Mail::Message object.  The MESSAGE specified is an
@@ -83,7 +82,7 @@ Examples:
  my Mail::Message  $msg   = Mail::Message->new;
  my Mail::Internet $copy  = $convert->export($msg);
 
-=item B<from> OBJECT, OPTIONS X<from>
+=item B<from> OBJECT, OPTIONS
 
 Returns a new Mail::Message object based on the information from
 an message-type which is strange to the Mail::Box set of modules.
@@ -177,7 +176,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

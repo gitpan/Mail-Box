@@ -1,29 +1,26 @@
 
 =head1 NAME
 
-
 Mail::Message::Head::Complete - the header of one message
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Head::Complete
+ Mail::Message::Head::Complete
    is a Mail::Message::Head
    is a Mail::Reporter
 
-Mail::Message::Head::Complete is realized by
+ Mail::Message::Head::Complete is realized by
    Mail::Message::Head::Delayed
    Mail::Message::Head::Subset
 
 =head1 SYNOPSIS
-
 
  my $head = Mail::Message::Head::Complete->new;
  See Mail::Message::Head
 
 =head1 DESCRIPTION
 
-
- mail's message can be in various states: unread, partially read, and
+E-mail's message can be in various states: unread, partially read, and
 fully read.  The class stores a message of which all header lines are
 known for sure.
 
@@ -37,7 +34,9 @@ known for sure.
 
 See Mail::Message::Head::build()
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  field_type           'Mail::Message::Field::Fast'
@@ -76,7 +75,7 @@ See Mail::Reporter::new(trace)
 
 =over 4
 
-=item B<clone> [FIELDS] X<clone>
+=item B<clone> [FIELDS]
 
 Make a copy of the header, optionally limited only to the header lines
 specified by FIELDS.  The lines which are taken must start with one of the
@@ -93,6 +92,10 @@ See Mail::Message::Head::isDelayed()
 =item B<isEmpty> 
 
 See Mail::Message::Head::isEmpty()
+
+=item B<isModified> 
+
+See Mail::Message::Head::isModified()
 
 =item B<isMultipart> 
 
@@ -112,7 +115,7 @@ See Mail::Message::Head::modified()
 
 =over 4
 
-=item B<add> FIELD | LINE | (NAME,BODY[,ATTRS]) X<add>
+=item B<add> FIELD | LINE | (NAME,BODY[,ATTRS])
 
 Add a field to the header.  If a field is added more than once, all values
 are stored in the header, in the order they are added.
@@ -139,19 +142,19 @@ Examples:
  $head->add($field);
  my Mail::Message::Field $s = $head->add(Sender => 'I');
 
-=item B<delete> NAME X<delete>
+=item B<delete> NAME
 
 Remove the field with the specified name.  If the header contained
 multiple lines with the same name, they will be replaced all together.
 This method simply calls reset() without replacement fields.
 
-=item B<removeField> FIELD X<removeField>
+=item B<removeField> FIELD
 
 Remove the specified FIELD from the header.  This is useful when there
 are possible more than one fields with the same name, and you need to
 remove exactly one of them.  Also have a look at delete(), reset() and set().
 
-=item B<reset> NAME, FIELDS X<reset>
+=item B<reset> NAME, FIELDS
 
 Replace the values in the header fields named by NAME with the values
 specified in the list of FIELDS. A single name can correspond to multiple
@@ -178,7 +181,7 @@ Examples:
  shift @rgs;     # keep this one (later is added in front)
  $_->delete foreach @rgs;
 
-=item B<set> FIELD | LINE | (NAME, BODY [,ATTRS]) X<set>
+=item B<set> FIELD | LINE | (NAME, BODY [,ATTRS])
 
 The C<set> method is similar to the add() method, and takes the same
 options. However, existing values for fields will be removed before a new
@@ -190,7 +193,7 @@ value is added.
 
 =over 4
 
-=item B<addResentGroup> RESENT-GROUP|DATA X<addResentGroup>
+=item B<addResentGroup> RESENT-GROUP|DATA
 
 Add a RESENT-GROUP (a Mail::Message::Head::ResentGroup object) to
 the header.  If you specify DATA, that is used to create such group
@@ -208,7 +211,7 @@ Examples:
 
  my $rg = $head->addResentGroup(From => 'me');
 
-=item B<count> NAME X<count>
+=item B<count> NAME
 
 Count the number of fields with this NAME.  Most fields will return 1: only one
 occurance in the header.  As example, the C<Received> fields are usually present
@@ -218,7 +221,7 @@ more than once.
 
 See Mail::Message::Head::get()
 
-=item B<grepNames> [NAMES|ARRAY-OF-NAMES|REGEXS] X<grepNames>
+=item B<grepNames> [NAMES|ARRAY-OF-NAMES|REGEXS]
 
 Filter from all header names the names which start will any of the
 specified list.  When no names are specified, all names will be returned.
@@ -234,14 +237,14 @@ Examples:
  print $head->grepNames('X-', 'Subject', ');
  print $head->grepNames('To\b');   # will only select To
 
-=item B<guessBodySize>  X<guessBodySize>
+=item B<guessBodySize> 
 
 Try to estimate the size of the body of this message, but without parsing
 the header or body.  The result might be C<undef> or a few percent of
 the real size.  It may even be very far of the real value, that's why
 this is a guess.
 
-=item B<guessTimeStamp>  X<guessTimeStamp>
+=item B<guessTimeStamp> 
 
 Make a guess about when the message was origanally posted, based on the
 information found in the header.
@@ -255,18 +258,18 @@ information.
 
 See Mail::Message::Head::knownNames()
 
-=item B<names>  X<names>
+=item B<names> 
 
 Returns a full ordered list of known field names, as defined in the
 header.  Fields which were reset() to be empty will still be
 listed here.
 
-=item B<nrLines>  X<nrLines>
+=item B<nrLines> 
 
 Return the number of lines needed to display this header (including
 the trailing newline)
 
-=item B<print> [FILEHANDLE] X<print>
+=item B<print> [FILEHANDLE]
 
 Print all headers to the specified FILEHANDLE, by default the selected
 filehandle.  See printUndisclosed() to limit the headers to include
@@ -280,13 +283,13 @@ Examples:
  my $fh = IO::File->new(...);
  $head->print($fh);
 
-=item B<printUndisclosed> [FILEHANDLE] X<printUndisclosed>
+=item B<printUndisclosed> [FILEHANDLE]
 
 Like the usual print(), the header lines are printed to the specified
 FILEHANDLE, by default the selected filehandle.  In this case, however,
 C<Bcc> and C<Resent-Bcc> lines are included.
 
-=item B<resentGroups>  X<resentGroups>
+=item B<resentGroups> 
 
 Returns a list of Mail::Message::Head::ResentGroup objects which
 each represent one intermediate point in the message's transmission in
@@ -297,19 +300,19 @@ with C<Resent->.  Before the first C<Resent> line is I<trace> information,
 which is composed of an optional C<Return-Path> field and an required
 C<Received> field.
 
-=item B<size>  X<size>
+=item B<size> 
 
 Return the number of bytes needed to display this header (including
 the trailing newline).  On systems which use CRLF as line separator,
 the number of lines in the header (see nlLines()) must be added to
 find the actual size in the file.
 
-=item B<string>  X<string>
+=item B<string> 
 
 Returns the whole header as one scalar (in scalar context) or list
 of lines (list context).  Triggers completion.
 
-=item B<timestamp>  X<timestamp>
+=item B<timestamp> 
 
 Will return a good indication of about when the message was send, with as
 little guessing as possible.  The timestamp is encoded as C<time> is
@@ -330,14 +333,14 @@ See Mail::Message::Head::addNoRealize()
 
 See Mail::Message::Head::addOrderedFields()
 
-=item B<createFromLine>  X<createFromLine>
+=item B<createFromLine> 
 
 For some mail-folder types separate messages by a line starting with
 'C<From >'.  If a message is moved to such folder from a folder-type
 which does not support these separators, this method is called to produce
 one.
 
-=item B<createMessageId>  X<createMessageId>
+=item B<createMessageId> 
 
 Creates a message-id for this message.  This method will be run when
 a new message is created, or a message is discovered without the
@@ -352,7 +355,7 @@ See Mail::Message::Head::fileLocation()
 
 See Mail::Message::Head::load()
 
-=item B<messagIdPrefix> [STRING] X<messagIdPrefix>
+=item B<messagIdPrefix> [STRING]
 
 Sets/returns the message-id start.  The rest of the message-id is an
 integer which is derived from the current time and the local host.
@@ -453,7 +456,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

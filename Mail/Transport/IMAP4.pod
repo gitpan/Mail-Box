@@ -1,25 +1,22 @@
 
 =head1 NAME
 
-
 Mail::Transport::IMAP4 - handle messages via the IMAP4 protocol
 
 =head1 CLASS INHERITANCE
 
-Mail::Transport::IMAP4
+ Mail::Transport::IMAP4
    is a Mail::Transport::Receive
    is a Mail::Transport
    is a Mail::Reporter
 
 =head1 SYNOPSIS
 
-
  my $imap = Mail::Transport::IMAP4->new(...);
  my $message = $imap->receive($id);
  $imap->send($message);
 
 =head1 DESCRIPTION
-
 
 UNDER DEVELOPMENT: Cannot be used yet.
 
@@ -39,8 +36,9 @@ by Mail::Box::IMAP4 for the real work.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
 
+(Class method) 
 Create the IMAP connection to the server.  IMAP servers can handle
 multiple folders for a single user, which means that connections
 may get shared.  This is sharing is hidden for the user.
@@ -62,7 +60,7 @@ may get shared.  This is sharing is hidden for the user.
 
 =over 4
 
-=item B<authenticate> =E<gt> 'KERBEROS_V4'|'GSSAPI'|'SKEY'|'AUTO' X<new(authenticate)>
+=item B<authenticate> =E<gt> 'KERBEROS_V4'|'GSSAPI'|'SKEY'|'AUTO'
 
 Authenthication method.  RFC1731 defines a few authentication methods
 to be (optionally) used with IMAP. NOT IMPLEMENTED YET.
@@ -117,7 +115,7 @@ See Mail::Transport::new(via)
 
 =back
 
-=item B<url>  X<url>
+=item B<url> 
 
 Represent this imap4 connection as URL.
 
@@ -155,19 +153,19 @@ See Mail::Transport::Receive::receive()
 
 =over 4
 
-=item B<deleteFetched>  X<deleteFetched>
+=item B<deleteFetched> 
 
 Mark all messages that have been fetched with message() for deletion.  See
 fetched().
 
-=item B<deleted> BOOLEAN, ID's X<deleted>
+=item B<deleted> BOOLEAN, ID's
 
 Either mark the specified message(s) to be deleted on the remote server or
 unmark them for deletion (if the first parameter is false).  Deletion of
 messages will take place B<only> when the connection is specifically
 disconnected or the last reference to the object goes out of scope.
 
-=item B<disconnect>  X<disconnect>
+=item B<disconnect> 
 
 Break contact with the server, if that (still) exists.  Returns true if
 successful.  Please note that even if the disconnect was not successful,
@@ -175,7 +173,7 @@ all knowledge of messages etc. will be removed from the object: the object
 basically has reverted to the state in which it was before anything was done
 with the mail box.
 
-=item B<fetched>  X<fetched>
+=item B<fetched> 
 
 Returns a reference to a list of ID's that have been fetched using the
 message() method.  This can be used to update a database of messages that
@@ -188,11 +186,11 @@ the messages themselves).
 
 See also deleteFetched().
 
-=item B<folderSize>  X<folderSize>
+=item B<folderSize> 
 
 Returns the total number of octets used by the mailbox on the remote server.
 
-=item B<header> ID, [BODYLINES] X<header>
+=item B<header> ID, [BODYLINES]
 
 Returns a reference to an array which contains the header of the message
 with the specified ID.  C<undef> is returned if something has gone wrong.
@@ -205,19 +203,19 @@ Examples:
  my $ref_lines = $imap4->header($uidl);
  print @$ref_lines;
 
-=item B<id2n> ID X<id2n>
+=item B<id2n> ID
 
 Translates the unique ID of a message into a sequence number which
 represents the message as long a this connection to the IMAP4 server
 exists.  When the message has been deleted for some reason, C<undef>
 is returned.
 
-=item B<ids>  X<ids>
+=item B<ids> 
 
 Returns a list (in list context) or a reference to a list (in scalar context)
 of all ID's which are known by the server on this moment.
 
-=item B<message> ID X<message>
+=item B<message> ID
 
 Returns a reference to an array which contains the lines of the
 message with the specified ID.  Returns C<undef> if something has gone
@@ -228,13 +226,13 @@ Examples:
  my $ref_lines = $imap->message($uidl);
  print @$ref_lines;
 
-=item B<messageSize> ID X<messageSize>
+=item B<messageSize> ID
 
 Returns the size of the message which is indicated by the ID, in octets.
 If the message has been deleted on the remote server, this will return
 C<undef>.
 
-=item B<messages>  X<messages>
+=item B<messages> 
 
 Returns (in scalar context only) the number of messages that are known
 to exist in the mailbox.
@@ -245,20 +243,27 @@ to exist in the mailbox.
 
 =over 4
 
-=item B<askSubfolderSeparator>  X<askSubfolderSeparator>
+=item B<askSubfolderSeparator> 
 
 Returns the separator which is used on the server side to indicate
 sub-folders.
 
-=item B<askSubfoldersOf> NAME X<askSubfoldersOf>
+=item B<askSubfoldersOf> NAME
 
 Returns a list of subfolders for this server.
 
-=item B<getFlag> ID, LABEL X<getFlag>
+=item B<getFlag> ID, LABEL
 
 Returns the value of the LABEL for the message with this ID.
 
-=item B<send> SOCKET, data X<send>
+=item B<login> 
+
+Establish a new connection to the IMAP4 server, using username and password.
+
+IMAP4 requires a username and password
+Cannot connect to $host:$port for IMAP4: $!
+
+=item B<send> SOCKET, data
 
 Send data to the indicated socket and return the first line read from
 that socket.  Logs an error if either writing to or reading from socket failed.
@@ -266,7 +271,7 @@ that socket.  Logs an error if either writing to or reading from socket failed.
 This method does B<not> attempt to reconnect or anything: if reading or
 writing the socket fails, something is very definitely wrong.
 
-=item B<sendList> SOCKET, COMMAND X<sendList>
+=item B<sendList> SOCKET, COMMAND
 
 Sends the indicated COMMAND to the specified socket, and retrieves the
 response.  It returns a reference to an array with all the lines that
@@ -274,9 +279,9 @@ were reveived after the first C<+OK> line and before the end-of-message
 delimiter (a single dot on a line).  Returns C<undef>
 whenever something has gone wrong.
 
-=item B<setFlags> ID, LABEL, VALUE, [LABEL, VALUE], ... X<setFlags>
+=item B<setFlags> ID, LABEL, VALUE, [LABEL, VALUE], ...
 
-=item B<socket>  X<socket>
+=item B<socket> 
 
 Returns a connection to the IMAP4 server.  If there was no connection yet,
 it will be created transparently.  If the connection with the IMAP4 server
@@ -366,7 +371,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

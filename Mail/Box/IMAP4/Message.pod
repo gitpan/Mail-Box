@@ -1,12 +1,11 @@
 
 =head1 NAME
 
-
 Mail::Box::IMAP4::Message - one message on a IMAP4 server
 
 =head1 CLASS INHERITANCE
 
-Mail::Box::IMAP4::Message
+ Mail::Box::IMAP4::Message
    is a Mail::Box::Net::Message
    is a Mail::Box::Message
    is a Mail::Message
@@ -14,12 +13,10 @@ Mail::Box::IMAP4::Message
 
 =head1 SYNOPSIS
 
-
  my $folder = new Mail::Box::IMAP4 ...
  my $message = $folder->message(10);
 
 =head1 DESCRIPTION
-
 
 A Mail::Box::IMAP4::Message represents one message on a IMAP4 server,
 maintained by a Mail::Box::IMAP4 folder. Each message is stored as
@@ -32,7 +29,9 @@ as well.
 
 =over 4
 
-=item B<new> OPTIONS X<new>
+=item B<new> OPTIONS
+
+(Class method)
 
  OPTION               DEFAULT
  body                 undef
@@ -194,6 +193,10 @@ See Mail::Box::Message::folder()
 
 See Mail::Message::isDummy()
 
+=item B<isModified> 
+
+See Mail::Message::isModified()
+
 =item B<isPart> 
 
 See Mail::Message::isPart()
@@ -222,7 +225,7 @@ See Mail::Message::send()
 
 See Mail::Box::Message::seqnr()
 
-=item B<size>  X<size>
+=item B<size> 
 
 Returns the size of this message.  If the message is still on the remote
 server, POP is used to ask for the size.  When the message is already loaded
@@ -232,6 +235,10 @@ sizes can differ because the difference in line-ending representation.
 =item B<toplevel> 
 
 See Mail::Message::toplevel()
+
+=item B<write> [FILEHANDLE]
+
+See Mail::Message::write()
 
 =back
 
@@ -355,7 +362,11 @@ See Mail::Box::Message::delete()
 
 See Mail::Box::Message::deleted()
 
-=item B<label> LABEL, [VALUE, [LABEL, VALUE, ...]] X<label>
+=item B<isDeleted> 
+
+See Mail::Box::Message::isDeleted()
+
+=item B<label> LABEL, [VALUE, [LABEL, VALUE, ...]]
 
 With only one argument, the value related to LABEL is returned.  With
 more that one argument, the list is interpreted a LABEL-VALUE pairs
@@ -369,6 +380,14 @@ IMAP system labels.
 =item B<labels> 
 
 See Mail::Message::labels()
+
+=item B<labelsToStatus> 
+
+See Mail::Message::labelsToStatus()
+
+=item B<statusToLabels> 
+
+See Mail::Message::statusToLabels()
 
 =back
 
@@ -388,9 +407,9 @@ See Mail::Box::Message::diskDelete()
 
 See Mail::Message::isDelayed()
 
-=item B<labelsToStatus> 
+=item B<loadBody> 
 
-See Mail::Message::labelsToStatus()
+See Mail::Box::Net::Message::loadBody()
 
 =item B<readBody> PARSER, HEAD [, BODYTYPE]
 
@@ -403,10 +422,6 @@ See Mail::Message::readFromParser()
 =item B<readHead> PARSER [,CLASS]
 
 See Mail::Message::readHead()
-
-=item B<statusToLabels> 
-
-See Mail::Message::statusToLabels()
 
 =item B<storeBody> BODY
 
@@ -499,7 +514,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

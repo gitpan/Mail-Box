@@ -1,5 +1,5 @@
 package Mail::Box::Maildir::Message;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Box::Dir::Message';
 
 use strict;
@@ -72,7 +72,7 @@ sub accept($)
     my $old    = $self->filename;
 
     unless($old =~ m!(.*)/(new|cur|tmp)/([^:]*)(\:[^:]*)?$! )
-    {   $self->log(ERROR => "filename $old is not in a Maildir folder.\n");
+    {   $self->log(ERROR => "Message $old is not in a Maildir folder.\n");
         return undef;
     }
 

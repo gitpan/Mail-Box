@@ -1,24 +1,21 @@
 
 =head1 NAME
 
-
 Mail::Message::TransferEnc::SevenBit - encode/decode 7bit message bodies
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::TransferEnc::SevenBit
+ Mail::Message::TransferEnc::SevenBit
    is a Mail::Message::TransferEnc
    is a Mail::Reporter
 
 =head1 SYNOPSIS
-
 
  my Mail::Message $msg = ...;
  my $decoded = $msg->decoded;
  my $encoded = $msg->encode(transfer => '7bit');
 
 =head1 DESCRIPTION
-
 
 Encode or decode message bodies for 7bit transfer encoding.  This is
 only very little encoding.  According to the specs:
@@ -43,7 +40,23 @@ at all.
 
 =item B<new> OPTIONS
 
-See Mail::Message::TransferEnc::new()
+(Class method)
+
+ OPTION               DEFAULT
+ log                  'WARNINGS'
+ trace                'WARNINGS'
+
+=over 4
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=back
 
 =back
 
@@ -160,7 +173,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

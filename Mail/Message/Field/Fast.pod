@@ -1,22 +1,19 @@
 
 =head1 NAME
 
-
 Mail::Message::Field::Fast - one line of a message header
 
 =head1 CLASS INHERITANCE
 
-Mail::Message::Field::Fast
+ Mail::Message::Field::Fast
    is a Mail::Message::Field
    is a Mail::Reporter
 
 =head1 SYNOPSIS
 
-
  See Mail::Message::Field
 
 =head1 DESCRIPTION
-
 
 This is the faster, but less flexible
 implementation of a header field.  The data is stored in an array,
@@ -30,8 +27,9 @@ is very important here.
 
 =over 4
 
-=item B<new> DATA X<new>
+=item B<new> DATA
 
+(Class method) 
 The constructor of this object does not follow the usual practise within
 the Mail::Box suite: it does not use the constructor Mail::Reporter::new().
 Therefor it has no logging or tracing facilities.
@@ -313,7 +311,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.036.
+This code is beta, version 2.037.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

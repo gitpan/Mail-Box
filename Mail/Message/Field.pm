@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Field;
-our $VERSION = 2.036;  # Part of Mail::Box
+our $VERSION = 2.037;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -210,7 +210,7 @@ sub dateToTimestamp($)
     str2time($string, 'GMT');
 }
 
-sub addresses() { Mail::Address->parse(shift->body) }
+sub addresses() { Mail::Address->parse(shift->unfoldedBody) }
 
 sub nrLines() { my @l = shift->foldedBody; scalar @l }
 
@@ -228,7 +228,7 @@ sub consume($;$)
 {   my $self = shift;
     my ($name, $body) = defined $_[1] ? @_ : split(/\s*\:\s*/, (shift), 2);
 
-    Mail::Reporter->log(WARNING => "Illegal character in field name: $name")
+    Mail::Reporter->log(WARNING => "Illegal character in field name $name")
        if $name =~ m/[^\041-\071\073-\176]/;
 
     #
@@ -257,7 +257,7 @@ sub consume($;$)
         $body =~ s/^\s*/ /;  # start with one blank, folding kept unchanged
 
         if($body eq "\n")
-        {   Mail::Reporter->log(WARNING => "Empty field: $name\n");
+        {   $self->log(WARNING => "Empty field: $name\n");
             return ();
         }
     }
