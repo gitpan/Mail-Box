@@ -8,7 +8,7 @@ WriteMakefile(
     PREREQ_PM    => { Mail::Internet => 1.0
                     , MIME::Tools    => 5.0
                     , Date::Parse    => 0.0
-		    , File::Spec     => 0.0
+		    , File::Spec     => 0.7
                     , IO::Scalar     => 0.0
 		    , Errno          => 0.0
                     }

@@ -7,7 +7,7 @@
 use Test;
 use File::Compare;
 use strict;
-use lib '..';
+use lib '/home/markov/MailBox1/fake';
 
 BEGIN {plan tests => 4}
 

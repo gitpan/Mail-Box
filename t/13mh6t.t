@@ -6,7 +6,7 @@
 
 use strict;
 use Test;
-use lib '..', 't';
+use lib '.', 't', '/home/markov/MailBox1/fake';
 use File::Spec;
 
 use Mail::Box::Manager;

@@ -2,7 +2,7 @@
 package Mail::Box;
 #use 5.006;
 
-$VERSION = '1.318';
+$VERSION = '1.319';
 
 use Carp;
 use MIME::Parser;
@@ -271,7 +271,7 @@ USAGE
     my %args    = @_;
 
     $self->init(\%args) or return;
-    $self->read         or return if $self->readable;
+    $self->read         or return;
 
     $self;
 }
@@ -741,9 +741,7 @@ sub name() { shift->{MB_foldername} }
 
 =item writeable
 
-=item readable
-
-Checks whether the current folder is writeable respectively readable.
+Checks whether the current folder is writeable.
 
 Example:
 
@@ -752,7 +750,8 @@ Example:
 =cut
 
 sub writeable() { shift->{MB_access} =~ /w|a/ }
-sub readable()  { shift->{MB_access} =~ /r/ }
+
+sub readable()  { 1 } # compatibility
 
 #-------------------------------------------
 
@@ -1023,7 +1022,7 @@ sub addMessages(@)
 
 (Class method) Append one or more messages to an unopened folder.
 Usually, this method is called by the Mail::Box::Manager (its method
-C<appendMessage()>), in which case the correctness of the
+C<appendMessages()>), in which case the correctness of the
 foldertype is checked.
  
 This method gets a list of labeled parameters, which may contain
@@ -1491,7 +1490,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 1.318
+This code is beta, version 1.3.19
 
 =cut
 

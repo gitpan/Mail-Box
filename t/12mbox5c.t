@@ -10,7 +10,7 @@ use Test;
 use File::Copy;
 use File::Spec;
 
-use lib '..', 't';
+use lib '.', 't', '/home/markov/MailBox1/fake';
 use Tools;
 
 use Mail::Box::Mbox;

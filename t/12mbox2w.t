@@ -10,7 +10,7 @@ use File::Compare;
 use File::Copy;
 use File::Spec;
 
-use lib '..';
+use lib '/home/markov/MailBox1/fake';
 use Mail::Box::Mbox;
 
 BEGIN {plan tests => 5}

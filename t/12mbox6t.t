@@ -10,7 +10,7 @@ use Test;
 use File::Copy;
 use File::Spec;
 
-use lib '..';
+use lib '/home/markov/MailBox1/fake';
 use Mail::Box::Manager;
 
 BEGIN {plan tests => 16}

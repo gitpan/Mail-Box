@@ -9,7 +9,7 @@ use File::Compare;
 use File::Copy;
 use File::Spec;
 
-use lib '..', 't';
+use lib 't', '.', '/home/markov/MailBox1/fake';
 use strict;
 
 use Mail::Box::MH;

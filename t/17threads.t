@@ -5,7 +5,7 @@
 
 use Test;
 use strict;
-use lib '..';
+use lib '/home/markov/MailBox1/fake';
 use File::Spec;
 
 BEGIN {plan tests => 1}

@@ -3,14 +3,27 @@ CHANGELOG of Mail::Box
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
+version 1.319: Tue Aug  7 22:13:33 CEST 2001
+
+	* Doc-fix copyTo in Mail::Box::Message [Marcel de Boer]
+
+	* Fix in appending message to file.  Bug report by [Marcel de Boer]
+
+	* Typo formLine --> fromLine in Mail::Box::Mbox.pm [Jerry Askew]
+
+	* Update of scripts/takemail [Tassilo von Parseval]
+
+
 version 1.318: Wed Jul 18 08:14:59 CEST 2001
 
-	* open file rw is impossible, of course!  Should be r+
+        * open file rw is impossible, of course!  Should be r+
           not rw
+
 
 version 1.317: Mon Jul 16 22:53:36 CEST 2001
 
 	* [Tassilo von Parseval] added scripts/takemail
+
 
 version 1.316: Sat Jul 14 10:15:01 CEST 2001
 

@@ -11,7 +11,7 @@ use File::Spec;
 
 BEGIN {plan tests => 10}
 
-use lib '..';
+use lib '/home/markov/MailBox1/fake';
 use Mail::Box::Manager;
 
 my $src  = File::Spec->catfile('t', 'mbox.src');

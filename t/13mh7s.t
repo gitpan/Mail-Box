@@ -9,7 +9,7 @@ use strict;
 use Test;
 use File::Spec;
 
-use lib '..', 't';
+use lib '.', 't', '/home/markov/MailBox1/fake';
 use Mail::Box::Manager;
 use Tools;
 

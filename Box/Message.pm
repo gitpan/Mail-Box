@@ -652,9 +652,8 @@ sub coerce($$@)
 
 =item copyTo FOLDER
 
-Move the message to the indicated opened FOLDER.  The message is
-removed from the folder where it resides in (flagged to be deleted).
-The content of the message is copied.
+Copy the message to the indicated opened FOLDER, without deleting
+the original.
 
 Example:
 
@@ -1231,7 +1230,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 1.318
+This code is beta, version 1.3.19
 
 =cut
 

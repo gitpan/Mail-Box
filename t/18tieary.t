@@ -9,7 +9,7 @@ use Test;
 
 BEGIN {plan tests => 8}
 
-use lib '..', 't';
+use lib '/home/markov/MailBox1/fake';
 use Mail::Box::Mbox;
 use Mail::Box::Tie::ARRAY;
 

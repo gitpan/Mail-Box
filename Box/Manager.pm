@@ -416,7 +416,7 @@ sub closeAllFolders()
 
 #-------------------------------------------
 
-=item appendMessage [FOLDER|FOLDERNAME,] MESSAGES, OPTIONS
+=item appendMessages [FOLDER|FOLDERNAME,] MESSAGES, OPTIONS
 
 Append one or more messages to a folder.  As first argument, you
 may specify a FOLDERNAME or an opened folder.  When the name is
@@ -430,7 +430,7 @@ written to disk until a write of that folder takes place.  When the
 name of an unopened folder is given, data message data is immediately
 stored on disk.
 
-A message must be an instance of an MIME::Entity.  The actual type
+A message must be an instance of an C<MIME::Entity>.  The actual type
 may be in conflict with the requirements for the folder-type where
 the data is added.  However, this is not a concern of the caller:
 the folders will try to resolve the differences with minimal loss of
@@ -441,13 +441,15 @@ the default options for the detected folder-type.
 
 Examples:
 
-   $mgr->appendMessage('=send', $message, folderdir => '/');
-   $mgr->appendMessage('=received', $inbox->messages);
-   $mgr->appendMessage($inbox->messages, folder => 'Drafts');
+   $mgr->appendMessages('=send', $message, folderdir => '/');
+   $mgr->appendMessages('=received', $inbox->messages);
+   $mgr->appendMessages($inbox->messages, folder => 'Drafts');
 
 =cut
 
-sub appendMessage(@)
+sub appendMessage(@) {shift->appendMessages(@_)}
+
+sub appendMessages(@)
 {   my $self = shift;
     my $folder;
     $folder  = shift if !ref $_[0] || $_[0]->isa('Mail::Box');
@@ -701,7 +703,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 1.318
+This code is beta, version 1.3.19
 
 =cut
 

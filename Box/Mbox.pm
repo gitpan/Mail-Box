@@ -213,7 +213,7 @@ sub fileOpen()
     my $file;
 
     my $access = $self->{MB_access} || 'r';
-    $access = 'r+' if $access eq 'rw';
+    $access = 'r+' if $access eq 'rw' || $access eq 'a';
 
     if($^O eq 'solaris' && $self->lockMethod eq 'FILE' && $access eq 'r')
     {   # An Solaris, excl lock can only be done on file which is opened
@@ -542,7 +542,7 @@ sub appendMessages(@)
         # with a from-line
         # $class->coerce($_);   # sorry, can't
  
-        $file->print( $_->can('formLine')
+        $file->print( $_->can('fromLine')
                     ? $_->fromLine
                     : $_->Mail::Box::Mbox::Message::fromLine
                     );
@@ -847,7 +847,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 1.318
+This code is beta, version 1.3.19
 
 =cut
 
