@@ -5,7 +5,7 @@ use strict;
 
 package Mail::Message;
 
-our $VERSION = 2.00_16;
+our $VERSION = 2.00_17;
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -63,21 +63,22 @@ In case you C<reply> on a multipart message, it will answer on the first
 message-part.  You may also reply explicitly on a single message-part.
 
  OPTIONS         DESCRIBED IN              DEFAULT
+ Bcc             Mail::Message::Construct  undef
+ Cc              Mail::Message::Construct  <'cc' in current>
+ From            Mail::Message::Construct  <'to' in current>
+ Message-ID      Mail::Message::Construct  <uniquely generated>
+ Subject         Mail::Message::Construct  <see replySubject>
+ To              Mail::Message::Construct  <'from' in current>
+
  body            Mail::Message::Construct  undef
- body_type       Mail::Message::Construct  <class of current body>
- cc              Mail::Message::Construct  <'cc' in current>
- from            Mail::Message::Construct  <'to' in current>
  group_reply     Mail::Message::Construct  1
  head            Mail::Message::Construct  <new Mail::Message::Head>
  include         Mail::Message::Construct  'INLINE'
- message_id      Mail::Message::Construct  <uniquely generated>
  message_type    Mail::Message::Construct  'Mail::Message'
  postlude        Mail::Message::Construct  undef
  prelude         Mail::Message::Construct  undef
  quote           Mail::Message::Construct  '=E<gt> '
  strip_signature Mail::Message::Construct  qr/^--\s/
- subject         Mail::Message::Construct  <see replySubject>
- to              Mail::Message::Construct  <'from' in current>
 
 The OPTIONS are:
 
@@ -89,16 +90,6 @@ Specifies the body of the message which is the reply.  Not used when
 C<include> is C<'INLINE'>.  Adviced in other cases: prepare the body
 of the reply before the reply is called.  It will avoid needless
 copying within C<Mail::Message>.
-
-=item * body_type =E<gt> CLASS
-
-Specifies the type of the body to be created.  If the reply will be
-a multipart message (C<include> equals C<'ATTACH'>), this must be
-a sub-class of C<Mail::Message::Body::Multipart>.  Otherwise any
-sub-class of C<Mail::Message::Body> will satisfy.
-
-If nothing is specified, the body type of the produced will be the same
-as that of the original (except when a multipart is to be created).
 
 =item * group_reply =E<gt> BOOLEAN
 
@@ -114,12 +105,6 @@ will create a multi-part body, where the original message is added
 after the specified body.  It is only possible to inline textual
 messages, therefore binary or multipart messages will always be
 inclosed as attachment.
-
-=item * message_id =E<gt> STRING
-
-Supply a STRING as specific message-id for the reply.  By default, one is
-generated for you.  If there are no angles around your id, they will be
-added.
 
 =item * message_type =E<gt> CLASS
 
@@ -175,13 +160,6 @@ one message remains, it will be the added as single attachment, otherwise
 a nested multipart will be the result.  The value of this option does not
 matter, as long as it is present.  See C<Mail::Message::Body::Multipart>.
 
-=item * subject =E<gt> STRING|CODE
-
-Force the subject line to the specific STRING, or the result of the
-subroutine specified by CODE.  The subroutine will be called passing
-the subject of the original message as only argument.  By default,
-the C<replySubject> method (described below) is used.
-
 =back
 
 You may wish to overrule some of the default settings for the
@@ -190,21 +168,39 @@ To overrule use
 
 =over 4
 
-=item * to =E<gt> ADDRESSES
+=item * To =E<gt> ADDRESSES
 
 The destination of your message, by default taken from the C<From> field
 of the source message.  The ADDRESSES may be specified as string, or
 a C<Mail::Address> object, or as array of C<Mail::Address> objects.
 
-=item * from =E<gt> ADDRESSES
+=item * From =E<gt> ADDRESSES
 
 Your identification, by default taken from the C<To> field of the
 source message.
 
-=item * cc =E<gt> ADDRESSES
+=item * Bcc =E<gt> ADDRESSES
+
+Receivers of blind carbon copies: their names will not be published to
+other message receivers.
+
+=item * Cc =E<gt> ADDRESSES
 
 The carbon-copy receivers, by default a copy of the C<Cc> field of
 the source message.
+
+=item * Message-ID =E<gt> STRING
+
+Supply a STRING as specific message-id for the reply.  By default, one is
+generated for you.  If there are no angles around your id, they will be
+added.
+
+=item * Subject =E<gt> STRING|CODE
+
+Force the subject line to the specific STRING, or the result of the
+subroutine specified by CODE.  The subroutine will be called passing
+the subject of the original message as only argument.  By default,
+the C<replySubject> method (described below) is used.
 
 =back
 
@@ -215,74 +211,45 @@ the source message.
 sub reply(@)
 {   my ($self, %args) = @_;
 
-    my $include  = $args{include} || 'INLINE';
+    my $include  = $args{include}   || 'INLINE';
     my $strip    = !exists $args{strip_signature} || $args{strip_signature};
+    my $body     = $self->body;
 
-    my $source   = $self->body;
-
-    if($include ne 'NO')
-    {   if($source->isMultipart && $strip)
-        {   my @parts = grep {!$_->body->mimeType->isSignature} $source->parts;
-
-            if(@parts==1) {$source = $parts[0]->body}
-            elsif(@parts < $source->parts)
-            {   $source = ref($source)->new(based_on=>$source, parts=>\@parts);
-            }
-        }
-
-        $source  = $source->part(0)->body
-            if $source->isMultipart && $source->parts==1
-            && !$source->part(0)->isBinary;
-
-        if($include eq 'INLINE' && ($source->isBinary || $source->isMultipart))
-        {   $include = 'ATTACH';
-            $source  = Mail::Message::Body::Multipart->new(parts => [$source]);
-        }
-    }
-
-    #
-    # Create the body
-    #
-
-    my $bodytype = $args{body_type} || ref $source;
-
-    my $body;
     if($include eq 'NO')
-    {   $body = defined $args{body} ? $args{body} : $bodytype->new(data =>
+    {   $body = defined $args{body} ? $args{body} : (ref $self)->new(data =>
               ["\n[The original message is not included]\n\n"]);
     }
-    elsif($include eq 'INLINE')
-    {   my $decoded  = $source->decoded(result_type => $bodytype);
-        my $stripped = $strip
-          ? $decoded->stripSignature
-             ( pattern     => $args{strip_signature}
-             , max_lines   => $args{max_signature}
-             , result_type => $bodytype
-             )
-          : $decoded;
+    elsif($include eq 'INLINE' || $include eq 'ATTACH')
+    {   my @stripopts =
+         ( pattern     => $args{strip_signature}
+         , max_lines   => $args{max_signature}
+         );
 
-        my $quote
-          = defined $args{quote} ? $args{quote}
-          : exists $args{quote}  ? undef
-          :                        '> ';
+        my $decoded  = $body->decoded;
+        $body        = $strip ? $decoded->stripSignature(@stripopts) : $decoded;
 
-        $body = $stripped;
-        if(defined $quote)
-        {   my $quoting = ref $quote ? $quote : sub {$quote . $_};
-            $body = $stripped->foreachLine($quoting);
+        if($body->isMultipart && $body->parts==1)
+        {   $decoded = $body->part(0)->decoded;
+            $body    = $strip ? $decoded->stripSignature(@stripopts) : $decoded;
         }
-    }
-    elsif($include eq 'ATTACH')
-    {   if($source->isMultipart && $strip)
-        {   my @parts = grep {!$_->body->mimeType->isSignature} $source->parts;
 
-            if(@parts==1) {$body = $parts[0]->body}
-            elsif(@parts < $source->parts)
-            {   $body = ref($source)->new(based_on=>$source, parts=>\@parts);
+        if($include eq 'INLINE' && $body->isMultipart) { $include = 'ATTACH' }
+        elsif($include eq 'INLINE' && $body->isBinary)
+        {   $include = 'ATTACH';
+            $body    = Mail::Message::Body::Multipart->new(parts => [$body]);
+        }
+
+        if($include eq 'INLINE')
+        {   my $quote
+              = defined $args{quote} ? $args{quote}
+              : exists $args{quote}  ? undef
+              :                        '> ';
+
+            if(defined $quote)
+            {   my $quoting = ref $quote ? $quote : sub {$quote . $_};
+                $body = $body->foreachLine($quoting);
             }
-            else {$body = $source}
         }
-        else {$body = $source}
     }
     else
     {   $self->log(ERROR => "Cannot include source as $include.");
@@ -297,39 +264,42 @@ sub reply(@)
 
     # Where it comes from
     my $from;
-    unless($from = $args{from})
+    unless($from = $args{From})
     {   $from = $mainhead->get('To');  # Me, with the alias known by the user.
         $from = $from->body if $from;
     }
 
     # To whom to send
     my $to;
-    unless($to = $args{to})
+    unless($to = $args{To})
     {   $to = $mainhead->get('reply-to') || $mainhead->get('from')
               || $mainhead->get('sender');
         $to = $to->body if $to;
     }
     return undef unless $to;
 
-    # Add CC
+    # Add Cc
     my $cc;
-    if(!($cc = $args{cc}) && $args{group_reply})
+    if(!($cc = $args{Cc}) && $args{group_reply})
     {   $cc = $mainhead->get('cc');
         $cc = $cc->body if $cc;
     }
 
+    # Add Bcc
+    my $bcc = $args{Bcc};
+
     # Create a subject
     my $subject;
-    if(exists $args{subject} && ! ref $args{subject})
-    {   $subject       = $args{subject}; }
+    if(exists $args{Subject} && ! ref $args{Subject})
+    {   $subject       = $args{Subject}; }
     else
     {   my $rawsubject = $mainhead->get('subject') || 'your mail';
-        my $make       = $args{subject} || \&replySubject;
+        my $make       = $args{Subject} || \&replySubject;
         $subject       = $make->($rawsubject);
     }
 
     # Create a nice message-id
-    my $msgid   = $args{message_id};
+    my $msgid   = $args{'Message-ID'};
     $msgid      = "<$msgid>" if $msgid && $msgid !~ /^\s*\<.*\>\s*$/;
 
     # Thread information
@@ -390,7 +360,8 @@ sub reply(@)
       );
 
     my $newhead = $reply->head;
-    $newhead->set(Cc => $cc) if $cc;
+    $newhead->set(Cc  => $cc)  if $cc;
+    $newhead->set(Bcc => $args{Bcc}) if $args{Bcc};
     $newhead->set('Message-Id'  => $msgid || $newhead->createMessageId);
 
     # Ready
@@ -743,7 +714,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_16.
+This code is beta, version 2.00_17.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

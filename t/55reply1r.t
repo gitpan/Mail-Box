@@ -12,22 +12,25 @@ use Mail::Message;
 use Mail::Message::Head;
 use Mail::Message::Body::Lines;
 use Mail::Message::Construct;
+
+use Mail::Address;
 use Tools;
 
-BEGIN {plan tests => 22}
+BEGIN {plan tests => 23}
 
 #
 # First produce a message to reply to.
 #
 
-my $head = Mail::Message::Head->new;
-$head->add(To   => 'me@example.com (Me the receiver)');
-$head->add(From => 'him@somewhere.else.nl (Original Sender)');
-$head->add(Cc   => 'the.rest@world.net');
-$head->add(Subject => 'Test of Reply');
-$head->add(Skip => 'Do not take this line');
-$head->add(Date => 'Wed, 9 Feb 2000 15:44:05 -0500');
-$head->add('Content-Something' => 'something');
+my $head = Mail::Message::Head->build
+ ( To   => 'me@example.com (Me the receiver)'
+ , From => 'him@somewhere.else.nl (Original Sender)'
+ , Cc   => 'the.rest@world.net'
+ , Subject => 'Test of Reply'
+ , Skip => 'Do not take this line'
+ , Date => 'Wed, 9 Feb 2000 15:44:05 -0500'
+ , 'Content-Something' => 'something'
+ );
 
 my ($text, $sig) = (<<'TEXT', <<'SIG');
 First line of orig message.
@@ -116,14 +119,16 @@ $reply = $msg->reply
   ( group_reply => 0
   , quote       => sub {chomp; "> ".reverse."\n"}
   , postlude    => $postlude
+  , Bcc         => Mail::Address->new('username', 'user@example.com')
   );
 
 ok(  $reply->head->get('to') eq $msg->head->get('from'));
 ok($reply->head->get('from') eq $msg->head->get('to'));
 ok(!defined $reply->head->get('cc'));
 ok(!defined $reply->head->get('skip'));
+ok($reply->head->get('bcc') eq 'username <user@example.com>');
 
-#$reply->body->print;
+#$reply->print;
 ok($reply->body->string eq <<'EXPECT');
 On Wed Feb  9 20:44:05 2000, Original Sender wrote:
 > .egassem giro fo enil tsriF

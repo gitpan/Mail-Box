@@ -261,7 +261,8 @@ Examples:
 
 sub stripSignature($@)
 {   my ($self, %args) = @_;
-    return $self unless $self->type =~ m!^text/!;
+
+    return $self if $self->mimeType->isBinary;
 
     my $pattern = !defined $args{pattern} ? qr/^--(\s|$)/
                 : !ref $args{pattern}     ? qr/^\Q${args{pattern}}/
@@ -335,7 +336,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_16.
+This code is beta, version 2.00_17.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

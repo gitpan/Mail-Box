@@ -5,7 +5,7 @@ package Mail::Box::Parser;
 use base 'Mail::Reporter';
 use Carp;
 
-our $VERSION = 2.00_16;
+our $VERSION = 2.00_17;
 
 =head1 NAME
 
@@ -262,14 +262,15 @@ sub filePosition(;$) {shift->NotImplemented}
 
 #------------------------------------------
 
-=item pushSeparator STRING
+=item pushSeparator STRING|REGEXP
 
 Add a boundary line.  Separators tell the parser where to stop reading.
 A famous seperator is the C<From>-line, which is used in Mbox-like
 folders to separate messages.  But also parts (I<attachments>) is a
 message are devided by separators.
 
-The specified string describes the start of the separator-line.
+The specified STRING describes the start of the separator-line.  The
+REGEXP can specify a more complicated format.
 
 =cut
 
@@ -440,7 +441,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_16.
+This code is beta, version 2.00_17.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

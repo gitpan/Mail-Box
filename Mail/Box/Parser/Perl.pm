@@ -7,7 +7,7 @@ use base 'Mail::Box::Parser';
 use List::Util 'sum';
 use FileHandle;
 
-our $VERSION = 2.00_16;
+our $VERSION = 2.00_17;
 
 =head1 NAME
 
@@ -95,7 +95,7 @@ sub closeFile()
 sub pushSeparator($)
 {   my ($self, $sep) = @_;
     unshift @{$self->{MBPP_separators}}, $sep;
-    $self->{MBPP_strip_gt}++ if $sep =~ /^From /;
+    $self->{MBPP_strip_gt}++ if $sep =~ m/^From /;
     $self;
 }
 
@@ -104,7 +104,7 @@ sub pushSeparator($)
 sub popSeparator()
 {   my $self = shift;
     my $sep  = shift @{$self->{MBPP_separators}};
-    $self->{MBPP_strip_gt}++ if $sep =~ /^From /;
+    $self->{MBPP_strip_gt}-- if $sep =~ m/^From /;
     $sep;
 }
     
@@ -170,8 +170,13 @@ sub _read_header_line()
 
     unless(defined $body)
     {   $self->log(WARNING => "Unexpected end of header:\n  $line");
-        $self->{MBPP_keep_line} = $line;
-        return $self;
+
+        while($line !~ m/\:/ )
+        {   $line = $self->_get_one_line;
+            return () unless defined $line;
+            ($name, $body) = split /\:\s*/, $line, 2;
+            last if defined $body;
+        }
     }
 
     $self->log(WARNING => "Blanks stripped after header fieldname: $name.")
@@ -282,7 +287,8 @@ sub _is_good_end(;$)
     seek $self->{MBPP_file}, $here, 0;
     return 1 unless defined $line;
 
-    substr($line, 0, length $sep) eq $sep;
+    substr($line, 0, length $sep) eq $sep
+    && ($sep !~ m/^From / || $line =~ m/ (19[789]\d|20[01]\d)/ );
 }
 
 #------------------------------------------
@@ -317,8 +323,11 @@ sub _read_stripped_lines(;$$)
     {   my $line = $self->_get_one_line;
 
   LINE: while(defined $line)
-        {   foreach (@seps)
-            {   last LINE if substr($line, 0, length $_) eq $_;
+        {
+            foreach my $sep (@seps)
+            {   last LINE
+                   if substr($line, 0, length $sep) eq $sep
+                   && ($sep !~ m/^From / || $line =~ m/ (19[789]\d|20[01]\d)/ );
             }
 
             push @lines, $line;
@@ -437,7 +446,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_16.
+This code is beta, version 2.00_17.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -10,7 +10,7 @@ use Mail::Box::Parser;
 use Carp;
 use List::Util 'sum';
 
-our $VERSION = 2.00_16;
+our $VERSION = 2.00_17;
 our %_structured;
 
 use overload qq("") => sub { $_[0]->body }
@@ -160,12 +160,12 @@ sub new($;$$@)
         ($name, $body) = split /\:\s*/, $name, 2;
 
         unless($body)
-        {   $self->log(ERROR => "No colon in headerline: $name");
+        {   warn "No colon in headerline: $name\n";
             $body = '';
         }
     }
     elsif($name =~ m/\:/)
-    {   $self->log(ERROR => "A header-name cannot contain a colon in $name.");
+    {   warn "A header-name cannot contain a colon in $name\n";
         return undef;
     }
 
@@ -176,7 +176,7 @@ sub new($;$$@)
                 (ref $body eq 'ARRAY' ? @$body : $body);
     }
     
-    $self->log(WARNING=> "Header-field name contains illegal character: $name.")
+    warn "Header-field name contains illegal character: $name\n"
         if $name =~ m/[^\041-\176]/;
 
     $body =~ s/\s*\015?\012$//;
@@ -467,7 +467,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_16.
+This code is beta, version 2.00_17.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

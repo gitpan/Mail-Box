@@ -7,7 +7,7 @@ use base 'Mail::Message::Body';
 use Mail::Message::Body::Lines;
 use Mail::Message::Part;
 
-our $VERSION = 2.00_16;
+our $VERSION = 2.00_17;
 
 use Carp;
 
@@ -199,6 +199,10 @@ sub init($)
 
 sub isMultipart() {1}
 
+# A multipart body is never binary itself.  The parts me be.
+sub isBinary() {0}
+
+
 #------------------------------------------
 
 =item encode OPTIONS
@@ -209,7 +213,6 @@ part.  New bodies will be created if any of the parts is encoded.
  OPTION            DESCRIBED IN         DEFAULT
  charset           Mail::Message::Body  undef
  mime_type         Mail::Message::Body  undef
- result_type       Mail::Message::Body  <same as source>
  transfer_encoding Mail::Message::Body  undef
 
 =cut
@@ -245,20 +248,16 @@ sub encode(@)
     my @encoded_parts;
     foreach (@encoded_bodies)
     {   my ($part, $body) = @$_;
-        my $encoded_part  = ref($part)->new(head => $part->head->clone);
+        my $encoded_part  = Mail::Message->new(head => $part->head->clone);
         $encoded_part->body($body);
         push @encoded_parts, $encoded_part;
     }
 
-    my $type = $args{result_type} || ref $self;
-
-    $type->new
+    (ref $self)->new
       ( preamble => $encoded_preamble
       , parts    => \@encoded_parts
       , epilogue => $encoded_epilogue
-      , boundary => $self->boundary
-      , based_on => $encoded_preamble
-      , $self->logSettings
+      , base_on  => $self
       );
 }
 
@@ -301,9 +300,7 @@ sub encoded()
       ( preamble => $encoded_preamble
       , parts    => \@encoded_parts
       , epilogue => $encoded_epilogue
-      , boundary => $self->boundary
-      , based_on => $encoded_preamble
-      , $self->logSettings
+      , based_on => $self
       );
 }
 
@@ -498,6 +495,28 @@ sub attach(@)
 
 #-------------------------------------------
 
+=item stripSignature OPTIONS
+
+Removes all parts which contains data usually defined as being signature.
+The C<MIME::Type> module provides this knowledge.  A new multipart is
+returned, containing the remaining parts.  No OPTIONS are defined yet,
+although some may be specified, because this method overrules the
+C<stripSignature> method for normal bodies.
+
+=cut
+
+sub stripSignature(@)
+{   my $self  = shift;
+
+    my @allparts = $self->parts;
+    my @parts    = grep {$_->body->mimeType->isSignature} @allparts;
+
+    @allparts==@parts ? $self
+    : (ref $self)->new(based_on => $self, parts => \@parts);
+}
+
+#-------------------------------------------
+
 =back
 
 =head1 METHODS for extension writers
@@ -591,7 +610,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_16.
+This code is beta, version 2.00_17.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

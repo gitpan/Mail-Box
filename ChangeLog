@@ -3,13 +3,35 @@ CHANGELOG of Mail::Box
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
-version 2.00_16:
+version 2.00_17: Sat Dec  8 23:10:06 CET 2001
+
+	- Moved scripts/web/* to scripts/
+
+	- Header line options in Mail::Message::Construct::reply start
+	  with capitals too.
+
+	- Added Mail::Message::Body::Multipart::stripSignature
+
+	- Simplified Mail::Message::Construct::reply a little
+
+	- Fixed problem with the resulting body-types where delayed bodies
+	  where used to be encoded and decoded.
+
+	- Extra checks for From-line in mbox folders, to help incorrectly
+	  formatted folders.
+
+	- [Tassilo v Parsival] discovered the problematic recovery for
+	  erroneous headers.  Some recovery is tried.
+
+version 2.00_16:  Sat Dec  8 16:56:53 CET 2001
 
 	First beta of Mail::Box version 2
 
         Most import changes:
 
-	* Removed all use of MIME::Parser, Mail::Internet, and MIME::Entity.
+	* Replaced all use of MIME::Parser, Mail::Internet, and MIME::Entity,
+	  althought the foreign message types are still useable in some
+	  places.
 
 	* All code has been changed.  Simple things, like opening a folder,
 	  reading messages and such are the same.  However handling of

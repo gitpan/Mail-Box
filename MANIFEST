@@ -72,7 +72,7 @@ examples/takelarge.pl
 examples/send.pl
 scripts/lsmail
 scripts/takemail
-scripts/web/mailbox2html
+scripts/mailbox2html
 t/01report.t
 t/11field.t
 t/12head0h.t

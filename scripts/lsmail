@@ -4,7 +4,7 @@ use strict;
 use lib '.';
 use Mail::Box::Manager;
 
-my $VERSION = '2.00_16';
+my $VERSION = '2.00_17';
 
 Mail::Box->VERSION($VERSION);
 
@@ -235,7 +235,7 @@ Additions by Tassilo v. Parseval (F<tassilo.parseval@post.rwth-aachen.de>)
 
 =head1 VERSION
 
-This code is beta, version 2.00_16
+This code is beta, version 2.00_17
 
 =cut
 

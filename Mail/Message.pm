@@ -9,7 +9,7 @@ use Mail::Message::Head::Complete;
 
 use Carp;
 
-our $VERSION = 2.00_16;
+our $VERSION = 2.00_17;
 
 =head1 NAME
 
@@ -261,7 +261,7 @@ sub decoded(@)
 
     return $self->{MB_decoded} if $self->{MB_decoded};
 
-    my $body    = $self->body or return;
+    my $body    = $self->body->load or return;
     my $decoded = $body->decoded(result_type => $args{result_type});
 
     $self->{MB_decoded} = $decoded if $args{keep};
@@ -279,7 +279,7 @@ can be specified here are those of the C<encode()> method.
 =cut
 
 sub encode(@)
-{   my $body = shift->body;
+{   my $body = shift->body->load;
     $body ? $body->encode(@_) : undef;
 }
 
@@ -628,6 +628,7 @@ sub read($;$)
 
     my $head         = $self->readHead($parser) or return;
     $self->head($head);
+#warn "Subject: ", $self->get('subject'), "\n";
 
     $self->{MM_body} = $self->readBody($parser, $head, $bodytype);
     $self;
@@ -987,7 +988,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_16.
+This code is beta, version 2.00_17.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
