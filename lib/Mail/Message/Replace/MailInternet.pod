@@ -90,6 +90,7 @@ Mail::Message::Replace::MailInternet-E<gt>B<new>([ARG], [OPTIONS])
  Modify                       0                                                                       
  body        L<Mail::Message>  undef                                                                   
  body_type   L<Mail::Message>  L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>                
+ deleted     L<Mail::Message>  <false>                                                                 
  field_type  L<Mail::Message>  undef                                                                   
  head        L<Mail::Message>  undef                                                                   
  head_type   L<Mail::Message>  L<Mail::Message::Replace::MailHeader|Mail::Message::Replace::MailHeader>
@@ -149,6 +150,8 @@ Passed to L<Mail::Message::Replace::MailHeader::new(Modify)|Mail::Message::Repla
 . body OBJECT
 
 . body_type CLASS
+
+. deleted BOOLEAN
 
 . field_type CLASS
 
@@ -654,7 +657,7 @@ Delete the fields with the specified NAME.  The deleted fields are
 returned.
 
 BE WARNED: if no NAME is specified, the C<delete> is interpreted as
-the deletion of the message in a folder, so L<Mail::Box::Message::delete()|Mail::Box::Message/"Flags">
+the deletion of the message in a folder, so L<Mail::Box::Message::delete()|Mail::Message/"Flags">
 will be called.  This may have no negative effect at all...
 
 Calls L<Mail::Message::Replace::MailHeader::delete()|Mail::Message::Replace::MailHeader/"Access to the header">
@@ -947,6 +950,14 @@ Removes blank lines from begin and end of the body.
 =head2 Flags
 
 
+$obj-E<gt>B<deleted>([BOOLEAN])
+
+=over 4
+
+See L<Mail::Message/"Flags">
+
+=back
+
 $obj-E<gt>B<isDeleted>
 
 =over 4
@@ -963,7 +974,7 @@ See L<Mail::Message/"Flags">
 
 =back
 
-$obj-E<gt>B<label>(LABEL [,VALUE [LABEL, VALUE] ])
+$obj-E<gt>B<label>(LABEL|PAIRS)
 
 =over 4
 
@@ -1321,7 +1332,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

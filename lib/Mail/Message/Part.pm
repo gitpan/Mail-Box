@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Part;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Message';
 use Scalar::Util 'weaken';
 
@@ -116,26 +116,6 @@ sub readFromParser($;$)
     $self->storeBody($body->contentInfoFrom($head));
     $self;
 }
-
-#------------------------------------------
-
-
-sub delete() { shift->{MMP_deleted} ||= time }
-
-#------------------------------------------
-
-
-sub deleted(;$)
-{   my $self = shift;
-      ! @_      ? $self->isDeleted   # compat 2.036
-    : ! (shift) ? ($self->{MMP_deleted} = undef)
-    :             $self->delete;
-}
-
-#------------------------------------------
-
-
-sub isDeleted() { shift->{MMP_deleted} }
 
 #------------------------------------------
 

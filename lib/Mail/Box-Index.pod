@@ -109,11 +109,14 @@ Only the HTML version of this manual page will list the sections.
   <li>Labels (Mail::Message)
       <ul>
       <li>Predefined labels (Mail::Message)
-  <li>Storing labels folder dependent
+      <li>Storing labels folder dependent
       <li>Flags in filename (Mail::Box::Maildir::Message)
-      <li>Status and X-Status fields (MBOX and POP3 folders)
+      <li>Status and X-Status fields (MBOX and POP3)
       <li>The .mh_sequences file (Mail::Box::MH::Labels)
       <li>IMAP protocol flags (Mail::Box::IMAP4::Message)
+      <li>Other labels (IMAP4)
+      <li>Caching labels (IMAP4)
+
       </ul>
   </ul>
 
@@ -122,7 +125,6 @@ Only the HTML version of this manual page will list the sections.
   <li>Reading a message (Mail::Message::Construct::Read)
   <li>Building a message (Mail::Message::Construct::Build)
   <li>Reply to a message (Mail::Message::Construct::Reply)
-  <li>
   <li>Creating a forward
   <li>Bounce a message (Mail::Message::Construct::Bounce)
   <li>Rebuilding a message (Mail::Message::Construct::Rebuild)
@@ -244,9 +246,17 @@ Only the HTML version of this manual page will list the sections.
           (Mail::Message::Head::Partial)
       <li>
   <li>Destructing messages (Mail::Box::Message::Destructed)
+  </ul>
+<li><strong>Additional modules</strong>
+  <ul>
+  <li>Extensions
+      <ul>
+      <li>Mail::Box::Parser::C, a faster parser
+      <li>HTML::FromMail,
+          webmail applications builder
+      </ul>
   <li>Helper modules
       <ul>
-      <li>Install Mail::Box::Parser::C
       <li>MIME::Types
       <li>Object::Realize::Later
       <li>User::Identity
@@ -271,7 +281,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

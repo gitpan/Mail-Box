@@ -943,6 +943,27 @@ is found.  The folder will be scanned back to front.
 
 =back
 
+$obj-E<gt>B<findFirstLabeled>(LABEL, [BOOLEAN, [ARRAY-OF-MSGS]])
+
+=over 4
+
+Find the first message which has this LABEL with the correct setting. The
+BOOLEAN indicates whether any true value or any false value is to
+be found.  By default, a true value is searched for.  When a message
+does not have the requested label, it is taken as false.
+
+I<Example:> looking for a labeled message
+
+
+ my $current = $folder->findFirstLabeled('current');
+
+ my $first   = $folder->findFirstLabeled(seen => 0);
+
+ my $last    = $folder->findFirstLabeled(seen => 0,
+                 [ reverse $self->messages('ACTIVE') ] )
+
+=back
+
 $obj-E<gt>B<message>(INDEX [,MESSAGE])
 
 =over 4
@@ -1757,7 +1778,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

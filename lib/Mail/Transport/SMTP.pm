@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport::SMTP;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Transport::Send';
 
 use Net::SMTP;
@@ -44,15 +44,22 @@ sub trySend($@)
 {   my ($self, $message, %args) = @_;
 
     # From whom is this message.
-    my $from = $args{from} || $message->sender;
-    $from = $from->address if $from->isa('Mail::Address');
+    my $from = $args{from} || $message->sender || '<>';
+    $from = $from->address if ref $from && $from->isa('Mail::Address');
 
     # Who are the destinations.
-    $self->log(ERROR =>
-        "Use option `to' to overrule the destination: `To' would refer to a field")
-            if defined $args{To};
+    if(defined $args{To})
+    {   $self->log(WARNING =>
+   "Use option `to' to overrule the destination: `To' would refer to a field");
+    }
 
     my @to = map {$_->address} $self->destinations($message, $args{to});
+
+    unless(@to)
+    {   $self->log(NOTICE =>
+            'No addresses found to send the message to, no connection made');
+        return 1;
+    }
 
     # Prepare the header
     my @header;
@@ -102,7 +109,8 @@ sub trySend($@)
         unless $server->mail($from);
 
     foreach (@to)
-    {     next if $server->to($_);
+    {
+          next if $server->to($_);
 # must we be able to disable this?
 # next if $args{ignore_erroneous_destinations}
           $server->quit;

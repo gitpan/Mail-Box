@@ -37,6 +37,14 @@ lib/Mail/Box/File/Message.pm
 lib/Mail/Box/File/Message.pod
 lib/Mail/Box/IMAP4.pm
 lib/Mail/Box/IMAP4.pod
+lib/Mail/Box/IMAP4/Body.pm
+lib/Mail/Box/IMAP4/Body.pod
+lib/Mail/Box/IMAP4/DelayedBody.pm
+lib/Mail/Box/IMAP4/DelayedBody.pod
+lib/Mail/Box/IMAP4/DelayedHead.pm
+lib/Mail/Box/IMAP4/DelayedHead.pod
+lib/Mail/Box/IMAP4/Head.pm
+lib/Mail/Box/IMAP4/Head.pod
 lib/Mail/Box/IMAP4/Message.pm
 lib/Mail/Box/IMAP4/Message.pod
 lib/Mail/Box/Locker.pm
@@ -318,6 +326,8 @@ tests/43pop3/original/0002
 tests/43pop3/original/0003
 tests/43pop3/original/0004
 tests/43pop3/server
+tests/44imap/10read.t
+tests/44imap/20write.t
 tests/44imap/Definition.pm
 tests/45dbx/10read.t
 tests/45dbx/Definition.pm

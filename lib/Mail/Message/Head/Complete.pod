@@ -580,7 +580,7 @@ $obj-E<gt>B<guessTimeStamp>
 =over 4
 
 Make a guess about when the message was origanally posted, based on the
-information found in the header.
+information found in the header's C<Date> field.
 
 For some kinds of folders, L<Mail::Message::guessTimestamp()|Mail::Message/"The header"> may produce
 a better result, for instance by looking at the modification time of the
@@ -597,12 +597,55 @@ See L<Mail::Message::Head/"About the body">
 
 =back
 
+$obj-E<gt>B<recvstamp>
+
+=over 4
+
+Returns an indication about when the message was sent, but only using the
+C<Date> field in the header as last resort: we do not trust the sender of
+the message to specify the correct date.  See L<timestamp()|Mail::Message::Head::Complete/"About the body"> when you do
+trust the sender.
+
+Many spam producers fake a date, which mess up the order of receiving
+things.  The timestamp which is produced is derived from the Received
+headers, if they are present, and C<undef> otherwise.
+
+The timestamp is encoded as C<time> is on your system (see perldoc -f
+time), and as such usable for the C<gmtime> and C<localtime> methods.
+
+I<Example:> of time-sorting folders with received messages
+
+
+ my $folder = $mgr->open('InBox');
+ my @messages = sort {$a->recvstamp <=> $b->recvstamp}
+                   $folder->messages;
+
+I<Example:> of time-sorting messages of mixed origin
+
+
+ my $folder = $mgr->open('MyFolder');
+
+ # Pre-calculate timestamps to be sorted (for speed)
+ my @stamps = map { [ ($_->timestamp || 0), $_ ] }
+                     $folder->messages;
+
+ my @sorted
+   = map { $_->[1] }      # get the message for the stamp
+       sort {$a->[0] <=> $b->[0]}   # stamps are numerics
+          @stamps;
+
+=back
+
 $obj-E<gt>B<timestamp>
 
 =over 4
 
-Will return a good indication of about when the message was send, with as
-little guessing as possible.  The timestamp is encoded as C<time> is
+Returns an indication about when the message was sent, with as
+little guessing as possible.  In this case, the date as specified by the
+sender is trusted.  See L<recvstamp()|Mail::Message::Head::Complete/"About the body"> when you do not want to trust the
+sender.
+
+The timestamp is encoded as C<time> is
 on your system (see perldoc -f time), and as such usable for the C<gmtime>
 and C<localtime> methods.
 
@@ -855,7 +898,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

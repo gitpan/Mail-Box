@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Thread::Node;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -64,7 +64,7 @@ sub message()
 
 sub addMessage($)
 {   my ($self, $message) = @_;
-    
+ 
     return $self->{MBTN_messages} = [ $message ]
         if $self->isDummy;
 
@@ -84,7 +84,6 @@ sub isDummy()
 
 
 sub messageId() { shift->{MBTN_msgid} }
-sub messageID() { shift->messageID } # compatibility
 
 #-------------------------------------------
 
@@ -235,8 +234,8 @@ sub startTimeEstimate()
     foreach ($self->followUps)
     {   my $stamp = $_->startTimeEstimate;
 
-        $earliest = $stamp if    !defined $earliest
-                              || (defined $stamp && $stamp < $earliest);
+        $earliest = $stamp
+	    if !defined $earliest || (defined $stamp && $stamp < $earliest);
     }
 
     $earliest;

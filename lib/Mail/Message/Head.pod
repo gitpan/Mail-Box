@@ -10,6 +10,7 @@ Mail::Message::Head - the header of one message
    is a Mail::Reporter
 
  Mail::Message::Head is extended by
+   Mail::Box::IMAP4::Head
    Mail::Message::Head::Complete
    Mail::Message::Head::Delayed
    Mail::Message::Head::Subset
@@ -600,7 +601,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

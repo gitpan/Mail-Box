@@ -71,7 +71,7 @@ Mail::Box::Message-E<gt>B<new>(OPTIONS)
  Option      Defined in       Default                                                       
  body        L<Mail::Message>  undef                                                         
  body_type                    <from folder>                                                 
- deleted                      <false>                                                       
+ deleted     L<Mail::Message>  <false>                                                       
  field_type  L<Mail::Message>  undef                                                         
  folder                       <required>                                                    
  head        L<Mail::Message>  undef                                                         
@@ -97,12 +97,6 @@ delaying the load must specify the algorithm to determine that type.
 =back
 
 . deleted BOOLEAN
-
-=over 4
-
-Is the file deleted from the start?
-
-=back
 
 . field_type CLASS
 
@@ -516,54 +510,6 @@ See L<Mail::Message/"The body">
 
 =back
 
-=head2 The message
-
-
-$obj-E<gt>B<copyTo>(FOLDER)
-
-=over 4
-
-Copy the message to the indicated opened FOLDER, without deleting the
-original.  The coerced message (the copy in the desitnation folder) is
-returned.
-
-I<Example:> 
-
- my $draft = $mgr->open(folder => 'Draft');
- $message->copyTo($draft);
-
-=back
-
-$obj-E<gt>B<folder>([FOLDER])
-
-=over 4
-
-In with folder did we detect this message/dummy?  This is a reference
-to the folder-object.
-
-=back
-
-$obj-E<gt>B<moveTo>(FOLDER)
-
-=over 4
-
-Move the message from this folder to the FOLDER specified.  This will
-create a copy using L<clone()|Mail::Message/"Constructors"> first, and flag this original message
-to be deleted.  So until the source folder is closed, two copies of
-the message stay in memory.  The newly created message (part of the
-destination folder) is returned.
-
-=back
-
-$obj-E<gt>B<seqnr>([INTEGER])
-
-=over 4
-
-Get the number of this message is the current folder.  It starts counting
-from zero.  Do not change the number.
-
-=back
-
 =head2 Flags
 
 
@@ -571,17 +517,7 @@ $obj-E<gt>B<delete>
 
 =over 4
 
-Flag the message to be deleted.  The real deletion only takes place on
-a synchronization of the folder.  See L<deleted()|Mail::Box::Message/"Flags"> as well.
-
-The time stamp of the moment of deletion is stored as value.  When the same
-message is deleted more than once, the first time stamp will stay.
-
-I<Example:> 
-
- $message->delete;
- $message->deleted(1);  # exactly the same
- delete $message;
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -589,19 +525,7 @@ $obj-E<gt>B<deleted>([BOOLEAN])
 
 =over 4
 
-Set the delete flag for this message.  Without argument, the method
-returns the same as L<isDeleted()|Mail::Box::Message/"Flags">, which is prefered.  When a true
-value is given, L<delete()|Mail::Box::Message/"Flags"> is called.
-
-I<Example:> 
-
- $message->deleted(1);          # delete
- $message->delete;              # delete (prefered)
-
- $message->deleted(0);          # undelete
-
- if($message->deleted) {...}    # check
- if($message->isDeleted) {...}  # check (prefered)
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -609,16 +533,7 @@ $obj-E<gt>B<isDeleted>
 
 =over 4
 
-Returns the moment (as the time function returns) when the message was
-flagged for deletion, or C<undef> when the message is not deleted.
-
-I<Example:> 
-
- next if $message->isDeleted;
-
- if(my $when = $message->isDeleted) {
-    print scalar localtime $when;
- }
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -630,7 +545,7 @@ See L<Mail::Message/"Flags">
 
 =back
 
-$obj-E<gt>B<label>(LABEL [,VALUE [LABEL, VALUE] ])
+$obj-E<gt>B<label>(LABEL|PAIRS)
 
 =over 4
 
@@ -705,6 +620,54 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 
 =back
 
+=head2 The message
+
+
+$obj-E<gt>B<copyTo>(FOLDER)
+
+=over 4
+
+Copy the message to the indicated opened FOLDER, without deleting the
+original.  The coerced message (the copy in the desitnation folder) is
+returned.
+
+I<Example:> 
+
+ my $draft = $mgr->open(folder => 'Draft');
+ $message->copyTo($draft);
+
+=back
+
+$obj-E<gt>B<folder>([FOLDER])
+
+=over 4
+
+In with folder did we detect this message/dummy?  This is a reference
+to the folder-object.
+
+=back
+
+$obj-E<gt>B<moveTo>(FOLDER)
+
+=over 4
+
+Move the message from this folder to the FOLDER specified.  This will
+create a copy using L<clone()|Mail::Message/"Constructors"> first, and flag this original message
+to be deleted.  So until the source folder is closed, two copies of
+the message stay in memory.  The newly created message (part of the
+destination folder) is returned.
+
+=back
+
+$obj-E<gt>B<seqnr>([INTEGER])
+
+=over 4
+
+Get the number of this message is the current folder.  It starts counting
+from zero.  Do not change the number.
+
+=back
+
 =head2 Internals
 
 
@@ -713,7 +676,7 @@ $obj-E<gt>B<diskDelete>
 =over 4
 
 Remove a message from disk.  This is not from the folder, but everything
-else, like parts of the message which are stored externally from the
+else, like parts of the message which are stored outside from the
 folder.
 
 =back
@@ -989,7 +952,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

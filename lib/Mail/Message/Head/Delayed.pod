@@ -169,7 +169,7 @@ $obj-E<gt>B<guessTimeStamp>
 
 =over 4
 
-Make a guess about when the message was origanally posted.
+Make a guess about when the message was originally posted.
 On a delayed head, this returns C<undef>.
 For messages in directory or network organized folders,
 L<Mail::Message::timestamp()|Mail::Message/"The header"> usually will give a figure without much cost.
@@ -398,7 +398,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -28,7 +28,7 @@ verious asynchronous actions.  The main document describing IMAP is
 rfc3501 (which obsoleted the original specification of protocol 4r1
 in rfc2060 in March 2003).
 
-This package, as part of Mail::Box, does not implement the actual
+This package, as part of MailBox, does not implement the actual
 protocol itself but uses Mail::IMAPClient to do the work.  The task
 for this package is to hide as many differences between that module's
 interface and the common L<Mail::Box|Mail::Box> folder types.  Multiple
@@ -59,39 +59,62 @@ Create the IMAP connection to the server.  IMAP servers can handle
 multiple folders for a single user, which means that connections
 may get shared.  This is sharing is hidden for the user.
 
- Option        Defined in       Default       
- authenticate                   C<'AUTO'>     
- executable    L<Mail::Transport>  C<undef>      
- hostname      L<Mail::Transport>  C<'localhost'>
- interval      L<Mail::Transport>  C<30>         
- log           L<Mail::Reporter>  C<'WARNINGS'> 
- password      L<Mail::Transport>  undef         
- port          L<Mail::Transport>  143           
- proxy         L<Mail::Transport>  undef         
- retry         L<Mail::Transport>  <false>       
- timeout       L<Mail::Transport>  C<120>        
- trace         L<Mail::Reporter>  C<'WARNINGS'> 
- username      L<Mail::Transport>  undef         
- via           L<Mail::Transport>  C<'imap'>     
+When an C<imap_client> is specified, then the options C<hostname>,
+C<port>, C<username>, and C<password> are extracted from it.
 
-. authenticate 'PLAIN'|'CRAM-MD5'|'NTLM'|'AUTO'|CODE
+ Option        Defined in       Default                             
+ authenticate                   C<'AUTO'>                           
+ domain                         <server_name>                       
+ executable    L<Mail::Transport>  C<undef>                            
+ hostname      L<Mail::Transport>  C<'localhost'>                      
+ imap_client                    L<Mail::IMAPClient|Mail::IMAPClient>
+ interval      L<Mail::Transport>  C<30>                               
+ log           L<Mail::Reporter>  C<'WARNINGS'>                       
+ password      L<Mail::Transport>  undef                               
+ port          L<Mail::Transport>  143                                 
+ proxy         L<Mail::Transport>  undef                               
+ retry         L<Mail::Transport>  <false>                             
+ timeout       L<Mail::Transport>  C<120>                              
+ trace         L<Mail::Reporter>  C<'WARNINGS'>                       
+ username      L<Mail::Transport>  undef                               
+ via           L<Mail::Transport>  C<'imap'>                           
+
+. authenticate TYPE|ARRAY-OF-TYPES
 
 =over 4
 
-Authenthication method.  C<AUTO> will try all known methods.
-The NTLM authentication requires Authen::NTLM to be installed.  If this
-module is not installed, it will be skipped by AUTO.
+Authenthication method to L<login()|Mail::Transport::IMAP4/"Protocol [internals]">, which will be passed to
+L<Mail::IMAPClient> method authenticate().  See the latter method for
+the available types.
 
-You can also specify your own mechan$^O eq 'MSWin32' ? "\n" : ism as CODE reference.  The
-Mail::IMAPClient documentation refers to this code as I<Authcallback>.
-In case you have your own implementation, please consider to contribute
-it to Mail::Box.
+=back
+
+. domain WINDOWS_DOMAIN
+
+=over 4
+
+Used for NTLM authentication.
 
 =back
 
 . executable FILENAME
 
 . hostname HOSTNAME|ARRAY-OF-HOSTNAMES
+
+. imap_client OBJECT|CLASS
+
+=over 4
+
+When an OBJECT is supplied, that client will be used for the implementation
+of the IMAP4 protocol. Information about server and such are extracted from
+the OBJECT to have the accessors to produce correct results. The OBJECT
+shall be a L<Mail::IMAPClient|Mail::IMAPClient>.
+
+When a CLASS is given, an object of that type is created for you.  The created
+object can be retreived via L<imapClient()|Mail::Transport::IMAP4/"Protocol [internals]">, and than configured as
+defined by L<Mail::IMAPClient|Mail::IMAPClient>.
+
+=back
 
 . interval SECONDS
 
@@ -153,91 +176,154 @@ See L<Mail::Transport/"Server connection">
 
 =back
 
-=head2 Exchanging Information
+=head2 Attributes
 
 
-$obj-E<gt>B<deleteFetched>
-
-=over 4
-
-Mark all messages that have been fetched with message() for deletion.  See
-fetched().
-
-=back
-
-$obj-E<gt>B<deleted>(BOOLEAN, ID's)
+$obj-E<gt>B<authentication>(['AUTO'|TYPE|LIST-OF-TYPES])
 
 =over 4
 
-Either mark the specified message(s) to be deleted on the remote server or
-unmark them for deletion (if the first parameter is false).  Deletion of
-messages will take place B<only> when the connection is specifically
-disconnected or the last reference to the object goes out of scope.
+Returned is a list of pairs (ref arrays) each describing one possible
+way to contact the server. Each pair contains a mechanism name and
+a challange callback (which may be C<undef>).
 
-=back
+The settings are used by L<login()|Mail::Transport::IMAP4/"Protocol [internals]"> to get server access.  The initial
+value origins from L<new(authenticate)|Mail::Transport::IMAP4/"METHODS">, but may be changed later.
 
-$obj-E<gt>B<disconnect>
+Available basic TYPES are C<CRAM-MD5> and C<PLAIN>.  The latter is sending
+username and password in plain text, and is therefore tried as last
+resort.
 
-=over 4
+The C<NTLM> authentication requires Authen::NTLM to be installed.  Other
+methods may be added later.  Besides, you may also specify a CODE
+reference which implements some authentication.
 
-Break contact with the server, if that (still) exists.  Returns true if
-successful.  Please note that even if the disconnect was not successful,
-all knowledge of messages etc. will be removed from the object: the object
-basically has reverted to the state in which it was before anything was done
-with the mail box.
+When C<AUTO> is given, then C<CRAM-MD5>, C<NTLM> and C<PLAIN> are tried,
+in that specific order.  When the Authen::NTLM is not installed it
+will silently be skipped.  Be warned that, because of C<PLAIN>, erroneous
+username/password combinations will be passed readible as last attempt!
 
-=back
-
-$obj-E<gt>B<fetched>
-
-=over 4
-
-Returns a reference to a list of ID's that have been fetched using the
-message() method.  This can be used to update a database of messages that
-were fetched (but maybe not yet deleted) from the mailbox.
-
-Please note that if the IMAP4 server did not support the UIDL command, this
-method will always return undef because it is not possibly to reliably
-identify messages between sessions (other than looking at the contents of
-the messages themselves).
-
-See also deleteFetched().
-
-=back
-
-$obj-E<gt>B<folderSize>
-
-=over 4
-
-Returns the total number of octets used by the mailbox on the remote server.
-
-=back
-
-$obj-E<gt>B<header>(ID, [BODYLINES])
-
-=over 4
-
-Returns a reference to an array which contains the header of the message
-with the specified ID.  C<undef> is returned if something has gone wrong.
-
-The optional integer BODYLINES specifies the number of lines from the body
-which should be added, by default none.
+An ARRAY as TYPE can be used to specify both mechanism as callback.  When
+no array is used, callback of the pair is set to C<undef>.  See
+L<Mail::IMAPCleint/authenticate> for the gory details.
 
 I<Example:> 
 
- my $ref_lines = $imap4->header($uidl);
- print @$ref_lines;
+ $transporter->authentication('CRAM-MD5', [MY_AUTH => \&c], 'PLAIN');
+
+ foreach my $pair ($transporter->authentication)
+ {   my ($mechanism, $challange) = @$pair;
+     ...
+ }
 
 =back
 
-$obj-E<gt>B<id2n>(ID)
+$obj-E<gt>B<domain>([DOMAIN])
 
 =over 4
 
-Translates the unique ID of a message into a sequence number which
-represents the message as long a this connection to the IMAP4 server
-exists.  When the message has been deleted for some reason, C<undef>
-is returned.
+Used in NTLM authentication to define the Windows domain which is
+accessed.  Initially set by L<new(domain)|Mail::Transport::IMAP4/"METHODS"> and defaults to the
+server's name.
+
+=back
+
+=head2 Exchanging Information
+
+
+=head2 Protocol [internals]
+
+The follow methods handle protocol internals, and should not be used
+by a normal user of this class.
+
+$obj-E<gt>B<appendMessage>(MESSAGE, FOLDERNAME)
+
+=over 4
+
+Write the message to the server.
+
+=back
+
+$obj-E<gt>B<createImapClient>(CLASS)
+
+=over 4
+
+Create an object of CLASS, which extends L<Mail::IMAPClient>.
+
+=back
+
+$obj-E<gt>B<destroyDeleted>
+
+=over 4
+
+Command the server to delete for real all messages which are flagged to
+be deleted.
+
+=back
+
+$obj-E<gt>B<fetch>(ARRAY-OF-MESSAGES, INFO)
+
+=over 4
+
+Get some INFO about the MESSAGES from the server.  The specified messages
+shall extend L<Mail::Box::Net::Message|Mail::Box::Net::Message>, Returned is a list
+of hashes, each info about one result.  The contents of the hash
+differs per INFO, but at least a C<message> field will be present, to
+relate to the message in question.
+
+The right folder should be selected before this method is called. When
+the connection was lost, C<undef> is returned.  Without any
+messages, and empty array is returned.  The retrieval is done by
+L<Mail::IMAPClient|Mail::IMAPClient> method C<fetch()>, which is then
+parsed.
+
+=back
+
+$obj-E<gt>B<folder>([FOLDERNAME])
+
+=over 4
+
+Be sure that the specific FOLDER is the current one selected.
+If the folder is already selected, no IMAP traffic will be produced.
+The imap connection is returned on succes
+
+=back
+
+$obj-E<gt>B<folders>([FOLDERNAME])
+
+=over 4
+
+Returns a list of folder names which are sub-folders of the specified
+FOLDERNAME.  Without FOLDERNAME, the top-level foldernames are returned.
+
+=back
+
+$obj-E<gt>B<getFields>(UID, NAME, [NAME, ...])
+
+=over 4
+
+Get the records with the specified NAMES from the header.  The header
+fields are returned as list of L<Mail::Message::Field::Fast|Mail::Message::Field::Fast> objects.
+When the name is C<ALL>, the whole header is returned.
+
+=back
+
+$obj-E<gt>B<getFlags>(FOLDER, ID)
+
+=over 4
+
+Returns the values of all flags which are related to the message with the
+specified ID.  These flags are translated into the names which are
+standard for the MailBox suite.  Names which do not appear will also provide
+a value in the return list: the negative for the value is it was present.
+
+=back
+
+$obj-E<gt>B<getMessageAsString>(MESSAGE|UID)
+
+=over 4
+
+Returns the whole text of the specified message: the head and the body.
 
 =back
 
@@ -245,74 +331,31 @@ $obj-E<gt>B<ids>
 
 =over 4
 
-Returns a list (in list context) or a reference to a list (in scalar context)
-of all ID's which are known by the server on this moment.
+Returns a list of UIDs which are defined by the IMAP server.
 
 =back
 
-$obj-E<gt>B<message>(ID)
+$obj-E<gt>B<imapClient>
 
 =over 4
 
-Returns a reference to an array which contains the lines of the
-message with the specified ID.  Returns C<undef> if something has gone
-wrong.
+Returns the object which implements the IMAP4 protocol, an instance
+of a Mail::IMAPClient, which is logged-in and ready to use.
 
-I<Example:> 
-
- my $ref_lines = $imap->message($uidl);
- print @$ref_lines;
+If the contact to the server was still present or could be established,
+an Mail::IMAPClient object is returned.  Else, C<undef> is returned and
+no further actions should be tried on the object.
 
 =back
 
-$obj-E<gt>B<messageSize>(ID)
+$obj-E<gt>B<labelsToFlags>(HASH|PAIRS)
+
+Mail::Transport::IMAP4-E<gt>B<labelsToFlags>(HASH|PAIRS)
 
 =over 4
 
-Returns the size of the message which is indicated by the ID, in octets.
-If the message has been deleted on the remote server, this will return
-C<undef>.
-
-=back
-
-$obj-E<gt>B<messages>
-
-=over 4
-
-Returns (in scalar context only) the number of messages that are known
-to exist in the mailbox.
-
-=back
-
-=head2 Protocol [internals]
-
-The follow methods handle protocol internals, and should not be used
-by a normal user of this class.
-
-$obj-E<gt>B<askSubfolderSeparator>
-
-=over 4
-
-Returns the separator which is used on the server side to indicate
-sub-folders.
-
-=back
-
-$obj-E<gt>B<askSubfoldersOf>(NAME)
-
-=over 4
-
-Returns a list of subfolders for this server.
-
-=back
-
-$obj-E<gt>B<getFlags>(ID)
-
-=over 4
-
-Returns the values of all flags which are related to the message with the
-specified ID.  These flags are translated into the names which are
-standard for the Mail::Box suite
+Convert MailBox labels into IMAP flags.  Returned is a string.  Unsupported
+labels are ignored.
 
 =back
 
@@ -324,48 +367,16 @@ Establish a new connection to the IMAP4 server, using username and password.
 
 =back
 
-$obj-E<gt>B<send>(SOCKET, data)
-
-=over 4
-
-Send data to the indicated socket and return the first line read from
-that socket.  Logs an error if either writing to or reading from socket failed.
-
-This method does B<not> attempt to reconnect or anything: if reading or
-writing the socket fails, something is very definitely wrong.
-
-=back
-
-$obj-E<gt>B<sendList>(SOCKET, COMMAND)
-
-=over 4
-
-Sends the indicated COMMAND to the specified socket, and retrieves the
-response.  It returns a reference to an array with all the lines that
-were reveived after the first C<+OK> line and before the end-of-message
-delimiter (a single dot on a line).  Returns C<undef>
-whenever something has gone wrong.
-
-=back
-
 $obj-E<gt>B<setFlags>(ID, LABEL, VALUE, [LABEL, VALUE], ...)
 
 =over 4
 
-=back
+Change the flags on the message which are represented by the label.  The
+value which can be related to the label will be lost, because IMAP only
+defines a boolean value, where MailBox labels can contain strings.
 
-$obj-E<gt>B<socket>
-
-=over 4
-
-Returns a connection to the IMAP4 server.  If there was no connection yet,
-it will be created transparently.  If the connection with the IMAP4 server
-was lost, it will be reconnected and the assures that internal
-state information (STAT and UID) is up-to-date in the object.
-
-If the contact to the server was still present, or could be established,
-an IO::Socket::INET object is returned.  Else, C<undef> is returned and
-no further actions should be tried on the object.
+Returned is a list of LABEL=>VALUE pairs which could not be send to
+the IMAP server.  These values may be cached in a different way.
 
 =back
 
@@ -481,7 +492,7 @@ $obj-E<gt>B<DESTROY>
 
 =over 4
 
-The connection is cleanly terminated when the program is cleanly
+The connection is cleanly terminated when the program is
 terminated.
 
 =back
@@ -501,28 +512,16 @@ See L<Mail::Reporter/"Cleanup">
 I<Error:> Cannot connect to $host:$port for IMAP4: $!
 
 
-I<Error:> Cannot get the messages of imap4 via messages()
+I<Error:> IMAP cannot connect to $host: $@
 
-It is not possible to retreive all messages on a remote IMAP4 folder
-at once: each shall be taken separately.  The IMAP4 folder will hide this
-for you.
 
-I<Error:> Cannot re-connect reliably to server which doesn't support UID.
+I<Notice:> IMAP4 authenication $mechanism to $host:$port successful
 
-The connection to the remote IMAP4 was lost, and cannot be re-established
-because the server's protocol implementation lacks the necessary information.
-
-I<Error:> Cannot read IMAP4 from socket: $!
-
-It is not possible to read the success status of the previously given IMAP4
-command.  Connection lost?
-
-I<Error:> Cannot write IMAP4 to socket: $@
-
-It is not possible to send a protocol command to the IMAP4 server.  Connection
-lost?
 
 I<Error:> IMAP4 requires a username and password
+
+
+I<Error:> IMAP4 username $username requires a password
 
 
 I<Error:> Package $package does not implement $method.
@@ -550,7 +549,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

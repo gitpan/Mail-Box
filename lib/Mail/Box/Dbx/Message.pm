@@ -4,11 +4,10 @@ use warnings;
 
 package Mail::Box::Dbx::Message;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Box::File::Message';
 
 use Carp;
-use IO::File;
 use File::Copy qw/move/;
 
 use Mail::Message::Body::String;

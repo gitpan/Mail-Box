@@ -84,6 +84,7 @@ Create a message part.
  body        L<Mail::Message>  undef                                                         
  body_type   L<Mail::Message>  L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>      
  container                    <required>                                                    
+ deleted     L<Mail::Message>  <false>                                                       
  field_type  L<Mail::Message>  undef                                                         
  head        L<Mail::Message>  <empty header>                                                
  head_type   L<Mail::Message>  L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>
@@ -107,6 +108,8 @@ is a member of.  That object may be a L<Mail::Message::Body::Multipart|Mail::Mes
 or a L<Mail::Message::Body::Nested|Mail::Message::Body::Nested>.
 
 =back
+
+. deleted BOOLEAN
 
 . field_type CLASS
 
@@ -517,15 +520,7 @@ $obj-E<gt>B<delete>
 
 =over 4
 
-Do not print or send this part of the message anymore.  See L<deleted()|Mail::Message::Part/"Flags">.
-The time stamp of the moment of deletion is stored as value.  When the same
-message is deleted more than once, the first time stamp will stay.
-
-I<Example:> 
-
- $message->part(2)->delete;
- $part->deleted(1);
- delete $part;
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -533,9 +528,7 @@ $obj-E<gt>B<deleted>([BOOLEAN])
 
 =over 4
 
-Set the delete flag for this part of the multipart message body.  Without
-argument, the method returns the same is the L<isDeleted()|Mail::Message::Part/"Flags"> method, which is
-prefered.  When a true value is given, L<delete()|Mail::Message::Part/"Flags"> is called.
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -543,16 +536,7 @@ $obj-E<gt>B<isDeleted>
 
 =over 4
 
-Returns the moment (as the time function returns) when the message part was
-flagged for deletion, or C<undef> when the part is not deleted.
-
-I<Example:> 
-
- next if $part->isDeleted;
-
- if(my $when = $part->isDeleted) {
-    print scalar localtime $when;
- }
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -564,7 +548,7 @@ See L<Mail::Message/"Flags">
 
 =back
 
-$obj-E<gt>B<label>(LABEL [,VALUE [LABEL, VALUE] ])
+$obj-E<gt>B<label>(LABEL|PAIRS)
 
 =over 4
 
@@ -837,7 +821,7 @@ $obj-E<gt>B<destruct>
 =over 4
 
 Message parts can not be destructed per part: only whole messages can
-be forcefully freed from memory.  Of course, you can L<delete()|Mail::Message::Part/"Flags"> separate
+be forcefully freed from memory.  Of course, you can L<delete()|Mail::Message/"Flags"> separate
 parts, which only sets a flag not to write a part again.  Furthermore,
 you may cosider L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> to get rit of deleted parts.
 
@@ -886,7 +870,7 @@ of the package.
 I<Error:> You cannot destruct message parts, only whole messages
 
 Message parts can not be destructed per part: only whole messages can
-be forcefully freed from memory. Consider L<delete()|Mail::Message::Part/"Flags"> or L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message">.
+be forcefully freed from memory. Consider L<delete()|Mail::Message/"Flags"> or L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message">.
 
 I<Error:> forwardAttach requires a preamble object
 
@@ -911,7 +895,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -3,14 +3,13 @@ use warnings;
 
 package Mail::Message::Body::File;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
 use Mail::Message;
 
 use Carp;
-use IO::File;
 use POSIX 'tmpnam';
 use File::Copy;
 
@@ -198,7 +197,10 @@ sub lines()
 
 #------------------------------------------
 
-sub file() { IO::File->new(shift->tempFilename, 'r') }
+sub file()
+{   open my $tmp, '<', shift->tempFilename;
+    $tmp;
+}
 
 #------------------------------------------
 

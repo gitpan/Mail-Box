@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Box::Message::Destructed;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Box::Message';
 
 use Carp;
@@ -52,7 +52,7 @@ sub coerce($)
       return ();
    }
 
-   $message->delete;
+   $message->label(deleted => 1);
    $message->body(undef);
    $message->head(undef);
 
@@ -62,13 +62,30 @@ sub coerce($)
 #-------------------------------------------
 
 
-sub deleted(;$)
+sub label($;@)
 {  my $self = shift;
 
-   $self->log(ERROR => "Destructed messages can not be undeleted")
-      if @_ && not $_[0];
+   if(@_==1)
+   {   my $label = shift;
+       return 1 if $label eq 'deleted';
+       $self->log(ERROR => "Destructed message has no labels except 'deleted', requested is $label");
+       return 0;
+   }
 
-   $self->delete;
+   my %flags = @_;
+   unless(keys %flags==1 && exists $flags{deleted})
+   {   $self->log(ERROR => "Destructed message has no labels except 'deleted', trying to set @{[ keys %flags ]}");
+       return;
+   }
+
+   $self->log(ERROR => "Destructed messages can not be undeleted")
+      unless $flags{deleted};
+
+   1;
 }
+
+#-------------------------------------------
+
+sub labels() { wantarray ? ('deleted') : { deleted => 1 } }
 
 1;

@@ -1,7 +1,7 @@
 
 package Mail::Box::POP3;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Box::Net';
 
 use strict;
@@ -91,9 +91,10 @@ sub close()
 
 sub delete()
 {   my $self = shift;
-    $self->log(WARNING => "A POP3 folder cannot be deleted: it will be emptied.");
+    $self->log(NOTICE =>
+        "A POP3 folder cannot be deleted: it will be emptied.");
 
-    $_->deleted(1) foreach $self->messages;
+    $_->label(deleted => 1) foreach $self->messages;
     $self;
 }
 

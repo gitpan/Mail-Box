@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::Message;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Message';
 
 use Date::Parse;
@@ -14,8 +14,6 @@ use Scalar::Util 'weaken';
 sub init($)
 {   my ($self, $args) = @_;
     $self->SUPER::init($args);
-
-    $self->{MBM_deleted}    = $args->{deleted}   || 0;
 
     $self->{MBM_body_type}  = $args->{body_type}
         if exists $args->{body_type};
@@ -36,9 +34,7 @@ sub coerce($)
     return bless $message, $class
         if $message->isa(__PACKAGE__);
 
-    my $coerced = $class->SUPER::coerce($message);
-    $coerced->{MBM_deleted} = 0;
-    $coerced;
+    $class->SUPER::coerce($message);
 }
 
 #-------------------------------------------
@@ -103,30 +99,9 @@ sub copyTo($)
 sub moveTo($)
 {   my ($self, $folder) = @_;
     my $added = $folder->addMessage($self->clone);
-    $self->delete;
+    $self->label(deleted => 1);
     $added;
 }
-
-#-------------------------------------------
-
-
-sub delete() { shift->{MBM_deleted} ||= time }
-
-#-------------------------------------------
-
-
-sub deleted(;$)
-{   my $self = shift;
-
-      ! @_      ? $self->isDeleted   # compat 2.036
-    : ! (shift) ? ($self->{MBM_deleted} = undef)
-    :             $self->delete;
-}
-
-#-------------------------------------------
-
-
-sub isDeleted() { shift->{MBM_deleted} }
 
 #-------------------------------------------
 

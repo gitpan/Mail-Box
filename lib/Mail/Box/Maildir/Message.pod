@@ -433,53 +433,6 @@ See L<Mail::Message/"The body">
 
 =back
 
-=head2 The message
-
-
-$obj-E<gt>B<copyTo>(FOLDER)
-
-=over 4
-
-See L<Mail::Box::Message/"The message">
-
-=back
-
-$obj-E<gt>B<filename>([FILENAME])
-
-=over 4
-
-Returns the current filename for this message.  If the FILENAME argument
-is specified, a new filename will be set.  For maildir messages this
-means that modifications are immediately performed: there will be
-a rename (move) from the old name to the new name.  Labels may change
-within in the message object as well.
-
-=back
-
-$obj-E<gt>B<folder>([FOLDER])
-
-=over 4
-
-See L<Mail::Box::Message/"The message">
-
-=back
-
-$obj-E<gt>B<moveTo>(FOLDER)
-
-=over 4
-
-See L<Mail::Box::Message/"The message">
-
-=back
-
-$obj-E<gt>B<seqnr>([INTEGER])
-
-=over 4
-
-See L<Mail::Box::Message/"The message">
-
-=back
-
 =head2 Flags
 
 
@@ -487,7 +440,7 @@ $obj-E<gt>B<delete>
 
 =over 4
 
-See L<Mail::Box::Message/"Flags">
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -495,7 +448,7 @@ $obj-E<gt>B<deleted>([BOOLEAN])
 
 =over 4
 
-See L<Mail::Box::Message/"Flags">
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -503,7 +456,7 @@ $obj-E<gt>B<isDeleted>
 
 =over 4
 
-See L<Mail::Box::Message/"Flags">
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -515,7 +468,7 @@ See L<Mail::Message/"Flags">
 
 =back
 
-$obj-E<gt>B<label>(LABEL [,VALUE [LABEL, VALUE] ])
+$obj-E<gt>B<label>(LABEL|PAIRS)
 
 =over 4
 
@@ -587,6 +540,53 @@ $obj-E<gt>B<string>
 =over 4
 
 See L<Mail::Message::Construct::Text/"The whole message as text">
+
+=back
+
+=head2 The message
+
+
+$obj-E<gt>B<copyTo>(FOLDER)
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<filename>([FILENAME])
+
+=over 4
+
+Returns the current filename for this message.  If the FILENAME argument
+is specified, a new filename will be set.  For maildir messages this
+means that modifications are immediately performed: there will be
+a rename (move) from the old name to the new name.  Labels may change
+within in the message object as well.
+
+=back
+
+$obj-E<gt>B<folder>([FOLDER])
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<moveTo>(FOLDER)
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<seqnr>([INTEGER])
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
 
 =back
 
@@ -988,7 +988,7 @@ be in alphabetic order) mean
  S      => seen
  T      => deleted  (tagged for deletion)
 
-The flags will immediately change when L<label()|Mail::Message/"Flags"> or L<delete()|Mail::Box::Message/"Flags"> is used,
+The flags will immediately change when L<label()|Mail::Message/"Flags"> or L<delete()|Mail::Message/"Flags"> is used,
 which differs from other message implementations: maildir is stateless,
 and should not break when applications crash.
 
@@ -1002,7 +1002,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -62,6 +62,7 @@ a real message with the specified MESSAGE-ID.
  Option      Defined in       Default                                                 
  body        L<Mail::Message>  <not used>                                              
  body_type   L<Mail::Message>  L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>
+ deleted     L<Mail::Message>  <false>                                                 
  field_type  L<Mail::Message>  <not used>                                              
  head        L<Mail::Message>  <not used>                                              
  head_type   L<Mail::Message>  <not used>                                              
@@ -75,6 +76,8 @@ a real message with the specified MESSAGE-ID.
 . body OBJECT
 
 . body_type CLASS
+
+. deleted BOOLEAN
 
 . field_type CLASS
 
@@ -476,6 +479,22 @@ See L<Mail::Message/"The body">
 =head2 Flags
 
 
+$obj-E<gt>B<delete>
+
+=over 4
+
+See L<Mail::Message/"Flags">
+
+=back
+
+$obj-E<gt>B<deleted>([BOOLEAN])
+
+=over 4
+
+See L<Mail::Message/"Flags">
+
+=back
+
 $obj-E<gt>B<isDeleted>
 
 =over 4
@@ -492,7 +511,7 @@ See L<Mail::Message/"Flags">
 
 =back
 
-$obj-E<gt>B<label>(LABEL [,VALUE [LABEL, VALUE] ])
+$obj-E<gt>B<label>(LABEL|PAIRS)
 
 =over 4
 
@@ -844,7 +863,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

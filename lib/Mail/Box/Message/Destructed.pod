@@ -75,7 +75,7 @@ done by calling L<Mail::Box::Message::destruct()|Mail::Box::Message/"Cleanup">.
  Option      Defined in       Default                                                       
  body        L<Mail::Message>  undef                                                         
  body_type   L<Mail::Box::Message>  <from folder>                                                 
- deleted     L<Mail::Box::Message>  <false>                                                       
+ deleted     L<Mail::Message>  <false>                                                       
  field_type  L<Mail::Message>  undef                                                         
  folder      L<Mail::Box::Message>  <required>                                                    
  head        L<Mail::Message>  undef                                                         
@@ -496,41 +496,6 @@ See L<Mail::Message/"The body">
 
 =back
 
-=head2 The message
-
-
-$obj-E<gt>B<copyTo>(FOLDER)
-
-=over 4
-
-See L<Mail::Box::Message/"The message">
-
-=back
-
-$obj-E<gt>B<folder>([FOLDER])
-
-=over 4
-
-See L<Mail::Box::Message/"The message">
-
-=back
-
-$obj-E<gt>B<moveTo>(FOLDER)
-
-=over 4
-
-See L<Mail::Box::Message/"The message">
-
-=back
-
-$obj-E<gt>B<seqnr>([INTEGER])
-
-=over 4
-
-See L<Mail::Box::Message/"The message">
-
-=back
-
 =head2 Flags
 
 
@@ -538,7 +503,7 @@ $obj-E<gt>B<delete>
 
 =over 4
 
-See L<Mail::Box::Message/"Flags">
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -546,7 +511,7 @@ $obj-E<gt>B<deleted>([BOOLEAN])
 
 =over 4
 
-It is possible to delete a destructed message, but not to undelete it.
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -554,7 +519,7 @@ $obj-E<gt>B<isDeleted>
 
 =over 4
 
-See L<Mail::Box::Message/"Flags">
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -566,11 +531,11 @@ See L<Mail::Message/"Flags">
 
 =back
 
-$obj-E<gt>B<label>(LABEL [,VALUE [LABEL, VALUE] ])
+$obj-E<gt>B<label>(LABEL|PAIRS)
 
 =over 4
 
-See L<Mail::Message/"Flags">
+It is possible to delete a destructed message, but not to undelete it.
 
 =back
 
@@ -638,6 +603,41 @@ $obj-E<gt>B<string>
 =over 4
 
 See L<Mail::Message::Construct::Text/"The whole message as text">
+
+=back
+
+=head2 The message
+
+
+$obj-E<gt>B<copyTo>(FOLDER)
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<folder>([FOLDER])
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<moveTo>(FOLDER)
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<seqnr>([INTEGER])
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
 
 =back
 
@@ -878,6 +878,9 @@ I<Error:> Cannot include reply source as $include.
 Unknown alternative for the C<include> option of L<reply()|Mail::Message::Construct::Reply/"Constructing a message">.  Valid
 choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
+I<Error:> Destructed message has no labels except 'deleted'
+
+
 I<Error:> Destructed messages can not be undeleted
 
 Once a message is destructed, it can not be revived.  Destruction is an
@@ -938,7 +941,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

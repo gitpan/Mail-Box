@@ -146,6 +146,7 @@ Mail::Message-E<gt>B<new>(OPTIONS)
  Option      Defined in       Default                                                       
  body                         undef                                                         
  body_type                    L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>      
+ deleted                      <false>                                                       
  field_type                   undef                                                         
  head                         undef                                                         
  head_type                    L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>
@@ -171,6 +172,14 @@ of Mail::Message::Body.  See also L<body()|Mail::Message/"The body"> and L<store
 =over 4
 
 Default type of body to be created for L<readBody()|Mail::Message/"Internals">.
+
+=back
+
+. deleted BOOLEAN
+
+=over 4
+
+Is the file deleted from the start?
 
 =back
 
@@ -476,6 +485,10 @@ is short (but little less flexibile) for
 
 See examples/send.pl in the distribution of L<Mail::Box|Mail::Box>.
 
+I<Example:> 
+
+ $message->send(via => 'sendmail')
+
 =back
 
 $obj-E<gt>B<size>
@@ -619,7 +632,7 @@ C<received> lines.  For MBox-like folders you may get the date from
 the from-line as well.
 
 This method may return C<undef> if the header is not parsed or only
-partially known.  If you require a time, then use the timestamp()
+partially known.  If you require a time, then use the L<timestamp()|Mail::Message/"The header">
 method, described below.
 
 I<Example:> using guessTimestamp() to get a transmission date
@@ -711,8 +724,15 @@ $obj-E<gt>B<timestamp>
 
 =over 4
 
-Get a timestamp, doesn't matter how much work it is.  If it is impossible
-to get a time from the header-lines, the current time-of-living is taken.
+Get a timestamp for the message, doesn't matter how much work it is.
+In these days, the timestamp as supplied by the message (in the C<Date>
+field) is not trustable at all: many spammers produce illegal or
+unreal dates to influence their location in the displayed folder.
+
+To start, the received headers are tried for a date (see
+L<Mail::Message::Head::Complete::recvstamp()|Mail::Message::Head::Complete/"About the body">) and only then the C<Date>
+field.  When no date was found, C<undef> will be returned.  This may be
+very usual, because MailBox message constructors add a Date automatically.
 
 =back
 
@@ -852,7 +872,8 @@ $obj-E<gt>B<parts>(['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER])
 Returns the I<parts> of this message. Usually, the term I<part> is used
 with I<multipart> messages: messages which are encapsulated in the body
 of a message.  To abstract this concept: this method will return you
-all header-body combinations which are stored within this message.
+all header-body combinations which are stored within this message
+B<except> the multipart and message/rfc822 wrappers.
 Objects returned are C<Mail::Message>'s and L<Mail::Message::Part|Mail::Message::Part>'s.
 
 The option default to 'ALL', which will return the message itself for
@@ -880,14 +901,66 @@ I<Example:>
 =head2 Flags
 
 
+$obj-E<gt>B<delete>
+
+=over 4
+
+Flag the message to be deleted, which is a shortcut for
+ $msg->label(deleted => time);
+The real deletion only takes place on a synchronization of the folder.
+See L<deleted()|Mail::Message/"Flags"> as well.
+
+The time stamp of the moment of deletion is stored as value, but that
+is not always preserved in the folder (depends on the implementation).
+When the same message is deleted more than once, the first time stamp
+will stay.
+
+I<Example:> 
+
+ $message->delete;
+ $message->deleted(1);  # exactly the same
+ $message->label(deleted => 1);
+ delete $message;
+
+=back
+
+$obj-E<gt>B<deleted>([BOOLEAN])
+
+=over 4
+
+Set the delete flag for this message.  Without argument, the method
+returns the same as L<isDeleted()|Mail::Message/"Flags">, which is prefered.  When a true
+value is given, L<delete()|Mail::Message/"Flags"> is called.
+
+I<Example:> 
+
+ $message->deleted(1);          # delete
+ $message->delete;              # delete (prefered)
+
+ $message->deleted(0);          # undelete
+
+ if($message->deleted) {...}    # check
+ if($message->isDeleted) {...}  # check (prefered)
+
+=back
+
 $obj-E<gt>B<isDeleted>
 
 =over 4
 
-A plain C<Mail::Message> is never deleted, but messages in folders and
-message parts (both extensions of this message base class) can be.  For
-simplicity, this method will always return C<false>: no we are not
-deleted.
+Short-cut for
+ $msg->label('deleted')
+
+For some folder types, you will get the time of deletion in return.  This
+depends on the implementation.
+
+I<Example:> 
+
+ next if $message->isDeleted;
+
+ if(my $when = $message->isDeleted) {
+    print scalar localtime $when;
+ }
 
 =back
 
@@ -901,17 +974,16 @@ are changes in header lines, when a new body is set to the message
 
 =back
 
-$obj-E<gt>B<label>(LABEL [,VALUE [LABEL, VALUE] ])
+$obj-E<gt>B<label>(LABEL|PAIRS)
 
 =over 4
 
-Return the value of the LABEL, optionally after setting it to VALUE.  If
-the VALUE is C<undef> then the label is removed.  You may specify a list
-of LABEL-VALUE pairs at once.  In the latter case, the first VALUE is returned.
+Return the value of the LABEL, optionally after setting some values.  In
+case of setting values, you specify key-value PAIRS.
 
 Labels are used to store knowledge about handling of the message within
 the folder.  Flags about whether a message was read, replied to, or
-(in some cases) scheduled for deletion.
+scheduled for deletion.
 
 Some labels are taken from the header's C<Status> and C<X-Status> lines,
 however folder types like MH define a separate label file.
@@ -921,6 +993,8 @@ I<Example:>
  print $message->label('seen');
  if($message->label('seen')) {...};
  $message->label(seen => 1);
+
+ $message->label(deleted => 1);  # same as $message->delete
 
 =back
 
@@ -1420,8 +1494,9 @@ header fields, MH uses a C<.mh-sequences> file, MAILDIR encodes the flags
 in the message's filename, and IMAP has flags as part of the protocol.
 
 Besides, some folder types can store labels with user defined names,
-where other lack that feature.  Read all about the specifics in the
-manual page of the message type you actually have.
+where other lack that feature.  Some folders have case-insensitive
+labels, other don't. Read all about the specifics in the manual page of
+the message type you actually have.
 
 =head3 Predefined labels
 
@@ -1434,12 +1509,13 @@ of messages:
 =item * deleted
 
 This message is flagged to be deleted once the folder closes.  Be very
-careful about the concept of 'delete' in a folder context (yes, also the
-L<Mail::Box::Message::delete()|Mail::Box::Message/"Flags"> and L<Mail::Box::Message::deleted()|Mail::Box::Message/"Flags">
-methods): it is only a flag, and does not involve immediate action!
-This means, for instance, that the memory which is used by Perl to
-store the message is not released immediately (see L<destruct()|Mail::Message/"Cleanup"> if you
-need to).
+careful about the concept of 'delete' in a folder context : it is only a
+flag, and does not involve immediate action!  This means, for instance,
+that the memory which is used by Perl to store the message is not released
+immediately (see L<destruct()|Mail::Message/"Cleanup"> if you need to).
+
+The methods L<delete()|Mail::Message/"Flags">, L<deleted()|Mail::Message/"Flags">, and L<isDeleted()|Mail::Message/"Flags"> are only
+short-cuts for managing the C<delete> label (as of MailBox 2.052).
 
 =item * draft
 
@@ -1509,7 +1585,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

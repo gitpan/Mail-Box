@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Box::Manager;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Reporter';
 
 use Mail::Box;
@@ -31,15 +31,21 @@ sub init($)
 
     # Register all folder-types.  There may be some added later.
 
-    my @types;
+    my @new_types;
     if(exists $args->{folder_types})
-    {   @types = ref $args->{folder_types}[0]
-               ? @{$args->{folder_types}}
-               : $args->{folder_types};
+    {   @new_types = ref $args->{folder_types}[0]
+                   ? @{$args->{folder_types}}
+                   : $args->{folder_types};
+    }
+
+    my @basic_types = reverse @basic_folder_types;
+    if(my $basic = $args->{autodetect})
+    {   my %types = map { ( $_ => 1) } (ref $basic ? @$basic : ($basic));
+        @basic_types = grep { $types{$_->[0]} } @basic_types;
     }
 
     $self->{MBM_folder_types} = [];
-    $self->registerType(@$_) foreach @types, reverse @basic_folder_types;
+    $self->registerType(@$_) foreach @new_types, @basic_types;
 
     $self->{MBM_default_type} = $args->{default_folder_type};
 
@@ -167,7 +173,7 @@ sub open(@)
         foreach (@{$self->{MBM_folder_types}})
         {   (my $abbrev, $class, @defaults) = @$_;
 
-            eval "require $class";
+            eval("require $class");
             next if $@;
 
             if($class->foundIn($name, @defaults, %args))
@@ -381,7 +387,7 @@ sub copyMessage(@)
 
     # hidden option, do not use it: it's designed to optimize moveMessage
     if($options{_delete})
-    {   $_->delete foreach @messages;
+    {   $_->label(deleted => 1) foreach @messages;
     }
 
     @coerced;

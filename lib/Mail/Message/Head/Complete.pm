@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Head::Complete;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Message::Head';
 
 use Mail::Box::Parser;
@@ -403,9 +403,25 @@ sub timestamp() {shift->guessTimestamp || time}
 #------------------------------------------
 
 
+sub recvstamp()
+{   my $self = shift;
+
+    return $self->{MMH_recvstamp} if exists $self->{MMH_recvstamp};
+
+    my $recvd = $self->get('received', 0) or
+        return $self->{MMH_recvstamp} = undef;
+
+    my $stamp = Mail::Message::Field->dateToTimestamp($recvd->comment);
+
+    $self->{MMH_recvstamp} = $stamp > 0 ? $stamp : undef;
+}
+
+#------------------------------------------
+
+
 sub guessTimestamp()
 {   my $self = shift;
-    return $self->{MMH_timestamp} if $self->{MMH_timestamp};
+    return $self->{MMH_timestamp} if exists $self->{MMH_timestamp};
 
     my $stamp;
     if(my $date = $self->get('date'))
@@ -419,7 +435,7 @@ sub guessTimestamp()
         }
     }
 
-    $self->{MBM_timestamp} = $stamp;
+    $self->{MMH_timestamp} = $stamp > 0 ? $stamp : undef;
 }
 
 #------------------------------------------

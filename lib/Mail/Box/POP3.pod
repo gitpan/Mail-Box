@@ -380,6 +380,14 @@ See L<Mail::Box/"The messages">
 
 =back
 
+$obj-E<gt>B<findFirstLabeled>(LABEL, [BOOLEAN, [ARRAY-OF-MSGS]])
+
+=over 4
+
+See L<Mail::Box/"The messages">
+
+=back
+
 $obj-E<gt>B<message>(INDEX [,MESSAGE])
 
 =over 4
@@ -741,7 +749,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Warning:> A POP3 folder cannot be deleted: it will be emptied.
+I<Notice:> A POP3 folder cannot be deleted: it will be emptied.
 
 Each user has only one POP3 folder on a server.  This folder is created and
 deleted by the server's administrator only.  A delete can only remove the
@@ -878,7 +886,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

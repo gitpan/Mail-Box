@@ -1,7 +1,7 @@
 
 package Mail::Box::Search;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Reporter';
 
 use strict;
@@ -32,7 +32,8 @@ sub init($)
     $self->{MBS_deliver}
       = ref $deliver eq 'CODE' ? sub { $deliver->($self, $_[0]) }
       : !defined $deliver      ? undef
-      : $deliver eq 'DELETE'   ? sub {$_[0]->{part}->toplevel->delete(1)}
+      : $deliver eq 'DELETE'
+        ? sub {$_[0]->{part}->toplevel->label(deleted => 1)}
       : $self->log(ERROR => "Don't know how to deliver results in $deliver.");
 
     my $logic               = $args->{logical}  || 'REPLACE';

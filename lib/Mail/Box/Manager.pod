@@ -55,12 +55,25 @@ Mail::Box::Manager-E<gt>B<new>(ARGS)
 =over 4
 
  Option               Defined in       Default                   
+ autodetect                            C<undef>                  
  default_folder_type                   C<'mbox'>                 
  folder_types                          <all standard types>      
  folderdir                             C<[ '.' ]>                
  folderdirs                            <synonym for C<folderdir>>
  log                  L<Mail::Reporter>  C<'WARNINGS'>             
  trace                L<Mail::Reporter>  C<'WARNINGS'>             
+
+. autodetect TYPE|ARRAY-OF-TYPES
+
+=over 4
+
+Select only a subset of the folder types which are implemented by MailBox
+to be detected automatically.  This may improve the auto-detection of
+folder types.  Normally, all folder types will be tried when a folder's
+name is incorrect, but this option limits the types which are checked
+and therefore may respond faster.
+
+=back
 
 . default_folder_type NAME|CLASS
 
@@ -586,8 +599,9 @@ this warning will be produced as well.
 
 The manager tried to open a folder of the specified type.  It may help
 to explicitly state the type of your folder with the C<type> option.
-There will probable be another warning or error message which is related
-to this report, and provides more details.
+There will probably be another warning or error message which is related
+to this report and provides more details about its cause.  You may also
+have a look at L<new(autodetect)|Mail::Box::Manager/"METHODS"> and L<new(folder_types)|Mail::Box::Manager/"METHODS">.
 
 I<Warning:> Folder type $type is unknown, using autodetect.
 
@@ -646,7 +660,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

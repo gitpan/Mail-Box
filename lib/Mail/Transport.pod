@@ -119,7 +119,7 @@ The port number behind which the service is hiding on the remote server.
 
 =over 4
 
-The name of the proxy software (the mail handler).  This must be
+The name of the proxy software (the protocol handler).  This must be
 the name (preferable the absolute path) of your mail delivery
 software.
 
@@ -358,7 +358,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -60,7 +60,7 @@ Messages in file-based folders use the following options for creation:
  Option      Defined in       Default                                                       
  body        L<Mail::Message>  undef                                                         
  body_type   L<Mail::Box::Message>  <from folder>                                                 
- deleted     L<Mail::Box::Message>  <false>                                                       
+ deleted     L<Mail::Message>  <false>                                                       
  field_type  L<Mail::Message>  undef                                                         
  folder      L<Mail::Box::Message>  <required>                                                    
  from_line                    undef                                                         
@@ -495,55 +495,6 @@ See L<Mail::Message/"The body">
 
 =back
 
-=head2 The message
-
-
-$obj-E<gt>B<copyTo>(FOLDER)
-
-=over 4
-
-See L<Mail::Box::Message/"The message">
-
-=back
-
-$obj-E<gt>B<folder>([FOLDER])
-
-=over 4
-
-See L<Mail::Box::Message/"The message">
-
-=back
-
-$obj-E<gt>B<fromLine>([LINE])
-
-=over 4
-
-Many people detest file-style folders because they store messages all in
-one file, where a line starting with C<From > leads the header.  If we
-receive a message from a file-based folder, we store that line.  If we write
-to such a file, but there is no such line stored, then we try to generate
-one.
-
-If LINE is provided, then the starting line is set to this value.
-
-=back
-
-$obj-E<gt>B<moveTo>(FOLDER)
-
-=over 4
-
-See L<Mail::Box::Message/"The message">
-
-=back
-
-$obj-E<gt>B<seqnr>([INTEGER])
-
-=over 4
-
-See L<Mail::Box::Message/"The message">
-
-=back
-
 =head2 Flags
 
 
@@ -551,7 +502,7 @@ $obj-E<gt>B<delete>
 
 =over 4
 
-See L<Mail::Box::Message/"Flags">
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -559,7 +510,7 @@ $obj-E<gt>B<deleted>([BOOLEAN])
 
 =over 4
 
-See L<Mail::Box::Message/"Flags">
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -567,7 +518,7 @@ $obj-E<gt>B<isDeleted>
 
 =over 4
 
-See L<Mail::Box::Message/"Flags">
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -579,7 +530,7 @@ See L<Mail::Message/"Flags">
 
 =back
 
-$obj-E<gt>B<label>(LABEL [,VALUE [LABEL, VALUE] ])
+$obj-E<gt>B<label>(LABEL|PAIRS)
 
 =over 4
 
@@ -651,6 +602,55 @@ $obj-E<gt>B<string>
 =over 4
 
 See L<Mail::Message::Construct::Text/"The whole message as text">
+
+=back
+
+=head2 The message
+
+
+$obj-E<gt>B<copyTo>(FOLDER)
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<folder>([FOLDER])
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<fromLine>([LINE])
+
+=over 4
+
+Many people detest file-style folders because they store messages all in
+one file, where a line starting with C<From > leads the header.  If we
+receive a message from a file-based folder, we store that line.  If we write
+to such a file, but there is no such line stored, then we try to generate
+one.
+
+If LINE is provided, then the starting line is set to this value.
+
+=back
+
+$obj-E<gt>B<moveTo>(FOLDER)
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<seqnr>([INTEGER])
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
 
 =back
 
@@ -956,7 +956,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

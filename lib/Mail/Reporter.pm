@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Reporter;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 
 use Carp;
 use Scalar::Util 'dualvar';
@@ -220,7 +220,5 @@ sub inGlobalDestruction() {$global_destruction}
 
 
 sub DESTROY {shift}
-
-#-------------------------------------------
 
 1;

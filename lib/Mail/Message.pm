@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -28,9 +28,8 @@ sub init($)
     $self->SUPER::init($args);
 
     # Field initializations also in coerce()
-    $self->{MM_modified}  = $args->{modified}  || 0;
-    $self->{MM_trusted}   = $args->{trusted}   || 0;
-    $self->{MM_labels}    = {};
+    $self->{MM_modified} = $args->{modified}  || 0;
+    $self->{MM_trusted}  = $args->{trusted}   || 0;
 
     # Set the header
 
@@ -56,7 +55,9 @@ sub init($)
        if defined $args->{field_type};
 
     my $labels = $args->{labels} || [];
-    $self->{MM_labels} = { ref $labels eq 'ARRAY' ? @$labels : %$labels };
+    my @labels = ref $labels eq 'ARRAY' ? @$labels : %$labels;
+    push @labels, deleted => $args->{deleted} if exists $args->{deleted};
+    $self->{MM_labels} = { @labels };
 
     $self;
 }
@@ -103,7 +104,6 @@ sub coerce($)
     }
 
     $message->{MM_modified}  ||= 0;
-
     bless $message, $class;
 }
 
@@ -123,7 +123,10 @@ sub clone()
      , $self->logSettings
      );
 
-    my %labels = %{$self->{MM_labels}};
+    my $labels = $self->labels;
+    my %labels = %$labels;
+    delete $labels{deleted};
+
     $clone->{MM_labels} = \%labels;
     $clone;
 }
@@ -314,7 +317,10 @@ sub guessTimestamp() {shift->head->guessTimestamp}
 #-------------------------------------------
 
 
-sub timestamp() {shift->head->timestamp}
+sub timestamp()
+{   my $head = shift->head or return;
+    $head->recvstamp || $head->timestamp;
+}
 
 #------------------------------------------
 
@@ -480,8 +486,26 @@ sub labels()
 #------------------------------------------
 
 
-# needed for parts('ACTIVE'|'DELETED') on non-folder messages.
-sub isDeleted() {0}
+sub isDeleted() { shift->label('deleted') }
+
+#-------------------------------------------
+
+
+sub delete()
+{  my $self = shift;
+   my $old = $self->label('deleted');
+   $old || $self->label(deleted => time);
+}
+
+#-------------------------------------------
+
+
+sub deleted(;$)
+{   my $self = shift;
+
+    @_ ? $self->label(deleted => shift)
+       : $self->label('deleted')   # compat 2.036
+}
 
 #-------------------------------------------
 
@@ -519,13 +543,19 @@ sub statusToLabels()
     my $head    = $self->head;
 
     if(my $status  = $head->get('status'))
-    {   $self->{MM_labels}{seen} = ($status  =~ /R/ ? 1 : 0);
-        $self->{MM_labels}{old}  = ($status  =~ /O/ ? 1 : 0);
+    {   $status = $status->foldedBody;
+        $self->label
+         ( seen    => (index($status, 'R') >= 0)
+         , old     => (index($status, 'O') >= 0)
+	 );
     }
 
     if(my $xstatus = $head->get('x-status'))
-    {   $self->{MM_labels}{replied} = ($xstatus  =~ /A/ ? 1 : 0);
-        $self->{MM_labels}{flagged} = ($xstatus  =~ /F/ ? 1 : 0);
+    {   $xstatus = $xstatus->foldedBody;
+        $self->label
+         ( replied => (index($xstatus, 'A') >= 0)
+         , flagged => (index($xstatus, 'F') >= 0)
+	 );
     }
 
     $self;

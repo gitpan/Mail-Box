@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport::Send;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Transport';
 
 use Carp;
@@ -23,7 +23,7 @@ sub new(@)
 
 
 sub send($@)
-{   my ($self, $message) = (shift, shift);
+{   my ($self, $message, %args) = @_;
 
     unless($message->isa('Mail::Message'))  # avoid rebless.
     {   $message = Mail::Message->coerce($message);
@@ -31,17 +31,16 @@ sub send($@)
             unless defined $message;
     }
 
-    return 1 if $self->trySend($message);
+    return 1 if $self->trySend($message, %args);
     return 0 unless $?==EAGAIN;
 
-    my %args     = @_;
     my ($interval, $retry) = $self->retry;
     $interval = $args{interval} if exists $args{interval};
     $retry    = $args{retry}    if exists $args{retry};
 
     while($retry!=0)
     {   sleep $interval;
-        return 1 if $self->trySend($message);
+        return 1 if $self->trySend($message, %args);
         return 0 unless $?==EAGAIN;
         $retry--;
     }
@@ -87,12 +86,12 @@ sub destinations($;$)
     }
     elsif(my @rgs = $message->head->resentGroups)
     {   @to = $rgs[0]->destinations;
-        $self->log(ERROR => "Resent group does not specify a destination"), return ()
+        $self->log(WARNING => "Resent group does not specify a destination"), return ()
             unless @to;
     }
     else
     {   @to = $message->destinations;
-        $self->log(ERROR => "Message has no destination"), return ()
+        $self->log(WARNING => "Message has no destination"), return ()
             unless @to;
     }
 

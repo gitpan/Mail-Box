@@ -3,12 +3,11 @@ use strict;
 
 package Mail::Box::MH::Labels;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Subset;
 
-use IO::File;
 use File::Copy;
 use Carp;
 
@@ -91,9 +90,10 @@ sub write(@)
         return $self;
     }
 
-    my $out = IO::File->new($filename, 'w') or return;
+    open my $out, '>', $filename or return;
     $self->print($out, @_);
-    $out->close;
+    close $out;
+
     $self;
 }
 
@@ -104,9 +104,10 @@ sub append(@)
 {   my $self     = shift;
     my $filename = $self->filename;
 
-    my $out      = IO::File->new($filename, 'a') or return;
+    open(my $out, '>>', $filename) or return;
     $self->print($out, @_);
-    $out->close;
+    close $out;
+
     $self;
 }
 
@@ -139,7 +140,7 @@ sub print($@)
     {
         my @msgs = @{$labeled{$_}};  #they are ordered already.
         $_ = 'cur' if $_ eq 'current';
-        print $out  "$_:";
+        print $out "$_:";
 
         while(@msgs)
         {   my $start = shift @msgs;

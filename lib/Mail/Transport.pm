@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -64,7 +64,7 @@ sub init($)
     $self->{MT_timeout}  = $args->{timeout}  || 120;
     $self->{MT_proxy}    = $args->{proxy};
 
-    if(my $exec = $args->{executable})
+    if(my $exec = $args->{executable} || $args->{proxy})
     {   $self->{MT_exec} = $exec;
 
         $self->log(WARNING => "Avoid program abuse: specify an absolute path for $exec.")

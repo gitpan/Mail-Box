@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::File::Message;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Box::Message';
 
 use POSIX 'SEEK_SET';
@@ -24,7 +24,6 @@ sub init($)
 sub coerce($)
 {   my ($self, $message) = @_;
     return $message if $message->isa(__PACKAGE__);
-
     $self->SUPER::coerce($message)->labelsToStatus;
 }
 

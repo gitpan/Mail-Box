@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Mbox::Message;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Box::File::Message';
 
 
@@ -25,7 +25,6 @@ sub label(@)
 {   my $self   = shift;
     $self->loadHead;    # be sure the status fields have been read
     my $return = $self->SUPER::label(@_);
-    $self->labelsToStatus if @_ > 1;
     $return;
 }
 

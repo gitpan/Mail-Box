@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message::Head::Delayed;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Message::Head';
 
 use Object::Realize::Later
@@ -11,8 +11,6 @@ use Object::Realize::Later
     realize          => 'load',
     believe_caller   => 1;
 
-use Carp;
-use Date::Parse;
 use Scalar::Util 'weaken';
 
 

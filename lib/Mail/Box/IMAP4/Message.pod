@@ -54,26 +54,44 @@ Mail::Box::IMAP4::Message-E<gt>B<new>(OPTIONS)
 
 =over 4
 
- Option      Defined in       Default                                                       
- body        L<Mail::Message>  undef                                                         
- body_type   L<Mail::Box::Message>  L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>      
- deleted     L<Mail::Box::Message>  <false>                                                       
- field_type  L<Mail::Message>  undef                                                         
- folder      L<Mail::Box::Message>  <required>                                                    
- head        L<Mail::Message>  undef                                                         
- head_type   L<Mail::Message>  L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>
- labels      L<Mail::Message>  {}                                                            
- log         L<Mail::Reporter>  C<'WARNINGS'>                                                 
- messageId   L<Mail::Message>  undef                                                         
- modified    L<Mail::Message>  <false>                                                       
- size        L<Mail::Box::Message>  undef                                                         
- trace       L<Mail::Reporter>  C<'WARNINGS'>                                                 
- trusted     L<Mail::Message>  <false>                                                       
- unique      L<Mail::Box::Net::Message>  <unique string>                                               
+ Option        Defined in       Default                                                       
+ body          L<Mail::Message>  undef                                                         
+ body_type     L<Mail::Box::Message>  L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>      
+ cache_body                     <false>                                                       
+ cache_head                     <false>                                                       
+ cache_labels                   <false>                                                       
+ deleted       L<Mail::Message>  <false>                                                       
+ field_type    L<Mail::Message>  undef                                                         
+ folder        L<Mail::Box::Message>  <required>                                                    
+ head          L<Mail::Message>  undef                                                         
+ head_type     L<Mail::Message>  L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>
+ labels        L<Mail::Message>  {}                                                            
+ log           L<Mail::Reporter>  C<'WARNINGS'>                                                 
+ messageId     L<Mail::Message>  undef                                                         
+ modified      L<Mail::Message>  <false>                                                       
+ size          L<Mail::Box::Message>  undef                                                         
+ trace         L<Mail::Reporter>  C<'WARNINGS'>                                                 
+ trusted       L<Mail::Message>  <false>                                                       
+ unique        L<Mail::Box::Net::Message>  <unique string>                                               
+ write_labels                   <true>                                                        
 
 . body OBJECT
 
 . body_type CODE|CLASS
+
+. cache_body BOOLEAN
+
+. cache_head BOOLEAN
+
+. cache_labels BOOLEAN
+
+=over 4
+
+All standard IMAP labels can be cached on the local server to improve
+speed.  This has the same dangers as setting C<write_labels> to false.
+The caching starts when the first label of the message was read.
+
+=back
 
 . deleted BOOLEAN
 
@@ -100,6 +118,18 @@ Mail::Box::IMAP4::Message-E<gt>B<new>(OPTIONS)
 . trusted BOOLEAN
 
 . unique STRING
+
+. write_labels BOOLEAN
+
+=over 4
+
+When a label is changed or its value read, using L<label()|Mail::Box::IMAP4::Message/"METHODS">, that info
+should be sent to the IMAP server.  But, this action could be superfluous,
+for instance because the label was already set or clear, and communication
+is expensive.  On the other hand, someone else may use IMAP to make
+changes in the same folder, and will get the updates too late or never...
+
+=back
 
 =back
 
@@ -480,49 +510,6 @@ See L<Mail::Message/"The body">
 
 =back
 
-=head2 The message
-
-
-$obj-E<gt>B<copyTo>(FOLDER)
-
-=over 4
-
-See L<Mail::Box::Message/"The message">
-
-=back
-
-$obj-E<gt>B<folder>([FOLDER])
-
-=over 4
-
-See L<Mail::Box::Message/"The message">
-
-=back
-
-$obj-E<gt>B<moveTo>(FOLDER)
-
-=over 4
-
-See L<Mail::Box::Message/"The message">
-
-=back
-
-$obj-E<gt>B<seqnr>([INTEGER])
-
-=over 4
-
-See L<Mail::Box::Message/"The message">
-
-=back
-
-$obj-E<gt>B<unique>([STRING])
-
-=over 4
-
-See L<Mail::Box::Net::Message/"The message">
-
-=back
-
 =head2 Flags
 
 
@@ -530,7 +517,7 @@ $obj-E<gt>B<delete>
 
 =over 4
 
-See L<Mail::Box::Message/"Flags">
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -538,7 +525,7 @@ $obj-E<gt>B<deleted>([BOOLEAN])
 
 =over 4
 
-See L<Mail::Box::Message/"Flags">
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -546,7 +533,7 @@ $obj-E<gt>B<isDeleted>
 
 =over 4
 
-See L<Mail::Box::Message/"Flags">
+See L<Mail::Message/"Flags">
 
 =back
 
@@ -558,18 +545,18 @@ See L<Mail::Message/"Flags">
 
 =back
 
-$obj-E<gt>B<label>(LABEL, [VALUE, [LABEL, VALUE, ...]])
+$obj-E<gt>B<label>(LABEL|PAIRS)
 
 =over 4
 
 With only one argument, the value related to LABEL is returned.  With
-more that one argument, the list is interpreted a LABEL-VALUE pairs
+more that one argument, the list is interpreted a label-value PAIRS
 to be set.
 
 The IMAP protocol defines its own names for the labels, which must
 be set imediately to inform other IMAP clients which may have the
-same folder open.  Some labels are translated to the corresponding
-IMAP system labels. 
+same folder open. But that can be changed with L<new(write_labels)|Mail::Box::IMAP4::Message/"METHODS">.
+Some labels are translated to the corresponding IMAP system labels. 
 
 =back
 
@@ -577,7 +564,10 @@ $obj-E<gt>B<labels>
 
 =over 4
 
-See L<Mail::Message/"Flags">
+Get the names of all labels (LIST context, not efficient in IMAP4), or
+a reference to a hash with labels.  You should only use the returned
+hash to read the labels, because changes made to it will not be passed
+to the remote server.  See L<labels()|Mail::Box::IMAP4::Message/"METHODS"> to set values.
 
 =back
 
@@ -640,6 +630,49 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 
 =back
 
+=head2 The message
+
+
+$obj-E<gt>B<copyTo>(FOLDER)
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<folder>([FOLDER])
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<moveTo>(FOLDER)
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<seqnr>([INTEGER])
+
+=over 4
+
+See L<Mail::Box::Message/"The message">
+
+=back
+
+$obj-E<gt>B<unique>([STRING|undef])
+
+=over 4
+
+See L<Mail::Box::Net::Message/"The message">
+
+=back
+
 =head2 Internals
 
 
@@ -648,6 +681,16 @@ $obj-E<gt>B<diskDelete>
 =over 4
 
 See L<Mail::Box::Message/"Internals">
+
+=back
+
+$obj-E<gt>B<fetch>([INFO, ...])
+
+=over 4
+
+Use the IMAP's C<UID FETCH IMAP> command to get some data about this
+message.  The INFO request is passed to L<Mail::Box::IMAP4::fetch()|Mail::Box::IMAP4/"Internals">.
+Without INFO, C<ALL> information is retreived and returned as a HASH.
 
 =back
 
@@ -712,6 +755,26 @@ $obj-E<gt>B<takeMessageId>([STRING])
 =over 4
 
 See L<Mail::Message/"Internals">
+
+=back
+
+$obj-E<gt>B<writeDelayed>(IMAP)
+
+=over 4
+
+Write all delayed information, like label changes, to the server.  This
+is done under force, so should even be done for folders opened without
+write-access. This method is called indirectly by a L<Mail::Box::write()|Mail::Box/"Internals">
+or L<Mail::Box::close()|Mail::Box/"The folder">.
+
+The IMAP argument is a Mail::IMAPClient which has the right folder
+already selected.
+
+Writing changes to the remote folder is not without hassle: IMAP4
+(or is it only L<Mail::IMAPClient> doesn't support replacing header
+or body.  Therefore, when either of them change, the whole message is
+rewritten to the server (which is supported), and the original flagged
+for deletion.
 
 =back
 
@@ -924,11 +987,11 @@ I<Error:> no rebuild rule $name defined.
 Labels (or flags) are known to all folder formats, but differ how they
 are stored.  Some folder types use message header lines to keep the
 labels, other use a seperate file.  The IMAP protocol does not specify
-how the labels are kept, but does specify how they are named.
+how the labels are kept on the server, but does specify how they are named.
 
-The label names as defined by the IMAP protocol are are standardized into
+The label names as defined by the IMAP protocol are standardized into
 the MailBox standard to hide folder differences.  The following translations
-are performed always:
+are always performed:
 
  \Seen     => seen
  \Answered => replied
@@ -936,9 +999,6 @@ are performed always:
  \Deleted  => deleted
  \Draft    => draft
  \Recent   => NOT old
-
-Other flags may be used as well, but will be translated into lower-case,
-because IMAP servers may behave case-insensive.
 
 I<Example:> of label translations
 
@@ -950,6 +1010,25 @@ will result in a IMAP protocol statements like
  A003 STORE 4 +FLAGS (\Answered)
  A003 STORE 4 -FLAGS (\Draft)
 
+=head3 Other labels
+
+Of course, your program may be in need for more labels than those provided
+by the protocol.  You can still use these: they stay locally (and are
+lost when the folder is closed).  Some IMAP4 extensions permit more labels
+than the basic RFC, but that is not yet supported by this implementation.
+
+=head3 Caching labels
+
+When you ask for one or more flags of a message more than once, you may
+improve the overall performance by setting L<new(cache_labels)|Mail::Box::IMAP4::Message/"METHODS"> to C<YES>.
+However, this may cause inconsistencies when multiple clients use the
+same folder on the IMAP server.
+
+You may also delay the label updates to the server until the
+folder is closed (or for ever when read-only is required).  When
+L<Mail::Box::write()|Mail::Box/"Internals"> or L<Mail::Box::close()|Mail::Box/"The folder"> is called, it is decided
+whether to throw all changes away or write after all.
+
 
 
 
@@ -960,7 +1039,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

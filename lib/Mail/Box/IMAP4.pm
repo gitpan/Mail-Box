@@ -1,34 +1,57 @@
 
-package Mail::Box::IMAP4;
-use vars '$VERSION';
-$VERSION = '2.051';
-use base 'Mail::Box::Net';
-
 use strict;
 use warnings;
 
-use Mail::Box::IMAP4::Message;
-use Mail::Box::Parser::Perl;
-use Mail::Box::FastScalar;
+package Mail::Box::IMAP4;
+use vars '$VERSION';
+$VERSION = '2.052';
+use base 'Mail::Box::Net';
 
-use File::Spec;
-use File::Basename;
-use Carp;
+use Mail::Box::IMAP4::Message;
+use Mail::Box::IMAP4::Head;
+use Mail::Transport::IMAP4;
+
+use Mail::Box::Parser::Perl;
+use Mail::Message::Head::Complete;
+use Mail::Message::Head::Delayed;
+
+use Scalar::Util 'weaken';
 
 
 sub init($)
 {   my ($self, $args) = @_;
 
-    $args->{server_port} ||= 143;
+    # Need some prediction for correct defaults
+    my $access    = $args->{access} ||= 'r';
+    my $writeable = $access =~ m/w|a/;
+    my $ch        = $self->{MBI_c_head}
+      = $args->{cache_head} || ($writeable ? 'NO' : 'DELAY');
+
+    $args->{head_type} ||= 'Mail::Box::IMAP4::Head'
+       if $ch eq 'NO' || $ch eq 'PARTIAL';
+
+    $args->{body_type}  ||= 'Mail::Message::Body::Lines';
 
     $self->SUPER::init($args);
 
-    $self->{MBI_client}    = $args->{imap_client}; 
-    $self->{MBI_auth}      = $args->{authenticate} || 'AUTO';
+    $self->{MBI_domain}   = $args->{domain};
+    $self->{MBI_c_labels} = $args->{cache_labels}
+                         || ($writeable  ? 'NO' : 'DELAY');
+    $self->{MBI_c_body}   = $args->{cache_body}
+                         || ($writeable ? 'NO' : 'DELAY');
 
-    my $imap               = $self->imapClient or return;
-    $self->{MBI_subsep}    = $args->{sub_sep}      || $imap->askSubfolderSeparator;
 
+    my $transport = $args->{transporter} || 'Mail::Transport::IMAP4';
+    unless(ref $transport)
+    {   eval "require $transport";
+        $self->log(ERROR => "Cannot install transporter $transport:\n$@\n"),
+           return () if $@;
+
+        $transport = $self->createTransporter($transport, %$args)
+	    or return undef;
+    }
+
+    $self->transporter($transport);
     $self;
 }
 
@@ -57,87 +80,71 @@ sub type() {'imap4'}
 
 #-------------------------------------------
 
-sub close()
+
+sub close(@)
 {   my $self = shift;
-
-    my $imap  = $self->imapClient;
-    $imap->disconnect if defined $imap;
-
-    $self->SUPER::close;
+    $self->SUPER::close(@_) or return ();
+    $self->transporter(undef);
+    $self;
 }
 
 #-------------------------------------------
 
 sub listSubFolders(@)
 {   my ($thing, %args) = @_;
+    my $self = $thing;
 
-    my $self
-     = ref $thing ? $thing                # instance method
-     :              $thing->new(%args);   # class method
+    $self = $thing->new(%args) or return ()  # list toplevel
+        unless ref $thing;
 
-    return () unless defined $self;
-
-    my $imap = $self->imapClient
-        or return ();
-
-    my $name      = $imap->folderName;
-    $name         = "" if $name eq '/';
-
-    $self->askSubfoldersOf("$name$self->{MBI_subsep}");
+    my $imap = $self->transporter;
+    defined $imap ? $imap->folders($self) : ();
 }
 
 #-------------------------------------------
 
 sub nameOfSubfolder($)
 {   my ($self, $name) = @_;
-    "$self" . $self->{MBI_subsep} . $name;
+    $name;
 }
 
 #-------------------------------------------
 
-
-sub imapClient()
-{   my $self = shift;
-
-    return $self->{MBI_client}
-        if defined $self->{MBI_client};
-
-    my $auth = $self->{auth};
-
-    require Mail::Transport::IMAP4;
-    my $client  = Mail::Transport::IMAP4->new
-      ( username     => $self->{MBN_username}
-      , password     => $self->{MBN_password}
-      , hostname     => $self->{MBN_hostname}
-      , port         => $self->{MBN_port}
-      , authenticate => $self->{MBI_auth}
-      );
-
-    $self->log(ERROR => "Cannot create IMAP4 client ".$self->url.'.')
-       unless defined $client;
-
-    $self->{MBI_client} = $client;
-}
-
-#-------------------------------------------
 
 sub readMessages(@)
 {   my ($self, %args) = @_;
 
-    my $imap   = $self->imapClient;
+    my $name  = $self->name;
+    return $self if $name eq '/';
+
+    my $imap  = $self->transporter;
     my @log   = $self->logSettings;
     my $seqnr = 0;
 
-#### Things must be changed here...
+    my $cl    = $self->{MBI_c_labels} ne 'NO';
+    my $wl    = $self->{MBI_c_labels} ne 'DELAY';
+
+    my $ch    = $self->{MBI_c_head};
+    my $ht    = $ch eq 'DELAY' ? $args{head_delayed_type} : $args{head_type};
+    my @ho    = $ch eq 'PARTIAL' ? (cache_fields => 1) : ();
+
     foreach my $id ($imap->ids)
-    {   my $message = $args{message_type}->new
-         ( head      => $args{head_delayed_type}->new(@log)
+    {   my $head    = $ht->new(@log, @ho);
+        my $message = $args{message_type}->new
+         ( head      => $head
          , unique    => $id
          , folder    => $self
          , seqnr     => $seqnr++
+
+	 , cache_labels => $cl
+	 , write_labels => $wl
+         , cache_head   => ($ch eq 'DELAY')
+         , cache_body   => ($ch ne 'NO')
          );
 
-        my $body    = $args{body_delayed_type}->new(@log, message => $message);
+        my $body    = $args{body_delayed_type}
+           ->new(@log, message => $message);
+
         $message->storeBody($body);
 
         $self->storeMessage($message);
@@ -151,27 +158,18 @@ sub readMessages(@)
 
 sub getHead($)
 {   my ($self, $message) = @_;
-    my $imap   = $self->imapClient or return;
+    my $imap   = $self->transporter or return;
 
-    my $uidl  = $message->unique;
-    my $lines = $imap->header($uidl);
+    my $uidl   = $message->unique;
+    my @fields = $imap->getFields($uidl, 'ALL');
 
-    unless(defined $lines)
+    unless(@fields)
     {   $self->log(WARNING => "Message $uidl disappeared from $self.");
         return;
-     }
+    }
 
-    my $parser = Mail::Box::Parser::Perl->new   # not parseable by C parser
-     ( filename  => "$imap"
-     , file      => Mail::Box::FastScalar->new(join '', @$lines)
-     );
-
-    $self->lazyPermitted(1);
-
-    my $head     = $message->readHead($parser);
-    $parser->stop;
-
-    $self->lazyPermitted(0);
+    my $head = $self->{MB_head_type}->new;
+    $head->addNoRealize($_) for @fields;
 
     $self->log(PROGRESS => "Loaded head of $uidl.");
     $head;
@@ -182,51 +180,141 @@ sub getHead($)
 
 sub getHeadAndBody($)
 {   my ($self, $message) = @_;
-    my $imap  = $self->imapClient or return;
-
-    my $uidl  = $message->unique;
-    my $lines = $imap->message($uidl);
+    my $imap  = $self->transporter or return;
+    my $uid   = $message->unique;
+    my $lines = $imap->getMessageAsString($uid);
 
     unless(defined $lines)
-    {   $self->log(WARNING  => "Message $uidl disappeared from $self.");
+    {   $self->log(WARNING => "Message $uid disappeared from $self.");
         return ();
      }
 
     my $parser = Mail::Box::Parser::Perl->new   # not parseable by C parser
      ( filename  => "$imap"
-     , file      => Mail::Box::FastScalar->new(join '', @$lines)
+     , file      => Mail::Box::FastScalar->new(\$lines)
      );
 
     my $head = $message->readHead($parser);
     unless(defined $head)
-    {   $self->log(WARNING => "Cannot find head back for $uidl in $self.");
+    {   $self->log(WARNING => "Cannot find head back for $uid in $self.");
         $parser->stop;
         return ();
     }
 
     my $body = $message->readBody($parser, $head);
     unless(defined $body)
-    {   $self->log(WARNING => "Cannot read body for $uidl in $self.");
+    {   $self->log(WARNING => "Cannot read body for $uid in $self.");
         $parser->stop;
         return ();
     }
 
     $parser->stop;
 
-    $self->log(PROGRESS => "Loaded message $uidl.");
+    $self->log(PROGRESS => "Loaded message $uid.");
     ($head, $body->contentInfoFrom($head));
 }
 
 #-------------------------------------------
 
+
+sub body(;$)
+{   my $self = shift;
+    unless(@_)
+    {   my $body = $self->{MBI_cache_body} ? $self->SUPER::body : undef;
+    }
+
+    $self->unique();
+    $self->SUPER::body(@_);
+}
+
+#-------------------------------------------
+
+
+
+sub write(@)
+{   my ($self, %args) = @_;
+    my $imap  = $self->transporter or return;
+
+    $self->SUPER::write(%args, transporter => $imap) or return;
+
+    if($args{save_deleted})
+    {   $self->log(NOTICE => "Impossible to keep deleted messages in IMAP")
+    }
+    else { $imap->destroyDeleted }
+
+    $self;
+}
+
+#-------------------------------------------
+
+
 sub writeMessages($@)
 {   my ($self, $args) = @_;
 
-    if(my $modifications = grep {$_->isModified} @{$args->{messages}})
-    {
-    }
+    my $imap = $args->{transporter};
+    my $fn   = $self->name;
+
+    $_->writeDelayed($fn, $imap) for @{$args->{messages}};
 
     $self;
+}
+
+#-------------------------------------------
+
+
+my %transporters;
+sub createTransporter($@)
+{   my ($self, $class, %args) = @_;
+
+    my $hostname = $self->{MBN_hostname} || 'localhost';
+    my $port     = $self->{MBN_port}     || '143';
+    my $username = $self->{MBN_username} || $ENV{USER};
+
+    my $join     = exists $args{join_connection} ? $args{join_connection} : 1;
+
+    my $linkid;
+    if($join)
+    {   $linkid  = "$hostname:$port:$username";
+        return $transporters{$linkid} if defined $transporters{$linkid};
+    }
+
+    my $transporter = $class->new
+     ( %args,
+     , hostname => $hostname, port     => $port
+     , username => $username, password => $self->{MBN_password}
+     , domain   => $self->{MBI_domain}
+     ) or return undef;
+
+    if(defined $linkid)
+    {   $transporters{$linkid} = $transporter;
+        weaken($transporters{$linkid});
+    }
+
+    $transporter;
+}
+
+#-------------------------------------------
+
+
+sub transporter(;$)
+{   my $self = shift;
+    my $imap = @_ ? ($self->{MBI_transport} = shift) : $self->{MBI_transport};
+    return unless defined $imap;
+
+    my $name = $self->name;
+    $imap->folder($name) unless $name eq '/';
+
+    $imap;
+}
+
+#-------------------------------------------
+
+
+sub fetch($@)
+{   my ($self, $what, @info) = @_;
+    my $imap = $self->transporter or return [];
+    $what = $self->messages($what) unless ref $what eq 'ARRAY';
+    $imap->fetch($what, @info);
 }
 
 #-------------------------------------------

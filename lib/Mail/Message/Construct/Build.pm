@@ -3,11 +3,12 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
 use Mail::Message::Body::Multipart;
+use Mail::Message::Field;
 
 use Mail::Address;
 use Carp;
@@ -24,37 +25,47 @@ sub build(@)
       : $_[0]->isa('Mail::Message::Body') ? shift
       :               ();
 
-    my ($head, @headerlines);
+    my ($head, $type, @headerlines);
     while(@_)
     {   my $key = shift;
         if(ref $key && $key->isa('Mail::Message::Field'))
-        {   push @headerlines, $key;
+        {   if($key->name eq 'content-type') { $type = $key }
+            else { push @headerlines, $key }
             next;
         }
 
         my $value = shift;
         next unless defined $value;
 
+        my @data;
+
         if($key eq 'head')
         {   $head = $value }
         elsif($key eq 'data')
-        {   push @parts, Mail::Message::Body->new(data => $value) }
+        {   @data = Mail::Message::Body->new(data => $value) }
         elsif($key eq 'file')
-        {   push @parts, Mail::Message::Body->new(file => $value) }
+        {   @data = Mail::Message::Body->new(file => $value) }
         elsif($key eq 'files')
-        {   push @parts, map {Mail::Message::Body->new(file => $_) } @$value }
+        {   @data = map {Mail::Message::Body->new(file => $_) } @$value }
         elsif($key eq 'attach')
-        {   push @parts, ref $value eq 'ARRAY' ? @$value : $value }
+        {   @data = ref $value eq 'ARRAY' ? @$value : $value }
+        elsif(lc $key eq 'content-type')
+        {   $type = Mail::Message::Field->new($key, $value) }
         elsif($key =~ m/^[A-Z]/)
         {   push @headerlines, $key, $value }
         else
         {   croak "Skipped unknown key $key in build." } 
+
+        push @parts, grep {defined $_} @data if @data;
     }
 
     my $body
        = @parts==0 ? Mail::Message::Body::Lines->new()
        : @parts==1 ? $parts[0]
        : Mail::Message::Body::Multipart->new(parts => \@parts);
+
+    # Setting the type explicitly, only after the body object is finalized
+    $body->type($type) if defined $type;
 
     $class->buildFromBody($body, $head, @headerlines);
 }

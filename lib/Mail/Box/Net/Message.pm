@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::Net::Message;
 use vars '$VERSION';
-$VERSION = '2.051';
+$VERSION = '2.052';
 use base 'Mail::Box::Message';
 
 use File::Copy;
@@ -16,11 +16,7 @@ sub init($)
 
     $self->SUPER::init($args);
 
-    my $unique = $args->{unique}
-        or croak "No unique keys for this net message.";
-
-    $self->unique($unique);
-
+    $self->unique($args->{unique});
     $self;
 }
 

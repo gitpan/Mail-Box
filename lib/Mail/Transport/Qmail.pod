@@ -268,6 +268,11 @@ I<Error:> Errors when closing Qmail mailer $program: $!
 The Qmail mail transfer agent did start, but was not able to handle the
 message for some specific reason.
 
+I<Warning:> Message has no destination
+
+It was not possible to figure-out where the message is intended to go
+to.
+
 I<Error:> Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
@@ -275,6 +280,21 @@ implement this method where it should. This message means that some other
 related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
+
+I<Warning:> Resent group does not specify a destination
+
+The message which is sent is the result of a bounce (for instance
+created with L<Mail::Message::bounce()|Mail::Message::Construct::Bounce/"Constructing a message">), and therefore starts with a
+C<Received> header field.  With the C<bounce>, the new destination(s)
+of the message are given, which should be included as C<Resent-To>,
+C<Resent-Cc>, and C<Resent-Bcc>.
+
+The C<To>, C<Cc>, and C<Bcc> header information is only used if no
+C<Received> was found.  That seems to be the best explanation of the RFC.
+
+As alternative, you may also specify the C<to> option to some of the senders
+(for instance L<Mail::Transport::SMTP::send(to)|Mail::Transport::Send/"Sending mail"> to overrule any information
+found in the message itself about the destination.
 
 
 
@@ -287,7 +307,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.051.
+Distribution version 2.052.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
