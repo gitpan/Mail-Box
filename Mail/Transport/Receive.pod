@@ -47,6 +47,7 @@ Implements the POP3 protocol.  See also Mail::Box::POP3.
 =item B<new> OPTIONS X<new>
 
  OPTION               DEFAULT
+ executable           C<undef>
  hostname             'localhost'
  interval             30
  log                  'WARNINGS'
@@ -60,6 +61,10 @@ Implements the POP3 protocol.  See also Mail::Box::POP3.
  via                  'sendmail'
 
 =over 4
+
+=item B<executable> =E<gt> FILENAME
+
+See Mail::Transport::new(executable)
 
 =item B<hostname> =E<gt> HOSTNAME|ARRAY-OF-HOSTNAMES
 
@@ -216,7 +221,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.034.
+This code is beta, version 2.035.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

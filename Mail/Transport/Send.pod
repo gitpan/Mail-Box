@@ -11,6 +11,7 @@ Mail::Transport::Send
    is a Mail::Reporter
 
 Mail::Transport::Send is extended by
+   Mail::Transport::Exim
    Mail::Transport::Mailx
    Mail::Transport::Qmail
    Mail::Transport::SMTP
@@ -42,6 +43,10 @@ without C<via> options to get a message transported.
 
 Use sendmail to process and deliver the mail.  This requires the
 C<sendmail> program to be installed on your system.
+
+=item * Mail::Transport::Exim
+
+Use C<exim> to distribute the message.
 
 =item * Mail::Transport::Qmail
 
@@ -76,6 +81,7 @@ known to have exploitable security breaches.
 =item B<new> OPTIONS X<new>
 
  OPTION               DEFAULT
+ executable           C<undef>
  hostname             'localhost'
  interval             30
  log                  'WARNINGS'
@@ -89,6 +95,10 @@ known to have exploitable security breaches.
  via                  'sendmail'
 
 =over 4
+
+=item B<executable> =E<gt> FILENAME
+
+See Mail::Transport::new(executable)
 
 =item B<hostname> =E<gt> HOSTNAME|ARRAY-OF-HOSTNAMES
 
@@ -275,7 +285,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.034.
+This code is beta, version 2.035.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

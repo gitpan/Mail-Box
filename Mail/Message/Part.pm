@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Part;
-our $VERSION = 2.034;  # Part of Mail::Box
+our $VERSION = 2.035;  # Part of Mail::Box
 use base 'Mail::Message';
 
 use Carp;
@@ -34,8 +34,7 @@ sub buildFromBody($$;@)
      , @log
      );
 
-    $part->storeBody($body->check);
-    $part->statusToLabels;
+    $part->body($body->check);
     $part;
 }
 

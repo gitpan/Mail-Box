@@ -177,9 +177,12 @@ Examples:
  my $msg    = Mail::Message->buildFromBody(
     $message->decoded->attach($pgpkey));
 
+ # The last message of the $multi multiparted body becomes a coerced $entity.
  my $entity  = MIME::Entity->new;
  my $multi   = $msg->body->attach($entity);
- # The last message of the $multi multiparted body is the coerced $entity.
+
+ # Now create a new message
+ my $msg     = Mail::Message->new(head => ..., body => $multi);
 
 =item B<check> 
 
@@ -404,7 +407,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.034.
+This code is beta, version 2.035.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

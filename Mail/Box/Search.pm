@@ -1,5 +1,5 @@
 package Mail::Box::Search;
-our $VERSION = 2.034;  # Part of Mail::Box
+our $VERSION = 2.035;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use strict;
@@ -108,7 +108,7 @@ sub searchPart($)
 
    # Handle multipart parts.
 
-   if($body->isMultipart)
+   if($body->isMultipart || $body->isNested)
    {   return $matched unless $self->{MBS_multiparts};
        my $no_delayed = not $self->{MBS_delayed};
        @bodies = ($body->preamble, $body->epilogue);

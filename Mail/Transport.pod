@@ -49,6 +49,7 @@ protocols will implement both sending and receiving.
 =item B<new> OPTIONS X<new>
 
  OPTION               DEFAULT
+ executable           C<undef>
  hostname             'localhost'
  interval             30
  log                  'WARNINGS'
@@ -62,6 +63,14 @@ protocols will implement both sending and receiving.
  via                  'sendmail'
 
 =over 4
+
+=item B<executable> =E<gt> FILENAME X<new(executable)>
+
+If you specify an executable, the module does not need to search the
+system directories to figure-out where the client lives.  Using this
+decreases the flexible usage of your program: moving your program
+to other systems may involve changing the path to the executable,
+which otherwise would work auto-detect and unmodified.
 
 =item B<hostname> =E<gt> HOSTNAME|ARRAY-OF-HOSTNAMES X<new(hostname)>
 
@@ -222,7 +231,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.034.
+This code is beta, version 2.035.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

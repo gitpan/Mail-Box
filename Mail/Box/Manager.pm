@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Manager;
-our $VERSION = 2.034;  # Part of Mail::Box
+our $VERSION = 2.035;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Box;

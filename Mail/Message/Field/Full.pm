@@ -1,0 +1,330 @@
+use strict;
+use warnings;
+
+package Mail::Message::Field::Full;
+our $VERSION = 2.035;  # Part of Mail::Box
+use base 'Mail::Message::Field';
+
+use Mail::Message::Field::Attribute;
+
+use utf8;
+use Encode ();
+use MIME::QuotedPrint ();
+
+use Carp;
+
+my %implementation
+ = ( from => 'Addresses', to  => 'Addresses', sender     => 'Addresses'
+   , cc   => 'Addresses', bcc => 'Addresses', 'reply-to' => 'Addresses'
+   , date => 'Date'
+   );
+
+sub new($;$$@)
+{   my ($class, $name, $body) = splice(@_, 0, 3);
+
+    my @attrs;
+    push @attrs, shift
+        while @_ && ref $_[0] && $_[0]->isa('Mail::Message::Field::Attribute');
+
+    my %args   = @_;
+
+    # Attributes preferably stored in array to protect order.
+    my $attr = $args{attributes} ||= [];
+    $attr    = $args{attribures} = [ %$attr ]   if ref $attr eq 'HASH';
+    unshift @$attr, @attrs;
+
+    return $class->SUPER::new(%args, name => $name, body => $body)
+       if $class ne __PACKAGE__;
+
+    # Look for best class to suit this field
+
+    (my $type = lc $name) =~ s/^Resent\-//;
+    my $myclass
+      = $implementation{$type} ? $implementation{$type}
+#     : $args{is_structured}   ? 'Structured'
+      : $args{is_structured}   ? 'Full'
+      :                          'Unstructured';
+
+    $myclass = "Mail::Message::Field::$myclass";
+    eval "require $myclass";
+    return if $@;
+
+    $myclass->SUPER::new(%args, name => $name, body => $body);
+}
+
+sub init($)
+{   my ($self, $args) = @_;
+
+    $self->SUPER::init($args);
+
+    $self->{MMFF_name}       = $args->{name};
+    $self->{MMFF_structured} = $args->{is_structured};
+
+    my $body = $args->{body};
+    if(index($body, "\n") >= 0)
+    {   # body is already folded: remember how
+        $self->{MMFF_body} = $body;
+        $body =~ s/\n//g;   # parts store unfolded versions
+    }
+    $body =~ s/^\s+//;
+    $self->{MMFF_parts} = length $body ? [ $body ] : [];
+
+    $self->addExtra($args->{extra})
+        if exists $args->{extra};
+
+    my $attr = $args->{attributes};
+    while(@$attr)
+    {   my $name = shift @$attr;
+        if(ref $name) { $self->attribute($name) }
+        else          { $self->attribute($name, shift @$attr) }
+    }
+
+    $self;
+}
+
+sub from($@)
+{   my ($class, $field) = (shift, shift);
+    defined $field ?  $class->new($field->Name, $field->folded, @_) : ();
+}
+
+sub addAttribute($;@)
+{   my $self = shift;
+
+    my $attr = ref $_[0] ? shift : Mail::Message::Field::Attribute->new(@_);
+    return undef unless $attr;
+
+    unless($self->{MMFF_structured})
+    {   $self->log(ERROR
+            => "You can not add an attribute to an unstructured field:\n  "
+               . "Field: ".$self->Name. " Attribute: " .$attr->name);
+        return;
+    }
+
+    my $name  = lc $attr->name;
+    if(my $old =  $self->{MMFF_attrs}{$name})
+    {   $old->mergeComponent($attr);
+        return $old;
+    }
+    else
+    {   $self->{MMFF_attrs}{$name} = $attr;
+        push @{$self->{MMFF_parts}}, $attr;
+        delete $self->{MMFF_body};
+        return $attr;
+    }
+}
+
+sub attribute($;$)
+{   my ($self, $name) = (shift, shift);
+    @_ ? $self->addAttribute($name, shift) : $self->{MMFF_attrs}{lc $name};
+}
+
+sub attributes() { values %{shift->{MMFF_attrs}} }
+
+sub addComment($@)
+{   my ($self, $comment) = (shift, shift);
+
+    unless($self->{MMFF_structured})
+    {   $self->log(ERROR
+            => "You can not add comment to an unstructured field:\n  "
+               . "Field: ".$self->Name. " Comment: ".$comment);
+        return;
+    }
+
+    if(@_)  # has encoding info?
+    {   # encoding required... simple case...
+        $comment = $self->encode($comment, @_);
+    }
+    else
+    {   # Correct dangling parenthesis
+        local $_ = $comment;
+        s#\\[()]#xx#g;                     # remove escaped parens
+        s#[^()]#x#g;                       # remove other chars
+        while( s#\(([^()]*)\)#x$1x# ) {;}  # remove pairs of parens
+
+        substr($comment, CORE::length($_), 0, '\\')
+            while s#[()][^()]*$##;         # add escape before remaining parens
+
+        $comment =~ s#\\+$##;              # backslash at end confuses
+    }
+
+    push @{$self->{MMFF_parts}}, "($comment)";
+    delete $self->{MMFF_body};
+    $comment;
+}
+
+sub addExtra($)
+{   my ($self, $extra) = @_;
+
+    unless($self->{MMFF_structured})
+    {   $self->log(ERROR
+            => "You can not add extras to an unstructured field:\n  "
+               . "Field: ".$self->Name. " Extra: ".$extra);
+        return;
+    }
+
+    if(defined $extra && length $extra)
+    {   push @{$self->{MMFF_parts}}, '; '.$extra;
+        delete $self->{MMFF_body};
+    }
+
+    $self;
+}
+
+sub clone()
+{   my $self = shift;
+    croak;
+}
+
+sub length()
+{   my $self = shift;
+    croak;
+}
+
+sub name() { lc shift->{MMFF_name}}
+
+sub Name() { shift->{MMFF_name}}
+
+sub folded(;$)
+{   my $self = shift;
+    return $self->{MMFF_name}.':'.$self->foldedBody
+        unless wantarray;
+
+    my @lines = $self->foldedBody;
+    my $first = $self->{MMFF_name}. ':'. shift @lines;
+    ($first, @lines);
+}
+
+sub unfoldedBody($;@)
+{   my $self = shift;
+    if(@_)
+    {   my $part = join ' ', @_;
+        $self->{MMFF_body}  = $self->fold($self->{MMFF_name}, $part);
+        $self->{MMFF_parts} = [ $part ];
+        return $part;
+    }
+
+    join(' ', @{$self->{MMFF_parts}});
+}
+
+sub foldedBody($)
+{   my ($self, $body) = @_;
+
+       if(@_==2) { $self->{MMFF_body} = $body }
+    elsif($body = $self->{MMFF_body}) { ; }
+    else
+    {   # Create a new folded body from the parts.
+        $self->{MMFF_body} = $body
+           = $self->fold($self->{MMFF_name}, join(' ', @{$self->{MMFF_parts}}));
+    }
+
+    wantarray ? (split /^/, $body) : $body;
+}
+
+sub decodedBody()
+{   my $self = shift;
+    $self->decode($self->unfoldedBody, @_);
+}
+
+sub encode($@)
+{   my ($self, $utf8, %args) = @_;
+
+    my ($charset, $lang, $encoding);
+
+    if($charset = $args{charset})
+    {   $self->log(WARNING => "Illegal character in charset '$charset'")
+            if $charset =~ m/[\x00-\ ()<>@,;:"\/[\]?.=\\]/;
+    }
+    else { $charset = 'us-ascii' }
+
+    if($lang = $args{language})
+    {   $self->log(WARNING => "Illegal character in language '$lang'")
+            if $lang =~ m/[\x00-\ ()<>@,;:"\/[\]?.=\\]/;
+    }
+
+    if($encoding = $args{encoding})
+    {   unless($encoding =~ m/^[bBqQ]$/ )
+        {   $self->log(WARNING => "Illegal encoding '$encoding', used 'q'");
+            $encoding = 'q';
+        }
+    }
+    else { $encoding = 'q' }
+
+    my $encoded  = Encode::encode($charset, $utf8, 0);
+
+    no utf8;
+
+    my $pre      = '=?'. $charset. ($lang ? '*'.$lang : '') .'?'.$encoding.'?';
+    my $ready    = '';
+
+    if(lc $encoding eq 'q')
+    {   # Quoted printable encoding
+        my $qp   = $encoded;
+        $qp      =~ s#([\x00-\x1F=\x7F-\xFF])#sprintf "=%02X", ord $1#ge;
+
+        return $qp           # string only contains us-ascii?
+           if !$args{force} && $qp eq $utf8;
+
+        $qp      =~ s#([_\?])#sprintf "=%02X", ord $1#ge;
+        $qp      =~ s/ /_/g;
+
+        my $take = 72 - CORE::length($pre);
+        while(CORE::length($qp) > $take)
+        {   $qp =~ s#^(.{$take}.?.?[^=][^=])## or warn $qp;
+            $ready .= "$pre$1?= ";
+        }
+        $ready .= "$pre$qp?=" if CORE::length $qp;
+    }
+
+    else
+    {   # base64 encoding
+        require MIME::Base64;
+        my $maxchars = int((74-CORE::length($pre))/4) *4;
+        my $bq       = MIME::Base64::encode_base64($encoded);
+        $bq =~ s/\s*//gs;
+        while(CORE::length($bq) > $maxchars)
+        {   $ready .= $pre . substr($bq, 0, $maxchars, '') . '?= ';
+        }
+        $ready .= "$pre$bq?=";
+    }
+
+    $ready;
+}
+
+sub _decoder($$$)
+{   my ($charset, $encoding, $encoded) = @_;
+    $charset   =~ s/\*[^*]+$//;   # string language, not used
+    $charset ||= 'us-ascii';
+
+    my $decoded;
+    if(lc($encoding) eq 'q')
+    {   # Quoted-printable encoded
+        $encoded =~ s/_/ /g;
+        $decoded = MIME::QuotedPrint::decode_qp($encoded);
+    }
+    elsif(lc($encoding) eq 'b')
+    {   # Base64 encoded
+        require MIME::Base64;
+        $decoded = MIME::Base64::decode_base64($encoded);
+    }
+    else
+    {   # unknown encodings ignored
+        return $encoded;
+    }
+
+    Encode::encode($charset, $decoded, 0);
+}
+
+sub decode($@)
+{   my ($self, $encoded, %args) = @_;
+
+    if(defined $args{is_text} ? $args{is_text} : 1)
+    {  # in text, blanks between encoding must be removed, but otherwise kept :(
+       # dirty trick to get this done.
+       $encoded =~ s/\?\=\s(?!\s*\=\?|$)/_?= /gs;
+    }
+    $encoded =~ s/\=\?([^?\s]*)\?([^?\s]*)\?([^?\s]*)\?\=\s*/_decoder($1,$2,$3)/gse;
+
+    $encoded;
+}
+
+1;

@@ -121,10 +121,16 @@ Mail/Message/Dummy.pm
 Mail/Message/Dummy.pod
 Mail/Message/Field.pm
 Mail/Message/Field.pod
+Mail/Message/Field/Attribute.pm
+Mail/Message/Field/Attribute.pod
 Mail/Message/Field/Fast.pm
 Mail/Message/Field/Fast.pod
 Mail/Message/Field/Flex.pm
 Mail/Message/Field/Flex.pod
+Mail/Message/Field/Full.pm
+Mail/Message/Field/Full.pod
+Mail/Message/Field/Unstructured.pm
+Mail/Message/Field/Unstructured.pod
 Mail/Message/Head.pm
 Mail/Message/Head.pod
 Mail/Message/Head/Complete.pm
@@ -155,6 +161,8 @@ Mail/Reporter.pm
 Mail/Reporter.pod
 Mail/Transport.pm
 Mail/Transport.pod
+Mail/Transport/Exim.pm
+Mail/Transport/Exim.pod
 Mail/Transport/IMAP4.pm
 Mail/Transport/IMAP4.pod
 Mail/Transport/Mailx.pm
@@ -196,6 +204,8 @@ tests/10report/Definition.pm
 tests/11field/10cfws.t
 tests/11field/20fast.t
 tests/11field/30flex.t
+tests/11field/40full.t
+tests/11field/41attr.t
 tests/11field/Definition.pm
 tests/12head/10create.t
 tests/12head/20resent.t

@@ -2,9 +2,10 @@ use strict;
 use warnings;
 
 package Mail::Reporter;
-our $VERSION = 2.034;  # Part of Mail::Box
+our $VERSION = 2.035;  # Part of Mail::Box
 
 use Carp;
+use Scalar::Util 'dualvar';
 
 # synchronize this with C code in Mail::Box::Parser.
 my @levelname = (undef, qw(DEBUG NOTICE PROGRESS WARNING ERROR NONE INTERNAL));
@@ -29,14 +30,25 @@ sub init($)
 
 sub defaultTrace(;$$)
 {   my $self = shift;
-    return ($default_log, $default_trace) unless @_;
 
-    ($default_log, $default_trace) = @_==1 ? ($_[0], $_[0]) : @_;
+    if(@_)
+    {   my ($log, $trace) = @_==1 ? ($_[0], $_[0]) : @_;
+
+        $default_log   = $levelprio{$log}
+           or croak "Undefined log level $log";
+
+        $default_trace = $levelprio{$trace}
+           or croak "Undefined trace level $trace";
+    }
+
+    ( $self->logPriority($default_log), $self->logPriority($default_trace) );
 }
 
 sub trace(;$)
 {   my $self = shift;
-    return $levelname[$self->{MR_trace}] unless @_;
+
+    return $self->logPriority($self->{MR_trace})
+        unless @_;
 
     my $level = shift;
     my $prio  = $levelprio{$level}
@@ -54,7 +66,8 @@ sub log(;$@)
 {   my $thing = shift;
 
     if(ref $thing)   # instance call
-    {   return $levelname[$thing->{MR_log}] unless @_;
+    {   return $thing->logPriority($thing->{MR_log})
+            unless @_;
 
         my $level = shift;
         my $prio  = $levelprio{$level}
@@ -127,7 +140,10 @@ sub notImplemented(@)
     confess "Please warn the author, this shouldn't happen.";
 }
 
-sub logPriority($) { $levelprio{$_[1]} }
+sub logPriority($)
+{   my $level = $levelprio{$_[1]} or return undef;
+    dualvar $level, $levelname[$level];
+}
 
 sub logSettings()
 {  my $self = shift;

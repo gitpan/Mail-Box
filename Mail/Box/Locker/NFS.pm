@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Box::Locker::NFS;
-our $VERSION = 2.034;  # Part of Mail::Box
+our $VERSION = 2.035;  # Part of Mail::Box
 use base 'Mail::Box::Locker';
 
 use IO::File;
@@ -76,21 +76,17 @@ sub lock()
                  : $self->{MBL_timeout};
     my $expires  = $self->{MBL_expires}/86400;  # in days for -A
 
+    if(-e $lockfile && -A $lockfile > $expires)
+    {   if(unlink $lockfile)
+             { $self->log(WARNING => "Removed expired lockfile $lockfile.\n") }
+        else { $self->log(WARNING =>
+                        "Unable to remove expired lockfile $lockfile: $!") }
+    }
+
     while(1)
     {   if($self->_try_lock($tmpfile, $lockfile))
         {   $self->{MBL_has_lock} = 1;
             return 1;
-        }
-
-        if(-e $lockfile && -A $lockfile > $expires)
-        {   if(unlink $lockfile)
-            {   warn "Removed expired lockfile $lockfile.\n";
-                redo;
-            }
-            else
-            {   warn "Unable to remove expired lockfile $lockfile: $!\n";
-                last;
-            }
         }
 
         last unless --$end;

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::SMTP;
-our $VERSION = 2.034;  # Part of Mail::Box
+our $VERSION = 2.035;  # Part of Mail::Box
 use base 'Mail::Transport::Send';
 
 use Net::SMTP;
@@ -21,7 +21,7 @@ sub init($)
     $args->{via}  ||= 'smtp';
     $args->{port} ||= '25';
 
-    $self->SUPER::init($args);
+    $self->SUPER::init($args) or return;
 
     my $helo = $args->{helo}
       || eval { require Net::Config; $Net::Config::inet_domain }
@@ -29,7 +29,7 @@ sub init($)
 
     $self->{MTS_net_smtp_opts}
        = { Hello   => $helo
-         , Debug   => ($args->{debug} || 0)
+         , Debug   => ($args->{smtp_debug} || 0)
          };
 
     $self;

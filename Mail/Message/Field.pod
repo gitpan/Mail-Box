@@ -12,6 +12,7 @@ Mail::Message::Field
 Mail::Message::Field is extended by
    Mail::Message::Field::Fast
    Mail::Message::Field::Flex
+   Mail::Message::Field::Full
 
 =head1 SYNOPSIS
 
@@ -201,8 +202,8 @@ be B<stripped> from everything what is behind the first semi-color (C<;>).
 In aby case, the string is unfolded.  
 
 Whether the field is structured is defined by isStructured().
-This method may be what you want, but usually, the folded_body() and
-unfolded_body() are what you are looking for.
+This method may be what you want, but usually, the foldedBody() and
+unfoldedBody() are what you are looking for.
 
 =item B<comment> [STRING] X<comment>
 
@@ -225,7 +226,7 @@ a timestamp like is produced by the C<time> function.
 Returns the folded version of the whole header.  When the header is shorter
 than the wrap length, a list of one line is returned.  Otherwise more
 lines will be returned, all but the first starting with at least one blank.
-See also folded_body() to get the same information without the field's name.
+See also foldedBody() to get the same information without the field's name.
 
 In scalar context, the lines are delived into one string, which is
 faster because that's the way they are stored...
@@ -236,7 +237,7 @@ Examples:
  print $field->folded;
  print scalar $field->folded; # faster
 
-=item B<folded_body> [BODY] X<folded_body>
+=item B<foldedBody> [BODY] X<foldedBody>
 
 Returns the body as a set of lines. In scalar context, this will be one line
 containing newlines.  Be warned about the newlines when you do
@@ -274,7 +275,12 @@ place (without changing the folding stored inside the field).
 
 (Class or Instance method) Remove the I<comments> and I<folding white
 spaces> from the STRING.  Without string and only as instance method, the
-unfolded_body() is being stripped and returned.
+unfoldedBody() is being stripped and returned.
+
+WARNING: This operation is only allowed for structured header fields (which
+are defined by the various RFCs as being so.  You don't want parts within
+braces which are in the Subject header line to be removed, to give an
+example.
 
 =item B<toDate> [TIME] X<toDate>
 
@@ -304,7 +310,7 @@ See also Mail::Message::printUndisclosed()
 Returns the value which is related to this field as integer.  A check is
 performed whether this is right.
 
-=item B<unfolded_body> [BODY, [WRAP]] X<unfolded_body>
+=item B<unfoldedBody> [BODY, [WRAP]] X<unfoldedBody>
 
 Returns the body as one single line, where all folding information (if
 available) is removed.  This line will also NOT end on a new-line.
@@ -315,7 +321,7 @@ folding size.
 
 Examples:
 
- my $body = $field->unfolded_body;
+ my $body = $field->unfoldedBody;
  print "$field";   # via overloading
 
 =item B<wellformedName> [STRING] X<wellformedName>
@@ -382,7 +388,7 @@ Examples:
 
 The reverse of fold(): all lines which form the body of a field are
 joined into one by removing all line terminators (even the last).
-The blank at the beginning of the first line is removed as well.
+Possible leading blanks on the first line are removed as well.
 
 =back
 
@@ -463,7 +469,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.034.
+This code is beta, version 2.035.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::IMAP4;
-our $VERSION = 2.034;  # Part of Mail::Box
+our $VERSION = 2.035;  # Part of Mail::Box
 use base 'Mail::Transport::Receive';
 
 sub init($)
@@ -10,7 +10,7 @@ sub init($)
     $args->{via}    = 'imap4';
     $args->{port} ||= 143;
 
-    $self->SUPER::init($args);
+    $self->SUPER::init($args) or return;
 
     $self->{MTP_auth}    = $args->{authenticate} || 'AUTO';
     return unless $self->socket;   # establish connection

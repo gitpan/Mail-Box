@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Box::Locker::POSIX;
-our $VERSION = 2.034;  # Part of Mail::Box
+our $VERSION = 2.035;  # Part of Mail::Box
 use base 'Mail::Box::Locker';
 
 use POSIX;

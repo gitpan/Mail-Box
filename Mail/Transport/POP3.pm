@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::POP3;
-our $VERSION = 2.034;  # Part of Mail::Box
+our $VERSION = 2.035;  # Part of Mail::Box
 use base 'Mail::Transport::Receive';
 
 use IO::Socket  ();
@@ -13,7 +13,7 @@ sub init($)
     $args->{via}    = 'pop3';
     $args->{port} ||= 110;
 
-    $self->SUPER::init($args);
+    $self->SUPER::init($args) or return;
 
     $self->{MTP_auth}    = $args->{authenticate} || 'AUTO';
     return unless $self->socket;   # establish connection

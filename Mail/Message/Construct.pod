@@ -102,6 +102,8 @@ been constructed.  Together, they produce your message.
  attach               undef
  data                 undef
  file                 undef
+ files                []
+ head                 undef
 
 =over 4
 
@@ -137,6 +139,14 @@ to create a C<Mail::Message::Body>.
  file => \*MYINPUTFILE                   # file handle
  file => $in                             # IO::Handle
 
+=item B<files> =E<gt> ARRAY-OF-FILE X<build(files)>
+
+See option file, but then an array reference collection more of them.
+
+=item B<head> =E<gt> HEAD X<build(head)>
+
+Start with a prepared header, otherwise one is created.
+
 =back
 
 Examples:
@@ -153,12 +163,15 @@ Examples:
   , attach => $signature
   );
 
-=item B<buildFromBody> BODY, HEADERS X<buildFromBody>
+=item B<buildFromBody> BODY, [HEAD], HEADERS X<buildFromBody>
 
 (Class method)
 Shape a message around a BODY.  Bodies have information about their
 content in them, which is used to construct a header for the message.
-Next to that, more HEADERS can be specified.
+You may specify a HEAD object which is pre-initialized, or one is
+created for you (also when HEAD is C<undef>).
+Next to that, more HEADERS can be specified which are stored in that
+header.
 
 Header fields are added in order, and before the header lines as
 defined by the body are taken.  They may be supplied as key-value
@@ -881,7 +894,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.034.
+This code is beta, version 2.035.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

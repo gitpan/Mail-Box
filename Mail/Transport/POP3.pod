@@ -40,6 +40,7 @@ will return C<undef>.
 
  OPTION               DEFAULT
  authenticate         'AUTO'
+ executable           C<undef>
  hostname             'localhost'
  interval             30
  log                  'WARNINGS'
@@ -60,6 +61,10 @@ Authenthication method.  The standard defines two methods, named LOGIN and
 APOP.  The first sends the username and password in plain text to the server
 to get permission, the latter encrypts this data using MD5.  When AUTO is
 used, first APOP is tried, and then LOGIN.
+
+=item B<executable> =E<gt> FILENAME
+
+See Mail::Transport::new(executable)
 
 =item B<hostname> =E<gt> HOSTNAME|ARRAY-OF-HOSTNAMES
 
@@ -341,7 +346,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.034.
+This code is beta, version 2.035.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

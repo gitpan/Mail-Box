@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::TransferEnc::Base64;
-our $VERSION = 2.034;  # Part of Mail::Box
+our $VERSION = 2.035;  # Part of Mail::Box
 use base 'Mail::Message::TransferEnc';
 
 sub name() { 'base64' }
@@ -44,7 +44,7 @@ sub _decode_from_file($)
     my $in = $body->file || return;
 
     my @unpacked;
-    while($in->getline)
+    while($_ = $in->getline)
     {   tr|A-Za-z0-9+=/||cd;   # remove non-base64 chars
         next unless length;
 
@@ -55,6 +55,8 @@ sub _decode_from_file($)
 
         s/=+$//;               # remove padding
         tr|A-Za-z0-9+/| -_|;   # convert to uuencoded format
+        return unless length;
+
         push @unpacked, unpack 'u*', $_;
     }
     $in->close;
@@ -78,6 +80,8 @@ sub _decode_from_lines($)
 
         s/=+$//;               # remove padding
         tr|A-Za-z0-9+/| -_|;   # convert to uuencoded format
+        return unless length;
+
         push @unpacked, unpack 'u', (chr 32+length($_)*3/4).$_;
     }
 

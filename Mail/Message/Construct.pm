@@ -3,7 +3,7 @@ use strict;
 # file Mail::Message::Construct extends functionalities from Mail::Message
 
 package Mail::Message;
-our $VERSION = 2.034;  # Part of Mail::Box
+our $VERSION = 2.035;  # Part of Mail::Box
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -450,14 +450,13 @@ sub forwardPostlude()
 sub build(@)
 {   my $class = shift;
 
-    my $head  = Mail::Message::Head::Complete->new;
     my @parts
       = ! ref $_[0] ? ()
       : $_[0]->isa('Mail::Message')       ? shift
       : $_[0]->isa('Mail::Message::Body') ? shift
       :               ();
 
-    my @headerlines;
+    my ($head, @headerlines);
     while(@_)
     {   my $key = shift;
         if(ref $key && $key->isa('Mail::Message::Field'))
@@ -466,10 +465,14 @@ sub build(@)
         }
 
         my $value = shift;
-        if($key eq 'data')
+        if($key eq 'head')
+        {   $head = $value }
+        elsif($key eq 'data')
         {   push @parts, Mail::Message::Body->new(data => $value) }
         elsif($key eq 'file')
         {   push @parts, Mail::Message::Body->new(file => $value) }
+        elsif($key eq 'files')
+        {   push @parts, map {Mail::Message::Body->new(file => $_) } @$value }
         elsif($key eq 'attach')
         {   push @parts, ref $value eq 'ARRAY' ? @$value : $value }
         elsif($key =~ m/^[A-Z]/)
@@ -478,21 +481,25 @@ sub build(@)
         {   croak "Skipped unknown key $key in build." }
     }
 
-    my $message = $class->new(head => $head);
-
     my $body
        = @parts==0 ? Mail::Message::Body::Lines->new()
        : @parts==1 ? $parts[0]
        : Mail::Message::Body::Multipart->new(parts => \@parts);
 
-    $class->buildFromBody($body, @headerlines);
+    $class->buildFromBody($body, $head, @headerlines);
 }
 
 sub buildFromBody(@)
 {   my ($class, $body) = (shift, shift);
     my @log     = $body->logSettings;
 
-    my $head    = Mail::Message::Head::Complete->new(@log);
+    my $head;
+    if(ref $_[0] && $_[0]->isa('Mail::Message::Head')) { $head = shift }
+    else
+    {   shift unless defined $_[0];   # undef as head
+        $head = Mail::Message::Head::Complete->new(@log);
+    }
+
     while(@_)
     {   if(ref $_[0]) {$head->add(shift)}
         else          {$head->add(shift, shift)}

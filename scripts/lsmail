@@ -1,12 +1,10 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 use strict;
-use lib '.';
+use warnings;
+
+use lib '.', '..';
 use Mail::Box::Manager;
-
-my $VERSION = '2.019';
-
-Mail::Box->VERSION($VERSION);
 
 =head1 NAME
 

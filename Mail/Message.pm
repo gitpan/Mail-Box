@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message;
-our $VERSION = 2.034;  # Part of Mail::Box
+our $VERSION = 2.035;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -149,19 +149,19 @@ sub print(;$)
 my $default_mailer;
 
 sub send(@)
-{   my $self   = shift;
+{   my ($self, @options) = @_;
 
     require Mail::Transport::Send;
 
     my $mailer
        = ref $_[0] && $_[0]->isa('Mail::Transport::Send') ? shift
-       : defined $default_mailer  ? $default_mailer
-       : ($default_mailer = Mail::Transport->new(@_));
+       : !@options && defined $default_mailer             ? $default_mailer
+       : ($default_mailer = Mail::Transport::Send->new(@options));
 
     $self->log(ERROR => "No mailer found"), return
         unless defined $mailer;
 
-    $mailer->send($self, @_);
+    $mailer->send($self, @options);
 }
 
 sub size()

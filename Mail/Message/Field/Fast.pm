@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Field::Fast;
-our $VERSION = 2.034;  # Part of Mail::Box
+our $VERSION = 2.035;  # Part of Mail::Box
 use base 'Mail::Message::Field';
 
 use Carp;
@@ -46,12 +46,12 @@ sub folded()
     return $self->[0].':'.$self->[1]
         unless wantarray;
 
-    my @lines = $self->folded_body;
+    my @lines = $self->foldedBody;
     my $first = $self->[0]. ':'. shift @lines;
     ($first, @lines);
 }
 
-sub unfolded_body($;@)
+sub unfoldedBody($;@)
 {   my $self = shift;
 
     $self->[1] = $self->fold($self->[0], @_)
@@ -60,7 +60,7 @@ sub unfolded_body($;@)
     $self->unfold($self->[1]);
 }
 
-sub folded_body($)
+sub foldedBody($)
 {   my ($self, $body) = @_;
     if(@_==2) { $self->[1] = $body }
     else      { $body = $self->[1] }

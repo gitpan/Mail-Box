@@ -35,7 +35,7 @@ C<sendmail>, C<mail>, or other programs on the local host.
 =item B<new> OPTIONS X<new>
 
  OPTION               DEFAULT
- debug                <false>
+ executable           C<undef>
  helo_domain          <from Net::Config>
  hostname             <from Net::Config>
  interval             30
@@ -44,6 +44,7 @@ C<sendmail>, C<mail>, or other programs on the local host.
  port                 25
  proxy                <from Net::Config>
  retry                <false>
+ smtp_debug           <false>
  timeout              120
  trace                'WARNINGS'
  username             undef
@@ -51,10 +52,9 @@ C<sendmail>, C<mail>, or other programs on the local host.
 
 =over 4
 
-=item B<debug> =E<gt> BOOLEAN X<new(debug)>
+=item B<executable> =E<gt> FILENAME
 
-Simulate transmission: the SMTP protocol output will be sent to your
-screen.
+See Mail::Transport::new(executable)
 
 =item B<helo_domain> =E<gt> HOST X<new(helo_domain)>
 
@@ -92,6 +92,11 @@ See Mail::Transport::new(proxy)
 =item B<retry> =E<gt> NUMBER|undef
 
 See Mail::Transport::new(retry)
+
+=item B<smtp_debug> =E<gt> BOOLEAN X<new(smtp_debug)>
+
+Simulate transmission: the SMTP protocol output will be sent to your
+screen.
 
 =item B<timeout> =E<gt> SECONDS X<new(timeout)>
 
@@ -280,7 +285,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.034.
+This code is beta, version 2.035.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

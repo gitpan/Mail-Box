@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::Mailx;
-our $VERSION = 2.034;  # Part of Mail::Box
+our $VERSION = 2.035;  # Part of Mail::Box
 use base 'Mail::Transport::Send';
 
 use Carp;
@@ -12,7 +12,7 @@ sub init($)
 
     $args->{via} = 'mailx';
 
-    $self->SUPER::init($args);
+    $self->SUPER::init($args) or return;
 
     $self->{MTM_program}
       = $args->{proxy}

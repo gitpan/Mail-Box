@@ -160,9 +160,9 @@ See Mail::Message::Field::dateToTimestamp()
 
 See Mail::Message::Field::folded()
 
-=item B<folded_body> [BODY]
+=item B<foldedBody> [BODY]
 
-See Mail::Message::Field::folded_body()
+See Mail::Message::Field::foldedBody()
 
 =item B<name> 
 
@@ -200,9 +200,9 @@ See Mail::Message::Field::toDisclose()
 
 See Mail::Message::Field::toInt()
 
-=item B<unfolded_body> [BODY, [WRAP]]
+=item B<unfoldedBody> [BODY, [WRAP]]
 
-See Mail::Message::Field::unfolded_body()
+See Mail::Message::Field::unfoldedBody()
 
 =item B<wellformedName> [STRING]
 
@@ -313,7 +313,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.034.
+This code is beta, version 2.035.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

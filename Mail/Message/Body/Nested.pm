@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Nested;
-our $VERSION = 2.034;  # Part of Mail::Box
+our $VERSION = 2.035;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -36,7 +36,7 @@ sub init($)
 
 sub isNested() {1}
 
-sub isBinary() {shift->nested->isBinary}
+sub isBinary() {shift->nested->body->isBinary}
 
 sub clone()
 {   my $self     = shift;
@@ -112,12 +112,12 @@ sub encoded() { shift->forNested( sub {$_[1]->encoded} ) }
 sub read($$$$)
 {   my ($self, $parser, $head, $bodytype) = @_;
 
-    my $raw = Mail::Message->new;
-    $raw->readFromParser($parser, $bodytype)
+    my $nest = Mail::Message::Part->new(container => undef);
+    $nest->readFromParser($parser, $bodytype)
        or return;
 
-    my $cooked = Mail::Message::Part->coerce($raw, $self);
-    $self->{MMBN_nested} = $cooked;
+    $nest->container($self);
+    $self->{MMBN_nested} = $nest;
     $self;
 }
 

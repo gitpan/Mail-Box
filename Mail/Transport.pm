@@ -2,19 +2,21 @@ use strict;
 use warnings;
 
 package Mail::Transport;
-our $VERSION = 2.034;  # Part of Mail::Box
+our $VERSION = 2.035;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
 use File::Spec;
 
 my %mailers =
- ( mail     => 'Mail::Transport::Mailx'
- , mailx    => 'Mail::Transport::Mailx'
- , sendmail => 'Mail::Transport::Sendmail'
- , smtp     => 'Mail::Transport::SMTP'
- , pop      => 'Mail::Transport::POP3'
- , pop3     => 'Mail::Transport::POP3'
+ ( exim     => '::Exim'
+ , mail     => '::Mailx'
+ , mailx    => '::Mailx'
+ , pop      => '::POP3'
+ , pop3     => '::POP3'
+ , qmail    => '::Qmail'
+ , sendmail => '::Sendmail'
+ , smtp     => '::SMTP'
  );
 
 sub new(@)
@@ -29,9 +31,10 @@ sub new(@)
 
     my %args  = @_;
     my $via   = lc($args{via} || '')
-        or croak "No transport protocol provided.\n";
+        or croak "No transport protocol provided";
 
-    $via      = $mailers{$via} if exists $mailers{$via};
+    $via      = 'Mail::Transport'.$mailers{$via}
+       if exists $mailers{$via};
 
     eval "require $via";
     return undef if $@;
@@ -55,6 +58,19 @@ sub init($)
     $self->{MT_timeout}  = $args->{timeout}  || 120;
     $self->{MT_proxy}    = $args->{proxy};
 
+    if(my $exec = $args->{executable})
+    {   $self->{MT_exec} = $exec;
+
+        $self->log(WARNING
+                    => "Avoid program abuse with an absolute path for $exec.")
+           unless File::Spec->file_name_is_absolute($exec);
+
+        unless(-x $exec)
+        {   $self->log(WARNING => "Executable $exec does not exist.");
+            return undef;
+        }
+    }
+
     $self;
 }
 
@@ -68,13 +84,16 @@ sub retry()
     @$self{ qw/MT_interval MT_retry MT_timeout/ };
 }
 
-my @safe_directories = qw(/usr/local/bin /usr/bin /bin
-   /sbin /usr/sbin /usr/lib);
+my @safe_directories
+   = qw(/usr/local/bin /usr/bin /bin /sbin /usr/sbin /usr/lib);
 
 sub findBinary($@)
 {   my ($self, $name) = (shift, shift);
 
-    foreach (@safe_directories, @_)
+    return $self->{MT_exec}
+        if exists $self->{MT_exec};
+
+    foreach (@_, @safe_directories)
     {   my $fullname = File::Spec->catfile($_, $name);
         return $fullname if -x $fullname;
     }
