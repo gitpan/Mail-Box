@@ -4,37 +4,26 @@ use warnings;
 
 package Mail::Box::Message;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Message';
 
 use Date::Parse;
 use Scalar::Util 'weaken';
 
 
+#-------------------------------------------
+
+
 sub init($)
 {   my ($self, $args) = @_;
     $self->SUPER::init($args);
 
-    $self->{MBM_body_type}  = $args->{body_type}
-        if exists $args->{body_type};
-
-    $self->{MBM_folder}     = $args->{folder};
+    $self->{MBM_body_type} = $args->{body_type};
+    $self->{MBM_folder}    = $args->{folder};
     weaken($self->{MBM_folder});
 
     return $self if $self->isDummy;
-
     $self;
-}
-
-#-------------------------------------------
-
-
-sub coerce($)
-{   my ($class, $message) = @_;
-    return bless $message, $class
-        if $message->isa(__PACKAGE__);
-
-    $class->SUPER::coerce($message);
 }
 
 #-------------------------------------------
@@ -88,17 +77,23 @@ sub seqnr(;$)
 #-------------------------------------------
 
 
-sub copyTo($)
-{   my ($self, $folder) = @_;
-    $folder->addMessage($self->clone);
+sub copyTo($@)
+{   my ($self, $folder) = (shift, shift);
+    my $clone = $self->clone(@_);
+
+    $folder->addMessage($clone);
 }
 
 #-------------------------------------------
 
 
-sub moveTo($)
-{   my ($self, $folder) = @_;
-    my $added = $folder->addMessage($self->clone);
+sub moveTo($@)
+{   my ($self, $folder, %args) = @_;
+
+    $args{share} = 1
+         unless exists $args{share} || exists $args{shallow_body};
+
+    my $added = $folder->copyTo($folder, %args);
     $self->label(deleted => 1);
     $added;
 }

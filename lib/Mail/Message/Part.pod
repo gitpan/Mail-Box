@@ -52,25 +52,11 @@ a leading C<gt>.  See L<Mail::Message::Body::printEscapedFrom()|Mail::Message::B
 =head2 Constructors
 
 
-$obj-E<gt>B<clone>
+$obj-E<gt>B<clone>(OPTIONS)
 
 =over 4
 
 See L<Mail::Message/"Constructors">
-
-=back
-
-Mail::Message::Part-E<gt>B<coerce>(BODY|MESSAGE, MULTIPART, HEADERS)
-
-=over 4
-
-Transforms a BODY or MESSAGE to a real message part.  The MULTIPART
-refers to the parental body.
-
-When ta BODY is specified, extra HEADERS can be supplied as well.
-Bodies are coerced into message parts by calling L<buildFromBody()|Mail::Message::Part/"METHODS">.
-If you specify a MESSAGE residing in a folder, this message will
-automatically be cloned.
 
 =back
 
@@ -272,14 +258,14 @@ See L<Mail::Message::Construct::Reply/"Constructing a message">
 
 =back
 
-=head2 The Message
+=head2 The message
 
 
 $obj-E<gt>B<container>
 
 =over 4
 
-See L<Mail::Message/"The Message">
+See L<Mail::Message/"The message">
 
 =back
 
@@ -287,7 +273,7 @@ $obj-E<gt>B<isDummy>
 
 =over 4
 
-See L<Mail::Message/"The Message">
+See L<Mail::Message/"The message">
 
 =back
 
@@ -295,7 +281,7 @@ $obj-E<gt>B<isPart>
 
 =over 4
 
-See L<Mail::Message/"The Message">
+See L<Mail::Message/"The message">
 
 =back
 
@@ -303,7 +289,7 @@ $obj-E<gt>B<messageId>
 
 =over 4
 
-See L<Mail::Message/"The Message">
+See L<Mail::Message/"The message">
 
 =back
 
@@ -311,7 +297,7 @@ $obj-E<gt>B<print>([FILEHANDLE])
 
 =over 4
 
-See L<Mail::Message/"The Message">
+See L<Mail::Message/"The message">
 
 =back
 
@@ -319,7 +305,7 @@ $obj-E<gt>B<send>([MAILER], OPTIONS)
 
 =over 4
 
-See L<Mail::Message/"The Message">
+See L<Mail::Message/"The message">
 
 =back
 
@@ -327,7 +313,7 @@ $obj-E<gt>B<size>
 
 =over 4
 
-See L<Mail::Message/"The Message">
+See L<Mail::Message/"The message">
 
 =back
 
@@ -335,7 +321,7 @@ $obj-E<gt>B<toplevel>
 
 =over 4
 
-See L<Mail::Message/"The Message">
+See L<Mail::Message/"The message">
 
 =back
 
@@ -343,7 +329,7 @@ $obj-E<gt>B<write>([FILEHANDLE])
 
 =over 4
 
-See L<Mail::Message/"The Message">
+See L<Mail::Message/"The message">
 
 =back
 
@@ -626,6 +612,28 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 =head2 Internals
 
 
+$obj-E<gt>B<clonedFrom>
+
+=over 4
+
+See L<Mail::Message/"Internals">
+
+=back
+
+Mail::Message::Part-E<gt>B<coerce>(BODY|MESSAGE, MULTIPART, HEADERS)
+
+=over 4
+
+Transforms a BODY or MESSAGE to a real message part.  The MULTIPART
+refers to the parental body.
+
+When ta BODY is specified, extra HEADERS can be supplied as well.
+Bodies are coerced into message parts by calling L<buildFromBody()|Mail::Message::Part/"METHODS">.
+If you specify a MESSAGE residing in a folder, this message will
+automatically be cloned.
+
+=back
+
 $obj-E<gt>B<isDelayed>
 
 =over 4
@@ -701,9 +709,9 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Message::Part-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+Mail::Message::Part-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -855,9 +863,17 @@ If a forward message is created, a destination address must be specified.
 
 I<Error:> No default mailer found to send message.
 
-The message L<send()|Mail::Message/"The Message"> mechanism had not enough information to automatically
+The message L<send()|Mail::Message/"The message"> mechanism had not enough information to automatically
 find a mail transfer agent to sent this message.  Specify a mailer
 explicitly using the C<via> options.
+
+I<Error:> Only build() Mail::Message's; they are not in a folder yet
+
+You may wish to construct a message to be stored in a some kind
+of folder, but you need to do that in two steps.  First, create a
+normal L<Mail::Message|Mail::Message>, and then add it to the folder.  During this
+L<Mail::Box::addMessage()|Mail::Box/"The folder"> process, the message will get L<coerce()|Mail::Message::Part/"METHODS">-d
+into the right message type, adding storage information and the like.
 
 I<Error:> Package $package does not implement $method.
 
@@ -895,7 +911,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

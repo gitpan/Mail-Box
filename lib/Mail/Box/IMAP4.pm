@@ -4,12 +4,11 @@ use warnings;
 
 package Mail::Box::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Box::Net';
 
 use Mail::Box::IMAP4::Message;
 use Mail::Box::IMAP4::Head;
-use Mail::Box::IMAP4::Fetch;
 use Mail::Transport::IMAP4;
 
 use Mail::Box::Parser::Perl;
@@ -45,7 +44,7 @@ sub init($)
     my $transport = $args->{transporter} || 'Mail::Transport::IMAP4';
     unless(ref $transport)
     {   eval "require $transport";
-        $self->log(ERROR => "Cannot install transporter $transport:\n$@\n"),
+        $self->log(ERROR => "Cannot install transporter $transport:\n$@"),
            return () if $@;
 
         $transport = $self->createTransporter($transport, %$args)
@@ -104,10 +103,7 @@ sub listSubFolders(@)
 
 #-------------------------------------------
 
-sub nameOfSubfolder($)
-{   my ($self, $name) = @_;
-    $name;
-}
+sub nameOfSubfolder($;$) { $_[1] }
 
 #-------------------------------------------
 
@@ -244,6 +240,15 @@ sub write(@)
     else { $imap->destroyDeleted }
 
     $self;
+}
+
+#-------------------------------------------
+
+sub delete(@)
+{   my $self   = shift;
+    my $transp = $self->transporter;
+    $self->SUPER::delete(@_);   # subfolders
+    $transp->deleteFolder($self->name);
 }
 
 #-------------------------------------------

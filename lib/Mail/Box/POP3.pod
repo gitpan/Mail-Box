@@ -61,22 +61,6 @@ See L<Mail::Box/"OVERLOADED">
 =head2 Constructors
 
 
-$obj-E<gt>B<create>(FOLDER, OPTIONS)
-
-Mail::Box::POP3-E<gt>B<create>(FOLDER, OPTIONS)
-
-=over 4
-
-It is not possible to create a new folder on a POP3 server.  This method
-will always return C<false>.
-
- Option     Defined in    Default   
- folderdir  L<Mail::Box>  <not used>
-
-. folderdir DIRECTORY
-
-=back
-
 Mail::Box::POP3-E<gt>B<new>(OPTIONS)
 
 =over 4
@@ -225,6 +209,11 @@ implemented (yet, patches welcome).
 C<undef> is returned, and an error displayed.  However, no complaint is
 given when the MESSAGE is C<undef> itself.
 
+ Option  Defined in    Default   
+ share   L<Mail::Box>  <not used>
+
+. share BOOLEAN
+
 =back
 
 $obj-E<gt>B<addMessages>(MESSAGES)
@@ -260,13 +249,18 @@ See L<Mail::Box/"The folder">
 
 =back
 
-$obj-E<gt>B<delete>
+$obj-E<gt>B<delete>(OPTIONS)
 
 =over 4
 
 It is not possible to delete a POP3 folder remotely: the best we can do
 is remove all the messages in it... which is the action implemented here.
 A notice is logged about this.
+
+ Option     Defined in    Default   
+ recursive  L<Mail::Box>  <not used>
+
+. recursive BOOLEAN
 
 =back
 
@@ -275,14 +269,6 @@ $obj-E<gt>B<folderdir>([DIRECTORY])
 =over 4
 
 See L<Mail::Box::Net/"METHODS">
-
-=back
-
-Mail::Box::POP3-E<gt>B<foundIn>([FOLDERNAME], OPTIONS)
-
-=over 4
-
-See L<Mail::Box/"The folder">
 
 =back
 
@@ -336,6 +322,14 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
+
+$obj-E<gt>B<access>
+
+=over 4
+
+See L<Mail::Box/"Folder flags">
+
+=back
 
 $obj-E<gt>B<isModified>
 
@@ -440,11 +434,11 @@ Mail::Box::POP3-E<gt>B<listSubFolders>(OPTIONS)
 The standard POP3 protocol does not support sub-folders, so an
 empty list will be returned in any case.
 
- Option      Defined in       Default      
- check       L<Mail::Box>     <false>      
- folder      L<Mail::Box>     <required>   
- folderdir   L<Mail::Box>     <from folder>
- skip_empty  L<Mail::Box>     <false>      
+ Option      Defined in       Default              
+ check       L<Mail::Box>     <false>              
+ folder      L<Mail::Box>     <from calling object>
+ folderdir   L<Mail::Box>     <from folder>        
+ skip_empty  L<Mail::Box>     <false>              
 
 . check BOOLEAN
 
@@ -456,7 +450,9 @@ empty list will be returned in any case.
 
 =back
 
-$obj-E<gt>B<nameOfSubFolder>(NAME)
+$obj-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
+
+Mail::Box::POP3-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
 
 =over 4
 
@@ -482,10 +478,20 @@ is returned to indicate a failure.
 
 =back
 
+$obj-E<gt>B<topFolderWithMessages>
+
+Mail::Box::POP3-E<gt>B<topFolderWithMessages>
+
+=over 4
+
+See L<Mail::Box/"Sub-folders">
+
+=back
+
 =head2 Internals
 
 
-$obj-E<gt>B<coerce>(MESSAGE)
+$obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
 
 =over 4
 
@@ -493,7 +499,31 @@ See L<Mail::Box/"Internals">
 
 =back
 
+$obj-E<gt>B<create>(FOLDER, OPTIONS)
+
+Mail::Box::POP3-E<gt>B<create>(FOLDER, OPTIONS)
+
+=over 4
+
+It is not possible to create a new folder on a POP3 server.  This method
+will always return C<false>.
+
+ Option     Defined in    Default   
+ folderdir  L<Mail::Box>  <not used>
+
+. folderdir DIRECTORY
+
+=back
+
 $obj-E<gt>B<determineBodyType>(MESSAGE, HEAD)
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+Mail::Box::POP3-E<gt>B<foundIn>([FOLDERNAME], OPTIONS)
 
 =over 4
 
@@ -640,9 +670,9 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Box::POP3-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+Mail::Box::POP3-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -749,12 +779,6 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Notice:> A POP3 folder cannot be deleted: it will be emptied.
-
-Each user has only one POP3 folder on a server.  This folder is created and
-deleted by the server's administrator only.  A delete can only remove the
-messages in the folder for you.
-
 I<Error:> Cannot create POP3 client for $name.
 
 The connection to the POP3 server cannot be established.  You may see
@@ -817,6 +841,11 @@ According to the RFCs, message-ids need to contain a unique random part,
 then an C<@>, and then a domain name.  This is made to avoid the creation
 of two messages with the same id.  The warning emerges when the C<@> is
 missing from the string.
+
+I<Warning:> POP3 folders cannot be deleted.
+
+Each user has only one POP3 folder on a server.  This folder is created and
+deleted by the server's administrator only.
 
 I<Error:> Package $package does not implement $method.
 
@@ -886,7 +915,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

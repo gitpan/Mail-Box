@@ -34,7 +34,7 @@ take a look at L<Mail::Message::Body::Multipart|Mail::Message::Body::Multipart>.
 
 The message-parts will be coerced into a L<Mail::Message::Part|Mail::Message::Part>, so you
 may attach Mail::Internet or MIME::Entity objects if you want --see
-L<Mail::Message::coerce()|Mail::Message/"Constructors">.  A new body with attached messages is
+L<Mail::Message::coerce()|Mail::Message/"Internals">.  A new body with attached messages is
 returned.
 
 I<Example:> 
@@ -181,7 +181,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

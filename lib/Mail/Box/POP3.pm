@@ -1,7 +1,7 @@
 
 package Mail::Box::POP3;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Box::Net';
 
 use strict;
@@ -89,13 +89,10 @@ sub close()
 #-------------------------------------------
 
 
-sub delete()
+sub delete(@)
 {   my $self = shift;
-    $self->log(NOTICE =>
-        "A POP3 folder cannot be deleted: it will be emptied.");
-
-    $_->label(deleted => 1) foreach $self->messages;
-    $self;
+    $self->log(WARNING => "POP3 folders cannot be deleted.");
+    undef;
 }
 
 #-------------------------------------------
@@ -107,6 +104,10 @@ sub listSubFolders(@) { () }     # no
 
 
 sub openSubFolder($@) { undef }  # fails
+
+#-------------------------------------------
+
+sub topFolderWithMessages() { 1 }  # Yes: only top folder
 
 #-------------------------------------------
 

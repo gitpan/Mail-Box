@@ -2,15 +2,16 @@
 use strict;
 package Mail::Box::Maildir;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
 
 use Carp;
-use File::Copy;
+use File::Copy     'move';
 use File::Basename 'basename';
-use Sys::Hostname;
+use Sys::Hostname  'hostname';
+use File::Remove   'remove';
 
 # Maildir is only supported on UNIX, because the filenames probably
 # do not work on other platforms.  Since MailBox 2.052, the use of
@@ -131,14 +132,18 @@ sub openSubFolder($@)
 
 #-------------------------------------------
 
+sub topFolderWithMessages() { 1 }
+
+#-------------------------------------------
+
 my $uniq = rand 1000;
 
 
 sub coerce($)
-{   my ($self, $message) = @_;
+{   my ($self, $message) = (shift, shift);
 
     my $is_native = $message->isa('Mail::Box::Maildir::Message');
-    my $coerced   = $self->SUPER::coerce($message);
+    my $coerced   = $self->SUPER::coerce($message, @_);
 
     my $basename  = $is_native ? basename($message->filename)
       : ($message->timestamp || time) .'.'. hostname .'.'. $uniq++;
@@ -161,19 +166,19 @@ sub coerce($)
 sub createDirs($)
 {   my ($thing, $dir) = @_;
 
-    $thing->log(ERROR => "Cannot create Maildir folder directory $dir: $!\n"), return
+    $thing->log(ERROR => "Cannot create Maildir folder directory $dir: $!"), return
         unless -d $dir || mkdir $dir;
 
     my $tmp = "$dir/tmp";
-    $thing->log(ERROR => "Cannot create Maildir folder subdir $tmp: $!\n"), return
+    $thing->log(ERROR => "Cannot create Maildir folder subdir $tmp: $!"), return
         unless -d $tmp || mkdir $tmp;
 
     my $new = "$dir/new";
-    $thing->log(ERROR => "Cannot create Maildir folder subdir $new: $!\n"), return
+    $thing->log(ERROR => "Cannot create Maildir folder subdir $new: $!"), return
         unless -d $new || mkdir $new;
 
     my $cur = "$dir/cur";
-    $thing->log(ERROR =>  "Cannot create Maildir folder subdir $cur: $!\n"), return
+    $thing->log(ERROR =>  "Cannot create Maildir folder subdir $cur: $!"), return
         unless -d $cur || mkdir $cur;
 
     $thing;
@@ -208,6 +213,15 @@ sub folderIsEmpty($)
 
     closedir DIR;
     1;
+}
+
+#-------------------------------------------
+
+sub delete(@)
+{   my $self = shift;
+
+    # Subfolders are not nested in the directory structure
+    remove \1, $self->directory;
 }
 
 #-------------------------------------------
@@ -354,12 +368,20 @@ sub appendMessages(@)
     croak "Cannot create directory $tmpdir: $!", return
         unless -d $tmpdir || mkdir $tmpdir;
 
-    foreach my $message (@messages)
-    {   my $is_native = $message->isa('Mail::Box::Maildir::Message');
-        my $coerced   = $self->SUPER::coerce($message);
+    my $msgtype  = $args{message_type} || 'Mail::Box::Maildir::Message';
 
-        my $basename  = $is_native ? basename($message->filename)
-         : ($message->timestamp || time) .'.'. hostname .'.'. $uniq++;
+    foreach my $message (@messages)
+    {   my $is_native = $message->isa($msgtype);
+        my ($basename, $coerced);
+
+        if($is_native)
+        {   $coerced  = $message;
+            $basename = basename $message->filename;
+        }
+        else
+        {   $coerced  = $self->SUPER::coerce($message);
+            $basename = ($message->timestamp||time).'.'. hostname.'.'.$uniq++;
+        }
 
        my $dir = $self->directory;
        my $tmp = "$dir/tmp/$basename";

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -15,6 +15,7 @@ use Mail::Message::Body::Multipart;
 use Mail::Message::Body::Nested;
 
 use Carp;
+use Scalar::Util   'weaken';
 
 
 our $crlf_platform;
@@ -65,61 +66,23 @@ sub init($)
 #------------------------------------------
 
 
-my $mail_internet_converter;
-my $mime_entity_converter;
-
-sub coerce($)
-{   my ($class, $message) = @_;
-
-    return bless $message, $class
-        if $message->isa(__PACKAGE__);
-
-    if($message->isa('MIME::Entity'))
-    {   unless($mime_entity_converter)
-        {   eval {require Mail::Message::Convert::MimeEntity};
-                confess "Install MIME::Entity" if $@;
-
-            $mime_entity_converter = Mail::Message::Convert::MimeEntity->new;
-        }
-
-        $message = $mime_entity_converter->from($message)
-            or return;
-    }
-
-    elsif($message->isa('Mail::Internet'))
-    {   unless($mail_internet_converter)
-        {   eval {require Mail::Message::Convert::MailInternet};
-            confess "Install Mail::Internet" if $@;
-
-           $mail_internet_converter = Mail::Message::Convert::MailInternet->new;
-        }
-
-        $message = $mail_internet_converter->from($message)
-            or return;
-    }
-
-    else
-    {   my $what = ref $message ? 'a'.ref($message).' object' : 'text';
-        confess "Cannot coerce $what into a ". __PACKAGE__." object.\n";
-    }
-
-    $message->{MM_modified}  ||= 0;
-    bless $message, $class;
-}
-
-#------------------------------------------
-
-
-sub clone()
-{   my $self  = shift;
+sub clone(@)
+{   my ($self, %args) = @_;
 
     # First clone body, which may trigger head load as well.  If head is
     # triggered first, then it may be decided to be lazy on the body at
     # moment.  And then the body would be triggered.
 
+    my ($head, $body) = ($self->head, $self->body);
+    $head = $head->clone
+       unless $args{shallow} || $args{shallow_head};
+
+    $body = $body->clone
+       unless $args{shallow} || $args{shallow_body};
+
     my $clone = Mail::Message->new
-     ( body  => $self->body->clone
-     , head  => $self->head->clone
+     ( head  => $head
+     , body  => $body
      , $self->logSettings
      );
 
@@ -128,6 +91,10 @@ sub clone()
     delete $labels{deleted};
 
     $clone->{MM_labels} = \%labels;
+
+    $clone->{MM_cloned} = $self;
+    weaken($clone->{MM_cloned});
+
     $clone;
 }
 
@@ -571,6 +538,56 @@ sub statusToLabels()
 
 
 #------------------------------------------
+
+
+my $mail_internet_converter;
+my $mime_entity_converter;
+
+sub coerce($@)
+{   my ($class, $message) = @_;
+
+    return bless $message, $class
+        if $message->isa(__PACKAGE__);
+
+    if($message->isa('MIME::Entity'))
+    {   unless($mime_entity_converter)
+        {   eval {require Mail::Message::Convert::MimeEntity};
+                confess "Install MIME::Entity" if $@;
+
+            $mime_entity_converter = Mail::Message::Convert::MimeEntity->new;
+        }
+
+        $message = $mime_entity_converter->from($message)
+            or return;
+    }
+
+    elsif($message->isa('Mail::Internet'))
+    {   unless($mail_internet_converter)
+        {   eval {require Mail::Message::Convert::MailInternet};
+            confess "Install Mail::Internet" if $@;
+
+           $mail_internet_converter = Mail::Message::Convert::MailInternet->new;
+        }
+
+        $message = $mail_internet_converter->from($message)
+            or return;
+    }
+
+    else
+    {   my $what = ref $message ? 'a'.ref($message).' object' : 'text';
+        confess "Cannot coerce $what into a ". __PACKAGE__." object.\n";
+    }
+
+    $message->{MM_modified}  ||= 0;
+    bless $message, $class;
+}
+
+#------------------------------------------
+
+
+sub clonedFrom() { shift->{MM_cloned} }
+
+#------------------------------------------
 # All next routines try to create compatibility with release < 2.0
 sub isParsed()   { not shift->isDelayed }
 sub headIsRead() { not shift->head->isa('Mail::Message::Delayed') }
@@ -659,7 +676,7 @@ sub readBody($$;$$)
     $body->read
       ( $parser, $head, $getbodytype,
       , $size, (defined $lines ? int $lines->body : undef)
-      ) or return;
+      );
 }
 
 #------------------------------------------

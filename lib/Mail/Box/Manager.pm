@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Box::Manager;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Reporter';
 
 use Mail::Box;
@@ -47,11 +47,11 @@ sub init($)
     $self->{MBM_folder_types} = [];
     $self->registerType(@$_) foreach @new_types, @basic_types;
 
-    $self->{MBM_default_type} = $args->{default_folder_type};
+    $self->{MBM_default_type} = $args->{default_folder_type} || 'mbox';
 
     # Inventory on existing folder-directories.
 
-    $self->{MBM_folderdirs} = [ '.' ];
+    $self->{MBM_folderdirs} = [ ];
     if(exists $args->{folderdir})
     {   my @dirs = $args->{folderdir};
         @dirs = @{$dirs[0]} if ref $dirs[0];
@@ -63,6 +63,7 @@ sub init($)
         @dirs = @{$dirs[0]} if ref $dirs[0];
         push @{$self->{MBM_folderdirs}}, @dirs;
     }
+    push @{$self->{MBM_folderdirs}}, '.';
 
     $self->{MBM_folders} = [];
     $self->{MBM_threads} = [];
@@ -85,6 +86,14 @@ sub registerType($$@)
 #-------------------------------------------
 
 
+sub folderdir()
+{   my $dirs = shift->{MBM_folderdirs} or return ();
+    wantarray ? @$dirs : $dirs->[0];
+}
+
+#-------------------------------------------
+
+
 sub folderTypes()
 {   my $self = shift;
     my %uniq;
@@ -92,6 +101,20 @@ sub folderTypes()
     sort keys %uniq;
 }
 
+#-------------------------------------------
+
+
+sub defaultFolderType()
+{   my $self = shift;
+    my $name = $self->{MBM_default_type};
+    return $name if $name =~ m/\:\:/;  # obviously a class name
+
+    foreach my $def (@{$self->{MBM_folder_types}})
+    {   return $def->[1] if $def->[0] eq $name || $def->[1] eq $name;
+    }
+
+    undef;
+}
 
 #-------------------------------------------
 
@@ -127,7 +150,7 @@ sub open(@)
     }
 
     unless(defined $name && length $name)
-    {   $self->log(ERROR => "No foldername specified to open.\n");
+    {   $self->log(ERROR => "No foldername specified to open.");
         return undef;
     }
         
@@ -144,7 +167,7 @@ sub open(@)
 
     # Do not open twice.
     if(my $folder = $self->isOpenFolder($name))
-    {   $self->log(WARNING => "Folder $name is already open.\n");
+    {   $self->log(ERROR => "Folder $name is already open.");
         return undef;
     }
 
@@ -212,7 +235,9 @@ sub open(@)
     my $folder = $class->new(@defaults, %args);
 
     unless(defined $folder)
-    {   $self->log(WARNING =>"Folder does not exist, failed opening $folder_type folder $name.");
+    {   $self->log(WARNING =>
+           "Folder does not exist, failed opening $folder_type folder $name.")
+           unless $args{to_delete};
         return;
     }
 
@@ -269,9 +294,13 @@ END {map {defined $_ && $_->closeAllFolders} @managers}
 
 
 sub delete($@)
-{   my ($self, $name, @options) = @_;
-    my $folder = $self->open(folder => $name, @options) or return;
-    $folder->delete;
+{   my ($self, $name, %args) = @_;
+    my $recurse = delete $args{recursive};
+
+    my $folder = $self->open(folder => $name, access => 'd', %args)
+        or return $self;  # still successful
+
+    $folder->delete(recursive => $recurse);
 }
 
 #-------------------------------------------
@@ -373,8 +402,9 @@ sub copyMessage(@)
         push @messages, $message;
     }
 
-    my %options = @_;
-    $folder ||= $options{folder};
+    my %args = @_;
+    $folder ||= $args{folder};
+    my $share   = exists $args{share} ? $args{share} : $args{_delete};
 
     # Try to resolve filenames into opened-files.
     $folder = $self->isOpenFolder($folder) || $folder
@@ -382,11 +412,11 @@ sub copyMessage(@)
 
     my @coerced
      = ref $folder
-     ? map {$_->copyTo($folder)} @messages
-     : $self->appendMessages(@messages, %options, folder => $folder);
+     ? map {$_->copyTo($folder, share => $args{share})} @messages
+     : $self->appendMessages(@messages, %args, folder => $folder);
 
     # hidden option, do not use it: it's designed to optimize moveMessage
-    if($options{_delete})
+    if($args{_delete})
     {   $_->label(deleted => 1) foreach @messages;
     }
 
@@ -424,7 +454,7 @@ sub threads(@)
        :                           $folders
        );
 
-    $self->log(INTERNAL => "No folders specified.\n")
+    $self->log(INTERNAL => "No folders specified.")
        unless @folders;
 
     my $threads;
@@ -501,6 +531,7 @@ sub decodeFolderURL($)
 }
 
 #-------------------------------------------
+
 
 
 1;

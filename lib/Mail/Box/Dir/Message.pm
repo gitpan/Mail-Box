@@ -4,11 +4,11 @@ use warnings;
 
 package Mail::Box::Dir::Message;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Box::Message';
 
-use Carp;
 use File::Copy qw/move/;
+use IO::File;
 
 
 sub init($)
@@ -58,7 +58,7 @@ BEGIN { *write = \&print }  # simply alias
 
 sub filename(;$)
 {   my $self = shift;
-    @_ ? $self->{MBDM_filename} = shift : $self->{MBDM_filename};
+    @_ ? ($self->{MBDM_filename} = shift) : $self->{MBDM_filename};
 }
 
 #-------------------------------------------
@@ -204,6 +204,9 @@ sub create($)
          unless move($new, $filename);
 
     $self->modified(0);
+
+    # Do not affect flags for Maildir (and some other) which keep it
+    # in there.  Flags will be processed later.
     $self->Mail::Box::Dir::Message::filename($filename);
 
     $self;

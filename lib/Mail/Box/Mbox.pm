@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Mbox;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Box::File';
 
 use Mail::Box::Mbox::Message;
@@ -62,6 +62,16 @@ sub foundIn($@)
     }
 
     return 1;
+}
+
+#-------------------------------------------
+
+sub delete(@)
+{   my $self = shift;
+    $self->SUPER::delete(@_);
+
+    my $subfdir = $self->filename . $default_sub_extension;
+    rmdir $subfdir;   # may fail, when there are still subfolders (no recurse)
 }
 
 #-------------------------------------------

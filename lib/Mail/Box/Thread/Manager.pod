@@ -293,7 +293,7 @@ $obj-E<gt>B<createDummy>(MESSAGE-ID)
 
 Get a replacement message to be used in threads.  Be warned that a
 dummy is not a member of any folder, so the program working with
-threads must test with L<Mail::Message::isDummy()|Mail::Message/"The Message"> before trying things only
+threads must test with L<Mail::Message::isDummy()|Mail::Message/"The message"> before trying things only
 available to real messages.
 
 =back
@@ -355,9 +355,9 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Box::Thread::Manager-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+Mail::Box::Thread::Manager-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -568,7 +568,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

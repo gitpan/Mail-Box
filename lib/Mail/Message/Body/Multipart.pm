@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body::Multipart;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;

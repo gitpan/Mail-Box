@@ -30,7 +30,7 @@ a L<Mail::Internet> object.  The name-space of that module is hijacked
 and many methods are added.
 
 Most methods will work without any change, but you may need to have
-a look at your L<smtpsend()|Mail::Message::Replace::MailInternet/"The body"> and L<send()|Mail::Message::Replace::MailInternet/"The Message"> calls.
+a look at your L<smtpsend()|Mail::Message::Replace::MailInternet/"The body"> and L<send()|Mail::Message::Replace::MailInternet/"The message"> calls.
 
 
 =head1 OVERLOADED
@@ -43,7 +43,7 @@ a look at your L<smtpsend()|Mail::Message::Replace::MailInternet/"The body"> and
 =head2 Constructors
 
 
-$obj-E<gt>B<clone>
+$obj-E<gt>B<clone>(OPTIONS)
 
 =over 4
 
@@ -56,7 +56,7 @@ Mail::Message::Replace::MailInternet-E<gt>B<coerce>(MESSAGE)
 =over 4
 
 Coerce (adapt type) of the specified MESSAGE (anything
-L<Mail::Message::coerce()|Mail::Message/"Constructors"> accepts) into an Mail::Internet simulating
+L<Mail::Message::coerce()|Mail::Message/"Internals"> accepts) into an Mail::Internet simulating
 object.
 
 =back
@@ -503,14 +503,14 @@ The signature in memory.
 
 =back
 
-=head2 The Message
+=head2 The message
 
 
 $obj-E<gt>B<container>
 
 =over 4
 
-See L<Mail::Message/"The Message">
+See L<Mail::Message/"The message">
 
 =back
 
@@ -518,7 +518,7 @@ $obj-E<gt>B<isDummy>
 
 =over 4
 
-See L<Mail::Message/"The Message">
+See L<Mail::Message/"The message">
 
 =back
 
@@ -526,7 +526,7 @@ $obj-E<gt>B<isPart>
 
 =over 4
 
-See L<Mail::Message/"The Message">
+See L<Mail::Message/"The message">
 
 =back
 
@@ -534,7 +534,7 @@ $obj-E<gt>B<messageId>
 
 =over 4
 
-See L<Mail::Message/"The Message">
+See L<Mail::Message/"The message">
 
 =back
 
@@ -543,7 +543,7 @@ $obj-E<gt>B<nntppost>(OPTIONS)
 =over 4
 
 Send an NNTP message (newsgroup message), which is equivalent to
-Mail::Transport::NNTP or L<Mail::Message::send()|Mail::Message/"The Message"> with C<via 'nntp'>.
+Mail::Transport::NNTP or L<Mail::Message::send()|Mail::Message/"The message"> with C<via 'nntp'>.
 
  Option  Defined in       Default           
  Debug                    <false>           
@@ -563,7 +563,7 @@ $obj-E<gt>B<print>([FILEHANDLE])
 =over 4
 
 Prints the whole message to the specified FILEHANDLE, which default to
-STDOUT.  This calls L<Mail::Message::print()|Mail::Message/"The Message">.
+STDOUT.  This calls L<Mail::Message::print()|Mail::Message/"The message">.
 
 =back
 
@@ -580,7 +580,7 @@ $obj-E<gt>B<size>
 
 =over 4
 
-See L<Mail::Message/"The Message">
+See L<Mail::Message/"The message">
 
 =back
 
@@ -588,7 +588,7 @@ $obj-E<gt>B<toplevel>
 
 =over 4
 
-See L<Mail::Message/"The Message">
+See L<Mail::Message/"The message">
 
 =back
 
@@ -596,7 +596,7 @@ $obj-E<gt>B<write>([FILEHANDLE])
 
 =over 4
 
-See L<Mail::Message/"The Message">
+See L<Mail::Message/"The message">
 
 =back
 
@@ -903,7 +903,7 @@ $obj-E<gt>B<smtpsend>(OPTIONS)
 
 =over 4
 
-This method is calling L<Mail::Message::send()|Mail::Message/"The Message"> via C<smtp>, which is
+This method is calling L<Mail::Message::send()|Mail::Message/"The message"> via C<smtp>, which is
 implemented in L<Mail::Transport::SMTP|Mail::Transport::SMTP>.  The implementation is
 slightly different, so this method is not 100% compliant.
 
@@ -1066,6 +1066,14 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 =head2 Internals
 
 
+$obj-E<gt>B<clonedFrom>
+
+=over 4
+
+See L<Mail::Message/"Internals">
+
+=back
+
 $obj-E<gt>B<isDelayed>
 
 =over 4
@@ -1141,9 +1149,9 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Message::Replace::MailInternet-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+Mail::Message::Replace::MailInternet-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -1304,6 +1312,14 @@ I<Error:> No address to create forwarded to.
 
 If a forward message is created, a destination address must be specified.
 
+I<Error:> Only build() Mail::Message's; they are not in a folder yet
+
+You may wish to construct a message to be stored in a some kind
+of folder, but you need to do that in two steps.  First, create a
+normal L<Mail::Message|Mail::Message>, and then add it to the folder.  During this
+L<Mail::Box::addMessage()|Mail::Box/"The folder"> process, the message will get L<coerce()|Mail::Message::Replace::MailInternet/"Constructors">-d
+into the right message type, adding storage information and the like.
+
 I<Error:> Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
@@ -1335,7 +1351,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

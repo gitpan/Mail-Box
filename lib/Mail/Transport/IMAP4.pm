@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Transport::Receive';
 
 use Digest::HMAC_MD5;   # only availability check for CRAM_MD5
@@ -444,6 +444,14 @@ sub destroyDeleted()
 #------------------------------------------
 
 
+sub deleteFolder($)
+{   my $imap = shift->imapClient or return ();
+    $imap->delete(shift);
+}
+
+#------------------------------------------
+
+
 sub DESTROY()
 {   my $self = shift;
     my $imap = $self->imapClient;
@@ -454,18 +462,14 @@ sub DESTROY()
 
 #------------------------------------------
 
-package Mail::IMAPClient::Debug;
-use vars '$VERSION';
-$VERSION = '2.056';
-
 # Tied filehandle translates IMAP's debug system into Mail::Reporter
 # calls.
-sub TIEHANDLE($)
+sub  Mail::IMAPClient::Debug::TIEHANDLE($)
 {   my ($class, $logger) = @_;
     bless \$logger, $class;
 }
 
-sub PRINT(@)
+sub  Mail::IMAPClient::Debug::PRINT(@)
 {   my $logger = ${ (shift) };
     $logger->log(DEBUG => @_);
 }

@@ -23,25 +23,10 @@ Only the HTML version of this manual page will list the sections.
 <li><strong><a name="general">General</a> sources of information</strong>
   <ul>
   <li>MailBox distribution overview (Mail::Box-Overview)
-      <ul>
-      <li>Introduction
-      <li>The class relations
-      <li>The Manager
-      <li>The Messages
-      <li>The Folder types
-      <li>Various Other Classes
-      </ul>
   <li>MailBox simple recepies (Mail::Box-Cookbook)
-      <ul>
-      <li>The Manager
-      <li>Multi part messages
-      <li>Filter
-      <li>Create a reply
-      <li>Build a message
-      </ul>
   </ul>
 
-<li><strong><a name="messages">Messages</a></strong> (L<Mail::Message|Mail::Message>)
+<li><strong><a name="messages">Messages</a></strong> (L<Mail::Message|Mail::Message>)<br />
       See separate entries on header, body, fields
       and construction in this index below.
   <ul>
@@ -151,10 +136,14 @@ Only the HTML version of this manual page will list the sections.
   <li>Folder types (Mail::Box)
       <ul>
       <li>Different kinds of folders
-      <li>Supported folder types
+      <li>Available folder types
       <li>Folder class implementation
       </ul>
   <li>The folder manager (Mail::Box::Manager)
+      <ul>
+      <li>Managing open folders
+      <li>Managing a user
+      </ul>
   <li>Folder tied as array (Mail::Box::Tie::ARRAY)
       <ul>
       <li>Limitations
@@ -280,7 +269,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

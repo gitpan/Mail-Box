@@ -63,27 +63,29 @@ where included and there is no name, then C<undef> is returned.
 
 =back
 
-=head2 Initiation
+=head2 Constructors
 
+
+$obj-E<gt>B<coerce>(OBJECT)
+
+=over 4
+
+Coerce an OBJECT into a L<Mail::Message::Field::AddrGroup|Mail::Message::Field::AddrGroup>.  Currently,
+you can only coerce L<User::Identity::Collection::Emails|User::Identity::Collection::Emails> (which is
+the base class for this one) into this one.
+
+=back
 
 Mail::Message::Field::AddrGroup-E<gt>B<new>([NAME], OPTIONS)
 
 =over 4
 
-See L<User::Identity::Collection::Emails/"Initiation">
+See L<User::Identity::Collection::Emails/"Constructors">
 
 =back
 
 =head2 Attributes
 
-
-$obj-E<gt>B<addRole>(ROLE| ( [NAME],OPTIONS ) | ARRAY-OF-OPTIONS)
-
-=over 4
-
-See L<User::Identity::Collection/"Attributes">
-
-=back
 
 $obj-E<gt>B<description>
 
@@ -93,7 +95,15 @@ See L<User::Identity::Item/"Attributes">
 
 =back
 
-$obj-E<gt>B<name>
+$obj-E<gt>B<itemType>
+
+=over 4
+
+See L<User::Identity::Collection/"Attributes">
+
+=back
+
+$obj-E<gt>B<name>([NEWNAME])
 
 =over 4
 
@@ -144,6 +154,14 @@ See L<User::Identity::Item/"Collections">
 
 =back
 
+$obj-E<gt>B<removeCollection>(OBJECT|NAME)
+
+=over 4
+
+See L<User::Identity::Item/"Collections">
+
+=back
+
 $obj-E<gt>B<type>
 
 Mail::Message::Field::AddrGroup-E<gt>B<type>
@@ -162,6 +180,41 @@ See L<User::Identity::Item/"Collections">
 
 =back
 
+=head2 Maintaining roles
+
+
+$obj-E<gt>B<addRole>(ROLE| ( [NAME],OPTIONS ) | ARRAY-OF-OPTIONS)
+
+=over 4
+
+See L<User::Identity::Collection/"Maintaining roles">
+
+=back
+
+$obj-E<gt>B<removeRole>(ROLE|NAME)
+
+=over 4
+
+See L<User::Identity::Collection/"Maintaining roles">
+
+=back
+
+$obj-E<gt>B<renameRole>(ROLE|OLDNAME, NEWNAME)
+
+=over 4
+
+See L<User::Identity::Collection/"Maintaining roles">
+
+=back
+
+$obj-E<gt>B<sorted>
+
+=over 4
+
+See L<User::Identity::Collection/"Maintaining roles">
+
+=back
+
 =head2 Searching
 
 
@@ -173,19 +226,6 @@ See L<User::Identity::Collection/"Searching">
 
 =back
 
-=head2 Constructors
-
-
-$obj-E<gt>B<coerce>(OBJECT)
-
-=over 4
-
-Coerce an OBJECT into a L<Mail::Message::Field::AddrGroup|Mail::Message::Field::AddrGroup>.  Currently,
-you can only coerce L<User::Identity::Collection::Emails|User::Identity::Collection::Emails> (which is
-the base class for this one) into this one.
-
-=back
-
 =head2 Addresses
 
 
@@ -194,7 +234,7 @@ $obj-E<gt>B<addAddress>(STRING|ADDRESS|OPTIONS)
 =over 4
 
 Add one e-mail address to the list which is maintained in the group. This
-is a wrapper around L<addRole()|User::Identity::Collection/"Attributes"> adding flexibility on how addresses
+is a wrapper around L<addRole()|User::Identity::Collection/"Maintaining roles"> adding flexibility on how addresses
 are specified.  An ADDRESS can be anything which is acceptable for
 L<Mail::Message::Field::Address::coerce()|Mail::Message::Field::Address/"Constructors"> or a list of options which
 will create such an object.
@@ -256,6 +296,12 @@ compilation errors.  If the type as specified in the warning is not
 the name of a package, you specified a nickname which was not defined.
 Maybe you forgot the 'require' the package which defines the nickname.
 
+I<Error:> Cannot rename $name into $newname: already exists
+
+
+I<Error:> Cannot rename $name into $newname: doesn't exist
+
+
 I<Error:> Creation of a collection via $class failed.
 
 The $class did compile, but it was not possible to create an object
@@ -287,7 +333,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -22,17 +22,12 @@ Mail::Box::IMAP4 - handle IMAP4 folders as client
 
 Maintain a folder which has its messages stored on a remote server.  The
 communication between the client application and the server is implemented
-using the IMAP4 protocol.
+using the IMAP4 protocol.  See also L<Mail::Server::IMAP4|Mail::Server::IMAP4>.
 
 This class uses L<Mail::Transport::IMAP4|Mail::Transport::IMAP4> to hide the transport of
 information, and focusses solely on the correct handling of messages
 within a IMAP4 folder.  More than one IMAP4 folder can be handled by
 one single IMAP4 connection.
-
-Helper class L<Mail::Box::IMAP4::Fetch|Mail::Box::IMAP4::Fetch> simplifies writing IMAP servers
-and clients by supplying code to handle the IMAP protocol's C<FETCH>
-command.  It is not complete, currently focussing on server side
-protocol handling.
 
 
 =head1 OVERLOADED
@@ -68,16 +63,6 @@ See L<Mail::Box/"OVERLOADED">
 
 =head2 Constructors
 
-
-$obj-E<gt>B<create>(FOLDER, OPTIONS)
-
-Mail::Box::IMAP4-E<gt>B<create>(FOLDER, OPTIONS)
-
-=over 4
-
-See L<Mail::Box::Net/"METHODS">
-
-=back
 
 Mail::Box::IMAP4-E<gt>B<new>(OPTIONS)
 
@@ -298,7 +283,7 @@ I<Example:>
 =head2 The folder
 
 
-$obj-E<gt>B<addMessage>(MESSAGE)
+$obj-E<gt>B<addMessage>(MESSAGE, OPTIONS)
 
 =over 4
 
@@ -353,7 +338,7 @@ See L<Mail::Box/"The folder">
 
 =back
 
-$obj-E<gt>B<delete>
+$obj-E<gt>B<delete>(OPTIONS)
 
 =over 4
 
@@ -366,14 +351,6 @@ $obj-E<gt>B<folderdir>([DIRECTORY])
 =over 4
 
 See L<Mail::Box::Net/"METHODS">
-
-=back
-
-Mail::Box::IMAP4-E<gt>B<foundIn>([FOLDERNAME], OPTIONS)
-
-=over 4
-
-See L<Mail::Box/"The folder">
 
 =back
 
@@ -427,6 +404,14 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
+
+$obj-E<gt>B<access>
+
+=over 4
+
+See L<Mail::Box/"Folder flags">
+
+=back
 
 $obj-E<gt>B<isModified>
 
@@ -532,7 +517,9 @@ See L<Mail::Box/"Sub-folders">
 
 =back
 
-$obj-E<gt>B<nameOfSubFolder>(NAME)
+$obj-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
+
+Mail::Box::IMAP4-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
 
 =over 4
 
@@ -548,7 +535,17 @@ See L<Mail::Box/"Sub-folders">
 
 =back
 
-$obj-E<gt>B<openSubFolder>(NAME, OPTIONS)
+$obj-E<gt>B<openSubFolder>(SUBNAME, OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"Sub-folders">
+
+=back
+
+$obj-E<gt>B<topFolderWithMessages>
+
+Mail::Box::IMAP4-E<gt>B<topFolderWithMessages>
 
 =over 4
 
@@ -565,11 +562,21 @@ $obj-E<gt>B<body>([BODY])
 
 =back
 
-$obj-E<gt>B<coerce>(MESSAGE)
+$obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
 
 =over 4
 
 See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<create>(FOLDER, OPTIONS)
+
+Mail::Box::IMAP4-E<gt>B<create>(FOLDER, OPTIONS)
+
+=over 4
+
+See L<Mail::Box::Net/"METHODS">
 
 =back
 
@@ -621,6 +628,14 @@ C<'ALL'>, C<'DELETED'>, or C<spam> (messages labelled to contain spam).
 
 The INFO contains one or more attributes as defined by the IMAP protocol.
 You have to read the full specs of the related RFCs to see these.
+
+=back
+
+Mail::Box::IMAP4-E<gt>B<foundIn>([FOLDERNAME], OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"Internals">
 
 =back
 
@@ -790,9 +805,9 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Box::IMAP4-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+Mail::Box::IMAP4-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -992,7 +1007,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

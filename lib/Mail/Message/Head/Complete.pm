@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Head::Complete;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Message::Head';
 
 use Mail::Box::Parser;
@@ -38,7 +38,7 @@ sub build(@)
 
         my $content = shift;
         if(ref $content && $content->isa('Mail::Message::Field'))
-        {   $self->log(WARNING => "field objects have an implied name ($name)");
+        {   $self->log(WARNING => "Field objects have an implied name ($name)");
             $head->add($content);
             next;
         }
@@ -63,6 +63,14 @@ sub nrLines() { sum 1, map { $_->nrLines } shift->orderedFields }
 
 
 sub size() { sum 1, map {$_->size} shift->orderedFields }
+
+#------------------------------------------
+
+
+sub wrap($)
+{   my ($self, $length) = @_;
+    $_->setWrapLength($length) foreach $self->orderedFields;
+}
 
 #------------------------------------------
 

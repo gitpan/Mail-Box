@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -146,19 +146,11 @@ sub init($)
 #-------------------------------------------
 
 
-sub create($@) {shift->notImplemented}
-
-#-------------------------------------------
-
-
 sub folderdir(;$)
 {   my $self = shift;
     $self->{MB_folderdir} = shift if @_;
     $self->{MB_folderdir};
 }
-
-#-------------------------------------------
-
 
 sub foundIn($@) { shift->notImplemented }
 
@@ -212,13 +204,14 @@ sub organization() { shift->notImplemented }
 #-------------------------------------------
 
 
-sub addMessage($)
+sub addMessage($@)
 {   my $self    = shift;
     my $message = shift or return $self;
+    my %args    = @_;
 
-    confess <<ERROR if $message->can('folder') && $message->folder;
+    confess <<ERROR if $message->can('folder') && defined $message->folder;
 You cannot add a message which is already part of a folder to a new
-one.  Please use moveMessage or copyMessage.
+one.  Please use moveTo or copyTo.
 ERROR
 
     # Force the message into the right folder-type.
@@ -244,6 +237,10 @@ ERROR
     $coerced;
 }
 
+#-------------------------------------------
+
+
+
 sub addMessages(@)
 {   my $self = shift;
     map {$self->addMessage($_)} @_;
@@ -267,14 +264,15 @@ sub copyTo($@)
        :                            (1, 0);
 
     my $delete = $args{delete_copied} || 0;
+    my $share  = $args{share}         || 0;
 
-    $self->_copy_to($to, $select, $flatten, $recurse, $delete);
+    $self->_copy_to($to, $select, $flatten, $recurse, $delete, $share);
 }
 
 # Interface may change without warning.
 sub _copy_to($@)
 {   my ($self, $to, @options) = @_;
-    my ($select, $flatten, $recurse, $delete) = @options;
+    my ($select, $flatten, $recurse, $delete, $share) = @options;
 
     $self->log(ERROR => "Destination folder $to is not writable."),
         return unless $to->writable;
@@ -285,7 +283,8 @@ sub _copy_to($@)
         "Copying ".@select." messages from $self to $to.");
 
     foreach my $msg (@select)
-    {   if($msg->copyTo($to)) { $msg->label(deleted => 1) if $delete }
+    {   if($msg->copyTo($to, share => $share))
+             { $msg->label(deleted => 1) if $delete }
         else { $self->log(ERROR => "Copying failed for one message.") }
     }
 
@@ -371,8 +370,9 @@ Suggestion: \$folder->close(write => 'NEVER')");
 #-------------------------------------------
 
 
-sub delete()
-{   my $self = shift;
+sub delete(@)
+{   my ($self, %args) = @_;
+    my $recurse = exists $args{recursive} ? $args{recursive} : 1;
 
     # Extra protection: do not remove read-only folders.
     unless($self->writable)
@@ -382,17 +382,15 @@ sub delete()
     }
 
     # Sub-directories need to be removed first.
-    foreach ($self->listSubFolders)
-    {   my $sub = $self->openRelatedFolder(folder => "$self/$_",access => 'rw');
-        next unless defined $sub;
-        $sub->delete;
+    if($recurse)
+    {   foreach ($self->listSubFolders)
+        {   my $sub = $self->openRelatedFolder
+               (folder => "$self/$_", access => 'd', create => 0);
+            defined $sub && $sub->delete(%args);
+        }
     }
 
-    $_->delete foreach $self->messages;
-
-    $self->{MB_remove_empty} = 1;
-    $self->close(write => 'ALWAYS');
-
+    $self->close(write => 'NEVER');
     $self;
 }
 
@@ -404,9 +402,14 @@ sub appendMessages(@) {shift->notImplemented}
 #-------------------------------------------
 
 
-sub writable()  {shift->{MB_access} =~ /w|a/ }
+sub writable()  {shift->{MB_access} =~ /w|a|d/ }
 sub writeable() {shift->writable}  # compatibility [typo]
 sub readable()  {1}  # compatibility
+
+#-------------------------------------------
+
+
+sub access()    {shift->{MB_access}}
 
 #-------------------------------------------
 
@@ -681,10 +684,16 @@ sub openSubFolder($@)
 #-------------------------------------------
 
 
-sub nameOfSubFolder($)
-{   my ($self, $name)= @_;
-    "$self/$name";
+sub nameOfSubFolder($;$)
+{   my ($thing, $name) = (shift, shift);
+    my $parent = @_ ? shift : ref $thing ? $thing->name : undef;
+    defined $parent ? "$parent/$name" : $name;
 }
+
+#-------------------------------------------
+
+
+sub topFolderWithMessages() { 1 }
 
 #-------------------------------------------
 
@@ -721,7 +730,7 @@ sub write(@)
 {   my ($self, %args) = @_;
 
     unless($args{force} || $self->writable)
-    {   $self->log(ERROR => "Folder $self is opened read-only.\n");
+    {   $self->log(ERROR => "Folder $self is opened read-only.");
         return;
     }
 
@@ -811,11 +820,19 @@ sub lineSeparator(;$)
 #-------------------------------------------
 
 
-sub coerce($)
-{   my ($self, $message) = @_;
-    $self->{MB_message_type}->coerce($message);
-}
+sub create($@) {shift->notImplemented}
 
+#-------------------------------------------
+
+
+#-------------------------------------------
+
+
+sub coerce($@)
+{   my ($self, $message) = (shift, shift);
+    my $mmtype = $self->{MB_message_type};
+    $message->isa($mmtype) ? $message : $mmtype->coerce($message, @_);
+}
 
 #-------------------------------------------
 
@@ -874,7 +891,7 @@ sub timespan2seconds($)
         :                $1 * 604800;  # week
     }
     else
-    {   $_[0]->log(ERROR => "Invalid timespan '$_' specified.\n");
+    {   $_[0]->log(ERROR => "Invalid timespan '$_' specified.");
         undef;
     }
 }

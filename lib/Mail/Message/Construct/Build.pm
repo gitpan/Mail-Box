@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 
 use Mail::Message::Head::Complete  ();
 use Mail::Message::Body::Lines     ();
@@ -16,6 +16,12 @@ use Mail::Address  ();
 
 sub build(@)
 {   my $class = shift;
+
+    if($class->isa('Mail::Box::Message'))
+    {   $class->log(ERROR
+           => "Only build() Mail::Message's; they are not in a folder yet"); 
+         return undef;
+    }
 
     my @parts
       = ! ref $_[0] ? ()

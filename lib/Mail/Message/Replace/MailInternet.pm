@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Message::Replace::MailInternet;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Message';
 
 use Mail::Box::FastScalar;
@@ -343,11 +343,13 @@ sub as_mbox_string()
 }
 
 
-BEGIN { *Mail::Internet::new =
-          sub { my $class = shift;
-                Mail::Message::Replace::MailInternet->new(@_);
-              }
-      }
+BEGIN {
+ no warnings;
+ *Mail::Internet::new =
+    sub { my $class = shift;
+          Mail::Message::Replace::MailInternet->new(@_);
+        }
+}
 
 
 sub isa($)

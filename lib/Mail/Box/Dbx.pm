@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Dbx;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Box::File';
 
 use Mail::Box::Dbx::Message;
@@ -94,10 +94,11 @@ sub updateMessages() { shift }
 
 #-------------------------------------------
 
-sub nameOfSubFolder($)
-{   my ($self, $name) = (shift, shift);
-    my $dirname = dirname $self->filename;
-    File::Spec->catfile($dirname, "$name.dbx");
+sub nameOfSubFolder($;$)
+{   my $thing  = shift;
+    my $name   = (shift). '.dbx';
+    my $parent = @_ ? shift : ref $thing ? $thing->filename : undef;
+    defined $parent ?  File::Spec->catfile(dirname($parent), $name) : $name;
 }
 
 #-------------------------------------------

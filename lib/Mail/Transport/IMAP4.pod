@@ -252,6 +252,14 @@ Create an object of CLASS, which extends L<Mail::IMAPClient>.
 
 =back
 
+$obj-E<gt>B<deleteFolder>(NAME)
+
+=over 4
+
+Remove one folder.
+
+=back
+
 $obj-E<gt>B<destroyDeleted>
 
 =over 4
@@ -422,9 +430,9 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Transport::IMAP4-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+Mail::Transport::IMAP4-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -572,7 +580,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

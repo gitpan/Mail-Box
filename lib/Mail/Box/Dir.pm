@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Dir;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 
 use base 'Mail::Box';
 
@@ -37,7 +37,7 @@ sub init($)
        if(-d $directory) {;}
     elsif($args->{create} && $class->create($directory, %$args)) {;}
     else
-    {   $self->log(PROGRESS => "$class: No directory $directory.\n");
+    {   $self->log(PROGRESS => "$class: No directory $directory.");
         return undef;
     }
 
@@ -54,7 +54,7 @@ sub init($)
     # Check if we can write to the folder, if we need to.
 
     if($self->writable && -e $directory && ! -w $directory)
-    {   $self->log(WARNING => "Folder directory $directory is write-protected.\n");
+    {   $self->log(WARNING => "Folder directory $directory is write-protected.");
         $self->{MB_access} = 'r';
     }
 
@@ -72,9 +72,10 @@ sub directory() { shift->{MBD_directory} }
 
 #-------------------------------------------
                                                                                 
-sub nameOfSubFolder($)
-{   my ($self, $name) = @_;
-    $self->directory.'/'.$name;
+sub nameOfSubFolder($;$)
+{   my ($thing, $name) = (shift, shift);
+    my $parent = @_ ? shift : ref $thing ? $thing->directory : undef;
+    defined $parent ? "$parent/$name" : $name;
 }
 
 #-------------------------------------------
@@ -82,7 +83,9 @@ sub nameOfSubFolder($)
 
 sub folderToDirectory($$)
 {   my ($class, $name, $folderdir) = @_;
-    $name =~ /^=(.*)/ ? File::Spec->catfile($folderdir,$1) : $name;
+    my $dir = ( $name =~ m#^=\/?(.*)# ? "$folderdir/$1" : $name);
+    $dir =~ s!/$!!;
+    $dir;
 }
 
 #-------------------------------------------

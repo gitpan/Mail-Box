@@ -159,7 +159,7 @@ On a delayed head, this retuns C<undef>, because when there is no header
 there is also no body.
 
 For messages in directory or network organized folders,
-L<Mail::Message::size()|Mail::Message/"The Message"> usually will give a figure for the whole message
+L<Mail::Message::size()|Mail::Message/"The message"> usually will give a figure for the whole message
 without much cost.  Subtract a few hundred bytes for the header, and
 you will get a good estimate.
 
@@ -262,9 +262,9 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Message::Head::Delayed-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+Mail::Message::Head::Delayed-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -398,7 +398,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

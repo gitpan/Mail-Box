@@ -82,16 +82,6 @@ See L<Mail::Box/"OVERLOADED">
 =head2 Constructors
 
 
-$obj-E<gt>B<create>(FOLDERNAME, OPTIONS)
-
-Mail::Box::Dir-E<gt>B<create>(FOLDERNAME, OPTIONS)
-
-=over 4
-
-See L<Mail::Box/"Constructors">
-
-=back
-
 Mail::Box::Dir-E<gt>B<new>(OPTIONS)
 
 =over 4
@@ -181,7 +171,7 @@ Mail::Box::Dir-E<gt>B<new>(OPTIONS)
 =head2 The folder
 
 
-$obj-E<gt>B<addMessage>(MESSAGE)
+$obj-E<gt>B<addMessage>(MESSAGE, OPTIONS)
 
 =over 4
 
@@ -221,7 +211,7 @@ See L<Mail::Box/"The folder">
 
 =back
 
-$obj-E<gt>B<delete>
+$obj-E<gt>B<delete>(OPTIONS)
 
 =over 4
 
@@ -242,14 +232,6 @@ I<Example:>
 =back
 
 $obj-E<gt>B<folderdir>([DIRECTORY])
-
-=over 4
-
-See L<Mail::Box/"The folder">
-
-=back
-
-Mail::Box::Dir-E<gt>B<foundIn>([FOLDERNAME], OPTIONS)
 
 =over 4
 
@@ -307,6 +289,14 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
+
+$obj-E<gt>B<access>
+
+=over 4
+
+See L<Mail::Box/"Folder flags">
+
+=back
 
 $obj-E<gt>B<isModified>
 
@@ -412,7 +402,9 @@ See L<Mail::Box/"Sub-folders">
 
 =back
 
-$obj-E<gt>B<nameOfSubFolder>(NAME)
+$obj-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
+
+Mail::Box::Dir-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
 
 =over 4
 
@@ -428,7 +420,17 @@ See L<Mail::Box/"Sub-folders">
 
 =back
 
-$obj-E<gt>B<openSubFolder>(NAME, OPTIONS)
+$obj-E<gt>B<openSubFolder>(SUBNAME, OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"Sub-folders">
+
+=back
+
+$obj-E<gt>B<topFolderWithMessages>
+
+Mail::Box::Dir-E<gt>B<topFolderWithMessages>
 
 =over 4
 
@@ -439,7 +441,17 @@ See L<Mail::Box/"Sub-folders">
 =head2 Internals
 
 
-$obj-E<gt>B<coerce>(MESSAGE)
+$obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<create>(FOLDERNAME, OPTIONS)
+
+Mail::Box::Dir-E<gt>B<create>(FOLDERNAME, OPTIONS)
 
 =over 4
 
@@ -461,6 +473,14 @@ $obj-E<gt>B<folderToDirectory>(FOLDERNAME, FOLDERDIR)
 
 (class method)  Translate a foldername into a filename, with use of the
 FOLDERDIR to replace a leading C<=>.
+
+=back
+
+Mail::Box::Dir-E<gt>B<foundIn>([FOLDERNAME], OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"Internals">
 
 =back
 
@@ -586,9 +606,9 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Box::Dir-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+Mail::Box::Dir-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -783,7 +803,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

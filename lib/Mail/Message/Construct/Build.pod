@@ -187,6 +187,16 @@ I<Example:>
 
 
 
+=head1 DIAGNOSTICS
+
+I<Error:> Only build() Mail::Message's; they are not in a folder yet
+
+You may wish to construct a message to be stored in a some kind
+of folder, but you need to do that in two steps.  First, create a
+normal L<Mail::Message|Mail::Message>, and then add it to the folder.  During this
+L<Mail::Box::addMessage()|Mail::Box/"The folder"> process, the message will get L<coerce()|Mail::Message/"Internals">-d
+into the right message type, adding storage information and the like.
+
 
 =head1 DETAILS
 
@@ -325,7 +335,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

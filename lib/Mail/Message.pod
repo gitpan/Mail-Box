@@ -7,14 +7,14 @@ Mail::Message - general message object
 =head1 INHERITANCE
 
  Mail::Message has extra code in
-   Mail::Message::Construct::Forward
-   Mail::Message::Construct::Bounce
-   Mail::Message::Construct::Read
-   Mail::Message::Construct::Build
-   Mail::Message::Construct::Reply
-   Mail::Message::Construct::Rebuild
-   Mail::Message::Construct::Text
    Mail::Message::Construct
+   Mail::Message::Construct::Read
+   Mail::Message::Construct::Rebuild
+   Mail::Message::Construct::Reply
+   Mail::Message::Construct::Text
+   Mail::Message::Construct::Forward
+   Mail::Message::Construct::Build
+   Mail::Message::Construct::Bounce
 
  Mail::Message
    is a Mail::Reporter
@@ -70,7 +70,7 @@ Those package add functionality to all kinds of message objects.
 =head2 Constructors
 
 
-$obj-E<gt>B<clone>
+$obj-E<gt>B<clone>(OPTIONS)
 
 =over 4
 
@@ -87,55 +87,48 @@ to be added.
 
 See also L<Mail::Box::Message::copyTo()|Mail::Box::Message/"The message"> and L<Mail::Box::Message::moveTo()|Mail::Box::Message/"The message">.
 
+ Option        Defined in       Default
+ shallow                        <false>
+ shallow_body                   <false>
+ shallow_head                   <false>
+
+. shallow BOOLEAN
+
+=over 4
+
+When a shallow clone is made, the header and body of the message will not
+be cloned, but shared.  This is quite dangerous: for instance in some
+folder types, the header fields are used to store folder flags.  When
+one of both shallow clones change the flags, that will update the header
+and thereby be visible in both.
+
+There are situations where a shallow clone can be used safely.  For instance,
+when L<Mail::Box::Message::moveTo()|Mail::Box::Message/"The message"> is used and you are sure that the
+original message cannot get undeleted after the move.
+
+=back
+
+. shallow_body BOOLEAN
+
+=over 4
+
+A rather safe bet, because you are not allowed to modify the body of a
+message: you may only set a new body with L<body()|Mail::Message/"The body">.
+
+=back
+
+. shallow_head BOOLEAN
+
+=over 4
+
+Only the head uses is reused, not the body.  This is probably a bad choice,
+because the header fields can be updated, for instance when labels change.
+
+=back
+
 I<Example:> 
 
  $copy = $msg->clone;
-
-=back
-
-Mail::Message-E<gt>B<coerce>(MESSAGE)
-
-=over 4
-
-Coerce a MESSAGE into a Mail::Message.  In some
-occasions, for instance where you add a message to a folder, this
-coercion is automatically called to ensure that the correct message
-type is stored.
-
-The coerced message is returned on success, otherwise C<undef>.  The
-coerced message may be a reblessed version of the original message
-or a new object.  In case the message has to be specialized, for
-instance from a general Mail::Message into a Mail::Box::Mbox::Message,
-no copy is needed.  However, to coerce a Mail::Internet object into
-a Mail::Message, a lot of copying and converting will take place.
-
-Valid MESSAGEs which can be coerced into Mail::Message objects
-are of type
-
-=over 4
-
-=item * Any type of L<Mail::Box::Message|Mail::Box::Message>
-
-=item * MIME::Entity's, using L<Mail::Message::Convert::MimeEntity|Mail::Message::Convert::MimeEntity>
-
-=item * Mail::Internet's, using L<Mail::Message::Convert::MailInternet|Mail::Message::Convert::MailInternet>
-
-=back
-
-L<Mail::Message::Part|Mail::Message::Part>'s, which are extensions of C<Mail::Message>'s,
-can also be coerced directly from a L<Mail::Message::Body|Mail::Message::Body>.
-
-I<Example:> 
-
- my $folder  = Mail::Box::Mbox->new;
- my $message = Mail::Message->build(...);
-
- my $coerced = Mail::Box::Mbox::Message->coerce($message);
- $folder->addMessage($coerced);
-
-Simpler replacement for the previous two lines:
-
- my $coerced = $folder->addMessage($message);
 
 =back
 
@@ -209,7 +202,7 @@ Default type of head to be created for L<readHead()|Mail::Message/"Internals">.
 
 Initial values of the labels.  In case of L<Mail::Box::Message|Mail::Box::Message>'s, this
 shall reflect the state the message is in.  For newly constructed
-L<Mail::Message|Mail::Message>'s, this may be anything you want, because L<coerce()|Mail::Message/"Constructors">
+L<Mail::Message|Mail::Message>'s, this may be anything you want, because L<coerce()|Mail::Message/"Internals">
 will take care of the folder specifics once the message is added to one.
 
 =back
@@ -383,7 +376,7 @@ See L<Mail::Message::Construct::Reply/"Constructing a message">
 
 =back
 
-=head2 The Message
+=head2 The message
 
 
 $obj-E<gt>B<container>
@@ -448,7 +441,7 @@ $obj-E<gt>B<print>([FILEHANDLE])
 
 Print the message to the FILE-HANDLE, which defaults to the selected
 filehandle, without the encapsulation sometimes required by a folder
-type, like L<write()|Mail::Message/"The Message"> does.
+type, like L<write()|Mail::Message/"The message"> does.
 
 I<Example:> 
 
@@ -496,8 +489,8 @@ $obj-E<gt>B<size>
 =over 4
 
 Returns an estimated size of the whole message in bytes.  In many occasions,
-the functions which process the message further, for instance L<send()|Mail::Message/"The Message">
-or L<print()|Mail::Message/"The Message"> will need to add/change header lines or add CR characters,
+the functions which process the message further, for instance L<send()|Mail::Message/"The message">
+or L<print()|Mail::Message/"The message"> will need to add/change header lines or add CR characters,
 so the size is only an estimate with a few percent margin of the real
 result.
 
@@ -527,7 +520,7 @@ Write the message to the FILE-HANDLE, which defaults to the selected
 FILEHANDLE, with all surrounding information which is needed to put
 it correctly in a folder file.
 
-In most cases, the result of C<write> will be the same as with L<print()|Mail::Message/"The Message">.
+In most cases, the result of C<write> will be the same as with L<print()|Mail::Message/"The message">.
 The main exception is for Mbox folder messages, which will get printed
 with their leading 'From ' line and a trailing blank.  Each line of
 their body which starts with 'From ' will have an 'E<gt>' added in front.
@@ -1086,6 +1079,61 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 =head2 Internals
 
 
+$obj-E<gt>B<clonedFrom>
+
+=over 4
+
+Returns the MESSAGE which is the source of this message, which was
+created by a L<clone()|Mail::Message/"Constructors"> operation.
+
+=back
+
+Mail::Message-E<gt>B<coerce>(MESSAGE, OPTIONS)
+
+=over 4
+
+Coerce a MESSAGE into a Mail::Message.  In some
+occasions, for instance where you add a message to a folder, this
+coercion is automatically called to ensure that the correct message
+type is stored.
+
+The coerced message is returned on success, otherwise C<undef>.  The
+coerced message may be a reblessed version of the original message
+or a new object.  In case the message has to be specialized, for
+instance from a general Mail::Message into a Mail::Box::Mbox::Message,
+no copy is needed.  However, to coerce a Mail::Internet object into
+a Mail::Message, a lot of copying and converting will take place.
+
+Valid MESSAGEs which can be coerced into Mail::Message objects
+are of type
+
+=over 4
+
+=item * Any type of L<Mail::Box::Message|Mail::Box::Message>
+
+=item * MIME::Entity's, using L<Mail::Message::Convert::MimeEntity|Mail::Message::Convert::MimeEntity>
+
+=item * Mail::Internet's, using L<Mail::Message::Convert::MailInternet|Mail::Message::Convert::MailInternet>
+
+=back
+
+L<Mail::Message::Part|Mail::Message::Part>'s, which are extensions of C<Mail::Message>'s,
+can also be coerced directly from a L<Mail::Message::Body|Mail::Message::Body>.
+
+I<Example:> 
+
+ my $folder  = Mail::Box::Mbox->new;
+ my $message = Mail::Message->build(...);
+
+ my $coerced = Mail::Box::Mbox::Message->coerce($message);
+ $folder->addMessage($coerced);
+
+Simpler replacement for the previous two lines:
+
+ my $coerced = $folder->addMessage($message);
+
+=back
+
 $obj-E<gt>B<isDelayed>
 
 =over 4
@@ -1184,9 +1232,9 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Message-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+Mail::Message-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -1357,9 +1405,17 @@ If a forward message is created, a destination address must be specified.
 
 I<Error:> No default mailer found to send message.
 
-The message L<send()|Mail::Message/"The Message"> mechanism had not enough information to automatically
+The message L<send()|Mail::Message/"The message"> mechanism had not enough information to automatically
 find a mail transfer agent to sent this message.  Specify a mailer
 explicitly using the C<via> options.
+
+I<Error:> Only build() Mail::Message's; they are not in a folder yet
+
+You may wish to construct a message to be stored in a some kind
+of folder, but you need to do that in two steps.  First, create a
+normal L<Mail::Message|Mail::Message>, and then add it to the folder.  During this
+L<Mail::Box::addMessage()|Mail::Box/"The folder"> process, the message will get L<coerce()|Mail::Message/"Internals">-d
+into the right message type, adding storage information and the like.
 
 I<Error:> Package $package does not implement $method.
 
@@ -1596,7 +1652,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport::SMTP;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Transport::Send';
 
 use Net::SMTP;
@@ -148,14 +148,14 @@ sub contactAnyServer()
 
         defined $server or next;
 
-        $self->log(PROGRESS => "Opened SMTP connection to $host.\n");
+        $self->log(PROGRESS => "Opened SMTP connection to $host.");
 
         if(defined $username)
         {   if($server->auth($username, $password))
-            {    $self->log(PROGRESS => "$host: Authentication succeeded.\n");
+            {    $self->log(PROGRESS => "$host: Authentication succeeded.");
             }
             else
-            {    $self->log(ERROR => "Authentication failed.\n");
+            {    $self->log(ERROR => "Authentication failed.");
                  return undef;
             }
         }

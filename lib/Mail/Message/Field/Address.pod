@@ -57,17 +57,6 @@ representation of the e-mail address, just like L<string()|Mail::Message::Field:
 =head1 METHODS
 
 
-=head2 Initiation
-
-
-Mail::Message::Field::Address-E<gt>B<new>([NAME], OPTIONS)
-
-=over 4
-
-See L<Mail::Identity/"METHODS">
-
-=back
-
 =head2 Constructors
 
 
@@ -94,6 +83,14 @@ $obj-E<gt>B<from>(OBJECT)
 =over 4
 
 See L<Mail::Identity/"Constructors">
+
+=back
+
+Mail::Message::Field::Address-E<gt>B<new>([NAME], OPTIONS)
+
+=over 4
+
+See L<Mail::Identity/"METHODS">
 
 =back
 
@@ -167,7 +164,7 @@ See L<Mail::Identity/"Attributes">
 
 =back
 
-$obj-E<gt>B<name>
+$obj-E<gt>B<name>([NEWNAME])
 
 =over 4
 
@@ -235,6 +232,14 @@ See L<User::Identity::Item/"Collections">
 =back
 
 $obj-E<gt>B<parent>([PARENT])
+
+=over 4
+
+See L<User::Identity::Item/"Collections">
+
+=back
+
+$obj-E<gt>B<removeCollection>(OBJECT|NAME)
 
 =over 4
 
@@ -327,7 +332,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

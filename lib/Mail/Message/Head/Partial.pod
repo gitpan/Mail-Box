@@ -160,6 +160,14 @@ See L<Mail::Message::Head::Complete/"The header">
 
 =back
 
+$obj-E<gt>B<wrap>(INTEGER)
+
+=over 4
+
+See L<Mail::Message::Head::Complete/"The header">
+
+=back
+
 =head2 Access to the header
 
 
@@ -577,9 +585,9 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Message::Head::Partial-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+Mail::Message::Head::Partial-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -692,6 +700,9 @@ You ask to remove a field which is not known in the header.  Using
 L<delete()|Mail::Message::Head::Complete/"Access to the header">, L<reset()|Mail::Message::Head::Complete/"Access to the header">, or L<set()|Mail::Message::Head::Complete/"Access to the header"> to do the job will not result
 in warnings: those methods check the existence of the field first.
 
+I<Warning:> Field objects have an implied name ($name)
+
+
 I<Error:> Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
@@ -699,9 +710,6 @@ implement this method where it should. This message means that some other
 related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
-
-I<Warning:> field objects have an implied name ($name)
-
 
 
 =head1 DETAILS
@@ -744,7 +752,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

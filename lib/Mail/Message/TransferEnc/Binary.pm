@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Message::TransferEnc::Binary;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Message::TransferEnc';
 
 

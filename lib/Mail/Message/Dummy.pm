@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message::Dummy;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Message';
 
 use Carp;

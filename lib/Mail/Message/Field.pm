@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -76,7 +76,7 @@ sub print(;$)
 #------------------------------------------
 
 
-sub toString(;$) {my $self = shift;$self->string(@_)}
+sub toString(;$) {shift->string(@_)}
 sub string(;$)
 {   my $self  = shift;
     return $self->folded unless @_;
@@ -121,7 +121,7 @@ sub nrLines() { my @l = shift->foldedBody; scalar @l }
 
 my %wf_lookup
   = qw/mime MIME  ldap LDAP  soap SOAP  swe SWE
-       bcc Bcc  cc Cc/;
+       bcc Bcc  cc Cc  id ID/;
 
 sub wellformedName(;$)
 {   my $thing = shift;
@@ -129,11 +129,13 @@ sub wellformedName(;$)
 
     join '-',
        map { $wf_lookup{lc $_} || ( /[aeiouyAEIOUY]/ ? ucfirst lc : uc ) }
-          split /\-/, $name;
+          split /\-/, $name, -1;
 }
 
 #------------------------------------------
 
+
+sub folded { shift->notImplemented }
 
 #------------------------------------------
 
@@ -149,6 +151,8 @@ sub body()
 
 #------------------------------------------
 
+
+sub foldedBody { shift->notImplemented }
 
 #------------------------------------------
 
@@ -311,7 +315,7 @@ sub _tz_offset($)
 
    my $diff = $zone eq '%z' ? Time::Zone::tz_local_offset()
            :                  Time::Zone::tz_offset($zone);
-   my $minutes = int((abs($diff)+0.01) / 60);     # float rounding errors :(
+   my $minutes = int((abs($diff)+0.01) / 60);     # float rounding errors
    my $hours   = int(($minutes+0.01) / 60);
    $minutes   -= $hours * 60;
    sprintf( ($diff < 0 ? " -%02d%02d" : " +%02d%02d"), $hours, $minutes);
@@ -376,7 +380,7 @@ sub consume($;$)
         $body =~ s/[\012\015]+/\n/g;
         $body =~ s/^[ \t]*/ /;  # start with one blank, folding kept unchanged
 
-        $self->log(NOTICE => "Empty field: $name\n")
+        $self->log(NOTICE => "Empty field: $name")
            if $body eq " \n";
     }
 
@@ -420,8 +424,8 @@ sub stringifyData($)
 sub setWrapLength(;$)
 {   my $self = shift;
 
-    $self->[1] = $self->fold($self->[0],$self->unfoldedBody, @_)
-        if @_ || $self->[1] !~ m/\n$/;
+    $self->foldedBody(scalar $self->fold($self->Name, $self->unfoldedBody, @_))
+        if @_;
 
     $self;
 }

@@ -11,8 +11,8 @@ Mail::Box::Search - select messages within a mail box
 
  Mail::Box::Search is extended by
    Mail::Box::Search::Grep
-   Mail::Box::Search::IMAP
    Mail::Box::Search::SpamAssassin
+   Mail::Server::IMAP4::Search
 
 
 =head1 SYNOPSIS
@@ -45,7 +45,7 @@ fashion.
 
 Try to detect spam, using Mail::SpamAssassin.
 
-=item L<Mail::Box::Search::IMAP|Mail::Box::Search::IMAP>
+=item Mail::Box::Search::IMAP
 
 Search an IMAP folder for special interface IMAP folders provide for it.
 UNDER CONSTRUCTION till L<Mail::Transport::IMAP4|Mail::Transport::IMAP4> is complete.
@@ -289,9 +289,9 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Box::Search-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+Mail::Box::Search-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -436,7 +436,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

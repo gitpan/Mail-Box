@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field::Full;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Message::Field';
 
 use utf8;
@@ -110,7 +110,7 @@ sub unfoldedBody($;$)
 {   my ($self, $body) = (shift, shift);
 
     if(defined $body)
-    {    $self->foldedBody($self->fold($self->{MMFF_name}, $body));
+    {    $self->foldedBody(scalar $self->fold($self->{MMFF_name}, $body));
          return $body;
     }
 

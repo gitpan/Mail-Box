@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Reporter;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 
 use Carp;
 use Scalar::Util 'dualvar';
@@ -23,8 +23,8 @@ sub new(@)
     (bless {}, $class)->init({@_});
 }
 
-my $default_log   = $levelprio{WARNINGS};
-my $default_trace = $levelprio{WARNINGS};
+my($default_log, $default_trace, $trace_callback);
+INIT {  __PACKAGE__->defaultTrace('WARNINGS'); }
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -36,26 +36,43 @@ sub init($)
 #------------------------------------------
 
 
+sub _trace_warn($$$)
+{   my ($who, $level, $text) = @_;
+    warn "$level: $text\n";
+}
+
 sub defaultTrace(;$$)
 {   my $thing = shift;
 
-    if(@_)
-    {   my ($log, $trace) = @_==1 ? ($_[0], $_[0]) : @_;
+    return ($default_log, $default_trace)
+        unless @_;
 
-        $default_log   = $levelprio{$log}
-           or croak "Undefined log level $log";
+    my $level = shift;
+    my $prio  = $thing->logPriority($level)
+        or croak "Unknown trace-level $level.";
 
-        $default_trace = $levelprio{$trace}
-           or croak "Undefined trace level $trace";
+    if( ! @_)
+    {   $default_log    = $default_trace = $prio;
+        $trace_callback = \&_trace_warn;
+    }
+    elsif(ref $_[0])
+    {   $default_log    = $thing->logPriority('NONE');
+        $default_trace  = $prio;
+        $trace_callback = shift;
+    }
+    else
+    {   $default_log    = $prio;
+        $default_trace  = $thing->logPriority(shift);
+        $trace_callback = \&_trace_warn;
     }
 
-    ( $thing->logPriority($default_log), $thing->logPriority($default_trace) );
+    ($default_log, $default_trace);
 }
 
 #------------------------------------------
 
 
-sub trace(;$)
+sub trace(;$$)
 {   my $self = shift;
 
     return $self->logPriority($self->{MR_trace})
@@ -71,9 +88,9 @@ sub trace(;$)
 #------------------------------------------
 
 
-# Implementation detail: the C code avoids calls back to Perl by
-# checking the trace-level itself.  In the perl code of this module
-# however, just always call the log() method, and let it check
+# Implementation detail: the Mail::Box::Parser::C code avoids calls back
+# to Perl by checking the trace-level itself.  In the perl code of this
+# module however, just always call the log() method, and let it check
 # whether or not to display it.
 
 sub log(;$@)
@@ -91,9 +108,7 @@ sub log(;$@)
             unless @_;
 
         my $text    = join '', @_;
-        $text      .= "\n" unless (substr $text, -1) eq "\n";
-
-        warn "$level: $text"
+        $trace_callback->($thing, $level, $text)
             if $prio >= $thing->{MR_trace};
 
         push @{$thing->{MR_report}[$prio]}, $text
@@ -104,12 +119,8 @@ sub log(;$@)
         my $prio  = $levelprio{$level}
             or croak "Unknown log-level $level";
 
-        return $thing unless $prio >= $default_trace;
-
-        my $text    = join '', @_;
-        $text      .= "\n" unless (substr $text, -1) eq "\n";
-
-        warn "$level: $text";
+        $trace_callback->($thing, $level, join('',@_)) 
+           if $prio >= $default_trace;
     }
 
     $thing;

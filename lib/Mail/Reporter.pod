@@ -96,25 +96,33 @@ about any problems.
 
 =back
 
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Reporter-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+Mail::Reporter-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
-Reports the default trace and log LEVEL which is used for object as list
+Reports the default log and trace level which is used for object as list
 of two elements.  When not explicitly set, both are set to C<WARNINGS>.
-Two values are returned: the first is the log level, the second represents
-the trace level.  Both are special variables: in numeric context they
-deliver a value (the internally used value), and in string context the
-string name.  Be warned that the string is always singular!
 
-You may specify one or two arguments.  In case of one argument, the
-default log and trace levels will both be set to that value.  When two
-levels are specified, the first represent the default log-level and
-the second the default trace level.
+This method has three different uses. When one argument is specified, that
+LEVEL is set for both loglevel as tracelevel.
 
-I<Example:> 
+With two arguments, the second determines which configuration you like.  If
+the second argument is a CODE reference, you install a CALLBACK.  The loglevel
+will be set to NONE, and all warnings produced in your program will get
+passed to the CALLBACK function.  That function will get the problem level,
+the object or class which reports the problem, and the problem text passed
+as arguments.
+
+In any case two values are returned: the first is the log level, the
+second represents the trace level.  Both are special variables: in numeric
+context they deliver a value (the internally used value), and in string
+context the string name.  Be warned that the string is always in singular
+form!
+
+I<Example:> setting loglevels
+
 
  my ($loglevel, $tracelevel) = Mail::Reporter->defaultTrace;
  Mail::Reporter->defaultTrace('NOTICES');
@@ -122,6 +130,17 @@ I<Example:>
  my ($l, $t) = Mail::Reporter->defaultTrace('WARNINGS', 'DEBUG');
  print $l;     # prints "WARNING"  (no S!)
  print $l+0;   # prints "4"
+ print "Auch" if $l >= $self->logPriority('ERROR');
+
+ Mail::Reporter->defaultTrace('NONE');  # silence all reports
+
+ $folder->defaultTrace('DEBUG');   # Still set as global default!
+ $folder->trace('DEBUG');          # local default
+
+I<Example:> installing a callback
+
+
+ Mail::Reporter->defaultTrace
 
 =back
 
@@ -338,7 +357,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

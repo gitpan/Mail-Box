@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 
 use IO::Lines;
 
@@ -63,4 +63,5 @@ sub printStructure(;$$)
     $_->printStructure($fh, $indent.'   ') foreach @parts;
 }
     
+
 1;

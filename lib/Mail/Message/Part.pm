@@ -3,9 +3,10 @@ use warnings;
 
 package Mail::Message::Part;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Message';
-use Scalar::Util 'weaken';
+
+use Scalar::Util    'weaken';
 
 use Carp;
 

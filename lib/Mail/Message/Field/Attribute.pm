@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field::Attribute;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 
 use Mail::Reporter;
 use 5.007003;
@@ -18,7 +18,7 @@ sub new($$@)
     my %args  = @_;
 
     my $name  = ($attr =~ m/^(.*?)(?:\*\d+)?\*?\=/ ? $1 : $attr);
-    $class->log(WARNING => "Illegal character in parameter name '$name'.\n")
+    $class->log(WARNING => "Illegal character in parameter name '$name'.")
         if $name !~ m/^[!#-'*+\-.0-9A-Z^-~]+$/;
 
     my $self  = bless

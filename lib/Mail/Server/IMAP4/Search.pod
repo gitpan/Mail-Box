@@ -1,12 +1,12 @@
 
 =head1 NAME
 
-Mail::Box::Search::IMAP - select messages within a IMAP folder
+Mail::Server::IMAP4::Search - select messages within a IMAP folder (not completed)
 
 
 =head1 INHERITANCE
 
- Mail::Box::Search::IMAP
+ Mail::Server::IMAP4::Search
    is a Mail::Box::Search
    is a Mail::Reporter
 
@@ -17,7 +17,7 @@ Mail::Box::Search::IMAP - select messages within a IMAP folder
  my $mgr    = Mail::Box::Manager->new;
  my $folder = $mgr->open('imap4:Inbox');
 
- my $filter = Mail::Box::Search::IMAP->new
+ my $filter = Mail::Server::IMAP4::Search->new
     (  ...to be defined...
     );
 
@@ -27,8 +27,7 @@ Mail::Box::Search::IMAP - select messages within a IMAP folder
 
 =head1 DESCRIPTION
 
-THIS PACKAGES IS NOT IMPLEMENTED YET: it waits for
-L<Mail::Transport::IMAP4|Mail::Transport::IMAP4> to be available.
+THIS PACKAGES IS NOT IMPLEMENTED YET...  (it's waiting for a volunteer)
 
 
 
@@ -38,7 +37,7 @@ L<Mail::Transport::IMAP4|Mail::Transport::IMAP4> to be available.
 =head2 Constructors
 
 
-Mail::Box::Search::IMAP-E<gt>B<new>(OPTIONS)
+Mail::Server::IMAP4::Search-E<gt>B<new>(OPTIONS)
 
 =over 4
 
@@ -147,9 +146,9 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Box::Search::IMAP-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+Mail::Server::IMAP4::Search-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -167,7 +166,7 @@ See L<Mail::Reporter/"Error handling">
 
 $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Mail::Box::Search::IMAP-E<gt>B<log>([LEVEL [,STRINGS]])
+Mail::Server::IMAP4::Search-E<gt>B<log>([LEVEL [,STRINGS]])
 
 =over 4
 
@@ -177,7 +176,7 @@ See L<Mail::Reporter/"Error handling">
 
 $obj-E<gt>B<logPriority>(LEVEL)
 
-Mail::Box::Search::IMAP-E<gt>B<logPriority>(LEVEL)
+Mail::Server::IMAP4::Search-E<gt>B<logPriority>(LEVEL)
 
 =over 4
 
@@ -275,7 +274,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -4,11 +4,19 @@ use warnings;
 
 package Mail::Box::MH::Message;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Box::Dir::Message';
 
 use File::Copy;
 use Carp;
+
+
+#-------------------------------------------
+
+
+# Purpose of doc is only the warning... no new implementation required.
+
+#-------------------------------------------
 
 
 1;

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body::File;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
@@ -28,7 +28,7 @@ sub _data_from_filename(@)
 
     my $file   = $self->tempFilename;
     unless(open OUT, '>', $file)
-    {   $self->log(ERROR => "Cannot write to temporary body file $file: $!\n");
+    {   $self->log(ERROR => "Cannot write to temporary body file $file: $!");
         return;
     }
 
@@ -50,7 +50,7 @@ sub _data_from_filehandle(@)
     local *OUT;
 
     unless(open OUT, '>', $file)
-    {   $self->log(ERROR => "Cannot write to temporary body file $file: $!\n");
+    {   $self->log(ERROR => "Cannot write to temporary body file $file: $!");
         return;
     }
 
@@ -73,7 +73,7 @@ sub _data_from_glob(@)
     local *OUT;
 
     unless(open OUT, '>', $file)
-    {   $self->log(ERROR => "Cannot write to temporary body file $file: $!\n");
+    {   $self->log(ERROR => "Cannot write to temporary body file $file: $!");
         return;
     }
 
@@ -94,7 +94,7 @@ sub _data_from_lines(@)
     local *OUT;
 
     unless(open OUT, '>', $file)
-    {   $self->log(ERROR => "Cannot write to $file: $!\n");
+    {   $self->log(ERROR => "Cannot write to $file: $!");
         return;
     }
 

@@ -2,9 +2,9 @@
 use strict;
 use warnings;
 
-package Mail::Box::IMAP4::Fetch;
+package Mail::Server::IMAP4::Fetch;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 
 use Date::Parse;
 use Digest::MD5   qw/md5_base64/;

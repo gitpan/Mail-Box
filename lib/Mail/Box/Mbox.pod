@@ -58,31 +58,6 @@ See L<Mail::Box/"OVERLOADED">
 =head2 Constructors
 
 
-$obj-E<gt>B<create>(FOLDERNAME, OPTIONS)
-
-Mail::Box::Mbox-E<gt>B<create>(FOLDERNAME, OPTIONS)
-
-=over 4
-
- Option               Defined in       Default
- folderdir            L<Mail::Box>     undef  
- subfolder_extension                   undef  
-
-. folderdir DIRECTORY
-
-. subfolder_extension STRING
-
-=over 4
-
-If a directory is found on the location of the folder to be created, this
-STRING is used to extend that directory name with.  This will cause the
-directory to be seen as sub-folder for the created folder.  This argument
-is passed to L<folderToFilename()|Mail::Box::Mbox/"Internals">.
-
-=back
-
-=back
-
 Mail::Box::Mbox-E<gt>B<new>(OPTIONS)
 
 =over 4
@@ -190,7 +165,7 @@ to contain them.  This extension C<.d> can be changed using this option.
 =head2 The folder
 
 
-$obj-E<gt>B<addMessage>(MESSAGE)
+$obj-E<gt>B<addMessage>(MESSAGE, OPTIONS)
 
 =over 4
 
@@ -230,7 +205,7 @@ See L<Mail::Box/"The folder">
 
 =back
 
-$obj-E<gt>B<delete>
+$obj-E<gt>B<delete>(OPTIONS)
 
 =over 4
 
@@ -251,28 +226,6 @@ $obj-E<gt>B<folderdir>([DIRECTORY])
 =over 4
 
 See L<Mail::Box/"The folder">
-
-=back
-
-Mail::Box::Mbox-E<gt>B<foundIn>([FOLDERNAME], [OPTIONS])
-
-=over 4
-
-If no FOLDERNAME is specified, then the value of the C<folder> option
-is taken.  A mbox folder is a file which starts with a separator
-line: a line with C<'From '> as first characters.  Blank lines which
-start the file are ignored, which is not for all MUA's acceptable.
-
- Option               Defined in       Default      
- folder                                undef        
- folderdir            L<Mail::Box>     undef        
- subfolder_extension                   <from object>
-
-. folder FOLDERNAME
-
-. folderdir DIRECTORY
-
-. subfolder_extension STRING
 
 =back
 
@@ -326,6 +279,14 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
+
+$obj-E<gt>B<access>
+
+=over 4
+
+See L<Mail::Box/"Folder flags">
+
+=back
 
 $obj-E<gt>B<isModified>
 
@@ -427,12 +388,12 @@ Mail::Box::Mbox-E<gt>B<listSubFolders>(OPTIONS)
 
 =over 4
 
- Option               Defined in       Default      
- check                L<Mail::Box>     <false>      
- folder               L<Mail::Box>     <required>   
- folderdir            L<Mail::Box>     <from folder>
- skip_empty           L<Mail::Box>     <false>      
- subfolder_extension                   <from object>
+ Option               Defined in       Default              
+ check                L<Mail::Box>     <false>              
+ folder               L<Mail::Box>     <from calling object>
+ folderdir            L<Mail::Box>     <from folder>        
+ skip_empty           L<Mail::Box>     <false>              
+ subfolder_extension                   <from object>        
 
 . check BOOLEAN
 
@@ -453,7 +414,9 @@ used to detect sub-folders by default.  Otherwise, C<'.d'> is taken.
 
 =back
 
-$obj-E<gt>B<nameOfSubFolder>(NAME)
+$obj-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
+
+Mail::Box::Mbox-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
 
 =over 4
 
@@ -469,7 +432,17 @@ See L<Mail::Box/"Sub-folders">
 
 =back
 
-$obj-E<gt>B<openSubFolder>(NAME, OPTIONS)
+$obj-E<gt>B<openSubFolder>(SUBNAME, OPTIONS)
+
+=over 4
+
+See L<Mail::Box/"Sub-folders">
+
+=back
+
+$obj-E<gt>B<topFolderWithMessages>
+
+Mail::Box::Mbox-E<gt>B<topFolderWithMessages>
 
 =over 4
 
@@ -480,11 +453,36 @@ See L<Mail::Box/"Sub-folders">
 =head2 Internals
 
 
-$obj-E<gt>B<coerce>(MESSAGE)
+$obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
 
 =over 4
 
 See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<create>(FOLDERNAME, OPTIONS)
+
+Mail::Box::Mbox-E<gt>B<create>(FOLDERNAME, OPTIONS)
+
+=over 4
+
+ Option               Defined in       Default
+ folderdir            L<Mail::Box>     undef  
+ subfolder_extension                   undef  
+
+. folderdir DIRECTORY
+
+. subfolder_extension STRING
+
+=over 4
+
+If a directory is found on the location of the folder to be created, this
+STRING is used to extend that directory name with.  This will cause the
+directory to be seen as sub-folder for the created folder.  This argument
+is passed to L<folderToFilename()|Mail::Box::Mbox/"Internals">.
+
+=back
 
 =back
 
@@ -506,6 +504,28 @@ Translate a folder name into a filename, using the
 FOLDERDIR value to replace a leading C<=>.  If no EXTENSION is specified and
 this method is called as instance method, new(subfolder_extension) is used.
 Otherwise, the extension default to C<'.d'>.
+
+=back
+
+Mail::Box::Mbox-E<gt>B<foundIn>([FOLDERNAME], [OPTIONS])
+
+=over 4
+
+If no FOLDERNAME is specified, then the value of the C<folder> option
+is taken.  A mbox folder is a file which starts with a separator
+line: a line with C<'From '> as first characters.  Blank lines which
+start the file are ignored, which is not for all MUA's acceptable.
+
+ Option               Defined in       Default      
+ folder                                undef        
+ folderdir            L<Mail::Box>     undef        
+ subfolder_extension                   <from object>
+
+. folder FOLDERNAME
+
+. folderdir DIRECTORY
+
+. subfolder_extension STRING
 
 =back
 
@@ -648,9 +668,9 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Box::Mbox-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+Mail::Box::Mbox-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -905,7 +925,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

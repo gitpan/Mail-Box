@@ -544,13 +544,10 @@ Force the wrapping of this field to the specified LENGTH characters. The
 wrapping is performed with L<fold()|Mail::Message::Field/"Internals"> and the results stored within
 the field object.
 
-Without LENGTH, the message will be folded, unless it is already folded.
-Pre-folded lines are detected on a trailing new-line character.
+I<Example:> refolding the field
 
-I<Example:> 
 
  $field->setWrapLength(99);
- $field->setWrapLength;
 
 =back
 
@@ -592,9 +589,9 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Message::Field-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+Mail::Message::Field-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -1110,7 +1107,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

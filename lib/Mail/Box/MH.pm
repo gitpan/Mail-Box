@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::MH;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Box::Dir';
 
 use Mail::Box::MH::Index;
@@ -10,8 +10,9 @@ use Mail::Box::MH::Message;
 use Mail::Box::MH::Labels;
 
 use Carp;
-use File::Spec;
-use File::Basename;
+use File::Spec       ();
+use File::Basename   'basename';
+use IO::Handle       ();
 
 # Since MailBox 2.052, the use of File::Spec is reduced to the minimum,
 # because it is too slow.  The '/' directory separators do work on
@@ -70,11 +71,11 @@ sub create($@)
     return $class if -d $directory;
 
     if(mkdir $directory, 0700)
-    {   $class->log(PROGRESS => "Created folder $name.\n");
+    {   $class->log(PROGRESS => "Created folder $name.");
         return $class;
     }
     else
-    {   $class->log(ERROR => "Cannot create MH folder $name: $!\n");
+    {   $class->log(ERROR => "Cannot create MH folder $name: $!");
         return;
     }
 }
@@ -191,6 +192,10 @@ sub openSubFolder($)
 
     $self->SUPER::openSubFolder($name, @_);
 }
+
+#-------------------------------------------
+
+sub topFolderWithMessages() { 1 }
 
 #-------------------------------------------
 
@@ -355,6 +360,23 @@ sub readMessages(@)
  
 #-------------------------------------------
 
+sub delete(@)
+{   my $self = shift;
+    $self->SUPER::delete(@_);
+
+    my $dir = $self->directory;
+    return 1 unless opendir DIR, $dir;
+    IO::Handle::untaint \*DIR;
+
+    # directories (subfolders) are not removed, as planned
+    unlink "$dir/$_" for readdir DIR;
+    closedir DIR;
+
+    rmdir $dir;    # fails when there are subdirs (without recurse)
+}
+
+#-------------------------------------------
+
 
 sub writeMessages($)
 {   my ($self, $args) = @_;
@@ -411,8 +433,6 @@ sub writeMessages($)
 
     $self;
 }
-
-#-------------------------------------------
 
 #-------------------------------------------
 

@@ -127,29 +127,6 @@ rules are those of the build-in C<cmp>.
 =head2 Constructors
 
 
-$obj-E<gt>B<create>(FOLDERNAME, OPTIONS)
-
-Mail::Box-E<gt>B<create>(FOLDERNAME, OPTIONS)
-
-=over 4
-
-Create a folder.  If the folder already exists, it will
-be left unchanged.  As options, you may specify:
-
- Option     Defined in  Default
- folderdir              undef  
-
-. folderdir DIRECTORY
-
-=over 4
-
-When the foldername is preceded by a C<=>, the C<folderdir> directory
-will be searched for the named folder.
-
-=back
-
-=back
-
 Mail::Box-E<gt>B<new>(OPTIONS)
 
 =over 4
@@ -195,16 +172,27 @@ we want delay-loading.
 
 =over 4
 
-Access-rights to the folder. MODE can be read-only (C<"r">), append (C<"a">),
-and read-write (C<"rw">).  Folders are opened for read-only (C<"r">)
-(which means write-protected) by default!
+Access-rights to the folder.  Folders are opened for read-only (which
 
-These MODEs have no relation to the modes actually used to open the
-folder files within this module.  For instance, if you specify C<"rw">, and
+means write-protected) by default! MODE can be
+
+=over 4
+
+=item C<'r'>: read-only (default)
+
+=item C<'a'>: append
+
+=item C<'rw'>: read-write
+
+=item C<'d'>: delete
+=back
+
+These MODE has no relation to the modes actually used to open the folder
+files within this module.  For instance, if you specify C<"rw">, and
 open the folder, only read permission on the folder-file is required.
 
-Be warned: writing a MBOX folder may create a new file to replace the
-old folder.  The permissions and owner of the file get changed by this.
+Be warned: writing a MBOX folder may create a new file to replace the old
+folder.  The permissions and owner of the file may get changed by this.
 
 =back
 
@@ -272,7 +260,7 @@ Automatically create the folder when it does not exist yet.  This will only
 work when access is granted for writing or appending to the folder.
 
 Be careful: you may create a different folder type than you expect unless you
-explicitly specify L<Mail::Box::Manager::open(type)|Mail::Box::Manager/"Manage folders">.
+explicitly specify L<Mail::Box::Manager::open(type)|Mail::Box::Manager/"Manage open folders">.
 
 =back
 
@@ -537,13 +525,7 @@ binary data to the screen, which is a security risk.
 =head2 The folder
 
 
-$obj-E<gt>B<addMessage>(MESSAGE)
-
-=over 4
-
-=back
-
-$obj-E<gt>B<addMessages>(MESSAGE [, MESSAGE, ...])
+$obj-E<gt>B<addMessage>(MESSAGE, OPTIONS)
 
 =over 4
 
@@ -555,9 +537,42 @@ L<Mail::Box::Manager::copyMessage()|Mail::Box::Manager/"Move messages to folders
 
 Messages with id's which already exist in this folder are not added.
 
+ Option  Defined in  Default   
+ share               <not used>
+
+. share BOOLEAN
+
+=over 4
+
+Try to share the physical resource of the current message with the
+indicated message.  It is sometimes possible to share messages between
+different folder types.  When the sharing is not possible, than this
+option is simply ignored.
+
+Sharing the resource is quite dangerous, and only available for a
+limited number of folder types, at the moment only some L<Mail::Box::Dir|Mail::Box::Dir>
+folders; these file-based messages can be hardlinked (on platforms that
+support it).  The link may get broken when one message is modified in one
+of the folders.... but maybe not, depending on the folder types involved.
+
+=back
+
 I<Example:> 
 
  $folder->addMessage($msg);
+ $folder->addMessages($msg1, $msg2, ...);
+
+=back
+
+$obj-E<gt>B<addMessages>(MESSAGE [, MESSAGE, ...])
+
+=over 4
+
+Adds a set of MESSAGE objects to the open folder at once.  For some folder
+types this may be faster than adding them one at a time.
+
+I<Example:> 
+
  $folder->addMessages($msg1, $msg2, ...);
 
 =back
@@ -570,14 +585,16 @@ Append one or more messages to an unopened folder.
 Usually, this method is called by the L<Mail::Box::Manager::appendMessage()|Mail::Box::Manager/"Move messages to folders">,
 in which case the correctness of the folder type is checked.
 
-This method takes a list of labeled parameters, which may contain
-any option which can be used when a folder is opened, most importantly
-L<new(folderdir)|Mail::Box/"Constructors">.
+For some folder types it is required to open the folder before it can
+be used for appending.  This can be fast, but this can also be very
+slow (depends on the implementation).  All OPTIONS passed will also be
+used to open the folder, if needed.
 
  Option    Defined in       Default   
  folder                     <required>
  message                    undef     
  messages                   undef     
+ share                      <false>   
 
 . folder FOLDERNAME
 
@@ -598,6 +615,15 @@ resource consuming.
 One reference to a MESSAGE or a reference to an ARRAY of MESSAGEs, which may
 be of any type.  The messages will be first coerced into the correct
 message type to fit in the folder, and then will be added to it.
+
+=back
+
+. share BOOLEAN
+
+=over 4
+
+Try to share physical storage of the message.  Only available for a
+limited number of folder types, otherwise no-op.
 
 =back
 
@@ -690,6 +716,7 @@ a different type.
  Option         Defined in       Default                
  delete_copied                   <false>                
  select                          'ACTIVE'               
+ share                           <not used>             
  subfolders                      <folder type dependent>
 
 . delete_copied BOOLEAN
@@ -708,6 +735,15 @@ folder is closed.
 
 Which messages are to be copied. See the description of L<messages()|Mail::Box/"The messages">
 about how this works.
+
+=back
+
+. share BOOLEAN
+
+=over 4
+
+Try to share the message between the folders.  Some L<Mail::Box::Dir|Mail::Box::Dir>
+folder types do support it by creating a hardlink (on UNIX/Linux).
 
 =back
 
@@ -736,21 +772,34 @@ I<Example:>
 
 =back
 
-$obj-E<gt>B<delete>
+$obj-E<gt>B<delete>(OPTIONS)
 
 =over 4
 
 Remove the specified folder file or folder directory (depending on
 the type of folder) from disk.  Of course, THIS IS DANGEROUS: you "may"
-lose data.
+lose data.  Returns a C<true> value on success.
 
 WARNING: When moving messages from one folder to another, be sure to write the
 destination folder before deleting the source folder.  Otherwise you may lose
 data if the system crashes or if there are software problems.
 
-I<Example:> 
+ Option     Defined in  Default
+ recursive              1      
 
- my $folder = Mail::Box::Mbox->new(folder => 'InBox');
+. recursive BOOLEAN
+
+I<Example:> removing an open folder
+
+
+ my $folder = Mail::Box::Mbox->new(folder => 'InBox', access => 'rw');
+ ... some other code ...
+ $folder->delete;
+
+I<Example:> removing an closed folder
+
+
+ my $folder = Mail::Box::Mbox->new(folder => 'INBOX', access => 'd');
  $folder->delete;
 
 =back
@@ -765,42 +814,6 @@ I<Example:>
 
  print $folder->folderdir;
  $folder->folderdir("$ENV{HOME}/nsmail");
-
-=back
-
-Mail::Box-E<gt>B<foundIn>([FOLDERNAME], OPTIONS)
-
-=over 4
-
-Determine if the specified folder is of the type handled by the
-folder class. This method is extended by each folder sub-type.
-
-The FOLDERNAME specifies the name of the folder, as is specified by the
-application.  You need to specified the C<folder> option when you skip
-this first argument.
-
-OPTIONS is a list of extra information for the request.  Read
-the documentation for each type of folder for type specific options, but
-each folder class will at least support the C<folderdir> option:
-
- Option     Defined in  Default
- folderdir              undef  
-
-. folderdir DIRECTORY
-
-=over 4
-
-The location where the folders of this class are stored by default.  If the
-user specifies a name starting with a C<=>, that indicates that the folder is
-to be found in this default DIRECTORY.
-
-=back
-
-I<Example:> 
-
- Mail::Box::Mbox->foundIn('=markov',
-     folderdir => "$ENV{HOME}/Mail");
- Mail::Box::MH->foundIn(folder => '=markov');
 
 =back
 
@@ -867,7 +880,7 @@ $obj-E<gt>B<url>
 =over 4
 
 Represent the folder as a URL (Universal Resource Locator) string.  You may
-pass such a URL as folder name to L<Mail::Box::Manager::open()|Mail::Box::Manager/"Manage folders">.
+pass such a URL as folder name to L<Mail::Box::Manager::open()|Mail::Box::Manager/"Manage open folders">.
 
 I<Example:> 
 
@@ -880,6 +893,14 @@ I<Example:>
 
 =head2 Folder flags
 
+
+$obj-E<gt>B<access>
+
+=over 4
+
+Returns the access mode of the folder, as set by L<new(access)|Mail::Box/"Constructors">
+
+=back
 
 $obj-E<gt>B<isModified>
 
@@ -1140,11 +1161,11 @@ access to that folder.
 
 For MBOX folders, sub-folders are simulated.
 
- Option      Defined in       Default      
- check                        <false>      
- folder                       <required>   
- folderdir                    <from folder>
- skip_empty                   <false>      
+ Option      Defined in       Default              
+ check                        <false>              
+ folder                       <from calling object>
+ folderdir                    <from folder>        
+ skip_empty                   <false>              
 
 . check BOOLEAN
 
@@ -1186,12 +1207,27 @@ I<Example:>
 
 =back
 
-$obj-E<gt>B<nameOfSubFolder>(NAME)
+$obj-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
+
+Mail::Box-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
 
 =over 4
 
 Returns the constructed name of the folder with NAME, which is a
-sub-folder of this current one.
+sub-folder of this current one.  You have either to call this method
+as instance method, or specify a PARENTNAME.
+
+I<Example:> how to get the name of a subfolder
+
+
+ my $sub = Mail::Box::Mbox->nameOfSubfolder('xyz', 'abc');
+ print $sub;                        # abc/xyz
+
+ my $f = Mail::Box::Mbox->new(folder => 'abc');
+ print $f->nameOfSubfolder('xyz');  # abc/xyz
+
+ my $sub = Mail::Box::Mbox->nameOfSubfolder('xyz', undef);
+ print $sub;                        # xyz
 
 =back
 
@@ -1206,7 +1242,7 @@ this method is called upon.
 
 =back
 
-$obj-E<gt>B<openSubFolder>(NAME, OPTIONS)
+$obj-E<gt>B<openSubFolder>(SUBNAME, OPTIONS)
 
 =over 4
 
@@ -1220,10 +1256,21 @@ I<Example:>
 
 =back
 
+$obj-E<gt>B<topFolderWithMessages>
+
+Mail::Box-E<gt>B<topFolderWithMessages>
+
+=over 4
+
+Some folder types can have messages in the top-level folder, some other
+can't.
+
+=back
+
 =head2 Internals
 
 
-$obj-E<gt>B<coerce>(MESSAGE)
+$obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
 
 =over 4
 
@@ -1233,12 +1280,73 @@ here: they will be translated into Mail::Message messages first.
 
 =back
 
+$obj-E<gt>B<create>(FOLDERNAME, OPTIONS)
+
+Mail::Box-E<gt>B<create>(FOLDERNAME, OPTIONS)
+
+=over 4
+
+Create a folder.  If the folder already exists, it will be left unchanged.
+The folder is created, but not opened!  If you want to open a file which
+may need to be created, then use L<Mail::Box::Manager::open()|Mail::Box::Manager/"Manage open folders"> with the
+create flag, or L<Mail::Box::new(create)|Mail::Box/"Constructors">.
+
+ Option     Defined in  Default
+ folderdir              undef  
+
+. folderdir DIRECTORY
+
+=over 4
+
+When the foldername is preceded by a C<=>, the C<folderdir> directory
+will be searched for the named folder.
+
+=back
+
+=back
+
 $obj-E<gt>B<determineBodyType>(MESSAGE, HEAD)
 
 =over 4
 
 Determine which kind of body will be created for this message when
 reading the folder initially.
+
+=back
+
+Mail::Box-E<gt>B<foundIn>([FOLDERNAME], OPTIONS)
+
+=over 4
+
+Determine if the specified folder is of the type handled by the
+folder class. This method is extended by each folder sub-type.
+
+The FOLDERNAME specifies the name of the folder, as is specified by the
+application.  You need to specified the C<folder> option when you skip
+this first argument.
+
+OPTIONS is a list of extra information for the request.  Read
+the documentation for each type of folder for type specific options, but
+each folder class will at least support the C<folderdir> option:
+
+ Option     Defined in  Default
+ folderdir              undef  
+
+. folderdir DIRECTORY
+
+=over 4
+
+The location where the folders of this class are stored by default.  If the
+user specifies a name starting with a C<=>, that indicates that the folder is
+to be found in this default DIRECTORY.
+
+=back
+
+I<Example:> 
+
+ Mail::Box::Mbox->foundIn('=markov',
+     folderdir => "$ENV{HOME}/Mail");
+ Mail::Box::MH->foundIn(folder => '=markov');
 
 =back
 
@@ -1446,9 +1554,9 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Box-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+Mail::Box-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -1693,7 +1801,7 @@ database oriented message storage.
 
 =back
 
-=head2 Supported folder types
+=head2 Available folder types
 
 =over 4
 
@@ -1707,7 +1815,12 @@ Writing and deleting messages is not supported by the library, and
 therefore not by MailBox. Read access is enough to do folder conversions,
 for instance.
 
-=item * L<Mail::Box::IMAP4|Mail::Box::IMAP4> (under development)
+=item * L<Mail::Box::IMAP4|Mail::Box::IMAP4> (partially)
+
+The IMAP protocol is very complex.  Some parts are implemented to
+create (sub-optimal but usable) IMAP clients.  Besides, there are
+also some parts for IMAP servers present.  The most important lacking
+feature is support for encrypted connections.
 
 =item * L<Mail::Box::Maildir|Mail::Box::Maildir>
 
@@ -1741,6 +1854,12 @@ remote system.  After the connection to a POP server is made, the
 messages can be looked at and removed as if they are on the local
 system.
 
+=item * Mail::Box::Netzwert
+
+The Netzwert folder type is optimized for mailbox handling on a cluster
+of systems with a shared NFS storage.  The code is not released under
+GPL (yet)
+
 =back
 
 Other folder types are on the (long) wishlist to get implemented.  Please,
@@ -1752,11 +1871,12 @@ The class structure of folders is very close to that of messages.  For
 instance, a L<Mail::Box::File::Message|Mail::Box::File::Message> relates to a L<Mail::Box::File|Mail::Box::File>
 folder.  The folder types are:
 
- Mail::Box::Mbox    Mail::Box::Maildir  Mail::Box::POP3
- |  Mail::Box::Dbx  |  Mail::Box::MH    |  Mail::Box::IMAP4
- |  |               |  |                |  |
- |  |               |  |                |  |
- Mail::Box::File    Mail::Box::Dir      Mail::Box::Net
+                    Mail::Box::Netzwert
+ Mail::Box::Mbox   | Mail::Box::Maildir Mail::Box::POP3
+ |  Mail::Box::Dbx | | Mail::Box::MH    |  Mail::Box::IMAP4
+ |  |               | | |                 |  |
+ |  |               | | |                 |  |
+ Mail::Box::File   Mail::Box::Dir       Mail::Box::Net
        |                  |                   |
        `--------------.   |   .---------------'
                       |   |   |
@@ -1780,7 +1900,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.056.
+Distribution version 2.057.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Thread::Node;
 use vars '$VERSION';
-$VERSION = '2.056';
+$VERSION = '2.057';
 use base 'Mail::Reporter';
 
 use Carp;
