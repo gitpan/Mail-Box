@@ -23,6 +23,7 @@ my $src  = File::Spec->catfile('t', 'mh.src');
 # Unpack the file-folder.
 #
 
+clean_dir $src;
 unpack_mbox($orig, $src);
 
 my $mgr = Mail::Box::Manager->new;
@@ -35,7 +36,8 @@ my $folder = $mgr->open
   , save_on_exit => 0
   );
 
-die "Couldn't read $src." unless $folder;
+die "Couldn't read $src: $!\n"
+    unless $folder;
 
 # We checked this in other scripts before, but just want to be
 # sure we have enough messages again.

@@ -1,6 +1,13 @@
 CHANGELOG of Mail::Box
 
-All changes made by Mark Overmeer <mark@overmeer.net>
+All changes till now were made by Mark Overmeer <mark@overmeer.net>
+
+version 1.002: Fri Feb 16 23:50:14 CET 2001
+
+	* Better error messages for die and warn during tests.  Hope
+	  to figure-out why Windows still gives some problems, but
+	  I do not want to go out and look a machine with it :(
+	* No changes to methods needed.
 
 version 1.001: Sun Feb 11 17:20:35 CET 2001
 
@@ -9,6 +16,7 @@ version 1.001: Sun Feb 11 17:20:35 CET 2001
 	* Added $! to some error-messages.  I hope it helps in the
 	  compilation reports of perl-testers, so I can see why the
 	  Win* tests do not work.
+	* No changes to methods needed.
 
 version 1.000: Mon Feb  5 22:36:11 CET 2001
 
@@ -18,6 +26,7 @@ version 1.000: Mon Feb  5 22:36:11 CET 2001
 	  on Win*
 	* Removed O_NONBLOCK for dotlock-files on Win*  Hope it
 	  works.  Can anyone improve the port to Windows?
+	* No changes on method-calls needed.
 
 version 0.94: Sat Feb  3 13:09:00 CET 2001
 

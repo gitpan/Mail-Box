@@ -4,12 +4,13 @@
 # Test writing of mbox folders.
 #
 
+use strict;
 use Test;
 use File::Compare;
 use File::Copy;
-use strict;
-use lib '..';
+use File::Spec;
 
+use lib '..';
 use Mail::Box::Mbox;
 
 BEGIN {plan tests => 5}
@@ -20,11 +21,12 @@ BEGIN {plan tests => 5}
 # over our test file.
 #
 
-my $orig = 't/mbox.src';
-my $src  = 't/mbox.cpy';
-my $dest = 't/mbox.cp2';
+my $orig = File::Spec->catfile('t', 'mbox.src');
+my $src  = File::Spec->catfile('t', 'mbox.cpy');
+my $dest = File::Spec->catfile('t', 'mbox.cp2');
 
-copy $orig, $src or die "Cannot create test folder.";
+copy $orig, $src
+    or die "Cannot create test folder: $!\n";
 
 my $folder = new Mail::Box::Mbox
   ( folder       => $src
@@ -33,7 +35,8 @@ my $folder = new Mail::Box::Mbox
   , access       => 'rw'
   );
 
-die "Couldn't read $src." unless $folder;
+die "Couldn't read $src: $!\n"
+     unless $folder;
 
 #
 # None of the messages should be modified.

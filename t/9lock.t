@@ -12,8 +12,9 @@ use lib '..';
 BEGIN {plan tests => 4}
 
 use Mail::Box::Mbox;
+use File::Spec;
 
-my $src  = 't/mbox.src';
+my $src  = File::Spec->catfile('t', 'mbox.src');
 unlink "$src.lock";
 
 #

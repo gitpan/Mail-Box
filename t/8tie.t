@@ -4,17 +4,16 @@
 # Test access to folders using ties.
 #
 
-use Test;
 use strict;
-use lib '..', 't';
+use Test;
 
 BEGIN {plan tests => 8}
 
+use lib '..', 't';
 use Mail::Box::Mbox;
 
-my $src  = 't/mbox.src';
+my $src  = File::Spec->catfile('t', 'mbox.src');
 
-#exit 0;
 #
 # The folder is read.
 #

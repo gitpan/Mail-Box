@@ -20,6 +20,7 @@ BEGIN {plan tests => 19}
 
 my $src = File::Spec->catfile('t', 'mbox.src');
 my $top = File::Spec->catfile('t', 'Mail');
+clean_dir $top;
 
 my $mbox = Mail::Box::Mbox->new
   ( folder      => $src
@@ -33,10 +34,13 @@ my $mbox = Mail::Box::Mbox->new
 sub folder($;$@)
 {   my $dirname = shift;
     $dirname = File::Spec->catfile($dirname, shift) if @_;
-    mkdir $dirname, 0700 || die unless -d $dirname;
+
+    die "Cannot create directory $dirname: $!\n"
+        unless -d $dirname || mkdir $dirname, 0700;
+
     foreach (@_)
     {   my $f = File::Spec->catfile($dirname, $_);
-        open CREATE, ">$f" or die "Cannot create $f";
+        open CREATE, ">$f" or die "Cannot create $f: $!\n";
         $mbox->message($_)->print(\*CREATE) if m/^\d+$/;
         close CREATE;
     }
@@ -137,13 +141,15 @@ ok($folder->messages==1);
 $folder->close;
 ok(-f File::Spec->catfile($newfolder, '1'));
 
-opendir DIR, $newfolder or die;
+opendir DIR, $newfolder
+    or die "Cannot read directory $newfolder: $!\n";
+
 my @all = grep !/^\./, readdir DIR;
 closedir DIR;
 ok(@all==1);
 
 my $seq = File::Spec->catfile($newfolder, '.mh_sequences');
-open SEQ, $seq or die "Cannot open $seq\n";;
+open SEQ, $seq or die "Cannot read $seq: $!\n";
 my @seq = <SEQ>;
 ok(@seq==1);
 ok($seq[0],"unseen: 1\n");

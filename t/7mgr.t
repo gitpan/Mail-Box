@@ -4,16 +4,18 @@
 # Test the folder manager
 #
 
-use Test;
-use lib '..';
 use strict;
+
+use Test;
+use File::Spec;
 
 BEGIN {plan tests => 10}
 
+use lib '..';
 use Mail::Box::Manager;
 
-my $src  = 't/mbox.src';
-my $new  = 't/create';
+my $src  = File::Spec->catfile('t', 'mbox.src');
+my $new  = File::Spec->catfile('t', 'create');
 
 my $manager = Mail::Box::Manager->new;
 

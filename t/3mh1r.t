@@ -7,6 +7,8 @@
 use Test;
 use File::Compare;
 use File::Copy;
+use File::Spec;
+
 use lib '..', 't';
 use strict;
 
@@ -17,8 +19,8 @@ use Tools;
 
 BEGIN {plan tests => 26}
 
-my $orig = 't/mbox.src';
-my $src = 't/mh.src';
+my $orig = File::Spec->catfile('t', 'mbox.src');
+my $src  = File::Spec->catfile('t', 'mh.src');
 
 unpack_mbox($orig, $src);
 

@@ -4,9 +4,10 @@
 # Test threading of MH folders.
 #
 
+use strict;
 use Test;
 use lib '..', 't';
-use strict;
+use File::Spec;
 
 use Mail::Box::MH;
 use Mail::Box::Mbox;
@@ -15,9 +16,10 @@ use Tools;
 
 BEGIN {plan tests => 1}
 
-my $orig = 't/mbox.src';
-my $src = 't/mh.src';
+my $orig = File::Spec->catfile('t', 'mbox.src');
+my $src  = File::Spec->catfile('t', 'mh.src');
 
+clean_dir $src;
 unpack_mbox($orig, $src);
 
 my $folder = new Mail::Box::MH
@@ -36,7 +38,6 @@ foreach (sort {$a->messageID cmp $b->messageID} $folder->threads)
 {   $out .= $_->threadToString;
 }
 
-print $out;
 ok($out eq <<'DUMP');
 3.1K *- Re: converts new sharpen factors
 2.9K *- Problem resizing images through perl script
@@ -83,3 +84,5 @@ ok($out eq <<'DUMP');
 2.5K    `- Re: your mail
 1.7K Resize with Transparency
 DUMP
+
+clean_dir $src;

@@ -4,12 +4,13 @@
 # Test writing of MH folders.
 #
 
+use strict;
 use Test;
 use File::Compare;
 use File::Copy;
-use lib '..', 't';
-use strict;
+use File::Spec;
 
+use lib '..', 't';
 use Mail::Box::MH;
 use Mail::Box::Mbox;
 
@@ -17,9 +18,10 @@ use Tools;
 
 BEGIN {plan tests => 13}
 
-my $orig = 't/mbox.src';
-my $src = 't/mh.src';
+my $orig = File::Spec->catfile('t', 'mbox.src');
+my $src  = File::Spec->catfile('t', 'mh.src');
 
+clean_dir $src;
 unpack_mbox($orig, $src);
 
 my $folder = new Mail::Box::MH

@@ -7,13 +7,14 @@ use Test;
 use File::Compare;
 use strict;
 use lib '..';
+use File::Spec;
 
 BEGIN {plan tests => 8}
 
 use Mail::Box::Mbox;
 
-my $src  = 't/mbox.src';
-my $dest = 't/mbox.cpy';
+my $src  = File::Spec->catfile('t', 'mbox.src');
+my $dest = File::Spec->catfile('t', 'mbox.cpy');
 
 warn "   * Mbox status BETA\n";
 ok(Mail::Box::Mbox->foundIn($src));

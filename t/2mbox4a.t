@@ -4,12 +4,13 @@
 # Test appending messages on Mbox folders.
 #
 
+use strict;
 use Test;
 use File::Compare;
 use File::Copy;
-use lib '..';
-use strict;
+use File::Spec;
 
+use lib '..';
 use Mail::Box::Manager;
 
 BEGIN {plan tests => 6}
@@ -19,10 +20,11 @@ BEGIN {plan tests => 6}
 # over our test file.
 #
 
-my $orig = 't/mbox.src';
-my $src  = 't/mbox.cpy';
+my $orig = File::Spec->catfile('t', 'mbox.src');
+my $src  = File::Spec->catfile('t', 'mbox.cpy');
 
-copy $orig, $src or die "Cannot create test folder.";
+copy $orig, $src
+    or die "Cannot create test folder $src: $!\n";
 
 my $mgr = Mail::Box::Manager->new;
 
@@ -34,7 +36,8 @@ my $folder = $mgr->open
   , save_on_exit => 0
   );
 
-die "Couldn't read $src." unless $folder;
+die "Couldn't read $src: $!\n"
+    unless $folder;
 
 ok($folder->messages==45);
 

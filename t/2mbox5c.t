@@ -20,6 +20,8 @@ BEGIN {plan tests => 24}
 my $top  = File::Spec->catfile('t', 'Mail');
 my $real = File::Spec->catfile('t', 'mbox.src');
 
+clean_dir $top;
+
 #
 # Create a nice structure which looks like a set of mbox folders.
 #
@@ -27,15 +29,18 @@ my $real = File::Spec->catfile('t', 'mbox.src');
 sub dir($;$)
 {   my $dirname = shift;
     $dirname = File::Spec->catfile($dirname, shift) if @_;
-    return if -d $dirname;
-    mkdir $dirname, 0700 || die;
+
+    die "Cannot create $dirname: $!\n"
+        unless -d $dirname || mkdir $dirname, 0700;
+
     $dirname;
 }
 
 sub folder($$;$)
 {   my $filename = File::Spec->catfile(shift, shift);
     my $content  = shift || $real;
-    copy $content, $filename || die;
+    copy $content, $filename
+       or die "Cannot copy $content to $filename: $!\n";
 }
 
 dir $top;
