@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message;
-our $VERSION = 2.019;  # Part of Mail::Box
+our $VERSION = 2.021;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -343,7 +343,7 @@ sub encode(@)
     $body ? $body->encode(@_) : undef;
 }
 
-sub isMultipart() {shift->body->isMultipart}
+sub isMultipart() {shift->head->isMultipart}
 
 sub parts(;$)
 {   my $self    = shift;
@@ -431,29 +431,32 @@ my $mpbody = 'Mail::Message::Body::Multipart';
 my $nbody  = 'Mail::Message::Body::Nested';
 my $lbody  = 'Mail::Message::Body::Lines';
 
-sub readBody($$;$)
+sub readBody($$;$$)
 {   my ($self, $parser, $head, $getbodytype) = @_;
 
-    my $ct   = $head->get('Content-Type');
-    my $type = defined $ct ? lc $ct->body : 'text/plain';
-
     my $bodytype
-      = substr($type, 0, 10) eq 'multipart/' ? $mpbody
-      : $type eq 'message/rfc822'            ? $nbody
-      : ! $getbodytype   ? ($self->{MM_body_type} || $lbody)
+      = ! $getbodytype   ? ($self->{MM_body_type} || $lbody)
       : ref $getbodytype ? $getbodytype->($self, $head)
       :                    $getbodytype;
 
-    my $lines   = $head->get('Lines');
-    my $size    = $head->guessBodySize;
+    my $body;
+    if($bodytype->isDelayed)
+    {   $body = $bodytype->new
+          ( message           => $self
+          , $self->logSettings
+          );
+    }
+    else
+    {   my $ct   = $head->get('Content-Type');
+        my $type = defined $ct ? lc $ct->body : 'text/plain';
 
-    my $body
-      = $bodytype->isDelayed
-      ? $bodytype->new
-        ( message           => $self
-        , $self->logSettings
-        )
-      : $bodytype->new
+        # Be sure you have acceptable bodies for multipars and nested.
+        if(substr($type, 0, 10) eq 'multipart/' && !$bodytype->isMultipart)
+        {   $bodytype = $mpbody }
+        elsif($type eq 'message/rfc822' && !$bodytype->isNested)
+        {   $bodytype = $nbody  }
+
+        $body = $bodytype->new
         ( message           => $self
         , mime_type         => scalar $head->get('Content-Type')
         , transfer_encoding => scalar $head->get('Content-Transfer-Encoding')
@@ -461,6 +464,10 @@ sub readBody($$;$)
         , checked           => $self->{MM_trusted}
         , $self->logSettings
         );
+    }
+
+    my $lines   = $head->get('Lines');
+    my $size    = $head->guessBodySize;
 
     $body->read
       ( $parser, $head, $getbodytype,

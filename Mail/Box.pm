@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box;
-our $VERSION = 2.019;  # Part of Mail::Box
+our $VERSION = 2.021;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -90,21 +90,21 @@ sub init($)
         = $args->{head_delayed_type}|| 'Mail::Message::Head::Delayed';
     $self->{MB_multipart_type}
         = $args->{multipart_type}   || 'Mail::Message::Body::Multipart';
-    my $headtype     = $self->{MB_head_type}
-        = $args->{MB_head_type}     || 'Mail::Message::Head::Complete';
     $self->{MB_field_type}          = $args->{field_type};
 
-    confess "head_type must be complete, but is $headtype.\n"
-        unless $headtype->isa('Mail::Message::Head::Complete');
+    my $headtype     = $self->{MB_head_type}
+        = $args->{MB_head_type}     || 'Mail::Message::Head::Complete';
 
-    my $extract  = $args->{extract} || 10000;
+    my $extract  = $args->{extract} || 'extractDefault';
     $self->{MB_extract}
       = ref $extract eq 'CODE' ? $extract
       : $extract eq 'ALWAYS'   ? sub {1}
       : $extract eq 'LAZY'     ? sub {0}
       : $extract eq 'NEVER'    ? sub {1}  # compatibility
       : $extract =~ m/\D/      ? sub {no strict 'refs';shift->$extract(@_)}
-      :                          $extract;  # digits stay to avoid closure.
+      :     sub { my $size = $_[1]->guessBodySize;
+                  defined $size && $size < $extract;
+                };
 
     #
     # Create a locker.
@@ -556,19 +556,10 @@ sub read(@)
 sub determineBodyType($$)
 {   my ($self, $message, $head) = @_;
 
-    if($self->{MB_lazy_permitted} && !$message->isPart)
-    {   my $delayed = $self->{MB_body_delayed_type};
-        my $extract = $self->{MB_extract};
-
-        return $delayed
-             if ref $extract && !$extract->($self, $head);
-
-        my $size = $head->guessBodySize;
-        return $delayed if $size && $size > $extract;
-    }
-
-    return $self->{MB_multipart_type}
-        if $head->isMultipart;
+    return $self->{MB_body_delayed_type}
+        if $self->{MB_lazy_permitted}
+        && ! $message->isPart
+        && ! $self->{MB_extract}->($self, $head);
 
     my $bodytype = $self->{MB_body_type};
     ref $bodytype ? $bodytype->($head) : $bodytype;

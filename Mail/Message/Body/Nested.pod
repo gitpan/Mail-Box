@@ -97,7 +97,7 @@ See Mail::Message::Body::new(mime_type)
 
 See Mail::Message::Body::new(modified)
 
-=item B<nested> =E<gt> =E<gt> MESSAGE X<new(nested)>
+=item B<nested> =E<gt> MESSAGE-PART X<new(nested)>
 
 The message which is nested within this one.
 
@@ -115,6 +115,9 @@ Examples:
 
  my $intro = Mail::Message::Body->new(data => ...);
  my $body  = Mail::Message::Body::Nested->new(nested  => $intro);
+
+ my $msg   = $folder->message(3);
+ my $encaps= Mail::Message::Body::Nested->new(nested => $msg);
 
 =back
 
@@ -176,6 +179,14 @@ See Mail::Message::Body::disposition()
 
 See Mail::Message::Body::eol()
 
+=item B<isBinary> 
+
+See Mail::Message::Body::Encode::isBinary()
+
+=item B<isText> 
+
+See Mail::Message::Body::Encode::isText()
+
 =item B<mimeType> 
 
 See Mail::Message::Body::mimeType()
@@ -221,6 +232,52 @@ Returns the message which is enclosed within this body.
 =item B<string> 
 
 See Mail::Message::Body::string()
+
+=back
+
+=head2 Constructing a Body
+
+=over 4
+
+=item B<addTransferEncHandler> NAME, CLASS|OBJECT
+
+See Mail::Message::Body::Encode::addTransferEncHandler()
+
+=item B<attach> MESSAGES, OPTIONS
+
+See Mail::Message::Body::Construct::attach()
+
+=item B<check> 
+
+See Mail::Message::Body::Encode::check()
+
+=item B<concatenate> COMPONENTS
+
+See Mail::Message::Body::Construct::concatenate()
+
+=item B<encode> OPTIONS
+
+See Mail::Message::Body::Encode::encode()
+
+=item B<encoded> 
+
+See Mail::Message::Body::Encode::encoded()
+
+=item B<foreachLine> CODE
+
+See Mail::Message::Body::Construct::foreachLine()
+
+=item B<getTransferEncHandler> TYPE
+
+See Mail::Message::Body::Encode::getTransferEncHandler()
+
+=item B<stripSignature> OPTIONS
+
+See Mail::Message::Body::Construct::stripSignature()
+
+=item B<unify> BODY
+
+See Mail::Message::Body::Encode::unify()
 
 =back
 
@@ -318,7 +375,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.019.
+This code is beta, version 2.021.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

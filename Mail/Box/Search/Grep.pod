@@ -101,7 +101,7 @@ is matched, the whole message will be flagged for deletion.
 =item B<field> =E<gt> undef|STRING|REGEX|CODE X<new(field)>
 
 Not valid in combination with C<< in => BODY >>.
-all. The STRING is one full field name (case-insensitive).  Use a REGEX
+The STRING is one full field name (case-insensitive).  Use a REGEX
 to select more than one header line to be scanned. CODE is a routine which
 is called for each field in the header.   The CODE is called with the header
 as first, and the field as second argument.  If the CODE returns true, the
@@ -266,7 +266,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.019.
+This code is beta, version 2.021.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

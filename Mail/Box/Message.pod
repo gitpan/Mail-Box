@@ -130,12 +130,56 @@ See Mail::Message::new(trusted)
 
 =over 4
 
+=item B<bounce> OPTIONS
+
+See Mail::Message::Construct::bounce()
+
+=item B<build> [MESSAGE|BODY], CONTENT
+
+See Mail::Message::Construct::build()
+
+=item B<buildFromBody> BODY, HEADERS
+
+See Mail::Message::Construct::buildFromBody()
+
 =item B<coerce> MESSAGE X<coerce>
 
 Coerce a message to be included in a folder.  The folder itself
 is not specified, but the type of the message is transformed correctly.
 The coerced version of the message is returned.  When no changes had
 to be made, the original message is returned.
+
+=item B<forward> OPTIONS
+
+See Mail::Message::Construct::forward()
+
+=item B<forwardPostlude> 
+
+See Mail::Message::Construct::forwardPostlude()
+
+=item B<forwardPrelude> 
+
+See Mail::Message::Construct::forwardPrelude()
+
+=item B<forwardSubject> STRING
+
+See Mail::Message::Construct::forwardSubject()
+
+=item B<read> FILEHANDLE|SCALAR|REF-SCALAR|ARRAY-OF-LINES, OPTIONS
+
+See Mail::Message::Construct::read()
+
+=item B<reply> OPTIONS
+
+See Mail::Message::Construct::reply()
+
+=item B<replyPrelude> [STRING|FIELD|ADDRESS]
+
+See Mail::Message::Construct::replyPrelude()
+
+=item B<replySubject> STRING
+
+See Mail::Message::Construct::replySubject()
 
 =back
 
@@ -291,6 +335,24 @@ See Mail::Message::parts()
 
 =back
 
+=head2 Access to the Message
+
+=over 4
+
+=item B<file> 
+
+See Mail::Message::Construct::file()
+
+=item B<lines> 
+
+See Mail::Message::Construct::lines()
+
+=item B<string> 
+
+See Mail::Message::Construct::string()
+
+=back
+
 =head2 Labels
 
 =over 4
@@ -382,16 +444,20 @@ See Mail::Reporter::errors()
 
 See Mail::Reporter::log()
 
+=item B<printStructure> [INDENT]
+
+See Mail::Message::Construct::printStructure()
+
 =item B<readBody> PARSER, HEAD [, BODYTYPE] X<readBody>
 
 Read the body of one message.  The PARSER gives access to the folder file.
-The HEAD has been read with C<readHead>.  The optional BODYTYPE supplies
+The HEAD has been read with readHead().  The optional BODYTYPE supplies
 the class name of the body to be created, or a code reference to a
 routine which can produce a body type based on the head (passed as
 first argument).
 
-By default, the BODYTYPE will call C<determineBodyType> method of the
-folder where the message will be added to.
+By default, the BODYTYPE will call Mail::Box::determineBodyType()
+where the message will be added to.
 
 =item B<report> [LEVEL]
 
@@ -454,7 +520,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.019.
+This code is beta, version 2.021.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

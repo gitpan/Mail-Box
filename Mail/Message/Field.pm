@@ -5,7 +5,7 @@ use warnings;
 # derived from Mail::Reporter.  See the manual page.
 
 package Mail::Message::Field;
-our $VERSION = 2.019;  # Part of Mail::Box
+our $VERSION = 2.021;  # Part of Mail::Box
 use Mail::Box::Parser;
 
 use Carp;

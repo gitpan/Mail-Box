@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Net;
-our $VERSION = 2.019;  # Part of Mail::Box
+our $VERSION = 2.021;  # Part of Mail::Box
 
 use base 'Mail::Box';
 

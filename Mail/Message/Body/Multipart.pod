@@ -211,6 +211,14 @@ See Mail::Message::Body::disposition()
 
 See Mail::Message::Body::eol()
 
+=item B<isBinary> 
+
+See Mail::Message::Body::Encode::isBinary()
+
+=item B<isText> 
+
+See Mail::Message::Body::Encode::isText()
+
 =item B<mimeType> 
 
 See Mail::Message::Body::mimeType()
@@ -319,6 +327,10 @@ See Mail::Message::Body::string()
 
 =over 4
 
+=item B<addTransferEncHandler> NAME, CLASS|OBJECT
+
+See Mail::Message::Body::Encode::addTransferEncHandler()
+
 =item B<attach> MESSAGES|BODIES X<attach>
 
 Attach a list of MESSAGES to this multipart.  A new body is returned.
@@ -327,6 +339,30 @@ real messages.  C<MIME::Entity> and C<Mail::Internet> objects may be
 specified too.  In any case, the parts will be coerced into
 Mail::Message::Part's.
 
+=item B<check> 
+
+See Mail::Message::Body::Encode::check()
+
+=item B<concatenate> COMPONENTS
+
+See Mail::Message::Body::Construct::concatenate()
+
+=item B<encode> OPTIONS
+
+See Mail::Message::Body::Encode::encode()
+
+=item B<encoded> 
+
+See Mail::Message::Body::Encode::encoded()
+
+=item B<foreachLine> CODE
+
+See Mail::Message::Body::Construct::foreachLine()
+
+=item B<getTransferEncHandler> TYPE
+
+See Mail::Message::Body::Encode::getTransferEncHandler()
+
 =item B<stripSignature> OPTIONS X<stripSignature>
 
 Removes all parts which contains data usually defined as being signature.
@@ -334,6 +370,31 @@ The C<MIME::Type> module provides this knowledge.  A new multipart is
 returned, containing the remaining parts.  No OPTIONS are defined yet,
 although some may be specified, because this method overrules the
 C<stripSignature> method for normal bodies.
+
+ OPTION               DEFAULT
+ max_lines            10
+ pattern              qr/^--\s?$/
+ result_type          <same as current>
+
+=over 4
+
+=item B<max_lines> =E<gt> INTEGER|undef
+
+See Mail::Message::Body::Construct::stripSignature(max_lines)
+
+=item B<pattern> =E<gt> REGEX|STRING|CODE
+
+See Mail::Message::Body::Construct::stripSignature(pattern)
+
+=item B<result_type> =E<gt> CLASS
+
+See Mail::Message::Body::Construct::stripSignature(result_type)
+
+=back
+
+=item B<unify> BODY
+
+See Mail::Message::Body::Encode::unify()
 
 =back
 
@@ -431,7 +492,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.019.
+This code is beta, version 2.021.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

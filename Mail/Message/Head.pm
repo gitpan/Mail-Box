@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Head;
-our $VERSION = 2.019;  # Part of Mail::Box
+our $VERSION = 2.021;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Complete;
@@ -13,7 +13,7 @@ use Carp;
 use Scalar::Util 'weaken';
 use FileHandle;
 
-use overload qq("") => 'toString'
+use overload qq("") => 'string_unless_carp'
            , bool   => 'isEmpty';
 
 sub new(@)
@@ -113,6 +113,14 @@ sub knownNames() { @{shift->{MMH_order}} }
 # To satisfy overload in static resolving.
 
 sub toString() { shift->load->toString }
+
+sub string_unless_carp()
+{   my $self = shift;
+    return $self->toString unless (caller)[0] eq 'Carp';
+
+    (my $class = ref $self) =~ s/^Mail::Message/MM/;
+    "$class object";
+}
 
 sub read($)
 {   my ($self, $parser) = @_;

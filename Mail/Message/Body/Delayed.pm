@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Delayed;
-our $VERSION = 2.019;  # Part of Mail::Box
+our $VERSION = 2.021;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Object::Realize::Later
@@ -11,7 +11,7 @@ use Object::Realize::Later
     warn_realization => 0,
     believe_caller   => 1;
 
-use overload '""'    => sub {shift->load->string}
+use overload '""'    => 'string_unless_carp'
            , bool    => sub {1}
            , '@{}'   => sub {shift->load->lines};
 
@@ -47,6 +47,14 @@ sub nrLines()
       defined $self->{MMBD_lines}
     ? $self->{MMBD_lines}
     : $_[0]->forceRealize->nrLines;
+}
+
+sub string_unless_carp()
+{   my $self = shift;
+    return $self->load->string unless (caller)[0] eq 'Carp';
+
+    (my $class = ref $self) =~ s/^Mail::Message/MM/g;
+    "$class object";
 }
 
 sub read($$;$@)

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Part;
-our $VERSION = 2.019;  # Part of Mail::Box
+our $VERSION = 2.021;  # Part of Mail::Box
 use base 'Mail::Message';
 
 use Carp;
@@ -17,12 +17,37 @@ sub init($)
     $self;
 }
 
+sub buildFromBody($$;@)
+{   my ($class, $body, $parent) = (shift, shift, shift);
+    my @log     = $body->logSettings;
+
+    my $head    = Mail::Message::Head::Complete->new(@log);
+    while(@_)
+    {   if(ref $_[0]) {$head->add(shift)}
+        else          {$head->add(shift, shift)}
+    }
+
+    my $part = $class->new
+     ( head   => $head
+     , parent => $parent
+     , @log
+     );
+
+    $part->storeBody($body->check);
+    $part->statusToLabels;
+    $part;
+}
+
 sub coerce($@)
-{   my ($class, $message, $parent) = @_;
+{   my ($class, $thing, $parent) = (shift, shift, shift);
+
+    return $class->buildFromBody($thing, $parent, @_)
+        if $thing->isa('Mail::Message::Body');
+
+    my $message = $thing->isa('Mail::Box::Message') ? $thing->clone : $thing;
 
     my $part = $class->SUPER::coerce($message);
     $part->{MMP_parent} = $parent;
-
     $part;
 }
 

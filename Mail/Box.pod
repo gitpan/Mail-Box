@@ -206,20 +206,22 @@ reading of the body.  Header information is more often needed than
 the body data, so why parse it always together?  The cost of delaying
 is not too high.
 
-If you supply a number to this option, bodies of those messages with a
+If you supply an INTEGER to this option, bodies of those messages with a
 total size less than that number will be extracted from the folder only
-when necessary.
+when necessary.  Messages where the size is not included in the header
+(like often the case for multiparts and nested messages) will not be
+extracted by default.
 
-If you supply a code reference, that subroutine is called every time
+If you supply a CODE reference, that subroutine is called every time
 that the extraction mechanism wants to determine whether to parse the
 body or not. The subroutine is called with the following arguments:
 
- $code->(FOLDER, HEAD)
+ CODE->(FOLDER, HEAD)
 
 where FOLDER is a reference to the folder we are reading.  HEAD refers to a
-Mail::Message::Head.  The routine must return a true value (extract now)
-or a false value (be lazy, do not parse yet).  Think about using the
-guessBodySize() and guessTimestamp() on the header to determine
+Mail::Message::Head::Complete.  The routine must return a C<true> value (extract
+now) or a C<false> value (be lazy, do not parse yet).  Think about using the
+C<guessBodySize> and C<guessTimestamp> on the header to determine
 your choice.
 
 The third possibility is to specify the NAME of a method.  In that case,
@@ -1049,7 +1051,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.019.
+This code is beta, version 2.021.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

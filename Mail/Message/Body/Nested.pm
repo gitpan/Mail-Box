@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Nested;
-our $VERSION = 2.019;  # Part of Mail::Box
+our $VERSION = 2.021;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -18,7 +18,7 @@ sub init($)
 
     my $nested;
     if(my $raw = $args->{nested})
-    {   my $nested = Mail::Message::Part->coerce($raw, $self);
+    {   $nested = Mail::Message::Part->coerce($raw, $self);
 
         croak 'Data not convertible to a message (type is ', ref $raw,")\n"
             unless defined $nested;
@@ -82,7 +82,7 @@ sub forNested($)
     my $body      = $nested->body;
     my $new_body  = $code->($self, $body);
 
-    return $body if $new_body == $body;
+    return $self if $new_body == $body;
 
     my $new_nested  = Mail::Message->new(head => $nested->head->clone);
     $new_nested->body($new_body);

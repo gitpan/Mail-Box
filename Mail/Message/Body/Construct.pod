@@ -195,15 +195,15 @@ Specify a list of COMPONENTS.  Each component can be
 
 =over 4
 
-=item a message (Mail::Message), the body of the message is used,
+=item * a message (Mail::Message), the body of the message is used,
 
-=item a body (Mail::Message::Body),
+=item * a body (Mail::Message::Body),
 
-=item C<undef>, which will be skipped,
+=item * C<undef>, which will be skipped,
 
-=item a scalar, which is split on new-lines,
+=item * a scalar, which is split on new-lines,
 
-=item an array of scalars, each providing one line.
+=item * an array of scalars, each providing one line.
 
 =back
 
@@ -399,7 +399,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.019.
+This code is beta, version 2.021.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

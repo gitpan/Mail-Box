@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body;
-our $VERSION = 2.019;  # Part of Mail::Box
+our $VERSION = 2.021;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Field;
@@ -10,7 +10,7 @@ use Mail::Message::Body::Lines;
 use Mail::Message::Body::File;
 
 use overload bool  => sub {1}   # $body->print if $body
-           , '""'  => 'string'
+           , '""'  => 'string_unless_carp'
            , '@{}' => 'lines'
            , '=='  => sub {$_[0]->{MMB_seqnr}==$_[1]->{MMB_seqnr}}
            , '!='  => sub {$_[0]->{MMB_seqnr}!=$_[1]->{MMB_seqnr}};
@@ -246,6 +246,14 @@ sub nrLines(@)  {shift->notImplemented}
 sub size(@)  {shift->notImplemented}
 
 sub string() {shift->notImplemented}
+
+sub string_unless_carp()
+{   my $self  = shift;
+    return $self->string unless (caller)[0] eq 'Carp';
+
+    (my $class = ref $self) =~ s/^Mail::Message/MM/;
+    "$class object";
+}
 
 sub lines() {shift->notImplemented}
 

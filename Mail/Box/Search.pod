@@ -36,12 +36,12 @@ Currently implemented searches:
 
 =item Mail::Box::Search::Grep
 
-Match header or body against a regular expression in a C<grep> like
+Match header or body against a regular expression in a UNIX C<grep> like
 fashion.
 
 =back
 
-A C<Mail::Box::Search::Spam> is high on the wishlist.
+A Mail::Box::Search::Spam is high on the wishlist.
 
 =head1 METHODS
 
@@ -284,7 +284,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.019.
+This code is beta, version 2.021.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
