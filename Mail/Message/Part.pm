@@ -4,7 +4,7 @@ use warnings;
 package Mail::Message::Part;
 use base 'Mail::Message';
 
-our $VERSION = 2.00_19;
+our $VERSION = 2.00_20;
 
 use Carp;
 
@@ -211,7 +211,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_19.
+This code is beta, version 2.00_20.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

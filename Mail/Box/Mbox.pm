@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox;
 use base 'Mail::Box';
 
-our $VERSION = 2.00_19;
+our $VERSION = 2.00_20;
 
 use Mail::Box::Mbox::Message;
 
@@ -123,6 +123,7 @@ folders you will not specify these:
  body_type           Mail::Box::Mbox    <see below>
  body_delayed_type   Mail::Box          'Mail::Message::Body::Delayed'
  coerce_options      Mail::Box          []
+ field_type          Mail::Box          undef
  head_type           Mail::Box          'Mail::Message::Head::Complete'
  head_delayed_type   Mail::Box          'Mail::Message::Head::Delayed'
  locker              Mail::Box          undef
@@ -469,16 +470,17 @@ sub readMessages(@)
 
     my @msgopts  =
       ( $self->logSettings
-      , folder    => $self
-      , head_wrap => $args{head_wrap}
-      , head_type => $args{head_type}
-      , trusted   => $args{trusted}
+      , folder     => $self
+      , head_wrap  => $args{head_wrap}
+      , head_type  => $args{head_type}
+      , field_type => $args{field_type}
+      , trusted    => $args{trusted}
       );
 
     while(1)
     {   my $message = $args{message_type}->new(@msgopts);
-        $delayed++ if !$delayed &&  $message->isDelayed;
         last unless $message->read($parser);
+        $delayed++ if !$delayed && $message->isDelayed;
         $self->storeMessage($message);
     }
 
@@ -893,7 +895,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_19.
+This code is beta, version 2.00_20.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -14,7 +14,7 @@ use Tools;
 
 use File::Spec;
 
-BEGIN { plan tests => 13 }
+BEGIN { plan tests => 15 }
 
 my $inbox = File::Spec->catfile('t', 'mbox.src');
 
@@ -25,7 +25,8 @@ my $parser = Mail::Box::Parser::Perl->new(filename  => $inbox);
 ok($parser);
 
 my $head = Mail::Message::Head->new;
-ok($head);
+ok(defined $head);
+ok(! $head);  # no lines yet
 
 $parser->pushSeparator('From ');
 my ($where, $sep) = $parser->readSeparator;
@@ -34,6 +35,7 @@ ok($where==0);
 ok($sep =~ m/^From mag.*2000$/);
 
 $head->read($parser);
+ok($head);  # now has lines
 ok($head->names==20);
 ok($head->get('subject') eq 'Re: File Conversion From HTML to PS and TIFF');
 

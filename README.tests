@@ -22,7 +22,8 @@ Support modules        Mail::Reporter
    01report.t          maintaining warnings/errors/trace
 
 Basic Mail::Message    Mail::Message  ::Field + ::Head* + ::Body*
-   11field.t           test storage of one header-line
+   11field1.t          test storage of one header-line in ::Fast
+   11field2.t          test storage of one header-line in ::Flex
    12head0h.t          test storage of one header
    13body0s.t          test storage of a string body
    13body1l.t          test storage of a lines body

@@ -9,7 +9,7 @@ use Mail::Box::Parser;
 use Carp;
 use Date::Parse;
 
-our $VERSION = 2.00_19;
+our $VERSION = 2.00_20;
 
 use overload qq("") => 'toString';
 
@@ -86,7 +86,7 @@ fields of a header.
 The following options can be specified:
 
  OPTION      DEFINED BY              DEFAULT
- field_type  Mail::Message::Head     'Mail::Message::Field'
+ field_type  Mail::Message::Head     'Mail::Message::Field::Fast'
  log         Mail::Reporter          'WARNINGS'
  message     Mail::Message::Head     undef
  modified    Mail::Message::Head     0
@@ -101,7 +101,7 @@ No options are specific to a C<Mail::Message::Head::Complete>
 
 sub add(@)
 {   my $self = shift;
-    my $type = $self->{MMH_field_type} || 'Mail::Message::Field';
+    my $type = $self->{MMH_field_type} || 'Mail::Message::Field::Fast';
 
     # Create object for this field.
 
@@ -142,7 +142,7 @@ my %skip_none = map { ($_ => 1) } @skip_none;
 
 sub set(@)
 {   my $self = shift;
-    my $type = $self->{MMH_field_type} || 'Mail::Message::Field';
+    my $type = $self->{MMH_field_type} || 'Mail::Message::Field::Fast';
 
     # Create object for this field.
 
@@ -375,7 +375,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_19.
+This code is beta, version 2.00_20.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

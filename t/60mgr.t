@@ -14,13 +14,16 @@ use File::Spec;
 
 warn "   * Various packages\n";
 
-BEGIN {plan tests => 11}
+BEGIN {plan tests => 16}
 
 my $src  = File::Spec->catfile('t', 'mbox.src');
 my $new  = File::Spec->catfile('t', 'create');
 unlink $new;
 
-my $manager = Mail::Box::Manager->new;
+my $manager = Mail::Box::Manager->new
+ ( log      => 'NOTICES'
+ , trace    => 'ERRORS'
+ );
 
 my $folder  = $manager->open
   ( folder    => $src
@@ -32,42 +35,46 @@ my $folder  = $manager->open
 ok(defined $folder);
 ok($folder->isa('Mail::Box::Mbox'));
 
-my $warn;
-{ local $SIG{__WARN__} = sub {$warn = join '', @_}; # ignore warning.
-  my $second = $manager->open
-    ( folder       => $src
-    , lock_type    => 'NONE'
-    );
+my $second = $manager->open
+ ( folder       => $src
+ , lock_type    => 'NONE'
+ );
 
-  ok(!defined $second);
-}
-ok($warn eq "Folder t/mbox.src is already open.\n");
-
+ok(defined $second);
+ok($second eq $folder);
+my @notices = $manager->report('NOTICES');
+ok(@notices==1);
+ok($notices[-1] eq "Folder t/mbox.src is already open.\n");
 ok($manager->openFolders==1);
 
-undef $warn;
-# Test a creation.
-{ local $SIG{__WARN__} = sub {$warn = join '', @_}; # ignore warning.
-  my $n = $manager->open
-    ( folder       => $new
-    , folderdir    => 't'
-    , type         => 'mbox'
-    , lock_type    => 'NONE'
-    );
-  ok(! -f $new);
-  ok(not defined $n);
-}
-ok(!defined $warn);
+undef $second;
+ok($manager->openFolders==1);
 
 my $n = $manager->open
+ ( folder       => $new
+ , folderdir    => 't'
+ , type         => 'mbox'
+ , lock_type    => 'NONE'
+ );
+ok(! -f $new);
+ok(not defined $n);
+@notices = $manager->report('NOTICES');
+ok(@notices==1);
+
+my @warnings = $manager->report('WARNINGS');
+ok(@warnings==1);
+ok($warnings[-1] eq "Folder t/create does not exist.\n");
+
+my $p = $manager->open
   ( folder       => $new
   , folderdir    => 't'
   , lock_type    => 'NONE'
   , type         => 'mbox'
   , create       => 1
   );
+
 ok(-f $new);
-ok($n);
+ok(defined $p);
 ok(-z $new);
 
 unlink $new;

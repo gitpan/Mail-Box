@@ -7,7 +7,7 @@ use base 'Mail::Box::Parser';
 use List::Util 'sum';
 use FileHandle;
 
-our $VERSION = 2.00_19;
+our $VERSION = 2.00_20;
 
 =head1 NAME
 
@@ -167,16 +167,11 @@ sub _read_header_line()
 
     return () if !defined $line || $line eq "\n";
 
-    my ($name, $body) = split /\:\s+/, $line, 2;
+    my ($name, $body) = split /\:\s*/, $line, 2;
     unless(defined $body)
     {   $self->log(WARNING => "Unexpected end of header:\n  $line");
-
-        until(index $line, ': ')
-        {   $line = $self->_get_one_line;
-            return () unless defined $line;
-            ($name, $body) = split /\:\s+/, $line, 2;
-            last if defined $body;
-        }
+        $self->{MBPP_keep_line} = $line;
+        return ();
     }
 
     $self->log(WARNING => "Blanks stripped after header fieldname: $name.")
@@ -446,7 +441,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_19.
+This code is beta, version 2.00_20.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

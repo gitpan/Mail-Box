@@ -5,7 +5,7 @@ use Getopt::Long;
 use lib '../../Mail';
 use Mail::Box::Manager;
 
-my $VERSION = '2.00_19';
+my $VERSION = '2.00_20';
 
 #-----------
 # prototypes
@@ -252,4 +252,4 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_19
+This code is beta, version 2.00_20

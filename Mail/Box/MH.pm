@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::MH;
 
 use base 'Mail::Box';
-our $VERSION = 2.00_19;
+our $VERSION = 2.00_20;
 
 use Mail::Box::MH::Index;
 use Mail::Box::MH::Message;
@@ -128,6 +128,7 @@ folders you will not specify these:
  body_type         Mail::Box::MH      <see below>
  body_delayed_type Mail::Box          'Mail::Message::Body::Delayed'
  coerce_options    Mail::Box          []
+ field_type        Mail::Box          undef
  head_type         Mail::Box          'Mail::Message::Head::Complete'
  head_delayed_type Mail::Box::MH      'Mail::Message::Head::Delayed'
  index             Mail::Box::MH      undef
@@ -848,7 +849,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_19.
+This code is beta, version 2.00_20.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

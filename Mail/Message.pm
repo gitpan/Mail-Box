@@ -9,7 +9,7 @@ use Mail::Message::Head::Complete;
 
 use Carp;
 
-our $VERSION = 2.00_19;
+our $VERSION = 2.00_20;
 
 =head1 NAME
 
@@ -101,15 +101,20 @@ be read later, unless specified at construction.
 
  OPTION            DESCRIBED IN       DEFAULT
  body              Mail::Message      undef
- body_type         Mail::Message      'Mail::Message::Body::Lines'
  head              Mail::Message      undef
- head_type         Mail::Message      'Mail::Message::Head::Complete'
  log               Mail::Reporter     'WARNINGS'
  messageId         Mail::Message      undef
  modified          Mail::Message      0
  trace             Mail::Reporter     'WARNINGS'
  trusted           Mail::Message      0
  head_wrap         Mail::Message      72
+
+Only for extension writers:
+
+ OPTION            DESCRIBED IN       DEFAULT
+ body_type         Mail::Message      'Mail::Message::Body::Lines'
+ field_type        Mail::Message      undef
+ head_type         Mail::Message      'Mail::Message::Head::Complete'
 
 =over 4
 
@@ -169,7 +174,7 @@ sub init($)
     # Set the header
 
     my $head;
-    if($head = $args->{head})
+    if(defined($head = $args->{head}))
     {   $self->head($head);
     }
     elsif(my $msgid = $args->{messageId} || $args->{messageID})
@@ -183,10 +188,13 @@ sub init($)
     }
 
     $self->{MM_body_type} = $args->{body_type}
-       if $args->{body_type};
+       if defined $args->{body_type};
 
     $self->{MM_head_type} = $args->{head_type}
-       if $args->{head_type};
+       if defined $args->{head_type};
+
+    $self->{MM_field_type} = $args->{field_type}
+       if defined $args->{field_type};
 
     $self;
 }
@@ -206,8 +214,7 @@ sub init($)
 =item get FIELD
 
 Returns the value which is stored in the header FIELD with the specified
-name.  If no header is known yet, or the field is not defined, then
-C<undef> is returned.  If the field has multiple appearances in the
+name.  If the field has multiple appearances in the
 header, the last instance is returned.
 
 The field name is case insensitive.  Only the `body' of the field is
@@ -225,8 +232,7 @@ Is equivalent to:
 =cut
 
 sub get($)
-{   my $head  = shift->head || return;
-    my $field = $head->get(shift) || return;
+{   my $field = shift->head->get(shift) || return;
     $field->body;
 }
 
@@ -773,16 +779,17 @@ The PARSER is the access to the folder's file.
 
 sub readHead($;$)
 {   my ($self, $parser) = (shift, shift);
-    my $headtype = shift || $self->{MM_head_type}
-                   || 'Mail::Message::Head::Complete';
+    my $headtype = shift
+      || $self->{MM_head_type}
+      || 'Mail::Message::Head::Complete';
 
     $headtype->new
       ( message     => $self
       , wrap_length => delete $self->{MM_head_wrap}
+      , field_type  => $self->{MM_field_type}
       , $self->logSettings
       )->read($parser);
 }
-
 
 #------------------------------------------
 
@@ -866,7 +873,7 @@ sub body(;$@)
     unless($rawbody)
     {   # Disconnect body from message.
         my $body = delete $self->{MM_body};
-        if(my $head = $self->head)
+        if(defined(my $head = $self->head))
         {   $head->reset($_) foreach @bodydata_in_header;
         }
 
@@ -938,7 +945,7 @@ sub head(;$)
     return $self->{MM_head} unless @_;
 
     my $head = shift;
-    return delete $self->{MM_head} unless $head;
+    return delete $self->{MM_head} unless defined $head;
 
     $self->log(INTERNAL => "wrong type of head for $self")
         unless ref $head && $head->isa('Mail::Message::Head');
@@ -946,7 +953,7 @@ sub head(;$)
     $head->message($self);
 
     my $old = $self->{MM_head};
-    $self->{MM_modified}++ if $old && !$old->isDelayed;
+    $self->{MM_modified}++ if defined $old && !$old->isDelayed;
 
     $self->{MM_head} = $head;
 
@@ -983,7 +990,7 @@ Angles (if present) are removed from the id.
 =cut
 
 sub takeMessageId(;$)
-{   my $self = shift;
+{   my $self  = shift;
     my $msgid = @_ ? shift : $self->get('Message-ID');
 
     return $self->{MM_message_id} = $self->head->createMessageId
@@ -1115,7 +1122,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_19.
+This code is beta, version 2.00_20.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

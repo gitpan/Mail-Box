@@ -8,7 +8,7 @@ use base 'Mail::Reporter';
 use Mail::Box::Message;
 use Mail::Box::Locker;
 
-our $VERSION = 2.00_19;
+our $VERSION = 2.00_20;
 
 use Carp;
 use Scalar::Util 'weaken';
@@ -152,6 +152,7 @@ you will not specify these:
  body_type         Mail::Box::Mbox    <see below, folder specific>
  body_delayed_type Mail::Box          'Mail::Message::Body::Delayed'
  coerce_options    Mail::Box          []
+ field_type        Mail::Box          undef
  head_type         Mail::Box          'Mail::Message::Head::Complete'
  locker            Mail::Box          undef
  lock_type         Mail::Box          'Mail::Box::Locker::DotLock'
@@ -331,6 +332,11 @@ no folder at all).
 Messages which are coerced are always fully read, so this kind of information
 does not need to be kept here.
 
+=item * field_type =E<gt> CLASS
+
+The type of the fields to be used in a header. Must extend
+C<Mail::Message::Field>.
+
 =item * head_type =E<gt> CLASS
 
 The type of header which contains all header information.  Must extend
@@ -418,7 +424,7 @@ sub init($)
       : substr($foldername, 0, length $folderdir) eq $folderdir;
 
     if(exists $args->{manager})
-    {   $self->{MB_manager}      = $args->{manager};
+    {   $self->{MB_manager}  = $args->{manager};
         weaken($self->{MB_manager});
     }
 
@@ -432,6 +438,7 @@ sub init($)
         = $args->{multipart_type}   || 'Mail::Message::Body::Multipart';
     my $headtype     = $self->{MB_head_type}
         = $args->{MB_head_type}     || 'Mail::Message::Head::Complete';
+    $self->{MB_field_type}          = $args->{field_type};
 
     confess "head_type must be complete, but is $headtype.\n"
         unless $headtype->isa('Mail::Message::Head::Complete');
@@ -510,13 +517,13 @@ sub close(@)
     delete $self->{MB_manager};
 
     my $write
-      = !exists $args{write} || $args{write} eq 'MODIFIED' ? $self->modified
-        : $args{write} eq 'ALWAYS'                         ? 1
-        : $args{write} eq 'NEVER'                          ? 0
-        :                                                    0;
+      = (!exists $args{write} || $args{write} eq 'MODIFIED') ? $self->modified
+        : $args{write} eq 'ALWAYS'                           ? 1
+        : $args{write} eq 'NEVER'                            ? 0
+        :                                                      0;
 
     if($write && !$force && !$self->writeable)
-    {   $self->log(WARNING => "Changes not written to read-only folder");
+    {   $self->log(WARNING => "Changes not written to read-only folder $self");
         return 1;
     }
 
@@ -1030,6 +1037,7 @@ sub read(@)
       ( trusted      => $self->{MB_trusted}
       , head_wrap    => $self->{MB_head_wrap}
       , head_type    => $self->{MB_head_type}
+      , field_type   => $self->{MB_field_type}
       , message_type => $self->{MB_message_type}
       , body_delayed_type => $self->{MB_body_delayed_type}
       , @_
@@ -1495,6 +1503,7 @@ sub DESTROY
 # MB_coerce_opts: Options which have to be applied to the messages which
 #    are coerced into this folder.
 # MB_current: Used by some mailbox-types to save last read message.
+# MB_field_type: new(field_type)
 # MB_folderdir: new(folderdir)
 # MB_foldername: new(folder)
 # MB_head_type: new(head_type)
@@ -1526,7 +1535,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_19.
+This code is beta, version 2.00_20.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

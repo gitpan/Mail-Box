@@ -16,7 +16,7 @@ use Tools;
 
 use File::Spec;
 
-BEGIN {plan tests => 144}
+BEGIN {plan tests => 145}
 
 my $inbox = File::Spec->catfile('t', 'mbox.src');
 
@@ -36,6 +36,7 @@ my $head = Mail::Message::Head->new;
 ok(defined $head);
 
 $head->read($parser);
+ok(defined $head);
 ok($head);
 
 my $length = int $head->get('Content-Length');

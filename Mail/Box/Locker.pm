@@ -4,10 +4,11 @@ use strict;
 package Mail::Box::Locker;
 use base 'Mail::Reporter';
 
-our $VERSION = 2.00_19;
+our $VERSION = 2.00_20;
 
 use Carp;
 use File::Spec;
+use Scalar::Util 'weaken';
 
 #-------------------------------------------
 
@@ -206,6 +207,8 @@ sub init($)
     $self->SUPER::init($args);
 
     $self->{MBL_folder}   = $args->{folder};
+    weaken($self->{MBL_folder});
+
     $self->{MBL_timeout}  = $args->{timeout}   || 3600;
     $self->{MBL_wait}     = $args->{wait}      || 10;
     $self->{MBL_filename} = $args->{file};
@@ -368,7 +371,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_19.
+This code is beta, version 2.00_20.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

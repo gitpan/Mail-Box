@@ -47,6 +47,8 @@ Mail/Message/TransferEnc/EightBit.pm
 Mail/Message/TransferEnc/Binary.pm
 Mail/Message/TransferEnc/QuotedPrint.pm
 Mail/Message/Field.pm
+Mail/Message/Field/Fast.pm
+Mail/Message/Field/Flex.pm
 Mail/Message/Head.pm
 Mail/Message/Head/Complete.pm
 Mail/Message/Head/Delayed.pm
@@ -77,7 +79,8 @@ scripts/lsmail
 scripts/takemail
 scripts/mailbox2html
 t/01report.t
-t/11field.t
+t/11field1.t
+t/11field2.t
 t/12head0h.t
 t/13body0s.t
 t/13body1l.t

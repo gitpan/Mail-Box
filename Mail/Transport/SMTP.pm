@@ -8,7 +8,7 @@ use Carp;
 use IO::Socket::INET;
 use Net::Cmd;
 
-our $VERSION = 2.00_19;
+our $VERSION = 2.00_20;
 
 =head1 NAME
 
@@ -123,7 +123,7 @@ sub init($)
     my $timeout = defined $args->{timeout} ? $args->{timeout} : 120;
     my $port    = $args->{port} || 'smtp(25)';
 
-    $self->{MTS_hosts} = [ \@hosts ];
+    $self->{MTS_hosts} = \@hosts;
     $self->{MTS_sock_opts}
        = [ PeerPort => $port, Proto => 'tcp', Timeout => $timeout ];
 
@@ -289,7 +289,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_19.
+This code is beta, version 2.00_20.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

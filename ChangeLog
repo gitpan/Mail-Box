@@ -3,6 +3,34 @@ CHANGELOG of Mail::Box
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
+version 2.00_20:
+
+	Fixes:
+
+	- Better (less complaining) recovery of bad header parsing.
+
+	- Removed a back-reference from a locker object to the folder,
+	  by which the folders where kept alive although out of scope.
+	  "circular reference".  According the the errors I got when
+	  removing this one, there should be no strong refs left.
+
+	- replaced many "warn"s by "$self->log(WARNING =>"s in
+	  Mail::Box::Manager.
+
+	- Improved handling and creating folders in the Mail::Box::Manager.
+
+	- A header may be empty, but then it will be 'false'.  This is
+	  needed to correctly recover corrupted mbox folders.
+
+	New:
+
+	- Mail::Message::Field::Fast implements a fast but dirty way to
+	  store the header information.  Tested in t/11field1.t
+	  It saves about 10% memory and 7% performance.
+
+	- Mail::Message::Field::Flex implements an extendible but slower
+	  way to manage the data.  Tested in t/11field2.t
+
 version 2.00_19: Wed Dec 12 22:13:56 CET 2001
 
 	Most work about sending messages.  Slight extension of the

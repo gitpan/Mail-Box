@@ -7,7 +7,7 @@ use base 'Mail::Message';
 use Date::Parse;
 use Scalar::Util 'weaken';
 
-our $VERSION = 2.00_19;
+our $VERSION = 2.00_20;
 
 =head1 NAME
 
@@ -100,11 +100,9 @@ are supported:
 
  OPTION        DESCRIBED IN         DEFAULT
  body          Mail::Message        undef
- body_type     Mail::Box::Message   <from folder>
  deleted       Mail::Box::Message   0
  folder        Mail::Box::Message   <required>
  head          Mail::Message        undef
- head_type     Mail::Message        'Mail::Message::Head::Complete'
  head_wrap     Mail::Message        72
  labels        Mail::Box::Message   []
  log           Mail::Reporter       'WARNINGS'
@@ -114,6 +112,12 @@ are supported:
  trace         Mail::Reporter       'WARNINGS'
  trusted       Mail::Message        0
 
+Only for extension writers:
+
+ OPTION        DESCRIBED IN         DEFAULT
+ body_type     Mail::Box::Message   <from folder>
+ field_type    Mail::Message        undef
+ head_type     Mail::Message        'Mail::Message::Head::Complete'
 
 =over 4
 
@@ -513,7 +517,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_19.
+This code is beta, version 2.00_20.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -5,16 +5,16 @@ package Mail::Message::Head;
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Complete;
-use Mail::Message::Field;
+use Mail::Message::Field::Fast;
 use Mail::Box::Parser;
 
 use Carp;
 use Scalar::Util 'weaken';
 use FileHandle;
 
-our $VERSION = 2.00_19;
+our $VERSION = 2.00_20;
 
-use overload bool => sub {1};
+use overload bool => sub { keys %{shift->{MMH_fields}} };
 
 =head1 NAME
 
@@ -125,7 +125,7 @@ be upgraded to a C<Mail::Message::Head::Complete> -a full head.
 The following options can be specified:
 
  OPTION       DEFINED BY                DEFAULT
- field_type   Mail::Message::Head       'Mail::Message::Field'
+ field_type   Mail::Message::Head       'Mail::Message::Field::Fast'
  log          Mail::Reporter            'WARNINGS'
  message      Mail::Message::Head       undef
  modified     Mail::Message::Head       0
@@ -487,7 +487,7 @@ which has preference over C<To> as destination for the message.
 
 =cut
 
-sub isResent() { shift->get('resent-message-id') }
+sub isResent() { defined shift->get('resent-message-id') }
 
 #------------------------------------------
 
@@ -514,13 +514,13 @@ sub read($)
 
     my $pairs     = [ $parser->readHeader($self->{MMH_wrap_length}) ];
     @$self{ qw/MMH_begin MMH_end/ } = splice @$pairs, 0, 2;
-    return unless @$pairs;
+#   return unless @$pairs;
 
     $parser->defaultParserType(ref $parser);
 
     my $known     = $self->{MMH_fields};
     my $wrap      = $self->{MMH_wrap_length};
-    my $fieldtype = $self->{MMH_field_type} || 'Mail::Message::Field';
+    my $fieldtype = $self->{MMH_field_type} || 'Mail::Message::Field::Fast';
 
     while(@$pairs)
     {   my ($name, $body) = (shift @$pairs, shift @$pairs);
@@ -796,7 +796,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_19.
+This code is beta, version 2.00_20.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

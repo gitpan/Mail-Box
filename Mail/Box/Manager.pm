@@ -4,7 +4,7 @@ use warnings;
 package Mail::Box::Manager;
 use base 'Mail::Reporter';
 
-our $VERSION = 2.00_19;
+our $VERSION = 2.00_20;
 use Mail::Box;
 
 use Carp;
@@ -194,7 +194,7 @@ sub registerType($$@)
 
     eval "require $class";
     if($@)
-    {   warn "Cannot find folder type $name: $@\n";
+    {   $self->log(INTERNAL => "Cannot find folder type $name: $@\n");
         return 0;
     }
 
@@ -276,9 +276,9 @@ The C<type> option specifies which type of folder is created.
 
 Examples:
 
- $manager->open(folder => '=jack', type => 'mbox');
- $manager->open(type => 'Mail::Box::Mbox', access => 'rw');
- $manager->open('Inbox');
+ my $jack  = $manager->open(folder => '=jack', type => 'mbox');
+ my $rcvd  = $manager->open(type => 'Mail::Box::Mbox', access => 'rw');
+ my $inbox = $manager->open('Inbox');
 
 =cut
 
@@ -293,7 +293,7 @@ sub open(@)
     $args{folder} = $name;
 
     unless(defined $name && length $name)
-    {   warn "No foldername specified.\n";
+    {   $self->log(ERROR => "No foldername specified to open.\n");
         return undef;
     }
         
@@ -303,25 +303,40 @@ sub open(@)
     # Do not open twice.
     my $folder = $self->isOpenFolder($name);
     if(defined $folder)
-    {   warn "Folder $name is already open.\n";
-        return;
+    {   $self->log(NOTICE => "Folder $name is already open.\n");
+        return $folder;
     }
 
     # User-specified foldertype prevails.
-    if(defined $args{type})
-    {   foreach (@{$self->{MBM_folder_types}})
-        {   my ($type, $class, @options) = @$_;
-            push @options, manager => $self;
-            next unless $args{type} eq $type || $args{type} eq $class;
+    if(my $type = $args{type})
+    {
+        foreach (@{$self->{MBM_folder_types}})
+        {   my ($abbrev, $class, @options) = @$_;
+            next unless $type eq $abbrev || $type eq $class;
 
+            push @options, manager => $self;
             my $folder = $class->new(@options, %args);
-            $folder = $class->create($name, @options, %args)
-                if !$folder && $args{create};
+
+            if(!defined $folder && $args{create})
+            {   if($class->create($name))
+                {   $self->log(PROGRESS => "Created folder $name.\n");
+                    $folder = $class->new(@options, %args);
+                }
+                else
+                {   $self->log(WARNING  => "Unabled to create folder $name.\n");
+                }
+            }
+
+            if(defined $folder)
+            {   $self->log(PROGRESS => "Opened folder $name.") }
+            else
+            {   $self->log(WARNING  => "Folder $name does not exist.\n") }
 
             push @{$self->{MBM_folders}}, $folder if $folder;
             return $folder;
         }
-        warn "I do not know foldertype $args{type}: autodecting.";
+
+        $self->log(WARNING => "I do not know foldertype $type: autodecting.\n");
     }
 
     # Try to autodetect foldertype.
@@ -341,16 +356,18 @@ sub open(@)
 
     # Open read-only only for folders which exist.
     if(exists $args{access} && $args{access} !~ m/w|a/)
-    {   warn "Couldn't detect type of folder $name.\n";
+    {   $self->log(ERROR => "Couldn't detect type of folder $name.\n");
         return;
     }
 
     # Create a new folder.
-    return unless $args{create};
+    unless($args{create})
+    {   $self->log(WARNING => "Folder $name does not exist.\n");
+        return;
+    }
 
-    my $retry = $self->{MBM_default_type} || $self->{MBM_folder_types}[0][1];
-    $retry->create($name, %args) or return;
-    $self->open(%args, type => $retry);  # retry to open.
+    my $type = $self->{MBM_default_type} || $self->{MBM_folder_types}[0][1];
+    $self->open(%args, type => $type);  # retry to open.
 }
 
 #-------------------------------------------
@@ -412,10 +429,8 @@ sub close($)
     my $name      = $folder->name;
     my @remaining = grep {$name ne $_->name} @{$self->{MBM_folders}};
 
-    if(@{$self->{MBM_folders}} == @remaining)
-    {   warn "The folder was not opened by this folder-manager.\n";
-        return;
-    }
+    # folder opening failed:
+    return if @{$self->{MBM_folders}} == @remaining;
 
     $self->{MBM_folders} = [ @remaining ];
     $_->removeFolder($folder) foreach @{$self->{MBM_threads}};
@@ -481,7 +496,8 @@ sub appendMessages(@)
     if(ref $folder)
     {   # An open file.
         unless($folder->isa('Mail::Box'))
-        {   warn "Folder $folder is not a Mail::Box; cannot add a message.\n";
+        {   $self->log(ERROR =>
+                "Folder $folder is not a Mail::Box; cannot add a message.\n");
             return;
         }
 
@@ -723,7 +739,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_19.
+This code is beta, version 2.00_20.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

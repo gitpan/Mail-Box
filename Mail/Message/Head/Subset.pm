@@ -10,7 +10,7 @@ use Object::Realize::Later
     realize        => 'load',
     believe_caller => 1;
 
-our $VERSION = 2.00_19;
+our $VERSION = 2.00_20;
 
 use Carp;
 use Date::Parse;
@@ -96,7 +96,7 @@ manual-pages:
 
  OPTION         DEFINED BY           DEFAULT
  complete_type  Mail::Message::Head  'Mail::Message::Head::Complete'
- field_type     Mail::Message::Head  'Mail::Message::Field'
+ field_type     Mail::Message::Head  'Mail::Message::Field::Fast'
  log            Mail::Reporter       'WARNINGS'
  message        Mail::Message::Head  undef
  modified       Mail::Message::Head  0
@@ -243,7 +243,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_19.
+This code is beta, version 2.00_20.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

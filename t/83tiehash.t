@@ -61,4 +61,5 @@ $folder{undef} = $newmsg;
 ok($folder->messages == 46);
 ok(keys %folder == 46);
 
+$folder->close(write => 'NEVER');
 exit 0;

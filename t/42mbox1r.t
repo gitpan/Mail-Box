@@ -80,5 +80,6 @@ ok($end== -s $folder->filename);
 $folder->message(2)->delete;
 ok($folder->message(2)->deleted);
 ok($folder->messages == 45);
+$folder->close(write => 'NEVER');
 
 exit 0;

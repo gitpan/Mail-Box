@@ -16,7 +16,7 @@ use Test;
 use File::Copy;
 use File::Spec;
 
-BEGIN {plan tests => 18}
+BEGIN {plan tests => 20}
 
 my $src = File::Spec->catfile('t', 'mbox.src');
 my $top = File::Spec->catfile('t', 'Mail');
@@ -170,6 +170,8 @@ $folder = Mail::Box::MH->new
 
 ok(-d $f4);
 $folder->delete;
+ok(1);
 $folder->close;
+ok(1);
 
 clean_dir $top;

@@ -445,132 +445,6 @@ Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
 
-From magick-owner@unca-don.wizards.dupont.com Thu Feb 24 17:27 MET 2000
-Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
-	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id RAA19964
-	for <markov@ATComputing.nl>; Thu, 24 Feb 2000 17:27:35 +0100 (MET)
-Received: (from nobody@localhost)
-	by ns.ATComputing.nl (8.8.8/8.8.8) id RAA23400
-	for <markov@ATComputing.nl>; Thu, 24 Feb 2000 17:27:34 +0100
-Received: from mustang.oldcity.dca.net(216.158.38.3) by ns.ATComputing.nl via smap (V2.1)
-	id xma023398; Thu, 24 Feb 00 17:27:10 +0100
-Received: from unca-don.wizards.dupont.com ([204.183.81.133])
-	by mustang.oldcity.dca.net (8.9.3/8.9.3/DCANET) with ESMTP id LAA14646;
-	Thu, 24 Feb 2000 11:25:37 -0500
-Received: (from majordomo@localhost)
-	by unca-don.wizards.dupont.com (8.9.3/8.9.3) id LAA15770
-	for magick-outgoing; Thu, 24 Feb 2000 11:04:56 -0500 (EST)
-X-Authentication-Warning: unca-don.wizards.dupont.com: majordomo set sender to owner-magick@wizards.dupont.com using -f
-Message-ID: <8100014B48DAD111AA4100805F9F3FC903A0E5B2@host60.corbis.com>
-From: Bill Radcliffe <BillR@corbis.com>
-To: "'Steve Sapovits'" <SapovitsS@globalsportsinc.com>,
-        "'magick@wizards.dupont.com'" <magick@wizards.dupont.com>
-Subject: RE: Transparency question
-Date: Thu, 24 Feb 2000 08:06:44 -0800
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2448.0)
-Sender: owner-magick@wizards.dupont.com
-Precedence: bulk
-Reply-To: Bill Radcliffe <BillR@corbis.com>
-Content-Type: text/plain
-Status: RO
-Content-Length: 3362
-Lines: 93
-
-It would help me if you could send some small samples of exactly the effect
-you are trying to achieve. I'm sure IM can do whatever you want but the road
-to get there may not be at all obvious.
-
-> -----Original Message-----
-> From:	Steve Sapovits [SMTP:SapovitsS@globalsportsinc.com]
-> Sent:	Wednesday, February 23, 2000 10:32 AM
-> To:	Steve Sapovits; magick@wizards.dupont.com
-> Subject:	RE: Transparency question
-> 
-> 
-> Someone on this list and my image folks here seem to confirm that the
-> problem
-> here is with 'fringe' pixels that were not trimmed back as neatly as
-> possible.  Any
-> suggestions for automating this?  This whole thing needs to be batched.  I
-> played
-> with the transparency and fuzz options with no real difference noted.
-> Trying 
-> crop 0x0 makes some of the fringe whitespace areas neater, but it doesn't
-> get rid
-> of them.
-> 
-> Any suggestions?
-> 
-> > -----Original Message-----
-> > From:	Steve Sapovits [SMTP:SapovitsS@globalsportsinc.com]
-> > Sent:	Wednesday, February 23, 2000 10:58 AM
-> > To:	magick@wizards.dupont.com
-> > Subject:	Transparency question
-> > 
-> > 
-> > I'm trying to do the following:
-> > 
-> > 1)  Take a JPEG image and size it down to a particular size.
-> > 2)  Overlay that JPEG on top of an GIF image to form a combined result.
-> > 
-> > This works fine for the most part:  I use mogrify to resize, followed by
-> 
-> > combine to overlay.
-> > 
-> > Now I'm presented with GIF images (the ones the JPEG is put on top of)
-> > that have colors or other background attributes we want to 'show
-> through'
-> > the overlay where there is no image.
-> > 
-> > Even without any transparency options this seems to ALMOST work.  The
-> > problem is that there's a small area around each image of 'white' that
-> > always
-> > shows up.  Trying transparency or the 'matte' option of '-draw' seems to
-> > have
-> > no effect.
-> > 
-> > Any ideas?  I'm an engineer -- not an image expert.  The images in
-> > question
-> > are handed to me.  I can change them if necessary and if it can be done
-> > via
-> > the ImageMagick tool.  The volume we generate makes manual changes to 
-> > each image out of the question.
-> > 
-> > ----
-> > Steve Sapovits
-> > Global Sports Interactive
-> > Work Email: sapovitss@globalsportsinc.com
-> > Home Email: steves@delanet.com
-> > Work Phone: 610-491-7087
-> > Cell:       610-574-7706
-> > Pager:      877-239-4003
-> > 
-> > 
-> > ***********************************************************************
-> > To remove yourself from this mailing list, send mail to:
-> > 	majordomo@wizards.dupont.com
-> > 
-> > Include the following command in the body of your message:
-> > 	unsubscribe magick
-> > ***********************************************************************
-> 
-> ***********************************************************************
-> To remove yourself from this mailing list, send mail to:
-> 	majordomo@wizards.dupont.com
-> 
-> Include the following command in the body of your message:
-> 	unsubscribe magick
-> ***********************************************************************
-
-***********************************************************************
-To remove yourself from this mailing list, send mail to:
-	majordomo@wizards.dupont.com
-
-Include the following command in the body of your message:
-	unsubscribe magick
-***********************************************************************
-
 From magick-owner@unca-don.wizards.dupont.com Thu Feb 24 18:17 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
 	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id SAA21506
@@ -2326,6 +2200,12 @@ Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
 
+.com
+
+Include the following command in the body of your message:
+	unsubscribe magick
+***********************************************************************
+
 From magick-owner@unca-don.wizards.dupont.com Mon Jul  3 16:12 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
         by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id QAA28389
@@ -2400,6 +2280,10 @@ Placed the -c -s back in
 
 
 ***********************************************************************
+To n
+
+
+***********************************************************************
 To remove yourself from this mailing list, send mail to:
 	majordomo@wizards.dupont.com
 
@@ -2471,6 +2355,7 @@ that I talked about above is the height and width of the matrix involved
 -- 
 Martien Verbruggen                      |
 Interactive Media Division              | "In a world without fences,
+Commercial Dynamics PMedia Division              | "In a world without fences,
 Commercial Dynamics Pty. Ltd.           |  who needs Gates?"
 NSW, Australia                          |
 
@@ -2531,6 +2416,8 @@ See
 
     http://www.imagemagick.org/www/magick-list.html
 
+for instructions on joining and/or posting.  I will keep the curren-list.html
+
 for instructions on joining and/or posting.  I will keep the current
 list at magick@wizards.dupont.com running for the next couple of months
 to cause the least amount of disruption.  At your convenience
@@ -2538,27 +2425,7 @@ unsubscribe from magick@wizards.dupont.com and choose one of the lists
 above, whichever is appropriate.
 
 ***********************************************************************
-To remove yourself from this mailing list, send mail to:
-	majordomo@wizards.dupont.com
-
-Include the following command in the body of your message:
-	unsubscribe magick
-***********************************************************************
-
-From markov@ATComputing.nl Sat Jul  8 10:27:08 2000
-Date: Sat, 8 Jul 2000 10:27:08 +0200
-From: Mark Overmeer <markov@ATComputing.nl>
-To: majordomo@imagemagick.org
-Subject: subscribe
-Message-ID: <20000708102708.B1570@atcmpg.ATComputing.nl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0pre4i
-Status: RO
-Content-Length: 27
-Lines: 1
-
-subscribe magick-developer
+er
 
 From markov@ATComputing.nl Sat Jul  8 13:53:18 2000
 Date: Sat, 8 Jul 2000 13:53:18 +0200
@@ -2608,6 +2475,7 @@ Lines: 25
 --
 
 Someone (possibly you) has requested that your email address be added
+to or deleted from the maili your email address be added
 to or deleted from the mailing list "magick-developer@imagemagick.org".
 
 If you really want this action to be taken, please send the following
@@ -2909,6 +2777,7 @@ ImageMagick Tools
      format, precede the filename with an image format name and a colon
      (i.e.  ps:image) or specify the image type as the filename suffix
      (i.e. image.ps).  Specify file as - for standard input or output.
+     If file has the extension .Z, the finput or output.
      If file has the extension .Z, the file is decoded with
      uncompress.
 
@@ -2980,7 +2849,7 @@ Lines: 55
 >  #1  0x4005eb8d in SetImageInfo () from /usr/local/lib/libMagick.so.5
 >  #2  0x4003c91e in ReadImage () from /usr/local/lib/libMagick.so.5
 >  #3  0x80491dd in process_image (dbm=0x804bea0, filename=0x806a157
-> "00132aac.tif") at tif2png.c:107
+> "00132aac.tif") at tif2ac.tif") at tif2png.c:107
 >  #4  0x8048fd3 in convert_images (args=0xbffff9f4) at tif2png.c:55
 >  #5  0x8048e6c in main (argc=1, argv=0xbffff9f4) at tif2png.c:21
 
@@ -3060,6 +2929,10 @@ The following snippet of code coew dumps on ReadImage():
    return;
  }
 
+The debugger output is the followinge '%s'", filename);
+   return;
+ }
+
 The debugger output is the following:
 
  Program received signal SIGSEGV, Segmentation fault.
@@ -3094,6 +2967,7 @@ To: Chris Wareham <chris.wareham@catchword.com>
 Subject: Re: core dump in simple ImageMagick example
 Message-ID: <20000726134909.I25170@atcmpg.ATComputing.nl>
 References: <397C6C6B.989E4BB2@catchword.com>
+        <200007261atchword.com>
         <20000726133231.G25170@atcmpg.ATComputing.nl>
         <397ECFEF.598EE285@catchword.com>
 Mime-Version: 1.0
@@ -3144,6 +3018,8 @@ Date: Wed, 26 Jul 2000 12:47:59 +0100
 From: Chris Wareham <chris.wareham@catchword.com>
 X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.17pre13 i686)
 X-Accept-Language: en
+MIME-Version: a 4.74 [en] (X11; U; Linux 2.2.17pre13 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
 To: Mark Overmeer <markov@ATComputing.nl>
 Subject: Re: core dump in simple ImageMagick example
@@ -3190,6 +3066,7 @@ To: Bryan Burchette <blburch@mindspring.com>
 Subject: Re: Core Dump on ReadImage
 Message-ID: <20000807113844.A22119@atcmpg.ATComputing.nl>
 References: <4.3.1.0.20000801154753.00ae3ed0@mindspring.com>
+Mime-Versi.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 1.0pre4i
@@ -3272,6 +3149,7 @@ test program on the website under the API section. No matter what I do, the
 program cores on ReadImage().
 
 This is the program I am using to test:
+http://www.wizards.dupont.com/cThis is the program I am using to test:
 http://www.wizards.dupont.com/cristy/www/api.html
 
 I have pointed the MagickIncarnate() function to the appropriate directory 
@@ -3341,35 +3219,4 @@ Content-Length: 1620
 Lines: 32
 
 The problem with general font metrics in ImageMagick is that there are
-four schemes for obtaining fonts FreeType 1, FreeType 2,
-Postscript/Ghostscript fonts, and X11 fonts.  Freetype returns plenty
-of information associated with font metrics.  I know of no way to get
-the font metrics from Ghostscript and X11 fonts returns metrics but
-they do not exactly match the information returned by Freetype.
-Layered on top of that is the fonts can be manipulated with an affine
-matrix with varying results for the different font schemes.  Currently
-I write fonts to an image that bounds the font and turn all pixels not
-covered by the font lettering to transparent then composite this on top
-of the image being annotated.
-
-The only metrics available now are the maximum font height and string
-width.  In Perl, for example, use
-
-  $font->Read('label:This is a test');
-  ($width,$height)=$font->Get('width','height');
-
-I can certainly include other metric information as well but how to do
-this consistently for all font schemes?  Perhaps I could retain the
-font metrics for Freetype fonts only?  Or can you think of a few
-specific font metrics that would be useful to you that we can get for
-FreeType, X11, and Postscript fonts?  What is a minimal set of font
-metrics you need to make annotating more useable?
-
-***********************************************************************
-To remove yourself from this mailing list, send mail to:
-	majordomo@imagemagick.org
-
-Include the following command in the body of your message:
-	unsubscribe magick-developer
-***********************************************************************
-
+four schemes for obtaining fonts Fr

@@ -8,9 +8,8 @@ package Mail::Message::Field;
 use Mail::Box::Parser;
 
 use Carp;
-use List::Util 'sum';
 
-our $VERSION = 2.00_19;
+our $VERSION = 2.00_20;
 our %_structured;
 
 use overload qq("") => sub { $_[0]->body }
@@ -23,8 +22,6 @@ use overload qq("") => sub { $_[0]->body }
                            }
            , fallback => 1;
 
-
-my $crlf = "\015\012";
 
 =head1 NAME
 
@@ -63,13 +60,33 @@ added methods of a message:
 
  my $other   = $message->get('Reply-To');
 
+=head2 consideration
+
 C<Mail::Message::Field> is the only object in the C<Mail::Box> suite
 which is not derived from a C<Mail::Reporter>.  The consideration is
 that fields are so often created, and such a small objects at the
 same time, that setting-up a logging for each of the objects is relatively
-expensive and not really useful.  The C<new> constructor even does not call
-a separate C<init>, so please contact the author of C<Mail::Box> if you
-want to create extensions to this object.
+expensive and not really useful.
+
+For the same reason, the are two types of fields: the flexible and
+the fast:
+
+=over 4
+
+=item C<Mail::Message::Field::Flex>
+
+The flexible implementation uses a has to store the data.  The C<new>
+and C<init> are split, so this object is extendible.
+
+=item C<Mail::Message::Field::Fast>
+
+The fast implementation uses an array to store the same data.  That
+will be faster.  Furthermore, it is less extendible because the object
+creation and initiation is merged into one method.
+
+=back
+
+As user of the object, there is not visible difference.
 
 =head1 METHOD INDEX
 
@@ -79,12 +96,13 @@ The general methods for C<Mail::Message::Field> objects:
       attribute NAME [, VALUE]             new ...
       body                                 print [FILEHANDLE]
       clone                                toDate TIME
-      comment                              toInt
+      comment [STRING]                     toInt
+      folded [ARRAY-OF-LINES]              toString
 
 The extra methods for extension writers:
 
-      isResent                             nrLines
-      isStructured                         setWrapLength CHARS
+      isStructured                         nrLines
+      newNoCheck NAME, BODY, COMM...       setWrapLength CHARS
 
 =head1 METHODS
 
@@ -152,70 +170,10 @@ the same things for C<add> as this C<new> accepts.
 
 =cut
 
-sub new($;$$@)
-{
-    my $class  = shift;
-    my ($name, $body, $comment, %args);
-
-    if(@_==2 && ref $_[1] eq 'ARRAY' && !ref $_[1][0])
-                 { $name = shift; %args = @{(shift)} }
-    elsif(@_>=3) { ($name, $body, $comment, %args) = @_ }
-    elsif(@_==2) { ($name, $body) = @_ }
-    elsif(@_==1) { $name = shift }
-    else         { confess }
-
-    my $self = bless {}, $class;
-
-    #
-    # Compose the body.
-    #
-
-    if(!defined $body)
-    {   # must be one line of a header.
-        ($name, $body) = split /\:\s*/, $name, 2;
-
-        unless($body)
-        {   warn "No colon in headerline: $name\n";
-            $body = '';
-        }
-    }
-    elsif($name =~ m/\:/)
-    {   warn "A header-name cannot contain a colon in $name\n";
-        return undef;
-    }
-
-    if(defined $body && ref $body)
-    {   # Objects
-        $body = join ', ',
-            map {$_->isa('Mail::Address') ? $_->format : "$_"}
-                (ref $body eq 'ARRAY' ? @$body : $body);
-    }
-    
-    warn "Header-field name contains illegal character: $name\n"
-        if $name =~ m/[^\041-\176]/;
-
-    $body =~ s/\s*\015?\012$//;
-
-    #
-    # Take the comment.
-    #
-
-    if(defined $comment && length $comment)
-    {   # A comment is defined, so shouldn't be in body.
-        confess "A header-body cannot contain a semi-colon in $body."
-            if $body =~ m/\;/;
-    }
-    elsif(__PACKAGE__->isStructured($name))
-    {   # try strip comment from field-body.
-        $comment = $body =~ s/\s*\;\s*(.*)$// ? $1 : undef;
-    }
-
-    #
-    # Create the object.
-    #
-
-    @$self{ qw/MMF_name MMF_body MMF_comment/ } = ($name, $body, $comment);
-    $self;
+sub new(@)
+{   shift;
+    require Mail::Message::Field::Fast;
+    Mail::Message::Field::Fast->new(@_);
 }
 
 #------------------------------------------
@@ -226,15 +184,6 @@ Create a copy of this field object.
 
 =cut
 
-# This is a rather blunt appoach: no nice construction via new(), however
-# it is called extremely often for one clone()... must be fast!
-
-sub clone()
-{   my $self = shift;
-    my %new  = %$self;
-    bless \%new, ref $self;
-}
-
 #------------------------------------------
 
 =item name
@@ -243,8 +192,6 @@ Returns the name of this field, with all characters lower-cased for
 ease of comparison.
 
 =cut
-
-sub name() { lc shift->{MMF_name} }
 
 #------------------------------------------
 
@@ -255,17 +202,24 @@ and CR LF characters (as far as were present at creation).
 
 =cut
 
-sub body() { shift->{MMF_body} }
-
 #------------------------------------------
 
-=item comment
+=item comment [STRING]
 
-Returns the comment (part after a semi-colon) in the header-line.
+Returns the comment (part after a semi-colon) in the header-line,
+optionally after setting it to a new value first.
 
 =cut
 
-sub comment() { shift->{MMF_comment} }
+#------------------------------------------
+
+=item folded [ARRAY-OF-LINES]
+
+Returns the folded version of the header.  When the header is shorter
+than the wrap length, a list of one line is returned.  Otherwise more
+lines will be returned, all but the first starting with a blank.
+
+=cut
 
 #------------------------------------------
 
@@ -288,7 +242,7 @@ sub attribute($;$)
 
     if(@_)
     {   my $value   = shift;
-        my $comment = $self->{MMF_comment};
+        my $comment = $self->comment;
         if(defined $comment)
         {   unless($comment =~ s/\b$name=(['"]?)[^\1]*\1/$name=$1$value$1/)
             {   $comment .= qq(; $name="$value");
@@ -296,12 +250,12 @@ sub attribute($;$)
         }
         else { $comment = qq($name="$value") }
 
-        $self->{MMF_comment} = $comment;
+        $self->comment($comment);
         $self->setWrapLength(72);
         return $value;
     }
 
-    my $comment = $self->{MMF_comment} or return;
+    my $comment = $self->comment or return;
     $comment =~ m/\b$name=(['"]?)([^\1]*)\1/;
     $2;
 }
@@ -319,7 +273,7 @@ lines.  The FILEHANDLE defaults to STDOUT.
 sub print($)
 {   my $self = shift;
     my $fh   = shift || \*STDOUT;
-    $fh->print($self->toString);
+    $fh->print($self->folded);
 }
 
 #------------------------------------------
@@ -337,14 +291,8 @@ Example:
 =cut
 
 sub toString()
-{   my $self  = shift;
-
-    return wantarray ? @{$self->{MMF_folded}} : join('', @{$self->{MMF_folded}})
-        if $self->{MMF_folded};
-
-      defined $self->{MMF_comment}
-    ? "$self->{MMF_name}: $self->{MMF_body}; $self->{MMF_comment}\n"
-    : "$self->{MMF_name}: $self->{MMF_body}\n";
+{   my @folded = shift->folded;
+    wantarray ? @folded : join('', @folded);
 }
 
 #------------------------------------------
@@ -357,12 +305,10 @@ performed whether this is right.
 =cut
 
 sub toInt()
-{   my $self  = shift;
-    my $value = $self->{MMF_body};
-    return $1 if $value =~ m/^\s*(\d+)\s*$/;
+{   my $self = shift;
+    return $1 if $self->body =~ m/^\s*(\d+)\s*$/;
 
-    $self->log(WARNING => "Field content is not a numerical value:\n  "
-                           . $self->toString);
+    $self->log(WARNING => "Field content is not numerical: ". $self->toString);
 
     return undef;
 }
@@ -394,11 +340,12 @@ e-mail addresses found in this header line.
 
 Example:
 
- my @addr = $message->head->get('to')->addresses
+ my @addr = $message->head->get('to')->addresses;
+ my @addr = $message->to;
 
 =cut
 
-sub addresses() { Mail::Address->parse(shift->{MMF_body}) }
+sub addresses() { Mail::Address->parse(shift->body) }
 
 #------------------------------------------
 
@@ -440,25 +387,9 @@ BEGIN {
 } 
 
 sub isStructured(;$)
-{   my $name  = ref $_[0] ? shift->{MMF_name} : $_[1];
+{   my $name  = ref $_[0] ? shift->name : $_[1];
     exists $_structured{lc $name};
 }
-
-#------------------------------------------
-
-=item isResent
-
-Returns whether the message has bounced during the preparation.  When
-this returns true, the C<Resent-> headers take preference over their
-counterparts.  For instance, if present the last C<Resent-To> is your real
-name, not C<To>.
-
-To simply this complication with resending, the message object implements
-methods for all lines which are inflicted.
-
-=cut
-
-sub isResent() {defined shift->{'resent-message-id'}}
 
 #------------------------------------------
 
@@ -468,10 +399,7 @@ Returns the number of lines needed to display this header-line.
 
 =cut
 
-sub nrLines()
-{   my $self = shift;
-    $self->{MMF_folded} ? scalar @{$self->{MMF_folded}} : 1;
-}
+sub nrLines() { my @l = shift->folded; scalar @l }
 
 #------------------------------------------
 
@@ -497,15 +425,26 @@ sub setWrapLength($)
     return $self unless $self->isStructured;
 
     my $wrap = shift;
-    delete $self->{MMF_folded};
     my $line = $self->toString;
 
-    return $self if length $line < $wrap;
+    $self->folded
+      ( length $line < $wrap ? undef
+      :  [ Mail::Box::Parser->defaultParserType->foldHeaderLine($line, $wrap) ]
+      );
 
-    my $parser_type = Mail::Box::Parser->defaultParserType;
-    $self->{MMF_folded} = [ $parser_type->foldHeaderLine($line, $wrap) ];
     $self;
 }
+
+#------------------------------------------
+
+=item newNoCheck NAME, BODY, COMMENT, [FOLDED]
+
+(Class method)
+Do not use this yourself.  This created an object without checking, which
+is ok when the parser is doing that already.  However, if you add unchecked
+fields you may get into big trouble!
+
+=cut
 
 #------------------------------------------
 
@@ -523,7 +462,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.00_19.
+This code is beta, version 2.00_20.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
