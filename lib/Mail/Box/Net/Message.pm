@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::Net::Message;
 use vars '$VERSION';
-$VERSION = '2.049';
+$VERSION = '2.050';
 use base 'Mail::Box::Message';
 
 use File::Copy;

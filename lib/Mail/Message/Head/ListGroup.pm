@@ -1,7 +1,7 @@
 
 package Mail::Message::Head::ListGroup;
 use vars '$VERSION';
-$VERSION = '2.049';
+$VERSION = '2.050';
 use base 'Mail::Message::Head::FieldGroup';
 
 use strict;
@@ -70,6 +70,12 @@ sub from($)
     {   ($software, $version) = $field =~ m/^(\S*)\s*(v[\d.]+)\s*$/;
         $type    = 'Listbox';
     }
+    elsif($field = first { m!LISTSERV-TCP/IP!s } $head->get('Received'))
+    {   # Listserv is hard to recognise
+        ($software, $version) = $field =~
+            m!\( (LISTSERV-TCP/IP) \s+ release \s+ (\S+) \)!xs;
+        $type = 'Listserv';
+    }
     elsif(defined($field = $head->get('X-Mailing-List'))
           && $field =~ m[archive/latest])
     {   $type    = 'Smartlist' }
@@ -105,7 +111,7 @@ sub rfc()
 
    my $head = $self->head;
      defined $head->get('List-Post') ? 'rfc2369'
-   : defined $head->get('List-Id')   ? 'rfc2918'
+   : defined $head->get('List-Id')   ? 'rfc2919'
    :                                    undef;
 }
 
@@ -124,6 +130,8 @@ sub address()
     {   $address = $1 if $field =~ m/\<([^>]+)\>/ }
     elsif($type eq 'YahooGroups')
     {   $address = $head->study('X-Apparently-To') }
+    elsif($type eq 'Listserv')
+    {   $address = $head->get('Sender') }
 
     $address ||= $head->get('List-Post') || $head->get('Reply-To')
              || $head->get('Sender');
@@ -185,7 +193,7 @@ sub listname()
 
 my $list_field_names
   = qr/ ^ (?: List|X-Envelope|X-Original ) - 
-      | ^ (?: Precedence|Mailing-List ) $
+      | ^ (?: Precedence|Mailing-List|Approved-By ) $
       | ^ X-(?: Loop|BeenThere|Sequence|List|Sender|MLServer ) $
       | ^ X-(?: Mailman|Listar|Egroups|Encartis|ML ) -
       | ^ X-(?: Archive|Mailing|Original|Mail|ListServer ) -

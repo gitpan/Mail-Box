@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::MH;
 use vars '$VERSION';
-$VERSION = '2.049';
+$VERSION = '2.050';
 use base 'Mail::Box::Dir';
 
 use Mail::Box::MH::Index;

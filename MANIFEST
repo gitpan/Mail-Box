@@ -198,6 +198,10 @@ lib/Mail/Message/Head/Subset.pm
 lib/Mail/Message/Head/Subset.pod
 lib/Mail/Message/Part.pm
 lib/Mail/Message/Part.pod
+lib/Mail/Message/Replace/MailHeader.pm
+lib/Mail/Message/Replace/MailHeader.pod
+lib/Mail/Message/Replace/MailInternet.pm
+lib/Mail/Message/Replace/MailInternet.pod
 lib/Mail/Message/TransferEnc.pm
 lib/Mail/Message/TransferEnc.pod
 lib/Mail/Message/TransferEnc/Base64.pm
