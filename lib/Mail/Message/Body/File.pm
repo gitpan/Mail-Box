@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body::File;
 use vars '$VERSION';
-$VERSION = '2.045';
+$VERSION = '2.046';
 use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
@@ -213,7 +213,7 @@ sub print(;$)
     open IN, '<', $file
         or croak "Cannot read from $file: $!\n";
 
-    if(ref $fh eq 'GLOB') {print $fh while <IN>}
+    if(ref $fh eq 'GLOB') {print $fh $_ while <IN>}
     else                  {$fh->print($_) while <IN>}
     close IN;
 

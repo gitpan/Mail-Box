@@ -434,10 +434,10 @@ Mail::Message::Field-E<gt>B<toDate>([TIME])
 
 =over 4
 
-Convert a timestamp into a MIME-acceptable date format.  This
-differs from the default output of C<localtime> in scalar context.  Without
-argument, the C<localtime> is used to get the current time. TIME can be
-specified as one numeric (like the result of C<time()>) and as list
+Convert a timestamp into an rfc2822 compliant date format.  This differs
+from the default output of C<localtime> in scalar context.  Without
+argument, the C<localtime> is used to get the current time. TIME can
+be specified as one numeric (like the result of C<time()>) and as list
 (like produced by c<localtime()> in list context).
 
 Be sure to have your timezone set right, especially when this script
@@ -447,11 +447,12 @@ I<Example:>
 
  my $now = time;
  Mail::Message::Field->toDate($now);
-
  Mail::Message::Field->toDate(time);
- Mail::Message::Field->toDate(localtime);  # same
- Mail::Message::Field->toDate;             # same
- # returns someting like:  Wed, 28 Aug 2002 10:40:25 +0200
+
+ Mail::Message::Field->toDate(localtime);
+ Mail::Message::Field->toDate;      # same
+ # returns someting like:
+ #     Wed, 28 Aug 2002 10:40:25 +0200
 
 =back
 
@@ -1086,7 +1087,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.045.
+Distribution version 2.046.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Transport::POP3;
 use vars '$VERSION';
-$VERSION = '2.045';
+$VERSION = '2.046';
 use base 'Mail::Transport::Receive';
 
 use IO::Socket  ();

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Box::Parser::Perl;
 use vars '$VERSION';
-$VERSION = '2.045';
+$VERSION = '2.046';
 use base 'Mail::Box::Parser';
 
 use Mail::Message::Field;
@@ -210,11 +210,11 @@ sub _read_stripped_lines(;$$)
              pop @lines;
          }
     }
-    else
-    {    if(@lines && $lines[-1] =~ $empty)
-         {   $end -= length $lines[-1];
-             pop @lines;
-         }
+    elsif(@seps && @lines && $lines[-1] =~ $empty)
+    {   # blank line should be in place before a separator.  Only that
+        # line is removed.
+        $end -= length $lines[-1];      
+        pop @lines;
     }
 
     map { s/^\>(\>*From\s)/$1/ } @lines

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Box::Parser;
 use vars '$VERSION';
-$VERSION = '2.045';
+$VERSION = '2.046';
 use base 'Mail::Reporter';
 use Carp;
 

@@ -23,6 +23,8 @@ WriteMakefile
     , URI            => 1.23
     , IO::Scalar     => 0.0
     , Digest::MD5    => 0.0
+    , User::Identity => 0.06
+    , Time::Zone     => 0.0
 
 # Optional
 #   Text::Autoformat

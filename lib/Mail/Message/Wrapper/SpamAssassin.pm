@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Wrapper::SpamAssassin;
 use vars '$VERSION';
-$VERSION = '2.045';
+$VERSION = '2.046';
 use base 'Mail::SpamAssassin::Message';
 
 use Carp;

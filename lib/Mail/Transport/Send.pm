@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport::Send;
 use vars '$VERSION';
-$VERSION = '2.045';
+$VERSION = '2.046';
 use base 'Mail::Transport';
 
 use Carp;
@@ -60,12 +60,12 @@ sub trySend($@)
 sub putContent($$@)
 {   my ($self, $message, $fh, %args) = @_;
 
-       if($args{body_only}) { $message->body->print($fh) }
-    elsif($args{undisclosed})
-    {    $message->head->printUndisclosed($fh);
-         $message->body->print($fh);
+       if($args{body_only})   { $message->body->print($fh) }
+    elsif($args{undisclosed}) { $message->Mail::Message::print($fh) }
+    else
+    {   $message->head->printUndisclosed($fh);
+        $message->body->print($fh);
     }
-    else { $message->Mail::Message::print($fh) }
 
     $self;
 }

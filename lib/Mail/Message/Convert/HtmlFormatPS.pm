@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Convert::HtmlFormatPS;
 use vars '$VERSION';
-$VERSION = '2.045';
+$VERSION = '2.046';
 use base 'Mail::Message::Convert';
 
 use Mail::Message::Body::String;

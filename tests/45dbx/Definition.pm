@@ -1,7 +1,7 @@
 
 package MailBox::Test::45dbx::Definition;
 
-sub name     {"Mail::Box::Dbx; reading Outlook Express folders"}
+sub name     {"Mail::Box::Dbx; Outlook Express folders"}
 sub critical {0}
 
 my $dbx_exists;
