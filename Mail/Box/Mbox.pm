@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Mbox;
-our $VERSION = 2.022;  # Part of Mail::Box
+our $VERSION = 2.023;  # Part of Mail::Box
 use base 'Mail::Box';
 
 use Mail::Box::Mbox::Message;
@@ -17,7 +17,7 @@ use File::Copy;
 use File::Spec;
 use File::Basename;
 use POSIX ':unistd_h';
-use IO::File;
+use IO::File ();
 
 my $default_folder_dir = exists $ENV{HOME} ? $ENV{HOME} . '/Mail' : '.';
 my $default_extension  = '.d';

@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Message::Head::Subset;
-our $VERSION = 2.022;  # Part of Mail::Box
+our $VERSION = 2.023;  # Part of Mail::Box
 
 use base 'Mail::Message::Head';
 

@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Box::Locker;
-our $VERSION = 2.022;  # Part of Mail::Box
+our $VERSION = 2.023;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;

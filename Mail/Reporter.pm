@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Reporter;
-our $VERSION = 2.022;  # Part of Mail::Box
+our $VERSION = 2.023;  # Part of Mail::Box
 
 use Carp;
 

@@ -1,5 +1,5 @@
 package Mail::Box::Search::Grep;
-our $VERSION = 2.022;  # Part of Mail::Box
+our $VERSION = 2.023;  # Part of Mail::Box
 use base 'Mail::Box::Search';
 
 use strict;
@@ -60,14 +60,12 @@ sub inHead(@)
 
     my $matched = 0;
   LINES:
-    foreach my $name ($head->names)
-    {   next unless $field_check->($head, $name);
-        foreach my $field ($head->get($name))
-        {   next unless $match_check->($head, $field);
-            $matched++;
-            last LINES unless $deliver;  # no deliver: only one match needed
-            $deliver->( {@details, field => $field} );
-        }
+    foreach my $field ($head->orderedFields)
+    {   next unless $field_check->($head, $field->name)
+                 && $match_check->($head, $field);
+        $matched++;
+        last LINES unless $deliver;  # no deliver: only one match needed
+        $deliver->( {@details, field => $field} );
     }
 
     $matched;

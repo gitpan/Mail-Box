@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Net::Message;
-our $VERSION = 2.022;  # Part of Mail::Box
+our $VERSION = 2.023;  # Part of Mail::Box
 use base 'Mail::Box::Message';
 
 use File::Copy;
