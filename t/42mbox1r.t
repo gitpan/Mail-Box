@@ -1,21 +1,22 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # Test reading of mbox folders.
 #
 
 use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 
 use Mail::Box::Mbox;
 use Tools;
 
 use File::Compare;
-use File::Spec;
 
 BEGIN {plan tests => 55}
 
-my @src = (folder => '=mbox.src', folderdir => 't');
+my @src = (folder => "=$fn", folderdir => 't');
 
 warn "   * Mbox status BETA\n";
 ok(Mail::Box::Mbox->foundIn(@src));

@@ -190,6 +190,12 @@ flock filehandle locking, and locking over NFS.  Each is implemented in a
 separate class.  A multi-locker, using a set of lock-methods at the
 same time is also available.
 
+=item C<Mail::Box::Search>
+
+The set of search packages implement various search techniques in an uniformal
+way.  Although implementing your own search algorithm is simple in general,
+in practice multiparts, encodings, and mime-types complicate things.
+
 =item C<Mail::Box::Parser>
 
 Describes the interface to the two current folder parsers: the parser

@@ -1,32 +1,32 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 #
 # Test reading of MH folders.
 #
 
+use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 use Mail::Box::MH;
 use Mail::Box::Mbox;
 use Tools;
 
-use Test;
 use File::Compare;
 use File::Copy;
-use File::Spec;
 
 BEGIN {plan tests => 27}
 
-my $orig = File::Spec->catfile('t', 'mbox.src');
-my $src  = File::Spec->catfile('t', 'mh.src');
+my $mhsrc = File::Spec->catfile('t', 'mh.src');
 
-unpack_mbox($orig, $src);
+unpack_mbox2mh($src, $mhsrc);
 
 warn "   * MH status BETA\n";
-ok(Mail::Box::MH->foundIn($src));
+ok(Mail::Box::MH->foundIn($mhsrc));
 
 my $folder = new Mail::Box::MH
-  ( folder       => $src
+  ( folder       => $mhsrc
   , folderdir    => 't'
   , lock_type    => 'NONE'
   , extract      => 'LAZY'
@@ -110,7 +110,7 @@ ok($heads==45);
 #
 
 my $mbox = Mail::Box::Mbox->new
-  ( folder      => $orig
+  ( folder      => $src
   , folderdir   => 't'
   , lock_type   => 'NONE'
   , access      => 'r'
@@ -148,7 +148,7 @@ $folder->close;
 
 my $parse_size = 5000;
 $folder = new Mail::Box::MH
-  ( folder    => $src
+  ( folder    => $mhsrc
   , folderdir => 't'
   , lock_type => 'NONE'
   , extract   => $parse_size  # messages > $parse_size bytes stay unloaded.
@@ -189,4 +189,4 @@ ok(not $mistake);
 ok($parsed == 7);
 ok($heads == 9);
 
-clean_dir $src;
+clean_dir $mhsrc;

@@ -1,16 +1,18 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 #
 # Test the locking methods.
 #
 
+use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 
-use Mail::Box::Locker::Flock;
 use Tools;
+use Mail::Box::Locker::Flock;
 
-use Test;
 use File::Spec;
 
 BEGIN {plan tests => 7}

@@ -1,29 +1,30 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 #
 # Test threading of MH folders.
 #
 
+use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 use Mail::Box::Manager;
 use Tools;
 
-use Test;
 use File::Spec;
 
 BEGIN {plan tests => 4}
 
-my $orig = File::Spec->catfile('t', 'mbox.src');
-my $src  = File::Spec->catfile('t', 'mh.src');
+my $mhsrc = File::Spec->catfile('t', 'mh.src');
 
-clean_dir $src;
-unpack_mbox($orig, $src);
+clean_dir $mhsrc;
+unpack_mbox2mh($src, $mhsrc);
 
 my $mgr    = new Mail::Box::Manager;
 
 my $folder = $mgr->open
-  ( folder    => $src
+  ( folder    => $mhsrc
   , folderdir => 't'
   , lock_type => 'NONE'
   , extract   => 'LAZY'
@@ -91,4 +92,4 @@ ok($out eq <<'DUMP');
 1.6K Font metrics
 DUMP
 
-clean_dir $src;
+clean_dir $mhsrc;

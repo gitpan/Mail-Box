@@ -17,7 +17,7 @@ use overload '""'    => sub {shift->load->string}
 use Carp;
 use Scalar::Util 'weaken';
 
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 
 =head1 NAME
 
@@ -51,7 +51,7 @@ The general methods for C<Mail::Message::Body::Delayed> objects:
   MMB disposition [STRING|FIELD]       MMB nrLines
  MMBE encode OPTIONS                   MMB print [FILE]
  MMBE encoded                          MMB reply OPTIONS
- MMBE eol ['CR'|'LF'|'CRLF'|'NATI...    MR report [LEVEL]
+  MMB eol ['CR'|'LF'|'CRLF'|'NATI...    MR report [LEVEL]
    MR errors                            MR reportAll [LEVEL]
   MMB file                             MMB size
  MMBC foreachLine CODE                 MMB string
@@ -204,7 +204,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -4,7 +4,7 @@ use strict;
 package Mail::Box::Message::Dummy;
 use base 'Mail::Box::Message';
 
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 
 use Carp;
 
@@ -138,7 +138,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

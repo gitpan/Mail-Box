@@ -12,7 +12,7 @@ use Carp;
 use Scalar::Util 'weaken';
 use FileHandle;
 
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 
 use overload bool => sub { keys %{shift->{MMH_fields}} };
 
@@ -78,8 +78,8 @@ The general methods for C<Mail::Message::Head> objects:
 
       add ...                              new OPTIONS
       build FIELDS                         nrLines
-      count NAME                           print FILEHANDLE
-   MR errors                               printUndisclosed FILEHANDLE
+      count NAME                           print [FILEHANDLE]
+   MR errors                               printUndisclosed [FILEHANDLE]
       get NAME [,INDEX]                 MR report [LEVEL]
       isDelayed                         MR reportAll [LEVEL]
       isMultipart                          reset NAME, FIELDS
@@ -396,16 +396,18 @@ sub isMultipart()
 
 #------------------------------------------
 
-=item print FILEHANDLE
+=item print [FILEHANDLE]
 
-=item printUndisclosed FILEHANDLE
+=item printUndisclosed [FILEHANDLE]
 
-Print the header to the specified FILEHANDLE.  In the former case,
-C<Bcc> and C<Resent-Bcc> lines are included, in the latter case not.
+Print the header to the specified FILEHANDLE, by default the selected
+filehandle.  In the former case, C<Bcc> and C<Resent-Bcc> lines are
+included, in the latter case not.
 
 Examples:
 
-    $head->print(\*STDOUT);
+    $head->print(\*OUT);
+    $head->print;
 
     my $fh = FileHandle->new(...);
     $head->print($fh);
@@ -847,7 +849,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

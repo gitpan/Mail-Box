@@ -1,19 +1,20 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 #
 # Test appending messages on Mbox folders.
 #
 
+use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 use Mail::Box::Manager;
 use Mail::Message::Construct;
 use Tools;
 
-use Test;
 use File::Compare;
 use File::Copy;
-use File::Spec;
 
 BEGIN {plan tests => 21}
 
@@ -22,12 +23,10 @@ BEGIN {plan tests => 21}
 # over our test file.
 #
 
-my $orig  = File::Spec->catfile('t', 'mbox.src');
-my $src   = File::Spec->catfile('t', 'mbox.cpy');
 my $empty = File::Spec->catfile('t', 'empty');
 
-copy $orig, $src
-    or die "Cannot create test folder $src: $!\n";
+copy $src, $cpy
+    or die "Cannot create test folder $cpy: $!\n";
 unlink $empty;
 
 my $mgr = Mail::Box::Manager->new;
@@ -40,12 +39,12 @@ my @fopts =
   );
 
 my $folder = $mgr->open
-  ( folder    => '=mbox.cpy'
+  ( folder    => "=$cpyfn"
   , folderdir => 't'
   , @fopts
   );
 
-die "Couldn't read $src: $!\n"
+die "Couldn't read $cpy: $!\n"
     unless $folder;
 
 ok($folder->messages==45);
@@ -67,7 +66,7 @@ my $msg = Mail::Message->build
   , data    => [ "a short message\n", "of two lines.\n" ]
   );
 
-$mgr->appendMessage('=mbox.cpy', $msg);
+$mgr->appendMessage("=$cpyfn", $msg);
 ok($folder->messages==46);
 
 ok($mgr->openFolders==1);
@@ -81,19 +80,19 @@ my $msg2 = Mail::Message->build
   , data      => [ "a short message\n", "of two lines.\n" ]
   );
 
-my $old_size = -s $src;
+my $old_size = -s $cpy;
 
-$mgr->appendMessage($src, $msg2
+$mgr->appendMessage($cpy, $msg2
   , lock_type => 'NONE'
   , extract   => 'LAZY'
   , access    => 'rw'
   );
 
 ok($mgr->openFolders==0);
-ok($old_size != -s $src);
+ok($old_size != -s $cpy);
 
 $folder = $mgr->open
-  ( folder    => '=mbox.cpy'
+  ( folder    => "=$cpyfn"
   , folderdir => 't'
   , @fopts
   , access    => 'rw'

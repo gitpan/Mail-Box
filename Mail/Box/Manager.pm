@@ -4,7 +4,7 @@ use warnings;
 package Mail::Box::Manager;
 use base 'Mail::Reporter';
 
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 use Mail::Box;
 
 use Carp;
@@ -36,8 +36,9 @@ Mail::Box::Manager - manage a set of folders
  $mgr->close($folder);
 
  # Create thread-detectors (see Mail::Box::Thread::Manager)
- my $threads = $mgr->threads(folder => $folder);
+ my $t       = $mgr->threads($inbox, $outbox);
 
+ my $threads = $mgr->threads(folder => $folder);
  foreach my $thread ($threads->all)
  {   $thread->print;
  }
@@ -61,7 +62,7 @@ The general methods for C<Mail::Box::Manager> objects:
       copyMessage [FOLDER|FOLDERN...       registerType TYPE =E<gt> CL...
       delete FOLDERNAME [,OPTIONS]      MR report [LEVEL]
    MR errors                            MR reportAll [LEVEL]
-      folderTypes                          threads OPTIONS
+      folderTypes                          threads [FOLDERS], OPTIONS
       isOpenFolder FOLDER                  toBeThreaded FOLDER, MESSAGES
    MR log [LEVEL [,STRINGS]]               toBeUnthreaded FOLDER, MESS...
       moveMessage [FOLDER|FOLDERN...    MR trace [LEVEL]
@@ -582,7 +583,12 @@ sub copyMessage(@)
     $folder    = shift if !ref $_[0] || $_[0]->isa('Mail::Box');
 
     my @messages;
-    push @messages, shift while @_ && ref $_[0];
+    while(@_ && ref $_[0])
+    {   my $message = shift;
+        croak "Use appendMessage to add messages which are not in a folder."
+           unless $message->isa('Mail::Box::Message');
+        push @messages, $message;
+    }
 
     my %options = @_;
     $folder ||= $options{folder};
@@ -655,29 +661,39 @@ sub delete($@)
 
 #-------------------------------------------
 
-=item threads OPTIONS
+=item threads [FOLDERS], OPTIONS
 
 Create a new object which keeps track of message threads.  You can read
 about the possible options in the C<Mail::Box::Thread::Manager> documentation.
-As OPTIONS specify one C<folder> or an array of C<folders>.
+As OPTIONS specify one C<folder> or an array of C<folders>.  It is also
+permitted to specify folders before the options.
 
 Example:
 
-    $mgr->threads(folders => [ $inbox, $send ]);
+    my $t1 = $mgr->threads(folders => [ $inbox, $send ]);
+    my $t2 = $mgr->threads($inbox);
+    my $t3 = $mgr->threads($inbox, $send);
 
 =cut
 
 sub threads(@)
-{   my ($self, %args) = @_;
+{   my $self    = shift;
+    my @folders;
+    push @folders, shift
+       while @_ && ref $_[0] && $_[0]->isa('Mail::Box');
+    my %args    = @_;
+
     my $base    = 'Mail::Box::Thread::Manager';
     my $type    = $args{threader_type} || $base;
 
-    my $folders = exists $args{folder}    ? delete $args{folder}
-                :                           delete $args{folders};
+    my $folders = delete $args{folder} || delete $args{folders};
+    push @folders
+     , ( !$folders               ? ()
+       : ref $folders eq 'ARRAY' ? @$folders
+       :                           $folders
+       );
 
-    my @folders = !$folders                ? ()
-                : ref($folders) eq 'ARRAY' ? @$folders
-                :                            $folders;
+    croak "No folders specified.\n" unless @folders;
 
     my $threads;
     if(ref $type)
@@ -740,7 +756,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

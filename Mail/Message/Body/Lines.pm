@@ -7,7 +7,7 @@ use base 'Mail::Message::Body';
 use Mail::Box::Parser;
 use IO::Lines;
 
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 
 use Carp;
 
@@ -48,9 +48,9 @@ The general methods for C<Mail::Message::Body::Lines> objects:
  MMBC concatenate COMPONENTS           MMB modified [BOOL]
   MMB decoded OPTIONS                      new OPTIONS
   MMB disposition [STRING|FIELD]       MMB nrLines
- MMBE encode OPTIONS                       print [FILE]
+ MMBE encode OPTIONS                   MMB print [FILE]
  MMBE encoded                          MMB reply OPTIONS
- MMBE eol ['CR'|'LF'|'CRLF'|'NATI...    MR report [LEVEL]
+  MMB eol ['CR'|'LF'|'CRLF'|'NATI...    MR report [LEVEL]
    MR errors                            MR reportAll [LEVEL]
   MMB file                             MMB size
  MMBC foreachLine CODE                 MMB string
@@ -128,18 +128,15 @@ sub size()
 
     my $size = 0;
     $size += length $_ foreach @{$self->{MMBL_array}};
+    $size += @{$self->{MMBL_array}} if $self->eol eq 'CRLF';
     $self->{MMBL_size} = $size;
 }
 
 #------------------------------------------
 
-=item print [FILE]
-
-=cut
-
 sub print(;$)
 {   my $self = shift;
-    my $fh   = shift || \*STDOUT;
+    my $fh   = shift || select;
     $fh->print(@{$self->{MMBL_array}});
 }
 
@@ -225,7 +222,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -1,36 +1,32 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 #
 # Test appending messages on MH folders.
 #
 
+use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 use Mail::Box::Manager;
 use Mail::Message::Construct;
 use Tools;
 
-use Test;
 use File::Compare;
 use File::Copy;
-use File::Spec;
 
 BEGIN {plan tests => 10}
 
-my $orig = File::Spec->catfile('t', 'mbox.src');
-my $src  = File::Spec->catfile('t', 'mh.src');
+my $mhsrc = File::Spec->catfile('t', 'mh.src');
 
-#
-# Unpack the file-folder.
-#
-
-clean_dir $src;
-unpack_mbox($orig, $src);
+clean_dir $mhsrc;
+unpack_mbox2mh($src, $mhsrc);
 
 my $mgr = Mail::Box::Manager->new;
 
 my $folder = $mgr->open
-  ( folder       => $src
+  ( folder       => $mhsrc
   , folderdir    => 't'
   , lock_type    => 'NONE'
   , extract      => 'LAZY'
@@ -38,7 +34,7 @@ my $folder = $mgr->open
   , save_on_exit => 0
   );
 
-die "Couldn't read $src: $!\n"
+die "Couldn't read $mhsrc: $!\n"
     unless $folder;
 
 # We checked this in other scripts before, but just want to be
@@ -72,19 +68,19 @@ my $msg = Mail::Message->build
   , data    => [ "a short message\n", "of two lines.\n" ]
   );
 
-$mgr->appendMessage($src, $msg);
+$mgr->appendMessage($mhsrc, $msg);
 ok($folder->messages==46);
 
 ok($mgr->openFolders==1);
 $mgr->close($folder);      # changes are not saved.
 ok($mgr->openFolders==0);
 
-$mgr->appendMessage($src, $msg
+$mgr->appendMessage($mhsrc, $msg
   , lock_type => 'NONE'
   , extract   => 'LAZY'
   , access    => 'rw'
   );
 
-ok(-f File::Spec->catfile($src, "47"));  # skipped 13, so new is 46+1
+ok(-f File::Spec->catfile($mhsrc, "47"));  # skipped 13, so new is 46+1
 
-clean_dir $src;
+clean_dir $mhsrc;

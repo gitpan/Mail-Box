@@ -6,7 +6,7 @@ use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
 
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 
 use Carp;
 use IO::File;
@@ -48,9 +48,9 @@ The general methods for C<Mail::Message::Body::File> objects:
  MMBC concatenate COMPONENTS           MMB modified [BOOL]
   MMB decoded OPTIONS                      new OPTIONS
   MMB disposition [STRING|FIELD]       MMB nrLines
- MMBE encode OPTIONS                       print [FILE]
+ MMBE encode OPTIONS                   MMB print [FILE]
  MMBE encoded                          MMB reply OPTIONS
- MMBE eol ['CR'|'LF'|'CRLF'|'NATI...    MR report [LEVEL]
+  MMB eol ['CR'|'LF'|'CRLF'|'NATI...    MR report [LEVEL]
    MR errors                            MR reportAll [LEVEL]
   MMB file                             MMB size
  MMBC foreachLine CODE                 MMB string
@@ -161,13 +161,9 @@ sub size()
 
 #------------------------------------------
 
-=item print [FILE]
-
-=cut
-
 sub print(;$)
 {   my $self = shift;
-    my $fh   = shift || \*STDOUT;
+    my $fh   = shift || select;
     my $file = $self->tempFilename;
 
     open IN, '<', $file
@@ -225,7 +221,6 @@ sub _data_from_filehandle(@)
     {   $self->log(ERROR => "Cannot write to $file: $!\n");
         return;
     }
-    binmode OUT;
 
     while(my $l = $fh->getline)
     {   print OUT $l;
@@ -263,7 +258,6 @@ sub _data_from_lines(@)
 
     open OUT, '>', $file
         or die "Cannot write to $file: $!\n";
-    binmode OUT;
 
     print OUT @$lines;
     close OUT;
@@ -280,7 +274,6 @@ sub read($$;$@)
 
     open OUT, '>', $file
         or die "Cannot write to $file: $!.\n";
-    binmode OUT;
 
     @$self{ qw/MMB_begin MMB_end MMBF_nrlines/ }
         = $parser->bodyAsFile(\*OUT, @_);
@@ -347,7 +340,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

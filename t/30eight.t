@@ -1,10 +1,12 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # Encoding and Decoding of 8bit
 #
 
 use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 
 use Mail::Message::Body::Lines;

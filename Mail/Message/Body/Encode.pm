@@ -10,7 +10,7 @@ use Carp;
 use MIME::Types;
 my MIME::Types $mime_types;
 
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 
 =head1 NAME
 
@@ -69,7 +69,7 @@ manual page losts the transfer encodings which are supported.
 The general methods for C<Mail::Message::Body::Encode> objects:
 
       check                                encoded
-      encode OPTIONS                       eol ['CR'|'LF'|'CRLF'|'NATI...
+      encode OPTIONS                       isBinary
 
 The extra methods for extension writers:
 
@@ -91,7 +91,6 @@ conversions.
 
  OPTION            DESCRIBED IN         DEFAULT
  charset           Mail::Message::Body  undef
- eol               Mail::Message::Body  <native>
  mime_type         Mail::Message::Body  undef
  result_type       Mail::Message::Body  <same as source>
  transfer_encoding Mail::Message::Body  undef
@@ -99,16 +98,6 @@ conversions.
 =over 4
 
 =item * charset =E<gt> STRING
-
-=item * eol =E<gt> 'CR'|'LF'|'CRLF'|'NATIVE'
-
-Convert the message into having the specified string as line terminator
-for all lines in the body.  C<NATIVE> is used to represent the C<\n>
-on the current platform.
-
-BE WARNED that folders with a non-native encoding may appear on your
-platform, for instance in Windows folders handled from a UNIX system.
-The eol encoding has effect on the size of the body!
 
 =item * mime_type =E<gt> STRING|FIELD
 
@@ -226,40 +215,6 @@ sub check()
 
 #------------------------------------------
 
-=item eol ['CR'|'LF'|'CRLF'|'NATIVE']
-
-Returns the character (or characters) which are used to separate lines
-within this body.
-
-=cut
-
-sub eol(;$)
-{   my $self = shift;
-    return $self->{MMB_eol} unless @_;
-
-    my $eol  = shift;
-    return $eol if $eol eq $self->{MMB_eol} && $self->checked;
-
-    my $lines = $self->lines;
-
-       if($eol eq 'NATIVE'){s/[\015\012]+$/\n/       foreach @$lines}
-    elsif($eol eq 'CR')    {s/[\015\012]+$/\015/     foreach @$lines}
-    elsif($eol eq 'LF')    {s/[\015\012]+$/\012/     foreach @$lines}
-    elsif($eol eq 'CRLF')  {s/[\015\012]+$/\015\012/ foreach @$lines}
-    else
-    {   carp "Unknown line terminator $eol ignored.";
-        return $self->eol('NATIVE');
-    }
-
-    (ref $self)->new
-      ( based_on => $self
-      , eol      => $eol
-      , data     => $lines
-      );
-}
-
-#------------------------------------------
-
 =item encoded
 
 Encode the body to a format what is acceptable to transmit or write to
@@ -294,8 +249,9 @@ is retreived from knowledge provided by L<MIME::Types>.
 sub isBinary()
 {   my $self = shift;
     $mime_types ||= MIME::Types->new(only_complete => 1);
-    my $mime = $mime_types->type($self->type->body);
-    !defined $mime || $mime->isBinary;
+    my $type = $self->type                    or return 1;
+    my $mime = $mime_types->type($type->body) or return 1;
+    $mime->isBinary;
 }
  
 #------------------------------------------
@@ -436,7 +392,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

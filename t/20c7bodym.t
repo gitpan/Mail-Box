@@ -1,10 +1,11 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # Test the reading from file of message bodies which are multiparts
 #
 
 use Test;
 use strict;
+use warnings;
 
 use lib qw(. t /home/markov/MailBox2/fake);
 
@@ -13,8 +14,6 @@ use Mail::Message::Body::Lines;
 use Mail::Message::Body::Multipart;
 use Mail::Message::Head;
 use Tools;
-
-use File::Spec;
 
 BEGIN
 {   eval 'require Mail::Box::Parser::C';
@@ -27,7 +26,6 @@ BEGIN
 }
 
 Mail::Box::Parser->defaultParserType('Mail::Box::Parser::C');
-my $inbox = File::Spec->catfile('t', 'mbox.src');
 
 my $getbodytype = sub { 'Mail::Message::Body::Lines' };
 
@@ -35,7 +33,7 @@ my $getbodytype = sub { 'Mail::Message::Body::Lines' };
 ### First pass through all messages, with correct data, if available
 ###
 
-my $parser = Mail::Box::Parser->new(filename  => $inbox);
+my $parser = Mail::Box::Parser->new(filename  => $src);
 ok($parser);
 
 $parser->pushSeparator('From ');
@@ -109,7 +107,7 @@ $parser->stop;
 
 undef $parser;
 
-$parser = Mail::Box::Parser->new(filename => $inbox);
+$parser = Mail::Box::Parser->new(filename => $src);
 $parser->pushSeparator('From ');
 
 my $count = 0;
@@ -166,7 +164,7 @@ $parser->stop;
 
 undef $parser;
 
-$parser = Mail::Box::Parser->new(filename => $inbox);
+$parser = Mail::Box::Parser->new(filename => $src);
 $parser->pushSeparator('From ');
 
 $count = 0;

@@ -8,7 +8,7 @@ use base 'Mail::Reporter';
 use Mail::Box::Message;
 use Mail::Box::Locker;
 
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 
 use Carp;
 use Scalar::Util 'weaken';
@@ -88,6 +88,7 @@ and its derived classes for more information.
 
 The general methods for C<Mail::Box> objects:
 
+      AUTOLOAD                          MR log [LEVEL [,STRINGS]]
       addMessage  MESSAGE                  message INDEX [,MESSAGE]
       addMessages MESSAGE [, MESS...       messageId MESSAGE-ID [,MESS...
       allMessageIds                        messages
@@ -99,7 +100,6 @@ The general methods for C<Mail::Box> objects:
       find MESSAGE-ID                   MR reportAll [LEVEL]
       listSubFolders OPTIONS            MR trace [LEVEL]
       locker                            MR warnings
-   MR log [LEVEL [,STRINGS]]               writeable
 
 The extra methods for extension writers:
 
@@ -121,6 +121,10 @@ Prefixed methods are described in   MR = L<Mail::Reporter>.
 =head1 METHODS
 
 =over 4
+
+=cut
+
+#-------------------------------------------
 
 =item new OPTIONS
 
@@ -283,19 +287,19 @@ loading.
 
 Examples:
 
-    $folder->new(extract => 'LAZY');
-    $folder->new(extract => 10000);
-    $folder->new(extract => sub
-       { my ($f, $head) = @_;
-         my $size = $head->guessBodySize;
-         defined $size ? $size < 10000 : 1
-       }); #same
+ $folder->new(extract => 'LAZY');
+ $folder->new(extract => 10000);
+ $folder->new(extract => sub
+    { my ($f, $head) = @_;
+      my $size = $head->guessBodySize;
+      defined $size ? $size < 10000 : 1
+    }); #same
 
-    $folder->new(extract => 'sent_by_me');
-    sub Mail::Box::send_by_me($$)
-    {   my ($self, $header) = @_;
-        $header->get('from') =~ m/\bmy\@example.com\b/i;
-    }
+ $folder->new(extract => 'sent_by_me');
+ sub Mail::Box::send_by_me($$)
+ {   my ($self, $header) = @_;
+     $header->get('from') =~ m/\bmy\@example.com\b/i;
+ }
 
 =item * body_type =E<gt> CLASS|CODE
 
@@ -314,14 +318,14 @@ messages, otherwise your parts (I<attachments>) will not be split-up.
 
 For instance:
 
-   $mgr->open(body_type => \&which_body);
+ $mgr->open(body_type => \&which_body);
 
-   sub which_body($) {
-       my $head = shift;
-       my $size = $head->guessBodySize || 0;
-       my $type = $size > 100000 ? 'File' : 'Lines';
-       "Mail::Message::Body::$type";
-   }
+ sub which_body($) {
+     my $head = shift;
+     my $size = $head->guessBodySize || 0;
+     my $type = $size > 100000 ? 'File' : 'Lines';
+     "Mail::Message::Body::$type";
+ }
 
 The default depends on the mail-folder type, although the general default
 is C<Mail::Message::Body::Lines>.  Please check the applicatable
@@ -846,7 +850,7 @@ sub allMessageIDs() {shift->allMessageIds}  # compatibilty
 Add a message to the folder.  A message is usually a C<Mail::Box::Message>
 object or a sub-class thereof.  The message shall not be in an other folder,
 when you use this method.  In case it is, use C<moveMessage()> or
-C<copyMessage()>.
+C<copyMessage()> via the manager.
 
 Messages with id's which already exist in this folder are not added.
 
@@ -1000,6 +1004,31 @@ Examples:
 sub listSubFolders(@)
 {   my ($class, @options) = @_;
     confess "Folder or class $class cannot list folders.\n";
+}
+
+#-------------------------------------------
+
+=item AUTOLOAD
+
+There are more mathods available for a C<Mail::Box>, which are
+supplied in C<Mail::Box::HTML>.  That package adds methods to
+general use for any C<Mail::Box> type and is autoloaded on
+demand.
+
+=cut
+
+sub AUTOLOAD(@)
+{   my $self  = shift;
+    our $AUTOLOAD;
+    (my $call = $AUTOLOAD) =~ s/.*\:\://g;
+    require Mail::Box::HTML;
+
+    no strict 'refs';
+    return $self->$call(@_) if $self->can($call);
+
+    our @ISA;
+    $call = "${ISA[0]}::$call";   # $call on base class.
+    $self->$call(@_);
 }
 
 #-------------------------------------------
@@ -1592,7 +1621,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -1,17 +1,18 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 #
 # Test threading on Mbox folders.
 #
 
+use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 use Mail::Box::Manager;
 use Tools;
 
-use Test;
 use File::Copy;
-use File::Spec;
 
 BEGIN {plan tests => 20}
 
@@ -20,17 +21,14 @@ BEGIN {plan tests => 20}
 # over our test file.
 #
 
-my $orig = File::Spec->catfile('t', 'mbox.src');
-my $src  = File::Spec->catfile('t', 'mbox.cpy');
-
-copy $orig, $src
-    or die "Cannot create test folder $src: $!\n";
+copy $src, $cpy
+    or die "Cannot create test folder $cpy: $!\n";
 
 my $mgr = Mail::Box::Manager->new;
 ok($mgr);
 
 my $folder = $mgr->open
-  ( folder       => '=mbox.cpy' 
+  ( folder       => "=$cpyfn"
   , folderdir    => 't'
   , lock_type    => 'NONE'
   , extract      => 'LAZY'
@@ -98,7 +96,7 @@ ok($start->threadToString, <<'START');
 1.2K `- Re: Convert HTM, HTML files to the .jpg format
 START
 
-my $out = join '', map {$_->threadToString} $threads->sortedKnown;
+my $out   = join '', map {$_->threadToString} $threads->sortedKnown;
 
 my @lines = split "\n", $out;
 pop @lines;

@@ -10,13 +10,15 @@ WriteMakefile
   , DIR          => [ 'Mail' ]
   , AUTHOR       => 'Mark Overmeer'
   , ABSTRACT     => 'E-mail handling'
-  , PREREQ_PM    => { Date::Parse    => 0.0
-		    , File::Spec     => 0.7
-                    , IO::Scalar     => 0.0
-		    , Errno          => 0.0
-		    , Scalar::Util   => 1.06
-		    , Object::Realize::Later => 0.07
-		    , Mail::Address  => 0.0
-                    , MIME::Types    => 0.13
-                    }
+  , PREREQ_PM    =>
+    { Date::Parse    => 0.0
+    , File::Spec     => 0.7
+    , IO::Scalar     => 0.0
+    , Errno          => 0.0
+    , Scalar::Util   => 1.06
+    , Object::Realize::Later => 0.07
+    , Mail::Address  => 0.0
+    , MIME::Types    => 0.16
+    , Sys::Hostname  => 0.0
+    }
   );

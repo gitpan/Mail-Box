@@ -1,15 +1,16 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # Test the creation of forward subjects
 #
 
 use Test;
 use strict;
+use warnings;
 
 use lib qw(. t /home/markov/MailBox2/fake);
 
-use Mail::Message::Construct;
 use Tools;
+use Mail::Message::Construct;
 
 BEGIN {plan tests => 7}
 

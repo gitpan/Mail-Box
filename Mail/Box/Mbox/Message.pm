@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox::Message;
 use base 'Mail::Box::Message';
 
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 
 use POSIX 'SEEK_SET';
 use IO::InnerFile;
@@ -156,13 +156,13 @@ sub fromLine(;$)
 Write one message to a file handle.  Unmodified messages are taken
 from the folder-file where they were stored.  Modified messages
 are written to memory.  Specify a FILEHANDLE to write to
-(defaults to STDOUT).
+(defaults to the selected handle).
 
 =cut
 
 sub print(;$)
 {   my $self  = shift;
-    my $out   = shift || \*STDOUT;
+    my $out   = shift || select;
 
     $out->print($self->fromLine);
     $self->SUPER::print($out);
@@ -302,7 +302,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

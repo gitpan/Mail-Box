@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # Encoding and Decoding of Base64
 # Could use some more tests....
@@ -6,6 +6,8 @@
 
 use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 
 use Mail::Message;

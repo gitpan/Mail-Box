@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # Test the processing of a message header, in this case purely the reading
 # from a file.
@@ -6,22 +6,20 @@
 
 use Test;
 use strict;
+use warnings;
 
 use lib qw(. t /home/markov/MailBox2/fake);
+
 use Mail::Message::Head;
 use Mail::Box::Parser::Perl;
 use Tools;
 
-use File::Spec;
-
 BEGIN { plan tests => 16 }
-
-my $inbox = File::Spec->catfile('t', 'mbox.src');
 
 my $h = Mail::Message::Head->new;
 ok(defined $h);
 
-my $parser = Mail::Box::Parser::Perl->new(filename  => $inbox);
+my $parser = Mail::Box::Parser::Perl->new(filename => $src);
 ok($parser);
 
 my $head = Mail::Message::Head->new;

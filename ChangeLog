@@ -3,6 +3,76 @@ CHANGELOG of Mail::Box version 2
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
+version 2.009:
+
+	Fixes:
+
+	- Forgot to update METHOD INDEX
+
+	- t/65search1g.t tests Mail::Box::Search::Grep, which found
+	  some problems in the implementation which are fixed now.
+
+	Improvements:
+
+	- Mail::Box::Manager::threads() now also works when the folders
+	  are not used as named parameter:
+	     $mgr->threads(folders => [$inbox, $outbox]);  # was
+	     $mgr->threads($inbox, $outbox);               # added
+
+	- Default output file-handle changed from STDOUT to the selected
+	  file-handle (see perldoc -f select)... usually this will
+	  return STDOUT.
+
+version 2.008: Mon Feb 18 16:11:52 CET 2002
+
+	Fixes:
+
+	- [Alam Kelm] proved me that the other perl modules are wrong,
+	  wrapping the header-lines more often than the RFC permits.  So,
+	  wrapping on ';' and '.' is removed.  Wrapped headers are always
+	  accepted, so there is no difference when reading a folder.
+
+	- Added 'use Mail::Address' to Mail::Message::Field
+          [Walery Studennikov]
+
+	- [Andreas Marcel Riechert] Added -I flag for {net|open}bsd with
+          mailx in Mail::Transport::Mailx
+
+	- The parent of a Multipart body after reading accidentally was
+          a body, not a message.  Fixed in Mail::Message::Body::Multipart.
+
+	Improvements:
+
+	- New modules Mail::Box::Search and Mail::Box::Search::Grep, however
+	  they still need testing.  De docs have to be updated too.
+	  Mail::Box::Search::Spam must be a piece of cake now.
+	  Example in examples/grep.pl
+
+	- Replaced -w flag in test-scripts by 'use warnings'
+
+	- Centralized definition of folder-files in t/Tools.pm to
+	  simplify implementation on Windows.
+
+	- t/00windows.t to convert t/mbox.src to t/mbox.win with CRLF
+	  line-terminations.
+
+	- moved Mail::Message::Body::Encode::eol to
+	  Mail::Message::Body::eol because is always needed and
+	  hence triggered the parsing of Encode..
+
+	- Mail::Message::Body::eol option NATIVE will be translated into
+          LF, CR or CRLF.
+
+	- Mail::Message::Body::*::size will return the size of the
+	  message as stored in the file, so taking care of \n which
+	  becomes CRLF on some systems.
+
+	- Croak when $mgr->copyTo/moveTo is used with a message which
+	  is not part of a folder yet: appendMessage should be used instead.
+
+	- Mail::Box::Thread::Node::threadMessages() collects all messages
+	  which are in a thread.
+
 version 2.007: Mon Jan 14 10:07:09 CET 2002
 
 	Fixes:

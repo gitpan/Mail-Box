@@ -1,24 +1,24 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 #
 # Test creation/deletion and listing of folders.
 #
 
+use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 use Mail::Box::Mbox;
 use Mail::Box::MH;
 use Mail::Message::Construct;
 
 use Tools;
-
-use Test;
 use File::Copy;
 use File::Spec;
 
 BEGIN {plan tests => 20}
 
-my $src = File::Spec->catfile('t', 'mbox.src');
 my $top = File::Spec->catfile('t', 'Mail');
 clean_dir $top;
 
@@ -60,7 +60,7 @@ folder $sub1, 's1f3';
 folder $top,  'sub2';            # empty dir
 my $f4 = folder $top, 'f4', 1, 2, 3;
 folder $f4, 'f4f1';
-unpack_mbox $src, File::Spec->catfile($f4, 'f4f2');
+unpack_mbox2mh $src, File::Spec->catfile($f4, 'f4f2');
 folder $f4, 'f4f3';
 
 ok(cmplists [ sort Mail::Box::MH->listSubFolders(folderdir => $top) ]

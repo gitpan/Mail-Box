@@ -1,22 +1,23 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 #
 # Test the folder manager
 #
 
-use strict;
-use lib qw(. t /home/markov/MailBox2/fake);
-use Mail::Box::Manager;
-use Tools;
-
 use Test;
+use strict;
+use warnings;
+
+use lib qw(. t /home/markov/MailBox2/fake);
+use Tools;
+use Mail::Box::Manager;
+
 use File::Spec;
 
 warn "   * Various packages\n";
 
 BEGIN {plan tests => 16}
 
-my $src  = File::Spec->catfile('t', 'mbox.src');
 my $new  = File::Spec->catfile('t', 'create');
 unlink $new;
 

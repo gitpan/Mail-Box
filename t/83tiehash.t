@@ -1,21 +1,20 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 #
 # Test access to folders using ties on hashes.
 #
 
+use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 use Mail::Box::Mbox;
 use Mail::Box::Tie::HASH;
 use Mail::Message::Construct;
 use Tools;
 
-use Test;
-
 BEGIN {plan tests => 100}
-
-my $src  = File::Spec->catfile('t', 'mbox.src');
 
 #
 # The folder is read.

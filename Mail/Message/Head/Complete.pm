@@ -9,7 +9,7 @@ use Mail::Box::Parser;
 use Carp;
 use Date::Parse;
 
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 
 use overload qq("") => 'toString';
 
@@ -40,8 +40,8 @@ The general methods for C<Mail::Message::Head::Complete> objects:
 
   MMH add ...                              new OPTIONS
   MMH build FIELDS                     MMH nrLines
-  MMH count NAME                       MMH print FILEHANDLE
-   MR errors                           MMH printUndisclosed FILEHANDLE
+  MMH count NAME                       MMH print [FILEHANDLE]
+   MR errors                           MMH printUndisclosed [FILEHANDLE]
   MMH get NAME [,INDEX]                 MR report [LEVEL]
   MMH isDelayed                         MR reportAll [LEVEL]
   MMH isMultipart                      MMH reset NAME, FIELDS
@@ -212,8 +212,9 @@ sub names() {shift->knownNames}
  
 #------------------------------------------
 
-sub print($)
-{   my ($self, $fh) = @_;
+sub print(;$)
+{   my $self  = shift;
+    my $fh    = shift || select;
 
     my $known = $self->{MMH_fields};
 
@@ -376,7 +377,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -1,25 +1,25 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 #
 # Test creation/deletion and listing of folders.
 #
 
+use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 
 use Mail::Box::Mbox;
 use Mail::Message::Construct;
 
 use Tools;
-use Test;
 use File::Copy;
 use File::Spec;
 
 BEGIN {plan tests => 24}
 
 my $top  = File::Spec->catfile('t', 'Mail');
-my $real = File::Spec->catfile('t', 'mbox.src');
-
 clean_dir $top;
 
 #
@@ -38,7 +38,7 @@ sub dir($;$)
 
 sub folder($$;$)
 {   my $filename = File::Spec->catfile(shift, shift);
-    my $content  = shift || $real;
+    my $content  = shift || $src;
     copy $content, $filename
        or die "Cannot copy $content to $filename: $!\n";
 }

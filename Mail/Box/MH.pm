@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::MH;
 
 use base 'Mail::Box';
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 
 use Mail::Box::MH::Index;
 use Mail::Box::MH::Message;
@@ -52,18 +52,19 @@ described in L<Mail::Box::MH::Message>.
 
 The general methods for C<Mail::Box::MH> objects:
 
-   MB addMessage  MESSAGE               MR log [LEVEL [,STRINGS]]
-   MB addMessages MESSAGE [, MESS...    MB message INDEX [,MESSAGE]
-   MB allMessageIds                     MB messageId MESSAGE-ID [,MESS...
-   MB close OPTIONS                     MB messages
-   MB create FOLDERNAME [, OPTIONS]     MB modified [BOOLEAN]
-   MB current [NUMBER|MESSAGE|MES...    MB name
-   MB delete                               new OPTIONS
-      directory                         MB openSubFolder NAME [,OPTIONS]
-   MR errors                            MR report [LEVEL]
-   MB find MESSAGE-ID                   MR reportAll [LEVEL]
-   MB listSubFolders OPTIONS            MR trace [LEVEL]
-   MB locker                            MR warnings
+   MB AUTOLOAD                          MR log [LEVEL [,STRINGS]]
+   MB addMessage  MESSAGE               MB message INDEX [,MESSAGE]
+   MB addMessages MESSAGE [, MESS...    MB messageId MESSAGE-ID [,MESS...
+   MB allMessageIds                     MB messages
+   MB close OPTIONS                     MB modified [BOOLEAN]
+   MB create FOLDERNAME [, OPTIONS]     MB name
+   MB current [NUMBER|MESSAGE|MES...       new OPTIONS
+   MB delete                            MB openSubFolder NAME [,OPTIONS]
+      directory                         MR report [LEVEL]
+   MR errors                            MR reportAll [LEVEL]
+   MB find MESSAGE-ID                   MR trace [LEVEL]
+   MB listSubFolders OPTIONS            MR warnings
+   MB locker                            MB writeable
 
 The extra methods for extension writers:
 
@@ -123,7 +124,7 @@ see below, but first the full list.
  trace             Mail::Reporter     'WARNINGS'
  trusted           Mail::Box          <depends on folder location>
 
-Only useful to write extension to C<Mail::Box::Mbox>.  Common users of
+Only useful to write extension to C<Mail::Box::MH>.  Common users of
 folders you will not specify these:
 
  OPTION            DEFINED BY         DEFAULT
@@ -190,12 +191,12 @@ reader as created by C<Mail::Box::MH>.
 
 =back
 
-The C<body_type> options for Mbox folders defaults to:
+The C<body_type> options for MH folders defaults to:
 
- sub determine_body_type($$)
- {   my $head = shift;
-     my $size = shift || 0;
-     'Mail::Message::Body::' . ($size > 10000 ? 'File' : 'Lines');
+ sub determine_body_type($$) {
+    my $head = shift;
+    my $size = shift || 0;
+    'Mail::Message::Body::' . ($size > 10000 ? 'File' : 'Lines');
  }
 
 which will cause messages larger than 10kB to be stored in files, and
@@ -856,7 +857,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

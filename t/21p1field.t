@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # Test processing of header-fields: only single fields, not whole headers.
 # This also doesn't cover reading headers from file.
@@ -6,6 +6,8 @@
 
 use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 
 BEGIN { plan tests => 15 }

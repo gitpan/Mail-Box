@@ -8,7 +8,7 @@ use Mail::Message::Field;
 use Mail::Message::Body::Lines;
 use Mail::Message::Body::File;
 
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 
 use overload bool  => sub {1}   # $body->print if $body
            , '""'  => 'string'
@@ -140,7 +140,7 @@ The general methods for C<Mail::Message::Body> objects:
       disposition [STRING|FIELD]           nrLines
  MMBE encode OPTIONS                       print [FILE]
  MMBE encoded                              reply OPTIONS
- MMBE eol ['CR'|'LF'|'CRLF'|'NATI...    MR report [LEVEL]
+      eol ['CR'|'LF'|'CRLF'|'NATI...    MR report [LEVEL]
    MR errors                            MR reportAll [LEVEL]
       file                                 size
  MMBC foreachLine CODE                     string
@@ -242,9 +242,13 @@ reader of the message when it is extacted.
 
 =item * eol =E<gt> 'CR'|'LF'|'CRLF'|'NATIVE'
 
-The one or two character string which is used as line-ending.  When C<checked>
-is set, all lines are expected to comply.  Otherwise, a call to C<check()>
-will check it.
+Convert the message into having the specified string as line terminator
+for all lines in the body.  C<NATIVE> is used to represent the C<\n>
+on the current platform and will be translated in the applicable one.
+
+BE WARNED that folders with a non-native encoding may appear on your
+platform, for instance in Windows folders handled from a UNIX system.
+The eol encoding has effect on the size of the body!
 
 =item * file =E<gt> FILENAME|FILEHANDLE|IOHANDLE
 
@@ -522,6 +526,44 @@ sub checked(;$)
 
 #------------------------------------------
 
+=item eol ['CR'|'LF'|'CRLF'|'NATIVE']
+
+Returns the character (or characters) which are used to separate lines
+within this body.
+
+=cut
+
+sub eol(;$)
+{   my $self = shift;
+    return $self->{MMB_eol} unless @_;
+
+    my $eol  = shift;
+    if($eol eq 'NATIVE')
+    {   $eol = $^O =~ m/^win/i ? 'CRLF'
+             : $^O =~ m/^mac/i ? 'CR'
+             :                   'LF';
+    }
+
+    return $eol if $eol eq $self->{MMB_eol} && $self->checked;
+    my $lines = $self->lines;
+
+       if($eol eq 'CR')    {s/[\015\012]+$/\015/     foreach @$lines}
+    elsif($eol eq 'LF')    {s/[\015\012]+$/\012/     foreach @$lines}
+    elsif($eol eq 'CRLF')  {s/[\015\012]+$/\015\012/ foreach @$lines}
+    else
+    {   carp "Unknown line terminator $eol ignored.";
+        return $self->eol('NATIVE');
+    }
+
+    (ref $self)->new
+      ( based_on => $self
+      , eol      => $eol
+      , data     => $lines
+      );
+}
+
+#------------------------------------------
+
 =item message [MESSAGE]
 
 Returns the message where this body belongs to, optionally setting it
@@ -655,7 +697,7 @@ sub size(@)  {shift->notImplemented}
 
 =item print [FILE]
 
-Print the body to the specified file (defaults to STDOUT)
+Print the body to the specified file (defaults to the selected handle)
 
 =cut
 
@@ -848,7 +890,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -1,15 +1,17 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # Test conversions between Mail::Internet and Mail::Message
 #
 
 use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 
+use Tools;
 use Mail::Message;
 use Mail::Message::Convert::MailInternet;
-use Tools;
 
 BEGIN
 {   eval {require Mail::Internet};

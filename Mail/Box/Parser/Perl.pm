@@ -8,7 +8,7 @@ use Mail::Message::Field;
 use List::Util 'sum';
 use FileHandle;
 
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 
 =head1 NAME
 
@@ -213,22 +213,21 @@ sub foldHeaderLine($$)
             last if length $_ <= $wrap;
 
             my $find = reverse substr($_, 20, $wrap-20);
-            my $blank= 0;
-            my $pos  = index $find, ';';
-            $pos     = index $find, ',' unless $pos >= 0;
-            unless($pos >= 0)
-            {   $pos = index $find, ' ';
-                $blank = 1 if $pos >= 0;
-            }
-            $pos     = index $find, '.' unless $pos >= 0;
+            my $blank_pos = index $find, ' ';
+            my $tab_pos   = index $find, "\t";
+            my $pos
+                = $blank_pos < 0          ? $tab_pos
+                : $tab_pos   < 0          ? $blank_pos
+                : $tab_pos   > $blank_pos ? $blank_pos
+                : -1;
 
-            if($pos >= 0) { $pos = 20+length($find)-$pos-$blank }
+            if($pos >= 0) { $pos = 20+length($find)-$pos-1 }
             else
             {   # Not found, so extend line.
                 $pos = $wrap;
                 while($pos < length)
                 {   my $c = substr $_, $pos++, 1;
-                    last if $c eq ';' || $c eq ',' || $c eq ' ' || $c eq '.';
+                    last if $c eq ' ' || $c eq '.';
                 }
                 $pos--;
             }
@@ -333,7 +332,6 @@ sub _read_stripped_lines(;$$)
     }
     else
     {   # File without separators.
-        binmode ':crlf';
         @lines = $file->getlines;
     }
 
@@ -446,7 +444,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

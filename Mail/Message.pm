@@ -9,7 +9,7 @@ use Mail::Message::Head::Complete;
 
 use Carp;
 
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 
 =head1 NAME
 
@@ -243,7 +243,7 @@ Is equivalent to:
 
 sub get($)
 {
-warn "BAD: ",$_[0]->seqnr if $_[0]->isa('Mail::Box::Message') && ! defined $_[0]->head;
+confess "BAD: ",$_[0]->seqnr if $_[0]->isa('Mail::Box::Message') && ! defined $_[0]->head;
     my $field = shift->head->get(shift) || return;
     $field->body;
 }
@@ -444,7 +444,8 @@ will be the type of the body returned.  BODYTYPE extends C<Mail::Message:Body>.
 
 Examples:
 
-   $message->decoded->print(\*STDOUT);
+   $message->decoded->print(\*OUT);
+   $message->decoded->print;
 
    my $dec = $message->body($message->decoded);
    my $dec = $message->decoded(keep => 1);   # same
@@ -545,20 +546,19 @@ another message.
 
 Examples:
 
-    my Mail::Message $msg = ...
+ my Mail::Message $msg = ...
+ return unless $msg->body->isMultipart;
+ my $part   = $msg->body->part(2);
 
-    return unless $msg->body->isMultipart;
-    my $part   = $msg->body->part(2);
+ return unless $part->body->isMultipart;
+ my $nested = $part->body->part(3);
 
-    return unless $part->body->isMultipart;
-    my $nested = $part->body->part(3);
-
-    $nested->parent;     # returns $part
-    $nested->toplevel;   # returns $msg
-    $msg->parent;        # returns undef
-    $msg->toplevel;      # returns $msg
-    $msg->isPart;        # returns false
-    $part->isPart;       # returns true
+ $nested->parent;     # returns $part
+ $nested->toplevel;   # returns $msg
+ $msg->parent;        # returns undef
+ $msg->toplevel;      # returns $msg
+ $msg->isPart;        # returns false
+ $part->isPart;       # returns true
 
 =cut
 
@@ -620,9 +620,9 @@ sub headIsRead() { not shift->head->isa('Mail::Message::Delayed') }
 
 =item printUndisclosed [FILEHANDLE]
 
-Print the message to the FILE-HANDLE, which defaults to STDOUT.  In
-the former case of C<print> including the C<Bcc> and C<Resent-Bcc>
-lines, in the latter case without them.
+Print the message to the FILE-HANDLE, which defaults to the selected
+filehandle.  In the former case of C<print> including the C<Bcc> and
+C<Resent-Bcc> lines, in the latter case without them.
 
 Examples:
 
@@ -636,7 +636,7 @@ Examples:
 
 sub print(;$)
 {   my $self = shift;
-    my $out  = shift || \*STDOUT;
+    my $out  = shift || select;
 
     $self->head->print($out);
     $self->body->print($out);
@@ -645,7 +645,7 @@ sub print(;$)
 
 sub printUndisclosed(;$)
 {   my $self = shift;
-    my $out  = shift || \*STDOUT;
+    my $out  = shift || select;
 
     $self->head->printUndisclosed($out);
     $self->body->print($out);
@@ -969,7 +969,10 @@ sub body(;$@)
     my $head = $self->head;
 confess unless defined $head;
     $head->set($body->type);
-    $head->set('Content-Length' => $body->size);
+
+    $head->set('Content-Length' => $body->size)
+       unless $body->isMultipart;  # too slow
+
     $head->set('Lines'          => $body->nrLines);
     $head->set($body->transferEncoding);
     $head->set($body->disposition);
@@ -1233,7 +1236,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

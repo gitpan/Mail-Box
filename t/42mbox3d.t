@@ -1,18 +1,19 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 #
 # Test delay-loading on mbox folders.
 #
 
+use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 use Mail::Box::Mbox;
 use Tools;
 
-use Test;
 use File::Compare;
 use File::Copy;
-use File::Spec;
 
 BEGIN {plan tests => 108}
 
@@ -21,21 +22,18 @@ BEGIN {plan tests => 108}
 # over our test file.
 #
 
-my $orig = File::Spec->catfile('t', 'mbox.src');
-my $src  = File::Spec->catfile('t', 'mbox.cpy');
-
-copy $orig, $src
+copy $src, $cpy
     or die "Cannot create test folder: $!\n";
 
 my $folder = new Mail::Box::Mbox
-  ( folder       => '=mbox.cpy'
+  ( folder       => "=$cpyfn"
   , folderdir    => 't'
   , lock_type    => 'NONE'
   , extract      => 'LAZY'
   , access       => 'rw'
   );
 
-die "Couldn't read $src: $!\n"
+die "Couldn't read $cpy: $!\n"
     unless $folder;
 
 #
@@ -84,7 +82,7 @@ ok($oldsize == -s $folder->filename);
 # Try to read it back
 
 my $copy = new Mail::Box::Mbox
-  ( folder       => '=mbox.cpy'
+  ( folder       => "=$cpyfn"
   , folderdir    => 't'
   , lock_type    => 'NONE'
   , extract      => 'LAZY'
@@ -168,4 +166,4 @@ ok(defined $folder->message(2)->head->get('x-mailer'));
 ok($folder->message(2)->head->isa('Mail::Message::Head::Complete'));
 ok(not $folder->message(2)->isParsed);
 
-#unlink $src;
+#unlink $cpy;

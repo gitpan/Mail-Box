@@ -39,8 +39,8 @@ The general methods for C<Mail::Box::Thread::Node> objects:
       followedBy THREADS                   repliedTo
       follows THREAD, QUALITY              sortedFollowUps [PREPARE [,...
       ids                                  startTimeEstimate
-      isDummy                              threadToString [CODE]
-      message                              totalSize
+      isDummy                              threadMessages
+      message                              threadToString [CODE]
 
 =head1 METHODS
 
@@ -120,10 +120,11 @@ Examples:
    my $threads = $mgr->threads(folders => [$draft, $sent]);
    my $node    = $draft->message(1)->thread;
 
-   foreach my $instance ($node->message)
-   {   print "Found in ", $instance->folder, ".\n";
+   foreach my $instance ($node->message) {
+       print "Found in ", $instance->folder, ".\n";
    }
-   print "Best is ", scalar $node->message, ".\n";
+
+   print "Subject is ", $node->message->subject, ".\n";
    
 =cut
 
@@ -567,6 +568,34 @@ sub nrMessages() {shift->numberOfMessages}  # compatibility
 
 #-------------------------------------------
 
+=item threadMessages
+
+Returns all the messages in the thread starting at the current thread
+node.  This list will not include dummies.
+
+Examples:
+
+    my @t = $folder->message(3)->threadStart->threadMessages;
+
+=cut
+
+sub threadMessages()
+{   my $self = shift;
+    my @messages;
+    $self->recurse
+     ( sub
+       { my $node = shift;
+         push @messages, $node->message unless $node->isDummy;
+         1;
+       }
+     );
+
+    @messages;
+}
+
+
+#-------------------------------------------
+
 =item ids
 
 Returns all the ids in the thread starting at the current thread node.
@@ -601,7 +630,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -13,18 +13,16 @@ use Tools;
 use Test;
 use File::Compare;
 use File::Copy;
-use File::Spec;
 
 BEGIN {plan tests => 54}
 
-my $orig = File::Spec->catfile('t', 'mbox.src');
-my $src  = File::Spec->catfile('t', 'mh.src');
+my $mhsrc = File::Spec->catfile('t', 'mh.src');
 
-clean_dir $src;
-unpack_mbox($orig, $src);
+clean_dir $mhsrc;
+unpack_mbox2mh($src, $mhsrc);
 
 my $folder = new Mail::Box::MH
-  ( folder     => $src
+  ( folder     => $mhsrc
   , folderdir  => 't'
   , lock_type  => 'NONE'
   , extract    => 'LAZY'
@@ -42,20 +40,20 @@ my $msg3 = $folder->message(3);
 $folder->modified(1);
 $folder->write(renumber => 0);
 
-ok(cmplists [sort {$a cmp $b} listdir $src],
+ok(cmplists [sort {$a cmp $b} listdir $mhsrc],
             [sort {$a cmp $b} '.index', '.mh_sequences', 1..12, 14..46]
   );
 
 $folder->modified(1);
 $folder->write(renumber => 1);
 
-ok(cmplists [sort {$a cmp $b} listdir $src],
+ok(cmplists [sort {$a cmp $b} listdir $mhsrc],
             [sort {$a cmp $b} '.index', '.mh_sequences', 1..45]
   );
 
 $folder->message(2)->delete;
 $folder->write;
-ok(cmplists [sort {$a cmp $b} listdir $src],
+ok(cmplists [sort {$a cmp $b} listdir $mhsrc],
             [sort {$a cmp $b} '.index', '.mh_sequences', 1..44]
   );
 ok($folder->messages==44);
@@ -74,4 +72,4 @@ foreach ($folder->messages) { ok(! $_->deleted) }
 
 $folder->close;
 
-clean_dir $src;
+clean_dir $mhsrc;

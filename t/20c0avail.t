@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # Check whether we can run the C parser (otherwise it is useless to
 # perform this set of tests.
@@ -6,6 +6,8 @@
 
 use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 use Tools;
 

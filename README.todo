@@ -53,8 +53,5 @@ Plans for the (near?) future:
   loading mechanism.
 
 * Convert text to html vv
-  Mail/HTML/Box
-  Mail/HTML/Message
-  Mail/HTML/Thread
-  Mail/HTML/Body
-  Mail/HTML/Head
+
+* Mail::Box::Search::Spam

@@ -1,19 +1,20 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # Test the creation of bounce messages
 #
 
 use Test;
 use strict;
+use warnings;
 
 use lib qw(. t /home/markov/MailBox2/fake);
 
+use Tools;
 use Mail::Message;
 use Mail::Message::Head;
 use Mail::Message::Body::Lines;
 use Mail::Message::Construct;
 
-use Tools;
 use IO::Scalar;
 
 BEGIN {plan tests => 2}

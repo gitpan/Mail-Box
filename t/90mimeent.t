@@ -1,14 +1,16 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # Test conversions between Mail::Message and MIME::Entity
 #
 
 use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 
-use Mail::Message;
 use Tools;
+use Mail::Message;
 
 BEGIN
 {   eval {require MIME::Entity};

@@ -38,3 +38,9 @@ Optional:
   Mail::Message::Body::Scalar can get nrlines from read()
 
   fromBody with nested multiparts at once.
+
+  Mail::Message::Field
+  - Parameter value continuations (RFC 2231 section 3)
+  - Parameter Value Character Set and Language Information (RFC 2231 section 4)
+  - Language specification in Encoded Words (RFC 2231 section 5)
+

@@ -93,6 +93,9 @@ Folder manager:
    60mgr.t             locating/opening/closing folders.
    61threads.t         thread detection and processing.
 
+Searching:
+   65search1g.t        search grep
+
 Locking:
    70dotlock.t         dotlock mechanism
    70flock.t           locking based on file-handle with flock

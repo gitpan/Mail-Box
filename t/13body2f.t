@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # Test processing of message bodies which have their content stored
 # in a file.
@@ -6,6 +6,7 @@
 
 use Test;
 use strict;
+use warnings;
 
 use lib qw(. t /home/markov/MailBox2/fake);
 use Mail::Message::Body::File;

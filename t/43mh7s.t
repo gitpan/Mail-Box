@@ -1,29 +1,26 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 #
 # Test mh-sequences
 #
 
+use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 use Mail::Box::Manager;
 use Tools;
 
-use Test;
 use File::Spec;
 
 BEGIN {plan tests => 10}
 
-my $orig = File::Spec->catfile('t', 'mbox.src');
-my $src  = File::Spec->catfile('t', 'mh.src');
-my $seq  = File::Spec->catfile($src, '.mh_sequences');
+my $mhsrc = File::Spec->catfile('t', 'mh.src');
+my $seq   = File::Spec->catfile($mhsrc, '.mh_sequences');
 
-#
-# Unpack the file-folder.
-#
-
-clean_dir $src;
-unpack_mbox($orig, $src);
+clean_dir $mhsrc;
+unpack_mbox2mh($src, $mhsrc);
 
 # Create a sequences file.
 open SEQ, ">$seq" or die "Cannot write to $seq: $!\n";
@@ -39,7 +36,7 @@ close SEQ;
 my $mgr = Mail::Box::Manager->new;
 
 my $folder = $mgr->open
-  ( folder       => $src
+  ( folder       => $mhsrc
   , folderdir    => 't'
   , lock_type    => 'NONE'
   , extract      => 'LAZY'
@@ -47,7 +44,7 @@ my $folder = $mgr->open
   , save_on_exit => 0
   );
 
-die "Couldn't read $src: $!\n" unless $folder;
+die "Couldn't read $mhsrc: $!\n" unless $folder;
 
 ok($folder->message(1)->label('seen'));
 ok(not $folder->message(2)->label('seen'));
@@ -73,4 +70,4 @@ ok($cur, "cur: 2\n");
 my ($unseen) = grep /^unseen\: /, @seq;
 ok($unseen, "unseen: 3 12-15 33 35\n");
 
-clean_dir $src;
+clean_dir $mhsrc;

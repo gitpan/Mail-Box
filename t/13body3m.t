@@ -1,10 +1,11 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # Test processing of multipart message bodies.
 #
 
 use Test;
 use strict;
+use warnings;
 
 use lib qw(. t /home/markov/MailBox2/fake);
 
@@ -181,7 +182,6 @@ From: me
 To: you
 Date: now
 Content-Type: multipart/mixed; boundary="part-separator"
-Content-Length: 327
 Lines: 24
 Content-Transfer-Encoding: 8bit
 
@@ -221,7 +221,6 @@ From: me
 To: you
 Date: now
 Content-Type: multipart/mixed; boundary="part-separator"
-Content-Length: 19
 Lines: 1
 Content-Transfer-Encoding: 8bit
 

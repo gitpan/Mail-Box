@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # Test the processing of a message header, in this case purely the reading
 # from a file.
@@ -6,6 +6,7 @@
 
 use Test;
 use strict;
+use warnings;
 
 use lib qw(. t /home/markov/MailBox2/fake);
 use Mail::Message::Head;

@@ -1,21 +1,18 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # Test threads over multi-folders.
 #
 
+use Test;
 use strict;
+use warnings;
+
 use lib qw(. t /home/markov/MailBox2/fake);
 
-use File::Spec;
-use Test;
+use Tools;
+#use Mail::Box::Manager;
 
 BEGIN {plan tests => 1}
-
-#use Mail::Box::Manager;
-use Tools;
-
-my $src  = File::Spec->catfile('t', 'mbox.src');
-my $dest = File::Spec->catfile('t', 'mbox.cpy');
 
 warn "   * Multi-folder threads status ALPHA (not tested)\n";
 ok(1);

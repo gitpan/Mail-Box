@@ -8,8 +8,9 @@ package Mail::Message::Field;
 use Mail::Box::Parser;
 
 use Carp;
+use Mail::Address;
 
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 our %_structured;  # not to be used directly: call isStructured!
 
 use overload qq("") => sub { $_[0]->body }
@@ -38,7 +39,7 @@ Mail::Message::Field - one line of a message header
  print $field->name;
  print $field->body;
  print $field->comment;
- $field->print(\*STDOUT);
+ $field->print(\*OUT);
  print $field->toString;
  print "$field\n";
  print $field->attribute('charset') || 'us-ascii';
@@ -269,13 +270,13 @@ sub attribute($;$)
 
 Print the whole header-line to the specified file-handle. One line may
 result in more than one printed line, because of the folding of long
-lines.  The FILEHANDLE defaults to STDOUT.
+lines.  The FILEHANDLE defaults to the selected handle.
 
 =cut
 
 sub print($)
 {   my $self = shift;
-    my $fh   = shift || \*STDOUT;
+    my $fh   = shift || select;
     $fh->print($self->folded);
 }
 
@@ -465,7 +466,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

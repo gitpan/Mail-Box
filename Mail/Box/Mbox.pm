@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox;
 use base 'Mail::Box';
 
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 
 use Mail::Box::Mbox::Message;
 
@@ -49,18 +49,19 @@ described in L<Mail::Box::Mbox::Message>.
 
 The general methods for C<Mail::Box::Mbox> objects:
 
-   MB addMessage  MESSAGE               MR log [LEVEL [,STRINGS]]
-   MB addMessages MESSAGE [, MESS...    MB message INDEX [,MESSAGE]
-   MB allMessageIds                     MB messageId MESSAGE-ID [,MESS...
-   MB close OPTIONS                     MB messages
-      create FOLDERNAME, ARGS           MB modified [BOOLEAN]
-   MB current [NUMBER|MESSAGE|MES...    MB name
-   MB delete                               new OPTIONS
-   MR errors                            MB openSubFolder NAME [,OPTIONS]
-      filename                          MR report [LEVEL]
-   MB find MESSAGE-ID                   MR reportAll [LEVEL]
-      listSubFolders [OPTIONS]          MR trace [LEVEL]
-   MB locker                            MR warnings
+   MB AUTOLOAD                          MR log [LEVEL [,STRINGS]]
+   MB addMessage  MESSAGE               MB message INDEX [,MESSAGE]
+   MB addMessages MESSAGE [, MESS...    MB messageId MESSAGE-ID [,MESS...
+   MB allMessageIds                     MB messages
+   MB close OPTIONS                     MB modified [BOOLEAN]
+      create FOLDERNAME, ARGS           MB name
+   MB current [NUMBER|MESSAGE|MES...       new OPTIONS
+   MB delete                            MB openSubFolder NAME [,OPTIONS]
+   MR errors                            MR report [LEVEL]
+      filename                          MR reportAll [LEVEL]
+   MB find MESSAGE-ID                   MR trace [LEVEL]
+      listSubFolders [OPTIONS]          MR warnings
+   MB locker                            MB writeable
 
 The extra methods for extension writers:
 
@@ -898,7 +899,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

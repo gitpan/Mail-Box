@@ -1,11 +1,12 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 #
 # Test writing of mbox folders using the inplace policy.
 #
 
-use strict;
 use Test;
+use strict;
+use warnings;
 
 use lib qw(. t /home/markov/MailBox2/fake);
 use Mail::Box::Mbox;
@@ -13,7 +14,6 @@ use Tools;
 
 use File::Compare;
 use File::Copy;
-use File::Spec;
 
 BEGIN {plan tests => 99}
 
@@ -22,14 +22,11 @@ BEGIN {plan tests => 99}
 # over our test file.
 #
 
-my $orig = File::Spec->catfile('t', 'mbox.src');
-my $src  = File::Spec->catfile('t', 'mbox.cpy');
-
-copy $orig, $src
-    or die "Cannot create test folder: $!\n";
+copy $src, $cpy
+    or die "Cannot create test folder $cpy: $!\n";
 
 my $folder = new Mail::Box::Mbox
-  ( folder       => '=mbox.cpy'
+  ( folder       => "=$cpyfn"
   , folderdir    => 't'
   , lock_type    => 'NONE'
   , extract      => 'LAZY'
@@ -38,7 +35,7 @@ my $folder = new Mail::Box::Mbox
 #, trace => 'NOTICES'
   );
 
-die "Couldn't read $src: $!\n"
+die "Couldn't read $cpy: $!\n"
      unless $folder;
 
 #
@@ -121,4 +118,4 @@ $folder->message(35)->delete;
 ok(1);
 
 ### work to be done
-unlink $src;
+unlink $cpy;

@@ -1,10 +1,11 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # Test the reading from file of message bodies which have their content
 # stored in a single Lines.
 
 use Test;
 use strict;
+use warnings;
 
 use lib qw(. t /home/markov/MailBox2/fake);
 
@@ -14,17 +15,13 @@ use Mail::Message::Body::Delayed;
 use Mail::Message::Head;
 use Tools;
 
-use File::Spec;
-
 BEGIN {plan tests => 145}
-
-my $inbox = File::Spec->catfile('t', 'mbox.src');
 
 ###
 ### First carefully read the first message
 ###
 
-my $parser = Mail::Box::Parser::Perl->new(filename  => $inbox);
+my $parser = Mail::Box::Parser::Perl->new(filename => $src);
 ok($parser);
 
 $parser->pushSeparator('From ');
@@ -118,7 +115,7 @@ $parser->stop;
 
 undef $parser;
 
-$parser = Mail::Box::Parser::Perl->new(filename => $inbox);
+$parser = Mail::Box::Parser::Perl->new(filename => $src);
 $parser->pushSeparator('From ');
 
 my $count = 0;
@@ -164,7 +161,7 @@ $parser->stop;
 
 undef $parser;
 
-$parser = Mail::Box::Parser::Perl->new(filename => $inbox);
+$parser = Mail::Box::Parser::Perl->new(filename => $src);
 $parser->pushSeparator('From ');
 
 $count = 0;

@@ -145,7 +145,7 @@ sub concatenate(@)
         {   $changes++ unless $unified==$body;
             push @unified, $unified;
         }
-        elsif($body->mimeType->mainType eq 'text')
+        elsif($body->mimeType->mediaType eq 'text')
         {   # Text stuff can be unified anyhow, although we do not want to
             # include postscript or such.
             push @unified, $body;
@@ -336,7 +336,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

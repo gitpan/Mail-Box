@@ -3,9 +3,31 @@ use strict;
 package Tools;
 
 use base 'Exporter';
-our @EXPORT = qw/clean_dir unpack_mbox cmplists listdir/;
+our @EXPORT = qw/clean_dir unpack_mbox2mh unpack_mbox2maildir
+                 cmplists listdir
+                 $src $unixsrc $winsrc
+                 $fn  $unixfn  $winfn
+                 $cpy $cpyfn
+                /;
 
 use File::Spec;
+use Sys::Hostname;
+
+our ($src, $unixsrc, $winsrc);
+our ($fn,  $unixfn,  $winfn);
+our ($cpy, $cpyfn);
+
+BEGIN {
+   $unixfn  = 'mbox.src';
+   $winfn   = 'mbox.win';
+   $cpyfn   = 'mbox.cpy';
+   $unixsrc = File::Spec->catfile('t', $unixfn);
+   $winsrc  = File::Spec->catfile('t', $winfn);
+   $cpy     = File::Spec->catfile('t', $cpyfn);
+   ($src, $fn) = $^O =~ m/win/
+            ? ($winsrc, $winfn)
+            : ($unixsrc, $unixfn);
+}
 
 #
 # CLEAN_DIR
@@ -26,11 +48,11 @@ sub clean_dir($)
     rmdir $dir;
 }
 
-# UNPACK_MBOX
+# UNPACK_MBOX2MH
 # Unpack an mbox-file into an MH-directory.
 # This skips message-nr 13 for testing purposes.
 
-sub unpack_mbox($$)
+sub unpack_mbox2mh($$)
 {   my ($file, $dir) = @_;
     clean_dir($dir);
 
@@ -38,13 +60,42 @@ sub unpack_mbox($$)
     my $count = 1;
 
     open FILE, $file or die;
-    open OUT, '>/dev/null';
+    open OUT, '>', File::Spec->devnull;
 
     while(<FILE>)
     {   if( /^From / )
         {   close OUT;
             open OUT, ">$dir/".$count++ or die;
             $count++ if $count==13;  # skip 13 for test
+            next;                    # from line not included in file.
+        }
+        print OUT;
+    }
+
+    close OUT;
+    close FILE;
+}
+
+# UNPACK_MBOX2MAILDIR
+# Unpack an mbox-file into an Maildir-directory.
+
+sub unpack_mbox2maildir($$)
+{   my ($file, $dir) = @_;
+    clean_dir($dir);
+
+    mkdir $dir, 0700;
+    my $unique = 1;
+
+    open FILE, $file or die;
+    open OUT, '>', File::Spec->devnull;
+
+    while(<FILE>)
+    {   if( /^From / )
+        {   close OUT;
+            my $now      = time;
+            my $hostname = hostname;
+            open OUT, ">$dir/cur/$now.$hostname.$unique" or die;
+            $unique++;
             next;                    # from line not included in file.
         }
         print OUT;

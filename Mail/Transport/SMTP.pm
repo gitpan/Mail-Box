@@ -8,7 +8,7 @@ use Carp;
 use IO::Socket::INET;
 use Net::Cmd;
 
-our $VERSION = 2.007;
+our $VERSION = 2.009;
 
 =head1 NAME
 
@@ -38,7 +38,7 @@ other programs on the local host.
 The general methods for C<Mail::Transport::SMTP> objects:
 
    MR errors                            MR reportAll [LEVEL]
-   MR log [LEVEL [,STRINGS]]               send MESSAGE, OPTIONS
+   MR log [LEVEL [,STRINGS]]            MT send MESSAGE, OPTIONS
       new OPTIONS                       MR trace [LEVEL]
    MR report [LEVEL]                    MT trySend MESSAGE, OPTIONS
 
@@ -110,19 +110,22 @@ sub init($)
 
     # Collect the data for a connection to the server
 
-    my $host    = $args->{proxy};
-    unless($host)
+    my $hosts   = $args->{proxy};
+    unless($hosts)
     {   require Net::Config;
-        $host   = $Net::Config::NetConfig{smtp_hosts};
+        $hosts  = $Net::Config::NetConfig{smtp_hosts};
+        undef $hosts unless @$hosts;
     }
 
-    confess "No server name specified, nor configured."
-        unless $host;
+    my @hosts
+      = ref $hosts     ? @$hosts
+      : defined $hosts ? $hosts
+      :                 'localhost';
 
-    my @hosts   = ref $host ? @$host : $host;
     my $timeout = defined $args->{timeout} ? $args->{timeout} : 120;
     my $port    = $args->{port} || 'smtp(25)';
 
+warn "hosts = @hosts";
     $self->{MTS_hosts} = \@hosts;
     $self->{MTS_sock_opts}
        = [ PeerPort => $port, Proto => 'tcp', Timeout => $timeout ];
@@ -140,8 +143,10 @@ sub init($)
 
 sub trySend($)
 {   my ($self, $message) = @_;
+warn "try contact @{$self->{MTS_hosts}}";
     my $server = $self->contactServer or return 0;
 
+warn "try send";
     my $from   = $message->from;
     my $domain = $self->{MTS_helo_domain};
     $domain    = $1 if !$domain && $from =~ m/\@(\S+)$/;
@@ -181,7 +186,7 @@ sub trySend($)
 
     $server->command('DATA');
 
-confess "Not fully implemented yet";
+#confess "Not fully implemented yet";
 
     $message->printUndislosed($server);
     $server->dataend;
@@ -192,47 +197,6 @@ confess "Not fully implemented yet";
     $server->close;
 
     1;
-}
-
-#------------------------------------------
-
-=item send MESSAGE, OPTIONS
-
-Transmit the MESSAGE.  It returns true when the transmission was succesfully
-completed.  Some extensions to C<Mail::Transport> may offer OPTIONS, but at
-least the following are supported:
-
- OPTIONS      DESCRIBED IN              DEFAULT
- interval     Mail::Transport           30
- retry        Mail::Transport           undef
-
-=cut
-
-sub send($@)
-{   my ($self, $message, %args) = @_;
-    my @to    = $message->destinations;
-    my $msgid = $message->messageId;
-
-    my $retry = defined $args{retry} ? $args{retry} : -1;
-    while($retry >= 0)
-    {   my @failed;
-        while(@to)
-        {   my $to = shift @to;
-            if($self->sendToOne($message, $to))
-                 { $self->log(NOTICE => "Sent $msgid to ".$to->format.".\n") }
-            else { push @failed, $to }
-        }
-
-        last unless @to;
-        @to = @failed;
-        $retry--;
-        sleep( $args{interval} || 30);
-    }
-
-    $self->log(NOTICE => "Failed to transmit $msgid to ". $_->format. ".\n")
-        foreach @to;
-
-    @to==0;
 }
 
 #------------------------------------------
@@ -263,13 +227,15 @@ sub contactServer()
 
     foreach my $host (@{$self->{MTS_hosts}})
     {
-        $server = IO::Server::INET->new(PeerAddr => $host, @options)
+warn "Trying host $host";
+        $server = IO::Socket::INET->new(PeerAddr => $host, @options)
             or next;
 
         last if $server->response==CMD_OK;
         $server->close;
     }
 
+warn "no server" unless $server;
     $server;
 }
 
@@ -289,7 +255,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.007.
+This code is beta, version 2.009.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
