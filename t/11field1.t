@@ -11,13 +11,13 @@ use warnings;
 
 use lib qw(. t /home/markov/MailBox2/fake);
 
-BEGIN {plan tests => 53}
+BEGIN {plan tests => 57}
 
 use Mail::Message::Field::Fast;
 use Mail::Address;
 use Tools;
 
-warn "   * Mail::Message modules status BETA\n";
+warn "   * Mail::Message modules status: released\n";
 
 #
 # Processing unstructured lines.
@@ -139,3 +139,12 @@ ok($q->attribute(charset => 'iso-10646'));
 ok($q->attribute('charset') eq 'iso-10646');
 ok($q->comment eq 'charset="iso-10646"');
 ok($q->toString eq qq(Content-Type: text/plain; charset="iso-10646"\n));
+
+#
+# Check preferred capitization of Labels
+#
+
+ok(Mail::Message::Field->wellformedName('Content-Transfer-Encoding') eq 'Content-Transfer-Encoding');
+ok(Mail::Message::Field->wellformedName('content-transfer-encoding') eq 'Content-Transfer-Encoding');
+ok(Mail::Message::Field->wellformedName('CONTENT-TRANSFER-ENCODING') eq 'Content-Transfer-Encoding');
+ok(Mail::Message::Field->wellformedName('cONTENT-tRANSFER-eNCODING') eq 'Content-Transfer-Encoding');

@@ -14,6 +14,7 @@ use Mail::Message::Body::Lines;
 use Tools;
 
 BEGIN {plan tests => 37}
+warn "   * Message construction status: released\n";
 
 #
 # No strip possible

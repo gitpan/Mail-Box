@@ -6,7 +6,7 @@ use warnings;
 
 my $verbose   = 1;
 
-my $home      = $ENV{HOME};
+my $home      = "$ENV{HOME}/shared/perl";
 my $realize   = "$home/Realize/Later";
 my $mailbox   = "$home/MailBox2";
 my $mime      = "$home/MimeTypes";

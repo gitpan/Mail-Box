@@ -5,7 +5,7 @@ use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 use Carp;
 use File::Copy;
@@ -139,7 +139,8 @@ sub init($)
     $args->{lock_type}   = 'NONE';
     $args->{folderdir} ||= $default_folder_dir;
 
-    $self->SUPER::init($args);
+    return undef
+        unless $self->SUPER::init($args);
 
     $self;
 }
@@ -211,8 +212,7 @@ sub create($@)
 {   my ($class, $name, %args) = @_;
     my $folderdir = $args{folderdir} || $default_folder_dir;
     my $directory = $class->folderToDirectory($name, $folderdir);
-
-    $class->createDirs($directory) ? undef : $class;
+    $class->createDirs($directory);
 }
 
 #-------------------------------------------
@@ -331,7 +331,7 @@ sub foundIn($@)
     my $folderdir = $args{folderdir} || $default_folder_dir;
     my $directory = $class->folderToDirectory($name, $folderdir);
 
-    -d File::Spec->catfile($directory, 'cur');
+    -d File::Spec->catdir($directory, 'cur');
 }
 
 #-------------------------------------------
@@ -422,7 +422,7 @@ sub updateMessages($)
         $self->storeMessage($message);
 
         $message->statusToLabels->labelsToFilename;
-        push @newmsgs, $message;
+        push @newmsgs, $message->accept;
     }
 
     @newmsgs;
@@ -606,7 +606,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

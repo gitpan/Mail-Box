@@ -113,8 +113,12 @@ Ties:
    83tiehash.t         accessing folder as hash.
 
 Foreign messages:      Mail::Message::Convert*
+   90textaf.t          fool around Text::Autoformat
    90mailint.t         Conversions from and to Mail::Internet
    90mimeent.t         Conversions from and to MIME::Entity
+   90html.t            fool around with html
+   90htmlfps.t         Conversions with HTML::FormatPS
+   90htmlft.t          Conversions with HTML::FormatText
 
 NOT Tested
 ==========

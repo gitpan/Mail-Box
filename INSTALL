@@ -32,10 +32,11 @@ functionality.  Obligatory are
 
 Optionally, you may want to install
 
+  Net::SMTP           to transport mail without external programs
   Mail::Internet      when you want to link to packages which require it.
   MIME::Entity         "
-  Inline::C           will enble the C-based parser
-  IO::Socket::INET    to use Mail::Transport::SMTP
+  HTML::FormatText    to convert HTML to plain text
+  HTML::FormatPS      to convert HTML to PostScript
 
 === Support
 

@@ -8,7 +8,7 @@ use lib '.';
 
 my ($src, $dest) = @ARGV;
 my $verbose = 0;
-my $version = '2.013';
+my $version = '2.014';
 my $email   = 'mailbox@overmeer.net';
 
 require $src;
@@ -125,7 +125,8 @@ sub collect_items($)
         $in_pod = 0 if /^=cut/;
         warn "IN POD line $.: $_" if $in_pod && /^(sub |\#\-\-)/;
 
-        warn "REMOVE $.: $_" if $in_pod && /^(warn|confess|croak|carp|die)/;
+        warn "REMOVE $. $mod->{filename}: $_"
+            if !$in_pod && /^(warn|confess|croak|carp|die)/;
     }
 
     close POD;

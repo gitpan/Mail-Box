@@ -46,6 +46,10 @@ Mail/Message/Construct.pm
 Mail/Message/Convert.pm
 Mail/Message/Convert/MimeEntity.pm
 Mail/Message/Convert/MailInternet.pm
+Mail/Message/Convert/HtmlFormatPS.pm
+Mail/Message/Convert/HtmlFormatText.pm
+Mail/Message/Convert/TextAutoformat.pm
+Mail/Message/Convert/Html.pm
 Mail/Message/TransferEnc.pm
 Mail/Message/TransferEnc/Base64.pm
 Mail/Message/TransferEnc/SevenBit.pm
@@ -146,9 +150,12 @@ t/70nfslock.t
 t/70multi.t
 t/82tieary.t
 t/83tiehash.t
+t/90html.t
+t/90htmlft.t
+t/90htmlfps.t
 t/90mailint.t
 t/90mimeent.t
-t/mbox.cpy
+t/90textaf.t
 t/mbox.src
 t/Tools.pm
 update_one_index

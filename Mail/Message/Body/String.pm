@@ -4,7 +4,7 @@ use warnings;
 package Mail::Message::Body::String;
 use base 'Mail::Message::Body';
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 use Carp;
 use IO::Scalar;
@@ -44,7 +44,8 @@ L<Mail::Reporter> (MR), L<Mail::Message::Body> (MMB), L<Mail::Message::Body::Con
 
 The general methods for C<Mail::Message::Body::String> objects:
 
- MMBC attach MESSAGES, OPTIONS          MR log [LEVEL [,STRINGS]]
+ MMBC attach MESSAGES, OPTIONS         MMB lines
+  MMB charset                           MR log [LEVEL [,STRINGS]]
  MMBE check                            MMB message [MESSAGE]
   MMB checked [BOOLEAN]                MMB mimeType
  MMBC concatenate COMPONENTS           MMB modified [BOOL]
@@ -59,7 +60,7 @@ The general methods for C<Mail::Message::Body::String> objects:
  MMBE isBinary                        MMBC stripSignature OPTIONS
   MMB isDelayed                         MR trace [LEVEL]
   MMB isMultipart                      MMB transferEncoding [STRING|FI...
-  MMB lines                            MMB type
+ MMBE isText                           MMB type
 
 The extra methods for extension writers:
 
@@ -229,7 +230,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -12,7 +12,8 @@ use FileHandle;
 
 BEGIN {
    unless($^O =~ m/^win/i)
-   {   plan tests => 0;
+   {   warn "requires MicroSoft Windows.\n";
+       plan tests => 0;
        exit 0;
    }
 

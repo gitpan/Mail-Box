@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Dir;
 
 use base 'Mail::Box';
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 use Mail::Box::Dir::Message;
 
@@ -143,10 +143,16 @@ sub init($)
     $args->{folderdir} ||= $args->{folderdir};
     $args->{body_type} ||= sub {'Mail::Message::Body::Lines'};
 
-    $self->SUPER::init($args);
+    return undef
+        unless $self->SUPER::init($args);
 
     my $directory        = $self->{MBD_directory}
        = (ref $self)->folderToDirectory($self->name, $self->folderdir);
+
+    unless(-d $directory)
+    {   $self->log(PROGRESS => "No directory $directory (yet)\n");
+        return undef;
+    }
 
     # About locking
 
@@ -289,7 +295,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

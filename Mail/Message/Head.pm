@@ -12,7 +12,7 @@ use Carp;
 use Scalar::Util 'weaken';
 use FileHandle;
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 use overload bool => sub { keys %{shift->{MMH_fields}} };
 
@@ -82,15 +82,16 @@ The general methods for C<Mail::Message::Head> objects:
       add ...                              new OPTIONS
       build FIELDS                         nrLines
       count NAME                           print [FILEHANDLE]
-   MR errors                               printUndisclosed [FILEHANDLE]
-      get NAME [,INDEX]                 MR report [LEVEL]
-      isDelayed                         MR reportAll [LEVEL]
-      isMultipart                          reset NAME, FIELDS
-      isResent                             set ...
-      knownNames                           size
-   MR log [LEVEL [,STRINGS]]               timestamp
-      modified [BOOL]                      toString
-      names                             MR trace [LEVEL]
+      delete NAME                          printUndisclosed [FILEHANDLE]
+   MR errors                            MR report [LEVEL]
+      get NAME [,INDEX]                 MR reportAll [LEVEL]
+      isDelayed                            reset NAME, FIELDS
+      isMultipart                          set ...
+      isResent                             size
+      knownNames                           timestamp
+   MR log [LEVEL [,STRINGS]]               toString
+      modified [BOOL]                   MR trace [LEVEL]
+      names                             MR warnings
 
 The extra methods for extension writers:
 
@@ -339,10 +340,12 @@ sub count($)
 
 Replace the values in the header fields named by NAME with the values
 specified in the list of FIELDS. A single name can correspond to multiple
-repeated fields.  If FIELDS is empty, the corresponding NAME fields will
+repeated fields.
+
+If FIELDS is empty, the corresponding NAME fields will
 be removed. The location of removed fields in the header order will be
 remembered. Fields with the same name which are added later will appear at
-the remembered position.
+the remembered position.  This is equivalent to the C<delete> method.
 
 Examples:
 
@@ -354,6 +357,18 @@ Examples:
 
 # Triggers completion
  
+#------------------------------------------
+
+=item delete NAME
+
+Remove the field with the specified name.  If the header contained
+multiple lines with the same name, they will be replaced all together.
+This method simply calls C<reset>.
+
+=cut
+
+sub delete($) { $_[0]->reset($_[1]) }
+
 #------------------------------------------
 
 =item knownNames
@@ -432,8 +447,11 @@ of lines (list context).
 
 =item timestamp
 
-Will return a good timestamp, with as little guessing as possible.  This
-will trigger reading of the header (if not already read).
+Will return a good indication of about when the message was send, with as
+little guessing as possible.  The timestamp is encoded as C<time> is
+on your system (see perldoc -f time), and as such useable for the C<gmtime>
+and C<localtime> methods.
+This method will trigger reading of the header (if not already read).
 
 =cut
 
@@ -561,14 +579,15 @@ Example:
 
 #------------------------------------------
 
-=item grepNames [NAMES|ARRAY-OF-NAMES]
+=item grepNames [NAMES|ARRAY-OF-NAMES|REGEXS]
 
 Filter from all header names the names which start will any of the
 specified list.  When no names are specified, all names will be returned.
 The list is ordered as they where read from file, or added later.
 
 The NAMES are regular expressions, and will all be matched case insensitive
-and attached to the front of the string only.
+and attached to the front of the string only.  You may also specify
+one or more prepared regexes.
 
 Examples:
 
@@ -580,14 +599,21 @@ Examples:
 
 sub grepNames(@)
 {   my $self = shift;
-    return $self->names unless @_;
 
     my @take;
-    push @take, (ref $_ ? @$_ : $_) foreach @_;
+    push @take, (ref $_ eq 'ARRAY' ? @$_ : $_) foreach @_;
 
-    # I love this tric:
-    local $"   = ')|(?:';
-    my $take   = qr/^(?:(?:@_))/i;
+    return $self->names unless @take;
+
+    my $take;
+    if(@take==1 && ref $take[0] eq 'Regexp')
+    {   $take    = $take[0];   # one regexp prepared already
+    }
+    else
+    {   # I love this tric:
+        local $" = ')|(?:';
+        $take    = qr/^(?:(?:@take))/i;
+    }
 
     grep {$_ =~ $take} $self->names;
 }
@@ -796,7 +822,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -12,6 +12,7 @@ detail than this document.  The Mail::Box-Overview page describe
 each set of modules in more detail.
 
 Other descriptive documents in this module:
+
     README.FAQ           Frequently asked questions
     README.plans         Design for Mail::Box v2.0
     README.status        Detailed status of current implementation
@@ -39,7 +40,7 @@ people have to mentioned in special:
     talking about to convince stubern Mark.
 * Tassilo von Parseval
   - scripts/takemail
-  - suggestions how to cope with the problems in MIME::Parser.
+  - contributions to the design
 
 ===== Status
 
@@ -48,11 +49,9 @@ large number of features.
 
 See the file README.status to see what has been tested and what
 hasn't.  Version 1.300 contained 300 tests, but that is certainly not
-sufficient to call the module `well tested'.  Version 2.01 has over
-500 tests, which is quite ok.
-
-Mail Box version 2.01 contains close to 1900 tests, contains 7000 lines
-of pure code in 64 packages.
+sufficient to call the module `well tested'.  Version 2.01 had over 500
+tests, which is quite ok.  Mail::Box version 2.014 contains close to 2500
+tests -much better- and over 9000 lines of pure code in 67 packages.
 
 ===== Features
 
@@ -91,6 +90,12 @@ Currently supported:
   One directory per folder, with each message in a seperate file.
 
 See STATUS for my wishlist of supported folder types.
+
+= Support for message construction
+
+Create messages from data. Easily create replies, forwards, and bounces.
+Conversions between different message types (even forreign to Mail::Box)
+Transfer encoding and decoding without hassle.
 
 = Support for message thread construction
 
@@ -140,5 +145,8 @@ folder manager object.
 
 ======
 
-Author: Mark Overmeer
-        mailbox@overmeer.net
+Website:     http://perl.overmeer.net/mailbox/
+
+Mailinglist: mailbox-subscribe@perl.overmeer.net
+
+Author:      Mark Overmeer   mark@overmeer.net

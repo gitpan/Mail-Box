@@ -5,7 +5,7 @@ use strict;
 
 package Mail::Message;
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -225,7 +225,7 @@ disable quoting.  This option is processed after the body has been decoded.
 
 The signature to be added in case of a multi-part reply.  The mime-type
 of the signature body should indicate this is a used as such.  However,
-in INLINE mode, the body will be taken, a line containing C<'--'> added
+in INLINE mode, the body will be taken, a line containing C<'-- '> added
 before it, and added behind the epilogue.
 
 =item * strip_signature =E<gt> REGEXP|STRING|CODE
@@ -420,7 +420,7 @@ sub reply(@)
 
         $total = $body->concatenate
           ( $prelude, $body, $postlude
-          , (defined $signature ? "--\n" : undef), $signature
+          , (defined $signature ? "-- \n" : undef), $signature
           );
     }
     if($include eq 'ATTACH')
@@ -624,7 +624,7 @@ after the body has been decoded.
 
 The signature to be added in case of a multi-part forward.  The mime-type
 of the signature body should indicate this is a used as such.  However,
-in INLINE mode, the body will be taken, a line containing C<'--'> added
+in INLINE mode, the body will be taken, a line containing C<'-- '> added
 before it, and added behind the epilogue.
 
 =item * strip_signature =E<gt> REGEXP|STRING|CODE
@@ -1164,7 +1164,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

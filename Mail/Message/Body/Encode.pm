@@ -10,7 +10,7 @@ use Carp;
 use MIME::Types;
 my MIME::Types $mime_types;
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 =head1 NAME
 
@@ -25,11 +25,12 @@ Mail::Message::Body::Encode - organize general message encodings
 
  my Mail::Message $msg = ...;
  my $decoded = $msg->decoded;
- my $encoded = $msg->encode(mime_type => 'image/gif', transfer => 'base64');
+ my $encoded = $msg->encode(mime_type => 'image/gif',
+     transfer_encoding => 'base64');
 
  my $body = $msg->body;
  my $decoded = $body->decoded;
- my $encoded = $body->encode(transfer => '7bit');
+ my $encoded = $body->encode(transfer_encoding => '7bit');
 
 =head1 DESCRIPTION
 
@@ -256,6 +257,17 @@ sub isBinary()
  
 #------------------------------------------
 
+=item isText
+
+Returns true when the un-encoded message contains printable
+text.
+
+=cut
+
+sub isText() { not shift->isBinary }
+
+#------------------------------------------
+
 =back
 
 =head1 METHODS for extension writers
@@ -394,7 +406,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

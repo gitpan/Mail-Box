@@ -8,6 +8,7 @@ our @EXPORT = qw/clean_dir unpack_mbox2mh unpack_mbox2maildir
                  $src $unixsrc $winsrc
                  $fn  $unixfn  $winfn
                  $cpy $cpyfn
+                 $raw_html_data
                 /;
 
 use File::Spec;
@@ -191,3 +192,50 @@ sub listdir($)
     closedir LISTDIR;
     @entities;
 }
+
+#
+# A piece of HTML text which is used in some tests.
+#
+
+our $raw_html_data = <<'TEXT';
+<HTML>
+<HEAD>
+<TITLE>My home page</TITLE>
+</HEAD>
+<BODY BGCOLOR=red>
+
+<H1>Life according to Brian</H1>
+
+This is normal text, but not in a paragraph.<P>New paragraph
+in a bad way.
+
+And this is just a continuation.  When texts get long, they must be
+auto-wrapped; and even that is working already.
+
+<H3>Silly subsection at once</H3>
+<H1>and another chapter</H1>
+<H2>again a section</H2>
+<P>Normal paragraph, which contains an <IMG
+SRC=image.gif>, some
+<I>italics with linebreak
+</I> and <TT>code</TT>
+
+<PRE>
+And now for the preformatted stuff
+   it should stay as it was
+      even   with   strange blanks
+  and indentations
+</PRE>
+
+And back to normal text...
+<UL>
+<LI>list item 1
+    <OL>
+    <LI>list item 1.1
+    <LI>list item 1.2
+    </OL>
+<LI>list item 2
+</UL>
+</BODY>
+</HTML>
+TEXT

@@ -4,7 +4,7 @@ use warnings;
 package Mail::Message::Part;
 use base 'Mail::Message';
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 use Carp;
 
@@ -47,14 +47,14 @@ L<Mail::Message> (MM), L<Mail::Reporter> (MR), L<Mail::Message::Construct> (MMC)
 
 The general methods for C<Mail::Message::Part> objects:
 
-   MM bcc                               MM messageId
-  MMC bounce OPTIONS                    MM modified [BOOL]
-  MMC build [MESSAGE|BODY], CONTENT        new OPTIONS
-      buildFromBody BODY, MULTIPA...    MM nrLines
-   MM cc                                MM parent
-   MM date                              MM parts
-   MM decoded OPTIONS                   MM print [FILEHANDLE]
-   MM destinations                      MM printUndisclosed [FILEHANDLE]
+   MM bcc                               MR log [LEVEL [,STRINGS]]
+  MMC bounce OPTIONS                    MM messageId
+  MMC build [MESSAGE|BODY], CONTENT     MM modified [BOOL]
+      buildFromBody BODY, MULTIPA...       new OPTIONS
+   MM cc                                MM nrLines
+   MM date                              MM parent
+   MM decoded OPTIONS                   MM parts
+   MM destinations                      MM print [FILEHANDLE]
    MM encode OPTIONS                   MMC read FILEHANDLE|SCALAR|REF-...
    MR errors                           MMC reply OPTIONS
   MMC forward OPTIONS                  MMC replyPrelude [STRING|FIELD|...
@@ -68,7 +68,6 @@ The general methods for C<Mail::Message::Part> objects:
    MM isMultipart                       MM to
    MM isPart                            MM toplevel
    MM label LABEL [,VALUE [LABEL,...    MR trace [LEVEL]
-   MR log [LEVEL [,STRINGS]]            MR warnings
 
 The extra methods for extension writers:
 
@@ -234,7 +233,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

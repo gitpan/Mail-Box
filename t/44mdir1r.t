@@ -22,7 +22,7 @@ my $mdsrc = File::Spec->catfile('t', 'maildir.src');
 
 unpack_mbox2maildir($src, $mdsrc);
 
-warn "   * Maildir under development\n";
+warn "   * Maildir status: alpha\n";
 ok(Mail::Box::Maildir->foundIn($mdsrc));
 
 my $folder = new Mail::Box::Maildir
@@ -174,8 +174,8 @@ foreach ($folder->messages)
 }
 
 ok(not $mistake);
-ok($parsed==4);   # The new messages
-ok($heads==4);
+ok(not $parsed);   # The new messages
+ok(not $heads);
 
 $folder->message($_)->head->get('subject')
     foreach 5..13;
@@ -190,8 +190,8 @@ foreach ($folder->messages)
 }
 
 ok(not $mistake);
-ok($parsed == 11);
-ok($heads == 13);
+ok($parsed == 7);
+ok($heads == 9);
 
 $folder->close;
 

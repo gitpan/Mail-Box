@@ -11,7 +11,7 @@ use Mail::Message::Body::Lines;
 use Carp;
 use IO::ScalarArray;
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 =head1 NAME
 
@@ -58,14 +58,14 @@ L<Mail::Reporter> (MR), L<Mail::Message::Construct> (MMC).
 
 The general methods for C<Mail::Message> objects:
 
-      bcc                                  messageId
-  MMC bounce OPTIONS                       modified [BOOL]
-  MMC build [MESSAGE|BODY], CONTENT        new OPTIONS
-  MMC buildFromBody BODY, HEADERS          nrLines
-      cc                                   parent
-      date                                 parts
-      decoded OPTIONS                      print [FILEHANDLE]
-      destinations                         printUndisclosed [FILEHANDLE]
+      bcc                               MR log [LEVEL [,STRINGS]]
+  MMC bounce OPTIONS                       messageId
+  MMC build [MESSAGE|BODY], CONTENT        modified [BOOL]
+  MMC buildFromBody BODY, HEADERS          new OPTIONS
+      cc                                   nrLines
+      date                                 parent
+      decoded OPTIONS                      parts
+      destinations                         print [FILEHANDLE]
       encode OPTIONS                   MMC read FILEHANDLE|SCALAR|REF-...
    MR errors                           MMC reply OPTIONS
   MMC forward OPTIONS                  MMC replyPrelude [STRING|FIELD|...
@@ -79,7 +79,6 @@ The general methods for C<Mail::Message> objects:
       isMultipart                          to
       isPart                               toplevel
       label LABEL [,VALUE [LABEL,...    MR trace [LEVEL]
-   MR log [LEVEL [,STRINGS]]            MR warnings
 
 The extra methods for extension writers:
 
@@ -174,6 +173,7 @@ sub init($)
 {   my ($self, $args) = @_;
     $self->SUPER::init($args);
 
+    # Field initialtions also in coerce()
     $self->{MM_modified}  = $args->{modified}  || 0;
     $self->{MM_head_wrap} = $args->{head_wrap} || 72;
     $self->{MM_trusted}   = $args->{trusted}   || 0;
@@ -239,9 +239,7 @@ Is equivalent to:
 =cut
 
 sub get($)
-{
-confess "Mail::Box BAD: ",$_[0]->seqnr if $_[0]->isa('Mail::Box::Message') && ! defined $_[0]->head;
-    my $field = shift->head->get(shift) || return;
+{   my $field = shift->head->get(shift) || return;
     $field->body;
 }
 
@@ -615,11 +613,8 @@ sub headIsRead() { not shift->head->isa('Mail::Message::Delayed') }
 
 =item print [FILEHANDLE]
 
-=item printUndisclosed [FILEHANDLE]
-
 Print the message to the FILE-HANDLE, which defaults to the selected
-filehandle.  In the former case of C<print> including the C<Bcc> and
-C<Resent-Bcc> lines, in the latter case without them.
+filehandle.
 
 Examples:
 
@@ -636,15 +631,6 @@ sub print(;$)
     my $out  = shift || select;
 
     $self->head->print($out);
-    $self->body->print($out);
-    $self;
-}
-
-sub printUndisclosed(;$)
-{   my $self = shift;
-    my $out  = shift || select;
-
-    $self->head->printUndisclosed($out);
     $self->body->print($out);
     $self;
 }
@@ -782,10 +768,15 @@ sub label($;$)
 
 =item clone
 
-Create a copy of this message.  The head and body, the log
-and trace levels are taken.  The copy will not be added to
-any folder automatically.
+Create a copy of this message.  The head and body, the log and trace
+levels are taken.  The copy will not be added to any folder automatically.
  
+BE WARNED: the clone of any kind of message will always be a
+C<Mail::Message> object, so a C<Mail::Box::Message>'s clone is
+detached from the folder of its original.  When you use C<addMessage>
+to a folder with the cloned message at hand, it will automatically
+coerce it into the right type to be added.
+
 Example:
 
    $copy = $msg->clone;
@@ -796,13 +787,12 @@ See also the C<copyTo FOLDER>, C<moveTo FOLDER>, and C<reply> methods.
 
 sub clone()
 {   my $self  = shift;
-    my $class = ref $self;
 
     # First clone body, which may trigger head load as well.  If head is
     # triggered first, then it may be decided to be lazy on the body at
     # moment.  And then the body would be triggered.
 
-    my $clone = $class->new
+    my $clone = Mail::Message->new
      ( body  => $self->body->clone
      , head  => $self->head->clone
      , $self->logSettings
@@ -977,9 +967,9 @@ sub body(;$@)
     # Update the header fields to the data of the body message.
 
     my $head = $self->head;
-confess unless defined $head;
-    $head->set($body->type);
+    confess unless defined $head;
 
+    $head->set($body->type);
     $head->set('Content-Length' => $body->size)
        unless $body->isMultipart;  # too slow
 
@@ -1141,7 +1131,6 @@ my $mime_entity_converter;
 sub coerce($)
 {   my ($class, $message) = @_;
 
-confess "@_" unless $message;
     return bless $message, $class
         if $message->isa(__PACKAGE__);
 
@@ -1173,6 +1162,9 @@ confess "@_" unless $message;
     {   confess "Cannot coerce ".ref($message)." objects into "
               . __PACKAGE__." objects.\n";
     }
+
+    $message->{MM_modified}  ||= 0;
+    $message->{MM_head_wrap} ||= 72;
 
     bless $message, $class;
 }
@@ -1294,7 +1286,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

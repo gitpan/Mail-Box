@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox::Message;
 use base 'Mail::Box::Message';
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 use POSIX 'SEEK_SET';
 use Carp;
@@ -49,22 +49,22 @@ The general methods for C<Mail::Box::Mbox::Message> objects:
    MM date                              MM parent
    MM decoded OPTIONS                   MM parts
   MBM delete                               print [FILEHANDLE]
-  MBM deleted [BOOL]                    MM printUndisclosed [FILEHANDLE]
-   MM destinations                     MMC read FILEHANDLE|SCALAR|REF-...
-   MM encode OPTIONS                   MMC reply OPTIONS
-   MR errors                           MMC replyPrelude [STRING|FIELD|...
-  MBM folder [FOLDER]                  MMC replySubject STRING
-  MMC forward OPTIONS                   MR report [LEVEL]
-  MMC forwardPostlude                   MR reportAll [LEVEL]
-  MMC forwardPrelude                    MM send [MAILER], OPTIONS
-  MMC forwardSubject STRING            MBM seqnr [INTEGER]
-   MM from                             MBM shortString
-      fromLine [LINE]                   MM size
-   MM get FIELD                         MM subject
-   MM guessTimestamp                    MM timestamp
-   MM isDummy                           MM to
-   MM isMultipart                       MM toplevel
-   MM isPart                            MR trace [LEVEL]
+  MBM deleted [BOOL]                   MMC read FILEHANDLE|SCALAR|REF-...
+   MM destinations                     MMC reply OPTIONS
+   MM encode OPTIONS                   MMC replyPrelude [STRING|FIELD|...
+   MR errors                           MMC replySubject STRING
+  MBM folder [FOLDER]                   MR report [LEVEL]
+  MMC forward OPTIONS                   MR reportAll [LEVEL]
+  MMC forwardPostlude                   MM send [MAILER], OPTIONS
+  MMC forwardPrelude                   MBM seqnr [INTEGER]
+  MMC forwardSubject STRING            MBM shortString
+   MM from                              MM size
+      fromLine [LINE]                   MM subject
+   MM get FIELD                         MM timestamp
+   MM guessTimestamp                    MM to
+   MM isDummy                           MM toplevel
+   MM isMultipart                       MR trace [LEVEL]
+   MM isPart                            MR warnings
 
 The extra methods for extension writers:
 
@@ -72,7 +72,7 @@ The extra methods for extension writers:
    MM DESTROY                           MR logPriority LEVEL
    MM body [BODY]                       MR logSettings
    MM clone                                moveLocation DISTANCE
-   MM coerce MESSAGE                    MR notImplemented
+  MBM coerce MESSAGE                    MR notImplemented
   MBM diskDelete                           read PARSER
       fileLocation                     MBM readBody PARSER, HEAD [, BO...
    MM head [HEAD]                       MM readFromParser PARSER, [BOD...
@@ -284,9 +284,9 @@ the begin is passed back.
 
 =cut
 
-sub fileLocation(;@)
+sub fileLocation()
 {   my $self = shift;
-croak if @_;
+
     wantarray
      ? ($self->{MBMM_begin}, ($self->body->fileLocation)[1])
      : $self->{MBMM_begin};
@@ -329,7 +329,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

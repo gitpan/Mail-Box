@@ -8,7 +8,7 @@ use Carp;
 use File::Spec;
 use Errno 'EAGAIN';
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 =head1 NAME
 
@@ -22,6 +22,8 @@ Mail::Transport - base class for message transmission
 =head1 SYNOPSIS
 
  my $message = Mail::Message->new(...);
+
+ # Some extensions implement sending:
  $message->send;
  $message->send(via => 'sendmail');
 
@@ -30,9 +32,10 @@ Mail::Transport - base class for message transmission
 
 =head1 DESCRIPTION
 
-Organize sending of C<Mail::Message> objects to the destinations as
-specified in the header.  The C<Mail::Transport> module is capable to
-autodetect which of the following modules work on your system:
+Send a message to the destinations as specified in the header.  The
+C<Mail::Transport> module is capable of autodetecting which of the
+following modules work on your system; you may simply call C<send>
+without C<via> options to get a message transported.
 
 =over 4
 
@@ -103,7 +106,7 @@ my %mailers =
  OPTION            DESCRIBED IN       DEFAULT
  log               Mail::Reporter     'WARNINGS'
  trace             Mail::Reporter     'WARNINGS'
- via               Mail::Transport    'smtp'
+ via               Mail::Transport    'sendmail'
  proxy             Mail::Transport    undef
 
 =over 4
@@ -134,7 +137,6 @@ sub new(@)
     $via      = $mailers{$via} if exists $mailers{$via};
 
     eval "require $via";
-warn $@ if $@;
     return undef if $@;
 
     $via->new(@_);
@@ -216,7 +218,7 @@ the exit status of the command which was started.
 
 sub trySend($@)
 {   my $self = shift;
-    croak "Transporters of type ",ref $self, " cannot send.";
+    $self->log(ERROR => "Transporters of type ".ref($self). " cannot send.");
 }
 
 #------------------------------------------
@@ -258,7 +260,10 @@ sub putContent($$@)
 {   my ($self, $message, $fh, %args) = @_;
 
        if($args{body_only})   { $message->body->print($fh) }
-    elsif($args{undisclosed}) { $message->printUndisclosed($fh) }
+    elsif($args{undisclosed})
+    {    $message->head->printUndisclosed($fh);
+         $message->body->print($fh);
+    }
     else                      { $message->Mail::Message::print($fh) }
 
     $self;
@@ -309,7 +314,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

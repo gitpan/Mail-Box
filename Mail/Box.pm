@@ -9,7 +9,7 @@ use Mail::Box::Message;
 use Mail::Box::Locker;
 use File::Spec;
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 use Carp;
 use Scalar::Util 'weaken';
@@ -794,7 +794,6 @@ sub messageId($;$)
     {   my $head1 = $message->head;
         my $head2 = $double->head;
 
-confess unless $head1;
         if(   $head1->get('subject') eq $head2->get('subject')
            && $head1->get('to')      eq $head2->get('to')
           )
@@ -1723,7 +1722,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -47,3 +47,9 @@ Optional:
   - Parameter Value Character Set and Language Information (RFC 2231 section 4)
   - Language specification in Encoded Words (RFC 2231 section 5)
 
+  updateMessages for Mail::Box::Mbox
+  updateMessages for Mail::Box::MH
+  demoting messages which stay when their folder closes.
+  Mail::Box::Maildir is progressing but not finished.
+  concatenate within reply must shape after source message, not prelude
+  $body->beautify;

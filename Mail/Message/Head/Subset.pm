@@ -10,7 +10,7 @@ use Object::Realize::Later
     realize        => 'load',
     believe_caller => 1;
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 use Carp;
 use Date::Parse;
@@ -57,15 +57,16 @@ The general methods for C<Mail::Message::Head::Subset> objects:
   MMH add ...                              new OPTIONS
   MMH build FIELDS                     MMH nrLines
       count NAME                       MMH print [FILEHANDLE]
-   MR errors                           MMH printUndisclosed [FILEHANDLE]
-      get NAME [,INDEX]                 MR report [LEVEL]
-  MMH isDelayed                         MR reportAll [LEVEL]
-  MMH isMultipart                      MMH reset NAME, FIELDS
-  MMH isResent                         MMH set ...
-  MMH knownNames                       MMH size
-   MR log [LEVEL [,STRINGS]]           MMH timestamp
-  MMH modified [BOOL]                  MMH toString
-  MMH names                             MR trace [LEVEL]
+  MMH delete NAME                      MMH printUndisclosed [FILEHANDLE]
+   MR errors                            MR report [LEVEL]
+      get NAME [,INDEX]                 MR reportAll [LEVEL]
+  MMH isDelayed                        MMH reset NAME, FIELDS
+  MMH isMultipart                      MMH set ...
+  MMH isResent                         MMH size
+  MMH knownNames                       MMH timestamp
+   MR log [LEVEL [,STRINGS]]           MMH toString
+  MMH modified [BOOL]                   MR trace [LEVEL]
+  MMH names                             MR warnings
 
 The extra methods for extension writers:
 
@@ -241,7 +242,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

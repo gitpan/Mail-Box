@@ -22,7 +22,7 @@ my $mhsrc = File::Spec->catfile('t', 'mh.src');
 
 unpack_mbox2mh($src, $mhsrc);
 
-warn "   * MH status BETA\n";
+warn "   * MH status: released\n";
 ok(Mail::Box::MH->foundIn($mhsrc));
 
 my $folder = new Mail::Box::MH

@@ -20,7 +20,7 @@ use Tools;
 
 Mail::Box::Parser->defaultParserType('Mail::Box::Parser::Perl');
 
-warn "   * Parser in Perl status BETA\n";
+warn "   * Parser in pure Perl status: released\n";
 
 #
 # Processing of structured lines.

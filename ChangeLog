@@ -3,13 +3,68 @@ CHANGELOG of Mail::Box version 2
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
-Soon to be implemented
- updateMessages for Mail::Box::Mbox
- updateMessages for Mail::Box::MH
- demoting messages which stay when their folder closes.
- Mail::Box::Maildir is progressing but not finished.
+version 2.014: Tue Jun 11 16:26:13 CEST 2002
 
-version 2.013:
+	Fixes:
+
+	- Forgot to implement the 'delete' method for a header field.  The
+	  'reset' method was available to achieve it, but harder to discover
+	  for unexperienced programmers.  Now 'delete' simply calls 'reset'.
+	  Spotted by [Mark Weiler]
+
+	- A coerce() from Mail::Message to Mail::Box::Message has to set
+	  the deleted flag (to avoid errors).  At the same time, the
+	  modified flag is cleared.  Detected by [Max Maischein]
+
+	- create option to Maildir's works now.
+
+	- Signature separator '--'  ==> '-- '
+
+	- [Gilles Darold] found that  m!(['"]?)([^\1])\1!  doesn't work.
+	  apparently, [^\1] is not working.  Temporarily fixed with [^'"]
+	  in Mail::Message::Field.
+
+	Improvements:
+
+	- Mail::Transport::SMTP is working now.
+
+	- The 'clone' operation on a message will return a Mail::Message
+	  object, which avoids complications with copying message between
+	  different kinds of folders.
+
+	- Maildir messages are moved from 'new' to 'cur' with the new
+	  method 'accept'.
+
+	- Mbox, MH, pure Perl parser, and modules status "Released" 
+	 (was "beta")
+
+	- Maildir status "Alpha" (was "under development")
+
+	- Added some docs to Mail::Transport about receiving messages
+	  via POP3.  This code may appear in the near future.
+
+	- Implemented Mail::Message::Convert::TextAutoformat, t/90textaf.t
+
+	- Implemented Mail::Message::Convert::HtmlFormatText, t/90htmlft.t
+
+	- Implemented Mail::Message::Convert::HtmlFormatPS, t/90htmlfps.t
+
+	- Initial coding of Mail::Message::Convert::Html, t/90html.t
+
+	- Mail::Message::Head::grepNames() now accepts regexes as well.
+
+	- Mail::Message::Field::wellformedName method added which returns
+          preferred capitization of a field's name.  The name() method
+          returns the lower-cased name.  Tests in t/11field1.t
+
+	- Mail::Message::Field::content returns both body and comment
+	  part of the message header line.
+
+	- added Mail::Message::Body::charset() to simplify code.
+
+	- removed useless Mail::Message::printUndisclosed().
+
+version 2.013: Thu May 23 11:30:35 CEST 2002
 
 	Fixes:
 

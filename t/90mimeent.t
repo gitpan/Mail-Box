@@ -15,7 +15,8 @@ use Mail::Message;
 BEGIN
 {   eval {require MIME::Entity};
     if($@)
-    {   plan tests => 0;
+    {   warn "requires MIME::Entity.\n";
+        plan tests => 0;
         exit 0;
     }
 

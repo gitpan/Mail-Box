@@ -141,3 +141,4 @@ ok($msg5->subject eq 'hello world');
 ok($msg5->messageId);
 ok($msg5->get('message-id'));
 
+unlink 'tmp';

@@ -7,7 +7,7 @@ use base 'Mail::Message::Body';
 use Mail::Message::Body::Lines;
 use Mail::Message::Part;
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 use Carp;
 
@@ -49,8 +49,9 @@ L<Mail::Reporter> (MR), L<Mail::Message::Body> (MMB), L<Mail::Message::Body::Con
 
 The general methods for C<Mail::Message::Body::Multipart> objects:
 
-      attach MESSAGES|BODIES            MR log [LEVEL [,STRINGS]]
-      boundary [STRING]                MMB message [MESSAGE]
+      attach MESSAGES|BODIES           MMB lines
+      boundary [STRING]                 MR log [LEVEL [,STRINGS]]
+  MMB charset                          MMB message [MESSAGE]
  MMBE check                            MMB mimeType
   MMB checked [BOOLEAN]                MMB modified [BOOL]
  MMBC concatenate COMPONENTS               new OPTIONS
@@ -67,7 +68,7 @@ The general methods for C<Mail::Message::Body::Multipart> objects:
  MMBE isBinary                             stripSignature OPTIONS
   MMB isDelayed                         MR trace [LEVEL]
   MMB isMultipart                      MMB transferEncoding [STRING|FI...
-  MMB lines                            MMB type
+ MMBE isText                           MMB type
 
 The extra methods for extension writers:
 
@@ -591,7 +592,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

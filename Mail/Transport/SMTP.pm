@@ -4,11 +4,10 @@ use warnings;
 package Mail::Transport::SMTP;
 use base 'Mail::Transport';
 
-use Carp;
-use IO::Socket::INET;
-use Net::Cmd;
+#use Mail::Transport::SMTP::Server;
+use Net::SMTP;
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 =head1 NAME
 
@@ -25,9 +24,11 @@ Mail::Transport::SMTP - transmit messages without external program
  my $sender = Mail::Transport::SMTP->new(...);
  $sender->send($message);
 
+ $message->send(via => 'smtp');
+
 =head1 DESCRIPTION
 
-UNDER CONSTRUCTIONS.  CANNOT BE USED YET.  (Suggestions welcome)
+USE WITH CARE! THIS MODULE IS VERY NEW, SO MAY CONTAIN BUGS
 
 This module implements transport of C<Mail::Message> objects by negotiating
 to the destination host directly, without help of C<sendmail>, C<mail>, or
@@ -40,17 +41,18 @@ L<Mail::Reporter> (MR), L<Mail::Transport> (MT).
 
 The general methods for C<Mail::Transport::SMTP> objects:
 
-   MR errors                            MR reportAll [LEVEL]
-   MR log [LEVEL [,STRINGS]]            MT send MESSAGE, OPTIONS
-      new OPTIONS                       MR trace [LEVEL]
-   MR report [LEVEL]                    MT trySend MESSAGE, OPTIONS
+      contactServer                     MR reportAll [LEVEL]
+   MR errors                            MT send MESSAGE, OPTIONS
+   MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
+      new OPTIONS                       MT trySend MESSAGE, OPTIONS
+   MR report [LEVEL]                    MR warnings
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MR inGlobalDestruction
-   MR DESTROY                           MR logPriority LEVEL
-      contactServer                     MR logSettings
+   MR AUTOLOAD                          MR logPriority LEVEL
+   MR DESTROY                           MR logSettings
    MT findBinary NAME [, DIRECTOR...    MR notImplemented
+   MR inGlobalDestruction               MT putContent MESSAGE, FILEHAN...
 
 =head1 METHODS
 
@@ -63,15 +65,20 @@ The extra methods for extension writers:
 =item new OPTIONS
 
  OPTION       DESCRIBED IN           DEFAULT
+ debug        Mail::Transport::SMTP  0
  helo_domain  Mail::Transport::SMTP  <from Net::Config>
  log          Mail::Reporter         'WARNINGS'
- port         Mail::Transport::SMTP  'smtp(25)'
  proxy        Mail::Transport::STMP  <from Net::Config>
  timeout      Mail::Transport::SMTP  120
  trace        Mail::Reporter         'WARNINGS'
  via          Mail::Transport        <unused>
 
 =over 4
+
+=item debug =E<gt> BOOLEAN
+
+Simulate transmission: the SMTP protocol output will be send to your
+screen.
 
 =item helo_domain =E<gt> HOST
 
@@ -80,11 +87,6 @@ is used for the greeting message to the receiver.  If not specified,
 L<Net::Config> or else L<Net::Domain> are questioned to find it.
 When even those are nor working, the domain is taken from the
 C<From> line of the message.
-
-=item port =E<gt> STRING
-
-The port to be used when contacting the server. L<IO::Socket>
-describes this field as C<PeerPort>.
 
 =item proxy =E<gt> HOST|ARRAY-OF-HOSTS
 
@@ -119,18 +121,17 @@ sub init($)
       : defined $hosts ? $hosts
       :                 'localhost';
 
-    my $timeout = defined $args->{timeout} ? $args->{timeout} : 120;
-    my $port    = $args->{port} || 'smtp(25)';
-
-warn "hosts = @hosts";
     $self->{MTS_hosts} = \@hosts;
-    $self->{MTS_sock_opts}
-       = [ PeerPort => $port, Proto => 'tcp', Timeout => $timeout ];
 
-    $self->{MTS_helo_domain}
-       = $args->{helo}
+    my $helo = $args->{helo}
       || eval { require Net::Config; $Net::Config::inet_domain }
       || eval { require Net::Domain; Net::Domain::hostfqdn() };
+
+    $self->{MTS_net_smtp_opts}
+       = { Hello   => $helo
+         , Timeout => (defined $args->{timeout} ? $args->{timeout} : 120)
+         , Debug   => ($args->{debug} || 0)
+         };
 
     $self;
 }
@@ -140,71 +141,32 @@ warn "hosts = @hosts";
 
 sub trySend($)
 {   my ($self, $message) = @_;
-warn "try contact @{$self->{MTS_hosts}}";
     my $server = $self->contactServer or return 0;
 
-warn "try send";
     my $from   = $message->from;
-    my $domain = $self->{MTS_helo_domain};
-    $domain    = $1 if !$domain && $from =~ m/\@(\S+)$/;
+    $server->mail($message->from->address);
+    $server->to($_->address) foreach $message->destinations;
 
-# Here, the filehandle has to start being intelligent.  Maybe a
-# tie inbetween (like Net::STMP) which adds CRLF's to the end?
-# But probably it is better to avoid the Net::* things totally.
+    $server->data;
 
-    # HELO!
+    # Print the message's header
+    # This is first prepared in an array of lines.
 
-    my $ok     = $server->command(EHLO => $domain)->response;
-    my ($welcome, @capable) = $server->message;
-    my %caps;
+    my @lines;
+    require IO::Lines;
+    my $lines = IO::Lines->new(\@lines);
+    $message->head->printUndisclosed($lines);
+    $server->datasend($_) foreach @lines;
 
-    if($ok==CMD_OK)
-    {   foreach (@capable)
-        {   $caps{uc $1} = $2 if m/(\S+)\s+([^\n]*)/;
-        }
-    }
-    elsif(($ok = $server->command(HELO => $domain)->response)==CMD_OK)
-    {   ($welcome) = $server->message;
-    }
+    # Print the message's body
+    my $bodydata = $message->body->file;
+    $server->datasend($_) while <$bodydata>;
 
-    unless($ok==CMD_OK && defined $welcome)
-    {   $server->close;
-        return 0;
-    }
-
-    # Send from and to
-
-    $server->command(MAIL => 'FROM:<'.$from->address.'>');
-
-    $server->command(RCPT => 'TO:<'.$_->address.'>')
-        foreach $message->destinations;
-
-    # Send the message
-
-    $server->command('DATA');
-
-#confess "Not fully implemented yet";
-
-    $message->printUndislosed($server);
     $server->dataend;
-
-    #
-
-    $server->command('QUIT');
-    $server->close;
+    $server->quit;
 
     1;
 }
-
-#------------------------------------------
-
-=back
-
-=head1 METHODS for extension writers
-
-=over 4
-
-=cut
 
 #------------------------------------------
 
@@ -219,21 +181,19 @@ C<IO::Server::INET> object is returned.
 sub contactServer()
 {   my $self = shift;
 
-    my $server;
-    my @options = @{$self->{MTS_sock_opts}};
-
     foreach my $host (@{$self->{MTS_hosts}})
-    {
-warn "Trying host $host";
-        $server = IO::Socket::INET->new(PeerAddr => $host, @options)
-            or next;
+    {   my $server = Net::SMTP->new
+         ( $host
+         , %{$self->{MTS_net_smtp_opts}}
+         );
 
-        last if $server->response==CMD_OK;
-        $server->close;
+        next unless defined $server;
+
+        $self->log(PROGRESS => "Opened SMTP connection to $host.\n");
+        return $server;
     }
 
-warn "no server" unless $server;
-    $server;
+    undef;
 }
 
 #------------------------------------------
@@ -254,7 +214,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

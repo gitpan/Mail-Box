@@ -8,7 +8,7 @@ use Mail::Message::Field;
 use Mail::Message::Body::Lines;
 use Mail::Message::Body::File;
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 use overload bool  => sub {1}   # $body->print if $body
            , '""'  => 'string'
@@ -135,7 +135,8 @@ L<Mail::Reporter> (MR), L<Mail::Message::Body::Construct> (MMBC), L<Mail::Messag
 
 The general methods for C<Mail::Message::Body> objects:
 
- MMBC attach MESSAGES, OPTIONS          MR log [LEVEL [,STRINGS]]
+ MMBC attach MESSAGES, OPTIONS             lines
+      charset                           MR log [LEVEL [,STRINGS]]
  MMBE check                                message [MESSAGE]
       checked [BOOLEAN]                    mimeType
  MMBC concatenate COMPONENTS               modified [BOOL]
@@ -150,7 +151,7 @@ The general methods for C<Mail::Message::Body> objects:
  MMBE isBinary                        MMBC stripSignature OPTIONS
       isDelayed                         MR trace [LEVEL]
       isMultipart                          transferEncoding [STRING|FI...
-      lines                                type
+ MMBE isText                               type
 
 The extra methods for extension writers:
 
@@ -206,7 +207,7 @@ Whether the added information has been check not to contain illegal
 octets with respect to the transfer encoding and mime type.  If not
 checked, and then set as body for a message, it will be.
 
-=item * data =E<gt> | ARRAY-OF-LINES | STRING
+=item * data =E<gt> ARRAY-OF-LINES | STRING
 
 The content of the body.  The only way to set the content of a body
 is during the creation of the body.  So if you want to modify the content
@@ -255,10 +256,11 @@ type C<IO::Handle>.
 
 The message where this body belongs to.
 
-=item * mime_type =E<gt> STRING|FIELD
+=item * mime_type =E<gt> STRING|FIELD|MIME
 
 The type of data which is added.  You may specify a content of a header
-line as STRING, or a FIELD object.  In any case, it will be kept as
+line as STRING, or a FIELD object.  You may also specify a L<MIME::Type>
+object.  In any case, it will be kept internally as
 a real field (a C<Mail::Message::Field> object).  This relates to the
 C<Content-Type> header field.
 
@@ -455,6 +457,17 @@ sub mimeType()
     my $type = $self->{MMB_type};
     $self->{MMB_mime} = $mime_types->type($type) || MIME::Type->new($type);
 }
+
+#------------------------------------------
+
+=item charset
+
+Returns the character set which is used in the text body as string.  This
+is part of the result of what the C<type> method returns.
+
+=cut
+
+sub charset() { shift->type->attribute('charset') }
 
 #------------------------------------------
 
@@ -769,7 +782,7 @@ sub decoded(@)
 
 #------------------------------------------
 
-my @in_encode = qw/check encode encoded eol isBinary unify/;
+my @in_encode = qw/check encode encoded eol isBinary isText unify/;
 my %in_module = map { ($_ => 'encode') } @in_encode;
 
 sub AUTOLOAD(@)
@@ -889,7 +902,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

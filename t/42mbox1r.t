@@ -18,7 +18,7 @@ BEGIN {plan tests => 55}
 
 my @src = (folder => "=$fn", folderdir => 't');
 
-warn "   * Mbox status BETA\n";
+warn "   * Mbox status: released\n";
 ok(Mail::Box::Mbox->foundIn(@src));
 
 #

@@ -13,7 +13,7 @@ use MIME::Entity;
 use MIME::Body;
 use Carp;
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 =head1 NAME
 
@@ -55,9 +55,9 @@ L<Mail::Reporter> (MR), L<Mail::Message::Convert> (MMC).
 
 The general methods for C<Mail::Message::Convert::MimeEntity> objects:
 
-   MR errors                            MR new OPTIONS
-  MMC export MESSAGE, OPTIONS           MR report [LEVEL]
-  MMC from OBJECT, OPTIONS              MR reportAll [LEVEL]
+   MR errors                               new OPTIONS
+      export MESSAGE, OPTIONS           MR report [LEVEL]
+      from OBJECT, OPTIONS              MR reportAll [LEVEL]
    MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
 
 The extra methods for extension writers:
@@ -69,6 +69,32 @@ The extra methods for extension writers:
 =head1 METHODS
 
 =over 4
+
+=cut
+
+#------------------------------------------
+
+=item new OPTIONS
+
+ OPTIONS         DESCRIBED IN           DEFAULT
+ log             Mail::Reporter         'WARNINGS'
+ trace           Mail::Reporter         'WARNINGS'
+
+=cut
+
+#------------------------------------------
+
+=item export MESSAGE, OPTIONS
+
+Returns a new message object based on the information from
+a C<Mail::Message> object.  The MESSAGE specified is an
+instance of a C<Mail::Message>.
+
+Examples:
+
+ my $convert = Mail::Message::Convert::MimeEntity->new;
+ my Mail::Message $msg  = Mail::Message->new;
+ my MIME::Entity  $copy = $convert->export($msg);
 
 =cut
 
@@ -111,6 +137,19 @@ sub export($$)
 }
 
 #------------------------------------------
+
+=item from OBJECT, OPTIONS
+
+Returns a new C<Mail::Message> object based on the information from
+an message-type which is strange to the C<Mail::Box> set of modules.
+
+Examples:
+
+ my $convert = Mail::Message::Convert::MimeEntity->new;
+ my MIME::Entity  $msg  = MIME::Entity->new;
+ my Mail::Message $copy = $convert->from($msg);
+
+=cut
 
 sub from($;$)
 {   my ($self, $me, $parent) = @_;
@@ -182,7 +221,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

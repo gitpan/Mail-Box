@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Reporter;
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 use Carp;
 
@@ -96,10 +96,7 @@ for(my $l = 1; $l < @levelname; $l++)
     $levelprio{$l} = $l;
 }
 
-#sub new(@) {(bless {}, shift)->init( {@_} ) }
-sub new(@) {my $class = shift; my$self =(bless {}, $class);
-confess if @_ % 2;
-confess unless $self->can('init'); $self->init( {@_} ) }
+sub new(@) {my $class = shift; (bless {}, $class)->init({@_}) }
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -299,9 +296,8 @@ sub notImplemented(@)
 {   my $self = shift;
     my ($package, $sub) = (caller 1)[0,3];
 
-confess;
     $self->log(INTERNAL => "$package does not implement $sub.");
-    croak "Please warn the author, this shouldn't happen.";
+    confess "Please warn the author, this shouldn't happen.";
 }
 
 #------------------------------------------
@@ -389,7 +385,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

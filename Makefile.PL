@@ -20,5 +20,10 @@ WriteMakefile
     , Mail::Address  => 0.0
     , MIME::Types    => 0.16
     , Sys::Hostname  => 0.0
+
+# Optional
+#   Text::Autoformat
+#   HTML::Format
+
     }
   );

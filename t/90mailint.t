@@ -16,7 +16,8 @@ use Mail::Message::Convert::MailInternet;
 BEGIN
 {   eval {require Mail::Internet};
     if($@)
-    {   plan tests => 0;
+    {   warn "requires Mail::Internet.\n";
+        plan tests => 0;
         exit 0;
     }
     plan tests => 21;

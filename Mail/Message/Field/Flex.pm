@@ -6,7 +6,7 @@ use base 'Mail::Message::Field';
 
 use Carp;
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 
 =head1 NAME
 
@@ -39,14 +39,15 @@ The general methods for C<Mail::Message::Field::Flex> objects:
   MMF addresses                        MMF name
   MMF attribute NAME [, VALUE]         MMF new ...
   MMF body                             MMF print [FILEHANDLE]
-  MMF clone                            MMF toDate TIME
-  MMF comment [STRING]                 MMF toInt
+  MMF comment [STRING]                 MMF toDate TIME
+  MMF content                          MMF toInt
   MMF folded [ARRAY-OF-LINES]          MMF toString
 
 The extra methods for extension writers:
 
-  MMF isStructured                     MMF nrLines
-  MMF newNoCheck NAME, BODY, COMM...   MMF setWrapLength CHARS
+  MMF clone                            MMF nrLines
+  MMF isStructured                     MMF setWrapLength CHARS
+  MMF newNoCheck NAME, BODY, COMM...   MMF size
 
 =head1 METHODS
 
@@ -196,7 +197,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

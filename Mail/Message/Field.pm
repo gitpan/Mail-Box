@@ -10,7 +10,7 @@ use Mail::Box::Parser;
 use Carp;
 use Mail::Address;
 
-our $VERSION = 2.013;
+our $VERSION = 2.014;
 our %_structured;  # not to be used directly: call isStructured!
 
 use overload qq("") => sub { $_[0]->body }
@@ -39,6 +39,7 @@ Mail::Message::Field - one line of a message header
  print $field->name;
  print $field->body;
  print $field->comment;
+ print $field->content;  # body & comment
  $field->print(\*OUT);
  print $field->toString;
  print "$field\n";
@@ -96,14 +97,15 @@ The general methods for C<Mail::Message::Field> objects:
       addresses                            name
       attribute NAME [, VALUE]             new ...
       body                                 print [FILEHANDLE]
-      clone                                toDate TIME
-      comment [STRING]                     toInt
+      comment [STRING]                     toDate TIME
+      content                              toInt
       folded [ARRAY-OF-LINES]              toString
 
 The extra methods for extension writers:
 
-      isStructured                         nrLines
-      newNoCheck NAME, BODY, COMM...       setWrapLength CHARS
+      clone                                nrLines
+      isStructured                         setWrapLength CHARS
+      newNoCheck NAME, BODY, COMM...       size
 
 =head1 METHODS
 
@@ -182,20 +184,38 @@ sub new(@)
 
 #------------------------------------------
 
-=item clone
-
-Create a copy of this field object.
-
-=cut
-
-#------------------------------------------
-
 =item name
 
 Returns the name of this field, with all characters lower-cased for
 ease of comparison.
 
 =cut
+
+#------------------------------------------
+
+=item wellformedName
+
+=item wellformedName [STRING]
+
+(Instance method class method)
+As instance method, the current field's name is correctly formatted
+and returned.  When a STRING is used, that one is formatted.
+
+Examples:
+
+ print Mail::Message::Field->Name('content-type') # Content-Type
+
+ my $field = $head->get('date');
+ print $field->Name;                              # Date
+
+=cut
+
+sub wellformedName(;$)
+{   my $thing = shift;
+    my $name = @_ ? shift : $thing->name;
+    $name =~ s/(\w+)/\L\u$1/g;
+    $name;
+}
 
 #------------------------------------------
 
@@ -214,6 +234,21 @@ Returns the comment (part after a semi-colon) in the header-line,
 optionally after setting it to a new value first.
 
 =cut
+
+#------------------------------------------
+
+=item content
+
+Returns the body and comment part of the field, separated by
+a semi-colon.
+
+=cut
+
+sub content()
+{   my $self    = shift;
+    my $comment = $self->comment;
+    $self->body . ($comment ? "; $comment" : '');
+}
 
 #------------------------------------------
 
@@ -248,7 +283,7 @@ sub attribute($;$)
     {   my $value   = shift;
         my $comment = $self->comment;
         if(defined $comment)
-        {   unless($comment =~ s/\b$name=(['"]?)[^\1]*\1/$name=$1$value$1/)
+        {   unless($comment =~ s/\b$name=(['"]?)[^'"]*\1/$name=$1$value$1/)
             {   $comment .= qq(; $name="$value");
             }
         }
@@ -260,7 +295,7 @@ sub attribute($;$)
     }
 
     my $comment = $self->comment or return;
-    $comment =~ m/\b$name=(['"]?)([^\1]*)\1/;
+    $comment =~ m/\b$name=(['"]?)([^'"]*)\1/;
     $2;
 }
 
@@ -358,6 +393,14 @@ sub addresses() { Mail::Address->parse(shift->body) }
 =head1 METHODS for extension writers
 
 =over 4
+
+=cut
+
+#------------------------------------------
+
+=item clone
+
+Create a copy of this field object.
 
 =cut
 
@@ -468,7 +511,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -49,37 +49,38 @@ The general methods for C<Mail::Box::Maildir::Message> objects:
    MM date                              MM parent
    MM decoded OPTIONS                   MM parts
   MBM delete                            MM print [FILEHANDLE]
-  MBM deleted [BOOL]                    MM printUndisclosed [FILEHANDLE]
-   MM destinations                     MMC read FILEHANDLE|SCALAR|REF-...
-   MM encode OPTIONS                   MMC reply OPTIONS
-   MR errors                           MMC replyPrelude [STRING|FIELD|...
-      filename [FILENAME]              MMC replySubject STRING
-  MBM folder [FOLDER]                   MR report [LEVEL]
-  MMC forward OPTIONS                   MR reportAll [LEVEL]
-  MMC forwardPostlude                   MM send [MAILER], OPTIONS
-  MMC forwardPrelude                   MBM seqnr [INTEGER]
-  MMC forwardSubject STRING            MBM shortString
-   MM from                              MM size
-   MM get FIELD                         MM subject
-   MM guessTimestamp                    MM timestamp
-   MM isDummy                           MM to
-   MM isMultipart                       MM toplevel
-   MM isPart                            MR trace [LEVEL]
+  MBM deleted [BOOL]                   MMC read FILEHANDLE|SCALAR|REF-...
+   MM destinations                     MMC reply OPTIONS
+   MM encode OPTIONS                   MMC replyPrelude [STRING|FIELD|...
+   MR errors                           MMC replySubject STRING
+      filename [FILENAME]               MR report [LEVEL]
+  MBM folder [FOLDER]                   MR reportAll [LEVEL]
+  MMC forward OPTIONS                   MM send [MAILER], OPTIONS
+  MMC forwardPostlude                  MBM seqnr [INTEGER]
+  MMC forwardPrelude                   MBM shortString
+  MMC forwardSubject STRING             MM size
+   MM from                              MM subject
+   MM get FIELD                         MM timestamp
+   MM guessTimestamp                    MM to
+   MM isDummy                           MM toplevel
+   MM isMultipart                       MR trace [LEVEL]
+   MM isPart                            MR warnings
 
 The extra methods for extension writers:
 
    MR AUTOLOAD                             labelsToFilename
    MM DESTROY                           MM labelsToStatus
-   MM body [BODY]                     MBDM loadHead
-   MM clone                             MR logPriority LEVEL
-   MM coerce MESSAGE                    MR logSettings
- MBDM create FILENAME                   MR notImplemented
-  MBM diskDelete                      MBDM parser
-      guessTimestamp                   MBM readBody PARSER, HEAD [, BO...
-   MM head [HEAD]                       MM readFromParser PARSER, [BOD...
-   MR inGlobalDestruction               MM readHead PARSER [,CLASS]
-   MM isDelayed                         MM statusToLabels
-   MM labels                            MM storeBody BODY
+      accept                          MBDM loadHead
+   MM body [BODY]                       MR logPriority LEVEL
+   MM clone                             MR logSettings
+  MBM coerce MESSAGE                    MR notImplemented
+ MBDM create FILENAME                 MBDM parser
+  MBM diskDelete                       MBM readBody PARSER, HEAD [, BO...
+      guessTimestamp                    MM readFromParser PARSER, [BOD...
+   MM head [HEAD]                       MM readHead PARSER [,CLASS]
+   MR inGlobalDestruction               MM statusToLabels
+   MM isDelayed                         MM storeBody BODY
+   MM labels                            MM takeMessageId [STRING]
 
 =head1 METHODS
 
@@ -197,28 +198,28 @@ sub label(@)
 
 #-------------------------------------------
 
-sub clone()
-{   my $self     = shift;
-    my $clone    = $self->SUPER::clone();
-    my $filename = $self->SUPER::filename;
+=item accept
 
-    my $clonename;
-    if($filename =~ m!(.*?)/(?:cur|tmp|new)/(.*?)\.(\d*)(\:[^:]*)?$! )
-         { $clonename = "$1/tmp/$2.". ($3+1). ($4 || '') }
-    else { confess "Not a Maildir message file: $filename\n" }
+Accept a message for the folder.  This will move it from the C<new> or
+C<tmp> sub-directories into the C<cur> sub-directory.  When you accept an
+already accepted message, nothing will happen.
 
-    # Maildir is stateless, so all message (even detached clones)
-    # must appear on disk.
-    unless(open OUT, '>', $clonename)
-    {   warn "Cannot create $clonename: $!";
+=cut
+
+sub accept($)
+{   my $self   = shift;
+    my $old    = $self->filename;
+
+    unless($old =~ m!(.*)/(new|cur|tmp)/([^:]*)(\:[^:]*)?$! )
+    {   $self->log(ERROR => "filename $old is not in a Maildir folder.\n");
         return undef;
     }
-    $clone->print(\*OUT);
-    close OUT;
 
-    $clone->SUPER::filename($clonename);
-    $clone->labelsToFilename;
-    $clone;
+    return $self if $2 eq 'cur';
+    my $new = "$1/cur/$3";
+
+    $self->log(PROGRESS => "Message $old is accepted.\n");
+    $self->filename($new);
 }
 
 #-------------------------------------------
@@ -234,7 +235,6 @@ sub labelsToFilename()
 {   my $self   = shift;
     my $labels = $self->labels;
     my $old    = $self->filename;
-confess unless $old;
 
     my ($folderdir, $set, $oldname)
       = $old =~ m!(.*)/(new|cur|tmp)/([^:]*)(\:[^:]*)?$!;
@@ -297,7 +297,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.013.
+This code is beta, version 2.014.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
