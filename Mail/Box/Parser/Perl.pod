@@ -117,10 +117,6 @@ See Mail::Box::Parser::bodyDelayed()
 
 See Mail::Box::Parser::filePosition()
 
-=item B<foldHeaderLine> LINE, LENGTH
-
-See Mail::Box::Parser::foldHeaderLine()
-
 =item B<lineSeparator> 
 
 See Mail::Box::Parser::lineSeparator()
@@ -133,7 +129,7 @@ See Mail::Box::Parser::popSeparator()
 
 See Mail::Box::Parser::pushSeparator()
 
-=item B<readHeader> WRAP
+=item B<readHeader> 
 
 See Mail::Box::Parser::readHeader()
 
@@ -146,6 +142,10 @@ See Mail::Box::Parser::readSeparator()
 =head2 Logging and Tracing
 
 =over 4
+
+=item B<defaultTrace> [LEVEL, [LEVEL]
+
+See Mail::Reporter::defaultTrace()
 
 =item B<errors> 
 
@@ -215,7 +215,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.021.
+This code is beta, version 2.022.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

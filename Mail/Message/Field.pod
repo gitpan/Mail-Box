@@ -7,6 +7,7 @@ Mail::Message::Field - one line of a message header
 =head1 CLASS INHERITANCE
 
 Mail::Message::Field
+   is a Mail::Reporter
 
 Mail::Message::Field is extended by
    Mail::Message::Field::Fast
@@ -43,6 +44,38 @@ added methods of a message:
 
  my $other   = $message->get('Reply-To');
 
+=head2 Header Fields
+
+This implementation follows the guidelines of rfc2822 as close as possible,
+and may there produce a different output than implementations based on
+the obsolete rfc822.  However, the old output will still be accepted.
+
+A head line is composed of two parts separated by a color (C<:>).  Before
+the colon is called the I<name> of the field, and the right part the
+I<body>.  In some lines, the body contains a semicolon (C<;>) which
+indicates the start of something refered to as I<comment>.  This comment
+is often used to contain I<attributes>: key-value pairs of information,
+which is of course much more important than simply accompanying text.
+
+=head2 folding
+
+Many implementations of mail transfer agents (MTAs) have problems with
+lines longer than 998 characters.  Many implementations of mail user agents
+(MUAs) can not handle lines longer than 78 characters well.  MTAs are
+programs which implement the SMTP protocol, like the C<sendmail> command
+or a web-browser which sends e-mail.  MUAs are programs which people use to
+read their e-mail, like C<mutt>, C<elm>, C<pine>, or also a web-browser.
+
+To avoid the problems with long lines, head lines are often folded into
+lines of 78 characters maximum.  Longer lines are wrapped, in RFC-terms
+I<folded>.  On some places in the body of a field, a line-feed is
+inserted.  The remaining part of the body is on the next line, which
+MUST be preceeded by at least one white-space (tab or blank)
+
+Some fields are called C<structured>: their structure is well-defined by
+the RFC.  In these fields, their is more flexibility where folding may
+take place.  Other fields only permit folding on white-spaces.
+
 =head2 consideration
 
 Mail::Message::Field is the only object in the Mail::Box suite
@@ -77,73 +110,37 @@ As user of the object, there is not visible difference.
 
 =over 4
 
+=item B<consume> LINE | (NAME,BODY|OBJECTS) X<consume>
+
+(Class method)
+Accepts a whole field LINE, or a pair with the field's NAME and BODY. In
+the latter case, the BODY data may be specified as array of OBJECTS which
+are stringified.  Returned is a nicely formatted pair of two strings: the
+field's name and a folded body.
+
+This method is called by new(), and usually not be an application
+program.
+
 =item B<new> DATA X<new>
 
-The constructor of this object does not follow the usual practise within
-the Mail::Box suite. The method can be used in one of the following ways:
+See Mail::Message::Field::Fast::new() or Mail::Message::Field::Flex::new().
+By default, a C<Fast> field is produced.
+
+ OPTION               DEFAULT
+ log                  'WARNINGS'
+ trace                'WARNINGS'
 
 =over 4
 
-=item * B<new> LINE [,ARRAY-OF-OPTIONS]
+=item B<log> =E<gt> LEVEL
 
-=item * B<new> NAME, BODY [,COMMENT [, OPTIONS]]
+See Mail::Reporter::new(log)
 
-=item * B<new> NAME, OBJECT|ARRAY-OF-OBJECTS [,COMMENT [, OPTIONS]]
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
 
 =back
-
-Create a new header-object.  Specify the whole header-LINE at once, and
-it will be split-up for you.  I case you already have the parts of the
-header-line, you may specify them.
-
-In structured fields (a list of pre-defined fields are considered
-to have a well-described format, checked with the isStructured() method)
-everything behind a semi-color is officially a COMMENT.  The comment is
-often (ab)used to supply extra information about the body information.
-When the field you specify is structured, and you do not specify a comment
-yourself, it will be stripped from the LINE or BODY for you.
-
-To keep the communication overhead low (there are too many of these
-field-objects to be created), the OPTIONS may be specified as last
-argument to new(), but as reference to an array.  There are no
-options defined yet, but they may appear in the future.
-
-In case you specify a single OBJECT, or a reference to an array of OBJECTS,
-these objects are processed to become suitable to fill a field.  When
-you specify one or more Mail::Address objects, these are transformed
-into a string using their C<format> method.
-
-You may also add one Mail::Message::Field, which body is taken.  For other
-objects, stringification is tried.  In case of an array, the elements are
-joined with a comma.
-
-Examples:
-
- my @options = (log => 'NOTICE', trace => 'NONE');
- my $mime = Mail::Message::Field->new(
-     'Content-Type: text/plain; charset=US-ASCII', \@options);
-
- my $mime = Mail::Message::Field->new(
-     'Content-Type' => 'text/plain; charset=US-ASCII');
-
- my $mime = Mail::Message::Field->new(
-     'Content-Type' => 'text/plain', 'charset=US-ASCII');
-
- my $mime = Mail::Message::Field->new(
-     To => Mail::Address->new('my name', 'me@example.com');
-
- my $mime = Mail::Message::Field->new(
-     Cc => [ Mail::Address->new('your name', 'you@example.com')
-           , Mail::Address->new('his name', 'he@example.com')
-           ]);
-
-But, more often, you would call
-
- my $head = Mail::Message::Head->new;
- $head->add('Content-Type' => 'text/plain; charset=US-ASCII');
-
-which implicitly calls this constructor (when needed).  You can specify
-the same things for add() as this C<new> accepts.
 
 =back
 
@@ -166,11 +163,20 @@ Examples:
 
  Mail::Message::Field->isStructured('From');
 
+=item B<length>  X<length>
+
+Returns the total length of the field in characters, which includes the
+field's name, body and folding characters.
+
 =back
 
 =head2 Access to the Field
 
 =over 4
+
+=item B<Name>  X<Name>
+
+Returns the name of this field in original casing.  See name() as well.
 
 =item B<addresses>  X<addresses>
 
@@ -187,38 +193,72 @@ Examples:
 Get the value of an attribute, optionally after setting it to a new value.
 Attributes are part of some header lines, and hide themselves in the
 comment field.  If the attribute does not exist, then C<undef> is
-returned.  For instance
+returned.
+
+Examples:
 
  my $field = Mail::Message::Field->new(
     'Content-Type: text/plain; charset="us-ascii"');
+
  print $field->attribute('charset');        # --> us-ascii
  print $field->attribute('bitmap') || 'no'  # --> no
+ $field->atrribute(filename => '/tmp/xyz'); # sets field
 
 =item B<body>  X<body>
 
-Returns the body of the field, unmodified but stripped from comment
-and CR LF characters (as far as were present at creation).
+Returns the body of the field.  When this field is structured, it will
+be B<stripped> from everything what is behind the first semi-color (C<;>).
+In aby case, the string is unfolded.  
+
+Whether the field is structured is defined by isStructured().
+This method may be what you want, but usually, the folded_body() and
+unfolded_body() are what you are looking for.
 
 =item B<comment> [STRING] X<comment>
 
-Returns the comment (part after a semi-colon) in the header-line,
-optionally after setting it to a new value first.
+Returns the unfolded comment (part after a semi-colon) in a structureed
+header-line. optionally after setting it to a new STRING first.
+When C<undef> is specified as STRING, the comment is removed.
+Whether the field is structured is defined by isStructured().
 
-=item B<content>  X<content>
+The I<comment> part of a header field often contains C<attributes>.  Often
+it is preferred to use attributes() on them.
 
-Returns the body and comment part of the field, separated by
-a semi-colon.
+=item B<dateToTimestamp> STRING X<dateToTimestamp>
 
-=item B<folded> [ARRAY-OF-LINES] X<folded>
+(Class method)
+Convert a STRING which represents and RFC compliant time string into
+a timestamp like is produced by the C<time> function.
 
-Returns the folded version of the header.  When the header is shorter
+=item B<folded>  X<folded>
+
+Returns the folded version of the whole header.  When the header is shorter
 than the wrap length, a list of one line is returned.  Otherwise more
-lines will be returned, all but the first starting with a blank.
+lines will be returned, all but the first starting with at least one blank.
+See also folded_body() to get the same information without the field's name.
+
+In scalar context, the lines are delived into one string, which is
+faster because that's the way they are stored...
+
+Examples:
+
+ my @lines = $field->folded;
+ print $field->folded;
+ print scalar $field->folded; # faster
+
+=item B<folded_body> [BODY] X<folded_body>
+
+Returns the body as a set of lines. In scalar context, this will be one line
+containing newlines.  Be warned about the newlines when you do
+pattern-matching on the result of thie method.
+
+The optional BODY argument changes the field's body.  The folding of the
+argument must be correct.
 
 =item B<name>  X<name>
 
 Returns the name of this field, with all characters lower-cased for
-ease of comparison.
+ease of comparison.  See Name() as well.
 
 =item B<nrLines>  X<nrLines>
 
@@ -234,28 +274,58 @@ lines.  The FILEHANDLE defaults to the selected handle.
 
 Returns the number of bytes needed to display this header-line.
 
-=item B<toDate> TIME X<toDate>
+=item B<stripCFWS> STRING X<stripCFWS>
 
-(Class method) Convert a timestamp into a MIME-acceptable date format.
+(Class method) Remove the I<comments> and I<folding white spaces> from
+the string.
+
+=item B<toDate> [TIME] X<toDate>
+
+(Class method) Convert a timestamp into a MIME-acceptable date format.  This
+differs from the default output of C<localtime> in scalar context.  Without
+argument, the C<localtime> is used to get the current time.  Be sure to have
+your timezone set right, especially when this script runs automatically.
 
 Examples:
 
- Mail::Message::Field->toDate(localtime);
+ my $now = localtime;
+ Mail::Message::Field->toDate($now);
+
+ Mail::Message::Field->toDate(scalar localtime);
+ Mail::Message::Field->toDate;  # same
+ # returns someting like:  Wed, 28 Aug 2002 10:40:25 +0200
+
+=item B<toDisclose>  X<toDisclose>
+
+Returns whether this field can be disclosed to other people, for instance
+when sending the message to an other party.  Returns a C<true> or C<false>
+condition.
+See also Mail::Message::printUndisclosed()
 
 =item B<toInt>  X<toInt>
 
 Returns the value which is related to this field as integer.  A check is
 performed whether this is right.
 
-=item B<toString>  X<toString>
+=item B<toString> [WRAP] X<toString>
 
-Returns the whole header-line.
+Returns the field as string.  By default, this returns the same as
+folded(). However, the optional WRAP will cause to re-fold to take
+place (without changing the folding stored inside the field).
 
-Example:
+=item B<unfolded_body> [BODY, [WRAP]] X<unfolded_body>
 
-    my @lines = $field->toString;
-    print $field->toString;
-    print "$field";
+Returns the body as one single line, where all folding information (if
+available) is removed.  This line will also NOT end on a new-line.
+
+The optional BODY argument changes the field's body.  The right folding is
+performed before assignment.  The WRAP may be specified to enforce a
+folding size.
+
+Examples:
+
+ my $body = $field->unfolded_body;
+ print "$field";   # via overloading
 
 =item B<wellformedName> [STRING] X<wellformedName>
 
@@ -276,17 +346,105 @@ Examples:
 
 =over 4
 
-=item B<newNoCheck> NAME, BODY, COMMENT, [FOLDED] X<newNoCheck>
+=item B<defaultWrapLength> [LENGTH] X<defaultWrapLength>
 
-(Class method)
-Do not use this yourself.  This creates an object without checking, which
-is ok when the parser is doing that already.  However, if you add unchecked
-fields you may get into big trouble!
+Any field from any header for any message will have this default wrapping.
+This is maintained in one global variable.  Without a specified LENGTH,
+the current value is returned.  The default is 78.
 
-=item B<setWrapLength> CHARS X<setWrapLength>
+=item B<fold> NAME, BODY, [MAXCHARS] X<fold>
 
-Make the header fold before the specified number of CHARS on a line.  This
-will be ignored for un-structured headers.
+Make the header field with NAME fold into multiple lines.
+Wrapping is performed by inserting newlines before a blanks in the
+BODY, such that no line exceeds the MAXCHARS and each line is as long
+as possible.
+
+The RFC requests for folding on nice spots, but this request is
+mainly ignored because it would make folding too slow.
+
+=item B<setWrapLength> [LENGTH] X<setWrapLength>
+
+Force the wrapping of this field to the specified LENGTH characters. The
+wrapping is performed with fold() and the results stored within
+the field object.
+
+Even without LENGTH this method is useful: the default wrap length will
+be enforced (re-folding will take place).
+
+Examples:
+
+ $field->setWrapLength(99);
+ $field->setWrapLength;
+
+=item B<unfold> STRING X<unfold>
+
+The reverse of fold(): all lines which form the body of a field are
+joined into one by removing all line terminators (even the last).
+The blank at the beginning of the first line is removed as well.
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<defaultTrace> [LEVEL, [LEVEL]
+
+See Mail::Reporter::defaultTrace()
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
 
 =back
 
@@ -302,7 +460,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.021.
+This code is beta, version 2.022.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

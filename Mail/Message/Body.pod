@@ -378,8 +378,13 @@ See Mail::Message::Body::Encode::isText()
 
 =item B<mimeType>  X<mimeType>
 
-Returns a C<MIME::Type> object which is related to this body's type.  This
+Returns a MIME::Type object which is related to this body's type.  This
 differs from the C<type> method, which results in a Mail::Message::Field.
+
+Examples:
+
+ if($body->mimeType eq 'text/html') {...}
+ print $body->mimeType->simplified;
 
 =item B<nrLines>  X<nrLines>
 
@@ -414,7 +419,7 @@ the header field C<Content-Type>, but may have changed during encoding
 
 The returned is a reference to a Mail::Message::Field object, where
 you can ask for the C<body> (main content of the field) and the comment
-(after a semicolon).  A field stringifies as its body only.
+(after a semicolon).  To get to the body, you can better use mimeType().
 
 Examples:
 
@@ -425,10 +430,13 @@ Examples:
  my $content = $msg->decoded;
  my $type    = $content->type;
 
- print "This is a $type message";
+ print "This is a $type message\n";
+    # --> This is a text/plain; charset="us-ascii" message
+
+ print "This is a ", $type->body, "message\n";
     # --> This is a text/plain message
 
- print "Comment: ", $content->comment;
+ print "Comment: ", $type->comment, "\n";
     # --> Comment: charset="us-ascii"
 
 =back
@@ -577,6 +585,10 @@ of the header.
 
 =over 4
 
+=item B<defaultTrace> [LEVEL, [LEVEL]
+
+See Mail::Reporter::defaultTrace()
+
 =item B<errors> 
 
 See Mail::Reporter::errors()
@@ -641,7 +653,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.021.
+This code is beta, version 2.022.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

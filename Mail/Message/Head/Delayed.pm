@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Message::Head::Delayed;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 use base 'Mail::Message::Head';
 
 use Object::Realize::Later
@@ -55,7 +55,7 @@ sub guessBodySize() {undef}
 sub guessTimestamp() {undef}
 
 sub read($)
-{   my ($self, $parser, $headtype, $bodytype, $wrap)  = @_;
+{   my ($self, $parser, $headtype, $bodytype)  = @_;
 
 #   $parser->skipHeader not implemented... returns where
     $self->{MMH_where}   = 0;

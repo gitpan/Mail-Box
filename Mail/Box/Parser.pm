@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Parser;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 use base 'Mail::Reporter';
 use Carp;
 
@@ -129,8 +129,6 @@ sub bodyAsFile() {shift->notImplemented}
 sub bodyDelayed() {shift->notImplemented}
 
 sub lineSeparator() {shift->{MBP_linesep}}
-
-sub foldHeaderLine($$) {shift->notImplemented}
 
 sub DESTROY
 {   my $self = shift;

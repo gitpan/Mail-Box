@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 sub init($)
@@ -17,7 +17,7 @@ sub init($)
 
 sub selectedFields($)
 {   my ($self, $head) = @_;
-    $head->grepNames($self->{MMC_fields})
+    $head->grepNames($self->{MMC_fields});
 }
 
 1;

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::Html;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 use base 'Mail::Message::Convert';
 
 use Carp;
@@ -58,12 +58,10 @@ sub headToHtmlTable($;$)
 
     my @lines = "<table $tp>\n";
     foreach my $f ($self->selectedFields($head))
-    {   push @lines, '<tr><th valign="top" align="left">'
-                     . $self->textToHtml($_->wellformedName).":</th>\n"
-                   , '    <td valign="top">'
-                     . $self->fieldContentsToHtml($_, $subject)
-                     . "</td></tr>\n"
-            foreach $head->get($f);
+    {   my $name_html = $self->textToHtml($f->wellformedName);
+        my $cont_html = $self->fieldContentsToHtml($f, $subject);
+        push @lines, qq(<tr><th valign="top" align="left">$name_html:</th>\n)
+                   , qq(    <td valign="top">$cont_html</td></tr>\n);
     }
 
     push @lines, "</table>\n";
@@ -100,13 +98,11 @@ sub headToHtmlHead($@)
                    ."\"$self->{MMCH_tail}\n";
     }
 
-    foreach my $f (sort map {lc} $self->selectedFields($head))
-    {   next if exists $meta{$f};
-
-        push @lines, '<meta name="' . $self->textToHtml($_->wellformedName)
-                   . '" content="'  . $self->textToHtml($_->content)
-                   . "\"$self->{MMCH_tail}\n"
-            foreach $head->get($f);
+    foreach my $f ($self->selectedFields($head))
+    {   next if exists $meta{$f->name};
+        push @lines, '<meta name="' . $self->textToHtml($f->wellformedName)
+                   . '" content="'  . $self->textToHtml($f->content)
+                   . "\"$self->{MMCH_tail}\n";
     }
 
     push @lines, "</head>\n";

@@ -3,7 +3,7 @@ use strict;
 # file Mail::Message::Construct extends functionalities from Mail::Message
 
 package Mail::Message;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -135,7 +135,7 @@ sub reply(@)
     {   my $reply = $mainhead->get('reply-to');
         $to       = [ $reply->addresses ] if defined $reply;
     }
-    $to  ||= $self->from || return;
+    $to  ||= $self->sender || return;
 
     # Add Cc
     my $cc = $args{Cc};
@@ -272,10 +272,12 @@ sub replyPrelude($)
      : $who->isa('Mail::Message::Field') ? ($who->addresses)[0]
      :                                     $who;
 
-    my $from      = ref $user && $user->isa('Mail::Address')
-     ? $user->name : 'someone';
+    my $from
+     = ref $user && $user->isa('Mail::Address')
+     ? ($user->name || $user->address || $user->format)
+     : 'someone';
 
-    my $time      = gmtime $self->timestamp;
+    my $time = gmtime $self->timestamp;
     "On $time, $from wrote:\n";
 }
 
@@ -334,8 +336,9 @@ sub forward(@)
     }
 
     # To whom to send
-    my $to = $args{To}
-      or croak "No address to forwarded to";
+    my $to = $args{To};
+    $self->log(ERROR => "No address to forwarded to"), return
+       unless $to;
 
     # Create a subject
     my $subject = $args{Subject};
@@ -425,11 +428,10 @@ sub forwardPrelude()
 {   my $head  = shift->head;
 
     my @lines = "---- BEGIN forwarded message\n";
-    my $r     = $head->isResent ? 'resent-' : '';
-    my $from  = $head->get($r.'from');
-    my $to    = $head->get($r.'to');
-    my $cc    = $head->get($r.'cc');
-    my $date  = $head->get($r.'date');
+    my $from  = $head->get('from');
+    my $to    = $head->get('to');
+    my $cc    = $head->get('cc');
+    my $date  = $head->get('date');
 
     push @lines, $from->toString if defined $from;
     push @lines,   $to->toString if defined $to;
@@ -545,16 +547,17 @@ sub file()
     $file;
 }
 
-sub printStructure(;$)
+sub printStructure(;$$)
 {   my $self    = shift;
-    my $indent  = shift || '';
+    my $indent  = @_ && !ref $_[-1] && substr($_[-1], -1, 1) eq ' ' ? pop : '';
+    my $fh      = @_ ? shift : select;
 
     my $subject = $self->get('Subject') || '';
-    $subject = ": $subject" if length $subject;
+    $subject    = ": $subject" if length $subject;
 
     my $type    = $self->get('Content-Type') || '';
     my $size    = $self->size;
-    print "$indent$type$subject ($size bytes)\n";
+    $fh->print("$indent$type$subject ($size bytes)\n");
 
     my $body    = $self->body;
     my @parts
@@ -562,7 +565,7 @@ sub printStructure(;$)
       : $body->isNested    ? ($body->nested)
       :                      ();
 
-    $_->printStructure($indent.'   ') foreach @parts;
+    $_->printStructure($fh, $indent.'   ') foreach @parts;
 }
 
 1;

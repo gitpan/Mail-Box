@@ -1,0 +1,276 @@
+
+=head1 NAME
+
+
+Mail::Message::Head::ResentGroup - a group of header fields about resending
+
+=head1 CLASS INHERITANCE
+
+Mail::Message::Head::ResentGroup
+   is a Mail::Reporter
+
+=head1 SYNOPSIS
+
+
+ my $rg = Mail::Message::Head::ResentGroup->new(head => $head,
+    From => 'me@home.nl', To => 'You@tux.aq');
+ $head->addResentGroup($rg);
+
+ my $rg = $head->addResentGroup(From => 'me');
+
+ my @from = $rg->From;
+
+ my @rgs = $head->resentGroups;
+ $rg[2]->delete if @rgs > 2;
+
+=head1 DESCRIPTION
+
+
+A I<resent group> is a set of header lines which describe a intermediate
+step in the message transport.  Resent groups B<have NOTHING to do> with
+user activety; there is no relation to the user's sense of creating
+C<reply>, C<forward> or C<bounce> messages at all!
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<new> [FIELDS], OPTIONS X<new>
+
+Create an object which maintains one set of resent headers.  The
+FIELDS are Mail::Message::Field objects from the same header.
+
+OPTIONS which start with capitals will be used to construct additional
+fields.  These option names are prepended with C<Resent->, keeping the
+capitization of what is specified.
+
+ OPTION               DEFAULT
+ Bcc                  undef
+ Cc                   undef
+ Date                 <now>
+ From                 <required>
+ Message-ID           <uniquely created>
+ Received             <required>
+ Sender               undef
+ To                   undef
+ head                 <required>
+ log                  'WARNINGS'
+ trace                'WARNINGS'
+
+=over 4
+
+=item B<Bcc> =E<gt> STRING|OBJECT|OBJECTS X<new(Bcc)>
+
+=item B<Cc> =E<gt> STRING|OBJECT|OBJECTS X<new(Cc)>
+
+=item B<Date> =E<gt> STRING X<new(Date)>
+
+When this resent-group is dispatched by the resender of the message. Like
+the C<Date> field, it is not the date and time that the message was
+actually transported.
+
+=item B<From> =E<gt> STRING|OBJECT|OBJECTS X<new(From)>
+
+=item B<Message-ID> =E<gt> STRING|FIELD X<new(Message-ID)>
+
+The C<Resent-Message-ID> which identifies this resent group.  The FIELD
+must contain a message id.
+
+=item B<Received> =E<gt> STRING X<new(Received)>
+
+The C<Received> field is the starting line for a resent group of header
+lines, therefore it is obligatory.
+
+=item B<Sender> =E<gt> STRING|OBJECT X<new(Sender)>
+
+Only permitted when more than one from address is specified.  In this case,
+it selects one of these addresses as the main originator of the message.
+
+=item B<To> =E<gt> STRING|OBJECT|OBJECTS X<new(To)>
+
+=item B<head> =E<gt> OBJECT X<new(head)>
+
+The header where this resent group belongs to.
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=back
+
+=back
+
+=head2 The Header
+
+=over 4
+
+=item B<delete>  X<delete>
+
+Remove all the header lines which are combined in this resent group
+from the header.
+
+=back
+
+=head2 Access to the Header
+
+=over 4
+
+=item B<bcc>  X<bcc>
+
+In scalar context, the C<Resent-Bcc> field is returned.  In list context,
+the addresses as specified within the bcc field are returned as
+Mail::Address objects.  Bcc fields are not transmitted (hidden for
+external parties).
+
+=item B<cc>  X<cc>
+
+In scalar context, the C<Resent-Cc> field is returned.  In list context,
+the addresses as specified within the cc field are returned as
+Mail::Address objects.
+
+=item B<date>  X<date>
+
+Returns the C<Resent-Date> field, or C<undef> if it was not defined.
+
+=item B<dateTimestamp>  X<dateTimestamp>
+
+The timestamp as stored within the C<Resent-Date> field converted to
+local system time.
+
+=item B<from>  X<from>
+
+In scalar context, the C<Resent-From> field is returned.  In list
+context, the addresses as specified within the from field are
+returned as Mail::Address objects.
+
+=item B<messageId>  X<messageId>
+
+Returns the message-ID used for this group of resent lines.
+
+=item B<received>  X<received>
+
+The field which describes the C<Received> data of this resent group.
+
+=item B<receivedTimestamp>  X<receivedTimestamp>
+
+The timestamp as stored within the C<Received> field converted to
+local system time.
+
+=item B<returnPath>  X<returnPath>
+
+The field which describes the C<Return-Path> of this resent group.
+
+=item B<sender>  X<sender>
+
+In scalar context, the C<Resent-Sender> field is returned.  In list
+context, the addresses as specified within the from field are
+returned as Mail::Address objects.
+
+=item B<to>  X<to>
+
+In scalar context, the C<Resent-To> field is returned.  In list context,
+the addresses as specified within the to field are returned as
+Mail::Address objects.
+
+=back
+
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<orderedFields>  X<orderedFields>
+
+Returns the fields in the order as should appear in header according
+to rfc2822.  For the C<Resent-> fields of the group, the order is
+not that important, but the C<Return-Path> and C<Received> must come
+first.  Only fields mentioned in the RFC are returned.
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<defaultTrace> [LEVEL, [LEVEL]
+
+See Mail::Reporter::defaultTrace()
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of many.
+
+=head1 VERSION
+
+This code is beta, version 2.022.
+
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

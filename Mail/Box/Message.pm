@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Message;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 use base 'Mail::Message';
 
 use Date::Parse;
@@ -52,6 +52,13 @@ sub seqnr(;$)
 sub copyTo($)
 {   my ($self, $folder) = @_;
     $folder->addMessage($self->clone);
+}
+
+sub moveTo($)
+{   my ($self, $folder) = @_;
+    my $added = $folder->addMessage($self->clone);
+    $self->delete;
+    $added;
 }
 
 sub head(;$)

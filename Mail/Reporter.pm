@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Reporter;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 
 use Carp;
 
@@ -17,11 +17,21 @@ for(my $l = 1; $l < @levelname; $l++)
 
 sub new(@) {my $class = shift; (bless {}, $class)->init({@_}) }
 
+my $default_log   = $levelprio{WARNINGS};
+my $default_trace = $levelprio{WARNINGS};
+
 sub init($)
 {   my ($self, $args) = @_;
-    $self->{MR_log}   = $levelprio{$args->{log}   || 'WARNING'};
-    $self->{MR_trace} = $levelprio{$args->{trace} || 'WARNING'};
+    $self->{MR_log}   = $levelprio{$args->{log}   || $default_log};
+    $self->{MR_trace} = $levelprio{$args->{trace} || $default_trace};
     $self;
+}
+
+sub defaultTrace(;$$)
+{   my $self = shift;
+    return ($default_log, $default_trace) unless @_;
+
+    ($default_log, $default_trace) = @_==1 ? ($_[0], $_[0]) : @_;
 }
 
 sub trace(;$)
@@ -41,25 +51,40 @@ sub trace(;$)
 # whether or not to display it.
 
 sub log(;$@)
-{   my $self = shift;
-    return $levelname[$self->{MR_log}] unless @_;
+{   my $thing = shift;
 
-    my $level = shift;
-    my $prio  = $levelprio{$level}
-        or croak "Unknown log-level $level.";
+    if(ref $thing)   # instance call
+    {   return $levelname[$thing->{MR_log}] unless @_;
 
-    return $self->{MR_log} = $prio unless @_;
+        my $level = shift;
+        my $prio  = $levelprio{$level}
+            or croak "Unknown log-level $level.";
 
-    my $text    = join '', @_;
-    $text      .= "\n" unless (substr $text, -1) eq "\n";
+        return $thing->{MR_log} = $prio unless @_;
 
-    warn "$level: $text"
-        if $prio >= $self->{MR_trace};
+        my $text    = join '', @_;
+        $text      .= "\n" unless (substr $text, -1) eq "\n";
 
-    push @{$self->{MR_report}[$prio]}, $text
-        if $prio >= $self->{MR_log};
+        warn "$level: $text"
+            if $prio >= $thing->{MR_trace};
 
-    $self;
+        push @{$thing->{MR_report}[$prio]}, $text
+            if $prio >= $thing->{MR_log};
+    }
+    else             # class method
+    {   my $level = shift;
+        my $prio  = $levelprio{$level}
+            or croak "Unknown log-level $level.";
+
+        return $thing unless $prio >= $default_trace;
+
+        my $text    = join '', @_;
+        $text      .= "\n" unless (substr $text, -1) eq "\n";
+
+        warn "$level: $text";
+    }
+
+    $thing;
 }
 
 sub report(;$)

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -66,7 +66,6 @@ sub init($)
 
     $self->{MB_messages}     = [];
     $self->{MB_organization} = $args->{organization}      || 'FILE';
-    $self->{MB_head_wrap}    = $args->{head_wrap} if defined $args->{head_wrap};
     $self->{MB_linesep}      = "\n";
     $self->{MB_keep_dups}    = !$self->writable || $args->{keep_dups};
 
@@ -155,7 +154,6 @@ sub update(@)
 
     my @new  = $self->updateMessages
       ( trusted      => $self->{MB_trusted}
-      , head_wrap    => $self->{MB_head_wrap}
       , head_type    => $self->{MB_head_type}
       , field_type   => $self->{MB_field_type}
       , message_type => $self->{MB_message_type}
@@ -529,7 +527,6 @@ sub read(@)
     # Read from existing folder.
     return unless $self->readMessages
       ( trusted      => $self->{MB_trusted}
-      , head_wrap    => $self->{MB_head_wrap}
       , head_type    => $self->{MB_head_type}
       , field_type   => $self->{MB_field_type}
       , message_type => $self->{MB_message_type}

@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::MH;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 use base 'Mail::Box::Dir';
 
 use Mail::Box::MH::Index;
@@ -190,7 +190,6 @@ sub index()
 
     $self->{MBM_index} = $self->{MBM_index_type}->new
      ( filename  => $self->{MBM_index_filename}
-     , head_wrap => $self->{MB_head_wrap}
      , $self->logSettings
      )
 

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Head;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Complete;
@@ -33,14 +33,8 @@ sub init($)
     $self->{MMH_field_type} = $args->{field_type}
         if $args->{field_type};
 
-    if(defined $args->{message})
-    {   $self->{MMH_message} = $args->{message};
-        weaken($self->{MMH_message});
-    }
-
-    $self->{MMH_wrap_length} = $args->{wrap_length}
-        ? ($args->{wrap_length} > 0 ? $args->{wrap_length} : 0)
-        : 72;
+    $self->message($args->{message})
+        if defined $args->{message};
 
     $self->{MMH_fields}     = {};
     $self->{MMH_order}      = [];
@@ -66,8 +60,6 @@ sub modified(;$)
 {   my $self = shift;
     @_ ? $self->{MMH_modified} = shift : $self->{MMH_modified};
 }
-
-sub isResent() { defined shift->get('resent-message-id') }
 
 sub isEmpty { scalar keys %{shift->{MMH_fields}} }
 
@@ -108,7 +100,7 @@ sub get($;$)
 
 sub get_all(@) { my @all = shift->get(@_) }   # compatibility, force list
 
-sub knownNames() { @{shift->{MMH_order}} }
+sub knownNames() { keys %{shift->{MMH_fields}} }
 
 # To satisfy overload in static resolving.
 
@@ -125,32 +117,27 @@ sub string_unless_carp()
 sub read($)
 {   my ($self, $parser) = @_;
 
-    my @fields    = $parser->readHeader($self->{MMH_wrap_length});
+    my @fields = $parser->readHeader;
     @$self{ qw/MMH_begin MMH_end/ } = (shift @fields, shift @fields);
 
-    $parser->defaultParserType(ref $parser);
+    my $type   = $self->{MMH_field_type} || 'Mail::Message::Field::Fast';
 
-    my $known     = $self->{MMH_fields};
-    my $fieldtype = $self->{MMH_field_type} || 'Mail::Message::Field::Fast';
-
-    foreach (@fields)
-    {   my $field = $fieldtype->newNoCheck( @$_ );
-        my $name  = $field->name;
-
-        push @{$self->{MMH_order}}, $name
-            unless exists $known->{$name};
-
-        if(defined $known->{$name})
-        {   if(ref $known->{$name} eq 'ARRAY')
-                 { push @{$known->{$name}}, $field }
-            else { $known->{$name} = [ $known->{$name}, $field ] }
-        }
-        else
-        {   $known->{$name} = $field;
-        }
-    }
+    $self->addNoRealize($type->new( @$_ ))
+        foreach @fields;
 
     $self;
+}
+
+sub orderedFields() { grep {defined $_} @{shift->{MMH_order}} }
+
+#  Warning: fields are added in addResentGroup() as well!
+sub addOrderedFields(@)
+{   my $order = shift->{MMH_order};
+    foreach (@_)
+    {   push @$order, $_;
+        weaken( $order->[-1] );
+    }
+    @_;
 }
 
 sub load($) {shift}
@@ -167,34 +154,13 @@ sub moveLocation($)
     $self;
 }
 
-sub createMessageId()
-{  shift->log(INTERNAL =>
-       "You didn't check well enough for a msg-id: header should be realized.");
-}
-
-sub wrapLength(;$)
-{   my $self = shift;
-    return $self->{MMH_wrap_length} unless @_;
-
-    my $wrap = shift;
-    return $wrap if $wrap==$self->{MMH_wrap_length};
-
-    foreach my $name ($self->names)
-    {   $_->setWrapLength($wrap) foreach $self->get($name);
-    }
-
-    $self->{MMH_wrap_length} = $wrap;
-}
-
 sub setNoRealize($)
 {   my ($self, $field) = @_;
 
     my $known = $self->{MMH_fields};
     my $name  = $field->name;
 
-    push @{$self->{MMH_order}}, $name
-        unless exists $known->{$name};
-
+    $self->addOrderedFields($field);
     $known->{$name} = $field;
     $field;
 }
@@ -205,8 +171,7 @@ sub addNoRealize($)
     my $known = $self->{MMH_fields};
     my $name  = $field->name;
 
-    push @{$self->{MMH_order}}, $name
-        unless exists $known->{$name};
+    $self->addOrderedFields($field);
 
     if(defined $known->{$name})
     {   if(ref $known->{$name} eq 'ARRAY') { push @{$known->{$name}}, $field }

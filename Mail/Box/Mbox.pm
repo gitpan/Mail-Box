@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Mbox;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 use base 'Mail::Box';
 
 use Mail::Box::Mbox::Message;
@@ -261,7 +261,6 @@ sub readMessages(@)
     my @msgopts  =
       ( $self->logSettings
       , folder     => $self
-      , head_wrap  => $args{head_wrap}
       , head_type  => $args{head_type}
       , field_type => $args{field_type}
       , trusted    => $args{trusted}

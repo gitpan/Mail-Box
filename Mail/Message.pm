@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -21,7 +21,6 @@ sub init($)
 
     # Field initializations also in coerce()
     $self->{MM_modified}  = $args->{modified}  || 0;
-    $self->{MM_head_wrap} = $args->{head_wrap} || 72;
     $self->{MM_trusted}   = $args->{trusted}   || 0;
     $self->{MM_labels}    = {};
 
@@ -91,7 +90,6 @@ sub coerce($)
     }
 
     $message->{MM_modified}  ||= 0;
-    $message->{MM_head_wrap} ||= 72;
 
     bless $message, $class;
 }
@@ -153,11 +151,12 @@ sub send(@)
     require Mail::Transport;
 
     my $mailer
-       = ref $_[0] && $_[0]->isa('Mail::Transport') ? shift
-       : defined $default_mailer                    ? $default_mailer
+       = ref $_[0] && $_[0]->isa('Mail::Transport::Send') ? shift
+       : defined $default_mailer ? $default_mailer
        : ($default_mailer = Mail::Transport->new(@_));
 
-    croak "No mailer found" unless defined $mailer;
+    $self->log(ERROR => "No mailer found"), return
+        unless defined $mailer;
 
     $mailer->send($self, @_);
 }
@@ -212,51 +211,32 @@ sub head(;$)
 }
 
 sub get($)
-{   my $field = shift->head->get(shift) || return;
+{   my $field = shift->head->get(shift) || return undef;
     $field->body;
 }
 
-sub from()
-{   my $head = shift->head;
-    my $from
-      = $head->isResent
-      ? $head->get('Resent-From')
-      : ($head->get('From') || $head->get('Sender'));
+sub from() { map {$_->addresses} shift->head->get('From') }
 
-    defined $from ? ($from->addresses)[0] : undef;
+sub sender()
+{   my $self   = shift;
+    my $sender = ($self->head->get('Sender'))[0];
+
+    $sender = ($self->head->get('From'))[0]
+        unless defined $sender;
+
+    return undef
+        unless defined $sender;
+
+    ($sender->addresses)[0];
 }
 
-sub to()
-{   my $head = shift->head;
-    my @to;
-    if($head->isResent) { @to = $head->get('Resent-To'); @to = $to[-1] if @to }
-    else                { @to = $head->get('To')}
-    map {$_->addresses} @to;
-}
+sub to() { map {$_->addresses} shift->head->get('To') }
 
-sub cc()
-{   my $head = shift->head;
-    my @cc;
-    if($head->isResent) { @cc = $head->get('Resent-Cc'); @cc = $cc[-1] if @cc }
-    else                { @cc = $head->get('Cc')}
-    map {$_->addresses} @cc;
-}
+sub cc() { map {$_->addresses} shift->head->get('Cc') }
 
-sub bcc()
-{   my $head = shift->head;
-    my @bcc;
-    if($head->isResent)
-    {      @bcc = $head->get('Resent-Bcc'); @bcc = $bcc[-1] if @bcc }
-    else { @bcc = $head->get('Bcc')}
-    map {$_->addresses} @bcc;
-}
+sub bcc() { map {$_->addresses} shift->head->get('Bcc') }
 
-sub date()
-{   my $head = shift->head;
-    return $head->get('date') unless $head->isResent;
-    my @date = $head->get('Resent-Date');
-    @date ? $date[-1] : ();
-}
+sub date() { shift->head->get('Date') }
 
 sub destinations()
 {   my $self = shift;
@@ -264,7 +244,10 @@ sub destinations()
     values %to;
 }
 
-sub subject() {shift->get('subject') || ''}
+sub subject()
+{   my $subject = shift->get('subject');
+    defined $subject ? $subject : '';
+}
 
 sub guessTimestamp() {shift->head->guessTimestamp}
 
@@ -421,7 +404,6 @@ sub readHead($;$)
 
     $headtype->new
       ( message     => $self
-      , wrap_length => delete $self->{MM_head_wrap}
       , field_type  => $self->{MM_field_type}
       , $self->logSettings
       )->read($parser);

@@ -49,7 +49,6 @@ within in the message object as well.
  folder               <required>
  head                 undef
  head_type            'Mail::Message::Head::Complete'
- head_wrap            72
  log                  'WARNINGS'
  messageId            undef
  modified             <false>
@@ -90,10 +89,6 @@ See Mail::Message::new(head)
 =item B<head_type> =E<gt> CLASS
 
 See Mail::Message::new(head_type)
-
-=item B<head_wrap> =E<gt> INTEGER
-
-See Mail::Message::new(head_wrap)
 
 =item B<log> =E<gt> LEVEL
 
@@ -209,6 +204,10 @@ See Mail::Message::messageId()
 
 See Mail::Message::modified()
 
+=item B<moveTo> FOLDER
+
+See Mail::Box::Message::moveTo()
+
 =item B<parent> 
 
 See Mail::Message::parent()
@@ -238,10 +237,6 @@ See Mail::Message::toplevel()
 =head2 The Header
 
 =over 4
-
-=item B<get> FIELD
-
-See Mail::Message::get()
 
 =item B<head> [HEAD]
 
@@ -273,6 +268,10 @@ See Mail::Message::destinations()
 
 See Mail::Message::from()
 
+=item B<get> FIELD
+
+See Mail::Message::get()
+
 =item B<guessTimestamp>  X<guessTimestamp>
 
 The filename of a Mail::Box::Maildir::Message contains a timestamp.  This
@@ -283,6 +282,10 @@ guess...  When the message header is not parsed, then this date is used.
 =item B<nrLines> 
 
 See Mail::Message::nrLines()
+
+=item B<sender> 
+
+See Mail::Message::sender()
 
 =item B<subject> 
 
@@ -433,6 +436,10 @@ See Mail::Message::takeMessageId()
 
 =over 4
 
+=item B<defaultTrace> [LEVEL, [LEVEL]
+
+See Mail::Reporter::defaultTrace()
+
 =item B<diskDelete> 
 
 See Mail::Box::Message::diskDelete()
@@ -445,7 +452,7 @@ See Mail::Reporter::errors()
 
 See Mail::Reporter::log()
 
-=item B<printStructure> [INDENT]
+=item B<printStructure> [FILEHANDLE][, INDENT]
 
 See Mail::Message::Construct::printStructure()
 
@@ -513,7 +520,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.021.
+This code is beta, version 2.022.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -55,7 +55,6 @@ At the moment, this object is extended by
  folderdir            undef
  head_delayed_type    'Mail::Message::Head::Delayed'
  head_type            'Mail::Message::Head::Complete'
- head_wrap            72
  keep_dups            <false>
  lock_file            <folder>/.lock
  lock_timeout         1 hour
@@ -116,10 +115,6 @@ See Mail::Box::new(head_delayed_type)
 =item B<head_type> =E<gt> CLASS
 
 See Mail::Box::new(head_type)
-
-=item B<head_wrap> =E<gt> INTEGER
-
-See Mail::Box::new(head_wrap)
 
 =item B<keep_dups> =E<gt> BOOLEAN
 
@@ -398,6 +393,10 @@ See Mail::Box::writeMessages()
 
 =over 4
 
+=item B<defaultTrace> [LEVEL, [LEVEL]
+
+See Mail::Reporter::defaultTrace()
+
 =item B<errors> 
 
 See Mail::Reporter::errors()
@@ -466,7 +465,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.021.
+This code is beta, version 2.022.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

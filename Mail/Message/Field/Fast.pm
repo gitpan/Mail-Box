@@ -2,77 +2,29 @@ use strict;
 use warnings;
 
 package Mail::Message::Field::Fast;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 use base 'Mail::Message::Field';
 
 use Carp;
 
 #
-# The array is defined as:
-#   [ $name, $body, $comment, $folded ]
-#   where folded may not be or undef
+# The DATA is stored as:   [ NAME, FOLDED-BODY ]
+# The body is kept in a folded fashion, where each line starts with
+# a single blank.
 
-sub new($;$$@)
-{
-    my $class  = shift;
-    my ($name, $body, $comment);
+sub new($;$@)
+{   my $class = shift;
 
-    if(@_==2 && ref $_[1] eq 'ARRAY' && !ref $_[1][0])
-                 { $name = shift }
-    elsif(@_>=3) { ($name, $body, $comment) = @_ }
-    elsif(@_==2) { ($name, $body) = @_ }
-    elsif(@_==1) { $name = shift }
-    else         { confess }
+    my ($name, $body) = $class->consume(@_==1 ? (shift) : (shift, shift));
+    return () unless defined $body;
 
-    #
-    # Compose the body.
-    #
+    my $self = bless [$name, $body], $class;
 
-    if(!defined $body)
-    {   # must be one line of a header.
-        ($name, $body) = split /\:\s*/, $name, 2;
+    # Attributes
+    $self->comment(shift)             if @_==1;   # one attribute line
+    $self->attribute(shift, shift) while @_ > 1;  # attribute pairs
 
-        unless($body)
-        {   warn "No colon in headerline: $name\n";
-            $body = '';
-        }
-    }
-    elsif($name =~ m/\:/)
-    {   warn "A header-name cannot contain a colon in $name\n";
-        return undef;
-    }
-
-    if(defined $body && ref $body)
-    {   # Objects
-        $body = join ', ',
-            map {$_->isa('Mail::Address') ? $_->format : "$_"}
-                (ref $body eq 'ARRAY' ? @$body : $body);
-    }
-
-    warn "Header-field name contains illegal character: $name\n"
-        if $name =~ m/[^\041-\176]/;
-
-    $body =~ s/\s*\015?\012$//;
-
-    #
-    # Take the comment.
-    #
-
-    if(defined $comment && length $comment)
-    {   # A comment is defined, so shouldn't be in body.
-        warn "A header-body cannot contain a semi-colon in $body."
-            if $body =~ m/\;/;
-    }
-    elsif(__PACKAGE__->isStructured($name))
-    {   # try strip comment from field-body.
-        ($body, $comment) = split /\s*\;\s*/, $body, 2;
-    }
-
-    #
-    # Create the object.
-    #
-
-    bless [$name, $body, $comment], $class;
+    $self;
 }
 
 sub clone()
@@ -80,37 +32,47 @@ sub clone()
     bless [ @$self ], ref $self;
 }
 
+sub length()
+{   my $self = shift;
+    length($self->[0]) + 1 + length($self->[1]);
+}
+
 sub name() { lc shift->[0] }
 
-sub body() {    shift->[1] }
+sub Name() { shift->[0] }
 
-sub comment(;$)
+sub folded()
 {   my $self = shift;
-    @_ ? $self->[2] = shift : $self->[2];
+    return $self->[0].':'.$self->[1]
+        unless wantarray;
+
+    my @lines = $self->folded_body;
+    my $first = $self->[0]. ':'. shift @lines;
+    ($first, @lines);
 }
 
-sub content()
+sub unfolded_body($;@)
 {   my $self = shift;
-    return $self->[1] unless defined $self->[2];
-    "$self->[1]; $self->[2]";
+
+    $self->[1] = $self->fold($self->[0], @_)
+       if @_;
+
+    $self->unfold($self->[1]);
 }
 
-sub folded(;$)
-{   my $self = shift;
-    if(@_)
-    {   return unless defined($self->[3] = shift);
-        return @{$self->[3]};
-    }
-    return @{$self->[3]} if defined $self->[3];
+sub folded_body($)
+{   my ($self, $body) = @_;
+    if(@_==2) { $self->[1] = $body }
+    else      { $body = $self->[1] }
 
-      defined $self->[2]
-    ? "$self->[0]: $self->[1]; $self->[2]\n"
-    : "$self->[0]: $self->[1]\n";
+    wantarray ? split(m!(?<=\n)!, $body) : $body;
 }
 
-sub newNoCheck($$$;$)
-{   my $class = shift;
-    bless [ @_ ], $class;
+# For performance only
+
+sub print(;$)
+{   my $self = shift;
+    (shift || select)->print($self->[0].':'.$self->[1]);
 }
 
 1;

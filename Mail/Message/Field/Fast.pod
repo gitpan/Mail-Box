@@ -8,6 +8,7 @@ Mail::Message::Field::Fast - one line of a message header
 
 Mail::Message::Field::Fast
    is a Mail::Message::Field
+   is a Mail::Reporter
 
 =head1 SYNOPSIS
 
@@ -17,7 +18,7 @@ Mail::Message::Field::Fast
 =head1 DESCRIPTION
 
 
-See Mail::Message::Field.  This is the faster, but less flexible
+This is the faster, but less flexible
 implementation of a header field.  The data is stored in an array,
 and some hacks are made to speeds things up.  Be gentle with me, and
 consider that each message contains many of these lines, so speed
@@ -29,9 +30,87 @@ is very important here.
 
 =over 4
 
-=item B<new> DATA
+=item B<consume> LINE | (NAME,BODY|OBJECTS)
 
-See Mail::Message::Field::new()
+See Mail::Message::Field::consume()
+
+=item B<new> DATA X<new>
+
+The constructor of this object does not follow the usual practise within
+the Mail::Box suite: it does not use the constructor Mail::Reporter::new().
+Therefor it has no logging or tracing facilities.
+
+The method can be used in one of the following ways:
+
+=over 4
+
+=item * B<new> LINE
+
+=item * B<new> NAME, (BODY|OBJECTS), [ATTRIBUTES]
+
+=back
+
+Create a new header field object.  Specify the whole LINE at once, and
+it will be split-up for you.  I case you already have the parts of the
+header line, you may specify them separately as NAME and BODY.
+
+In case you specify a single OBJECT, or a reference to an array of OBJECTS,
+these objects are processed to become suitable to fill a field, usually
+by simple strification.  When you specify one or more Mail::Address objects,
+these are transformed into a string using their C<format> method.
+You may also add one Mail::Message::Field, whose body is taken.  In case of
+ an array, the elements are joined into one string with a comma.
+
+ATTRIBUTES can be exactly one string which may contain multiple attributes
+at once, quoted and formatted as required in RFC2822.  As alternative,
+list of key-value pairs can be used.  In this case, the values will get
+quoted if needed and everything formatted as the protocol demands.
+
+ OPTION               DEFAULT
+ log                  <disabled>
+ trace                <disabled>
+
+=over 4
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=back
+
+Examples:
+
+ my $mime = Mail::Message::Field->new(
+     'Content-Type: text/plain; charset=US-ASCII');
+
+ my $mime = Mail::Message::Field->new(
+     'Content-Type' => 'text/plain; charset=US-ASCII');
+
+ my $mime = Mail::Message::Field->new(
+     'Content-Type' => 'text/plain', 'charset=US-ASCII');
+
+ my $mime = Mail::Message::Field->new(
+     'Content-Type' => 'text/plain', charset => 'US-ASCII');
+
+ my $mime = Mail::Message::Field->new(
+     To => Mail::Address->new('my name', 'me@example.com');
+
+ my $mime = Mail::Message::Field->new(
+     Cc => [ Mail::Address->new('your name', 'you@example.com')
+           , Mail::Address->new('his name', 'he@example.com')
+           ]);
+
+But in practice, you can simply call
+
+ my $head = Mail::Message::Head->new;
+ $head->add('Content-Type' => 'text/plain', charset => 'US-ASCII');
+
+which implicitly calls this constructor (when needed).  You can specify
+the same things for add() as this C<new> accepts.
 
 =back
 
@@ -47,11 +126,19 @@ See Mail::Message::Field::clone()
 
 See Mail::Message::Field::isStructured()
 
+=item B<length> 
+
+See Mail::Message::Field::length()
+
 =back
 
 =head2 Access to the Field
 
 =over 4
+
+=item B<Name> 
+
+See Mail::Message::Field::Name()
 
 =item B<addresses> 
 
@@ -69,13 +156,17 @@ See Mail::Message::Field::body()
 
 See Mail::Message::Field::comment()
 
-=item B<content> 
+=item B<dateToTimestamp> STRING
 
-See Mail::Message::Field::content()
+See Mail::Message::Field::dateToTimestamp()
 
-=item B<folded> [ARRAY-OF-LINES]
+=item B<folded> 
 
 See Mail::Message::Field::folded()
+
+=item B<folded_body> [BODY]
+
+See Mail::Message::Field::folded_body()
 
 =item B<name> 
 
@@ -93,17 +184,29 @@ See Mail::Message::Field::print()
 
 See Mail::Message::Field::size()
 
-=item B<toDate> TIME
+=item B<stripCFWS> STRING
+
+See Mail::Message::Field::stripCFWS()
+
+=item B<toDate> [TIME]
 
 See Mail::Message::Field::toDate()
+
+=item B<toDisclose> 
+
+See Mail::Message::Field::toDisclose()
 
 =item B<toInt> 
 
 See Mail::Message::Field::toInt()
 
-=item B<toString> 
+=item B<toString> [WRAP]
 
 See Mail::Message::Field::toString()
+
+=item B<unfolded_body> [BODY, [WRAP]]
+
+See Mail::Message::Field::unfolded_body()
 
 =item B<wellformedName> [STRING]
 
@@ -115,13 +218,85 @@ See Mail::Message::Field::wellformedName()
 
 =over 4
 
-=item B<newNoCheck> NAME, BODY, COMMENT, [FOLDED]
+=item B<defaultWrapLength> [LENGTH]
 
-See Mail::Message::Field::newNoCheck()
+See Mail::Message::Field::defaultWrapLength()
 
-=item B<setWrapLength> CHARS
+=item B<fold> NAME, BODY, [MAXCHARS]
+
+See Mail::Message::Field::fold()
+
+=item B<setWrapLength> [LENGTH]
 
 See Mail::Message::Field::setWrapLength()
+
+=item B<unfold> STRING
+
+See Mail::Message::Field::unfold()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<defaultTrace> [LEVEL, [LEVEL]
+
+See Mail::Reporter::defaultTrace()
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
 
 =back
 
@@ -137,7 +312,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.021.
+This code is beta, version 2.022.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

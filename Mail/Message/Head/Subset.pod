@@ -51,7 +51,6 @@ See Mail::Message::Head::build()
  message              undef
  modified             <false>
  trace                'WARNINGS'
- wrap_length          72
 
 =over 4
 
@@ -74,10 +73,6 @@ See Mail::Message::Head::new(modified)
 =item B<trace> =E<gt> LEVEL
 
 See Mail::Reporter::new(trace)
-
-=item B<wrap_length> =E<gt> INTEGER
-
-See Mail::Message::Head::new(wrap_length)
 
 =back
 
@@ -103,10 +98,6 @@ See Mail::Message::Head::isEmpty()
 
 See Mail::Message::Head::isMultipart()
 
-=item B<isResent> 
-
-See Mail::Message::Head::isResent()
-
 =item B<message> [MESSAGE]
 
 See Mail::Message::Head::message()
@@ -121,7 +112,7 @@ See Mail::Message::Head::modified()
 
 =over 4
 
-=item B<add> FIELD | LINE | NAME, BODY [,COMMENT]
+=item B<add> FIELD | LINE | (NAME,BODY[,ATTRS])
 
 See Mail::Message::Head::Complete::add()
 
@@ -129,11 +120,15 @@ See Mail::Message::Head::Complete::add()
 
 See Mail::Message::Head::Complete::delete()
 
+=item B<removeField> FIELD
+
+See Mail::Message::Head::Complete::removeField()
+
 =item B<reset> NAME, FIELDS
 
 See Mail::Message::Head::Complete::reset()
 
-=item B<set> FIELD | LINE | NAME, BODY [,COMMENT]
+=item B<set> FIELD | LINE | (NAME, BODY [,ATTRS])
 
 See Mail::Message::Head::Complete::set()
 
@@ -142,6 +137,10 @@ See Mail::Message::Head::Complete::set()
 =head2 Access to the Header
 
 =over 4
+
+=item B<addResentGroup> RESENT-GROUP|DATA
+
+See Mail::Message::Head::Complete::addResentGroup()
 
 =item B<count> NAME X<count>
 
@@ -187,6 +186,10 @@ See Mail::Message::Head::Complete::print()
 
 See Mail::Message::Head::Complete::printUndisclosed()
 
+=item B<resentGroups> 
+
+See Mail::Message::Head::Complete::resentGroups()
+
 =item B<size> 
 
 See Mail::Message::Head::Complete::size()
@@ -209,6 +212,10 @@ See Mail::Message::Head::Complete::toString()
 
 See Mail::Message::Head::addNoRealize()
 
+=item B<addOrderedFields> FIELDS
+
+See Mail::Message::Head::addOrderedFields()
+
 =item B<createFromLine> 
 
 See Mail::Message::Head::Complete::createFromLine()
@@ -229,6 +236,10 @@ See Mail::Message::Head::load()
 
 See Mail::Message::Head::moveLocation()
 
+=item B<orderedFields> 
+
+See Mail::Message::Head::orderedFields()
+
 =item B<read> PARSER
 
 See Mail::Message::Head::read()
@@ -237,15 +248,15 @@ See Mail::Message::Head::read()
 
 See Mail::Message::Head::setNoRealize()
 
-=item B<wrapLength> [CHARS]
-
-See Mail::Message::Head::wrapLength()
-
 =back
 
 =head2 Logging and Tracing
 
 =over 4
+
+=item B<defaultTrace> [LEVEL, [LEVEL]
+
+See Mail::Reporter::defaultTrace()
 
 =item B<errors> 
 
@@ -315,7 +326,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.021.
+This code is beta, version 2.022.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

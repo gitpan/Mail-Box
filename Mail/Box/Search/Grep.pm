@@ -1,5 +1,5 @@
 package Mail::Box::Search::Grep;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 use base 'Mail::Box::Search';
 
 use strict;

@@ -195,20 +195,6 @@ Returns the location of the next byte to be used in the file which is
 parsed.  When a POSITION is specified, the location in the file is
 moved to the indicated spot first.
 
-=item B<foldHeaderLine> LINE, LENGTH X<foldHeaderLine>
-
-(Class method) Fold the specified line (which is a header-line with a
-structured format) into multiple lines.  Each line is terminated by a
-newline.
-
-This method is called by Mail::Message::Field::toString() to
-format headers before writing them to a file.
-
-Examples:
-
- my $string = 'From: me; very long comment';
- print Mail::Box::Parser::C->foldHeaderLine($string, 40);
-
 =item B<lineSeparator>  X<lineSeparator>
 
 Returns the character or characters which are used to separate lines
@@ -231,19 +217,18 @@ message are divided by separators.
 The specified STRING describes the start of the separator-line.  The
 REGEXP can specify a more complicated format.
 
-=item B<readHeader> WRAP X<readHeader>
+=item B<readHeader>  X<readHeader>
 
 Read the whole message-header and return it as list
 C<< field => value, field => value >>.  Mind that some fields will
-appear more than once.  The WRAP is the expected length of lines,
-but is not yet used.
+appear more than once.
 
 The first element will represent the position in the file where the
 header starts.  The follows the list of header field names and bodies.
 
 Examples:
 
- my ($where, @header) = $parser->readHeader(72);
+ my ($where, @header) = $parser->readHeader;
 
 =item B<readSeparator> OPTIONS X<readSeparator>
 
@@ -260,6 +245,10 @@ separator.  A new separator is activated using the pushSeparator() method.
 =head2 Logging and Tracing
 
 =over 4
+
+=item B<defaultTrace> [LEVEL, [LEVEL]
+
+See Mail::Reporter::defaultTrace()
 
 =item B<errors> 
 
@@ -329,7 +318,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.021.
+This code is beta, version 2.022.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -2,13 +2,14 @@ use strict;
 use warnings;
 
 package Mail::Message::Head::Complete;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 use base 'Mail::Message::Head';
 
 use Mail::Box::Parser;
 
 use Carp;
-use Date::Parse;
+use Scalar::Util 'weaken';
+use List::Util 'sum';
 
 sub isDelayed() {0}
 
@@ -16,36 +17,27 @@ sub clone(;@)
 {   my $self   = shift;
     my $copy   = ref($self)->new($self->logSettings);
 
-    foreach my $name ($self->grepNames(@_))
-    {   $copy->add($_->clone) foreach $self->get($name);
-    }
-
+    $copy->add($_->clone) foreach $self->orderedFields;
     $copy;
 }
 
 sub add(@)
 {   my $self = shift;
-    my $type = $self->{MMH_field_type} || 'Mail::Message::Field::Fast';
 
     # Create object for this field.
 
-    my $field;
-    if(@_==1 && ref $_[0])   # A fully qualified field is added.
-    {   $field = shift;
-        confess "Add field to header requires $type but got ".ref($field)."\n"
-            unless $field->isa($type);
-    }
-    else { $field = $type->new(@_) }
+    my $field
+      = @_==1 && ref $_[0] ? shift     # A fully qualified field is added.
+      : ($self->{MMH_field_type} || 'Mail::Message::Field::Fast')->new(@_);
 
-    $field->setWrapLength($self->{MMH_wrap_length});
+    $field->setWrapLength;
 
     # Put it in place.
 
     my $known = $self->{MMH_fields};
     my $name  = $field->name;  # is already lower-cased
 
-    push @{$self->{MMH_order}}, $name
-        unless exists $known->{$name};
+    $self->addOrderedFields($field);
 
     if(defined $known->{$name})
     {   if(ref $known->{$name} eq 'ARRAY') { push @{$known->{$name}}, $field }
@@ -65,18 +57,10 @@ my %skip_none = map { ($_ => 1) } @skip_none;
 sub set(@)
 {   my $self = shift;
     my $type = $self->{MMH_field_type} || 'Mail::Message::Field::Fast';
+    $self->{MMH_modified}++;
 
     # Create object for this field.
-
-    my $field;
-    if(@_==1 && ref $_[0])   # A fully qualified field is added.
-    {   $field = shift;
-        confess "Add field to header requires $type but got ".ref($field)."\n"
-            unless $field->isa($type);
-    }
-    else
-    {   $field = $type->new(@_);
-    }
+    my $field = @_==1 && ref $_[0] ? shift->clone : $type->new(@_);
 
     my $name  = $field->name;         # is already lower-cased
     my $known = $self->{MMH_fields};
@@ -89,32 +73,62 @@ sub set(@)
         return $field;
     }
 
-    # Put it in place.
-
-    $field->setWrapLength($self->{MMH_wrap_length});
-
-    push @{$self->{MMH_order}}, $name
-        unless exists $known->{$name};
-
+    $field->setWrapLength;
     $known->{$name} = $field;
-    $self->{MMH_modified}++;
 
+    $self->addOrderedFields($field);
     $field;
 }
 
 sub reset($@)
 {   my ($self, $name) = (shift, lc shift);
-    my $known = $self->{MMH_fields};
-
-    if(@_==0)    { undef $known->{$name}  }
-    elsif(@_==1) { $known->{$name} = shift }
-    else         { $known->{$name} = [@_]  }
 
     $self->{MMH_modified}++;
+    my $known = $self->{MMH_fields};
+
+    if(@_==0)
+    {   delete $known->{$name};
+        return ();
+    }
+
+    # Cloning required, otherwise double registrations will not be
+    # removed from the ordered list: that's controled by 'weaken'
+
+    my @fields = map {$_->clone} @_;
+
+    if(@_==1) { $known->{$name} = $fields[0] }
+    else      { $known->{$name} = [@fields]  }
+
+    $self->addOrderedFields(@fields);
     $self;
 }
 
 sub delete($) { $_[0]->reset($_[1]) }
+
+sub removeField($)
+{   my ($self, $field) = @_;
+    my $name = $field->name;
+
+    my $known = $self->{MMH_fields};
+
+    if(!defined $known->{$name})
+    { ; }  # complain
+    elsif(ref $known->{$name} eq 'ARRAY')
+    {    for(my $i=0; $i < @{$known->{$name}}; $i++)
+         {
+             return splice @{$known->{$name}}, $i, 1
+                 if $known->{$name}[$i] eq $field;
+         }
+    }
+    elsif($known->{$name} eq $field)
+    {    return delete $known->{$name};
+    }
+
+    $self->log(WARNING =>
+        "Could not remove field $name from header: not found.");
+
+    return;
+}
 
 sub count($)
 {   my $known = shift->{MMH_fields};
@@ -139,25 +153,20 @@ sub grepNames(@)
     {   $take    = $take[0];   # one regexp prepared already
     }
     else
-    {   # I love this tric:
+    {   # I love this trick:
         local $" = ')|(?:';
         $take    = qr/^(?:(?:@take))/i;
     }
 
-    grep {$_ =~ $take} $self->names;
+    grep {$_->Name =~ $take} $self->orderedFields;
 }
 
 sub print(;$)
 {   my $self  = shift;
     my $fh    = shift || select;
 
-    my $known = $self->{MMH_fields};
-
-    foreach my $name (@{$self->{MMH_order}})
-    {   my $this = $known->{$name} or next;
-        my @this = ref $this eq 'ARRAY' ? @$this : $this;
-        $_->print($fh) foreach @this;
-    }
+    $_->print($fh)
+        foreach $self->orderedFields;
 
     $fh->print("\n");
 
@@ -167,52 +176,26 @@ sub print(;$)
 sub printUndisclosed($)
 {   my ($self, $fh) = @_;
 
-    my $known = $self->{MMH_fields};
-    foreach my $name (@{$self->{MMH_order}})
-    {   next if $name eq 'Resent-Bcc' || $name eq 'Bcc';
-        my $this = $known->{$name} or next;
-        my @this = ref $this eq 'ARRAY' ? @$this : $this;
-        $_->print($fh) foreach @this;
-    }
+    $_->print($fh)
+       foreach grep {$_->toDisclose} $self->orderedFields;
 
     $fh->print("\n");
+
     $self;
 }
 
 sub toString()
 {   my $self  = shift;
-    my $known = $self->{MMH_fields};
 
-    my @lines;
-    foreach my $name (@{$self->{MMH_order}})
-    {   my $this = $known->{$name} or next;
-        my @this = ref $this eq 'ARRAY' ? @$this : $this;
-        push @lines, $_->toString foreach @this;
-    }
-
+    my @lines = map {$_->toString} $self->orderedFields;
     push @lines, "\n";
+
     wantarray ? @lines : join('', @lines);
 }
 
-sub nrLines()
-{   my $self = shift;
-    my $nr   = 1;  # trailing
+sub nrLines() { sum 1, map { $_->nrLines } shift->orderedFields }
 
-    foreach my $name ($self->names)
-    {   $nr += $_->nrLines foreach $self->get($name);
-    }
-
-    $nr;
-}
-
-sub size()
-{   my $self  = shift;
-    my $bytes = 1;  # trailing blank
-    foreach my $name ($self->names)
-    {   $bytes += $_->size foreach $self->get($name);
-    }
-    $bytes;
-}
+sub size() { sum 1, map {$_->size} shift->orderedFields }
 
 sub timestamp() {shift->guessTimestamp || time}
 
@@ -222,12 +205,12 @@ sub guessTimestamp()
 
     my $stamp;
     if(my $date = $self->get('date'))
-    {   $stamp = str2time($date, 'GMT');
+    {   $stamp = Mail::Message::Field->dateToTimestamp($date);
     }
 
     unless($stamp)
     {   foreach (reverse $self->get('received'))
-        {   $stamp = str2time($_, 'GMT');
+        {   $stamp = Mail::Message::Field->dateToTimestamp($_->comment);
             last if $stamp;
         }
     }
@@ -245,6 +228,64 @@ sub guessBodySize()
     return $1 * 40   if defined $lines && $lines =~ m/(\d+)/;
 
     undef;
+}
+
+sub resentGroups()
+{   my $self = shift;
+    my (@groups, $return_path, @fields);
+    require Mail::Message::Head::ResentGroup;
+
+    foreach my $field ($self->orderedFields)
+    {   my $name = $field->name;
+        if($name eq 'return-path')              { $return_path = $field }
+        elsif(substr($name, 0, 7) eq 'resent-') { push @fields, $field }
+        elsif($name eq 'received')
+        {   push @groups, Mail::Message::Head::ResentGroup->new
+               (@fields, head => $self)
+                   if @fields;
+
+            @fields = defined $return_path ? ($return_path, $field) : ($field);
+            undef $return_path;
+        }
+    }
+
+    push @groups, Mail::Message::Head::ResentGroup->new(@fields, head => $self)
+          if @fields;
+
+    @groups;
+}
+
+sub addResentGroup(@)
+{   my $self  = shift;
+
+    require Mail::Message::Head::ResentGroup;
+    my $rg = @_==1 ? (shift)
+      : Mail::Message::Head::ResentGroup->new(@_, head => $self);
+
+    my @fields = $rg->orderedFields;
+    my $order  = $self->{MMH_order};
+
+    my $i;
+    for($i=0; $i < @$order; $i++)
+    {   next unless defined $order->[$i];
+        last if $order->[$i]->name =~ m!^(?:received|return-path|resent-)!;
+    }
+
+    my $known = $self->{MMH_fields};
+    while(@fields)
+    {   my $f    = pop @fields;
+        splice @$order, $i, 0, $f;
+        weaken( $order->[$i] );
+        my $name = $f->name;
+
+        # Adds *before* in the list.
+           if(!defined $known->{$name})      {$known->{$name} = $f}
+        elsif(ref $known->{$name} eq 'ARRAY'){unshift @{$known->{$name}},$f}
+        else                       {$known->{$name} = [$f, $known->{$name}]}
+    }
+
+    $self->modified(1);
+    $rg;
 }
 
 sub createFromLine()

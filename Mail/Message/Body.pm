@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Field;
@@ -118,7 +118,7 @@ sub init($)
     unless(ref $mime)
     {   $mime = Mail::Message::Field->new('Content-Type' => lc $mime);
         $mime->attribute(charset => $args->{charset} || 'us-ascii')
-            if $mime->body =~ m!^text/!;
+            if $mime =~ m!^text/!;
     }
 
     $transfer = Mail::Message::Field->new('Content-Transfer-Encoding' =>
@@ -174,14 +174,16 @@ sub decoded(@)
      );
 }
 
-sub type()             { shift->{MMB_type} }
+sub type() { shift->{MMB_type} }
 
 sub mimeType()
 {   my $self = shift;
     return $self->{MMB_mime} if exists $self->{MMB_mime};
 
-    my $type = $self->{MMB_type};
-    $self->{MMB_mime} = $mime_types->type($type) || MIME::Type->new($type);
+    my $type = $self->{MMB_type}->body;
+
+    $self->{MMB_mime}
+       = $mime_types->type($type) || MIME::Type->new(type => $type);
 }
 
 sub charset() { shift->type->attribute('charset') }

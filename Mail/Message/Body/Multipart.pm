@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Multipart;
-our $VERSION = 2.021;  # Part of Mail::Box
+our $VERSION = 2.022;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -262,10 +262,7 @@ sub read($$$$)
     my $boundary = $self->boundary;
 
     $parser->pushSeparator("--$boundary");
-    my @msgopts  =
-     ( $self->logSettings
-     , head_wrap => $head->wrapLength
-     );
+    my @msgopts  = ($self->logSettings);
 
     my @sloppyopts =
       ( mime_type         => 'text/plain'
