@@ -3,6 +3,12 @@ CHANGELOG of Mail::Box version 2
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
+version 2.006: Wed Jan  2 08:27:21 CET 2002
+
+	Fixes:
+
+	- Accidentally typed   (@_)  as prototype of some methods.
+
 version 2.005: Sun Dec 30 14:25:22 CET 2001
 
 	Fixes:

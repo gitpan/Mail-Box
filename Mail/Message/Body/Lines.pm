@@ -7,7 +7,7 @@ use base 'Mail::Message::Body';
 use Mail::Box::Parser;
 use IO::Lines;
 
-our $VERSION = 2.005;
+our $VERSION = 2.006;
 
 use Carp;
 
@@ -155,7 +155,7 @@ sub print(;$)
 
 #------------------------------------------
 
-sub _data_from_filename(@_)
+sub _data_from_filename(@)
 {   my ($self, $filename) = @_;
 
     unless(open IN, '<', $filename)
@@ -169,19 +169,19 @@ sub _data_from_filename(@_)
     $self;
 }
 
-sub _data_from_filehandle(@_)
+sub _data_from_filehandle(@)
 {   my ($self, $fh) = @_;
     $self->{MMBL_array} = [ $fh->getlines ];
     $self
 }
 
-sub _data_from_glob(@_)
+sub _data_from_glob(@)
 {   my ($self, $fh) = @_;
     $self->{MMBL_array} = [ <$fh> ];
     $self;
 }
 
-sub _data_from_lines(@_)
+sub _data_from_lines(@)
 {   my ($self, $lines)  = @_;
     $lines = [ split /(?<=\n)/, $lines->[0] ] # body passed in one string.
         if @$lines==1;
@@ -225,7 +225,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.005.
+This code is beta, version 2.006.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

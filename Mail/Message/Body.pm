@@ -8,7 +8,7 @@ use Mail::Message::Field;
 use Mail::Message::Body::Lines;
 use Mail::Message::Body::File;
 
-our $VERSION = 2.005;
+our $VERSION = 2.006;
 
 use overload bool  => sub {1}   # $body->print if $body
            , '""'  => 'string'
@@ -535,10 +535,10 @@ sub message(;$)
 
 # All body implementations shall implement all of the following!!
 
-sub _data_from_filename(@_)   {shift->notImplemented}
-sub _data_from_filehandle(@_) {shift->notImplemented}
-sub _data_from_glob(@_)       {shift->notImplemented}
-sub _data_from_lines(@_)      {shift->notImplemented}
+sub _data_from_filename(@)   {shift->notImplemented}
+sub _data_from_filehandle(@) {shift->notImplemented}
+sub _data_from_glob(@)       {shift->notImplemented}
+sub _data_from_lines(@)      {shift->notImplemented}
 
 #------------------------------------------
 
@@ -629,7 +629,7 @@ this includes the header lines and boundaries of all the parts.
 
 =cut
 
-sub nrLines(@_)  {shift->notImplemented}
+sub nrLines(@)  {shift->notImplemented}
 
 #------------------------------------------
 
@@ -641,7 +641,7 @@ characters.  See the C<decode()> method of C<Mail::Message>.
 
 =cut
 
-sub size(@_)  {shift->notImplemented}
+sub size(@)  {shift->notImplemented}
 
 #------------------------------------------
 
@@ -840,7 +840,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.005.
+This code is beta, version 2.006.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -5,7 +5,7 @@ use strict;
 
 package Mail::Message;
 
-our $VERSION = 2.005;
+our $VERSION = 2.006;
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -1061,7 +1061,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.005.
+This code is beta, version 2.006.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
