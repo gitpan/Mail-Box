@@ -62,7 +62,8 @@ take hours to complete).
 
 Use the external C<mail>, C<mailx>, or C<Mail> programs to send the
 message.  Usually, the result is poor, because some versions of these
-programs do not support MIME headers.
+programs do not support MIME headers.  Besides, these programs are
+known to have exploitable security breaches.
 
 =back
 
@@ -274,7 +275,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.027.
+This code is beta, version 2.028.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::File;
-our $VERSION = 2.027;  # Part of Mail::Box
+our $VERSION = 2.028;  # Part of Mail::Box
 use base 'Mail::Box';
 
 use Mail::Box::File::Message;
@@ -137,8 +137,8 @@ sub close(@)
     undef $_[0];                 #    ref to undef, as the SUPER does.
     shift;
 
-    $self->parserClose;
     $self->SUPER::close(@_);
+    $self->parserClose;
 }
 
 sub listSubFolders(@)

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Field;
-our $VERSION = 2.027;  # Part of Mail::Box
+our $VERSION = 2.028;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -289,7 +289,7 @@ sub fold($$;$)
        push @folded, " $1\n";
     }
 
-    push @folded, " $line\n";
+    push @folded, " $line\n" if length $line;
     wantarray ? @folded : join('', @folded);
 }
 

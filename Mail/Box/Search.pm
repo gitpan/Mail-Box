@@ -1,5 +1,5 @@
 package Mail::Box::Search;
-our $VERSION = 2.027;  # Part of Mail::Box
+our $VERSION = 2.028;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use strict;
