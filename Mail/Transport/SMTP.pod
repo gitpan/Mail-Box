@@ -151,14 +151,7 @@ IO::Socket::INET object is returned.
 
 =item B<destinations> MESSAGE, [ADDRESS|ARRAY-OF-ADDRESSES]
 
-Determine the destination for this message.  If a valid ADDRESS is defined,
-this is used to overrule the addresses within the message.  If the ADDRESS
-is C<undef> it is ignored.
-
-If no ADDRESS is specified, the message is scanned for resent groups (see
-Mail::Message::Head::resentGroups()).  The addresses found in the first
-(is latest added) group are used.  If no resent groups are found, the
-normal C<To>, C<Cc>, and C<Bcc> lines are taken.
+See Mail::Transport::Send::destinations()
 
 =item B<putContent> MESSAGE, FILEHANDLE, OPTIONS
 
@@ -284,7 +277,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.039.
+This code is beta, version 2.040.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message;
-our $VERSION = 2.039;  # Part of Mail::Box
+our $VERSION = 2.040;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -507,11 +507,14 @@ sub readBody($$;$$)
         elsif($type eq 'message/rfc822' && !$bodytype->isNested)
         {   $bodytype = $nbody  }
 
+        my $cte = $head->get('Content-Transfer-Encoding');
+        my $cd  = $head->get('Content-Disposition');
+
         $body = $bodytype->new
         ( message           => $self
-        , mime_type         => scalar $head->get('Content-Type')
-        , transfer_encoding => scalar $head->get('Content-Transfer-Encoding')
-        , disposition       => scalar $head->get('Content-Disposition')
+        , mime_type         => (defined $ct  ? $ct->clone  : $type)
+        , transfer_encoding => (defined $cte ? $cte->clone : undef)
+        , disposition       => (defined $cd  ? $cd->clone  : undef)
         , checked           => $self->{MM_trusted}
         , $self->logSettings
         );

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::String;
-our $VERSION = 2.039;  # Part of Mail::Box
+our $VERSION = 2.040;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Carp;
@@ -56,7 +56,7 @@ sub _data_from_lines(@)
 
 sub clone()
 {   my $self = shift;
-    ref($self)->new(data => $self->string);
+    ref($self)->new(data => $self->string, based_on => $self);
 }
 
 # Only compute it once, if needed.  The scalar contains lines, so will

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Part;
-our $VERSION = 2.039;  # Part of Mail::Box
+our $VERSION = 2.040;  # Part of Mail::Box
 use base 'Mail::Message';
 
 use Carp;
@@ -34,7 +34,7 @@ sub buildFromBody($$;@)
      , @log
      );
 
-    $part->body($body->check);
+    $part->body($body);
     $part;
 }
 
@@ -44,10 +44,11 @@ sub coerce($@)
     return $class->buildFromBody($thing, $container, @_)
         if $thing->isa('Mail::Message::Body');
 
+    # Although cloning is a Bad Thing(tm), we must avoid modifying
+    # header fields of messages which reside in a folder.
     my $message = $thing->isa('Mail::Box::Message') ? $thing->clone : $thing;
 
-    my $part = $class->SUPER::coerce($message);
-
+    my $part    = $class->SUPER::coerce($message);
     $part->{MMP_container} = $container;
     $part;
 }

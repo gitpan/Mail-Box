@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Wrapper::SpamAssassin;
-our $VERSION = 2.039;  # Part of Mail::Box
+our $VERSION = 2.040;  # Part of Mail::Box
 use base 'Mail::SpamAssassin::Message';
 
 use Carp;

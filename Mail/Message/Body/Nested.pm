@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Nested;
-our $VERSION = 2.039;  # Part of Mail::Box
+our $VERSION = 2.040;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -27,8 +27,8 @@ sub init($)
     my $based = $args->{based_on};
 
     $self->{MMBN_nested}
-       = !$based || defined $nested  ? $nested
-       : $based->isNested            ? $based->nested
+       = (!$based || defined $nested) ? $nested
+       : $based->isNested             ? $based->nested
        : undef;
 
     $self;

@@ -182,7 +182,7 @@ See Mail::Box::new(trusted)
 
 See Mail::Box::clone()
 
-=item B<create> FOLDERNMAE, OPTIONS
+=item B<create> FOLDERNAME, OPTIONS
 
 (Class method)
 
@@ -558,7 +558,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.039.
+This code is beta, version 2.040.
 
 Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

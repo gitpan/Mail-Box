@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box;
-our $VERSION = 2.039;  # Part of Mail::Box
+our $VERSION = 2.040;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -38,7 +38,9 @@ USAGE
       , init_options => [ @_ ]  # for clone
       ) or return;
 
-    $self->read if $self->{MB_access} =~ /r|a/;
+    $self->read or return
+        if $self->{MB_access} =~ /r|a/;
+
     $self;
 }
 

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Lines;
-our $VERSION = 2.039;  # Part of Mail::Box
+our $VERSION = 2.040;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
@@ -50,7 +50,7 @@ sub _data_from_lines(@)
 
 sub clone()
 {   my $self  = shift;
-    ref($self)->new(data => [ $self->lines ] );
+    ref($self)->new(data => [ $self->lines ], based_on => $self);
 }
 
 sub nrLines() { scalar @{shift->{MMBL_array}} }

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Manager;
-our $VERSION = 2.039;  # Part of Mail::Box
+our $VERSION = 2.040;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Box;
@@ -218,7 +218,7 @@ sub open(@)
     my $folder = $class->new(@defaults, %args);
 
     unless(defined $folder)
-    {   $self->log(WARNING => "No folder $name of type $folder_type does exist.");
+    {   $self->log(WARNING =>"Folder does not exist, failed opening $folder_type folder $name.");
         return;
     }
 

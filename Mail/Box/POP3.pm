@@ -1,5 +1,5 @@
 package Mail::Box::POP3;
-our $VERSION = 2.039;  # Part of Mail::Box
+our $VERSION = 2.040;  # Part of Mail::Box
 use base 'Mail::Box::Net';
 
 use strict;
@@ -108,7 +108,7 @@ sub popClient()
 sub readMessages(@)
 {   my ($self, %args) = @_;
 
-    my $pop   = $self->popClient;
+    my $pop   = $self->popClient or return;
     my @log   = $self->logSettings;
     my $seqnr = 0;
 

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::Send;
-our $VERSION = 2.039;  # Part of Mail::Box
+our $VERSION = 2.040;  # Part of Mail::Box
 use base 'Mail::Transport';
 
 use Carp;
@@ -57,6 +57,29 @@ sub putContent($$@)
     else { $message->Mail::Message::print($fh) }
 
     $self;
+}
+
+sub destinations($;$)
+{   my ($self, $message, $overrule) = @_;
+    my @to;
+
+    if(defined $overrule)      # Destinations overruled by user.
+    {   my @addr = ref $overrule eq 'ARRAY' ? @$overrule : ($overrule);
+        @to = map { ref $_ && $_->isa('Mail::Address') ? ($_)
+                    : Mail::Address->parse($_) } @addr;
+    }
+    elsif(my @rgs = $message->head->resentGroups)
+    {   @to = $rgs[0]->destinations;
+        $self->log(ERROR => "Resent group does not specify a destination"), return ()
+            unless @to;
+    }
+    else
+    {   @to = $message->destinations;
+        $self->log(ERROR => "Message has no destination"), return ()
+            unless @to;
+    }
+
+    @to;
 }
 
 1;

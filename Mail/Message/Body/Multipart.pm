@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Multipart;
-our $VERSION = 2.039;  # Part of Mail::Box
+our $VERSION = 2.040;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -13,7 +13,8 @@ use IO::Lines;
 sub init($)
 {   my ($self, $args) = @_;
     my $based = $args->{based_on};
-    $args->{mime_type} ||= defined $based ? $based->mimeType :'multipart/mixed';
+    $args->{mime_type} ||=
+        defined $based ? $based->mimeType : 'multipart/mixed';
 
     $self->SUPER::init($args);
 

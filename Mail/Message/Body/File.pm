@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::File;
-our $VERSION = 2.039;  # Part of Mail::Box
+our $VERSION = 2.040;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
@@ -106,7 +106,7 @@ sub _data_from_lines(@)
 
 sub clone()
 {   my $self  = shift;
-    my $clone = ref($self)->new;
+    my $clone = ref($self)->new(based_on => $self);
 
     copy($self->tempFilename, $clone->tempFilename)
        or return;

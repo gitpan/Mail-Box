@@ -2,13 +2,13 @@ use strict;
 use warnings;
 
 package Mail::Transport::POP3;
-our $VERSION = 2.039;  # Part of Mail::Box
+our $VERSION = 2.040;  # Part of Mail::Box
 use base 'Mail::Transport::Receive';
 
 use IO::Socket  ();
 use Digest::MD5 ();
 
-my $CRLF = "\015\012";
+my $CRLF = $^O eq 'MSWin32' ? "\n" : "\015\012";
 
 sub init($)
 {   my ($self, $args) = @_;

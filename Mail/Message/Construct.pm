@@ -3,7 +3,7 @@ use strict;
 # file Mail::Message::Construct extends functionalities from Mail::Message
 
 package Mail::Message;
-our $VERSION = 2.039;  # Part of Mail::Box
+our $VERSION = 2.040;  # Part of Mail::Box
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -20,7 +20,6 @@ sub read($@)
     my $ref       = ref $from;
 
     require IO::Scalar;
-    require IO::ScalarArray;
 
     if(!$ref)
     {   $filename = 'scalar';
@@ -32,15 +31,19 @@ sub read($@)
     }
     elsif($ref eq 'ARRAY')
     {   $filename = 'array of lines';
-        $file     = IO::ScalarArray->new($from);
+        my $buffer= join '', @$from;
+        $file     = IO::Scalar->new(\$buffer);
     }
     elsif($ref eq 'GLOB')
     {   $filename = 'file (GLOB)';
-        $file     = IO::ScalarArray->new( [ <$from> ] );
+        local $/;
+        my $buffer= <$from>;
+        $file     = IO::Scalar->new(\$buffer);
     }
     elsif($ref && $from->isa('IO::Handle'))
     {   $filename = 'file ('.ref($from).')';
-        $file     = IO::ScalarArray->new( [ $from->getlines ] );
+        my $buffer= join '', $from->getlines;
+        $file     = IO::Scalar->new(\$buffer);
     }
     else
     {   croak "Cannot read from $from";
@@ -70,9 +73,9 @@ sub read($@)
 sub reply(@)
 {   my ($self, %args) = @_;
 
+    my $body   = $args{body};
+    my $strip  = !exists $args{strip_signature} || $args{strip_signature};
     my $include  = $args{include}   || 'INLINE';
-    my $strip    = !exists $args{strip_signature} || $args{strip_signature};
-    my $body     = defined $args{body} ? $args{body} : $self->body;
 
     if($include eq 'NO')
     {   # Throw away real body.
@@ -81,17 +84,20 @@ sub reply(@)
                unless defined $args{body};
     }
     elsif($include eq 'INLINE' || $include eq 'ATTACH')
-    {   my @stripopts =
-         ( pattern     => $args{strip_signature}
-         , max_lines   => $args{max_signature}
-         );
+    {
+        unless(defined $body)
+        {   # text attachment
+            $body = $self->body;
+            $body = $body->part(0) if $body->isMultipart && $body->parts==1;
+            $body = $body->nested  if $body->isNested;
 
-        my $decoded  = $body->decoded;
-        $body        = $strip ? $decoded->stripSignature(@stripopts) : $decoded;
-
-        if($body->isMultipart && $body->parts==1)
-        {   $decoded = $body->part(0)->decoded;
-            $body    = $strip ? $decoded->stripSignature(@stripopts) : $decoded;
+            $body
+             = $strip && ! $body->isMultipart && !$body->isBinary
+             ? $body->decoded->stripSignature
+                 ( pattern   => $args{strip_signature}
+                 , max_lines => $args{max_signature}
+                 )
+             : $body->decoded;
         }
 
         if($include eq 'INLINE' && $body->isMultipart) { $include = 'ATTACH' }

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body;
-our $VERSION = 2.039;  # Part of Mail::Box
+our $VERSION = 2.040;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -50,8 +50,6 @@ sub encode(@)
     my $trans_was = lc $self->transferEncoding;
     my $trans_to  = lc $transfer;
 
-#warn "Translate ($mime_was, $char_was, $trans_was) -> ($mime_to, $char_to, $trans_to)\n";
-
     #
     # The only translations implemented now is content transfer encoding.
     #
@@ -80,8 +78,7 @@ sub encode(@)
            'No encoder defined for transfer encoding $trans_to.');
         return $decoded;
     }
-
-    return $encoded;
+    $encoded;
 }
 
 sub check()
