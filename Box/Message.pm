@@ -630,7 +630,6 @@ sub coerce($$@)
     # Re-initialize the message, but with the options as specified by the
     # creation of this folder, not the folder where the message came from.
 
-    
     (bless $message, $class)->init(\%args) or return;
 
     $message->folder($folder);
@@ -1234,7 +1233,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 1.112
+This code is beta, version 1.200
 
 =cut
 

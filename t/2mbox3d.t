@@ -87,7 +87,7 @@ ok(!$parsed);
 # Force one message to be loaded.
 #
 
-my $message = $folder->message(25);
+my $message = $folder->message(3);
 ok(ref $message);
 my $body = $message->body;
 ok($message->isParsed);
