@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Box::Parser;
 use vars '$VERSION';
-$VERSION = '2.046';
+$VERSION = '2.047';
 use base 'Mail::Reporter';
 use Carp;
 
@@ -57,8 +57,8 @@ sub stop()
 
     my $filename = $self->filename;
 
-    $self->log(WARNING => "File $filename changed during access.")
-       if $self->fileChanged;
+#   $self->log(WARNING => "File $filename changed during access.")
+#      if $self->fileChanged;
 
     $self->log(NOTICE  => "Close parser for file $filename");
     $self->closeFile;
@@ -87,11 +87,8 @@ sub restart()
 sub fileChanged()
 {   my $self = shift;
     my ($size, $mtime) = (stat $self->filename)[7,9];
-    return 0 unless $size;
-
-      $size != $self->{MBP_size} ? 0
-    : !defined $mtime            ? 0
-    : $mtime != $self->{MBP_mtime};
+    return 0 if !defined $size || !defined $mtime;
+    $size != $self->{MBP_size} || $mtime != $self->{MBP_mtime};
 }
     
 #------------------------------------------

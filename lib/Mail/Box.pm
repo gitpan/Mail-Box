@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.046';
+$VERSION = '2.047';
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;

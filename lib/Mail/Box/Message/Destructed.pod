@@ -550,7 +550,23 @@ See L<Mail::Message/"Flags">
 
 =back
 
+$obj-E<gt>B<labelsToStatus>
+
+=over 4
+
+See L<Mail::Message/"Flags">
+
+=back
+
 $obj-E<gt>B<modified>([BOOLEAN])
+
+=over 4
+
+See L<Mail::Message/"Flags">
+
+=back
+
+$obj-E<gt>B<statusToLabels>
 
 =over 4
 
@@ -876,7 +892,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.046.
+Distribution version 2.047.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -1,5 +1,11 @@
-use Test::More tests => 18;
-use File::Copy;
+#!/usr/bin/perl -T
+
+use warnings;
+use strict;
+
+use Tools;
+
+use Test::More tests => 14;
 
 BEGIN { use_ok('Mail::Transport::POP3') }
 
@@ -25,36 +31,13 @@ can_ok('Mail::Transport::POP3', qw(
  url
 ));
 
-# Setup a mailbox
+my $original     = File::Spec->catdir ('43pop3', 'original');
+my $popbox       = File::Spec->catdir ('43pop3', 'popbox');
 
-my $serverscript = '43pop3/server';
-my $original = '43pop3/original';
-my $popbox = '43pop3/popbox';
+copy_dir($original, $popbox);
+my ($server, $port) = start_pop3_server($popbox);
+my $receiver = start_pop3_client($port);
 
-mkdir $popbox; # be lenient in case previous test bombed
-ok(-d $popbox, "Directory $popbox does not exist") ;
-
-my $error = '';
-foreach my $from (<$original/????>)
-{   (my $to = $from) =~ s#^$original#$popbox#o;
-    $error = $! unless copy( $from,$to );
-}
-ok(!$error,
- "Could not copy one or more files from $original to $popbox: $error");
-
-# Setup the POP server
-
-ok(open(my $server, "$^X $serverscript $popbox|"),
- "Could not start POP3 server");
-my $port = <$server>; $port =~ s#\r?\n$##;
-ok( $port =~ m#^\d+$#, 'Did not get port specification');
-
-my $receiver = Mail::Transport::POP3->new(
- hostname => '127.0.0.1',
- port     => $port,
- username => 'user',
- password => 'password',
-);
 isa_ok($receiver, 'Mail::Transport::POP3');
 
 my $socket = $receiver->socket;
@@ -72,7 +55,7 @@ my @id = $receiver->ids;
 cmp_ok(scalar(@id), '==', scalar(@message), "Number of messages doesn't match");
 is(join('',@id), join('',@message), "ID's don't match filenames");
 
-$error = '';
+my $error = '';
 foreach(@id)
 {   my ($reported, $real) = ($receiver->messageSize($_),-s);
     $error .= "size $_ is not right: expected $real, got $reported\n"

@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::File;
 use vars '$VERSION';
-$VERSION = '2.046';
+$VERSION = '2.047';
 use base 'Mail::Box';
 
 use Mail::Box::File::Message;
@@ -422,6 +422,10 @@ sub _write_inplace($)
     # Chop the folder after the messages which does not have to change.
 
     my $end = defined $last ? ($last->fileLocation)[1] : 0;
+
+    $end =~ m/(.*)/;  # untaint, only required by perl5.6.1
+    $end = $1;
+
     unless($old->truncate($end))
     {   # truncate impossible: try replace writing
         $old->close;

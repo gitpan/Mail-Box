@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Maildir;
 use vars '$VERSION';
-$VERSION = '2.046';
+$VERSION = '2.047';
 use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
@@ -109,7 +109,9 @@ sub listSubFolders(@)
 
     # Check if the files we want to return are really folders.
 
+    @dirs = map { m/(.*)/ && $1 } @dirs;  # untaint
     return @dirs unless $args{check};
+
     grep { $class->foundIn(File::Spec->catfile($dir,$_)) } @dirs;
 }
 
@@ -217,7 +219,10 @@ sub readMessageFilenames
 {   my ($self, $dirname) = @_;
 
     opendir DIR, $dirname or return ();
-    my @files = grep { /^\d/ && -f File::Spec->catfile($dirname, $_) }
+
+    # unsorted list of untainted filenames.
+    my @files = map { /^(\d[\w.:,\-]+)$/
+                      && -f File::Spec->catfile($dirname, $1) ? $1 : () }
                    readdir DIR;
     closedir DIR;
 

@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::POP3::Message;
 use vars '$VERSION';
-$VERSION = '2.046';
+$VERSION = '2.047';
 use base 'Mail::Box::Net::Message';
 
 use File::Copy;
@@ -55,13 +55,33 @@ sub deleted(;$)
 
 #-------------------------------------------
 
+sub label(@)
+{   my $self = shift;
+    $self->loadHead;              # be sure the labels are read
+    $self->SUPER::label(@_);
+}
+
+#-------------------------------------------
+
+sub labels(@)
+{   my $self = shift;
+    $self->loadHead;              # be sure the labels are read
+    $self->SUPER::labels(@_);
+}
+
+#-------------------------------------------
+
 
 sub loadHead()
 {   my $self     = shift;
     my $head     = $self->head;
     return $head unless $head->isDelayed;
 
-    $self->head($self->folder->getHead($self));
+    $head        = $self->folder->getHead($self);
+    $self->head($head);
+
+    $self->statusToLabels;  # not supported by al POP3 servers
+    $head;
 }
 
 #-------------------------------------------

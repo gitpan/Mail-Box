@@ -905,12 +905,34 @@ that they will not all evaluate to true, although most of them will.
 
 =back
 
+$obj-E<gt>B<labelsToStatus>
+
+=over 4
+
+When the labels were changed, that may effect the C<Status> and/or
+C<X-Status> header lines of mbox messages.  Read about the relation
+between these fields and the labels in the DETAILS chapter.
+
+The method will carefully only affect the result of L<modified()|Mail::Message/"Flags"> when
+there is a real change of flags, so not for each call to L<label()|Mail::Message/"Flags">.
+
+=back
+
 $obj-E<gt>B<modified>([BOOLEAN])
 
 =over 4
 
 Returns (optionally after setting) whether this message is flagged as
 being modified.  See isModified().
+
+=back
+
+$obj-E<gt>B<statusToLabels>
+
+=over 4
+
+Update the labels according the status lines in the header.  See the
+description in the DETAILS chapter.
 
 =back
 
@@ -1410,6 +1432,27 @@ message once.
 
 =back
 
+=head3 Status and X-Status fields
+
+Mbox folders have no special means of storing information about messages
+(except the message separator line), and therefore have to revert to
+adding fields to the message header when something special comes up.
+This feature is also enabled for POP3, although whether that works
+depends on the POP server.
+
+All applications which can handle mbox folders support the C<Status> and
+C<X-Status> field convensions.  The following encoding is used:
+
+ Flag   Field       Label
+ R      Status   => seen    (Read)
+ O      Status   => old     (not recent)
+ A      X-Status => replied (Answered)
+ F      X-Status => flagged
+
+There is no special flag for C<deleted>, which most other folders support:
+messages flagged to be deleted will never be written to a folder file when
+it is closed.
+
 
 
 
@@ -1420,7 +1463,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.046.
+Distribution version 2.047.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

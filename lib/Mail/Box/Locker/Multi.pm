@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Box::Locker::Multi;
 use vars '$VERSION';
-$VERSION = '2.046';
+$VERSION = '2.047';
 use base 'Mail::Box::Locker';
 
 use IO::File;

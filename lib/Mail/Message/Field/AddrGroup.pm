@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field::AddrGroup;
 use vars '$VERSION';
-$VERSION = '2.046';
+$VERSION = '2.047';
 use base 'User::Identity::Collection::Emails';
 
 
@@ -15,7 +15,7 @@ use overload '""' => 'string';
 sub string()
 {   my $self = shift;
     my $name = $self->name;
-    my @addr = map {$_->string} $self->addresses;
+    my @addr = sort map {$_->string} $self->addresses;
 
     local $" = ', ';
 
