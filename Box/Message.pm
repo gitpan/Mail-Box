@@ -757,13 +757,12 @@ sub parts(@)
 sub part_upgrade($$)   # from MIME::Entity into Mail::Box::Message::Parsed
 {   my ($self, $part, $count) = @_;
 
+    bless $part, ref $self;
     $part->Mail::Box::Message::init
       ( { messageID => $self->messageID . '-p$count' }
       );
 
     $part->{MBM_is_part} = 1;
-
-#   bless $part, ref $self;    # shouldn't be necessary
     $self;
 }
  

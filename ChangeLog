@@ -3,6 +3,10 @@ CHANGELOG of Mail::Box
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
+version 1.113:
+
+	* Patch blessing in $folder->parts.
+
 version 1.112:
 
 	* Changed the detection of "From"-lines again... each Mbox-
