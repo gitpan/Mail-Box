@@ -7,14 +7,14 @@ Mail::Message - general message object
 =head1 INHERITANCE
 
  Mail::Message has extra code in
-   Mail::Message::Construct::Reply
-   Mail::Message::Construct::Text
-   Mail::Message::Construct::Bounce
-   Mail::Message::Construct::Rebuild
-   Mail::Message::Construct::Read
-   Mail::Message::Construct
-   Mail::Message::Construct::Build
    Mail::Message::Construct::Forward
+   Mail::Message::Construct::Text
+   Mail::Message::Construct::Build
+   Mail::Message::Construct::Rebuild
+   Mail::Message::Construct::Bounce
+   Mail::Message::Construct
+   Mail::Message::Construct::Reply
+   Mail::Message::Construct::Read
 
  Mail::Message
    is a Mail::Reporter
@@ -50,7 +50,7 @@ Mail::Message - general message object
 A C<Mail::Message> object is a container for MIME-encoded message information,
 as defined by RFC2822.  Everything what is not specificly related to storing
 the messages in mailboxes (folders) is implemented in this class.  Methods
-which are are related to folders is implemented in the L<Mail::Box::Message|Mail::Box::Message>
+which are related to folders is implemented in the L<Mail::Box::Message|Mail::Box::Message>
 extension.
 
 The main methods are L<get()|Mail::Message/"The header">, to get information from a message header
@@ -365,7 +365,7 @@ See L<Mail::Message::Construct::Reply/"Constructing a message">
 
 =back
 
-$obj-E<gt>B<replyPrelude>([STRING|FIELD|ADDRESS])
+$obj-E<gt>B<replyPrelude>([STRING|FIELD|ADDRESS|ARRAY-OF-THINGS])
 
 =over 4
 
@@ -564,12 +564,8 @@ $obj-E<gt>B<date>
 
 =over 4
 
-Returns the last C<Date> header line as string.
-
-I<Example:> using date() to get the C<Date> header field
-
-
- my $date = $message->date;
+Method has been removed for reasons of consistency.  Use L<timestamp()|Mail::Message/"The header">
+or C<$msg->head->get('Date')>.
 
 =back
 
@@ -729,7 +725,10 @@ $obj-E<gt>B<timestamp>
 
 =over 4
 
-Get a timestamp for the message, doesn't matter how much work it is.
+Get a good timestamp for the message, doesn't matter how much work it is.
+The value returned is compatible with the platform dependent result of
+function time().
+
 In these days, the timestamp as supplied by the message (in the C<Date>
 field) is not trustable at all: many spammers produce illegal or
 unreal dates to influence their location in the displayed folder.
@@ -1391,7 +1390,7 @@ I<body>.
 The header is a list of fields, some spanning more than one line
 (I<folded>) each telling something about the message. Information stored
 in here are for instance the sender of the message, the receivers of
-the message, when it was transported, how it was transported, etc etc.
+the message, when it was transported, how it was transported, etc.
 Headers can grow quite large.
 
 In MailBox, each message object manages exactly one header object
@@ -1590,7 +1589,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.054.
+Distribution version 2.055.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

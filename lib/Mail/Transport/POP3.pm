@@ -4,13 +4,13 @@ use warnings;
 
 package Mail::Transport::POP3;
 use vars '$VERSION';
-$VERSION = '2.054';
+$VERSION = '2.055';
 use base 'Mail::Transport::Receive';
 
 use IO::Socket  ();
-use Digest::MD5 ();
+use Socket      qw/$CRLF/;
 
-my $CRLF = $^O eq 'MSWin32' ? "\n" : "\015\012";
+use Digest::MD5 ();
 
 
 sub init($)
@@ -303,7 +303,7 @@ sub login(;$)
 
 # Check APOP login if automatic or APOP specifically requested
 
-    if($authenticate eq 'AUTO' or $authenticate eq 'APOP')
+    if($authenticate eq 'AUTO' || $authenticate eq 'APOP')
     {   if($welcome =~ m#^\+OK .*(<\d+\.\d+\@[^>]+>)#)
         {   my $md5 = Digest::MD5::md5_hex($1.$password);
             my $response = $self->send($socket, "APOP $username $md5$CRLF")
@@ -315,7 +315,7 @@ sub login(;$)
 # Check USER/PASS login if automatic and failed or LOGIN specifically requested
 
     unless($connected)
-    {   if($authenticate eq 'AUTO' or $authenticate eq 'LOGIN')
+    {   if($authenticate eq 'AUTO' || $authenticate eq 'LOGIN')
         {   my $response = $self->send($socket, "USER $username$CRLF")
                or return;
 
@@ -335,6 +335,7 @@ sub login(;$)
          "Could not authenticate using '$authenticate' method");
         return;
     }
+
     $socket;
 }
 

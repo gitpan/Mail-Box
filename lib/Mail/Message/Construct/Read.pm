@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.054';
+$VERSION = '2.055';
 
 use Mail::Box::FastScalar;
 
@@ -55,7 +55,7 @@ sub read($@)
      );
 
     my $self = $class->new(%args);
-    $self->readFromParser($parser);
+    $self->readFromParser($parser, $args{body_type});
     $self->addReport($parser);
 
     $parser->stop;

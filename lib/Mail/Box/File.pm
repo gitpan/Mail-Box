@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::File;
 use vars '$VERSION';
-$VERSION = '2.054';
+$VERSION = '2.055';
 use base 'Mail::Box';
 
 use Mail::Box::File::Message;
@@ -20,6 +20,9 @@ use File::Spec;
 use File::Basename;
 use POSIX ':unistd_h';
 use IO::File ();
+
+my $windows;
+BEGIN { $windows = $^O =~ m/mswin32|cygwin/i }
 
 
 my $default_folder_dir = exists $ENV{HOME} ? $ENV{HOME} . '/Mail' : '.';
@@ -293,8 +296,12 @@ sub updateMessages(@)
 
 
 sub messageCreateOptions(@)
-{   my $self = shift;
-    $self->{MBF_create_options} = [ @_ ] if @_;
+{   my ($self, @options) = @_;
+    if(@options)
+    {   ref($_) && ref($_) =~ m/^Mail::/ && weaken $_ for @options;
+        $self->{MBF_create_options} = \@options;
+    }
+    
     @{$self->{MBF_create_options}};
 }
 
@@ -406,7 +413,7 @@ sub _write_replace($)
     my $ok = $new->close;
     return 0 unless $old->close && $ok;
 
-    unlink $filename;
+    unlink $filename if $windows;
     unless(move $tmpnew, $filename)
     {   $self->log(WARNING =>
             "Cannot replace $filename by $tmpnew, to update folder $self: $!");

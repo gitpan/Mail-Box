@@ -1,7 +1,7 @@
 # http://module-build.sourceforge.net/META-spec.html
 #XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
 name:         Mail-Box
-version:      2.054
+version:      2.055
 version_from: lib/Mail/Box.pm
 installdirs:  site
 requires:
@@ -11,7 +11,6 @@ requires:
     File::Spec:                    0.7
     IO::Scalar:                    0
     Mail::Address:                 0
-    Mail::IMAPClient:              2.2
     MIME::Base64:                  0
     MIME::Types:                   1.004
     Object::Realize::Later:        0.14

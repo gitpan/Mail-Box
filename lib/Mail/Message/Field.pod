@@ -828,7 +828,7 @@ string.  If the same fieldname appears more than once in the header,
 only the last value is returned.
 
 When L<Mail::Message::Head::get()|Mail::Message::Head/"Access to the header"> is called in scalar context, the
-the last field with the specified name is returned as field B<object>.
+last field with the specified name is returned as field B<object>.
 This object strinigfies into the unfolded contents of the field, including
 attributes and comments.  In list context, all appearances of the field
 in the header are returned as objects.
@@ -1097,7 +1097,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.054.
+Distribution version 2.055.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.054';
+$VERSION = '2.055';
 use base 'Mail::Reporter';
 
 use Mail::Message::Field;
@@ -89,8 +89,8 @@ sub init($)
 
     # Set the content info
 
-    my ($mime, $transfer, $disp)
-      = @$args{ qw/mime_type transfer_encoding disposition/ };
+    my ($mime, $transfer, $disp, $charset)
+      = @$args{ qw/mime_type transfer_encoding disposition charset/ };
 
     if(defined $filename)
     {   unless(defined $disp)
@@ -107,12 +107,15 @@ sub init($)
         }
     }
 
-    $mime = $mime->type if ref $mime && $mime->isa('MIME::Type');
+    if(ref $mime && $mime->isa('MIME::Type'))
+    {   $mime    = $mime->type;
+    }
 
     if(defined(my $based = $args->{based_on}))
     {   $mime     = $based->type             unless defined $mime;
         $transfer = $based->transferEncoding unless defined $transfer;
         $disp     = $based->disposition      unless defined $disp;
+        $charset  = $based->charset          unless defined $charset;
 
         $self->{MMB_checked}
                = defined $args->{checked} ? $args->{checked} : $based->checked;
@@ -123,9 +126,9 @@ sub init($)
     }
 
     if(defined $mime)
-    {   $mime = $self->type($mime);
-        $mime->attribute(charset => $args->{charset} || 'us-ascii')
-            if $mime =~ m!^text/!;
+    {   #$charset ||= 'us-ascii' if $mime =~ m!^text/!i;
+        $mime = $self->type($mime);
+        $mime->attribute(charset => $charset) if defined $charset;
     }
 
     $self->transferEncoding($transfer) if defined $transfer;

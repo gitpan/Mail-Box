@@ -314,8 +314,11 @@ object method, L<Mail::Message::read()|Mail::Message::Construct::Read/"Construct
 As class method, the Mail::Internet compatible read is called.  OPTIONS are
 only available in the first case.
 
- Option               Defined in                         Default
- strip_status_fields  L<Mail::Message::Construct::Read>  <true> 
+ Option               Defined in       Default 
+ body_type            L<Mail::Message::Construct::Read>  C<undef>
+ strip_status_fields  L<Mail::Message::Construct::Read>  <true>  
+
+. body_type CLASS
 
 . strip_status_fields BOOLEAN
 
@@ -454,7 +457,7 @@ set to C<undef>, or the file does not exist, then a header will be created.
 
 =back
 
-$obj-E<gt>B<replyPrelude>([STRING|FIELD|ADDRESS])
+$obj-E<gt>B<replyPrelude>([STRING|FIELD|ADDRESS|ARRAY-OF-THINGS])
 
 =over 4
 
@@ -1332,7 +1335,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.054.
+Distribution version 2.055.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

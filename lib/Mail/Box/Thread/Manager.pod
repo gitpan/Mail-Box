@@ -265,7 +265,7 @@ is a possibility that this message is a reply itself.
 
 Usually, all messages which are in reply of this message are dated later
 than the specified one.  All headers of messages later than this one are
-are getting parsed first, for each folder in this threads-object.
+getting parsed first, for each folder in this threads-object.
 
 I<Example:> 
 
@@ -568,7 +568,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.054.
+Distribution version 2.055.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -80,7 +80,7 @@ $obj-E<gt>B<fieldContentsToHtml>(FIELD, [SUBJECT])
 =over 4
 
 Format one field from the header to HTML.  When the header line usually
-usually contains e-mail addresses, the line is scanned and valid addresses
+contains e-mail addresses, the line is scanned and valid addresses
 are linked with an C<mailto:> anchor.  The SUBJECT can be specified to
 be included in that link.
 
@@ -307,7 +307,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.054.
+Distribution version 2.055.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

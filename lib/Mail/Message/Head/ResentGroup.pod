@@ -56,7 +56,7 @@ WARNING: this method has two very different purposes.  For backward
 compatibility reasons, without arguments L<resentFrom()|Mail::Message::Head::ResentGroup/"Access to the header"> is called to
 return the C<From> field of this resent group.
 
-With any arguments, a a list of C<Mail::Message::Head::ResentGroup> objects
+With any arguments, a list of C<Mail::Message::Head::ResentGroup> objects
 is returned, taken from the specified MESSAGE or message HEAD.
 
 =back
@@ -641,7 +641,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.054.
+Distribution version 2.055.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

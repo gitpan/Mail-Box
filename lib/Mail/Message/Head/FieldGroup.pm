@@ -1,7 +1,7 @@
 
 package Mail::Message::Head::FieldGroup;
 use vars '$VERSION';
-$VERSION = '2.054';
+$VERSION = '2.055';
 use base 'Mail::Reporter';
 
 use strict;
@@ -68,11 +68,8 @@ sub head() { shift->{MMHF_head} }
 
 sub attach($)
 {   my ($self, $head) = @_;
-    my $lg = ref($self)->clone;
-    $self->{MMHF_head} = $head;
-
     $head->add($_->clone) for $self->fields;
-    $lg;
+    $self;
 }
 
 #------------------------------------------

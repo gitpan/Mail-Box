@@ -1,18 +1,80 @@
 
 package Mail::Message::Head::SpamGroup;
 use vars '$VERSION';
-$VERSION = '2.054';
+$VERSION = '2.055';
 use base 'Mail::Message::Head::FieldGroup';
 
 use strict;
 use warnings;
 
+use Carp 'confess';
+
 
 #------------------------------------------
 
-my @implemented = qw/SpamAssassin Habeas-SWE MailScanner/;
 
-sub implementedTypes() { @implemented }
+my %fighters;
+my $fighterfields;    # one regexp for all fields
+
+sub knownFighters() { keys %fighters }
+
+#------------------------------------------
+
+
+sub fighter($;@)
+{   my ($thing, $name) = (shift, shift);
+
+    if(@_)
+    {   my %args   = @_;
+        defined $args{fields} or confess "Spamfighters require fields\n";
+        defined $args{isspam} or confess "Spamfighters require isspam\n";
+        $fighters{$name} = \%args;
+
+        my @fields = map { $_->{fields} } values %fighters;
+        local $" = '|';
+        $fighterfields = qr/@fields/;
+    }
+
+    %{$fighters{$name}};
+}
+
+
+BEGIN
+{  __PACKAGE__->fighter( SpamAssassin =>
+       fields  => qr/^X-Spam-/i
+     , isspam  =>
+          sub { my ($sg, $head) = @_;
+                my $f = $head->get('X-Spam-Flag') || $head->get('X-Spam-Status')
+                   or return 0;
+
+                $f =~ m/^yes\b/i;
+              }
+    , version =>
+          sub { my ($sg, $head) = @_;
+                my $assin = $head->get('X-Spam-Checker-Version') or return ();
+                my ($software, $version) = $assin =~ m/^(.*)\s+(.*?)\s*$/;
+                ($software, $version);
+              }
+    );
+
+  __PACKAGE__->fighter( 'Habeas-SWE' =>
+      fields  => qr/^X-Habeas-SWE/i
+    , isspam  =>
+          sub { my ($sg, $head) = @_;
+                not $sg->habeasSweFieldsCorrect;
+              }
+    );
+
+  __PACKAGE__->fighter( MailScanner  =>
+      fields  => qr/^X-MailScanner/i
+    , isspam  =>
+          sub { my ($sg, $head) = @_;
+                my $subject = $head->get('subject');
+                $subject =~ m/^\{ (?:spam|virus)/xi;
+              }
+    );
+
+}
 
 #------------------------------------------
 
@@ -22,36 +84,18 @@ sub from($@)
    my $head  = $from->isa('Mail::Message::Head') ? $from : $from->head;
    my ($self, @detected);
 
-   my @types = defined $args{types} ? @{$args{types}}
-             :                        $class->implementedTypes;
+   my @types = defined $args{types} ? @{$args{types}} : $class->knownFighters;
 
    foreach my $type (@types)
    {   $self = $class->new(head => $head) unless defined $self;
        next unless $self->collectFields($type);
 
-       my ($software, $version, $spam);
-       if($type eq 'SpamAssassin')
-       {   if(my $assassin = $head->get('X-Spam-Checker-Version'))  
-           {   # SpamAssassin combine version and subversion.
-               ($software, $version) = $assassin =~ m/^(.*)\s+(.*?)\s*$/;
-           }
-
-           if(my $f = $head->get('X-Spam-Flag') || $head->get('X-Spam-Status'))
-           {   $spam = $f =~ m/yes/i;
-           }
-       }
-       elsif($type eq 'Habeas-SWE')
-       {   ; # no version information, as far as I know
-           $spam = not $self->habeasSweFieldsCorrect;
-       }
-       elsif($type eq 'MailScanner')
-       {   ; # no version information, as far as I know
-           my $subject = $head->get('subject');
-           $spam = $subject =~ m/^\{ (?:spam|virus)/xi;
-       }
+       my %fighter = $self->fighter($type);
+       my ($software, $version)
+           = defined $fighter{version} ? $fighter{version}->($self, $head) : ();
  
        $self->detected($type, $software, $version);
-       $self->spamDetected($spam);
+       $self->spamDetected( $fighter{isspam}->($self, $head) );
 
        push @detected, $self;
        undef $self;             # create a new one
@@ -62,18 +106,12 @@ sub from($@)
 
 #------------------------------------------
 
-my $spam_assassin_names = qr/^X-Spam-/i;
-my $habeas_swe_names    = qr/^X-Habeas-SWE/i;
-my $mailscanner_names   = qr/^X-MailScanner/i;
-
 sub collectFields($)
 {   my ($self, $set) = @_;
-    my $scan = $set eq 'SpamAssassin' ? $spam_assassin_names
-             : $set eq 'Habeas-SWE'   ? $habeas_swe_names
-             : $set eq 'MailScanner'  ? $mailscanner_names
-             : die "No spam set $set.";
+    my %fighter = $self->fighter($set)
+       or confess "ERROR: No spam set $set.";
 
-    my @names = map { $_->name } $self->head->grepNames($scan);
+    my @names = map { $_->name } $self->head->grepNames( $fighter{fields} );
     return () unless @names;
 
     $self->addFields(@names);
@@ -83,14 +121,7 @@ sub collectFields($)
 #------------------------------------------
 
 
-sub isSpamGroupFieldName($)
-{  local $_ = $_[1];
-    my $about_spam = (   $_ =~ $spam_assassin_names
-                      || $_ =~ $habeas_swe_names
-                      || $_ =~ $mailscanner_names
-                     );
-    $about_spam;
-}
+sub isSpamGroupFieldName($) { $_[1] =~ $fighterfields }
 
 #------------------------------------------
 

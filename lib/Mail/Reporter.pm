@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Reporter;
 use vars '$VERSION';
-$VERSION = '2.054';
+$VERSION = '2.055';
 
 use Carp;
 use Scalar::Util 'dualvar';
@@ -17,7 +17,11 @@ for(my $l = 1; $l < @levelname; $l++)
     $levelprio{$l} = $l;
 }
 
-sub new(@) {my $class = shift; (bless {}, $class)->init({@_}) }
+sub new(@)
+{   my $class = shift;
+#confess "Parameter list has odd length: @_" if @_ % 2;
+    (bless {}, $class)->init({@_});
+}
 
 my $default_log   = $levelprio{WARNINGS};
 my $default_trace = $levelprio{WARNINGS};

@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.054';
+$VERSION = '2.055';
 
 use Mail::Message::Body::Multipart;
 use Mail::Address;
@@ -223,6 +223,8 @@ sub replySubject($)
 sub replyPrelude($)
 {   my ($self, $who) = @_;
  
+    $who = $who->[0] if ref $who eq 'ARRAY';
+
     my $user
      = !defined $who                     ? undef
      : !ref $who                         ? (Mail::Address->parse($who))[0]

@@ -19,7 +19,7 @@ Mail::Message::Head::SpamGroup - spam fighting related header fields
  my $sg = $head->addSpamGroup( <options> );
  $sg->delete;
  
- my @sgs = $head=>spamGroups;
+ my @sgs = $head->spamGroups;
 
 
 =head1 DESCRIPTION
@@ -41,6 +41,60 @@ $obj-E<gt>B<clone>
 =over 4
 
 See L<Mail::Message::Head::FieldGroup/"Constructors">
+
+=back
+
+$obj-E<gt>B<fighter>(NAME, [SETTINGS])
+
+Mail::Message::Head::SpamGroup-E<gt>B<fighter>(NAME, [SETTINGS])
+
+=over 4
+
+Get the SETTINGS of a certain spam-fighter, optionally after setting them.
+The L<knownFighters()> method returns the defined names.  The names
+are case-sensitive.
+
+ Option   Defined in       Default   
+ fields                    <required>
+ isspam                    <required>
+ version                   C<undef>  
+
+. fields REGEXP
+
+=over 4
+
+The regular expression which indicates which of the header fields are
+added by the spam fighter software.
+
+=back
+
+. isspam CODE
+
+=over 4
+
+The CODE must return true or false, to indicate whether the spam fighter
+thinks that the message contains spam.  The CODE ref is called with
+the spamgroup object (under construction) and the header which is inspected.
+
+=back
+
+. version CODE
+
+=over 4
+
+Can be called to collect the official name and the version of the
+software which is used to detect spam.  The CODE ref is called with
+the spamgroup object (under construction) and the header which is inspected.
+
+=back
+
+I<Example:> adding your own spam-fighter definitions
+
+
+ Mail::Message::Head::SpamGroup->fighter( 'MY-OWN',
+    fields => qw/^x-MY-SPAM-DETECTOR-/,
+    isspam => sub { my ($sg, $head) = @_; $head->fields > 100 }
+   );
 
 =back
 
@@ -107,6 +161,18 @@ $obj-E<gt>B<isSpamGroupFieldName>(NAME)
 Mail::Message::Head::SpamGroup-E<gt>B<isSpamGroupFieldName>(NAME)
 
 =over 4
+
+=back
+
+$obj-E<gt>B<knownFighters>
+
+Mail::Message::Head::SpamGroup-E<gt>B<knownFighters>
+
+=over 4
+
+Returns an unsorted list of all names representing pre-defined spam-fighter
+software.  You can ask details about them, and register more fighters with
+the L<fighter()|Mail::Message::Head::SpamGroup/"Constructors"> method.
 
 =back
 
@@ -463,7 +529,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.054.
+Distribution version 2.055.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

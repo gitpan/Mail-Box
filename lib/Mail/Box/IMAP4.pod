@@ -251,7 +251,7 @@ same server will try to reuse one connection.
 
 . lock_timeout SECONDS
 
-. lock_type CLASS|STRING
+. lock_type CLASS|STRING|ARRAY
 
 . lock_wait SECONDS
 
@@ -1002,7 +1002,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.054.
+Distribution version 2.055.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

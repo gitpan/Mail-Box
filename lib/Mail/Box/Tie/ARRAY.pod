@@ -131,7 +131,7 @@ $obj-E<gt>B<STORE>(INDEX, MESSAGE)
 
 =over 4
 
-Random message replacement is is not permitted--doing so would disturb threads
+Random message replacement is not permitted --doing so would disturb threads
 etc.  An error occurs if you try to do this. The only thing which is allowed
 is to store a message at the first free index at the end of the folder (which
 is also achievable with L<PUSH()|Mail::Box::Tie::ARRAY/"Tied Interface">).
@@ -180,7 +180,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.054.
+Distribution version 2.055.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

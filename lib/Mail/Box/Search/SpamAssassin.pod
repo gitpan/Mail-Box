@@ -100,7 +100,7 @@ the Mail::SpamAssassin module.
 
 =over 4
 
-Mark all selected selected message with the specified STRING.  If this
+Mark all selected message with the specified STRING.  If this
 option is explicitly set to C<undef>, the label will not be set.
 
 =back
@@ -354,7 +354,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.054.
+Distribution version 2.055.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -436,13 +436,15 @@ this folder.
 
 =back
 
-. lock_type CLASS|STRING
+. lock_type CLASS|STRING|ARRAY
 
 =over 4
 
 The type of the locker object.  This may be the full name of a CLASS
 which extends Mail::Box::Locker, or one of the known locker types
-C<DotLock>, C<File>, C<Multi>, C<NFS>, C<POSIX>, or C<NONE>.
+C<DotLock>, C<File>, C<Multi>, C<NFS>, C<POSIX>, or C<NONE>.  If an
+ARRAY is specified, then a Multi locker is built which uses the specified
+list.
 
 =back
 
@@ -1778,7 +1780,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.054.
+Distribution version 2.055.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

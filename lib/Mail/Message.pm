@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.054';
+$VERSION = '2.055';
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -187,19 +187,24 @@ sub write(;$)
 my $default_mailer;
 
 sub send(@)
-{   my ($self, @options) = @_;
+{   my $self = shift;
 
     require Mail::Transport::Send;
 
-    my $mailer
-       = (ref $_[0] && $_[0]->isa('Mail::Transport::Send')) ? shift
-       : (!@options && defined $default_mailer)             ? $default_mailer
-       : ($default_mailer = Mail::Transport::Send->new(@options));
+    my $mailer;
+    $default_mailer = $mailer = shift
+        if ref $_[0] && $_[0]->isa('Mail::Transport::Send');
 
-    $self->log(ERROR => "No default mailer found to send message."), return
-        unless defined $mailer;
+    my %args = @_;
+    if( ! $args{via} && defined $default_mailer )
+    {   $mailer = $default_mailer
+    }
+    else
+    {   my $via = delete $args{via} || 'sendmail';
+        $default_mailer = $mailer = Mail::Transport->new(via => $via);
+    }
 
-    $mailer->send($self, @options);
+    $mailer->send($self, %args);
 }
 
 #------------------------------------------
@@ -288,8 +293,6 @@ sub bcc() { map {$_->addresses} shift->head->get('Bcc') }
 
 #-------------------------------------------
 
-
-sub date() { shift->head->get('Date') }
 
 #-------------------------------------------
 

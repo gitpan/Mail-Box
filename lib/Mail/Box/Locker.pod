@@ -88,18 +88,22 @@ Name of the file to lock.  By default, the name of the folder is taken.
 
 =over 4
 
-Which folder is locked.
+Which FOLDER is to be locked, a L<Mail::Box|Mail::Box> object.
 
 =back
 
 . log LEVEL
 
-. method METHOD | CLASS
+. method STRING|CLASS|ARRAY
 
 =over 4
 
-Which kind of locking, specified as one of the following names, or a
-full CLASS name.  Supported METHODs are
+Which kind of locking, specified as one of the following names as STRING.
+You may also specify a CLASS name, or an ARRAY of names.  In case of an
+ARRAY, a 'multi' locker is started with all thee 
+full CLASS name.
+
+Supported locking names are
 
 =over 4
 
@@ -126,9 +130,10 @@ Use the POSIX standard fcntl locking.
 
 =item 'MULTI' | 'multi'
 
-Try more than one locking method to be used at the same time, probably
-all available, to avoid any chance that you miss a lock from a different
-application.
+Use ALL available locking methods at the same time, to have a bigger
+chance that the folder will not be modified by some other application
+which uses an unspecified locking method.  When one of the locking
+methods disallows access, the locking fails.
 
 =item 'NFS' | 'nfs'
 
@@ -411,7 +416,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.054.
+Distribution version 2.055.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

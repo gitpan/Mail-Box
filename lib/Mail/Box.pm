@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.054';
+$VERSION = '2.055';
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -191,7 +191,7 @@ sub size() { sum map { $_->size } shift->messages('ACTIVE') }
 sub update(@)
 {   my $self = shift;
 
-    my @new  = $self->updateMessages
+    $self->updateMessages
       ( trusted      => $self->{MB_trusted}
       , head_type    => $self->{MB_head_type}
       , field_type   => $self->{MB_field_type}
@@ -201,7 +201,6 @@ sub update(@)
       , @_
       );
 
-    $self->log(PROGRESS => "Found ".@new." new messages in $self");
     $self;
 }
 
@@ -432,7 +431,7 @@ sub isModified()
     return 1 if $self->{MB_modified};
 
     foreach (@{$self->{MB_messages}})
-    {   return $self->{MB_modified} = 1
+    {    return $self->{MB_modified} = 1
             if $_->isDeleted || $_->isModified;
     }
 
@@ -822,7 +821,7 @@ sub readMessages(@) {shift->notImplemented}
 #-------------------------------------------
 
 
-sub updateMessages(@) {shift}
+sub updateMessages(@) { shift }
 
 #-------------------------------------------
 

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body::Nested;
 use vars '$VERSION';
-$VERSION = '2.054';
+$VERSION = '2.055';
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -122,7 +122,25 @@ sub read($$$$)
 
 #-------------------------------------------
 
-sub fileLocation(;$$) { shift->{MMBN_nested}->fileLocation(@_) }
+sub fileLocation()
+{   my $nested   = shift->nested;
+
+    ( ($nested->head->fileLocation)[0]
+    , ($nested->body->fileLocation)[1]
+    );
+}
+
+#------------------------------------------
+
+sub moveLocation($)
+{   my $self   = shift;
+    my $nested = $self->nested;
+    my $dist   = shift or return $self;  # no move
+
+    $nested->head->moveLocation($dist);
+    $nested->body->moveLocation($dist);
+    $self;
+}
 
 #------------------------------------------
 

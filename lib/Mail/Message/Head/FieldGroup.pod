@@ -75,7 +75,7 @@ Mail::Message::Head::FieldGroup-E<gt>B<new>(FIELDS, OPTIONS)
 
 =over 4
 
-Construct an object which maintains one set of spam headers.  The
+Construct an object which maintains one set of header FIELDS.  The
 FIELDS may be specified as C<Mail::Message::Field> objects or as key-value
 pairs.  The OPTIONS and FIELDS (as key-value pair) can be mixed: they are
 distinguished by their name, where the fields always start with a capital.
@@ -93,7 +93,7 @@ The field objects must aways lead the OPTIONS.
 
 =over 4
 
-The header HEAD object is used to store the spam related fields in.
+The header HEAD object is used to store the grouped fields in.
 If no header is specified, a L<Mail::Message::Head::Partial|Mail::Message::Head::Partial> is created
 for you.  If you wish to scan the existing fields in a header, then use
 the L<from()|Mail::Message::Head::FieldGroup/"Constructors"> method.
@@ -180,6 +180,8 @@ I<Example:> attaching a list group to a message
  my $lg = Mail::Message::Head::ListGroup->new(...);
  $lg->attach($msg->head);
  $msg->head->addListGroup($lg);   # same
+
+ $msg->head->addSpamGroup($sg);   # also implemented with attach
 
 =back
 
@@ -449,7 +451,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.054.
+Distribution version 2.055.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

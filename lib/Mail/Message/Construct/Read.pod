@@ -49,8 +49,19 @@ This method will remove C<Status> and C<X-Status> fields when they appear
 in the source, to avoid the risk that these fields accidentally interfere
 with your internal administration, which may have security implications.
 
- Option               Defined in  Default
- strip_status_fields              <true> 
+ Option               Defined in       Default 
+ body_type                             C<undef>
+ strip_status_fields                   <true>  
+
+. body_type CLASS
+
+=over 4
+
+Force a body type (any specific implementation of a L<Mail::Message::Body|Mail::Message::Body>)
+to be used to store the message content.  When the body is a multipart or
+nested, this will be overruled.
+
+=back
 
 . strip_status_fields BOOLEAN
 
@@ -98,7 +109,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.054.
+Distribution version 2.055.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

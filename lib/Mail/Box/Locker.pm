@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Box::Locker;
 use vars '$VERSION';
-$VERSION = '2.054';
+$VERSION = '2.055';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -31,16 +31,21 @@ sub new(@)
     # Try to figure out which locking method we really want (bootstrap)
 
     my %args   = @_;
-    my $method = defined $args{method} ? uc $args{method} : 'DOTLOCK';
+    my $method = !defined $args{method}       ? 'DOTLOCK'
+               : ref $args{method} eq 'ARRAY' ? 'MULTI'
+               :                                 uc $args{method};
+
     my $create = $lockers{$method} || $args{$method};
 
-    local $" = ' or ';
+    local $"   = ' or ';
     confess "No locking method $method defined: use @{[ keys %lockers ]}"
         unless $create;
 
     # compile the locking module (if needed)
     eval "require $create";
     confess $@ if $@;
+
+    $args{use} = $args{method} if ref $args{method} eq 'ARRAY';
 
     $create->SUPER::new(%args);
 }
