@@ -11,6 +11,8 @@ Mail/Box/Locker/NFS.pm
 Mail/Box/Locker/POSIX.pm
 Mail/Box/Locker.pm
 Mail/Box/Manager.pm
+Mail/Box/Maildir.pm
+Mail/Box/Maildir/Message.pm
 Mail/Box/Mbox/Message.pm
 Mail/Box/Mbox.pm
 Mail/Box/Message/Dummy.pm
@@ -19,6 +21,8 @@ Mail/Box/MH.pm
 Mail/Box/MH/Message.pm
 Mail/Box/MH/Index.pm
 Mail/Box/MH/Labels.pm
+Mail/Box/Dir.pm
+Mail/Box/Dir/Message.pm
 Mail/Box/Parser/C.pm
 Mail/Box/Parser/Perl.pm
 Mail/Box/Parser.pm
@@ -123,6 +127,7 @@ t/43mh3a.t
 t/43mh5c.t
 t/43mh6t.t
 t/43mh7s.t
+t/44maildir1.t
 t/51stripsig.t
 t/55reply0s.t
 t/55reply1r.t

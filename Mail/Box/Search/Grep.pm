@@ -25,11 +25,11 @@ Mail::Box::Search::Grep - select messages within a mail box like grep does
  my $mgr    = Mail::Box::Manager->new;
  my $folder = $mgr->open('Inbox');
 
- my $filter = Mail::Box::Search::Grep->new;
- my @msgs   = $filter->search
+ my $filter = Mail::Box::Search::Grep->new
     ( $folder, label => 'selected'
     , in => 'BODY', match => qr/abc?d*e/
     );
+ my @msgs   = $filter->search($folder);
 
  my $filter = Mail::Box::Search::Grep
     ->new(field => 'To', match => $my_email);
@@ -40,6 +40,9 @@ Mail::Box::Search::Grep - select messages within a mail box like grep does
 Read L<Mail::Box-Overview> first.
 
 =head1 METHOD INDEX
+
+Methods prefixed with an abbreviation are described in
+L<Mail::Reporter> (MR), L<Mail::Box::Search> (MBS).
 
 The general methods for C<Mail::Box::Search::Grep> objects:
 
@@ -55,12 +58,6 @@ The extra methods for extension writers:
    MR DESTROY                           MR logPriority LEVEL
   MBS inBody PART, BODY                 MR logSettings
    MR inGlobalDestruction               MR notImplemented
-
-Methods prefixed with an abbreviation are described in the following
-manual-pages:
-
-   MR = L<Mail::Reporter>
-  MBS = L<Mail::Box::Search>
 
 =head1 METHODS
 
@@ -137,6 +134,10 @@ When the result is true, the details are delivered.  The call formats are
  $code->($head, $field);          # for HEAD searches
  $code->($body, $linenr, $line);  # for BODY searches
 
+The C<$head> resp C<$body> are one message's head resp. body object.  The
+C<$field> is a header line which matches.  The C<$line> and C<$linenr>
+tell the matching line in the body.
+
 Be warned that when you search C<in =E<gt> MESSAGE> the code must accept
 both formats.
 
@@ -153,7 +154,7 @@ sub init($)
     my $take = $args->{field};
     $self->{MBSG_field_check}
      = !defined $take         ? sub {1}
-     : !ref $take             ? sub { lc $_[1] eq $take }
+     : !ref $take             ? do {$take = lc $take; sub { $_[1] eq $take }}
      :  ref $take eq 'Regexp' ? sub { $_[1] =~ $take }
      :  ref $take eq 'CODE'   ? $take
      : croak "Illegal field selector $take.";
@@ -221,7 +222,6 @@ sub inHead(@)
   LINES:
     foreach my $name ($head->names)
     {   next unless $field_check->($head, $name);
-
         foreach my $field ($head->get($name))
         {   next unless $match_check->($head, $field);
             $matched++;
@@ -324,7 +324,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

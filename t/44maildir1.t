@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 #
-# Test reading of MH folders.
+# Test reading of Maildir folders.
 #
 
 use Test;
@@ -9,7 +9,7 @@ use strict;
 use warnings;
 
 use lib qw(. t /home/markov/MailBox2/fake);
-use Mail::Box::MH;
+use Mail::Box::Maildir;
 use Mail::Box::Mbox;
 use Tools;
 
@@ -18,25 +18,22 @@ use File::Copy;
 
 BEGIN {plan tests => 27}
 
-my $mhsrc = File::Spec->catfile('t', 'mh.src');
+my $mdsrc = File::Spec->catfile('t', 'maildir.src');
 
-unpack_mbox2mh($src, $mhsrc);
+unpack_mbox2maildir($src, $mdsrc);
 
-warn "   * MH status BETA\n";
-ok(Mail::Box::MH->foundIn($mhsrc));
+warn "   * Maildir under development\n";
+ok(Mail::Box::Maildir->foundIn($mdsrc));
 
-my $folder = new Mail::Box::MH
-  ( folder       => $mhsrc
+my $folder = new Mail::Box::Maildir
+  ( folder       => $mdsrc
   , folderdir    => 't'
-  , lock_type    => 'NONE'
   , extract      => 'LAZY'
-  , access       => 'rw'
+  , access       => 'r'
+  , trace        => 'NONE'
   );
 
 ok(defined $folder);
-
-# We skipped message number 13 in the production, but that shouldn't
-# distrub things.
 
 ok($folder->messages==45);
 ok($folder->organization eq 'DIRECTORY');
@@ -50,7 +47,7 @@ my $heads = 0;
 foreach ($folder->messages)
 {  $heads++ unless $_->head->isDelayed;
 }
-ok($heads==0);
+ok($heads==4);   # Last 4 messages started in new and have Status read
 
 #
 # Loading a header should not be done unless really necessary.
@@ -147,8 +144,8 @@ $folder->close;
 #
 
 my $parse_size = 5000;
-$folder = new Mail::Box::MH
-  ( folder    => $mhsrc
+$folder = new Mail::Box::Maildir
+  ( folder    => $mdsrc
   , folderdir => 't'
   , lock_type => 'NONE'
   , extract   => $parse_size  # messages > $parse_size bytes stay unloaded.
@@ -189,4 +186,4 @@ ok(not $mistake);
 ok($parsed == 7);
 ok($heads == 9);
 
-#clean_dir $mhsrc;
+clean_dir $mdsrc;

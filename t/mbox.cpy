@@ -68,7 +68,6 @@ Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
 
-
 From magick-owner@unca-don.wizards.dupont.com Wed Feb  9 23:15 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
 	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id XAA24500
@@ -166,7 +165,6 @@ To remove yourself from this mailing list, send mail to:
 Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
-
 
 From magick-owner@unca-don.wizards.dupont.com Wed Feb  9 23:15 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -268,7 +266,6 @@ Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
 
-
 From magick-owner@unca-don.wizards.dupont.com Wed Feb 23 17:28 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
 	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id RAA20894
@@ -342,7 +339,6 @@ To remove yourself from this mailing list, send mail to:
 Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
-
 
 From magick-owner@unca-don.wizards.dupont.com Wed Feb 23 20:13 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -448,7 +444,6 @@ To remove yourself from this mailing list, send mail to:
 Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
-
 
 From magick-owner@unca-don.wizards.dupont.com Thu Feb 24 18:17 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -644,7 +639,6 @@ To remove yourself from this mailing list, send mail to:
 Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
-
 
 From magick-owner@unca-don.wizards.dupont.com Thu Feb 24 20:21 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -886,7 +880,6 @@ Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
 
-
 From markov Sun Aug  8 10:04:17 1999
 Subject: Resize with Transparency
 To: magick@wizards.dupont.com
@@ -937,7 +930,6 @@ Thanks,
 drs Mark A.C.J. Overmeer                           markov@ATComputing.nl
 AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
-
 
 From magick-owner@unca-don.wizards.dupont.com Thu Mar 30 19:09 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -1038,7 +1030,6 @@ Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
 
-
 From markov@ATComputing.nl Fri Mar 31 17:01:17 2000
 Date: Fri, 31 Mar 2000 17:01:17 +0200
 From: Mark Overmeer <markov@ATComputing.nl>
@@ -1078,7 +1069,6 @@ Is it just a slip of pen here, or just usual programmers-blindness?
 drs Mark A.C.J. Overmeer                           markov@ATComputing.nl
 AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
-
 
 From magick-owner@unca-don.wizards.dupont.com Fri Mar 31 01:39 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -1167,7 +1157,6 @@ Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
 
-
 From magick-owner@unca-don.wizards.dupont.com Fri Mar 31 02:25 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
 	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id CAA16260
@@ -1244,7 +1233,6 @@ Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
 
-
 From markov@ATComputing.nl Mon Apr  3 08:25:55 2000
 Date: Mon, 3 Apr 2000 08:25:55 +0200
 From: Mark Overmeer <markov@ATComputing.nl>
@@ -1283,7 +1271,6 @@ Compatibility between all those libs and apps will continue to haunt us.
 drs Mark A.C.J. Overmeer                           markov@ATComputing.nl
 AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
-
 
 From cknoos@atg.com Sat Apr  1 22:42 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -1381,7 +1368,6 @@ Include the following command in the body of your message:
 ***********************************************************************
 
 
-
 From markov@ATComputing.nl Tue May  9 15:14:18 2000
 Date: Tue, 9 May 2000 15:14:18 +0200
 From: Mark Overmeer <markov@ATComputing.nl>
@@ -1422,7 +1408,6 @@ you may still use the old versions...
 drs Mark A.C.J. Overmeer                           markov@ATComputing.nl
 AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
-
 
 From magick-owner@unca-don.wizards.dupont.com Tue May  9 15:11 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -1477,7 +1462,6 @@ To remove yourself from this mailing list, send mail to:
 Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
-
 
 From magick-owner@unca-don.wizards.dupont.com Wed May 17 16:07 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -1566,7 +1550,6 @@ Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
 
-
 From magick-bugs@simple.dallas.tx.us Wed Jun 14 16:54 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
 	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id QAA25632
@@ -1599,7 +1582,6 @@ http://www.simplesystems.org/ImageMagick/bugs?findid=298
 
 Report any problems with the bug tracking system itself to
 Bob Friesenhahn <bfriesen@simple.dallas.tx.us>.
-
 
 
 From markov@ATComputing.nl Wed Jun 14 17:43:34 2000
@@ -1652,7 +1634,6 @@ And also: the text still appears in black.
 drs Mark A.C.J. Overmeer                           markov@ATComputing.nl
 AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
-
 
 From cristy@mystic.es.dupont.com Wed Jun 14 17:23 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -1735,7 +1716,6 @@ drs Mark A.C.J. Overmeer                           markov@ATComputing.nl
 AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
 
-
 From cristy@mystic.es.dupont.com Wed Jun 14 17:46 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
 	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id RAA27475
@@ -1767,7 +1747,6 @@ Lines: 4
 There is alot that is not clear in the docs.  We're writing a book due
 out next year to fix these sorts of problems.
 
-
 From cristy@mystic.es.dupont.com Wed Jun 14 17:56 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
 	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id RAA27517
@@ -1798,7 +1777,6 @@ Lines: 5
 
 Sure if you remind me what they are.  I get upwards of 100+ e-mails a day
 so it's hard to keep track...
-
 
 From markov@ATComputing.nl Wed Jun 14 18:00:18 2000
 Date: Wed, 14 Jun 2000 18:00:18 +0200
@@ -1862,7 +1840,6 @@ Thanks for the example anyway.
 > drs Mark A.C.J. Overmeer                           markov@ATComputing.nl
 > AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 > http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
-
 
 From markov@ATComputing.nl Wed Jun 14 18:17:41 2000
 Date: Wed, 14 Jun 2000 18:17:41 +0200
@@ -2003,7 +1980,6 @@ is placed relative to the virtual bounding box.
 Are you using ImageMagick 5.2.0?  When I used the script I sent the
 text color was indeed yellow.
 
-
 From cristy@eplrx7.es.dupont.com Wed Jun 14 18:05 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
 	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id SAA28006
@@ -2116,7 +2092,6 @@ Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
 
-
 From markov@ATComputing.nl Tue Jul  4 12:33:47 2000
 Date: Tue, 4 Jul 2000 12:33:47 +0200
 From: Mark Overmeer <markov@ATComputing.nl>
@@ -2144,7 +2119,6 @@ Both indicated problems are fixed in 5.2.1
 drs Mark A.C.J. Overmeer                           markov@ATComputing.nl
 AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
-
 
 From magick-owner@unca-don.wizards.dupont.com Sun Jul  2 02:40 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -2223,7 +2197,6 @@ To remove yourself from this mailing list, send mail to:
 Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
-
 
 From magick-owner@unca-don.wizards.dupont.com Mon Jul  3 16:12 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -2304,7 +2277,6 @@ Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
 
-
 From magick-owner@unca-don.wizards.dupont.com Fri Jul  7 09:27 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
 	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id JAA27505
@@ -2378,7 +2350,6 @@ Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
 
-
 From magick-owner@unca-don.wizards.dupont.com Fri Jul  7 17:55 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
 	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id RAA13560
@@ -2440,7 +2411,6 @@ Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
 
-
 From markov@ATComputing.nl Sat Jul  8 10:27:08 2000
 Date: Sat, 8 Jul 2000 10:27:08 +0200
 From: Mark Overmeer <markov@ATComputing.nl>
@@ -2455,7 +2425,6 @@ Content-Length: 27
 Lines: 1
 
 subscribe magick-developer
-
 
 From Majordomo-Owner@imagemagick.org Sat Jul  8 10:27 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -2507,7 +2476,6 @@ contact "magick-developer-approval@imagemagick.org".
 Thanks!
 
 Majordomo@imagemagick.org
-
 
 From owner-magick@imagemagick.org Sat Jul  8 13:53 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -2808,7 +2776,6 @@ ImageMagick Tools
   combine
      Combine combines images to create new images.
 
-
 From markov@ATComputing.nl Wed Jul 26 13:32:31 2000
 Date: Wed, 26 Jul 2000 13:32:31 +0200
 From: Mark Overmeer <markov@ATComputing.nl>
@@ -2879,7 +2846,6 @@ Please let me know.
 drs Mark A.C.J. Overmeer                           markov@ATComputing.nl
 AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
-
 
 From magick-owner@unca-don.wizards.dupont.com Mon Jul 24 18:24 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -2963,7 +2929,6 @@ Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
 
-
 From markov@ATComputing.nl Wed Jul 26 13:49:09 2000
 Date: Wed, 26 Jul 2000 13:49:09 +0200
 From: Mark Overmeer <markov@ATComputing.nl>
@@ -2995,7 +2960,6 @@ Ok.  Still strange spot to dump core...
 drs Mark A.C.J. Overmeer                           markov@ATComputing.nl
 AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
-
 
 From chris.wareham@catchword.com Wed Jul 26 13:46 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -3053,7 +3017,6 @@ I don't know whether it is relevant for PerlMagick programs.
 
 Chris
 
-
 From markov@ATComputing.nl Mon Aug  7 11:38:44 2000
 Date: Mon, 7 Aug 2000 11:38:44 +0200
 From: Mark Overmeer <markov@ATComputing.nl>
@@ -3093,7 +3056,6 @@ developers?
 drs Mark A.C.J. Overmeer                           markov@ATComputing.nl
 AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
 http://www.dhp.nl/~markov/                         http://satfoto.dhp.nl
-
 
 From magick-owner@unca-don.wizards.dupont.com Tue Aug  1 22:37 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
@@ -3184,7 +3146,6 @@ Include the following command in the body of your message:
 	unsubscribe magick
 ***********************************************************************
 
-
 From magick-owner@imagemagick.org Wed Oct  4 19:56 MET 2000
 Received: from ns.ATComputing.nl (ns.ATComputing.nl [195.108.229.25])
 	by atcmpg.ATComputing.nl (8.9.0/8.9.0) with ESMTP id TAA26427
@@ -3241,5 +3202,4 @@ To remove yourself from this mailing list, send mail to:
 Include the following command in the body of your message:
 	unsubscribe magick-developer
 ***********************************************************************
-
 

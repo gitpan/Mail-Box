@@ -4,6 +4,7 @@ use strict;
 package Mail::Box::MH::Index;
 use base 'Mail::Reporter';
 
+our $VERSION = '2.010';
 use Mail::Message::Head::Subset;
 use Carp;
 
@@ -40,6 +41,9 @@ of the folder).
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Reporter> (MR).
+
 The general methods for C<Mail::Box::MH::Index> objects:
 
    MR errors                            MR report [LEVEL]
@@ -54,8 +58,6 @@ The extra methods for extension writers:
    MR DESTROY                           MR logPriority LEVEL
       filename                          MR logSettings
 
-Prefixed methods are described in   MR = L<Mail::Reporter>.
-
 =head1 METHODS
 
 =over 4
@@ -67,28 +69,21 @@ Prefixed methods are described in   MR = L<Mail::Reporter>.
 =item new OPTIONS
 
 This method is called by folder classes, and should not be called by
-client programs. If you wish to control how indexing occurs, use the
-following options when creating a folder.
+client programs, unless you really know what you are doing.
 
  OPTION      DEFINED BY             DEFAULT
- filename    Mail::Box::MH::Index   '.index'
+ filename    Mail::Box::MH::Index   <obligatory>
  log         Mail::Reporter         'WARNINGS'
  trace       Mail::Reporter         'WARNINGS'
  head_wrap   Mail::Box::MH::Index   72
-
-Only useful to write extension to C<Mail::Box::MH::Index>.  Common users of
-folders you will not specify these:
-
- OPTION      DEFINED BY             DEFAULT
  head_type   Mail::Box::MH::Index   'Mail::Message::Head::Subset'
 
 =over 4
 
 =item * filename =E<gt> FILENAME
 
-The FILENAME which is used in each directory to store the headers of all
-mails. The filename shall not contain a directory path. (e.g. Do not use
-C</usr/people/jan/.index>, nor C<subdir/.index>, but say C<.index>.)
+The FILENAME which is used to store the headers of all the e-mails for
+one folder. This must be an absolute pathname.
 
 =item * head_type =E<gt> CLASS
 
@@ -108,9 +103,12 @@ The preferred number of character in each header line.
 
 sub init($)
 {   my ($self, $args) = @_;
-    $self->{MBMI_filename}  = $args->{filename}  || '.index';
-    $self->{MBMI_head_wrap} = $args->{head_wrap} || 72;
+    $self->SUPER::init($args);
 
+    $self->{MBMI_filename}  = $args->{filename}
+       or croak "No index filename specified.";
+
+    $self->{MBMI_head_wrap} = $args->{head_wrap} || 72;
     $self->{MBMI_head_type}
        = $args->{head_type} || 'Mail::Message::Head::Subset';
 
@@ -241,7 +239,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

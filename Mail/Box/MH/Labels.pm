@@ -4,10 +4,12 @@ use strict;
 package Mail::Box::MH::Labels;
 use base 'Mail::Reporter';
 
+our $VERSION = '2.010';
 use Mail::Message::Head::Subset;
 
 use FileHandle;
 use File::Copy;
+use Carp;
 
 =head1 NAME
 
@@ -65,6 +67,9 @@ So: label C<unseen> is translated into C<seen> for internal use.
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Reporter> (MR).
+
 The general methods for C<Mail::Box::MH::Labels> objects:
 
    MR errors                            MR report [LEVEL]
@@ -76,8 +81,6 @@ The extra methods for extension writers:
    MR AUTOLOAD                          MR logPriority LEVEL
    MR DESTROY                           MR logSettings
    MR inGlobalDestruction               MR notImplemented
-
-Prefixed methods are described in   MR = L<Mail::Reporter>.
 
 =head1 METHODS
 
@@ -94,22 +97,16 @@ client programs. If you wish to control how indexing occurs, use the
 following options when creating a folder.
 
  OPTION         DEFINED BY         DEFAULT
- filename       Mail::Box::Index   '.mh_sequences'
+ filename       Mail::Box::Labels  <obligatory>
  log            Mail::Reporter     'WARNINGS'
  trace          Mail::Reporter     'WARNINGS'
-
-Only useful to write extension to C<Mail::Box::MH::Labels>.  Common users of
-folders you will not specify these:
-
- OPTION         DEFINED BY         DEFAULT
 
 =over 4
 
 =item * filename =E<gt> FILENAME
 
 The FILENAME which is used in each directory to store the headers of all
-mails. The filename shall not contain a directory path. (e.g. Do not use
-C</usr/people/jan/.index>, nor C<subdir/.index>, but say C<.index>.)
+mails. The filename must be an absolute path.
 
 =back
 
@@ -117,7 +114,9 @@ C</usr/people/jan/.index>, nor C<subdir/.index>, but say C<.index>.)
 
 sub init($)
 {   my ($self, $args) = @_;
-    $self->{MBML_filename}  = $args->{filename}  || '.mh_sequences';
+    $self->SUPER::init($args);
+    $self->{MBML_filename}  = $args->{filename}
+       or croak "No label filename specified.";
 
     $self;
 }
@@ -311,7 +310,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

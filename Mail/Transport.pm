@@ -8,7 +8,7 @@ use Carp;
 use File::Spec;
 use Errno 'EAGAIN';
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 =head1 NAME
 
@@ -66,6 +66,9 @@ programs do not support MIME headers.
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Reporter> (MR).
+
 The general methods for C<Mail::Transport> objects:
 
    MR errors                            MR reportAll [LEVEL]
@@ -79,8 +82,6 @@ The extra methods for extension writers:
    MR DESTROY                           MR logSettings
       findBinary NAME [, DIRECTOR...    MR notImplemented
    MR inGlobalDestruction                  putContent MESSAGE, FILEHAN...
-
-Prefixed methods are described in   MR = L<Mail::Reporter>.
 
 =head1 METHODS
 
@@ -276,7 +277,8 @@ of the binary to be used.
 
 =cut
 
-my @safe_directories = qw(/usr/local/bin /usr/bin /bin /sbin /usr/sbin);
+my @safe_directories = qw(/usr/local/bin /usr/bin /bin
+   /sbin /usr/sbin /usr/lib);
 
 sub findBinary($@)
 {   my ($self, $name) = (shift, shift);
@@ -305,7 +307,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

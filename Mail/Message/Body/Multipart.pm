@@ -7,7 +7,7 @@ use base 'Mail::Message::Body';
 use Mail::Message::Body::Lines;
 use Mail::Message::Part;
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 use Carp;
 
@@ -44,6 +44,9 @@ when a message contains attachments (parts).
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Reporter> (MR), L<Mail::Message::Body> (MMB), L<Mail::Message::Body::Construct> (MMBC), L<Mail::Message::Body::Encode> (MMBE).
+
 The general methods for C<Mail::Message::Body::Multipart> objects:
 
       attach MESSAGES|BODIES            MR log [LEVEL [,STRINGS]]
@@ -72,17 +75,9 @@ The extra methods for extension writers:
    MR DESTROY                           MR logPriority LEVEL
  MMBE addTransferEncHandler NAME,...    MR logSettings
   MMB clone                            MMB moveLocation [DISTANCE]
-  MMB fileLocation                      MR notImplemented
+  MMB fileLocation [BEGIN,END]          MR notImplemented
  MMBE getTransferEncHandler TYPE       MMB read PARSER, HEAD, BODYTYPE...
    MR inGlobalDestruction             MMBE unify BODY
-
-Methods prefixed with an abbreviation are described in the following
-manual-pages:
-
-   MR = L<Mail::Reporter>
-  MMB = L<Mail::Message::Body>
- MMBC = L<Mail::Message::Body::Construct>
- MMBE = L<Mail::Message::Body::Encode>
 
 =head1 METHODS
 
@@ -529,7 +524,7 @@ sub read($$)
     # Get preamble.
     my $headtype = ref $head;
 
-    $self->{MMB_begin} = $parser->filePosition;
+    my $begin    = $parser->filePosition;
     my $preamble = Mail::Message::Body::Lines->new(@msgopts, @sloppyopts)
        ->read($parser, $head);
 
@@ -556,7 +551,7 @@ sub read($$)
       ->read($parser, $head);
 
     $self->{MMBM_epilogue} = $epilogue if defined $epilogue;
-    $self->{MMB_end}       = $parser->filePosition;
+    $self->fileLocation($begin, $parser->filePosition);
 
     $self;
 }
@@ -594,7 +589,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

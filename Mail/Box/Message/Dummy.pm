@@ -4,7 +4,7 @@ use strict;
 package Mail::Box::Message::Dummy;
 use base 'Mail::Box::Message';
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 use Carp;
 
@@ -38,9 +38,12 @@ dummy message.
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Message> (MM), L<Mail::Reporter> (MR), L<Mail::Box::Message> (MBM), L<Mail::Message::Construct> (MMC).
+
 The general methods for C<Mail::Box::Message::Dummy> objects:
 
-   MM bcc                               MM label LABEL [,VALUE]
+   MM bcc                               MM label LABEL [,VALUE [LABEL,...
   MMC bounce OPTIONS                    MR log [LEVEL [,STRINGS]]
   MMC build [MESSAGE|BODY], CONTENT     MM messageId
   MMC buildFromBody BODY, HEADERS       MM modified [BOOL]
@@ -67,23 +70,16 @@ The general methods for C<Mail::Box::Message::Dummy> objects:
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MM labels
+   MR AUTOLOAD                          MM labelsToStatus
    MM DESTROY                           MR logPriority LEVEL
    MM body [BODY]                       MR logSettings
    MM clone                             MR notImplemented
    MM coerce MESSAGE                    MM read PARSER, [BODYTYPE]
   MBM diskDelete                       MBM readBody PARSER, HEAD [, BO...
-   MM head [HEAD, [LABELS]]             MM readHead PARSER [,CLASS]
-   MR inGlobalDestruction               MM storeBody BODY
-   MM isDelayed                         MM takeMessageId [STRING]
-
-Methods prefixed with an abbreviation are described in the following
-manual-pages:
-
-   MM = L<Mail::Message>
-   MR = L<Mail::Reporter>
-  MBM = L<Mail::Box::Message>
-  MMC = L<Mail::Message::Construct>
+   MM head [HEAD]                       MM readHead PARSER [,CLASS]
+   MR inGlobalDestruction               MM statusToLabels
+   MM isDelayed                         MM storeBody BODY
+   MM labels                            MM takeMessageId [STRING]
 
 =head1 METHOD
 
@@ -138,7 +134,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

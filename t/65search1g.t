@@ -15,7 +15,7 @@ use Mail::Box::Search::Grep;
 
 use IO::Scalar;
 
-BEGIN {plan tests => 55}
+BEGIN {plan tests => 56}
 
 my $mgr    = Mail::Box::Manager->new;
 
@@ -117,8 +117,8 @@ my $grep3  = Mail::Box::Search::Grep->new
  );
 
 my @m3 = $grep3->search($folder);
-ok(@m3==22);
-ok(@hits==38);
+ok(@m3==23);
+ok(@hits==59);
 
 $last = shift @m3;
 my %m3 = ($last->seqnr => 1);
@@ -127,10 +127,10 @@ foreach (@m3)   # in order?
     $m3{$_->seqnr}++;
     $last = $_;
 }
-ok(keys %m3==22);
+ok(keys %m3==23);
 
 my %h3 = map { ($_->{message}->seqnr => 1) } @hits;
-ok(keys %h3==22);
+ok(keys %h3==23);
 
 undef $grep3;
 
@@ -146,8 +146,8 @@ my $grep4  = Mail::Box::Search::Grep->new
  );
 
 my @m4 = $grep4->search($folder);
-ok(@m4==25);
-ok(@hits==66);
+ok(@m4==26);
+ok(@hits==98);
 
 undef $grep4;
 
@@ -165,8 +165,8 @@ my $grep5  = Mail::Box::Search::Grep->new
  );
 
 my @m5 = $grep5->search($folder);
-ok(@m5==22);
-ok(@hits==63);
+ok(@m5==23);
+ok(@hits==95);
 
 undef $grep5;
 
@@ -181,8 +181,8 @@ my $grep6  = Mail::Box::Search::Grep->new
  );
 
 my @m6 = $grep6->search($folder);
-ok(@m6==25);
-ok(@hits==66);
+ok(@m6==26);
+ok(@hits==98);
 
 undef $grep6;
 
@@ -196,8 +196,8 @@ my $grep7  = Mail::Box::Search::Grep->new
  );
 
 my @m7 = $grep7->search($folder);
-ok(@m7==9);
-ok(@hits==18);
+ok(@m7==10);
+ok(@hits==24);
 
 undef $grep7;
 
@@ -211,10 +211,10 @@ my $grep8  = Mail::Box::Search::Grep->new
  );
 
 my @m8 = $grep8->search($folder);
-ok(@m8==22);
-ok(@hits==45);
+ok(@m8==23);
+ok(@hits==71);
 
-ok($grep8->search($folder)==22);
+ok($grep8->search($folder)==23);
 
 undef $grep8;
 

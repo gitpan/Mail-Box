@@ -8,7 +8,7 @@ use Mail::Message::Field;
 use Mail::Message::Body::Lines;
 use Mail::Message::Body::File;
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 use overload bool  => sub {1}   # $body->print if $body
            , '""'  => 'string'
@@ -130,6 +130,9 @@ but this call will be most efficient for the C<::Body::Lines> type.
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Reporter> (MR), L<Mail::Message::Body::Construct> (MMBC), L<Mail::Message::Body::Encode> (MMBE).
+
 The general methods for C<Mail::Message::Body> objects:
 
  MMBC attach MESSAGES, OPTIONS          MR log [LEVEL [,STRINGS]]
@@ -155,16 +158,9 @@ The extra methods for extension writers:
    MR DESTROY                           MR logPriority LEVEL
  MMBE addTransferEncHandler NAME,...    MR logSettings
       clone                                moveLocation [DISTANCE]
-      fileLocation                      MR notImplemented
+      fileLocation [BEGIN,END]          MR notImplemented
  MMBE getTransferEncHandler TYPE           read PARSER, HEAD, BODYTYPE...
    MR inGlobalDestruction             MMBE unify BODY
-
-Methods prefixed with an abbreviation are described in the following
-manual-pages:
-
-   MR = L<Mail::Reporter>
- MMBC = L<Mail::Message::Body::Construct>
- MMBE = L<Mail::Message::Body::Encode>
 
 =head1 METHODS
 
@@ -834,7 +830,7 @@ sub clone() {shift->notImplemented}
 
 #------------------------------------------
 
-=item fileLocation
+=item fileLocation [BEGIN,END]
 
 The location of the body in the file.  Returned a list containing begin and
 end.  The begin is the offsets of the first byte if the folder used for
@@ -842,9 +838,10 @@ this body.  The end is the offset of the first byte of the next message.
 
 =cut
 
-sub fileLocation() {
+sub fileLocation(;@) {
     my $self = shift;
-    @$self{ qw/MMB_begin MMB_end/ };
+    return @$self{ qw/MMB_begin MMB_end/ } unless @_;
+    @$self{ qw/MMB_begin MMB_end/ } = @_;
 }
 
 #------------------------------------------
@@ -890,7 +887,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

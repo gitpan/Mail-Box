@@ -8,7 +8,7 @@ use Mail::Message::Field;
 use List::Util 'sum';
 use FileHandle;
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 =head1 NAME
 
@@ -30,6 +30,9 @@ work on platforms where no C compiler is available.
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Reporter> (MR), L<Mail::Box::Parser> (MBP).
+
 The general methods for C<Mail::Box::Parser::Perl> objects:
 
   MBP bodyAsFile FILEHANDLE [,CHA...   MBP new [OPTIONS]
@@ -48,12 +51,6 @@ The extra methods for extension writers:
    MR AUTOLOAD                          MR logPriority LEVEL
    MR DESTROY                           MR logSettings
    MR inGlobalDestruction               MR notImplemented
-
-Methods prefixed with an abbreviation are described in the following
-manual-pages:
-
-   MR = L<Mail::Reporter>
-  MBP = L<Mail::Box::Parser>
 
 =head1 METHODS
 
@@ -84,7 +81,7 @@ sub init(@)
     $self->{MBP_linesep}     = $1;
     $file->seek(0, 0);
 
-    binmode ':crlf';
+    binmode $file, ':crlf' if $] < 5.007;  # problem with perlIO
 
     $self->log(PROGRESS => "Opened folder from file $filename.");
 
@@ -427,7 +424,8 @@ sub bodyDelayed(;$$)
     my $lines = $self->_read_stripped_lines($exp_chars, $exp_lines);
     return () unless @$lines;
 
-    ($begin, $file->tell, sum(map {length} @$lines), scalar @$lines);
+    my $chars = sum(map {length} @$lines);
+    ($begin, $file->tell, $chars, scalar @$lines);
 }
 
 #------------------------------------------
@@ -444,7 +442,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

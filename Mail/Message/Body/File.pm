@@ -6,7 +6,7 @@ use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 use Carp;
 use IO::File;
@@ -40,6 +40,9 @@ access through a file is slower, it is saving a lot of memory.
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Reporter> (MR), L<Mail::Message::Body> (MMB), L<Mail::Message::Body::Construct> (MMBC), L<Mail::Message::Body::Encode> (MMBE).
+
 The general methods for C<Mail::Message::Body::File> objects:
 
  MMBC attach MESSAGES, OPTIONS          MR log [LEVEL [,STRINGS]]
@@ -65,17 +68,9 @@ The extra methods for extension writers:
       DESTROY                           MR logPriority LEVEL
  MMBE addTransferEncHandler NAME,...    MR logSettings
   MMB clone                            MMB moveLocation [DISTANCE]
-  MMB fileLocation                      MR notImplemented
+  MMB fileLocation [BEGIN,END]          MR notImplemented
  MMBE getTransferEncHandler TYPE       MMB read PARSER, HEAD, BODYTYPE...
    MR inGlobalDestruction                  tempFilename [FILENAME]
-
-Methods prefixed with an abbreviation are described in the following
-manual-pages:
-
-   MR = L<Mail::Reporter>
-  MMB = L<Mail::Message::Body>
- MMBC = L<Mail::Message::Body::Construct>
- MMBE = L<Mail::Message::Body::Encode>
 
 =head1 METHODS
 
@@ -275,11 +270,10 @@ sub read($$;$@)
     open OUT, '>', $file
         or die "Cannot write to $file: $!.\n";
 
-    @$self{ qw/MMB_begin MMB_end MMBF_nrlines/ }
-        = $parser->bodyAsFile(\*OUT, @_);
-
+    (my $begin, my $end, $self->{MMBF_nrlines}) = $parser->bodyAsFile(\*OUT,@_);
     close OUT;
 
+    $self->fileLocation($begin, $end);
     $self;
 }
 
@@ -340,7 +334,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

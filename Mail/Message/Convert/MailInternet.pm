@@ -12,7 +12,7 @@ use Mail::Message::Body::Lines;
 
 use Carp;
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 =head1 NAME
 
@@ -50,6 +50,9 @@ this respect.
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Reporter> (MR), L<Mail::Message::Convert> (MMC).
+
 The general methods for C<Mail::Message::Convert::MailInternet> objects:
 
    MR errors                            MR new OPTIONS
@@ -62,12 +65,6 @@ The extra methods for extension writers:
    MR AUTOLOAD                          MR logPriority LEVEL
    MR DESTROY                           MR logSettings
    MR inGlobalDestruction               MR notImplemented
-
-Methods prefixed with an abbreviation are described in the following
-manual-pages:
-
-   MR = L<Mail::Reporter>
-  MMC = L<Mail::Message::Convert>
 
 =head1 METHODS
 
@@ -146,7 +143,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -10,7 +10,7 @@ use Mail::Box::Parser;
 use Carp;
 use Mail::Address;
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 our %_structured;  # not to be used directly: call isStructured!
 
 use overload qq("") => sub { $_[0]->body }
@@ -466,7 +466,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

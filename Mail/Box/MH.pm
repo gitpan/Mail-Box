@@ -1,21 +1,13 @@
 
 use strict;
 package Mail::Box::MH;
+use base 'Mail::Box::Dir';
 
-use base 'Mail::Box';
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 use Mail::Box::MH::Index;
 use Mail::Box::MH::Message;
 use Mail::Box::MH::Labels;
-
-use Mail::Message::Body::Lines;
-use Mail::Message::Body::File;
-use Mail::Message::Body::Delayed;
-use Mail::Message::Body::Multipart;
-
-use Mail::Message::Head;
-use Mail::Message::Head::Delayed;
 
 use Carp;
 use FileHandle;
@@ -25,11 +17,12 @@ use File::Basename;
 
 =head1 NAME
 
-Mail::Box::MH - handle folders with a file per message.
+Mail::Box::MH - handle MH folders
 
 =head1 CLASS HIERARCHY
 
  Mail::Box::MH
+ is a Mail::Box::Dir
  is a Mail::Box
  is a Mail::Reporter
 
@@ -45,10 +38,12 @@ can do with the MH folder object C<Mail::Box::MH>.
 Please read C<Mail::Box-Overview> and C<Mail::Box> first.
 
 L<The internal organization and details|/"IMPLEMENTATION"> are found
-at the bottom of this manual-page.  The working of MH-messages are
-described in L<Mail::Box::MH::Message>.
+at the bottom of this manual-page.
 
 =head1 METHOD INDEX
+
+Methods prefixed with an abbreviation are described in
+L<Mail::Box> (MB), L<Mail::Reporter> (MR), L<Mail::Box::Dir> (MBD).
 
 The general methods for C<Mail::Box::MH> objects:
 
@@ -60,7 +55,7 @@ The general methods for C<Mail::Box::MH> objects:
    MB create FOLDERNAME [, OPTIONS]     MB name
    MB current [NUMBER|MESSAGE|MES...       new OPTIONS
    MB delete                            MB openSubFolder NAME [,OPTIONS]
-      directory                         MR report [LEVEL]
+  MBD directory                         MR report [LEVEL]
    MR errors                            MR reportAll [LEVEL]
    MB find MESSAGE-ID                   MR trace [LEVEL]
    MB listSubFolders OPTIONS            MR warnings
@@ -68,27 +63,22 @@ The general methods for C<Mail::Box::MH> objects:
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MR logSettings
-   MB DESTROY                           MR notImplemented
-   MB appendMessages OPTIONS            MB organization
-   MB clone OPTIONS                     MB read OPTIONS
-   MB coerce MESSAGE                       readAllHeaders
-   MB determineBodyType MESSAGE, ...       readMessageFilenames DIRECTORY
-      folderToDirectory FOLDERNAM...    MB readMessages
-   MB folderdir [DIR]                   MB scanForMessages MESSAGE, ME...
-   MB foundIn [FOLDERNAME], OPTIONS     MB sort PREPARE, COMPARE, LIST
-      highestMessageNumber              MB storeMessage MESSAGE
-   MR inGlobalDestruction               MB timespan2seconds TIME
-      index                             MB toBeThreaded MESSAGES
-      labels                            MB toBeUnthreaded MESSAGES
-   MB lineSeparator [STRING|'CR'|...    MB write OPTIONS
-   MR logPriority LEVEL                    writeMessages [OPTIONS]
-
-Methods prefixed with an abbreviation are described in the following
-manual-pages:
-
-   MB = L<Mail::Box>
-   MR = L<Mail::Reporter>
+   MR AUTOLOAD                          MR notImplemented
+   MB DESTROY                           MB organization
+   MB appendMessages OPTIONS            MB read OPTIONS
+   MB clone OPTIONS                    MBD readAllHeaders
+   MB coerce MESSAGE                   MBD readMessageFilenames DIRECTORY
+   MB determineBodyType MESSAGE, ...    MB readMessages OPTIONS
+  MBD folderToDirectory FOLDERNAM...    MB scanForMessages MESSAGE, ME...
+   MB folderdir [DIR]                   MB sort PREPARE, COMPARE, LIST
+   MB foundIn [FOLDERNAME], OPTIONS     MB storeMessage MESSAGE
+      highestMessageNumber              MB timespan2seconds TIME
+   MR inGlobalDestruction               MB toBeThreaded MESSAGES
+      index                             MB toBeUnthreaded MESSAGES
+      labels                            MB update OPTIONS
+   MB lineSeparator [STRING|'CR'|...    MB updateMessages OPTIONS
+   MR logPriority LEVEL                 MB write OPTIONS
+   MR logSettings                          writeMessages [OPTIONS]
 
 =head1 METHODS
 
@@ -115,6 +105,7 @@ see below, but first the full list.
  keep_index        Mail::Box::MH      0
  labels_filename   Mail::Box::MH      foldername.'/.mh_sequence'
  extract           Mail::Box          10kB
+ lock_type         Mail::Box          'DOTLOCK'
  lock_file         Mail::Box          foldername.'/.lock'
  lock_timeout      Mail::Box          3600    (1 hour)
  lock_wait         Mail::Box          10      (seconds)
@@ -128,22 +119,20 @@ Only useful to write extension to C<Mail::Box::MH>.  Common users of
 folders you will not specify these:
 
  OPTION            DEFINED BY         DEFAULT
- body_type         Mail::Box::MH      <see below>
+ body_type         Mail::Box::Dir     <see Mail::Box::Dir>
  body_delayed_type Mail::Box          'Mail::Message::Body::Delayed'
  coerce_options    Mail::Box          []
  field_type        Mail::Box          undef
  head_type         Mail::Box          'Mail::Message::Head::Complete'
- head_delayed_type Mail::Box::MH      'Mail::Message::Head::Delayed'
+ head_delayed_type Mail::Box          'Mail::Message::Head::Delayed'
  index             Mail::Box::MH      undef
  index_type        Mail::Box::MH      'Mail::Box::MH::Index'
  labels            Mail::Box::MH      undef
  labels_type       Mail::Box::MH      'Mail::Box::MH::Labels'
  locker            Mail::Box          undef
- lock_type         Mail::Box          'DOTLOCK'
  multipart_type    Mail::Box          'Mail::Message::Body::Multipart'
  manager           Mail::Box          undef
  message_type      Mail::Box          'Mail::Box::MH::Message'
- organization      Mail::Box          'DIRECTORY'
  realhead_type     Mail::Box          'Mail::Message::Head'
 
 MH specific options:
@@ -158,11 +147,6 @@ reading all the message files the moment that you open the folder.  When
 you open a folder, you can use the index file to retrieve information such
 as the subject of each message, instead of having to read possibly
 thousands of messages.
-
-=item * head_delayed_type =E<gt> CLASS
-
-The headers which are delayed: which will be read from file when it
-is needed, but not before.
 
 =item * index_filename =E<gt> FILENAME
 
@@ -191,17 +175,6 @@ reader as created by C<Mail::Box::MH>.
 
 =back
 
-The C<body_type> options for MH folders defaults to:
-
- sub determine_body_type($$) {
-    my $head = shift;
-    my $size = shift || 0;
-    'Mail::Message::Body::' . ($size > 10000 ? 'File' : 'Lines');
- }
-
-which will cause messages larger than 10kB to be stored in files, and
-smaller files in memory.
-
 =cut
 
 my $default_folder_dir = exists $ENV{HOME} ? "$ENV{HOME}/.mh" : '.';
@@ -209,18 +182,14 @@ my $default_folder_dir = exists $ENV{HOME} ? "$ENV{HOME}/.mh" : '.';
 sub init($)
 {   my ($self, $args) = @_;
 
-    $args->{organization}  ||= 'DIRECTORY';
     $args->{folderdir}     ||= $default_folder_dir;
 
     $self->SUPER::init($args);
 
-    my $directory            = $self->{MBM_directory}
-       = (ref $self)->folderToDirectory($self->name, $self->folderdir);
-
-    $self->{MBM_head_delayed_type}
-        = $args->{head_delayed_type}  || 'Mail::Message::Head::Delayed';
-
     # About the index
+
+    my $directory            = $self->directory;
+    my $folderdir            = $self->folderdir;
 
     $self->{MBM_keep_index}  = $args->{keep_index} || 0;
     $self->{MBM_index}       = $args->{index};
@@ -230,16 +199,6 @@ sub init($)
           = !defined $_ ? File::Spec->catfile($directory, '.index') # default
           : File::Spec->file_name_is_absolute($_) ? $_              # absolute
           :               File::Spec->catfile($directory, $_);      # relative
-    }
-
-    # About locking
-
-    for($args->{lockfile} || undef)
-    {   $self->locker->filename
-          ( !defined $_ ? File::Spec->catfile($directory, '.index')  # default
-          : File::Spec->file_name_is_absolute($_) ? $_               # absolute
-          :               File::Spec->catfile($directory, $_)        # relative
-          );
     }
 
     # About labels
@@ -253,62 +212,8 @@ sub init($)
           :               File::Spec->catfile($directory, $_);       # relative
     }
 
-    # Check if we can write to the folder, if we need to.
-
-    if($self->writeable && -e $directory && ! -w $directory)
-    {   warn "Folder $directory is write-protected.\n";
-        $self->{MB_access} = 'r';
-    }
-
     $self;
 }
-
-#-------------------------------------------
-
-=item directory
-
-Returns the directory related to this folder.
-
-Example:
-
-    print $folder->directory;
-
-=cut
-
-sub directory() { shift->{MBM_directory} }
-
-#-------------------------------------------
-
-sub messageId($;$)
-{   my ($self, $msgid) = (shift, shift);
-
-    # Set or remove message-id
-    if(@_)
-    {   if(my $message = shift)
-        {   # Define loaded message.
-            $self->SUPER::messageId($msgid, $message);
-            return $self->{MB_msgid}{$msgid};
-        }
-        else
-        {   delete $self->{MB_msgid}{$msgid};
-            return;
-        }
-    }
-
-    # Message-id not found yet. Trigger autoload until the message-id appears.
-    foreach my $message (reverse $self->messages)
-    {   $message->head;
-        last if exists $self->{MB_msgid}{$msgid};
-    }
-
-    $self->{MB_msgid}{$msgid};
-}
-
-sub messageID(@) {shift->messageId(@_)} # compatibility
-
-#-------------------------------------------
-
-sub allMessageIds() {shift->readAllHeaders->SUPER::allMessageIds }
 
 #-------------------------------------------
 
@@ -405,7 +310,7 @@ sub openSubFolder($@)
         return;
     }
 
-    $self->SUPER::openSubFolder(@_, folder => $self->name.'/'.$name);
+    $self->openRelatedFolder(@_, folder => $dir);
 }
 
 #-------------------------------------------
@@ -442,20 +347,6 @@ sub foundIn($@)
 
     closedir DIR;
     0;
-}
-
-#-------------------------------------------
-
-=item folderToDirectory FOLDERNAME, FOLDERDIR
-
-(class method)  Translate a foldername into a filename, with use of the
-FOLDERDIR to replace a leading C<=>.
-
-=cut
-
-sub folderToDirectory($$)
-{   my ($class, $name, $folderdir) = @_;
-    $name =~ /^=(.*)/ ? File::Spec->catfile($folderdir,$1) : $name;
 }
 
 #-------------------------------------------
@@ -518,31 +409,25 @@ sub labels()
     return $self->{MBM_labels} if defined $self->{MBM_labels};
 
     $self->{MBM_labels} = $self->{MBM_labels_type}->new
-     ( filename => $self->{MBM_labels_filename}
-     , $self->logSettings
-     )
+      ( filename => $self->{MBM_labels_filename}
+      , $self->logSettings
+      )
 }
 
 #-------------------------------------------
-
-=item readMessageFilenames DIRECTORY
-
-Returns a list of all filenames which are found in this folder
-directory and represent a message.  Message files are recognized
-by having a number as name.
-
-=cut
 
 sub readMessageFilenames
 {   my ($self, $dirname) = @_;
 
     opendir DIR, $dirname or return;
-    my @msgnrs = sort {$a <=> $b}
-                    grep /^\d+$/, readdir DIR;
+    my @msgnrs
+       = sort {$a <=> $b}
+            grep { /^\d+$/ && -f File::Spec->catfile($dirname,$_) }
+               readdir DIR;
+
     closedir DIR;
 
-    grep { -f File::Spec->catfile($dirname,$_) && -r _ }
-        @msgnrs;
+    @msgnrs;
 }
 
 #-------------------------------------------
@@ -570,24 +455,23 @@ sub readMessages(@)
          $labels->read if $labels;
     }
 
+    my @log    = $self->logSettings;
     foreach my $msgnr (@msgnrs)
     {
         my $msgfile = File::Spec->catfile($directory, $msgnr);
-        my @log     = $self->logSettings;
 
         my $head;
         $head       = $index->get($msgfile) if $index;
-        $head     ||= $self->{MBM_head_delayed_type}->new(@log);
-
-        my $labref  = $labels ? $labels->get($msgnr) : undef;
-        unshift @$labref, seen => 1;
+        $head     ||= $args{head_delayed_type}->new(@log);
 
         my $message = $args{message_type}->new
          ( head      => $head
-         , labels    => $labref
          , filename  => $msgfile
          , folder    => $self
          );
+
+        my $labref  = $labels ? $labels->get($msgnr) : ();
+        $message->label(seen => 1, $labref ? @$labref : ());
 
         my $body    = $args{body_delayed_type}->new(@log, message => $message);
         $message->storeBody($body);
@@ -596,14 +480,6 @@ sub readMessages(@)
     }
 
     $self->{MBM_highest_msgnr}  = $msgnrs[-1];
-
-    # Which one becomes current?
-    foreach ($self->messages)
-    {   next unless $_->label('current') || 0;
-        $self->current($_);
-        last;
-    }
-
     $self;
 }
  
@@ -722,22 +598,6 @@ sub writeMessages($)
 
 #-------------------------------------------
 
-=item readAllHeaders
-
-Force all messages to be read at least till their header information
-is known.
-
-=cut
-
-sub readAllHeaders()
-{   my $self = shift;
-    my $nrmsgs = $self->messages;
-    $self->readMessage($_, 0) foreach 0..$nrmsgs-1;
-    $self;
-}
-
-#-------------------------------------------
-
 sub appendMessages(@)
 {   my $class  = shift;
     my %args   = @_;
@@ -789,28 +649,34 @@ sub appendMessages(@)
 
 =head1 IMPLEMENTATION
 
-The explanation is complicated, but for normal use you should bother
-yourself with all details.
-
 =head2 How MH-folders work
 
 MH-type folders use a directory to store the messages of one folder.  Each
-message is stored in a seperate file.  This seems useful, because changes
+message is stored in a separate file.  This seems useful, because changes
 in a folder change only a few of these small files, in contrast with
 file-based folders where changes in a folder cause rewrites of huge
-folder-files.
+folder files.
 
-However, MH-based folders perform very bad if you need header-information
+However, MH-based folders perform very bad if you need header information
 of all messages.  For instance, if you want to have full knowledge about
 all message-threads (see C<Mail::Box::Thread::Manager>) in the folder, it
-requires to read all header-lines in all message-files.  And usually, reading
-your messages as threads is desired.
+requires to read all header lines in all message files.  And usually, reading
+your messages in threads is desired.
 
-So, each message is written in a seperate file.  The file-names are
-numbers, which count from C<1>.  Next to these message-files, a
+So, each message is written in a separate file.  The filenames are
+numbers, which count from C<1>.  Next to these message files, a
 directory may contain a file named C<.mh_sequences>, storing labels which
 relate to the messages.  Furthermore, a folder-directory may contain
 sub-directories, which are seen as sub-folders.
+
+=head2 Labels
+
+User actions on a message are flagged with a label.  When the folder is
+opened, these flags are read from the C<.mh_sequences> file.  When the
+folder is closed that file gets updated.  C<Status> and C<X-Status> lines
+in the message headers -as used by Mbox folders- are only looked at when
+new messages are added to the folder.  These lines are only updated when a
+MH message has to be written to a folder for some reason.
 
 =head2 This implementation
 
@@ -843,8 +709,6 @@ be bad for performance.
 If you do not (want to) use an index-file, then delay-loading may
 save your day.
 
-=head2 Delayed loading
-
 =head1 SEE ALSO
 
 L<Mail::Box-Overview>
@@ -857,7 +721,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

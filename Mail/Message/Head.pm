@@ -12,7 +12,7 @@ use Carp;
 use Scalar::Util 'weaken';
 use FileHandle;
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 use overload bool => sub { keys %{shift->{MMH_fields}} };
 
@@ -74,6 +74,9 @@ described.  Read about differences in the sub-class specific pages.
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Reporter> (MR).
+
 The general methods for C<Mail::Message::Head> objects:
 
       add ...                              new OPTIONS
@@ -97,13 +100,10 @@ The extra methods for extension writers:
       clone [FIELDS]                    MR logSettings
       createFromLine                       message [MESSAGE]
       createMessageId                      moveLocation DISTANCE
-      createStatus LABEL                MR notImplemented
-      fileLocation                         read PARSER
-      grepNames [NAMES|ARRAY-OF-N...       setNoRealize FIELD
-      guessBodySize                        statusLabels
+      fileLocation                      MR notImplemented
+      grepNames [NAMES|ARRAY-OF-N...       read PARSER
+      guessBodySize                        setNoRealize FIELD
       guessTimestamp                       wrapLength [CHARS]
-
-Prefixed methods are described in   MR = L<Mail::Reporter>.
 
 =head1 METHODS
 
@@ -750,7 +750,6 @@ sub setNoRealize($)
     $field;
 }
 
-
 #------------------------------------------
 
 =item addNoRealize FIELD
@@ -781,60 +780,6 @@ sub addNoRealize($)
     $field;
 }
 
-#-------------------------------------------
-
-=item statusLabels
-
-Returns a list of key values pairs which show how the C<Status> and
-C<X-Status> header lines are to be represented in labels.
-
-=cut
-
-sub statusLabels($)
-{   my $self  = shift;
-
-    my $status  = $self->get('status')   || '';
-    my $xstatus = $self->get('x-status') || '';
-
-    ( seen    => ($status  =~ /R/ ? 1 : 0)
-    , old     => ($status  =~ /O/ ? 1 : 0)
-    , replied => ($xstatus =~ /A/ ? 1 : 0)
-    , flagged => ($xstatus =~ /F/ ? 1 : 0)
-    );
-}
-
-#------------------------------------------
-
-=item createStatus LABEL
-
-The LABEL changes, and therefor the C<Status> or C<X-Status> lines of the
-header may need an update.  If the LABEL is not used for a header line,
-the call is ignored.
-
-=cut
-
-sub createStatus($)
-{   my ($self, $label) = @_;
-
-    if($label eq "seen")
-    {   my $status = $self->get('status') || '';
-        $self->set(Status => 'RO') if $status !~ /R/;
-    }
-    elsif($label eq "old")
-    {   my $status = $self->get('status') || '';
-        $self->set(Status => $status.'O') if $status !~ /O/;
-    }
-    elsif($label eq "replied")
-    {   my $xstatus = $self->get('x-status') || '';
-        $self->set('X-Status' => $xstatus.'A') if $xstatus !~ /A/;
-    }
-    elsif($label eq "flagged")
-    {   my $xstatus = $self->get('x-status') || '';
-        $self->set('X-Status' => $xstatus.'F') if $xstatus !~ /F/;
-    }
-
-    $self;
-}
 #------------------------------------------
 
 =head1 SEE ALSO
@@ -849,7 +794,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

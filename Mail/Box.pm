@@ -7,8 +7,9 @@ use base 'Mail::Reporter';
 
 use Mail::Box::Message;
 use Mail::Box::Locker;
+use File::Spec;
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 use Carp;
 use Scalar::Util 'weaken';
@@ -63,28 +64,54 @@ Tied-interface:   (See C<Mail::Box::Tie>)
  tie my(%inbox), 'Mail::Box::Tie::HASH', $inbox;
  $inbox{$msgid}->print   # same as $folder->messageId($msgid)->print
 
-
 =head1 DESCRIPTION
 
 A C<Mail::Box::Manager> creates C<Mail::Box> objects.  But you already
 knew, because you started with the C<Mail::Box-Overview> manual page.
-That is obligatory reading, sorry!
+That page is obligatory reading, sorry!
 
-C<Mail::Box> is the base-class for accessing various types of mail-folder
+C<Mail::Box> is the base class for accessing various types of mail folder
 organizational structures in a uniform way.  The various folder types vary
 on how they store their messages. For example, a folder may store many
 messages in a single file, or store each message in a separate file in a
 directory. Similarly, there may be different techniques for locking the
 folders.
 
+No object will be of type C<Mail::Box>: it is only used as base class
+for the real folder types.  C<Mail::Box> is extended by
+
+=over 4
+
+=item * Mail::Box::Mbox is a Mail::Box
+
+A folder type in which all related messages are stored in one file.  This
+is very common folder type for UNIX.
+
+=item * Mail::Box::MH is a Mail::Box::Dir is a Mail::Box
+
+This folder creates a directory for each folder, and a message is one
+file inside that directory.  The message files are numbered.
+
+=item * Mail::Box::Maildir is a Mail::Box::Dir is a Mail::Box
+
+This folder creates a directory for each folder.  A folder directory
+contains a C<tmp>, C<new>, and C<cur> subdirectory.  New messages are
+first stored in C<new>, and later moved to C<cur>.  Each message is one
+file with a name starting with timestamp.
+
+=back
+
 The C<Mail::Box> is used to get C<Mail::Box::Message> objects from the
 mailbox.  Applications then usually use information or add information to the
-message object. For instance, the application can set a flag which indicates
+message object. For instance, the application can set a label which indicates
 whether a message has been replied to or not. In addition, applications can
-extend C<Mail::Box::Message> by deriving from it. See C<Mail::Box::Message>
+extend C<Mail::Box::Message> by deriving from it. See L<Mail::Box::Message>
 and its derived classes for more information.
 
 =head1 METHOD INDEX
+
+Methods prefixed with an abbreviation are described in
+L<Mail::Reporter> (MR).
 
 The general methods for C<Mail::Box> objects:
 
@@ -103,20 +130,19 @@ The general methods for C<Mail::Box> objects:
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MR notImplemented
-      DESTROY                              organization
-      appendMessages OPTIONS               read OPTIONS
-      clone OPTIONS                        readMessages
-      coerce MESSAGE                       scanForMessages MESSAGE, ME...
-      determineBodyType MESSAGE, ...       sort PREPARE, COMPARE, LIST
-      folderdir [DIR]                      storeMessage MESSAGE
-      foundIn [FOLDERNAME], OPTIONS        timespan2seconds TIME
-   MR inGlobalDestruction                  toBeThreaded MESSAGES
-      lineSeparator [STRING|'CR'|...       toBeUnthreaded MESSAGES
-   MR logPriority LEVEL                    write OPTIONS
-   MR logSettings                          writeMessages
-
-Prefixed methods are described in   MR = L<Mail::Reporter>.
+   MR AUTOLOAD                             organization
+      DESTROY                              read OPTIONS
+      appendMessages OPTIONS               readMessages OPTIONS
+      clone OPTIONS                        scanForMessages MESSAGE, ME...
+      coerce MESSAGE                       sort PREPARE, COMPARE, LIST
+      determineBodyType MESSAGE, ...       storeMessage MESSAGE
+      folderdir [DIR]                      timespan2seconds TIME
+      foundIn [FOLDERNAME], OPTIONS        toBeThreaded MESSAGES
+   MR inGlobalDestruction                  toBeUnthreaded MESSAGES
+      lineSeparator [STRING|'CR'|...       update OPTIONS
+   MR logPriority LEVEL                    updateMessages OPTIONS
+   MR logSettings                          write OPTIONS
+   MR notImplemented                       writeMessages
 
 =head1 METHODS
 
@@ -144,6 +170,7 @@ sub-class.
  head_wrap         Mail::Box          72
  extract           Mail::Box          10kb
  keep_dups         Mail::Box          0
+ lock_type         Mail::Box          'Mail::Box::Locker::DotLock'
  log               Mail::Reporter     'WARNINGS'
  remove_when_empty Mail::Box          1
  save_on_exit      Mail::Box          1
@@ -157,18 +184,17 @@ you will not specify these:
  OPTION            DEFINED BY         DEFAULT
  body_type         Mail::Box::Mbox    <see below, folder specific>
  body_delayed_type Mail::Box          'Mail::Message::Body::Delayed'
+ head_delayed_type Mail::Box          'Mail::Message::Head::Delayed'
  coerce_options    Mail::Box          []
  field_type        Mail::Box          undef
  head_type         Mail::Box          'Mail::Message::Head::Complete'
  locker            Mail::Box          undef
- lock_type         Mail::Box          'Mail::Box::Locker::DotLock'
  lock_file         Mail::Box          foldername.'.lock'
  lock_timeout      Mail::Box          1 hour
  lock_wait         Mail::Box          10 seconds
  multipart_type    Mail::Box          'Mail::Message::Body::Multipart'
  manager           Mail::Box          undef
  message_type      Mail::Box          'Mail::Box::Message'
- organization      Mail::Box          'FILE'
 
 The normal usage options for C<Mail::Box::new()> are:
 
@@ -337,6 +363,11 @@ Options for extension-writers are:
 
 =over 4
 
+=item * body_delayed_type =E<gt> CLASS
+
+The bodies which are delayed: which will be read from file when it
+is needed, but not before.
+
 =item * coerce_options =E<gt> ARRAY
 
 Keep configuration information for messages which are coerced into the
@@ -355,6 +386,11 @@ C<Mail::Message::Field>.
 
 The type of header which contains all header information.  Must extend
 C<Mail::Message::Head::Complete>.
+
+=item * head_delayed_type =E<gt> CLASS
+
+The headers which are delayed: which will be read from file when it
+is needed, but not before.
 
 =item * lock_type =E<gt> CLASS|STRING
 
@@ -377,12 +413,6 @@ C<Mail::Box::Manager> instance.
 What kind of message-objects are stored in this type of folder.  The
 default is Mail::Box::Message (which is a sub-class of Mail::Message).
 The class you offer must be an extension of C<Mail::Box::Message>.
-
-=item * organization =E<gt> 'FILE' | 'DIRECTORY'
-
-Tells whether a folder is one file containing many messages (like
-Mbox-folders) or one directory per folder, a message per file
-(like MH-folders).
 
 =back
 
@@ -450,6 +480,8 @@ sub init($)
         = $args->{body_type}        || 'Mail::Message::Body::Lines';
     $self->{MB_body_delayed_type}
         = $args->{body_delayed_type}|| 'Mail::Message::Body::Delayed';
+    $self->{MB_head_delayed_type}
+        = $args->{head_delayed_type}|| 'Mail::Message::Head::Delayed';
     $self->{MB_multipart_type}
         = $args->{multipart_type}   || 'Mail::Message::Body::Multipart';
     my $headtype     = $self->{MB_head_type}
@@ -621,7 +653,9 @@ Example:
 
 =cut
 
-sub openSubFolder(@)
+sub openSubFolder(@) {shift->notImplemented}
+
+sub openRelatedFolder(@)
 {   my $self    = shift;
     my @options = (@{$self->{MB_init_options}}, @_);
 
@@ -947,10 +981,7 @@ will be searched for the named folder.
 
 =cut
 
-sub create($@)
-{   my ($class, $name, @options) = @_;
-    die "$class cannot create a folder named $name.\n";
-}
+sub create($@) {shift->notImplemented}
 
 #-------------------------------------------
 
@@ -1001,10 +1032,7 @@ Examples:
 
 =cut
 
-sub listSubFolders(@)
-{   my ($class, @options) = @_;
-    confess "Folder or class $class cannot list folders.\n";
-}
+sub listSubFolders(@) {shift->notImplemented}
 
 #-------------------------------------------
 
@@ -1072,7 +1100,13 @@ sub clone(@)
 =item read OPTIONS
 
 Read messages from the folder into memory.  The OPTIONS are folder
-specific.
+specific.  Do not call C<read> yourself: it will be called for you
+when you open the folder via the manager or instantiate a folder
+object directly:
+
+  my $mgr = Mail::Box::Manager->new;
+  my $folder = $mgr->open('InBox');             # implies read
+  my $folder = Mail::Box::Mbox->new(folder => 'Inbox'); # same
 
 NOTE: if you are copying messages from one folder to another, use
 C<addMessages> instead of C<read>.
@@ -1093,6 +1127,7 @@ sub read(@)
       , field_type   => $self->{MB_field_type}
       , message_type => $self->{MB_message_type}
       , body_delayed_type => $self->{MB_body_delayed_type}
+      , head_delayed_type => $self->{MB_head_delayed_type}
       , @_
       );
 
@@ -1101,6 +1136,46 @@ sub read(@)
         $self->{MB_modified} = 0;  #after reading, no changes found yet.
     }
 
+    # Which one becomes current?
+    foreach ($self->messages)
+    {   next unless $_->label('current') || 0;
+        $self->current($_);
+        last;
+    }
+
+    $self;
+}
+
+#-------------------------------------------
+
+=item update OPTIONS
+
+Read new messages from the folder, which where received after opening
+it.  This is quite dangerous and shouldn't be possible: folders which
+are open are locked.  However, some applications do not use locks or
+the wrong kind of locks.  This method reads the changes (not always
+failsafe) and incorporates them in the open folder administration.
+
+The OPTIONS are extra values which are passed to the
+C<updateMessages> method which is doing the actual work here.
+
+=cut
+
+sub update(@)
+{   my $self = shift;
+
+    my @new  = $self->updateMessages
+      ( trusted      => $self->{MB_trusted}
+      , head_wrap    => $self->{MB_head_wrap}
+      , head_type    => $self->{MB_head_type}
+      , field_type   => $self->{MB_field_type}
+      , message_type => $self->{MB_message_type}
+      , body_delayed_type => $self->{MB_body_delayed_type}
+      , head_delayed_type => $self->{MB_head_delayed_type}
+      , @_
+      );
+
+    $self->log(PROGRESS => "Found ".@new." new messages in $self");
     $self;
 }
 
@@ -1297,12 +1372,12 @@ sub coerce($)
 
 =item organization
 
-Return whether a folder is organized as one 'FILE' with many messages or
+Returns whether a folder is organized as one 'FILE' with many messages or
 a 'DIRECTORY' with one message per file.
 
 =cut
 
-sub organization() { shift->{MB_organization} }
+sub organization() { shift->notImplemented }
 
 #-------------------------------------------
 
@@ -1320,25 +1395,46 @@ Examples:
 sub folderdir(;$)
 {   my $self = shift;
     if(@_)
-    {   my $newdir = shift;
-        $newdir   .= ($^O =~ m/^Win/i ? '\\' : '/')
-            unless $newdir =~ m![/\\]$!;
-
-        $self->{MB_folderdir} = $newdir;
+    {   # Add / or \ to the end of the directory path.
+        $self->{MB_folderdir} = File::Spec->catfile(shift, "");
     }
     $self->{MB_folderdir};
 }
 
 #-------------------------------------------
 
-=item readMessages
+=item readMessages OPTIONS
 
 Called by C<read()> to actually read the messages from one specific
 folder type.  The C<read()> organizes the general activities.
 
+The OPTIONS are C<trusted>, C<head_wrap>, C<head_type>, C<field_type>,
+C<message_type>, C<body_delayed_type>, and C<head_delayed_type> as
+defined by the folder at hand.  The defaults are the constructor
+defaults (see C<new()>).
+
 =cut
 
 sub readMessages(@) {shift->notImplemented}
+
+#-------------------------------------------
+
+=item updateMessages OPTIONS
+
+Called by C<update()> to read messages which arrived in the folder
+after it was opened.  Sometimes, external applications dump messages
+in a folder without locking (or using a different lock than your
+application does).
+
+Although this is quite a dangerous, it only fails when a folder is
+updated (reordered or message removed) at exactly the same time as
+new messages arrive.  These collisions are sparse.
+
+The options are the same as for C<readMessages>, described above.
+
+=cut
+
+sub updateMessages(@) {shift}
 
 #-------------------------------------------
 
@@ -1621,7 +1717,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -17,7 +17,7 @@ use overload '""'    => sub {shift->load->string}
 use Carp;
 use Scalar::Util 'weaken';
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 =head1 NAME
 
@@ -40,6 +40,9 @@ access the content.  In this documentation you will find the description of
 how a message body gets delay loaded.
 
 =head1 METHOD INDEX
+
+Methods prefixed with an abbreviation are described in
+L<Mail::Reporter> (MR), L<Mail::Message::Body> (MMB), L<Mail::Message::Body::Construct> (MMBC), L<Mail::Message::Body::Encode> (MMBE).
 
 The general methods for C<Mail::Message::Body::Delayed> objects:
 
@@ -66,17 +69,9 @@ The extra methods for extension writers:
    MR DESTROY                           MR logPriority LEVEL
  MMBE addTransferEncHandler NAME,...    MR logSettings
   MMB clone                            MMB moveLocation [DISTANCE]
-  MMB fileLocation                      MR notImplemented
+  MMB fileLocation [BEGIN,END]          MR notImplemented
  MMBE getTransferEncHandler TYPE       MMB read PARSER, HEAD, BODYTYPE...
    MR inGlobalDestruction             MMBE unify BODY
-
-Methods prefixed with an abbreviation are described in the following
-manual-pages:
-
-   MR = L<Mail::Reporter>
-  MMB = L<Mail::Message::Body>
- MMBC = L<Mail::Message::Body::Construct>
- MMBE = L<Mail::Message::Body::Encode>
 
 =head1 METHODS
 
@@ -164,9 +159,10 @@ sub read($$;$@)
 
 #------------------------------------------
 
-sub fileLocation() {
+sub fileLocation(;@) {
    my $self = shift;
-   @$self{ qw/MMBD_begin MMBD_end/ };
+   return @$self{ qw/MMBD_begin MMBD_end/ } unless @_;
+   @$self{ qw/MMBD_begin MMBD_end/ } = @_;
 }
 
 #------------------------------------------
@@ -204,7 +200,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

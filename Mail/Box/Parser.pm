@@ -5,7 +5,7 @@ package Mail::Box::Parser;
 use base 'Mail::Reporter';
 use Carp;
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 =head1 NAME
 
@@ -47,6 +47,9 @@ Each implementation supplies the same methods, as described below.
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Reporter> (MR).
+
 The general methods for C<Mail::Box::Parser> objects:
 
       bodyAsFile FILEHANDLE [,CHA...       new [OPTIONS]
@@ -65,8 +68,6 @@ The extra methods for extension writers:
    MR AUTOLOAD                          MR logPriority LEVEL
    MR DESTROY                           MR logSettings
    MR inGlobalDestruction               MR notImplemented
-
-Prefixed methods are described in   MR = L<Mail::Reporter>.
 
 =head1 METHODS
 
@@ -444,7 +445,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -122,14 +122,14 @@ foreach my $filename (@files)
 
 format STDOUT =
 
-@>>>>>> modules     @>>>>>>>>>> chars   @>>>>>>> lines   Perl
+@>>>>>> modules       @>>>>>>>>>> chars   @>>>>>>> lines   Perl
 $modules, $sumcodechars, $sumcodelines
-                    @>>>>>>>>>> chars   @>>>>>>> lines   C
+                      @>>>>>>>>>> chars   @>>>>>>> lines   C
 $sumccodechars, $sumccodelines
-@>>>>>> tests       @>>>>>>>>>> chars   @>>>>>>> lines
+@>>>>>> test scripts  @>>>>>>>>>> chars   @>>>>>>> lines
 $tests, $sumtestchars, $sumtestlines
 
-@>>>>>> files       @>>>>>>>>>> chars   @>>>>>>> lines
+@>>>>>> files         @>>>>>>>>>> chars   @>>>>>>> lines
 scalar @files, $sumchars, $sumlines
 .
 

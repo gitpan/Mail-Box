@@ -3,7 +3,88 @@ CHANGELOG of Mail::Box version 2
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
-version 2.009:
+Soon to be implemented
+ updateMessages for Mail::Box::Mbox
+ updateMessages for Mail::Box::MH
+ writeMessages  for Mail::Box::Maildir
+ appendMessages for Mail::Box::Maildir
+
+version 2.010: Sun Mar  3 16:05:16 CET 2002
+
+	Fixes:
+
+	- Fixed serious mis-calculation for delayed bodies in MH folders.
+	  The 'fail-safe' approach did safe the programs till now, but
+	  it is much better now: correct 'Content-Length' headers will
+	  safe you time now.
+
+	- Improved quite some doc-issues in Mail::Box::MH::(Label|Index).pm
+
+	- Prototype of Mail::Message::Body::_data_from_lines was @_, which
+	  is a silly typo checked by bleadperl... [Marcel Gruenauer]
+
+	- Mail::Box::Parser::Perl line 87, binmode without filehandle...
+	  reported by [Marcel Gruenauer]  But now it is causing problems
+	  with perlio in 5.7.2 ...
+
+	- Minor changes to scripts/takemail by [Tassilo v Parseval]
+
+	- Mistakes in the docs of Mail::Box::Search::Grep, found by
+	  [Tassilo v Parseval]
+
+	- Accidentally took only non-delayed messages in Grep: wrong
+	  default.  Detected by [Tassilo v Parseval]
+
+	- The METHOD INDEXes ended with a list of links to related
+	  manual-pages which where not expanded correctly by pod.
+	  Therefor is was changed: now the INDEX starts with the
+	  man-pages which will have correct links this time.
+
+	Improvements:
+
+	- Changed encoders/decoders status from ALPHA to BETA.
+
+	- Removed organization option to new() for Mail::Boxes: it is
+	  not modifyable.  The method which shows whether the folder
+	  is DIRECTORY or FILE organized will stay.
+
+	- *PARTIAL* implementation of Maildir folders, which did have large
+	  implications for the MH implementation.  The maildir implementation
+	  is NOT READY yet.
+
+          New class structure:
+
+	    Mail::Box::MH
+	    is a Mail::Box::Dir            <-- new
+	    is a Mail::Box
+
+	    Mail::Box::MH::Message
+	    is a Mail::Box::Dir::Message   <-- new
+	    is a Mail::Box::Message
+	    is a Mail::Message
+
+	    Mail::Box::Maildir             <-- new
+	    is a Mail::Box::Dir            <-- new
+	    is a Mail::Box
+
+	    Mail::Box::Maildir::Message    <-- new
+	    is a Mail::Box::Dir::Message   <-- new
+	    is a Mail::Box::Message
+
+	- Massive changes in label management, required to facilitate
+	  Maildir labels which are in the filename.
+
+	- Added /usr/lib to the safe_directories are searched by
+	  Mail::Transport for binaries [Slaven Rezic]
+
+	- Any Mail::Box type may implement an 'updateMessages'.  When
+	  $mailbox->update is called and 'updateMessages' exists, the
+	  folder tries to figure-out changes in the folder which were
+	  made by external programs.  External programs may add messages
+	  to the end of the folder without applying a lock, which is
+	  dangerous.
+
+version 2.009: Wed Feb 20 09:03:56 CET 2002
 
 	Fixes:
 

@@ -4,7 +4,7 @@ use warnings;
 package Mail::Message::Part;
 use base 'Mail::Message';
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 use Carp;
 
@@ -42,6 +42,9 @@ into mail-folder-specific variants.
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Message> (MM), L<Mail::Reporter> (MR), L<Mail::Message::Construct> (MMC).
+
 The general methods for C<Mail::Message::Part> objects:
 
    MM bcc                               MR log [LEVEL [,STRINGS]]
@@ -64,25 +67,19 @@ The general methods for C<Mail::Message::Part> objects:
    MM isDummy                           MM timestamp
    MM isMultipart                       MM to
    MM isPart                            MM toplevel
-   MM label LABEL [,VALUE]              MR trace [LEVEL]
+   MM label LABEL [,VALUE [LABEL,...    MR trace [LEVEL]
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MM labels
+   MR AUTOLOAD                          MM labelsToStatus
    MM DESTROY                           MR logPriority LEVEL
    MM body [BODY]                       MR logSettings
       clone                             MR notImplemented
       coerce BODY|MESSAGE, MULTIPART    MM read PARSER, [BODYTYPE]
-   MM head [HEAD, [LABELS]]             MM readBody PARSER, HEAD [, BO...
+   MM head [HEAD]                       MM readBody PARSER, HEAD [, BO...
    MR inGlobalDestruction               MM readHead PARSER [,CLASS]
-   MM isDelayed                         MM storeBody BODY
-
-Methods prefixed with an abbreviation are described in the following
-manual-pages:
-
-   MM = L<Mail::Message>
-   MR = L<Mail::Reporter>
-  MMC = L<Mail::Message::Construct>
+   MM isDelayed                         MM statusToLabels
+   MM labels                            MM storeBody BODY
 
 =head1 METHODS
 
@@ -234,7 +231,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

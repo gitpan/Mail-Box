@@ -18,7 +18,7 @@ C<Mail::Box> suite you have to read C<Mail::Box-Overview>.  But you
 do not need to know much if you want to use the C<Mail::Box> suite.
 
 Please use the manager to open your folders.  You will certainly
-benevit from it.  The manager takes care of detecting which folder
+benefit from it.  The manager takes care of detecting which folder
 type you are using, and which folders are open.  The latter avoids
 the accidental re-opening of an already open folder.
 

@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox;
 use base 'Mail::Box';
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 use Mail::Box::Mbox::Message;
 
@@ -47,6 +47,9 @@ described in L<Mail::Box::Mbox::Message>.
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Box> (MB), L<Mail::Reporter> (MR).
+
 The general methods for C<Mail::Box::Mbox> objects:
 
    MB AUTOLOAD                          MR log [LEVEL [,STRINGS]]
@@ -65,25 +68,20 @@ The general methods for C<Mail::Box::Mbox> objects:
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MR notImplemented
-   MB DESTROY                           MB organization
-   MB appendMessages OPTIONS               parser
-   MB clone OPTIONS                     MB read OPTIONS
-   MB coerce MESSAGE                    MB readMessages
-   MB determineBodyType MESSAGE, ...    MB scanForMessages MESSAGE, ME...
-      folderToFilename FOLDERNAME...    MB sort PREPARE, COMPARE, LIST
-   MB folderdir [DIR]                   MB storeMessage MESSAGE
-      foundIn [FOLDERNAME] [,OPTI...    MB timespan2seconds TIME
-   MR inGlobalDestruction               MB toBeThreaded MESSAGES
-   MB lineSeparator [STRING|'CR'|...    MB toBeUnthreaded MESSAGES
-   MR logPriority LEVEL                    write OPTIONS
-   MR logSettings                       MB writeMessages
-
-Methods prefixed with an abbreviation are described in the following
-manual-pages:
-
-   MB = L<Mail::Box>
-   MR = L<Mail::Reporter>
+   MR AUTOLOAD                          MB organization
+   MB DESTROY                              parser
+   MB appendMessages OPTIONS            MB read OPTIONS
+   MB clone OPTIONS                     MB readMessages OPTIONS
+   MB coerce MESSAGE                    MB scanForMessages MESSAGE, ME...
+   MB determineBodyType MESSAGE, ...    MB sort PREPARE, COMPARE, LIST
+      folderToFilename FOLDERNAME...    MB storeMessage MESSAGE
+   MB folderdir [DIR]                   MB timespan2seconds TIME
+      foundIn [FOLDERNAME] [,OPTI...    MB toBeThreaded MESSAGES
+   MR inGlobalDestruction               MB toBeUnthreaded MESSAGES
+   MB lineSeparator [STRING|'CR'|...    MB update OPTIONS
+   MR logPriority LEVEL                 MB updateMessages OPTIONS
+   MR logSettings                          write OPTIONS
+   MR notImplemented                    MB writeMessages
 
 =head1 METHODS
 
@@ -134,7 +132,6 @@ folders you will not specify these:
  multipart_type      Mail::Box          'Mail::Message::Body::Multipart'
  manager             Mail::Box          undef
  message_type        Mail::Box          'Mail::Box::Mbox::Message'
- organization        Mail::Box          'FILE'
 
 Mbox specific options:
 
@@ -197,7 +194,6 @@ sub _default_body_type($$)
 sub init($)
 {   my ($self, $args) = @_;
     $args->{folderdir}        ||= $default_folder_dir;
-    $args->{organization}     ||= 'FILE';
     $args->{body_type}        ||= \&_default_body_type;
 
     $self->SUPER::init($args);
@@ -244,6 +240,22 @@ sub init($)
     : $self->parser              ? $self
     : undef;
 }
+
+#-------------------------------------------
+
+sub head(;$)
+{   my $self   = shift;
+    return $self->head unless @_;
+
+    my $head   = shift;
+    $self->SUPER::head($head);
+    $self->statusToLabels if $head;
+    $head;
+}
+
+#-------------------------------------------
+
+sub organization() { 'FILE' }
 
 #-------------------------------------------
 
@@ -393,7 +405,7 @@ sub listSubFolders(@)
 
 sub openSubFolder($@)
 {   my ($self, $name) = (shift, shift);
-    $self->SUPER::openSubFolder(@_, folder => $self->name . '/' .$name);
+    $self->openRelatedFolder(@_, folder => $self->name . '/' .$name);
 }
 
 #-------------------------------------------
@@ -852,8 +864,8 @@ sub scanForMessages(@) {shift}
 =head2 How Mbox folders work
 
 Mbox folders store many messages in one file (let's call this a
-`file-based' folder, in comparison to a `directory-based' folder type
-like MH).
+`file-based' folder, in comparison to a `directory-based' folder types
+like MH and Maildir).
 
 In file-based folders, each message begins with a line which starts with
 the string C<From >.  Lines inside a message which accidentally start with
@@ -863,6 +875,12 @@ when the message is read.
 In this module, the name of a folder may be an absolute or relative path.
 You can also preceed the foldername by C<=>, which means that it is
 relative to the I<folderdir> option specified for the C<new> method.
+
+=head2 Labels
+
+Message labels (flags which tell about user-actions on the message) are
+stored in C<Status> and C<X-Status> fields.  Each time a label is changed
+(using the C<label()> method) these lines are updated immediately.
 
 =head2 Simulation of sub-folders
 
@@ -899,7 +917,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -8,7 +8,7 @@ use Carp;
 use IO::Socket::INET;
 use Net::Cmd;
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 =head1 NAME
 
@@ -35,6 +35,9 @@ other programs on the local host.
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Reporter> (MR), L<Mail::Transport> (MT).
+
 The general methods for C<Mail::Transport::SMTP> objects:
 
    MR errors                            MR reportAll [LEVEL]
@@ -48,12 +51,6 @@ The extra methods for extension writers:
    MR DESTROY                           MR logPriority LEVEL
       contactServer                     MR logSettings
    MT findBinary NAME [, DIRECTOR...    MR notImplemented
-
-Methods prefixed with an abbreviation are described in the following
-manual-pages:
-
-   MR = L<Mail::Reporter>
-   MT = L<Mail::Transport>
 
 =head1 METHODS
 
@@ -255,7 +252,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -9,7 +9,7 @@ use Mail::Message::Head::Complete;
 
 use Carp;
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 =head1 NAME
 
@@ -49,6 +49,9 @@ header- and C<decoded()> to get the intented content of a message.
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Reporter> (MR), L<Mail::Message::Construct> (MMC).
+
 The general methods for C<Mail::Message> objects:
 
       bcc                               MR log [LEVEL [,STRINGS]]
@@ -71,24 +74,19 @@ The general methods for C<Mail::Message> objects:
       isDummy                              timestamp
       isMultipart                          to
       isPart                               toplevel
-      label LABEL [,VALUE]              MR trace [LEVEL]
+      label LABEL [,VALUE [LABEL,...    MR trace [LEVEL]
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                             labels
+   MR AUTOLOAD                             labelsToStatus
       DESTROY                           MR logPriority LEVEL
       body [BODY]                       MR logSettings
       clone                             MR notImplemented
       coerce MESSAGE                       read PARSER, [BODYTYPE]
-      head [HEAD, [LABELS]]                readBody PARSER, HEAD [, BO...
+      head [HEAD]                          readBody PARSER, HEAD [, BO...
    MR inGlobalDestruction                  readHead PARSER [,CLASS]
-      isDelayed                            storeBody BODY
-
-Methods prefixed with an abbreviation are described in the following
-manual-pages:
-
-   MR = L<Mail::Reporter>
-  MMC = L<Mail::Message::Construct>
+      isDelayed                            statusToLabels
+      labels                               storeBody BODY
 
 =head1 METHODS
 
@@ -106,7 +104,6 @@ be read later, unless specified at construction.
  OPTION            DESCRIBED IN       DEFAULT
  body              Mail::Message      undef
  head              Mail::Message      undef
- labels            Mail::Message      []
  log               Mail::Reporter     'WARNINGS'
  messageId         Mail::Message      undef
  modified          Mail::Message      0
@@ -147,11 +144,6 @@ Default type of head to be created for C<readHead()>.
 
 The soft maximum line width of header lines in the folder to write.
 
-=item * labels =E<gt> [ STRING =E<gt> VALUE, ... ]
-
-Set the specified labels to their accompanying value.  In most cases, this
-value will only be used as boolean, but it might be more complex.
-
 =item * messageId =E<gt> STRING
 
 The id on which this message can be recognized.  If none specified and
@@ -180,13 +172,12 @@ sub init($)
     $self->{MM_modified}  = $args->{modified}  || 0;
     $self->{MM_head_wrap} = $args->{head_wrap} || 72;
     $self->{MM_trusted}   = $args->{trusted}   || 0;
+    $self->{MM_labels}    = {};
 
     # Set the header
 
     my $head;
-    if(defined($head = $args->{head}))
-    {   $self->head($head, $args->{labels});
-    }
+    if(defined($head = $args->{head})) { $self->head($head) }
     elsif(my $msgid = $args->{messageId} || $args->{messageID})
     {   $self->takeMessageId($msgid);
     }
@@ -206,6 +197,7 @@ sub init($)
     $self->{MM_field_type} = $args->{field_type}
        if defined $args->{field_type};
 
+    $self->labels(@{$args->{labels}}) if $args->{labels};
     $self;
 }
 
@@ -740,10 +732,11 @@ sub AUTOLOAD(@)
 
 #------------------------------------------
 
-=item label LABEL [,VALUE]
+=item label LABEL [,VALUE [LABEL, VALUE] ]
 
 Return the value of the LABEL, optionally after setting it to VALUE.  If
-the VALUE is C<undef> then the label is removed.
+the VALUE is C<undef> then the label is removed.  You may specify a list
+of LABEL-VALUE pairs at once.  In the latter case, the first VALUE is returned.
 
 Labels are used to store knowledge about handling of the message within
 the folder.  Flags about whether a message was read, replied to, or
@@ -761,12 +754,13 @@ Examples:
 =cut
 
 sub label($;$)
-{   my ($self, $label) = (shift, shift);
-    if(@_)
-    {   $self->{MM_labels}{$label} = shift;
-        $self->head->createStatus($label);
-    }
-    $self->{MM_labels}{$label};
+{   my $self   = shift;
+    return $self->{MM_labels}{$_[0]} unless @_ > 1;
+    my $return = $_[0];
+
+    my %labels = @_;
+    @{$self->{MM_labels}}{keys %labels} = values %labels;
+    $return;
 }
 
 #------------------------------------------
@@ -890,17 +884,24 @@ sub readBody($$;$)
     my $lines   = $head->get('Lines');
     my $size    = $head->guessBodySize;
 
-    $bodytype->new
-      ( message           => $self
-      , mime_type         => ($head->get('Content-Type')              || undef)
-      , transfer_encoding => ($head->get('Content-Transfer-Encoding') || undef)
-      , disposition       => ($head->get('Content-Disposition')       || undef)
-      , checked           => $self->{MM_trusted}
-      , $self->logSettings
-      )->read
+    my $body
+      = $bodytype->isDelayed
+      ? $bodytype->new
+        ( message           => $self
+        , $self->logSettings
+        )
+      : $bodytype->new
+        ( message           => $self
+        , mime_type         => scalar $head->get('Content-Type')
+        , transfer_encoding => scalar $head->get('Content-Transfer-Encoding')
+        , disposition       => scalar $head->get('Content-Disposition')
+        , checked           => $self->{MM_trusted}
+        , $self->logSettings
+        );
+
+    $body->read
       ( $parser, $head, $getbodytype,
-      , (defined $lines ? int $lines->body : undef)
-      , $size
+      , $size, (defined $lines ? int $lines->body : undef)
       );
 }
 
@@ -1004,7 +1005,7 @@ sub storeBody($)
 
 #------------------------------------------
 
-=item head [HEAD, [LABELS]]
+=item head [HEAD]
 
 Return (optionally after setting) the HEAD of this message.
 The head must be an (sub-)class of C<Mail::Message::Head>.
@@ -1018,7 +1019,7 @@ Example:
 
 =cut
 
-sub head(;$$)
+sub head(;$)
 {   my $self = shift;
     return $self->{MM_head} unless @_;
 
@@ -1027,8 +1028,6 @@ sub head(;$$)
     {   delete $self->{MM_head};
         return undef;
     }
-
-    my $labels = shift;
 
     $self->log(INTERNAL => "wrong type of head for $self")
         unless ref $head && $head->isa('Mail::Message::Head');
@@ -1041,18 +1040,7 @@ sub head(;$$)
 
     $self->{MM_head} = $head;
 
-    unless($head->isDelayed)
-    {  $self->takeMessageId;
-       my %labels = $head->statusLabels;
-       if(exists $self->{MM_labels})
-            { @{$self->{MM_labels}}{keys %labels} = values %labels }
-       else { $self->{MM_labels} = \%labels }
-    }
-
-    if($labels)
-    {   my %labels = @$labels;
-        @{$self->{MM_labels}}{keys %labels} = values %labels;
-    }
+    $self->takeMessageId unless $head->isDelayed;
 
     $head;
 }
@@ -1182,7 +1170,6 @@ confess "@_" unless $message;
 
 #------------------------------------------
 
-
 =item labels
 
 Returns all known labels.  In SCALAR context, it returns the knowledge
@@ -1198,6 +1185,66 @@ that they will not all evaluate to true, although most of them will.
 sub labels()
 {   my $self = shift;
     wantarray ? keys %{$self->{MM_labels}} : $self->{MM_labels};
+}
+
+#------------------------------------------
+
+=item labelsToStatus
+
+When the labels were changes, there may be an effect for the
+C<Status> and/or C<X-Status> header-lines.  Whether this update has
+to take place depends on the type of folder.
+
+=cut
+
+sub labelsToStatus()
+{   my $self    = shift;
+    my $head    = $self->head;
+    my $labels  = $self->labels;
+
+    my $status  = $head->get('status') || '';
+    my $newstatus
+      = $labels->{seen}    ? 'RO'
+      : $labels->{old}     ? 'O'
+      : '';
+
+    $head->set(Status => $newstatus)
+        if $newstatus ne $status;
+
+    my $xstatus = $head->get('x-status') || '';
+    my $newxstatus
+      = ($labels->{replied} ? 'A' : '')
+      . ($labels->{flagged} ? 'F' : '');
+
+    $head->set('X-Status' => $newxstatus)
+        if $newxstatus ne $xstatus;
+
+    $self;
+}
+
+#-------------------------------------------
+
+=item statusToLabels
+
+Update de labels accoring the status lines in the header.
+
+=cut
+
+sub statusToLabels()
+{   my $self    = shift;
+    my $head    = $self->head;
+
+    if(my $status  = $head->get('status'))
+    {   $self->{MM_labels}{seen} = ($status  =~ /R/ ? 1 : 0);
+        $self->{MM_labels}{old}  = ($status  =~ /O/ ? 1 : 0);
+    }
+
+    if(my $xstatus = $head->get('x-status'))
+    {   $self->{MM_labels}{replied} = ($xstatus  =~ /A/ ? 1 : 0);
+        $self->{MM_labels}{flagged} = ($xstatus  =~ /F/ ? 1 : 0);
+    }
+
+    $self;
 }
 
 #------------------------------------------
@@ -1236,7 +1283,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -8,7 +8,7 @@ use lib '.';
 
 my ($src, $dest) = @ARGV;
 my $verbose = 0;
-my $version = '2.009';
+my $version = '2.010';
 my $email   = 'mailbox@overmeer.net';
 
 require $src;
@@ -225,7 +225,12 @@ sub build_abbrev($)
         $abbrev{sprintf "%4s", $abbrev} = $_;
     }
     
-    map {"$_ = L<$abbrev{$_}>"} sort keys %abbrev;
+    my @abbrevs;
+    foreach (sort keys %abbrev)
+    {   (my $short = $_) =~ s/\s//g;
+         push @abbrevs, "L<$abbrev{$_}> ($short)";
+    }
+    @abbrevs;
 }
 
 #
@@ -351,32 +356,31 @@ my @listabbrev= build_abbrev $mod;
 #print "GENERAL:\n$general\n";
 #print "EXTENT:\n$extent\n";
 
-local $" = "\n ";
+my $method_index = '';
 
-my $method_index = <<INDEX;
+{   local $" = ", ";
+    $method_index .= <<INDEX if @listabbrev;
+Methods prefixed with an abbreviation are described in
+@listabbrev.
+
+INDEX
+}
+
+{   local $" = "\n ";
+    $method_index .= <<INDEX if @general;
 The general methods for C<$mod> objects:
 
  @general
 INDEX
+}
 
-$method_index .= <<INDEX if @extent;
+{   local $" = "\n ";
+    $method_index .= <<INDEX if @extent;
 
 The extra methods for extension writers:
 
  @extent
 INDEX
-
-if(@listabbrev)
-{   $method_index .= @listabbrev==1 ? <<SHORT : <<LONG;
-
-Prefixed methods are described in @listabbrev.
-SHORT
-
-Methods prefixed with an abbreviation are described in the following
-manual-pages:
-
- @listabbrev
-LONG
 }
 
 replace $hierarchy, $method_index;

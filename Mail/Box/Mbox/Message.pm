@@ -3,10 +3,10 @@ use strict;
 package Mail::Box::Mbox::Message;
 use base 'Mail::Box::Message';
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 use POSIX 'SEEK_SET';
-use IO::InnerFile;
+use Carp;
 
 =head1 NAME
 
@@ -35,9 +35,12 @@ L<details about the implementation|/"IMPLEMENTATION">, but first the use.
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Message> (MM), L<Mail::Reporter> (MR), L<Mail::Box::Message> (MBM), L<Mail::Message::Construct> (MMC).
+
 The general methods for C<Mail::Box::Mbox::Message> objects:
 
-   MM bcc                               MM label LABEL [,VALUE]
+   MM bcc                               MM label LABEL [,VALUE [LABEL,...
   MMC bounce OPTIONS                    MR log [LEVEL [,STRINGS]]
   MMC build [MESSAGE|BODY], CONTENT     MM messageId
   MMC buildFromBody BODY, HEADERS       MM modified [BOOL]
@@ -65,24 +68,17 @@ The general methods for C<Mail::Box::Mbox::Message> objects:
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MM labels
+   MR AUTOLOAD                          MM labelsToStatus
    MM DESTROY                              loadBody
    MM body [BODY]                       MR logPriority LEVEL
    MM clone                             MR logSettings
    MM coerce MESSAGE                       moveLocation DISTANCE
   MBM diskDelete                        MR notImplemented
       fileLocation                         read PARSER
-   MM head [HEAD, [LABELS]]            MBM readBody PARSER, HEAD [, BO...
+   MM head [HEAD]                      MBM readBody PARSER, HEAD [, BO...
    MR inGlobalDestruction               MM readHead PARSER [,CLASS]
-   MM isDelayed                         MM storeBody BODY
-
-Methods prefixed with an abbreviation are described in the following
-manual-pages:
-
-   MM = L<Mail::Message>
-   MR = L<Mail::Reporter>
-  MBM = L<Mail::Box::Message>
-  MMC = L<Mail::Message::Construct>
+   MM isDelayed                         MM statusToLabels
+   MM labels                            MM storeBody BODY
 
 =head1 METHODS
 
@@ -102,7 +98,6 @@ Messages in file-based folders use the following options for creation:
  folder        Mail::Box::Message    <required>
  head          Mail::Message         undef
  head_wrap     Mail::Message         72
- labels        Mail::Box::Message    []
  log           Mail::Reporter        'WARNINGS'
  messageId     Mail::Message         undef
  modified      Mail::Message         0
@@ -127,6 +122,18 @@ this line, but this is just how things were invented...
 =back
 
 =cut
+
+#-------------------------------------------
+
+sub head(;$$)
+{   my $self  = shift;
+    return $self->SUPER::head unless @_;
+
+    my ($head, $labels) = @_;
+    $self->SUPER::head($head, $labels);
+    $self->statusToLabels if $head && !$head->isDelayed;
+    $head;
+}
 
 #-------------------------------------------
 
@@ -168,6 +175,15 @@ sub print(;$)
     $self->SUPER::print($out);
     $out->print("\n");
     $self;
+}
+
+#-------------------------------------------
+
+sub label(@)
+{   my $self   = shift;
+    my $return = $self->SUPER::label(@_);
+    $self->labelsToStatus if @_ > 1;
+    $return;
 }
 
 #-------------------------------------------
@@ -250,6 +266,15 @@ sub loadBody()
 
 #------------------------------------------
 
+sub coerce($)
+{   my ($self, $message) = @_;
+    return $message if $message->isa(__PACKAGE__);
+
+    $self->SUPER::coerce($message)->labelsToStatus;
+}
+
+#------------------------------------------
+
 =item fileLocation
 
 Returns the location of the whole message including the from-line.  In
@@ -258,8 +283,9 @@ the begin is passed back.
 
 =cut
 
-sub fileLocation()
+sub fileLocation(;@)
 {   my $self = shift;
+croak if @_;
     wantarray
      ? ($self->{MBMM_begin}, ($self->body->fileLocation)[1])
      : $self->{MBMM_begin};
@@ -288,8 +314,6 @@ sub moveLocation($)
 
 =back
 
-=head1 IMPLEMENTATION
-
 =head1 SEE ALSO
 
 L<Mail::Box-Overview>
@@ -302,7 +326,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

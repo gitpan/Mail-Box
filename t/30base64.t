@@ -14,7 +14,7 @@ use Mail::Message::Body::Lines;
 use Mail::Message::TransferEnc::Base64;
 use Tools;
 
-warn "   * Transfer Encodings status ALPHA\n";
+warn "   * Transfer Encodings status BETA\n";
 
 BEGIN { plan tests => 11 }
 

@@ -48,6 +48,9 @@ A C<Mail::Box::Search::Spam> is on the wishlist.
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Reporter> (MR).
+
 The general methods for C<Mail::Box::Search> objects:
 
    MR errors                            MR report [LEVEL]
@@ -61,8 +64,6 @@ The extra methods for extension writers:
    MR DESTROY                           MR logPriority LEVEL
       inBody PART, BODY                 MR logSettings
    MR inGlobalDestruction               MR notImplemented
-
-Prefixed methods are described in   MR = L<Mail::Reporter>.
 
 =head1 METHODS
 
@@ -195,7 +196,7 @@ sub init($)
     $self->{MBS_limit}      = $args->{limit}    || 0;
     $self->{MBS_decode}     = $args->{decode}   || 1;
     $self->{MBS_no_deleted} = not $args->{deleted};
-    $self->{MBS_no_delayed} = not $args->{delayed};
+    $self->{MBS_delayed}    = defined $args->{delayed} ? $args->{delayed} : 1;
     $self->{MBS_multiparts}
        = defined $args->{multiparts} ? $args->{multiparts} : 1;
 
@@ -256,7 +257,7 @@ sub search(@)
 
     foreach my $message (@messages)
     {   next if $self->{MBS_no_deleted} && $message->deleted;
-        next if $self->{MBS_no_delayed} && $message->isDelayed;
+        next unless $self->{MBS_delayed} || !$message->isDelayed;
 
         my $set = defined $label ? $message->label($label) : 0;
 
@@ -391,7 +392,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -5,7 +5,7 @@ use Getopt::Long;
 use lib '../../Mail';
 use Mail::Box::Manager;
 
-my $VERSION = '2.009';
+my $VERSION = '2.010';
 
 #-----------
 # prototypes
@@ -58,7 +58,8 @@ sub open_mailboxes() {
                 trace "Opening folder $mb. ";
 
                 if(my $mbox = $Manager->open(
-                    folder => "$item/$mb", access => 'r', extract => 'LAZY'))
+                    folder => "$item/$mb", access => 'r', extract => 'LAZY',
+                    trace => 'NONE'))
                 {   trace "Success.\n";
                     push @Mailboxes, $mbox;
                 }
@@ -72,7 +73,8 @@ sub open_mailboxes() {
             trace "Opening folder $item. ";
             my $mbox = $Manager->open(  folder => $item, 
                                         access => 'r',
-                                        extract => 'LAZY');
+                                        extract => 'LAZY',
+                                        trace   => 'NONE');
             if ($mbox) {
                     trace "Success.\n";
                     push @Mailboxes, $mbox;
@@ -101,11 +103,11 @@ sub parse_mailboxes() {
     for my $mbox (@Mailboxes) {
         MESSAGE:
         for my $msg ($mbox->messages) {
-                
+
             for my $h (keys %{$option{header}}) {
                 my $hd  = $msg->head->get($h);                
                 my $pat = $option{header}{$h};
-                next MESSAGE if (not $hd or not $hd =~ $pat); 
+                next MESSAGE unless defined $hd && $hd =~ $pat; 
             }
             
             for my $h (keys %{$option{nheader}}) {
@@ -252,4 +254,4 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009
+This code is beta, version 2.010

@@ -7,7 +7,7 @@ use base 'Mail::Message';
 use Date::Parse;
 use Scalar::Util 'weaken';
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 =head1 NAME
 
@@ -43,9 +43,12 @@ L<details about the implementation|/"IMPLEMENTATION">, but first the use.
 
 =head1 METHOD INDEX
 
+Methods prefixed with an abbreviation are described in
+L<Mail::Message> (MM), L<Mail::Reporter> (MR), L<Mail::Message::Construct> (MMC).
+
 The general methods for C<Mail::Box::Message> objects:
 
-   MM bcc                               MM label LABEL [,VALUE]
+   MM bcc                               MM label LABEL [,VALUE [LABEL,...
   MMC bounce OPTIONS                    MR log [LEVEL [,STRINGS]]
   MMC build [MESSAGE|BODY], CONTENT     MM messageId
   MMC buildFromBody BODY, HEADERS       MM modified [BOOL]
@@ -72,22 +75,16 @@ The general methods for C<Mail::Box::Message> objects:
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                          MM labels
+   MR AUTOLOAD                          MM labelsToStatus
    MM DESTROY                           MR logPriority LEVEL
    MM body [BODY]                       MR logSettings
    MM clone                             MR notImplemented
    MM coerce MESSAGE                    MM read PARSER, [BODYTYPE]
       diskDelete                           readBody PARSER, HEAD [, BO...
-   MM head [HEAD, [LABELS]]             MM readHead PARSER [,CLASS]
-   MR inGlobalDestruction               MM storeBody BODY
-   MM isDelayed                         MM takeMessageId [STRING]
-
-Methods prefixed with an abbreviation are described in the following
-manual-pages:
-
-   MM = L<Mail::Message>
-   MR = L<Mail::Reporter>
-  MMC = L<Mail::Message::Construct>
+   MM head [HEAD]                       MM readHead PARSER [,CLASS]
+   MR inGlobalDestruction               MM statusToLabels
+   MM isDelayed                         MM storeBody BODY
+   MM labels                            MM takeMessageId [STRING]
 
 =head1 METHODS
 
@@ -300,16 +297,17 @@ sub copyTo($)
 
 #-------------------------------------------
 
-sub head(;$$)
+sub head(;$)
 {   my $self  = shift;
-    return $self->{MM_head} unless @_;  #optimization
+    return $self->SUPER::head unless @_;
 
-    my $old   = $self->{MM_head};
-    my $new   = $self->SUPER::head(@_);
+    my $new   = shift;
+    my $old   = $self->head;
+    $self->SUPER::head($new);
 
     return unless defined $new || defined $old;
 
-    my $folder = $self->{MBM_folder}
+    my $folder = $self->folder
         or return $new;
 
     if(!defined $new && defined $old && !$old->isDelayed)
@@ -402,7 +400,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

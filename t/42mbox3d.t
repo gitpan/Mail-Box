@@ -57,7 +57,10 @@ foreach my $message ($folder->messages)
     warn "Message ", $message->get('subject') || '<no subject>', " failed\n"
        unless $ok==3;
 }
-ok($end== -s $folder->filename);
+
+if($^O =~ /win32/i)   # Correct count for empty trailing line
+     { ok($end+2 == -s $folder->filename); }
+else { ok($end+1 == -s $folder->filename); }
 
 #
 # None of the messages should be modified.
@@ -77,7 +80,7 @@ my $oldsize = -s $folder->filename;
 
 $folder->modified(1);    # force write
 ok($folder->write);
-ok($oldsize == -s $folder->filename);
+ok($oldsize-1 == -s $folder->filename);
 
 # Try to read it back
 

@@ -24,7 +24,7 @@ BEGIN {
    $unixsrc = File::Spec->catfile('t', $unixfn);
    $winsrc  = File::Spec->catfile('t', $winfn);
    $cpy     = File::Spec->catfile('t', $cpyfn);
-   ($src, $fn) = $^O =~ m/win/
+   ($src, $fn) = $^O =~ m/win32/
             ? ($winsrc, $winfn)
             : ($unixsrc, $unixfn);
 }
@@ -79,25 +79,85 @@ sub unpack_mbox2mh($$)
 # UNPACK_MBOX2MAILDIR
 # Unpack an mbox-file into an Maildir-directory.
 
+our @maildir_names =
+ (   '8000000.localhost.23'
+ ,  '90000000.localhost.213'
+ , '110000000.localhost.12'
+ , '110000001.l.42'
+ , '110000002.l.42'
+ , '110000002.l.43'
+ , '110000004.l.43'
+ , '110000005.l.43'
+ , '110000006.l.43:2,'
+ , '110000007.l.43:2,D'
+ , '110000008.l.43:2,DF'
+ , '110000009.l.43:2,DFR'
+ , '110000010.l.43:2,DFRS'
+ , '110000011.l.43:2,DFRST'
+ , '110000012.l.43:2,F'
+ , '110000013.l.43:2,FR'
+ , '110000014.l.43:2,FRS'
+ , '110000015.l.43:2,FRST'
+ , '110000016.l.43:2,DR'
+ , '110000017.l.43:2,DRS'
+ , '110000018.l.43:2,DRST'
+ , '110000019.l.43:2,FS'
+ , '110000020.l.43:2,FST'
+ , '110000021.l.43:2,R'
+ , '110000022.l.43:2,RS'
+ , '110000023.l.43:2,RST'
+ , '110000024.l.43:2,S'
+ , '110000025.l.43:2,ST'
+ , '110000026.l.43:2,T'
+ , '110000027.l.43'
+ , '110000028.l.43'
+ , '110000029.l.43'
+ , '110000030.l.43'
+ , '110000031.l.43'
+ , '110000032.l.43'
+ , '110000033.l.43'
+ , '110000034.l.43'
+ , '110000035.l.43'
+ , '110000036.l.43'
+ , '110000037.l.43'
+ , '110000038.l.43'
+ , '110000039.l.43'
+ , '110000040.l.43'
+ , '110000041.l.43'
+ , '110000042.l.43'
+ );
+ 
 sub unpack_mbox2maildir($$)
 {   my ($file, $dir) = @_;
     clean_dir($dir);
 
-    mkdir $dir, 0700;
-    my $unique = 1;
+    die unless @maildir_names==45;
+
+    mkdir $dir or die;
+    mkdir File::Spec->catfile($dir, 'cur') or die;
+    mkdir File::Spec->catfile($dir, 'new') or die;
+    my $msgnr = 0;
 
     open FILE, $file or die;
     open OUT, '>', File::Spec->devnull;
 
+    my $last_empty = 0;
+
     while(<FILE>)
-    {   if( /^From / )
+    {   if( m/^From / )
         {   close OUT;
             my $now      = time;
             my $hostname = hostname;
-            open OUT, ">$dir/cur/$now.$hostname.$unique" or die;
-            $unique++;
+
+            my $msgfile  = File::Spec->catfile($dir
+              , ($msgnr > 40 ? 'new' : 'cur')
+              , $maildir_names[$msgnr++]
+              );
+
+            open OUT, ">", $msgfile or die "Create $msgfile: $!\n";
             next;                    # from line not included in file.
         }
+
         print OUT;
     }
 

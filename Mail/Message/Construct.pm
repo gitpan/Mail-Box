@@ -5,7 +5,7 @@ use strict;
 
 package Mail::Message;
 
-our $VERSION = 2.009;
+our $VERSION = 2.010;
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -902,6 +902,8 @@ sub build(@)
        : Mail::Message::Body::Multipart->new(parts => \@parts);
 
     $message->body($body->check);
+    $message->statusToLabels;
+
     $message;
 }
 
@@ -959,6 +961,7 @@ sub buildFromBody(@)
      );
 
     $message->body($body->check);
+    $message->statusToLabels;
     $message;
 }
 
@@ -1061,7 +1064,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.009.
+This code is beta, version 2.010.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
