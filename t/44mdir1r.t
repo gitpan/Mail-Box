@@ -16,7 +16,15 @@ use Tools;
 use File::Compare;
 use File::Copy;
 
-BEGIN {plan tests => 28}
+BEGIN {
+   if($^O =~ /mswin/i)
+   {   warn "Maildir filenames are incompatible with Windows";
+       plan tests => 0;
+       exit 0;
+   }
+
+   plan tests => 28
+}
 
 my $mdsrc = File::Spec->catfile('t', 'maildir.src');
 

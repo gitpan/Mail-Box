@@ -7,7 +7,7 @@ use base 'Mail::Message::Body';
 use Mail::Message::Body::Lines;
 use Mail::Message::Part;
 
-our $VERSION = 2.016;
+our $VERSION = 2.017;
 
 use Carp;
 
@@ -26,7 +26,7 @@ Mail::Message::Body::Nested - body of a message which contains a message
  See Mail::Message::Body, plus
 
  if($body->isNested) {
-    my ($nest) = $body->parts;
+    my ($nest) = $body->nested;
     $body->part(1)->delete;
  }
 
@@ -134,7 +134,7 @@ sub init($)
 
     $self->{MMBN_nested}
        = !$based || defined $nested  ? $nested
-       : $based->isNested            ? ($based->parts)[0]
+       : $based->isNested            ? $based->nested
        : undef;
 
     $self;
@@ -292,7 +292,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.016.
+This code is beta, version 2.017.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

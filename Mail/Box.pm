@@ -9,7 +9,7 @@ use Mail::Box::Message;
 use Mail::Box::Locker;
 use File::Spec;
 
-our $VERSION = 2.016;
+our $VERSION = 2.017;
 
 use Carp;
 use Scalar::Util 'weaken';
@@ -115,19 +115,19 @@ L<Mail::Reporter> (MR).
 
 The general methods for C<Mail::Box> objects:
 
-      addMessage  MESSAGE                  message INDEX [,MESSAGE]
-      addMessages MESSAGE [, MESS...       messageId MESSAGE-ID [,MESS...
-      allMessageIds                        messages
-      close OPTIONS                        modified [BOOLEAN]
-      copyTo FOLDER, OPTIONS               name
-      create FOLDERNAME [, OPTIONS]        new OPTIONS
-      current [NUMBER|MESSAGE|MES...       openSubFolder NAME [,OPTIONS]
-      delete                            MR report [LEVEL]
-   MR errors                            MR reportAll [LEVEL]
-      find MESSAGE-ID                   MR trace [LEVEL]
-      listSubFolders OPTIONS            MR warnings
-      locker                               writable
-   MR log [LEVEL [,STRINGS]]
+      addMessage  MESSAGE                  messageId MESSAGE-ID [,MESS...
+      addMessages MESSAGE [, MESS...       messageIds
+      close OPTIONS                        messages ['ALL',RANGE,'ACTI...
+      copyTo FOLDER, OPTIONS               modified [BOOLEAN]
+      create FOLDERNAME [, OPTIONS]        name
+      current [NUMBER|MESSAGE|MES...       new OPTIONS
+      delete                               openSubFolder NAME [,OPTIONS]
+   MR errors                            MR report [LEVEL]
+      find MESSAGE-ID                   MR reportAll [LEVEL]
+      listSubFolders OPTIONS            MR trace [LEVEL]
+      locker                            MR warnings
+   MR log [LEVEL [,STRINGS]]               writable
+      message INDEX [,MESSAGE]
 
 The extra methods for extension writers:
 
@@ -565,25 +565,28 @@ sub close(@)
 
     # Inform manager that the folder is closed.
     $self->{MB_manager}->close($self)
-        if exists $self->{MB_manager}
-           && !$args{close_by_manager};
+        if exists $self->{MB_manager} && !$args{close_by_manager};
 
     delete $self->{MB_manager};
 
-    my $write
-      = (!exists $args{write} || $args{write} eq 'MODIFIED') ? $self->modified
-        : $args{write} eq 'ALWAYS'                           ? 1
-        : $args{write} eq 'NEVER'                            ? 0
-        :                                                      0;
-
-    if($write && !$force && !$self->writable)
-    {   $self->log(WARNING => "Changes not written to read-only folder $self");
-        return 1;
+    my $write;
+    for($args{write} || 'MODIFIED')
+    {   $write = $_ eq 'MODIFIED' ? $self->modified
+               : $_ eq 'ALWAYS'   ? 1
+               : $_ eq 'NEVER'    ? 0
+               : croak "Unknown value to write options: $_.";
     }
 
-    my $rc;
-    if($write)   { $self->write(force => $force) }
-    else         { $self->{MB_messages} = []     }
+    if($write && !$force && !$self->writable)
+    {   $self->log(WARNING => "Changes not written to read-only folder $self.
+Suggestion: \$folder->close(write => 'NEVER')");
+
+        return 0;
+    }
+
+    my $rc = 1;
+    if($write) { $rc = $self->write(force => $force) }
+    else       { $self->{MB_messages} = [] }
 
     $self->{MB_locker}->unlock;
     $rc;
@@ -707,8 +710,8 @@ sub modified($)
     return 1 if $self->{MB_modified};
 
     foreach (@{$self->{MB_messages}})
-    {   next unless $_->deleted || $_->modified;
-        return $self->{MB_modified} = 1;
+    {   return $self->{MB_modified} = 1
+            if $_->deleted || $_->modified;
     }
 
     0;
@@ -833,28 +836,78 @@ sub find
 
 #-------------------------------------------
 
-=item messages
+=item messages ['ALL',RANGE,'ACTIVE','DELETED',LABEL,!LABEL,FILTER]
 
-Returns all messages.  In scalar context, it returns the number of undeleted
-messages in the folder.  Dereferencing a folder to an array is overloaded
-to call this method.
+Returns multiple messages from the folder.  The default is 'ALL'
+which will return (as expected maybe) all the messages in the
+folder.  The 'ACTIVE' flag will return the messages not flagged for
+deletion.  This is the opposite of 'DELETED', which returns all
+messages from the folder which will be deleted when the folder is
+closed.
+
+You may also specify a RANGE: two numbers specifying begin and end
+index in the array of messages.  Negative indexes count from the
+end of the folder.  When an index is out-of-range, the returned
+list will be shorter without complaints.
+
+Everything else than the predefined names is seen as labels.  The messages
+which have that label set will be returned.  When the secquence starts
+with an exclamation mark (!), the search result is reversed.
+
+For more complex searches, you can specify a FILTER, which is
+simply a code reference.  The message is passed as only argument.
 
 Examples:
 
     foreach my $message ($folder->messages) {...}
     foreach my $message (@$folder) {...}
     my @messages   = $folder->messages;
-    my @not_deleted= grep {! $_->deleted} $folder->messages;
-    my $nr_of_msgs = $folder->messages;
-    $folder->[2];   # third message
+    my @messages   = $folder->messages('ALL');    # same
+
+    my $subset     = $folder->messages(10,-8);
+
+    my @not_deleted= grep {not $_->deleted} $folder->messages;
+    my @not_deleted= $folder->messages('ACTIVE'); # same
+    
+    my $nr_of_msgs = $folder->messages;           # scalar context
+    $folder->[2];                  # third message, via overloading
+
+    $mgr->moveMessages($spamfolder, $inbox->message('spam'));
+    $mgr->moveMessages($archive, $inbox->message('seen'));
 
 =cut
 
-sub messages() { @{shift->{MB_messages}} }
+sub messages($;$)
+{   my $self = shift;
+
+    return @{$self->{MB_messages}} unless @_;
+    my $nr = @{$self->{MB_messages}};
+
+    if(@_==2)   # range
+    {   my ($begin, $end) = @_;
+        $begin += $nr if $begin < 0;
+        $begin = 0    if $begin < 0;
+        $end   += $nr if $end < 0;
+        $end   = $nr  if $end > $nr;
+
+        return $begin > $end ? () : @{$self->{MB_messages}}[$begin..$end];
+    }
+
+    my $what = shift;
+    my $action
+      = ref $what eq 'CODE'? $what
+      : $what eq 'DELETED' ? sub {$_[0]->deleted}
+      : $what eq 'ACTIVE'  ? sub {not $_[0]->deleted}
+      : $what eq 'ALL'     ? sub {1}
+      : $what =~ s/^\!//   ? sub {not $_[0]->label($what)}
+      :                      sub {$_[0]->label($what)};
+
+    grep {$action->($_)} @{$self->{MB_messages}};
+}
 
 #-------------------------------------------
 
-=item allMessageIds
+=item messageIds
 
 Returns a list of I<all> message-ids in the folder, including
 those of messages which are to be deleted.
@@ -864,13 +917,14 @@ to be read.  See their respective manual pages.
 
 Examples:
 
-    foreach my $id ($folder->allMessageIds) {
+    foreach my $id ($folder->messageIds) {
         $folder->messageId($id)->print;
     }
 
 =cut
 
-sub allMessageIds() { keys %{shift->{MB_msgid}} }
+sub messageIds()    { keys %{shift->{MB_msgid}} }
+sub allMessageIds() {shift->allMessageIds}  # compatibilty
 sub allMessageIDs() {shift->allMessageIds}  # compatibilty
 
 #-------------------------------------------
@@ -995,17 +1049,10 @@ Flag the messages from the source folder to be deleted, just after it
 was copied.  The deletion will only take effect when the originating
 folder is closed.  By default, copying will not delete the original.
 
-=item * select =E<gt> CODE|'DELETED'|'ALL'|'ACTIVE'|'SPAM'
+=item * select =E<gt> 'ACTIVE'|'DELETED'|'ALL'|LABEL|!LABEL|FILTER
 
-Which messages are to be copied. C<ALL> will include the message which
-are flagged to be deleted.  C<DELETED> will only copy the messages which
-are flagged for deletion.  By default the C<ACTIVE> messages (not to be
-deleted) are taken. With C<SPAM>, all messages which are labeled 'spam'
-are selected.  Deletion flags will not be set on the copies.
-
-You may specify your own CODE, which is called for each message in the
-source folder, with that message as first argument.  When the CODE
-returns true, the message is taken otherwise ignored.
+Which messages are to be copied. See the description of the option
+for the C<messages()> method about how this works.  Default is 'ACTIVE'.
 
 =item * subfolders =E<gt> BOOLEAN|'FLATTEN'|'RECURSE'
 
@@ -1033,16 +1080,7 @@ Example:
 sub copyTo($@)
 {   my ($self, $to, %args) = @_;
 
-    my $select = $args{select} || 'ACTIVE';
-    unless(ref $select)
-    {   $select
-           = $select eq 'ACTIVE'  ? sub { not $_[0]->deleted }
-           : $select eq 'DELETED' ? sub { $_[0]->deleted }
-           : $select eq 'ALL'     ? sub {1}
-           : $select eq 'SPAM'    ? sub { $_[0]->label('spam') }
-           : croak "copyTo flag 'select' does not understand $select";
-    }
-
+    my $select      = $args{select} || 'ACTIVE';
     my $subfolders  = exists $args{subfolders} ? $args{subfolders} : 1;
     my $can_recurse
        = $to->can('openSubFolder') ne Mail::Box->can('openSubFolder');
@@ -1070,9 +1108,8 @@ sub _copy_to($@)
     $self->log(PROGRESS => "Copying messages from $self to $to.");
 
     # Take messages from this folder.
-    foreach my $msg ($self->messages)
-    {   next unless $select->($msg);
-        $msg->copyTo($to) or return;
+    foreach my $msg ($self->messages($select))
+    {   $msg->copyTo($to) or return;
         $msg->delete if $delete;
     }
 
@@ -1653,8 +1690,8 @@ to be found in this default DIRECTORY.
 
 Examples:
 
-   Mail::Box::Mbox->foundIn('=markov', folderdir => "$ENV{HOME}/Mail");
-   Mail::Box::MH->foundIn(folder => '=markov');
+ Mail::Box::Mbox->foundIn('=markov', folderdir => "$ENV{HOME}/Mail");
+ Mail::Box::MH->foundIn(folder => '=markov');
 
 =cut
 
@@ -1869,7 +1906,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.016.
+This code is beta, version 2.017.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -7,6 +7,65 @@ NOTE: The number of changes and fixes for each release seem large, but
       usually limited to areas which are under development.  Mail::Box
       is a huge module, so there is always a lot of activity.
 
+version 2.017:
+
+	Fixes:
+
+	- Thanks to [Liz Mattijsen] for the detection of some flaws in
+	  the QuotedPrintable encoding.  Fixed it.
+
+	- Nested (rfc822) message clone() did not work.  Detected by
+	  [Blair Zajac]
+
+	- [Greg Matheson] is fixing the test suite for Windows.  Very good
+	  work.  Changes made in t/65search.t
+
+	Improvements:
+
+	- Deleted parts will not be returned in $multipart_body->lines
+
+	- Deleted parts will not be counted in $multipart_body->nrLines
+	  and ->size
+
+	- Deleted parts will not be cloned.
+
+	- For efficiency reasons, $multipart_body->foreachComponent
+	  will skip deleted parts as well.
+
+	- Mail::Box::messages() accepts
+             range:       $folder->messages(3, 100)
+             non-deleted: $folder->messages('ACTIVE')
+             deleted:     $folder->messages('DELETED')
+             labeled:     $folder->messages('seen')
+             labeled:     $folder->messages('!seen')
+	     code:        $folder->messages( sub {$_[0]->size > 10000} )
+	  limiting the default result being all messages.
+
+	- Mail::Message::parts() accepts
+             non-deleted: $msg->parts('ACTIVE')
+             deleted:     $msg->parts('DELETED')
+	     nested:      $msg->parts('RECURSE');
+	     code:        $msg->parts( sub {$_[0]->size > 10000)} )
+
+	- Mail::Message::Body::Multipart::parts accepts
+             non-deleted: $body->parts('ACTIVE')
+             deleted:     $body->parts('DELETED')
+	     nested:      $body->parts('RECURSE');
+	     code:        $body->parts( sub {$_[0]->size > 10000)} )
+
+	- Mail::Box::allMessageIds() renamed to messageIds(), but old
+	  name still available.
+
+	- Add suggestion to close() without writing changes.
+
+	- Avoid testing of maildir folders for Windows.  They are not
+	  supported, because maildir uses characters in filenames which
+	  are not acceptabled for the Windows file-systyem. [Greg Matheson]
+
+	- Added Mail::Box::POP3, Mail::Box::POP3::Message
+          Mail::Box::Net, and Mail::Box::Net::Message as first steps to
+	  a POP3 implementation.
+
 version 2.016: Tue Jun 25 16:24:54 CEST 2002
 
 	Fixes:
@@ -15,7 +74,7 @@ version 2.016: Tue Jun 25 16:24:54 CEST 2002
 	  return codes in Mail::Transport::SMTP.  Late transport failures
 	  are reported back now.
 
-	- [Jeff Squyres] attribures in header fields must be matched
+	- [Jeff Squyres] attributes in header fields must be matched
 	  case-insensitive.
 
 	- $folder->writeable --> $folder->writable, but old method
@@ -45,6 +104,8 @@ version 2.016: Tue Jun 25 16:24:54 CEST 2002
 	  now all return the coerced message(s), because that is much
 	  more useful than the message which are passed into the
 	  method call, the folder, or the class.
+
+	- Mail::Box::Manager::open() is rewritten, and a such much improved.
 
 	- Much stricter handling of folder closing and folder deletion:
 	  when a manager is used, folders are removed before global

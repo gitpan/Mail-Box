@@ -5,7 +5,7 @@ use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
 
-our $VERSION = 2.016;
+our $VERSION = 2.017;
 
 use Carp;
 use File::Copy;
@@ -34,6 +34,8 @@ This documentation describes how Maildir mailboxes work, and what you
 can do with the Maildir folder object C<Mail::Box::Maildir>.
 Please read C<Mail::Box-Overview> and C<Mail::Box::Dir> first.
 
+Maildir is not supported for Windows, because it create filenames
+which are not accepted by the Windows system.
 L<The internal organization and details|/"IMPLEMENTATION"> are found
 at the bottom of this manual-page.
 
@@ -44,20 +46,20 @@ L<Mail::Box> (MB), L<Mail::Reporter> (MR), L<Mail::Box::Dir> (MBD).
 
 The general methods for C<Mail::Box::Maildir> objects:
 
-   MB addMessage  MESSAGE               MB locker
-   MB addMessages MESSAGE [, MESS...    MR log [LEVEL [,STRINGS]]
-   MB allMessageIds                     MB message INDEX [,MESSAGE]
+   MB addMessage  MESSAGE               MR log [LEVEL [,STRINGS]]
+   MB addMessages MESSAGE [, MESS...    MB message INDEX [,MESSAGE]
    MB close OPTIONS                     MB messageId MESSAGE-ID [,MESS...
-   MB copyTo FOLDER, OPTIONS            MB messages
-   MB create FOLDERNAME [, OPTIONS]     MB modified [BOOLEAN]
-      createDirs FOLDERDIR              MB name
-   MB current [NUMBER|MESSAGE|MES...       new OPTIONS
-   MB delete                            MB openSubFolder NAME [,OPTIONS]
-  MBD directory                         MR report [LEVEL]
-   MR errors                            MR reportAll [LEVEL]
-   MB find MESSAGE-ID                   MR trace [LEVEL]
-      folderIsEmpty FOLDERDIR           MR warnings
-   MB listSubFolders OPTIONS            MB writable
+   MB copyTo FOLDER, OPTIONS            MB messageIds
+   MB create FOLDERNAME [, OPTIONS]     MB messages ['ALL',RANGE,'ACTI...
+      createDirs FOLDERDIR              MB modified [BOOLEAN]
+   MB current [NUMBER|MESSAGE|MES...    MB name
+   MB delete                               new OPTIONS
+  MBD directory                         MB openSubFolder NAME [,OPTIONS]
+   MR errors                            MR report [LEVEL]
+   MB find MESSAGE-ID                   MR reportAll [LEVEL]
+      folderIsEmpty FOLDERDIR           MR trace [LEVEL]
+   MB listSubFolders OPTIONS            MR warnings
+   MB locker                            MB writable
 
 The extra methods for extension writers:
 
@@ -614,7 +616,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.016.
+This code is beta, version 2.017.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

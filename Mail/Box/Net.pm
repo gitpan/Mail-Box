@@ -1,11 +1,11 @@
 
 use strict;
-package Mail::Box::Dir;
+package Mail::Box::Net;
 
 use base 'Mail::Box';
 our $VERSION = 2.017;
 
-use Mail::Box::Dir::Message;
+use Mail::Box::Net::Message;
 
 use Mail::Message::Body::Lines;
 use Mail::Message::Body::File;
@@ -23,17 +23,17 @@ use File::Basename;
 
 =head1 NAME
 
-Mail::Box::Dir - handle folders with a file per message.
+Mail::Box::Net - handle folders which are stored remote.
 
 =head1 CLASS HIERARCHY
 
- Mail::Box::Dir
+ Mail::Box::Net
  is a Mail::Box
  is a Mail::Reporter
 
 =head1 SYNOPSIS
 
- # Do not instantiate this object
+ # Do not instantiate this object yourself
 
 =head1 DESCRIPTION
 
@@ -55,31 +55,30 @@ At the moment, this object is extended by
 Methods prefixed with an abbreviation are described in
 L<Mail::Box> (MB), L<Mail::Reporter> (MR).
 
-The general methods for C<Mail::Box::Dir> objects:
+The general methods for C<Mail::Box::Net> objects:
 
-   MB addMessage  MESSAGE               MB message INDEX [,MESSAGE]
-   MB addMessages MESSAGE [, MESS...    MB messageId MESSAGE-ID [,MESS...
-   MB close OPTIONS                     MB messageIds
-   MB copyTo FOLDER, OPTIONS            MB messages ['ALL',RANGE,'ACTI...
-   MB create FOLDERNAME [, OPTIONS]     MB modified [BOOLEAN]
-   MB current [NUMBER|MESSAGE|MES...    MB name
-   MB delete                               new OPTIONS
-      directory                         MB openSubFolder NAME [,OPTIONS]
+   MB addMessage  MESSAGE               MB messageId MESSAGE-ID [,MESS...
+   MB addMessages MESSAGE [, MESS...    MB messageIds
+   MB close OPTIONS                     MB messages ['ALL',RANGE,'ACTI...
+   MB copyTo FOLDER, OPTIONS            MB modified [BOOLEAN]
+   MB create FOLDERNAME [, OPTIONS]     MB name
+   MB current [NUMBER|MESSAGE|MES...       new OPTIONS
+   MB delete                            MB openSubFolder NAME [,OPTIONS]
    MR errors                            MR report [LEVEL]
    MB find MESSAGE-ID                   MR reportAll [LEVEL]
    MB listSubFolders OPTIONS            MR trace [LEVEL]
    MB locker                            MR warnings
    MR log [LEVEL [,STRINGS]]            MB writable
+   MB message INDEX [,MESSAGE]
 
 The extra methods for extension writers:
 
    MR AUTOLOAD                          MB organization
    MB DESTROY                           MB read OPTIONS
    MB appendMessages OPTIONS               readAllHeaders
-   MB clone OPTIONS                        readMessageFilenames DIRECTORY
-   MB coerce MESSAGE                    MB readMessages OPTIONS
-   MB determineBodyType MESSAGE, ...    MB scanForMessages MESSAGE, ME...
-      folderToDirectory FOLDERNAM...    MB sort PREPARE, COMPARE, LIST
+   MB clone OPTIONS                     MB readMessages OPTIONS
+   MB coerce MESSAGE                    MB scanForMessages MESSAGE, ME...
+   MB determineBodyType MESSAGE, ...    MB sort PREPARE, COMPARE, LIST
    MB folderdir [DIR]                   MB storeMessage MESSAGE
    MB foundIn [FOLDERNAME], OPTIONS     MB timespan2seconds TIME
    MR inGlobalDestruction               MB toBeThreaded MESSAGES
@@ -121,11 +120,11 @@ see below, but first the full list.
  trace             Mail::Reporter     'WARNINGS'
  trusted           Mail::Box          <depends on folder location>
 
-Only useful to write extension to C<Mail::Box::Dir>.  Common users of
+Only useful to write extension to C<Mail::Box::Net>.  Common users of
 folders you will not specify these:
 
  OPTION            DEFINED BY         DEFAULT
- body_type         Mail::Box::Dir     'Mail::Message::Body::Lines'
+ body_type         Mail::Box::Net     'Mail::Message::Body::Lines'
  body_delayed_type Mail::Box          'Mail::Message::Body::Delayed'
  coerce_options    Mail::Box          []
  field_type        Mail::Box          undef
@@ -134,7 +133,7 @@ folders you will not specify these:
  locker            Mail::Box          undef
  multipart_type    Mail::Box          'Mail::Message::Body::Multipart'
  manager           Mail::Box          undef
- message_type      Mail::Box          'Mail::Box::Dir::Message'
+ message_type      Mail::Box          'Mail::Box::Net::Message'
  realhead_type     Mail::Box          'Mail::Message::Head'
 
 =cut
@@ -142,57 +141,17 @@ folders you will not specify these:
 sub init($)
 {   my ($self, $args)    = @_;
 
-    $args->{folderdir} ||= $args->{folderdir};
     $args->{body_type} ||= sub {'Mail::Message::Body::Lines'};
 
     return undef
         unless $self->SUPER::init($args);
-
-    my $directory        = $self->{MBD_directory}
-       = (ref $self)->folderToDirectory($self->name, $self->folderdir);
-
-    unless(-d $directory)
-    {   $self->log(PROGRESS => "No directory $directory (yet)\n");
-        return undef;
-    }
-
-    # About locking
-
-    for($args->{lockfile} || undef)
-    {   $self->locker->filename
-          ( !defined $_ ? File::Spec->catfile($directory, '.index')  # default
-          : File::Spec->file_name_is_absolute($_) ? $_               # absolute
-          :               File::Spec->catfile($directory, $_)        # relative
-          );
-    }
-
-    # Check if we can write to the folder, if we need to.
-
-    if($self->writable && -e $directory && ! -w $directory)
-    {   warn "Folder $directory is write-protected.\n";
-        $self->{MB_access} = 'r';
-    }
 
     $self;
 }
 
 #-------------------------------------------
 
-sub organization() { 'DIRECTORY' }
-
-#-------------------------------------------
-
-=item directory
-
-Returns the directory related to this folder.
-
-Example:
-
-    print $folder->directory;
-
-=cut
-
-sub directory() { shift->{MBD_directory} }
+sub organization() { 'REMOTE' }
 
 #-------------------------------------------
 
@@ -236,32 +195,6 @@ sub allMessageIds() {shift->readAllHeaders->SUPER::allMessageIds }
 =over 4
 
 =cut
-
-#-------------------------------------------
-
-=item folderToDirectory FOLDERNAME, FOLDERDIR
-
-(class method)  Translate a foldername into a filename, with use of the
-FOLDERDIR to replace a leading C<=>.
-
-=cut
-
-sub folderToDirectory($$)
-{   my ($class, $name, $folderdir) = @_;
-    $name =~ /^=(.*)/ ? File::Spec->catfile($folderdir,$1) : $name;
-}
-
-#-------------------------------------------
-
-=item readMessageFilenames DIRECTORY
-
-Returns a list of all filenames which are found in this folder
-directory and represent a message.  The filenames are returned as
-relative path.
-
-=cut
-
-sub readMessageFilenames() {shift->notImplemented}
 
 #-------------------------------------------
 

@@ -4,7 +4,7 @@ use strict;
 package Mail::Box::Message::Dummy;
 use base 'Mail::Box::Message';
 
-our $VERSION = 2.016;
+our $VERSION = 2.017;
 
 use Carp;
 
@@ -49,7 +49,7 @@ The general methods for C<Mail::Box::Message::Dummy> objects:
   MMC buildFromBody BODY, HEADERS      MBM new OPTIONS
    MM cc                                MM nrLines
   MBM copyTo FOLDER                     MM parent
-   MM date                              MM parts
+   MM date                              MM parts ['ALL'|'ACTIVE'|'DELE...
    MM decoded OPTIONS                   MM print [FILEHANDLE]
   MBM delete                           MMC printStructure [INDENT]
   MBM deleted [BOOL]                   MMC read FILEHANDLE|SCALAR|REF-...
@@ -139,7 +139,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.016.
+This code is beta, version 2.017.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -15,6 +15,10 @@ Mail/Box/Maildir.pm
 Mail/Box/Maildir/Message.pm
 Mail/Box/Mbox/Message.pm
 Mail/Box/Mbox.pm
+Mail/Box/POP3/Message.pm
+Mail/Box/POP3.pm
+Mail/Box/Net/Message.pm
+Mail/Box/Net.pm
 Mail/Box/Message/Dummy.pm
 Mail/Box/Message.pm
 Mail/Box/MH.pm

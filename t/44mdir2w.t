@@ -15,7 +15,14 @@ use Tools;
 use File::Compare;
 use File::Copy;
 
-BEGIN {plan tests => 31}
+BEGIN {
+   if($^O =~ /mswin/i)
+   {   plan tests => 0;
+       exit 0;
+   }
+
+   plan tests => 31
+}
 
 my $mdsrc = File::Spec->catfile('t', 'maildir.src');
 

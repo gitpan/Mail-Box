@@ -7,7 +7,7 @@ use base 'Mail::Message::Body';
 use Mail::Message::Body::Lines;
 use Mail::Message::Part;
 
-our $VERSION = 2.016;
+our $VERSION = 2.017;
 
 use Carp;
 
@@ -57,7 +57,7 @@ The general methods for C<Mail::Message::Body::Multipart> objects:
  MMBC concatenate COMPONENTS               new OPTIONS
   MMB decoded OPTIONS                  MMB nrLines
   MMB disposition [STRING|FIELD]           part INDEX
- MMBE encode OPTIONS                       parts
+ MMBE encode OPTIONS                       parts ['ALL'|'ACTIVE'|'DELE...
  MMBE encoded                              preamble
   MMB eol ['CR'|'LF'|'CRLF'|'NATI...   MMB print [FILE]
       epilogue                         MMB reply OPTIONS
@@ -178,7 +178,7 @@ sub init($)
 
         $self->{MMBM_parts}
             = @parts              ? \@parts
-            : $based->isMultipart ? [$based->parts]
+            : $based->isMultipart ? [ $based->parts('ACTIVE') ]
             : [];
 
         $self->{MMBM_epilogue} = $args->{epilogue} || $based->epilogue;
@@ -237,7 +237,7 @@ sub foreachComponent($)
     }
 
     my @new_bodies;
-    foreach my $part ($self->parts)
+    foreach my $part ($self->parts('ACTIVE'))
     {   my $part_body = $part->body;
         my $new_body  = $code->($self, $part_body);
 
@@ -299,9 +299,8 @@ sub lines()
     my $preamble = $self->preamble;
     push @lines, $preamble->lines if $preamble;
 
-    foreach ($self->parts)
-    {   push @lines, "--$boundary\n", $_->body->lines;
-    }
+    push @lines, "--$boundary\n", $_->body->lines
+        foreach $self->parts('ACTIVE');
 
     push @lines, "\n--$boundary--\n";
 
@@ -322,7 +321,7 @@ sub nrLines()
     my $nr     = 1;     # trailing boundary
 
     if(my $preamble = $self->preamble) { $nr += $preamble->nrLines }
-    foreach ($self->parts) { $nr += 2 + $_->nrLines }
+    $nr += 2 + $_->nrLines foreach $self->parts('ACTIVE');
     if(my $epilogue = $self->epilogue) { $nr += $epilogue->nrLines }
     $nr;
 }
@@ -336,8 +335,8 @@ sub size()
 
     my $bytes  = 0;
     if(my $preamble = $self->preamble) { $bytes += $preamble->size }
-    $bytes    += $bbytes + 2;  # last boundary
-    $bytes    += $bbytes + 1 + $_->size foreach $self->parts;
+    $bytes     += $bbytes + 2;  # last boundary
+    $bytes += $bbytes + 1 + $_->size foreach $self->parts('ACTIVE');
     if(my $epilogue = $self->epilogue) { $bytes += $epilogue->size }
 
     $bytes;
@@ -350,24 +349,16 @@ sub print(;$)
     my $out  = shift || select;
 
     my $boundary = $self->boundary;
-    if(my $preamble = $self->preamble)
-    {   $preamble->print($out);
-    }
+    if(my $preamble = $self->preamble) { $preamble->print($out) }
 
-    my @parts    = $self->parts;
-    foreach my $part (@parts)
-    {   next if $part->deleted;
-
-        $out->print("--$boundary\n");
+    foreach my $part ($self->parts('ACTIVE'))
+    {   $out->print("--$boundary\n");
         $part->print($out);
         $out->print("\n");
     }
 
     $out->print("--$boundary--\n");
-
-    if(my $epilogue = $self->epilogue)
-    {   $epilogue->print($out);
-    }
+    if(my $epilogue = $self->epilogue) { $epilogue->print($out) }
 
     $self;
 }
@@ -398,15 +389,20 @@ sub epilogue() {shift->{MMBM_epilogue}}
 
 #------------------------------------------
 
-=item parts
+=item parts ['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER]
 
-In LIST context, the current list of parts (attachments) is returned,
-In SCALAR context the length of the list is returned, so the number
-of parts for this multiparted body.  This is normal behavior of Perl.
+Return all parts by default, or when ALL is specified.  ACTIVE returns
+the parts which are not flagged for deletion, as opposite to DELETED.
+RECURSE descents into all nested multiparts to collect all parts.
+
+You may also specify a code reference which is called for each nested
+part.  The first argument will be the message part.  When the code
+returns true, the part is incorporated in the return list.
 
 Examples:
 
- print "Number of attachments: ", scalar $message->body->parts;
+ print "Number of attachments: ",
+     scalar $message->body->parts('ACTIVE');
 
  foreach my $part ($message->body->parts) {
      print "Type: ", $part->get('Content-Type');
@@ -414,18 +410,33 @@ Examples:
 
 =cut
 
-sub parts() { @{shift->{MMBM_parts}} }
+sub parts(;$)
+{   my $self  = shift;
+    return @{$self->{MMBM_parts}} unless $@;
+
+    my $what  = shift;
+    my @parts = @{$self->{MMBM_parts}};
+
+      $what eq 'RECURSE' ? (map {$_->parts('RECURSE')} @parts)
+    : $what eq 'ALL'     ? @parts
+    : $what eq 'DELETED' ? (map {$_->deleted} @parts)
+    : $what eq 'ACTIVE'  ? (map {not $_->deleted} @parts)
+    : ref $what eq 'CODE'? (grep {$what->($_)} @parts)
+    : confess "Select with what?";
+}
 
 #-------------------------------------------
 
 =item part INDEX
 
 Returns only the part with the specified INDEX.  You may use a negative
-value here, which counts from the back in the list.
+value here, which counts from the back in the list.  Parts which are
+flagged to be deleted are included in the count.
 
 Example:
 
  $message->body->part(2)->print;
+ $body->part(1)->delete;
 
 =cut
 
@@ -572,7 +583,7 @@ sub clone()
      , based_on => $self
      , preamble => ($preamble ? $preamble->clone : undef)
      , epilogue => ($epilogue ? $epilogue->clone : undef)
-     , parts    => [ map {$_->clone} $self->parts]
+     , parts    => [ map {$_->clone} $self->parts('ACTIVE') ]
      );
 
 }
@@ -595,7 +606,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.016.
+This code is beta, version 2.017.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

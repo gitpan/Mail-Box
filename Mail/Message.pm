@@ -14,7 +14,7 @@ use Mail::Message::Body::Nested;
 use Carp;
 use IO::ScalarArray;
 
-our $VERSION = 2.016;
+our $VERSION = 2.017;
 
 =head1 NAME
 
@@ -66,7 +66,7 @@ The general methods for C<Mail::Message> objects:
   MMC build [MESSAGE|BODY], CONTENT        new OPTIONS
   MMC buildFromBody BODY, HEADERS          nrLines
       cc                                   parent
-      date                                 parts
+      date                                 parts ['ALL'|'ACTIVE'|'DELE...
       decoded OPTIONS                      print [FILEHANDLE]
       destinations                     MMC printStructure [INDENT]
       encode OPTIONS                   MMC read FILEHANDLE|SCALAR|REF-...
@@ -597,20 +597,54 @@ sub isMultipart() {shift->body->isMultipart}
 
 #------------------------------------------
 
-=item parts
+=item parts ['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER]
 
-Returns the parts of this message.  If the message is not a multi-part, it
-will be returned itself.  However, if this is a multi-part then a list
-with all the parts is returned.
+Returns the I<parts> of this message. Usually, the term I<part> is used
+with I<multipart> messages: messages which are encapsulated in the body
+of a message.  To abstract this concept: this method will return you
+all header-body combinations which are stored within this message.
+Objects returned are C<Mail::Message>s and C<Mail::Message::Part>s.
+
+The option default to 'ALL', which will return the message itself for
+single-parts, the nested content of a message/rfc822 object, respectively
+the parts of a multipart without recursion.  In case of 'RECURSE', the
+parts of multiparts will be collected recursively.  This option cannot
+be combined with the other options, which you may want: it that case
+you have to test yourself.
+
+'ACTIVE' and 'DELETED' check for the deleted flag on messages and
+message parts.  The FILTER is a code reference, which is called for
+each message and message part (implies RECURSE).
+
+Examples on single parts:
+
+ my @parts = $msg->parts;           # $msg not multipart: returns ($msg)
+ my $parts = $msg->parts('ACTIVE'); # returns ($msg)
+
+ $msg->delete;
+ my @parts = $msg->parts;           # returns ($msg)
+ my $parts = $msg->parts('ACTIVE'); # returns ()
 
 =cut
 
-sub parts()
-{   my $self = shift;
+sub parts(;$)
+{   my $self    = shift;
+    my $what    = shift || 'ACTIVE';
 
-      $self->isMultipart ? $self->body->parts
-    : $self->isNested    ? $self->nested
-    :                      $self;
+    my $body    = $self->body;
+    my $recurse = $what eq 'RECURSE';
+
+    my @parts
+     = $body->isNested     ? $body->nested->parts($what)
+     : $body->isMultipart  ? $body->parts($recurse ? 'RECURSE' : ())
+     :                       $self;
+
+      ref $what eq 'CODE' ? (grep {$what->($_)} @parts)
+    : $what eq 'ACTIVE'   ? (grep {not $_->deleted } @parts)
+    : $what eq 'DELETED'  ? (grep { $_->deleted } @parts)
+    : $what eq 'ALL'      ? @parts
+    : $recurse            ? @parts
+    : confess "Select parts via $what?";
 }
 
 #------------------------------------------
@@ -1309,7 +1343,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.016.
+This code is beta, version 2.017.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -7,7 +7,7 @@ use base 'Mail::Transport';
 #use Mail::Transport::SMTP::Server;
 use Net::SMTP;
 
-our $VERSION = 2.016;
+our $VERSION = 2.017;
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ The general methods for C<Mail::Transport::SMTP> objects:
       contactAnyServer                  MT send MESSAGE, OPTIONS
    MR errors                            MR trace [LEVEL]
    MR log [LEVEL [,STRINGS]]               tryConnectTo HOST, OPTIONS
-      new OPTIONS                       MT trySend MESSAGE, OPTIONS
+      new OPTIONS                          trySend MESSAGE, OPTIONS
    MR report [LEVEL]                    MR warnings
    MR reportAll [LEVEL]
 
@@ -141,34 +141,114 @@ sub init($)
 
 #------------------------------------------
 
-sub trySend($)
-{   my ($self, $message) = @_;
-    my $server = $self->contactAnyServer or return 0;
+=item trySend MESSAGE, OPTIONS
 
-    my $from   = $message->from;
-    $server->mail($message->from->address);
-    $server->to($_->address) foreach $message->destinations;
+Try to send the MESSAGE once.   This may fail, in which case this
+method will return C<false>.  In list context, the reason for failure
+can be caught: in list context C<trySend> will return a list of
+five values:
+
+ (success, error code, error text, error location, quit success)
+
+Success and quit success are booleans.  The error code and -text are
+protocol specific codes and texts.  The location tells where the
+problem occurred.
+
+As OPTIONS, you can use
+
+=over 4
+
+=item * to => ADDRESS|[ADDRESSES]
+
+Alternative destinations.  If not specified, the C<To>, C<Cc> and C<Bcc>
+fields of the header are used.  An address is a string or a L<Mail::Address>
+object.
+
+=item * from => ADDRESS
+
+Your own identification.  This may be fake.  If not specified, it is
+taken from the C<From> field in the header.
+
+=back
+
+=cut
+
+sub trySend($@)
+{   my ($self, $message, %args) = @_;
+
+    # From whom is this message.
+    my $from = $args{from} || $message->from;
+    $from = $from->address if ref $from;
+
+    # Who are the destinations.
+    my $to   = $args{to}   || [$message->destinations];
+    my @to   = ref $to eq 'ARRAY' ? @$to : ($to);
+    foreach (@to)
+    {   $_ = $_->address if ref $_ && $_->isa('Mail::Address');
+    }
+
+    # Prepare the header
+    my @header;
+    require IO::Lines;
+    my $lines = IO::Lines->new(\@header);
+    $message->head->printUndisclosed($lines);
+
+    #
+    # Send
+    #
+
+    if(wantarray)
+    {   # In LIST context
+        my $server;
+        return (0, 500, "Connection Failed", "CONNECT", 0)
+            unless $server = $self->contactAnyServer;
+
+        return (0, $server->code, $server->message, 'FROM', $server->quit)
+            unless $server->mail($from);
+
+        foreach (@to)
+        {     next if $server->to($_);
+# must we be able to disable this?
+# next if $args{ignore_erroneous_desinations}
+              return (0, $server->code, $server->message,"To $_",$server->quit);
+        }
+
+        $server->data;
+        $server->datasend($_) foreach @header;
+        my $bodydata = $message->body->file;
+        $server->datasend($_) while <$bodydata>;
+
+        return (0, $server->code, $server->message, 'DATA', $server->quit)
+            unless $server->dataend;
+
+        return ($server->quit, $server->code, $server->message, 'QUIT',
+                $server->code);
+    }
+
+    # in SCALAR context
+    my $server;
+    return 0 unless $server = $self->contactAnyServer;
+
+    $server->quit, return 0
+        unless $server->mail($from);
+
+    foreach (@to)
+    {     next if $server->to($_);
+# must we be able to disable this?
+# next if $args{ignore_erroneous_desinations}
+          $server->quit;
+          return 0;
+    }
 
     $server->data;
-
-    # Print the message's header
-    # This is first prepared in an array of lines.
-
-    my @lines;
-    require IO::Lines;
-    my $lines = IO::Lines->new(\@lines);
-    $message->head->printUndisclosed($lines);
-    $server->datasend($_) foreach @lines;
-
-    # Print the message's body
+    $server->datasend($_) foreach @header;
     my $bodydata = $message->body->file;
     $server->datasend($_) while <$bodydata>;
 
-    my $success = $server->dataend;
-    my $error   = $success ? 0 : $server->code;
+    $server->quit, return 0
+        unless $server->dataend;
 
     $server->quit;
-    wantarray ? ($success, $error) : $success;
 }
 
 #------------------------------------------
@@ -227,7 +307,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.016.
+This code is beta, version 2.017.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -14,7 +14,7 @@ use Tools;
 
 use File::Compare;
 
-BEGIN {plan tests => 55}
+BEGIN {plan tests => 59}
 
 my @src = (folder => "=$fn", folderdir => 't');
 
@@ -42,6 +42,14 @@ ok($folder->organization eq 'FILE');
 my $message = $folder->message(2);
 ok(defined $message);
 ok($message->isa('Mail::Box::Message'));
+
+#
+# Extract a few messages.
+#
+
+my @some = $folder->messages(3,7);
+ok(@some==5);
+ok($some[0]->isa('Mail::Box::Message'));
 
 #
 # All message should be parsed.
@@ -81,6 +89,10 @@ ok($end== -s $folder->filename);
 $folder->message(2)->delete;
 ok($folder->message(2)->deleted);
 ok($folder->messages == 45);
+
+ok($folder->messages('ACTIVE')  == 44);
+ok($folder->messages('DELETED') ==  1);
+
 $folder->close(write => 'NEVER');
 
 exit 0;

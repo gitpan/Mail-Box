@@ -5,7 +5,7 @@ use warnings;
 package Mail::Message::TransferEnc::QuotedPrint;
 use base 'Mail::Message::TransferEnc';
 
-our $VERSION = 2.016;
+our $VERSION = 2.017;
 
 =head1 NAME
 
@@ -105,7 +105,8 @@ sub decode($@)
             $code < 040 || $code > 127 ? sprintf('\\%03o', $code) : chr $code
          /ge;
 
-        push @lines, "$_\n";
+        $_ .= "\n" unless s/\=$//;
+        push @lines, $_;
     }
 
     my $bodytype = $args{result_type} || ref $body;
@@ -148,23 +149,24 @@ sub encode($@)
 
             while(1)
             {   my $changes;
-                $part = substr $line, 0, $maxline;
+                $part   = substr $line, 0, $maxline;
+                my $all = (length $part==length $line);
                 for($part)
-                {   $changes  = tr/ \t\n!-<>-~]//c;
-                    $changes += length $1 if m/(\s+)$/;
+                {   $changes  = tr/ \t!-<>-~]//c;
+                    $changes += 1 if $all && m/[ \t]$/;
                 }
-                last if length($part) + $changes*2 <= 76;
+                last if length($part) + $changes*2 + ($all ? 0 : 1) <= 76;
                 $maxline--;
             }
 
             substr $line, 0, $maxline, '';
 
             for($part)
-            {   s/[^ \t\n!-<>-~]/sprintf '=%02X', ord $&/ge;
-                s/\s+$/ join '', map {sprintf '=%02X', ord $_} $&/gem;
+            {   s/[^ \t!-<>-~]/sprintf '=%02X', ord $&/ge;
+                s/[ \t]$/ join '', map {sprintf '=%02X', ord $_} $&/gem;
             }
 
-            push @lines, "$part\n";
+            push @lines, $part . (length($line) ? '=' : '') .  "\n";
         }
     }
 
@@ -205,7 +207,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.016.
+This code is beta, version 2.017.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

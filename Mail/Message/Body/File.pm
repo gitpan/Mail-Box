@@ -6,7 +6,7 @@ use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
 
-our $VERSION = 2.016;
+our $VERSION = 2.017;
 
 use Carp;
 use IO::File;
@@ -340,7 +340,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.016.
+This code is beta, version 2.017.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
