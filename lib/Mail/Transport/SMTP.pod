@@ -1,0 +1,388 @@
+
+=head1 NAME
+
+Mail::Transport::SMTP - transmit messages without external program
+
+
+=head1 INHERITANCE
+
+ Mail::Transport::SMTP
+   is a Mail::Transport::Send
+   is a Mail::Transport
+   is a Mail::Reporter
+
+
+=head1 SYNOPSIS
+
+ my $sender = Mail::Transport::SMTP->new(...);
+ $sender->send($message);
+
+ $message->send(via => 'smtp');
+
+
+=head1 DESCRIPTION
+
+This module implements transport of C<Mail::Message> objects by negotiating
+to the destination host directly by using the SMTP protocol, without help of
+C<sendmail>, C<mail>, or other programs on the local host.
+
+
+
+=head1 METHODS
+
+
+=head2 Constructors
+
+
+Mail::Transport::SMTP-E<gt>B<new>(OPTIONS)
+
+=over 4
+
+ Option       Defined in       Default           
+ executable   L<Mail::Transport>  C<undef>          
+ helo_domain                   <from Net::Config>
+ hostname     L<Mail::Transport>  <from Net::Config>
+ interval     L<Mail::Transport>  C<30>             
+ log          L<Mail::Reporter>  C<'WARNINGS'>     
+ password                      undef             
+ port         L<Mail::Transport>  C<25>             
+ proxy        L<Mail::Transport>  <from Net::Config>
+ retry        L<Mail::Transport>  <false>           
+ smtp_debug                    <false>           
+ timeout                       120               
+ trace        L<Mail::Reporter>  C<'WARNINGS'>     
+ username                      undef             
+ via          L<Mail::Transport>  C<'smtp'>         
+
+. executable FILENAME
+
+. helo_domain HOST
+
+=over 4
+
+The fully qualified name of the sender's host (your system) which
+is used for the greeting message to the receiver.  If not specified,
+Net::Config or else Net::Domain are questioned to find it.
+When even these do not supply a valid name, the name of the domain in the
+C<From> line of the message is assumed.
+
+=back
+
+. hostname HOSTNAME|ARRAY-OF-HOSTNAMES
+
+. interval SECONDS
+
+. log LEVEL
+
+. password STRING
+
+=over 4
+
+The password to be used with the new(username) to log in to the remote
+server.
+
+=back
+
+. port INTEGER
+
+. proxy PATH
+
+. retry NUMBER|undef
+
+. smtp_debug BOOLEAN
+
+=over 4
+
+Simulate transmission: the SMTP protocol output will be sent to your
+screen.
+
+=back
+
+. timeout SECONDS
+
+=over 4
+
+The number of seconds to wait for a valid response from the server before
+failing.
+
+=back
+
+. trace LEVEL
+
+. username STRING
+
+=over 4
+
+Use SASL authentication to contact the remote SMTP server (RFC2554).
+This username in combination with new(password) is passed as arguments
+to Net::SMTP method auth.  Other forms of authentication are not
+supported by Net::SMTP.  The C<username> can also be specified as an
+Authen::SASL object.
+
+=back
+
+. via CLASS|NAME
+
+=back
+
+=head2 Sending mail
+
+
+$obj-E<gt>B<destinations>(MESSAGE, [ADDRESS|ARRAY-OF-ADDRESSES])
+
+=over 4
+
+See L<Mail::Transport::Send/"Sending mail">
+
+=back
+
+$obj-E<gt>B<putContent>(MESSAGE, FILEHANDLE, OPTIONS)
+
+=over 4
+
+See L<Mail::Transport::Send/"Sending mail">
+
+=back
+
+$obj-E<gt>B<send>(MESSAGE, OPTIONS)
+
+=over 4
+
+See L<Mail::Transport::Send/"Sending mail">
+
+=back
+
+$obj-E<gt>B<trySend>(MESSAGE, OPTIONS)
+
+=over 4
+
+Try to send the MESSAGE once.   This may fail, in which case this
+method will return C<false>.  In list context, the reason for failure
+can be caught: in list context C<trySend> will return a list of
+five values:
+
+ (success, error code, error text, error location, quit success)
+
+Success and quit success are booleans.  The error code and -text are
+protocol specific codes and texts.  The location tells where the
+problem occurred.
+
+ Option  Defined in       Default
+ from                     []     
+ to                       []     
+
+. from ADDRESS
+
+=over 4
+
+Your own identification.  This may be fake.  If not specified, it is
+taken from the C<From> field in the header.
+
+=back
+
+. to ADDRESS|[ADDRESSES]
+
+=over 4
+
+Alternative destinations.  If not specified, the C<To>, C<Cc> and C<Bcc>
+fields of the header are used.  An address is a string or a Mail::Address
+object.
+
+=back
+
+=back
+
+=head2 Server connection
+
+
+$obj-E<gt>B<contactAnyServer>
+
+=over 4
+
+Creates the connection to the SMTP server.  When more than one hostname
+was specified, the first which accepts a connection is taken.  An
+IO::Socket::INET object is returned.
+
+=back
+
+$obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
+
+=over 4
+
+See L<Mail::Transport/"Server connection">
+
+=back
+
+$obj-E<gt>B<remoteHost>
+
+=over 4
+
+See L<Mail::Transport/"Server connection">
+
+=back
+
+$obj-E<gt>B<retry>
+
+=over 4
+
+See L<Mail::Transport/"Server connection">
+
+=back
+
+$obj-E<gt>B<tryConnectTo>(HOST, OPTIONS)
+
+=over 4
+
+Try to establish a connection to deliver SMTP to the specified HOST.  The
+OPTIONS are passed to the C<new> method of Net::SMTP.
+
+=back
+
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Transport::SMTP-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<errors>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Transport::SMTP-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Transport::SMTP-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Distribution version 2.044.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

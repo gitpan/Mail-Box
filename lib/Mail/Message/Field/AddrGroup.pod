@@ -1,0 +1,226 @@
+
+=head1 NAME
+
+Mail::Message::Field::AddrGroup - A group of Mail::Message::Field::Address objects
+
+
+=head1 INHERITANCE
+
+ Mail::Message::Field::AddrGroup
+   is a User::Identity::Collection::Emails
+   is a User::Identity::Collection
+   is a User::Identity::Item
+
+
+=head1 SYNOPSIS
+
+ my $g = Mail::Message::Field::AddrGroup->new(name => 'name');
+
+ my $a = Mail::Message::Field::Address->new(...);
+ $g->addAddress($a);
+ 
+ my $f = Mail::Message::Field::Addresses->new;
+ $f->addGroup($g);
+
+
+=head1 DESCRIPTION
+
+An address group collects a set of e-mail addresses (in this case they
+are L<Mail::Message::Field::Address|Mail::Message::Field::Address> objects).
+
+
+=head1 OVERLOADED
+
+
+overload: B<@{}>
+
+=over 4
+
+See L<User::Identity::Collection/"OVERLOADED">
+
+=back
+
+overload: B<stringification>
+
+=over 4
+
+Returns the L<string()|Mail::Message::Field::AddrGroup/"METHODS"> value.
+
+=back
+
+
+=head1 METHODS
+
+
+$obj-E<gt>B<string>
+
+=over 4
+
+Returns the address group as string.  When no name is specified, it will
+only be a comma separated list of addresses.  With a name, the groups
+name will be prepended and a semi-colon appended.  When no addresses
+where included and there is no name, then C<undef> is returned.
+
+=back
+
+=head2 Initiation
+
+
+Mail::Message::Field::AddrGroup-E<gt>B<new>([NAME], OPTIONS)
+
+=over 4
+
+See L<User::Identity::Collection::Emails/"Initiation">
+
+=back
+
+=head2 Attributes
+
+
+$obj-E<gt>B<addRole>(ROLE| ( [NAME],OPTIONS ) | ARRAY-OF-OPTIONS)
+
+=over 4
+
+See L<User::Identity::Collection/"Attributes">
+
+=back
+
+$obj-E<gt>B<description>
+
+=over 4
+
+See L<User::Identity::Item/"Attributes">
+
+=back
+
+$obj-E<gt>B<name>
+
+=over 4
+
+See L<User::Identity::Item/"Attributes">
+
+=back
+
+$obj-E<gt>B<roles>
+
+=over 4
+
+See L<User::Identity::Collection/"Attributes">
+
+=back
+
+$obj-E<gt>B<user>([USER])
+
+=over 4
+
+See L<User::Identity::Collection/"Attributes">
+
+=back
+
+=head2 Searching
+
+
+$obj-E<gt>B<find>(NAME|CODE|undef)
+
+=over 4
+
+See L<User::Identity::Collection/"Searching">
+
+=back
+
+=head2 Constructors
+
+
+$obj-E<gt>B<coerce>(OBJECT)
+
+=over 4
+
+Coerce an OBJECT into a L<Mail::Message::Field::AddrGroup|Mail::Message::Field::AddrGroup>.  Currently,
+you can only coerce L<User::Identity::Collection::Emails|User::Identity::Collection::Emails> (which is
+the base class for this one) into this one.
+
+=back
+
+=head2 Addresses
+
+
+$obj-E<gt>B<addAddress>(STRING|ADDRESS|OPTIONS)
+
+=over 4
+
+Add one e-mail address to the list which is maintained in the group. This
+is a wrapper around L<addRole()|User::Identity::Collection/"Attributes"> adding flexibility on how addresses
+are specified.  An ADDRESS can be anything which is acceptable for
+L<Mail::Message::Field::Address::coerce()|Mail::Message::Field::Address/"Constructors"> or a list of options which
+will create such an object.
+
+I<Example:> of adding an address to an address group
+
+
+ my @data = (full_name => "Myself", address => 'me@tux.org');
+ $group->addAddress(@data);
+
+ my $addr = Mail::Message::Field::Address->new(@data);
+ $group->addAddress(@data);
+
+ my $ma = Mail::Address->new(...);
+ $group->addAddress($ma);
+
+=back
+
+$obj-E<gt>B<addresses>
+
+=over 4
+
+Returns all addresses defined in this group.  The addresses will be
+ordered alphabetically to make automated testing possible: roles are
+stored in a hash, so have an unpredictable order by default.
+
+I<Example:> getting all addresses from a group
+
+
+ my @addrs = $group->addresses;
+ my @addrs = map { $_->address } $self->roles; #same
+
+=back
+
+=head2 Error handling
+
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Cannot coerce a $type into a Mail::Message::Field::AddrGroup
+
+
+I<Error:> Cannot create a $type to add this to my collection.
+
+Some options are specified to create a $type object, which is native to
+this collection.  However, for some reason this failed.
+
+I<Error:> Wrong type of role for $collection: requires a $expect but got a $type
+
+Each $collection groups sets of roles of one specific type ($expect).  You
+cannot add objects of a different $type.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Distribution version 2.044.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

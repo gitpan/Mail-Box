@@ -1,0 +1,278 @@
+
+=head1 NAME
+
+Mail::Box::Search::IMAP - select messages within a IMAP folder
+
+
+=head1 INHERITANCE
+
+ Mail::Box::Search::IMAP
+   is a Mail::Box::Search
+   is a Mail::Reporter
+
+
+=head1 SYNOPSIS
+
+ use Mail::Box::Manager;
+ my $mgr    = Mail::Box::Manager->new;
+ my $folder = $mgr->open('imap4:Inbox');
+
+ my $filter = Mail::Box::Search::IMAP->new
+    (  ...to be defined...
+    );
+
+ my @msgs   = $filter->search($folder);
+ if($filter->search($message)) {...}
+
+
+=head1 DESCRIPTION
+
+THIS PACKAGES IS NOT IMPLEMENTED YET: it waits for
+L<Mail::Transport::IMAP4|Mail::Transport::IMAP4> to be available.
+
+
+
+=head1 METHODS
+
+
+=head2 Constructors
+
+
+Mail::Box::Search::IMAP-E<gt>B<new>(OPTIONS)
+
+=over 4
+
+ Option      Defined in       Default      
+ binaries    L<Mail::Box::Search>  <false>      
+ decode      L<Mail::Box::Search>  <true>       
+ delayed     L<Mail::Box::Search>  <true>       
+ deleted     L<Mail::Box::Search>  <false>      
+ deliver     L<Mail::Box::Search>  undef        
+ in          L<Mail::Box::Search>  C<'BODY'>    
+ label       L<Mail::Box::Search>  undef        
+ limit       L<Mail::Box::Search>  C<0>         
+ log         L<Mail::Reporter>  C<'WARNINGS'>
+ logical     L<Mail::Box::Search>  C<'REPLACE'> 
+ multiparts  L<Mail::Box::Search>  <true>       
+ trace       L<Mail::Reporter>  C<'WARNINGS'>
+
+. binaries BOOLEAN
+
+. decode BOOLEAN
+
+. delayed BOOLEAN
+
+. deleted BOOLEAN
+
+. deliver undef|CODE|'DELETE'
+
+. in 'HEAD'|'BODY'|'MESSAGE'
+
+. label STRING
+
+. limit NUMBER
+
+. log LEVEL
+
+. logical 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT'
+
+. multiparts BOOLEAN
+
+. trace LEVEL
+
+=back
+
+=head2 Searching
+
+
+$obj-E<gt>B<inBody>(PART, BODY)
+
+=over 4
+
+See L<Mail::Box::Search/"Searching">
+
+=back
+
+$obj-E<gt>B<inHead>(PART, HEAD)
+
+=over 4
+
+See L<Mail::Box::Search/"Searching">
+
+=back
+
+$obj-E<gt>B<search>(FOLDER|THREAD|MESSAGE|ARRAY-OF-MESSAGES)
+
+=over 4
+
+See L<Mail::Box::Search/"Searching">
+
+=back
+
+$obj-E<gt>B<searchPart>(PART)
+
+=over 4
+
+See L<Mail::Box::Search/"Searching">
+
+=back
+
+=head2 The Results
+
+
+$obj-E<gt>B<printMatch>([FILEHANDLE], HASH)
+
+=over 4
+
+See L<Mail::Box::Search/"The Results">
+
+=back
+
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Box::Search::IMAP-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<errors>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Box::Search::IMAP-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Box::Search::IMAP-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+
+
+
+
+=head1 REFERENCES
+
+See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Distribution version 2.044.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

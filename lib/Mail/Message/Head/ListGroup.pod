@@ -1,0 +1,544 @@
+
+=head1 NAME
+
+Mail::Message::Head::ListGroup - mailinglist related header fields
+
+
+=head1 INHERITANCE
+
+ Mail::Message::Head::ListGroup
+   is a Mail::Reporter
+
+
+=head1 SYNOPSIS
+
+ my $lg = Mail::Message::Head::ListGroup->new(head => $head, ...);
+ $head->addListGroup($lg);
+
+ my $lg = $head->addListGroup(...);
+
+ $lg->delete;
+
+
+=head1 DESCRIPTION
+
+A I<list group> is a set of header fields which are added by mailing-list
+managing software.  This class contains various kinds of knowledge about
+that software.
+
+The knowledge and test messages which are used to initially implement
+this module is taken from Mail::ListDetector, written by
+Michael Stevens <mailto:michael@etla.org>.  The logic is redesigned to
+add flexibility and use the powerful MailBox features.
+
+
+
+=head1 METHODS
+
+
+=head2 Constructors
+
+
+$obj-E<gt>B<clone>
+
+=over 4
+
+Make a copy of this object.  The collected fieldnames are copied and the
+list type information.  No deep copy is made for the header: this is
+only copied as reference.
+
+=back
+
+$obj-E<gt>B<from>(HEAD|MESSAGE)
+
+=over 4
+
+Create a C<Mail::Message::Head::ListGroup> based in the specified MESSAGE
+or message HEAD.
+
+=back
+
+Mail::Message::Head::ListGroup-E<gt>B<new>(FIELDS, OPTIONS)
+
+=over 4
+
+Construct an object which maintains one set of mailing list headers.  The
+FIELDS may be specified as C<Mail::Message::Field> objects or as key-value
+pairs.  The OPTIONS and FIELDS (as key-value pair) can be mixed: they are
+distinguished by their name, where the fields always start with a capital.
+The field objects must aways lead the OPTIONS.
+
+ Option    Defined in       Default               
+ address                    C<undef>              
+ head                       C<undef>              
+ listname                   <derived from address>
+ log       L<Mail::Reporter>  C<'WARNINGS'>         
+ rfc                        C<undef>              
+ software                   C<undef>              
+ trace     L<Mail::Reporter>  C<'WARNINGS'>         
+ type                       C<undef>              
+ version                    C<undef>              
+
+. address STRING|OBJECT
+
+=over 4
+
+Address of the mailing list, which may be specified as STRING
+or e-mail containing object (a Mail::Address or L<Mail::Identity|Mail::Identity>.
+In any case, the data is converted into a L<Mail::Identity|Mail::Identity>.
+
+=back
+
+. head HEAD
+
+=over 4
+
+The header HEAD object is used to store the list fields in.  If no header
+is specified, a L<Mail::Message::Head::Partial|Mail::Message::Head::Partial> is created for you.  If
+you wish to scan the existing fields in a header, then use the L<from()|Mail::Message::Head::ListGroup/"Constructors">
+method.
+
+=back
+
+. listname STRING
+
+=over 4
+
+A short textual representation of the mailing-list.
+
+=back
+
+. log LEVEL
+
+. rfc 'rfc2918'|'rfc2369'
+
+=over 4
+
+Defines the mailing list software follows an rfc.
+
+=back
+
+. software STRING
+
+=over 4
+
+Name of the software which maintains the mailing list.
+
+=back
+
+. trace LEVEL
+
+. type STRING
+
+=over 4
+
+Group name for the mailing list software.  Often the same, or close
+to the same STRING, as the C<software> option contains.
+
+=back
+
+. version STRING
+
+=over 4
+
+Version number for the mailing list software.
+
+=back
+
+=back
+
+=head2 The header
+
+
+$obj-E<gt>B<attach>(HEAD)
+
+=over 4
+
+Add a list group to a message HEAD.  The fields will be cloned(!)
+into the header, so that the list group object can be used again.
+
+I<Example:> attaching a list group to a message
+
+
+ my $lg = Mail::Message::Head::ListGroup->new(...);
+ $lg->attach($msg->head);
+ $msg->head->addListGroup($lg);   # same
+
+I<Example:> copying list information
+
+
+ if(my $lg = $listmsg->head->listGroup)
+ {   $msg->head->addListGroup($lg);
+ }
+
+=back
+
+$obj-E<gt>B<delete>
+
+=over 4
+
+Remove all the header lines which are combined in this list group
+from the header.
+
+=back
+
+$obj-E<gt>B<head>
+
+=over 4
+
+Returns the header object, which includes these fields.
+
+=back
+
+=head2 Access to the header
+
+
+$obj-E<gt>B<add>((FIELD, VALUE) | OBJECT)
+
+=over 4
+
+Add a field to the header, using the list group.  When the list group
+is already attached to a real message header, it will appear in that
+one as well as being registed in this set.
+
+I<Example:> adding a field to a detached list group
+
+
+ my $this = Mail::Message::Head::ListGroup->new(...);
+ $this->add('List-Id' => 'mailbox');
+ $msg->addListGroup($this);
+ $msg->send;
+
+I<Example:> adding a field to an attached list group
+
+
+ my $lg = Mail::Message::Head::ListGroup->from($msg);
+ $lg->add('List-Id' => 'mailbox');
+
+=back
+
+$obj-E<gt>B<address>
+
+=over 4
+
+Returns a L<Mail::Message::Field::Address|Mail::Message::Field::Address> object (or C<undef>) which
+defines the posting address of the mailing list.
+
+=back
+
+$obj-E<gt>B<fields>
+
+=over 4
+
+Return the fields which are defined for this list group.
+
+=back
+
+$obj-E<gt>B<findListFields>
+
+=over 4
+
+Scan the header for fields which are usually contained in mailing list
+software.  This method is automatically called when a list group is
+constructed L<from()|Mail::Message::Head::ListGroup/"Constructors"> an existing header or message.
+
+Returned are the names of the list header fields found, in scalar
+context the amount.  An empty list/zero indicates that this is not
+a mailing list message.
+
+Please warn the author of MailBox if you see that to few
+or too many fields are included.
+
+=back
+
+$obj-E<gt>B<listname>
+
+=over 4
+
+Returns the name of the mailing list, which is usually a part of the
+e-mail address which is used to post the messages to.
+
+=back
+
+$obj-E<gt>B<rfc>
+
+=over 4
+
+When the mailing list software follows the guidelines of one of the dedictated
+RFCs, then this will be returned otherwise C<undef>.  The return values can
+be C<rfc2918>, C<rfc2369>, or C<undef>.
+
+=back
+
+$obj-E<gt>B<software>
+
+=over 4
+
+Returns the name of the software as is defined in the headers.  The may
+be slightly different from the return value of L<type()|Mail::Message::Head::ListGroup/"Access to the header">, but usually
+not too different.
+
+=back
+
+$obj-E<gt>B<type>
+
+=over 4
+
+Returns an abstract name for the list group; which mailing software is
+controling it.  C<undef> is returned in case the type is not known, and
+the other names are listed in L</Detected lists>.
+
+=back
+
+$obj-E<gt>B<version>
+
+=over 4
+
+Returns the version number of the software used by the mailing list
+software.  This is ofthen not known, in which case C<undef> will be
+returned.
+
+=back
+
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Message::Head::ListGroup-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<details>
+
+=over 4
+
+Produce information about the detected/create list group, which may be
+helpful during debugging, by default to the selected file handle.
+
+=back
+
+$obj-E<gt>B<errors>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Message::Head::ListGroup-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Message::Head::ListGroup-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<print>([FILEHANDLE])
+
+=over 4
+
+Print the group to the specified FILEHANDLE or GLOB.  This is probably only
+useful for debugging purposed.  The output defaults to the selected file
+handle.
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Cannot convert "$string" into an address object
+
+The L<new(address)|Mail::Message::Head::ListGroup/"Constructors"> is coerced into a L<Mail::Message::Field::Address|Mail::Message::Field::Address>,
+which fails.  Have a look at L<Mail::Message::Field::Address::coerce()|Mail::Message::Field::Address/"Constructors">
+to see what valid arguments are.
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+=head1 DETAILS
+
+
+=head2 Mailing list fields
+
+
+=head3 Detected lists
+
+The L<Mail::Message::Head::ListGroup|Mail::Message::Head::ListGroup> class can detect many different
+mailing lists, some of which are very popular and some of which are
+rare.
+
+Numerous fields in a header are addded when the message is passed
+through a mailing list server.  Each list software has defined its own
+fields, sometimes woth conflicting definitions.  There are also two
+RFCs about mailing list: C<rfc2918> and C<rfc2369>.
+
+The following lists are currently detected.  Between parenthesis is
+the string returned by L<type()|Mail::Message::Head::ListGroup/"Access to the header"> when that differs from the software
+name.
+
+=over 4
+
+=item * CommuniGate Pro (CommuniGate)
+
+Commercial rfc2918 compliant implementation by Stalker Software Inc.
+L<http://www.stalker.com>
+
+=item * Ecartis
+
+Commercial mailing list manager, formerly known as Listar. Produced
+by NodeRunner Computing.  See L<http://www.ecartis.com>.
+
+=item * Ezmlm
+
+Open Source mailing list manager, available from L<http://www.ezmlm.org>.
+
+=item * FML
+
+Open Source mailing list manager, see L<http://www.fml.org>.
+
+=item * Listar
+
+Old name for Ecartis.
+
+=item * Listbox
+
+Mailing lists defined at L<http://listbox.com>.
+
+=item * Mailman
+
+GNU's mailing list manager, available from L<http://www.list.org>.
+
+=item * Majordomo
+
+Free (licenced) mailing list manager by Great Circle Associates,
+available from L<http://www.greatcircle.com/majordomo/>
+
+=item * Smartlist
+
+Related to procmail, as expressed by their shared main page at
+L<http://www.procmail.org/>.
+
+=item * Yahoo! Groups (YahooGroups)
+
+Mailing lists defined at L<http://groups.yahoo.com>.
+
+=back
+
+
+
+
+
+=head1 REFERENCES
+
+See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Distribution version 2.044.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+
