@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message::Head::ResentGroup;
 use vars '$VERSION';
-$VERSION = '2.050';
+$VERSION = '2.051';
 use base 'Mail::Message::Head::FieldGroup';
 
 use Scalar::Util 'weaken';
@@ -105,11 +105,6 @@ sub set($;$)
     $field;
 }
 
-#------------------------------------------
-
-
-sub add(@) { shift->set(@_) }
-
 #-------------------------------------------
 
 sub fields() { shift->orderedFields }
@@ -126,6 +121,11 @@ sub delete()
     $head->removeField($_) foreach $self->fields;
     $self;
 }
+
+#------------------------------------------
+
+
+sub add(@) { shift->set(@_) }
 
 #-------------------------------------------
 

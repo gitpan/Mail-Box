@@ -1,7 +1,7 @@
 
 package Mail::Message::Head::ListGroup;
 use vars '$VERSION';
-$VERSION = '2.050';
+$VERSION = '2.051';
 use base 'Mail::Message::Head::FieldGroup';
 
 use strict;
@@ -45,9 +45,9 @@ sub from($)
     return () unless $self->collectFields;
 
     my ($type, $software, $version, $field);
-    if(my $commpro = $head->get('X-ListServer'))  
-    {   ($software, $version) = $commpro =~ m/^(.*)\s+LIST\s*([\d.]+)\s*$/;
-        $type    = 'CommuniGate';
+    if(my $communigate = $head->get('X-ListServer'))
+    {   ($software, $version) = $communigate =~ m/^(.*)\s+LIST\s*([\d.]+)\s*$/i;
+        $type    = ($software =~ m/Pro/ ? 'CommuniGatePro' : 'CommuniGate');
     }
     elsif(my $mailman = $head->get('X-Mailman-Version'))
     {   $version = "$mailman";
@@ -129,7 +129,7 @@ sub address()
     if($type eq 'Smartlist' && defined($field = $head->get('X-Mailing-List')))
     {   $address = $1 if $field =~ m/\<([^>]+)\>/ }
     elsif($type eq 'YahooGroups')
-    {   $address = $head->study('X-Apparently-To') }
+    {   $address = $head->get('X-Apparently-To')->unfoldedBody }
     elsif($type eq 'Listserv')
     {   $address = $head->get('Sender') }
 
@@ -200,17 +200,17 @@ my $list_field_names
       | ^ (?: Mail-Followup|Delivered|Errors|X-Apperently ) -To $
       /xi;
 
+sub isListGroupFieldName($) { $_[1] =~ $list_field_names }
+
+#------------------------------------------
+
+
 sub collectFields()
 {   my $self = shift;
     my @names = map { $_->name } $self->head->grepNames($list_field_names);
     $self->addFields(@names);
     @names;
 }
-
-#------------------------------------------
-
-
-sub isListGroupFieldName($) { $_[1] =~ $list_field_names }
 
 #------------------------------------------
 

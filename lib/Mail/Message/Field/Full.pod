@@ -610,6 +610,8 @@ STRING is a strandard iso language name.
 
 $obj-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
 
+Mail::Message::Field::Full-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
+
 =over 4
 
 See L<Mail::Message::Field/"Internals">
@@ -875,7 +877,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.050.
+Distribution version 2.051.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

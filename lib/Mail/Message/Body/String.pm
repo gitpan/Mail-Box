@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body::String;
 use vars '$VERSION';
-$VERSION = '2.050';
+$VERSION = '2.051';
 use base 'Mail::Message::Body';
 
 use Carp;

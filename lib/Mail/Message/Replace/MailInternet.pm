@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Message::Replace::MailInternet;
 use vars '$VERSION';
-$VERSION = '2.050';
+$VERSION = '2.051';
 use base 'Mail::Message';
 
 use Mail::Box::FastScalar;
@@ -114,9 +114,15 @@ sub MailFrom(;$)
 }
 
 
-sub read($)
-{   my ($self, $data) = @_;
-    $self->processRawData($data, 1, 1);
+sub read($@)
+{   my $thing = shift;
+
+    return $thing->SUPER::read(@_)   # Mail::Message behavior
+        unless ref $thing;
+
+    # Mail::Header emulation
+    my $data = shift;
+    $thing->processRawData($data, 1, 1);
 }
 
 

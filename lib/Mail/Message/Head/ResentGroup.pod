@@ -216,6 +216,22 @@ See L<Mail::Message::Head::FieldGroup/"The header">
 
 =back
 
+$obj-E<gt>B<fieldNames>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"The header">
+
+=back
+
+$obj-E<gt>B<fields>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"The header">
+
+=back
+
 $obj-E<gt>B<head>
 
 =over 4
@@ -323,22 +339,6 @@ $obj-E<gt>B<destinations>
 
 Returns a list of all addresses specified in the C<Resent-To>, C<-Cc>, and
 C<-Bcc> fields of this resent group.
-
-=back
-
-$obj-E<gt>B<fieldNames>
-
-=over 4
-
-See L<Mail::Message::Head::FieldGroup/"Access to the header">
-
-=back
-
-$obj-E<gt>B<fields>
-
-=over 4
-
-See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
 =back
 
@@ -641,7 +641,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.050.
+Distribution version 2.051.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

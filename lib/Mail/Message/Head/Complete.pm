@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Head::Complete;
 use vars '$VERSION';
-$VERSION = '2.050';
+$VERSION = '2.051';
 use base 'Mail::Message::Head';
 
 use Mail::Box::Parser;
@@ -252,6 +252,15 @@ sub removeListGroup(@)
 sub removeSpamGroups(@)
 {   my $self = shift;
     (bless $self, 'Mail::Message::Head::Partial')->removeSpamGroups(@_);
+}
+
+#------------------------------------------
+
+
+sub spamDetected()
+{   my $self = shift;
+    my @sgs = $self->spamGroups or return undef;
+    grep { $_->spamDetected } @sgs;
 }
 
 #------------------------------------------

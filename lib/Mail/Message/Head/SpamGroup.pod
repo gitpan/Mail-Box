@@ -139,8 +139,41 @@ by spam fighting software.
 
 =back
 
+$obj-E<gt>B<spamDetected>([BOOLEAN])
+
+=over 4
+
+Returns (after setting) whether this group of spam headers thinks that
+this is spam.  See L<Mail::Message::Head::Complete::spamDetected()|Mail::Message::Head::Complete/"Access to the header">.
+
+I<Example:> 
+
+  die if $head->spamDetected;
+
+  foreach my $sg ($head->spamGroups)
+  {   print $sg->type." found spam\n" if $sg->spamDetected;
+  }
+
+=back
+
 =head2 The header
 
+
+$obj-E<gt>B<add>((FIELD, VALUE) | OBJECT)
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"The header">
+
+=back
+
+$obj-E<gt>B<addFields>([FIELDNAMES])
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"The header">
+
+=back
 
 $obj-E<gt>B<attach>(HEAD)
 
@@ -158,6 +191,22 @@ See L<Mail::Message::Head::FieldGroup/"The header">
 
 =back
 
+$obj-E<gt>B<fieldNames>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"The header">
+
+=back
+
+$obj-E<gt>B<fields>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"The header">
+
+=back
+
 $obj-E<gt>B<head>
 
 =over 4
@@ -168,38 +217,6 @@ See L<Mail::Message::Head::FieldGroup/"The header">
 
 =head2 Access to the header
 
-
-$obj-E<gt>B<add>((FIELD, VALUE) | OBJECT)
-
-=over 4
-
-See L<Mail::Message::Head::FieldGroup/"Access to the header">
-
-=back
-
-$obj-E<gt>B<addFields>([FIELDNAMES])
-
-=over 4
-
-See L<Mail::Message::Head::FieldGroup/"Access to the header">
-
-=back
-
-$obj-E<gt>B<fieldNames>
-
-=over 4
-
-See L<Mail::Message::Head::FieldGroup/"Access to the header">
-
-=back
-
-$obj-E<gt>B<fields>
-
-=over 4
-
-See L<Mail::Message::Head::FieldGroup/"Access to the header">
-
-=back
 
 $obj-E<gt>B<software>
 
@@ -427,6 +444,13 @@ see these nine lines are (quite) sure that the message is sincere.
 See L<http://www.habeas.com> for all the details on this commercial
 product.
 
+=item * MailScanner
+
+The MailScanner filter is developed and maintained by
+transtec Computers.  The software is available for free download from
+L<http://www.sng.ecs.soton.ac.uk/mailscanner/>.  Commercial support
+is provided via L<http://www.mailscanner.biz>.
+
 =back
 
 
@@ -439,7 +463,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.050.
+Distribution version 2.051.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Mbox;
 use vars '$VERSION';
-$VERSION = '2.050';
+$VERSION = '2.051';
 use base 'Mail::Box::File';
 
 use Mail::Box::Mbox::Message;

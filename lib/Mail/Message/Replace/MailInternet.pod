@@ -30,7 +30,7 @@ a L<Mail::Internet> object.  The name-space of that module is hijacked
 and many methods are added.
 
 Most methods will work without any change, but you may need to have
-a look at your L<smtpsend()|Mail::Message::Replace::MailInternet/"The body"> and L<send()|Mail::Message::Replace::MailInternet/"The message"> calls.
+a look at your L<smtpsend()|Mail::Message::Replace::MailInternet/"The body"> and L<send()|Mail::Message::Replace::MailInternet/"The Message"> calls.
 
 
 =head1 OVERLOADED
@@ -300,11 +300,16 @@ See L<Mail::Message::Construct::Forward/"Constructing a message">
 
 =back
 
-$obj-E<gt>B<read>(ARRAY|FILEHANDLE)
+$obj-E<gt>B<read>(ARRAY|FILEHANDLE, OPTIONS)
+
+Mail::Message::Replace::MailInternet-E<gt>B<read>(ARRAY|FILEHANDLE, OPTIONS)
 
 =over 4
 
-Read header and body from the specified ARRAY or FILEHANDLE.
+Read header and body from the specified ARRAY or FILEHANDLE.  When used as
+object method, L<Mail::Message::read()|Mail::Message::Construct::Read/"Constructing a message"> is called, to be MailBox compliant.
+As class method, the Mail::Internet compatible read is called.  OPTIONS are
+only available in the first case.
 
  Option               Defined in                         Default
  strip_status_fields  L<Mail::Message::Construct::Read>  <true> 
@@ -527,33 +532,6 @@ See L<Mail::Message/"The Message">
 
 =back
 
-$obj-E<gt>B<size>
-
-=over 4
-
-See L<Mail::Message/"The Message">
-
-=back
-
-$obj-E<gt>B<toplevel>
-
-=over 4
-
-See L<Mail::Message/"The Message">
-
-=back
-
-$obj-E<gt>B<write>([FILEHANDLE])
-
-=over 4
-
-See L<Mail::Message/"The Message">
-
-=back
-
-=head2 The message
-
-
 $obj-E<gt>B<nntppost>(OPTIONS)
 
 =over 4
@@ -589,6 +567,30 @@ $obj-E<gt>B<send>(TYPE, OPTIONS)
 
 Send via Mail Transfer Agents (MUA).  These will be handled by various
 L<Mail::Transport::Send|Mail::Transport::Send> extensions.  The C<test> TYPE is not supported.
+
+=back
+
+$obj-E<gt>B<size>
+
+=over 4
+
+See L<Mail::Message/"The Message">
+
+=back
+
+$obj-E<gt>B<toplevel>
+
+=over 4
+
+See L<Mail::Message/"The Message">
+
+=back
+
+$obj-E<gt>B<write>([FILEHANDLE])
+
+=over 4
+
+See L<Mail::Message/"The Message">
 
 =back
 
@@ -1319,7 +1321,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.050.
+Distribution version 2.051.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

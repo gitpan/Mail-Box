@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.050';
+$VERSION = '2.051';
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -33,6 +33,8 @@ sub build(@)
         }
 
         my $value = shift;
+        next unless defined $value;
+
         if($key eq 'head')
         {   $head = $value }
         elsif($key eq 'data')

@@ -134,42 +134,6 @@ Version number for the software which produced the fields.
 =head2 The header
 
 
-$obj-E<gt>B<attach>(HEAD)
-
-=over 4
-
-Add a group of fields to a message HEAD.  The fields will be cloned(!)
-into the header, so that the field group object can be used again.
-
-I<Example:> attaching a list group to a message
-
-
- my $lg = Mail::Message::Head::ListGroup->new(...);
- $lg->attach($msg->head);
- $msg->head->addListGroup($lg);   # same
-
-=back
-
-$obj-E<gt>B<delete>
-
-=over 4
-
-Remove all the header lines which are combined in this fields group,
-from the header.
-
-=back
-
-$obj-E<gt>B<head>
-
-=over 4
-
-Returns the header object, which includes these fields.
-
-=back
-
-=head2 Access to the header
-
-
 $obj-E<gt>B<add>((FIELD, VALUE) | OBJECT)
 
 =over 4
@@ -203,6 +167,31 @@ Add some FIELDNAMES to the set.
 
 =back
 
+$obj-E<gt>B<attach>(HEAD)
+
+=over 4
+
+Add a group of fields to a message HEAD.  The fields will be cloned(!)
+into the header, so that the field group object can be used again.
+
+I<Example:> attaching a list group to a message
+
+
+ my $lg = Mail::Message::Head::ListGroup->new(...);
+ $lg->attach($msg->head);
+ $msg->head->addListGroup($lg);   # same
+
+=back
+
+$obj-E<gt>B<delete>
+
+=over 4
+
+Remove all the header lines which are combined in this fields group,
+from the header.
+
+=back
+
 $obj-E<gt>B<fieldNames>
 
 =over 4
@@ -218,6 +207,17 @@ $obj-E<gt>B<fields>
 Return the fields which are defined for this group.
 
 =back
+
+$obj-E<gt>B<head>
+
+=over 4
+
+Returns the header object, which includes these fields.
+
+=back
+
+=head2 Access to the header
+
 
 $obj-E<gt>B<software>
 
@@ -449,7 +449,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.050.
+Distribution version 2.051.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

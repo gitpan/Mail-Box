@@ -390,6 +390,14 @@ See L<Mail::Message::Head::Complete/"Access to the header">
 
 =back
 
+$obj-E<gt>B<spamDetected>
+
+=over 4
+
+See L<Mail::Message::Head::Complete/"Access to the header">
+
+=back
+
 $obj-E<gt>B<spamGroups>([NAMES])
 
 =over 4
@@ -715,7 +723,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.050.
+Distribution version 2.051.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

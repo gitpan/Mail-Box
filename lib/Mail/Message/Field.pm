@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field;
 use vars '$VERSION';
-$VERSION = '2.050';
+$VERSION = '2.051';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -305,7 +305,7 @@ sub addresses() { Mail::Address->parse(shift->unfoldedBody) }
 sub study()
 {   my $self = shift;
     require Mail::Message::Field::Full;
-    Mail::Message::Field::Full->new($self->folded);
+    Mail::Message::Field::Full->new(scalar $self->folded);
 }
 
 #------------------------------------------
@@ -415,10 +415,10 @@ sub defaultWrapLength(;$)
 
 
 sub fold($$;$)
-{   my $self = shift;
-    my $name = shift;
-    my $line = shift;
-    my $wrap = shift || $default_wrap_length;
+{   my $thing = shift;
+    my $name  = shift;
+    my $line  = shift;
+    my $wrap  = shift || $default_wrap_length;
 
     $line    =~ s/\n\s/ /gms;            # Remove accidental folding
     return " \n" unless length $line;    # empty field

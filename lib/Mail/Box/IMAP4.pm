@@ -1,7 +1,7 @@
 
 package Mail::Box::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.050';
+$VERSION = '2.051';
 use base 'Mail::Box::Net';
 
 use strict;
