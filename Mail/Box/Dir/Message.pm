@@ -45,7 +45,7 @@ L<Mail::Message> (MM), L<Mail::Reporter> (MR), L<Mail::Box::Message> (MBM), L<Ma
 
 The general methods for C<Mail::Box::Dir::Message> objects:
 
-   MM bcc                               MM label LABEL [,VALUE [LABEL,...
+   MM bcc                              MMC lines
   MMC bounce OPTIONS                    MR log [LEVEL [,STRINGS]]
   MMC build [MESSAGE|BODY], CONTENT     MM messageId
   MMC buildFromBody BODY, HEADERS       MM modified [BOOL]
@@ -54,22 +54,24 @@ The general methods for C<Mail::Box::Dir::Message> objects:
    MM date                              MM parent
    MM decoded OPTIONS                   MM parts
   MBM delete                            MM print [FILEHANDLE]
-  MBM deleted [BOOL]                   MMC read FILEHANDLE|SCALAR|REF-...
-   MM destinations                     MMC reply OPTIONS
-   MM encode OPTIONS                   MMC replyPrelude [STRING|FIELD|...
-   MR errors                           MMC replySubject STRING
+  MBM deleted [BOOL]                   MMC printStructure [INDENT]
+   MM destinations                     MMC read FILEHANDLE|SCALAR|REF-...
+   MM encode OPTIONS                   MMC reply OPTIONS
+   MR errors                           MMC replyPrelude [STRING|FIELD|...
+  MMC file                             MMC replySubject STRING
       filename [FILENAME]               MR report [LEVEL]
   MBM folder [FOLDER]                   MR reportAll [LEVEL]
   MMC forward OPTIONS                   MM send [MAILER], OPTIONS
   MMC forwardPostlude                  MBM seqnr [INTEGER]
   MMC forwardPrelude                   MBM shortString
   MMC forwardSubject STRING             MM size
-   MM from                              MM subject
-   MM get FIELD                         MM timestamp
-   MM guessTimestamp                    MM to
-   MM isDummy                           MM toplevel
-   MM isMultipart                       MR trace [LEVEL]
-   MM isPart                            MR warnings
+   MM from                             MMC string
+   MM get FIELD                         MM subject
+   MM guessTimestamp                    MM timestamp
+   MM isDummy                           MM to
+   MM isMultipart                       MM toplevel
+   MM isPart                            MR trace [LEVEL]
+   MM label LABEL [,VALUE [LABEL,...    MR warnings
 
 The extra methods for extension writers:
 
@@ -294,33 +296,34 @@ as well.
 
 sub create($)
 {   my ($self, $filename) = @_;
-    my $old = $self->filename || '';
 
+    my $old = $self->filename || '';
     return $self if $filename eq $old && !$self->modified;
 
-    my $oldtmp;
-    if($old && $self->modified)
-    {   $oldtmp = $old . '.old';
-        move $old, $oldtmp;
-        $old    = '';
-    }
+    # Write the new data to a new file.
 
-    unless($old && move($old, $filename))
-    {   my $new = IO::File->new($filename, 'w');
-        $self->log(ERROR => "Cannot write message to $filename: $!"), return
-           unless $new;
+    my $new     = $filename . '.new';
+    my $newfile = IO::File->new($new, 'w');
+    $self->log(ERROR => "Cannot write message to $new: $!"), return
+        unless $newfile;
 
-        $self->print($new);
-        $new->close;
-        $self->modified(0);
-    }
+    $self->print($newfile);
+    $newfile->close;
 
+    # Accept the new data
+#   $self->log(WARNING => "Failed to remove $old: $!")
+#       if $old && !unlink $old;
+
+    unlink $old if $old;
+    $self->log(ERROR => "Failed to move $new to $filename: $!"), return
+         unless move($new, $filename);
+
+    $self->modified(0);
     $self->Mail::Box::Dir::Message::filename($filename);
-    unlink $oldtmp if $oldtmp;
 
     $self;
 }
- 
+
 #-------------------------------------------
 
 =back
@@ -339,7 +342,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.014.
+This code is beta, version 2.015.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

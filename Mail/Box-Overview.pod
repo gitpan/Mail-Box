@@ -178,9 +178,11 @@ This is the base-class for all message-bodies.  It describes what you
 can do with any kind of body.  The body-types differ on the way how the
 keep the body-content during the run of your program.
 
-One special case of the body-types is the C<::Multipart>, which
+One special case of the body types is the C<::Multipart>, which
 contains a set of C<Mail::Message::Part> objects.  These are just like
 normal messages, except that they are contained in an other message.
+The C<::Nested> body type contains only one message: they are used
+for C<message/rfc822> message encodings.
 
 When needed, the functionality of the body objects is extended with
 C<::Body::Construct> and C<::Body::Encode>.  The former package implements

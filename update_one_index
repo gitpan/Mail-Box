@@ -8,7 +8,7 @@ use lib '.';
 
 my ($src, $dest) = @ARGV;
 my $verbose = 0;
-my $version = '2.014';
+my $version = '2.015';
 my $email   = 'mailbox@overmeer.net';
 
 require $src;

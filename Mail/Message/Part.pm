@@ -4,7 +4,7 @@ use warnings;
 package Mail::Message::Part;
 use base 'Mail::Message';
 
-our $VERSION = 2.014;
+our $VERSION = 2.015;
 
 use Carp;
 
@@ -47,22 +47,25 @@ L<Mail::Message> (MM), L<Mail::Reporter> (MR), L<Mail::Message::Construct> (MMC)
 
 The general methods for C<Mail::Message::Part> objects:
 
-   MM bcc                               MR log [LEVEL [,STRINGS]]
-  MMC bounce OPTIONS                    MM messageId
-  MMC build [MESSAGE|BODY], CONTENT     MM modified [BOOL]
-      buildFromBody BODY, MULTIPA...       new OPTIONS
-   MM cc                                MM nrLines
-   MM date                              MM parent
-   MM decoded OPTIONS                   MM parts
-   MM destinations                      MM print [FILEHANDLE]
+   MM bcc                              MMC lines
+  MMC bounce OPTIONS                    MR log [LEVEL [,STRINGS]]
+  MMC build [MESSAGE|BODY], CONTENT     MM messageId
+      buildFromBody BODY, MULTIPA...    MM modified [BOOL]
+   MM cc                                   new OPTIONS
+   MM date                              MM nrLines
+   MM decoded OPTIONS                   MM parent
+      delete                            MM parts
+      deleted [BOOLEAN]                 MM print [FILEHANDLE]
+   MM destinations                     MMC printStructure [INDENT]
    MM encode OPTIONS                   MMC read FILEHANDLE|SCALAR|REF-...
    MR errors                           MMC reply OPTIONS
-  MMC forward OPTIONS                  MMC replyPrelude [STRING|FIELD|...
-  MMC forwardPostlude                  MMC replySubject STRING
-  MMC forwardPrelude                    MR report [LEVEL]
-  MMC forwardSubject STRING             MR reportAll [LEVEL]
-   MM from                              MM send [MAILER], OPTIONS
-   MM get FIELD                         MM size
+  MMC file                             MMC replyPrelude [STRING|FIELD|...
+  MMC forward OPTIONS                  MMC replySubject STRING
+  MMC forwardPostlude                   MR report [LEVEL]
+  MMC forwardPrelude                    MR reportAll [LEVEL]
+  MMC forwardSubject STRING             MM send [MAILER], OPTIONS
+   MM from                              MM size
+   MM get FIELD                        MMC string
    MM guessTimestamp                    MM subject
    MM isDummy                           MM timestamp
    MM isMultipart                       MM to
@@ -119,9 +122,9 @@ sub init($)
     $self;
 }
 
-sub parent()     { shift->{MMP_parent} }           # overrides
-sub toplevel()   { shift->{MMP_parent}->toplevel } # idem
-sub isPart()     { 1 }                             # idem
+sub parent()     { shift->{MMP_parent} }     # overrides
+sub toplevel()   { shift->parent->toplevel } # idem
+sub isPart()     { 1 }                       # idem
 
 #------------------------------------------
 
@@ -160,6 +163,33 @@ sub buildFromBody($$)
 
     $part->body($body);
     $part;
+}
+
+#------------------------------------------
+
+=item delete
+
+Do not print or send this part of the message anymore.
+
+=cut
+
+sub delete() {shift->deleted(1)}
+
+#------------------------------------------
+
+=item deleted [BOOLEAN]
+
+Returns whether this part is still in the body or not, optionally
+after setting it to the BOOLEAN.
+
+=cut
+
+sub deleted(;$)
+{   my $self = shift;
+    return $self->{MMP_deleted} unless @_;
+
+    $self->toplevel->modified(1);
+    $self->{MMP_deleted} = shift;
 }
 
 #------------------------------------------
@@ -233,7 +263,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.014.
+This code is beta, version 2.015.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

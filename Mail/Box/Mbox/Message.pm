@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox::Message;
 use base 'Mail::Box::Message';
 
-our $VERSION = 2.014;
+our $VERSION = 2.015;
 
 use POSIX 'SEEK_SET';
 use Carp;
@@ -40,7 +40,7 @@ L<Mail::Message> (MM), L<Mail::Reporter> (MR), L<Mail::Box::Message> (MBM), L<Ma
 
 The general methods for C<Mail::Box::Mbox::Message> objects:
 
-   MM bcc                               MM label LABEL [,VALUE [LABEL,...
+   MM bcc                              MMC lines
   MMC bounce OPTIONS                    MR log [LEVEL [,STRINGS]]
   MMC build [MESSAGE|BODY], CONTENT     MM messageId
   MMC buildFromBody BODY, HEADERS       MM modified [BOOL]
@@ -49,22 +49,24 @@ The general methods for C<Mail::Box::Mbox::Message> objects:
    MM date                              MM parent
    MM decoded OPTIONS                   MM parts
   MBM delete                               print [FILEHANDLE]
-  MBM deleted [BOOL]                   MMC read FILEHANDLE|SCALAR|REF-...
-   MM destinations                     MMC reply OPTIONS
-   MM encode OPTIONS                   MMC replyPrelude [STRING|FIELD|...
-   MR errors                           MMC replySubject STRING
+  MBM deleted [BOOL]                   MMC printStructure [INDENT]
+   MM destinations                     MMC read FILEHANDLE|SCALAR|REF-...
+   MM encode OPTIONS                   MMC reply OPTIONS
+   MR errors                           MMC replyPrelude [STRING|FIELD|...
+  MMC file                             MMC replySubject STRING
   MBM folder [FOLDER]                   MR report [LEVEL]
   MMC forward OPTIONS                   MR reportAll [LEVEL]
   MMC forwardPostlude                   MM send [MAILER], OPTIONS
   MMC forwardPrelude                   MBM seqnr [INTEGER]
   MMC forwardSubject STRING            MBM shortString
    MM from                              MM size
-      fromLine [LINE]                   MM subject
-   MM get FIELD                         MM timestamp
-   MM guessTimestamp                    MM to
-   MM isDummy                           MM toplevel
-   MM isMultipart                       MR trace [LEVEL]
-   MM isPart                            MR warnings
+      fromLine [LINE]                  MMC string
+   MM get FIELD                         MM subject
+   MM guessTimestamp                    MM timestamp
+   MM isDummy                           MM to
+   MM isMultipart                       MM toplevel
+   MM isPart                            MR trace [LEVEL]
+   MM label LABEL [,VALUE [LABEL,...    MR warnings
 
 The extra methods for extension writers:
 
@@ -329,7 +331,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.014.
+This code is beta, version 2.015.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -3,6 +3,54 @@ CHANGELOG of Mail::Box version 2
 All changes were made by Mark Overmeer <mark@overmeer.net>, unless
 specified differently.
 
+version 2.015: Tue Jun 18 19:41:45 CEST 2002
+
+	Fixes:
+
+	- Duplicated messages without subject or to fields will
+	  not produce errors anymore.
+
+	- Duplicated messages produce NOTICE now, not WARNINGS.  Same
+	  for empty fields and other minor things the parser detects.
+
+	- Multiparts where not correctly processed when read from STDIN:
+	  the body type was '::Lines' only. Bug reported by [Evan Borgstrom]
+
+	- Bogus message-IDs  <>  caused problems, but these situations are
+	  avoided now.  Problem found by [Jost Krieger]
+
+	Improvements:
+
+	- message/rfc822 messages are handled now via a
+	  Mail::Message::Body::Nested.pm, Tests in t/21p9rfc.t
+	  This all because [Max Poduhoroff] asked for it  ;-)
+
+	- Removed all tests for Inline::C parser....
+
+	- Mail::Message::Body::AUTOLOAD handles errors better, which
+	  should provide nicer error-messages.
+
+	- Updates on MH/Maildir messages will first be created in an
+	  'invisible' name, to avoid accidental access to partially
+	  written messages Mail::Box::Dir::Message::create()
+
+	- Mail::Message::Parts can be deleted (ignored for printing and
+	  sending).  $part->deleted, $part->deleted(0), if($part->deleted)
+
+	- timestamp() prefers time from last Received field over first
+	  [Jost Krieger]
+
+	- Mail::Transport::SMTP:
+	    contactServer()  --> contactAnyServer()
+	    new method tryConnectTo($host, @options);
+
+	- $msg->printStructure for debugging purposes
+	  (see Mail::Message::Construct)
+
+	- Now requires MIME::Types v1.001
+
+	- Mail::Message $msg   implemented $msg->string, ->lines, ->file
+	
 version 2.014: Tue Jun 11 16:26:13 CEST 2002
 
 	Fixes:
@@ -12,7 +60,7 @@ version 2.014: Tue Jun 11 16:26:13 CEST 2002
 	  for unexperienced programmers.  Now 'delete' simply calls 'reset'.
 	  Spotted by [Mark Weiler]
 
-	- A coerce() from Mail::Message to Mail::Box::Message has to set
+	- A coerce() from Mail::Message to Mail::Box::Message has to clear
 	  the deleted flag (to avoid errors).  At the same time, the
 	  modified flag is cleared.  Detected by [Max Maischein]
 

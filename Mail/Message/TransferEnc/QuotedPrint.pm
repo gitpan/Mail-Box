@@ -5,7 +5,7 @@ use warnings;
 package Mail::Message::TransferEnc::QuotedPrint;
 use base 'Mail::Message::TransferEnc';
 
-our $VERSION = 2.014;
+our $VERSION = 2.015;
 
 =head1 NAME
 
@@ -204,7 +204,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.014.
+This code is beta, version 2.015.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

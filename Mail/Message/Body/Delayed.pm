@@ -17,7 +17,7 @@ use overload '""'    => sub {shift->load->string}
 use Carp;
 use Scalar::Util 'weaken';
 
-our $VERSION = 2.014;
+our $VERSION = 2.015;
 
 =head1 NAME
 
@@ -62,7 +62,8 @@ The general methods for C<Mail::Message::Body::Delayed> objects:
  MMBE isBinary                        MMBC stripSignature OPTIONS
   MMB isDelayed                         MR trace [LEVEL]
   MMB isMultipart                      MMB transferEncoding [STRING|FI...
- MMBE isText                           MMB type
+  MMB isNested                         MMB type
+ MMBE isText                            MR warnings
 
 The extra methods for extension writers:
 
@@ -203,7 +204,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.014.
+This code is beta, version 2.015.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -7,7 +7,7 @@ use base 'Mail::Transport';
 #use Mail::Transport::SMTP::Server;
 use Net::SMTP;
 
-our $VERSION = 2.014;
+our $VERSION = 2.015;
 
 =head1 NAME
 
@@ -41,11 +41,11 @@ L<Mail::Reporter> (MR), L<Mail::Transport> (MT).
 
 The general methods for C<Mail::Transport::SMTP> objects:
 
-      contactServer                     MR reportAll [LEVEL]
+      contactAnyServer                  MR reportAll [LEVEL]
    MR errors                            MT send MESSAGE, OPTIONS
    MR log [LEVEL [,STRINGS]]            MR trace [LEVEL]
-      new OPTIONS                       MT trySend MESSAGE, OPTIONS
-   MR report [LEVEL]                    MR warnings
+      new OPTIONS                          tryConnectTo HOST, OPTIONS
+   MR report [LEVEL]                    MT trySend MESSAGE, OPTIONS
 
 The extra methods for extension writers:
 
@@ -141,7 +141,7 @@ sub init($)
 
 sub trySend($)
 {   my ($self, $message) = @_;
-    my $server = $self->contactServer or return 0;
+    my $server = $self->contactAnyServer or return 0;
 
     my $from   = $message->from;
     $server->mail($message->from->address);
@@ -170,30 +170,40 @@ sub trySend($)
 
 #------------------------------------------
 
-=item contactServer
+=item contactAnyServer
 
-Creates the connect to the SMTP server.  When more than one hostname
+Creates the connection to the SMTP server.  When more than one hostname
 was specified, the first which accepts a connection is taken.  An
 C<IO::Server::INET> object is returned.
 
 =cut
 
-sub contactServer()
+sub contactAnyServer()
 {   my $self = shift;
 
     foreach my $host (@{$self->{MTS_hosts}})
-    {   my $server = Net::SMTP->new
-         ( $host
-         , %{$self->{MTS_net_smtp_opts}}
-         );
-
-        next unless defined $server;
+    {   my $server = $self->tryConnectTo($host, %{$self->{MTS_net_smtp_opts}} )
+            or next;
 
         $self->log(PROGRESS => "Opened SMTP connection to $host.\n");
         return $server;
     }
 
     undef;
+}
+
+#------------------------------------------
+
+=item tryConnectTo HOST, OPTIONS
+
+Try to establish a connection to deliver SMTP to the specified HOST.  The
+OPTIONS are passed to the C<new> method of L<Net::SMTP>.
+
+=cut
+
+sub tryConnectTo($@)
+{   my ($self, $host) = (shift, shift);
+    Net::SMTP->new($host, @_);
 }
 
 #------------------------------------------
@@ -214,7 +224,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.014.
+This code is beta, version 2.015.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

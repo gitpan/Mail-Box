@@ -8,7 +8,7 @@ use Mail::Message::Field;
 use Mail::Message::Body::Lines;
 use Mail::Message::Body::File;
 
-our $VERSION = 2.014;
+our $VERSION = 2.015;
 
 use overload bool  => sub {1}   # $body->print if $body
            , '""'  => 'string'
@@ -108,6 +108,11 @@ The message body contains a set of sub-messages (which can contain
 multipart bodies themselves).  Each sub-message is an instance
 of C<Mail::Message::Part>, which is an extension of C<Mail::Message>.
 
+=item * C<Mail::Message::Body::Nested>
+
+Nested messages, like C<message/rfc822>: they contain a message in
+the body.  For most code, they simply behave like multiparts.
+
 =item * C<Mail::Message::Body::InFolder>
 
 NOT IMPLEMENTED YET.
@@ -151,7 +156,8 @@ The general methods for C<Mail::Message::Body> objects:
  MMBE isBinary                        MMBC stripSignature OPTIONS
       isDelayed                         MR trace [LEVEL]
       isMultipart                          transferEncoding [STRING|FI...
- MMBE isText                               type
+      isNested                             type
+ MMBE isText                            MR warnings
 
 The extra methods for extension writers:
 
@@ -344,7 +350,7 @@ sub init($)
         else
         {   croak "Illegal datatype for data option." }
     }
-    elsif(! $self->isMultipart)
+    elsif(! $self->isMultipart && ! $self->isNested)
     {   # Neither 'file' nor 'data', so empty body.
         $self->_data_from_lines( [] ) or return;
     }
@@ -739,11 +745,23 @@ sub isDelayed() {0}
 
 =item isMultipart
 
-Returns whether this message-body consists of multiple parts.
+Returns whether this message-body contains parts which are messages
+by themselves.
 
 =cut
 
 sub isMultipart() {0}
+
+#------------------------------------------
+
+=item isNested
+
+Only true for a message body which contains exactly one sub-message:
+the C<::Nested> body type.
+
+=cut
+
+sub isNested() {0}
 
 #------------------------------------------
 
@@ -795,7 +813,10 @@ sub AUTOLOAD(@)
     else                { require Mail::Message::Body::Construct }
 
     no strict 'refs';
-    $self->can($call) ? $self->$call(@_) : $self->SUPER::AUTOLOAD->$call(@_);
+    return $self->$call(@_) if $self->can($call);  # now loaded
+
+    # Try parental AUTOLOAD
+    Mail::Reporter->$call(@_);
 }   
 
 #------------------------------------------
@@ -902,7 +923,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.014.
+This code is beta, version 2.015.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

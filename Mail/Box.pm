@@ -9,7 +9,7 @@ use Mail::Box::Message;
 use Mail::Box::Locker;
 use File::Spec;
 
-our $VERSION = 2.014;
+our $VERSION = 2.015;
 
 use Carp;
 use Scalar::Util 'weaken';
@@ -790,20 +790,23 @@ sub messageId($;$)
         return;
     }
 
-    if(my $double = $self->{MB_msgid}{$msgid})
+    my $double = $self->{MB_msgid}{$msgid};
+    if(defined $double && !$self->{MB_keep_dups})
     {   my $head1 = $message->head;
         my $head2 = $double->head;
 
-        if(   $head1->get('subject') eq $head2->get('subject')
-           && $head1->get('to')      eq $head2->get('to')
-          )
-        {   # Auto-delete doubles.
-            return $message->delete unless $self->{MB_keep_dups};
-        }
-        else
-        {   $self->log(WARNING => "Different message with id $msgid.");
-            $msgid = $message->takeMessageId(undef);
-        }
+        my $subj1 = $head1->get('subject') || '';
+        my $subj2 = $head2->get('subject') || '';
+
+        my $to1   = $head1->get('to') || '';
+        my $to2   = $head2->get('to') || '';
+
+        # Auto-delete doubles.
+        return $message->delete
+            if $subj1 eq $subj2 && $to1 eq $to2;
+
+        $self->log(NOTICE => "Different message with id $msgid.");
+        $msgid = $message->takeMessageId(undef);
     }
 
     $self->{MB_msgid}{$msgid} = $message;
@@ -1722,7 +1725,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.014.
+This code is beta, version 2.015.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -49,6 +49,7 @@ Parsing in Perl        Mail::Box::Parser::Perl
    21p6bodyf.t         read body from folder file into separate file
    21p7bodym.t         read body for multipart messages
    21p8read.t          test Mail::Message::read
+   21p9rfc.t           complex multiparts and message/rfc822
 
 Transfer encodings     Mail::Message::TransfEnc*
    30base64.t          base64 transfer encoding

@@ -7,7 +7,7 @@ use base 'Mail::Message::Body';
 use Mail::Message::Body::Lines;
 use Mail::Message::Part;
 
-our $VERSION = 2.014;
+our $VERSION = 2.015;
 
 use Carp;
 
@@ -68,7 +68,8 @@ The general methods for C<Mail::Message::Body::Multipart> objects:
  MMBE isBinary                             stripSignature OPTIONS
   MMB isDelayed                         MR trace [LEVEL]
   MMB isMultipart                      MMB transferEncoding [STRING|FI...
- MMBE isText                           MMB type
+  MMB isNested                         MMB type
+ MMBE isText                            MR warnings
 
 The extra methods for extension writers:
 
@@ -196,7 +197,7 @@ sub init($)
 
 sub isMultipart() {1}
 
-# A multipart body is never binary itself.  The parts me be.
+# A multipart body is never binary itself.  The parts may be.
 sub isBinary() {0}
 
 #------------------------------------------
@@ -354,9 +355,11 @@ sub print(;$)
     }
 
     my @parts    = $self->parts;
-    while(@parts)
-    {   $out->print("--$boundary\n");
-        shift(@parts)->print($out);
+    foreach my $part (@parts)
+    {   next if $part->deleted;
+
+        $out->print("--$boundary\n");
+        $part->print($out);
         $out->print("\n");
     }
 
@@ -592,7 +595,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.014.
+This code is beta, version 2.015.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -18,7 +18,7 @@ WriteMakefile
     , Scalar::Util   => 1.06
     , Object::Realize::Later => 0.07
     , Mail::Address  => 0.0
-    , MIME::Types    => 0.16
+    , MIME::Types    => 1.001
     , Sys::Hostname  => 0.0
 
 # Optional

@@ -6,12 +6,15 @@ use base 'Mail::Reporter';
 
 use Mail::Message::Part;
 use Mail::Message::Head::Complete;
+
 use Mail::Message::Body::Lines;
+use Mail::Message::Body::Multipart;
+use Mail::Message::Body::Nested;
 
 use Carp;
 use IO::ScalarArray;
 
-our $VERSION = 2.014;
+our $VERSION = 2.015;
 
 =head1 NAME
 
@@ -66,19 +69,21 @@ The general methods for C<Mail::Message> objects:
       date                                 parent
       decoded OPTIONS                      parts
       destinations                         print [FILEHANDLE]
-      encode OPTIONS                   MMC read FILEHANDLE|SCALAR|REF-...
-   MR errors                           MMC reply OPTIONS
+      encode OPTIONS                   MMC printStructure [INDENT]
+   MR errors                           MMC read FILEHANDLE|SCALAR|REF-...
+  MMC file                             MMC reply OPTIONS
   MMC forward OPTIONS                  MMC replyPrelude [STRING|FIELD|...
   MMC forwardPostlude                  MMC replySubject STRING
   MMC forwardPrelude                    MR report [LEVEL]
   MMC forwardSubject STRING             MR reportAll [LEVEL]
       from                                 send [MAILER], OPTIONS
       get FIELD                            size
-      guessTimestamp                       subject
-      isDummy                              timestamp
-      isMultipart                          to
-      isPart                               toplevel
-      label LABEL [,VALUE [LABEL,...    MR trace [LEVEL]
+      guessTimestamp                   MMC string
+      isDummy                              subject
+      isMultipart                          timestamp
+      isPart                               to
+      label LABEL [,VALUE [LABEL,...       toplevel
+  MMC lines                             MR trace [LEVEL]
 
 The extra methods for extension writers:
 
@@ -600,7 +605,10 @@ with all the parts is returned.
 
 sub parts()
 {   my $self = shift;
-    $self->isMultipart ? $self->body->parts : $self;
+
+      $self->isMultipart ? $self->body->parts
+    : $self->isNested    ? $self->nested
+    :                      $self;
 }
 
 #------------------------------------------
@@ -843,6 +851,7 @@ The PARSER is the access to the folder's file.
 
 sub readHead($;$)
 {   my ($self, $parser) = (shift, shift);
+
     my $headtype = shift
       || $self->{MM_head_type}
       || 'Mail::Message::Head::Complete';
@@ -872,13 +881,27 @@ argument.
 
 =cut
 
+my $mpbody = 'Mail::Message::Body::Multipart';
+my $nbody  = 'Mail::Message::Body::Nested';
+my $lbody  = 'Mail::Message::Body::Lines';
+
 sub readBody($$;$)
 {   my ($self, $parser, $head, $getbodytype) = @_;
 
     my $bodytype
-      = ! $getbodytype   ? ($self->{MM_body_type}||'Mail::Message::Body::Lines')
+      = ! $getbodytype   ? ($self->{MM_body_type} || $lbody)
       : ref $getbodytype ? $getbodytype->($self, $head)
       :                    $getbodytype;
+
+    # Overrule short-comings of some 'getbodytype' specs
+
+    my $ct   = $head->get('Content-Type');
+    my $type = defined $ct ? lc $ct->body : 'text/plain';
+
+    if(substr($type, 0, 10) eq 'multipart/')
+    {   $bodytype = $mpbody unless $bodytype->isa($mpbody) }
+    elsif($type eq 'message/rfc822')
+    {   $bodytype = $nbody unless $bodytype->isa($nbody) }
 
     my $lines   = $head->get('Lines');
     my $size    = $head->guessBodySize;
@@ -901,7 +924,7 @@ sub readBody($$;$)
     $body->read
       ( $parser, $head, $getbodytype,
       , $size, (defined $lines ? int $lines->body : undef)
-      );
+      ) or return;
 }
 
 #------------------------------------------
@@ -1072,17 +1095,15 @@ Angles (if present) are removed from the id.
 
 sub takeMessageId(;$)
 {   my $self  = shift;
-    my $msgid = @_ ? shift : $self->get('Message-ID');
+    my $msgid = @_ ? shift : ($self->get('Message-ID') || '');
 
-    return $self->{MM_message_id} = $self->head->createMessageId
-        unless defined $msgid;
-    
     if($msgid =~ m/\<([^>]*)\>/s)
     {   $msgid = $1;
         $msgid =~ s/\s//gs;
     }
-
-    $self->{MM_message_id} = $msgid;
+ 
+    $self->{MM_message_id} =
+      (length $msgid ? $msgid : $self->head->createMessageId);
 }
 
 #------------------------------------------
@@ -1286,7 +1307,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.014.
+This code is beta, version 2.015.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -5,7 +5,7 @@ use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
 
-our $VERSION = 2.014;
+our $VERSION = 2.015;
 
 use Carp;
 use File::Copy;
@@ -339,9 +339,15 @@ sub foundIn($@)
 sub readMessageFilenames
 {   my ($self, $dirname) = @_;
 
+    # Collect all files which start with a timestamp.  Ignore filenames
+    # which end with '.new', because they are being created on this moment.
+
     opendir DIR, $dirname or return ();
-    my @files = grep { m/^\d/ && -f File::Spec->catfile($dirname, $_) }
-        readdir DIR;
+
+    my @files
+      = grep { /^\d/ && !/\.new$/ && -f File::Spec->catfile($dirname, $_) }
+           readdir DIR;
+
     closedir DIR;
 
     # Sort the names.  Solve the Y2K (actually the 1 billion seconds
@@ -606,7 +612,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.014.
+This code is beta, version 2.015.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

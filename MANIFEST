@@ -23,7 +23,6 @@ Mail/Box/MH/Index.pm
 Mail/Box/MH/Labels.pm
 Mail/Box/Dir.pm
 Mail/Box/Dir/Message.pm
-Mail/Box/Parser/C.pm
 Mail/Box/Parser/Perl.pm
 Mail/Box/Parser.pm
 Mail/Box/Search.pm
@@ -39,6 +38,7 @@ Mail/Message/Body/Delayed.pm
 Mail/Message/Body/File.pm
 Mail/Message/Body/Lines.pm
 Mail/Message/Body/Multipart.pm
+Mail/Message/Body/Nested.pm
 Mail/Message/Body/String.pm
 Mail/Message/Body/Construct.pm
 Mail/Message/Body/Encode.pm
@@ -98,14 +98,6 @@ t/13body0s.t
 t/13body1l.t
 t/13body2f.t
 t/13body3m.t
-t/20c0avail.t
-t/20c1field.t
-t/20c2head.t
-t/20c3bodys.t
-t/20c4bodyl.t
-t/20c5bodyd.t
-t/20c6bodyf.t
-t/20c7bodym.t
 t/21p1field.t
 t/21p2head.t
 t/21p3bodys.t
@@ -114,6 +106,7 @@ t/21p5bodyd.t
 t/21p6bodyf.t
 t/21p7bodym.t
 t/21p8read.t
+t/21p9rfc.t
 t/30base64.t
 t/30eight.t
 t/30quoted.t
