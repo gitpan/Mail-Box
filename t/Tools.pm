@@ -136,6 +136,7 @@ sub unpack_mbox2maildir($$)
     mkdir $dir or die;
     mkdir File::Spec->catfile($dir, 'cur') or die;
     mkdir File::Spec->catfile($dir, 'new') or die;
+    mkdir File::Spec->catfile($dir, 'tmp') or die;
     my $msgnr = 0;
 
     open FILE, $file or die;

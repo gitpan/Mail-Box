@@ -8,7 +8,7 @@ use Mail::Message::Field;
 use List::Util 'sum';
 use FileHandle;
 
-our $VERSION = 2.012;
+our $VERSION = 2.013;
 
 =head1 NAME
 
@@ -384,8 +384,6 @@ sub bodyAsString(;$$)
     }
 
     my $lines = $self->_read_stripped_lines($exp_chars, $exp_lines);
-    return () unless @$lines;
-
     return ($begin, $file->tell, join('', @$lines));
 }
 
@@ -398,7 +396,7 @@ sub bodyAsList(;$$)
     my $begin = $file->tell;
 
     my $lines = $self->_read_stripped_lines($exp_chars, $exp_lines);
-    @$lines ? ($begin, $file->tell, @$lines) : ();
+    ($begin, $file->tell, @$lines);
 }
 
 #------------------------------------------
@@ -409,7 +407,6 @@ sub bodyAsFile($;$$)
     my $begin = $file->tell;
 
     my $lines = $self->_read_stripped_lines($exp_chars, $exp_lines);
-    return () unless @$lines;
 
     $out->print($_) foreach @$lines;
     ($begin, $file->tell, scalar @$lines);
@@ -432,8 +429,6 @@ sub bodyDelayed(;$$)
     }
 
     my $lines = $self->_read_stripped_lines($exp_chars, $exp_lines);
-    return () unless @$lines;
-
     my $chars = sum(map {length} @$lines);
     ($begin, $file->tell, $chars, scalar @$lines);
 }
@@ -444,6 +439,8 @@ sub bodyDelayed(;$$)
 
 L<Mail::Box-Overview>
 
+For support and additional documentation, see http://perl.overmeer.net/mailbox/
+
 =head1 AUTHOR
 
 Mark Overmeer (F<mailbox@overmeer.net>).
@@ -452,9 +449,9 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.012.
+This code is beta, version 2.013.
 
-Copyright (c) 2001 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 

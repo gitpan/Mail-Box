@@ -1,12 +1,12 @@
 
-use strict;
-use warnings;
 
 package Mail::Box::Maildir::Message;
 use base 'Mail::Box::Dir::Message';
 
+use strict;
 use File::Copy;
 use Carp;
+use warnings;
 
 =head1 NAME
 
@@ -96,7 +96,7 @@ Messages in directory-based folders use the following options:
  OPTION      DESCRIBED IN            DEFAULT
  body        Mail::Message           undef
  deleted     Mail::Box::Message      0
- filename    Mail::Box::Maildir::Message  undef
+ filename    Mail::Box::Dir::Message undef
  folder      Mail::Box::Message      <required>
  head        Mail::Message           undef
  head_wrap   Mail::Message           undef
@@ -114,16 +114,8 @@ Only for extension writers:
  field_type  Mail::Message           undef
  head_type   Mail::Message           'Mail::Message::Head::Complete'
 
-=over 4
-
-=item * filename =E<gt> FILENAME
-
-The file where the message is stored in on the moment.  For maildir
-messages, this name can change all the time.
-
-=back
-
 =cut
+
 
 #-------------------------------------------
 
@@ -138,15 +130,17 @@ within in the message object as well.
 =cut
 
 sub filename(;$)
-{   my $self = shift;
-    my $old  = $self->SUPER::filename;
-    return $old unless @_;
+{   my $self    = shift;
+    my $oldname = $self->SUPER::filename;
+    return $oldname unless @_;
 
-    my $new  = shift;
-    return $new if defined $old && $old eq $new;
+    my $newname = shift;
+    return $newname if defined $oldname && $oldname eq $newname;
 
-    my ($id, $semantics, $flags) =
-        $new =~ m!(.*?)(?:\:([12])\,([A-Z]*))! ? ($1, $2, $3) : ($new, '','');
+    my ($id, $semantics, $flags)
+     = $newname =~ m!(.*?)(?:\:([12])\,([A-Z]*))!
+     ? ($1, $2, $3)
+     : ($newname, '','');
 
     my %flags;
     $flags{$_}++ foreach split //, $flags;
@@ -160,12 +154,12 @@ sub filename(;$)
 
     $self->SUPER::deleted($flags{T} || 0);
 
-    if(defined $old)
-    {   move $old, $new
-           or confess "Cannot move $old to $new: $!";
+    if(defined $oldname)
+    {   move $oldname, $newname
+           or confess "Cannot move $oldname to $newname: $!";
     }
 
-    $self->SUPER::filename($new);
+    $self->SUPER::filename($newname);
 }
 
 #-------------------------------------------
@@ -207,23 +201,23 @@ sub clone()
 {   my $self     = shift;
     my $clone    = $self->SUPER::clone();
     my $filename = $self->SUPER::filename;
+
     my $clonename;
+    if($filename =~ m!(.*?)/(?:cur|tmp|new)/(.*?)\.(\d*)(\:[^:]*)?$! )
+         { $clonename = "$1/tmp/$2.". ($3+1). ($4 || '') }
+    else { confess "Not a Maildir message file: $filename\n" }
 
-    if(my ($b,$nr, $f) = $filename =~ m/(.*?)(\d*)(\:[^:]*)$/)
-         {$clonename = $b.++$nr.$f }
-    else {$clonename = ++$filename}
-
-    $clone->SUPER::filename($clonename);
-    $clone->labelsToFilename;
-
-    my $clonefn = $clone->filename;
-    unless(open OUT, '>', $clonefn)
-    {   carp "Cannot create $clonefn: $!";
+    # Maildir is stateless, so all message (even detached clones)
+    # must appear on disk.
+    unless(open OUT, '>', $clonename)
+    {   warn "Cannot create $clonename: $!";
         return undef;
     }
     $clone->print(\*OUT);
     close OUT;
 
+    $clone->SUPER::filename($clonename);
+    $clone->labelsToFilename;
     $clone;
 }
 
@@ -242,7 +236,9 @@ sub labelsToFilename()
     my $old    = $self->filename;
 confess unless $old;
 
-    my ($folderdir, $oldname) = $old =~ m!(.*)/(?:new|cur)/([^:]*)(\:[^:]*)?$!;
+    my ($folderdir, $set, $oldname)
+      = $old =~ m!(.*)/(new|cur|tmp)/([^:]*)(\:[^:]*)?$!;
+
     my $newflags
       = ($labels->{draft}      ? 'D' : '')    # flags must be alphabetic
       . ($labels->{flagged}    ? 'F' : '')
@@ -250,7 +246,7 @@ confess unless $old;
       . ($labels->{seen}       ? 'S' : '')
       . ($self->SUPER::deleted ? 'T' : '');
 
-    my $new = File::Spec->catfile($folderdir, cur => "$oldname:2,$newflags");
+    my $new = File::Spec->catfile($folderdir, $set, "$oldname:2,$newflags");
 
     if($new ne $old)
     {   unless(move $old, $new)
@@ -291,6 +287,8 @@ sub guessTimestamp()
 
 L<Mail::Box-Overview>
 
+For support and additional documentation, see http://perl.overmeer.net/mailbox/
+
 =head1 AUTHOR
 
 Mark Overmeer (F<mailbox@overmeer.net>).
@@ -299,9 +297,9 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.012.
+This code is beta, version 2.013.
 
-Copyright (c) 2001 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 

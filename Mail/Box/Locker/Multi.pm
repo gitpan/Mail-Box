@@ -70,9 +70,9 @@ sub name() {'MULTI'}
  file           Mail::Box::Locker          undef
  log            Mail::Reporter             'WARNINGS'
  method         Mail::Box::Locker          <not used>
- timeout        Mail::Box::Locker          1 hour
+ expires        Mail::Box::Locker          1 hour
  trace          Mail::Reporter             'WARNINGS'
- wait           Mail::Box::Locker          10 seconds
+ timeout        Mail::Box::Locker          10 seconds
  use            Mail::Box::Locker::Multi   [ 'NFS', 'POSIX', 'Flock' ]
 
 =over 4
@@ -98,7 +98,7 @@ sub init($)
         {   Mail::Box::Locker->new
               ( %$args
               , method  => $method
-              , wait    => 1
+              , timeout => 1
               )
         };
         next unless defined $locker;
@@ -159,11 +159,13 @@ sub lock()
     return 1 if $self->hasLock;
 
     my $end   = $self->{MBL_timeout} eq 'NOTIMEOUT' ? -1 : $self->{MBL_timeout};
-    my $timer = 0;
 
-    while($timer < $end)
-    {   return $self->{MBL_has_lock} = 1 if $self->_try_lock;
-        $timer++;
+    while(1)
+    {   return $self->{MBL_has_lock} = 1
+            if $self->_try_lock;
+
+        last unless --$end;
+        sleep 1;
     }
 
     return 0;
@@ -186,6 +188,8 @@ sub isLocked()
 
 L<Mail::Box-Overview>
 
+For support and additional documentation, see http://perl.overmeer.net/mailbox/
+
 =head1 AUTHOR
 
 Mark Overmeer (F<mailbox@overmeer.net>).
@@ -194,9 +198,9 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.012.
+This code is beta, version 2.013.
 
-Copyright (c) 2001 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 

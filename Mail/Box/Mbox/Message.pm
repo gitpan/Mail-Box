@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Mbox::Message;
 use base 'Mail::Box::Message';
 
-our $VERSION = 2.012;
+our $VERSION = 2.013;
 
 use POSIX 'SEEK_SET';
 use Carp;
@@ -214,7 +214,7 @@ sub readFromParser($)
     $self->{MBMM_from_line} = $fromline;
     $self->{MBMM_begin}     = $start;
 
-    $self->SUPER::readFromParser($parser);
+    $self->SUPER::readFromParser($parser) or return;
 
     $self->{MBMM_parser}    = $parser
         if $self->isDelayed;
@@ -319,6 +319,8 @@ sub moveLocation($)
 
 L<Mail::Box-Overview>
 
+For support and additional documentation, see http://perl.overmeer.net/mailbox/
+
 =head1 AUTHOR
 
 Mark Overmeer (F<mailbox@overmeer.net>).
@@ -327,9 +329,9 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.012.
+This code is beta, version 2.013.
 
-Copyright (c) 2001 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 

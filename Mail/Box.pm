@@ -9,7 +9,7 @@ use Mail::Box::Message;
 use Mail::Box::Locker;
 use File::Spec;
 
-our $VERSION = 2.012;
+our $VERSION = 2.013;
 
 use Carp;
 use Scalar::Util 'weaken';
@@ -115,7 +115,6 @@ L<Mail::Reporter> (MR).
 
 The general methods for C<Mail::Box> objects:
 
-      AUTOLOAD                          MR log [LEVEL [,STRINGS]]
       addMessage  MESSAGE                  message INDEX [,MESSAGE]
       addMessages MESSAGE [, MESS...       messageId MESSAGE-ID [,MESS...
       allMessageIds                        messages
@@ -127,6 +126,7 @@ The general methods for C<Mail::Box> objects:
       find MESSAGE-ID                   MR reportAll [LEVEL]
       listSubFolders OPTIONS            MR trace [LEVEL]
       locker                            MR warnings
+   MR log [LEVEL [,STRINGS]]               writeable
 
 The extra methods for extension writers:
 
@@ -1713,6 +1713,8 @@ sub DESTROY
 
 L<Mail::Box-Overview>
 
+For support and additional documentation, see http://perl.overmeer.net/mailbox/
+
 =head1 AUTHOR
 
 Mark Overmeer (F<mailbox@overmeer.net>).
@@ -1721,9 +1723,9 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.012.
+This code is beta, version 2.013.
 
-Copyright (c) 2001 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 

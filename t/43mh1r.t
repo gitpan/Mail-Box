@@ -189,4 +189,7 @@ ok(not $mistake);
 ok($parsed == 7);
 ok($heads == 9);
 
+# No clean-dir: see how it behaves when the folder is not explictly
+# closed before the program terminates.  Terrible things can happen
+# during auto-cleanup
 #clean_dir $mhsrc;

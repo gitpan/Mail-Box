@@ -3,7 +3,7 @@ use strict;
 package Mail::Box::Dir;
 
 use base 'Mail::Box';
-our $VERSION = 2.012;
+our $VERSION = 2.013;
 
 use Mail::Box::Dir::Message;
 
@@ -57,19 +57,18 @@ L<Mail::Box> (MB), L<Mail::Reporter> (MR).
 
 The general methods for C<Mail::Box::Dir> objects:
 
-   MB AUTOLOAD                          MR log [LEVEL [,STRINGS]]
-   MB addMessage  MESSAGE               MB message INDEX [,MESSAGE]
-   MB addMessages MESSAGE [, MESS...    MB messageId MESSAGE-ID [,MESS...
-   MB allMessageIds                     MB messages
-   MB close OPTIONS                     MB modified [BOOLEAN]
-   MB create FOLDERNAME [, OPTIONS]     MB name
-   MB current [NUMBER|MESSAGE|MES...       new OPTIONS
-   MB delete                            MB openSubFolder NAME [,OPTIONS]
-      directory                         MR report [LEVEL]
-   MR errors                            MR reportAll [LEVEL]
-   MB find MESSAGE-ID                   MR trace [LEVEL]
-   MB listSubFolders OPTIONS            MR warnings
-   MB locker                            MB writeable
+   MB addMessage  MESSAGE               MR log [LEVEL [,STRINGS]]
+   MB addMessages MESSAGE [, MESS...    MB message INDEX [,MESSAGE]
+   MB allMessageIds                     MB messageId MESSAGE-ID [,MESS...
+   MB close OPTIONS                     MB messages
+   MB create FOLDERNAME [, OPTIONS]     MB modified [BOOLEAN]
+   MB current [NUMBER|MESSAGE|MES...    MB name
+   MB delete                               new OPTIONS
+      directory                         MB openSubFolder NAME [,OPTIONS]
+   MR errors                            MR report [LEVEL]
+   MB find MESSAGE-ID                   MR reportAll [LEVEL]
+   MB listSubFolders OPTIONS            MR trace [LEVEL]
+   MB locker                            MR warnings
 
 The extra methods for extension writers:
 
@@ -124,7 +123,7 @@ Only useful to write extension to C<Mail::Box::Dir>.  Common users of
 folders you will not specify these:
 
  OPTION            DEFINED BY         DEFAULT
- body_type         Mail::Box::Dir     <see below>
+ body_type         Mail::Box::Dir     'Mail::Message::Body::Lines'
  body_delayed_type Mail::Box          'Mail::Message::Body::Delayed'
  coerce_options    Mail::Box          []
  field_type        Mail::Box          undef
@@ -136,25 +135,13 @@ folders you will not specify these:
  message_type      Mail::Box          'Mail::Box::Dir::Message'
  realhead_type     Mail::Box          'Mail::Message::Head'
 
-MH specific options:
-
-The C<body_type> options for MH folders defaults to:
-
- sub determine_body_type($$) {
-    my $head = shift;
-    my $size = shift || 0;
-    'Mail::Message::Body::' . ($size > 10000 ? 'File' : 'Lines');
- }
-
-which will cause messages larger than 10kB to be stored in files, and
-smaller files in memory.
-
 =cut
 
 sub init($)
 {   my ($self, $args)    = @_;
 
     $args->{folderdir} ||= $args->{folderdir};
+    $args->{body_type} ||= sub {'Mail::Message::Body::Lines'};
 
     $self->SUPER::init($args);
 
@@ -292,6 +279,8 @@ sub readAllHeaders()
 
 L<Mail::Box-Overview>
 
+For support and additional documentation, see http://perl.overmeer.net/mailbox/
+
 =head1 AUTHOR
 
 Mark Overmeer (F<mailbox@overmeer.net>).
@@ -300,9 +289,9 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.012.
+This code is beta, version 2.013.
 
-Copyright (c) 2001 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 

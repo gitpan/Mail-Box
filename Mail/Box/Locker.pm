@@ -4,7 +4,7 @@ use strict;
 package Mail::Box::Locker;
 use base 'Mail::Reporter';
 
-our $VERSION = 2.012;
+our $VERSION = 2.013;
 
 use Carp;
 use File::Spec;
@@ -87,9 +87,9 @@ options given to the folder class.
  file           Mail::Box::Locker          undef
  log            Mail::Reporter             'WARNINGS'
  method         Mail::Box::Locker          'DOTLOCK'
- timeout        Mail::Box::Locker          1 hour
+ expires        Mail::Box::Locker          1 hour
  trace          Mail::Reporter             'WARNINGS'
- wait           Mail::Box::Locker          10 seconds
+ timeout        Mail::Box::Locker          10 seconds
 
 =over 4
 
@@ -147,13 +147,13 @@ class with this parameter:
    my $locker = Mail::Box::Locker::MyOwn->new;
    $folder->open(lock_method => $locker);
 
-=item * timeout =E<gt> SECONDS
+=item * expires =E<gt> SECONDS
 
 How long can a lock exist?  If a different e-mail program leaves a stale
 lock, then this lock will be removed automatically after the specified
 number of seconds.
 
-=item * wait =E<gt> SECONDS|'NOTIMEOUT'
+=item * timeout =E<gt> SECONDS|'NOTIMEOUT'
 
 How long to wait while trying to acquire the lock. The lock request will
 fail when the specified number of seconds is reached.  If 'NOTIMEOUT' is
@@ -210,8 +210,8 @@ sub init($)
     $self->{MBL_folder}   = $args->{folder};
     weaken($self->{MBL_folder});
 
-    $self->{MBL_timeout}  = $args->{timeout}   || 3600;
-    $self->{MBL_wait}     = $args->{wait}      || 10;
+    $self->{MBL_expires}  = $args->{expires}   || 3600;  # one hour
+    $self->{MBL_timeout}  = $args->{timeout}   || 10;    # ten secs
     $self->{MBL_filename} = $args->{file};
     $self->{MBL_has_lock} = 0;
 
@@ -364,6 +364,8 @@ sub DESTROY()
 
 L<Mail::Box-Overview>
 
+For support and additional documentation, see http://perl.overmeer.net/mailbox/
+
 =head1 AUTHOR
 
 Mark Overmeer (F<mailbox@overmeer.net>).
@@ -372,9 +374,9 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.012.
+This code is beta, version 2.013.
 
-Copyright (c) 2001 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 

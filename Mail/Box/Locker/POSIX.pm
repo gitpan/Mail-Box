@@ -88,10 +88,9 @@ sub lock()
         return 0;
     }
 
-    my $end    = $self->{MBL_timeout} eq 'NOTIMEOUT' ? 0 : $self->{MBL_timeout};
-    my $timer  = 0;
+    my $end = $self->{MBL_timeout} eq 'NOTIMEOUT' ? -1 : $self->{MBL_timeout};
 
-    while($timer != $end)
+    while(1)
     {   if($self->_try_lock($file))
         {   $self->{MBL_has_lock}    = 1;
             $self->{MBLF_filehandle} = $file;
@@ -101,11 +100,11 @@ sub lock()
         if($? != EAGAIN)
         {   $self->log(ERROR =>
                   "Will never get a lock at ".$self->{MBL_folder}->name.": $!");
-            return 0;
+            last;
         }
 
+        last unless --$end;
         sleep 1;
-        $timer++;
     }
 
     return 0;
@@ -147,6 +146,8 @@ sub unlock()
 
 L<Mail::Box-Overview>
 
+For support and additional documentation, see http://perl.overmeer.net/mailbox/
+
 =head1 AUTHOR
 
 Mark Overmeer (F<mailbox@overmeer.net>).
@@ -155,9 +156,9 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.012.
+This code is beta, version 2.013.
 
-Copyright (c) 2001 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 

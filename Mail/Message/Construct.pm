@@ -5,7 +5,7 @@ use strict;
 
 package Mail::Message;
 
-our $VERSION = 2.012;
+our $VERSION = 2.013;
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -251,11 +251,12 @@ To overrule use
 
 =item * To =E<gt> ADDRESSES
 
-The destination of your message, by default taken from the C<From> field
-of the source message.  The ADDRESSES may be specified as string, or
+The destination of your message, by default taken from the C<Reply-To>
+field in the source message.  If that field is not present, the C<From> field
+is taken.  The ADDRESSES may be specified as string, or
 a C<Mail::Address> object, or as array of C<Mail::Address> objects.
 
-=item * From =E<gt> ADDRESSES
+=item * From =E<gt> ADDRESSEj
 
 Your identification, by default taken from the C<To> field of the
 source message.
@@ -1153,6 +1154,8 @@ sub bounce(@)
 
 L<Mail::Box-Overview>
 
+For support and additional documentation, see http://perl.overmeer.net/mailbox/
+
 =head1 AUTHOR
 
 Mark Overmeer (F<mailbox@overmeer.net>).
@@ -1161,9 +1164,9 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.012.
+This code is beta, version 2.013.
 
-Copyright (c) 2001 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 

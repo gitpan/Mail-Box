@@ -8,7 +8,7 @@ use lib '.';
 
 my ($src, $dest) = @ARGV;
 my $verbose = 0;
-my $version = '2.012';
+my $version = '2.013';
 my $email   = 'mailbox@overmeer.net';
 
 require $src;
@@ -301,6 +301,8 @@ NEWINDEX
 =head1 SEE ALSO
 
 L<Mail::Box-Overview>
+
+For support and additional documentation, see http://perl.overmeer.net/mailbox/
 
 =head1 AUTHOR
 

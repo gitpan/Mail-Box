@@ -5,7 +5,7 @@ use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
 
-our $VERSION = 2.012;
+our $VERSION = 2.013;
 
 use Carp;
 use File::Copy;
@@ -44,20 +44,19 @@ L<Mail::Box> (MB), L<Mail::Reporter> (MR), L<Mail::Box::Dir> (MBD).
 
 The general methods for C<Mail::Box::Maildir> objects:
 
-   MB AUTOLOAD                          MB locker
-      addMessage MESSAGE                MR log [LEVEL [,STRINGS]]
-   MB addMessages MESSAGE [, MESS...    MB message INDEX [,MESSAGE]
-   MB allMessageIds                     MB messageId MESSAGE-ID [,MESS...
-   MB close OPTIONS                     MB messages
-   MB create FOLDERNAME [, OPTIONS]     MB modified [BOOLEAN]
-      createDirs FOLDERDIR              MB name
-   MB current [NUMBER|MESSAGE|MES...       new OPTIONS
-   MB delete                            MB openSubFolder NAME [,OPTIONS]
-  MBD directory                         MR report [LEVEL]
-   MR errors                            MR reportAll [LEVEL]
-   MB find MESSAGE-ID                   MR trace [LEVEL]
-      folderIsEmpty FOLDERDIR           MR warnings
-   MB listSubFolders OPTIONS            MB writeable
+   MB addMessage  MESSAGE               MB locker
+   MB addMessages MESSAGE [, MESS...    MR log [LEVEL [,STRINGS]]
+   MB allMessageIds                     MB message INDEX [,MESSAGE]
+   MB close OPTIONS                     MB messageId MESSAGE-ID [,MESS...
+   MB create FOLDERNAME [, OPTIONS]     MB messages
+      createDirs FOLDERDIR              MB modified [BOOLEAN]
+   MB current [NUMBER|MESSAGE|MES...    MB name
+   MB delete                               new OPTIONS
+  MBD directory                         MB openSubFolder NAME [,OPTIONS]
+   MR errors                            MR report [LEVEL]
+   MB find MESSAGE-ID                   MR reportAll [LEVEL]
+      folderIsEmpty FOLDERDIR           MR trace [LEVEL]
+   MB listSubFolders OPTIONS            MR warnings
 
 The extra methods for extension writers:
 
@@ -147,33 +146,28 @@ sub init($)
 
 #-------------------------------------------
 
-=item addMessage MESSAGE
-
-Add a message to this folder.  This requires it to be written into
-the right directory, because maildir is keeping the states in the
-filenames.
-
-=cut
-
 my $uniq = rand 1000;
 
 sub coerce($)
 {   my ($self, $message) = @_;
-    my $coerced  = $self->SUPER::coerce($message);
 
-    my $filename = $message->filename;
+    my $is_native = $message->isa('Mail::Box::Maildir::Message');
+    my $coerced   = $self->SUPER::coerce($message);
+
     my $basename
-     = $filename && $filename =~ m!(\d+\..+?\.\w+)(\:[12],[A-Z]*)?$!
-     ? $1
-     : $message->timestamp .'.'. hostname .'.'. $uniq++;
+      = $is_native
+      ? (split m!/!, $message->filename)[-1]
+      : $message->timestamp .'.'. hostname .'.'. $uniq++;
 
     my $dir = $self->directory;
     my $tmp = File::Spec->catfile($dir, tmp => $basename);
-    my $new = File::Spec->catfile($dir, cur => $basename);
+    my $new = File::Spec->catfile($dir, new => $basename);
 
-    if($message->create($tmp) && $message->create($new))
+    if($coerced->create($tmp) && $coerced->create($new))
          {$self->log(PROGRESS => "Added message in $new") }
     else {$self->log(ERROR    => "Cannot create $new") }
+
+    $coerced->labelsToFilename unless $is_native;
     $coerced;
 }
 
@@ -245,7 +239,7 @@ sub folderIsEmpty($)
 
         opendir DIR, $subdir or return 0;
         my $first  = readdir DIR;
-        closdir DIR;
+        closedir DIR;
 
         return 0 if defined $first;
     }
@@ -372,7 +366,7 @@ sub readMessages(@)
     # Read all accepted messages
     #
 
-    my $curdir  = File::Spec->catfile($directory, 'cur');
+    my $curdir  = File::Spec->catdir($directory, 'cur');
     my @cur     = $self->readMessageFilenames($curdir);
     my @log     = $self->logSettings;
 
@@ -463,7 +457,7 @@ sub writeMessages($)
     my @messages  = @{$args->{messages}};
 
     my $tmpdir    = File::Spec->catfile($directory, 'tmp');
-    croak "Cannot create directory $tmpdir: $!"
+    die "Cannot create directory $tmpdir: $!"
         unless -d $tmpdir || mkdir $tmpdir;
 
     foreach my $message (@messages)
@@ -519,26 +513,21 @@ sub appendMessages(@)
         unless -d $tmpdir || mkdir $tmpdir;
 
     foreach my $message (@messages)
-    {   my $basename = $message->timestamp . "." .hostname. "." .$uniq++;
-        my $tmpname  = File::Spec->catfile($directory, 'tmp', $basename);
-        my $tmp      = FileHandle->new($tmpname, 'w');
-warn "appending message in $tmpname";
-        unless($tmp)
-        {   $self->log(ERROR => "Unable to write message to $tmpname: $!\n");
-            next;
-        }
+    {   my $is_native = $message->isa('Mail::Box::Maildir::Message');
+        my $coerced   = $self->SUPER::coerce($message);
 
-        $message->print($tmp);
-        $tmp->close;
+        my $basename
+         = $is_native
+         ? (split m!/!, $message->filename)[-1]
+         : $message->timestamp .'.'. hostname .'.'. $uniq++;
 
-        my $newname = File::Spec->catfile($directory, 'new', $basename);
-        unless(move $tmpname, $newname)
-        {   $self->log(ERROR =>
-                "Unable to move message from $tmpname to $newname: $!\n");
-            next;
-        }
+       my $dir = $self->directory;
+       my $tmp = File::Spec->catfile($dir, tmp => $basename);
+       my $new = File::Spec->catfile($dir, new => $basename);
 
-        $message->filename($newname);
+       if($coerced->create($tmp) && $coerced->create($new))
+            {$self->log(PROGRESS => "Appended message in $new") }
+       else {$self->log(ERROR    => "Cannot append in $new") }
     }
  
     $self->close;
@@ -607,6 +596,8 @@ for some reason, the status header lines are updated as well.
 
 L<Mail::Box-Overview>
 
+For support and additional documentation, see http://perl.overmeer.net/mailbox/
+
 =head1 AUTHOR
 
 Mark Overmeer (F<mailbox@overmeer.net>).
@@ -615,9 +606,9 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.012.
+This code is beta, version 2.013.
 
-Copyright (c) 2001 Mark Overmeer. All rights reserved.
+Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 

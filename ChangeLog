@@ -7,10 +7,29 @@ Soon to be implemented
  updateMessages for Mail::Box::Mbox
  updateMessages for Mail::Box::MH
  demoting messages which stay when their folder closes.
- Mail::Box::Maildir is progressing but not ready yet.
+ Mail::Box::Maildir is progressing but not finished.
 
-Updates will take place more often.  A mailinglist will be started
-in May 2002.
+version 2.013:
+
+	Fixes:
+
+	- Create MH directories when asked to. [Greg Matheson] reported
+	  the problem.
+
+	- Mail::Box::Locker::new "timeout" and "wait" options where too
+	  confusing to be implemented correctly.  So they didn't work
+	  as described.  Now, they are called "expire" and "timeout".
+	  Thanks to [John B Batzel] for pointing-out the problems.
+
+	- Messages with empty bodies where not accepted at all.  This
+	  combined with a mistake in treating these errors in Mbox
+	  folders gave <undef>s when asked for a body.
+
+	Improvements:
+
+	- Maildir implementation runs all its tests.  Still there are
+	  some support functions lacking.  Reports are that sub-folders
+	  are to be implemented differently.
 
 version 2.012: Mon Apr 22 15:53:05 CEST 2002
 

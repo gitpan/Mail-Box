@@ -8,5 +8,5 @@ done
 
 for f in `grep '^Mail/.*\.pm$' MANIFEST`
 do  echo "$f: updating";
-    update_one_index $f $f.new && mv $f.new $f
+    ./update_one_index $f $f.new && mv $f.new $f
 done

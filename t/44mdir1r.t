@@ -16,10 +16,6 @@ use Tools;
 use File::Compare;
 use File::Copy;
 
-# under development
-BEGIN {plan tests => 0};
-__END__
-
 BEGIN {plan tests => 28}
 
 my $mdsrc = File::Spec->catfile('t', 'maildir.src');
@@ -178,8 +174,8 @@ foreach ($folder->messages)
 }
 
 ok(not $mistake);
-ok(not $parsed);
-ok(not $heads);
+ok($parsed==4);   # The new messages
+ok($heads==4);
 
 $folder->message($_)->head->get('subject')
     foreach 5..13;
@@ -194,7 +190,12 @@ foreach ($folder->messages)
 }
 
 ok(not $mistake);
-ok($parsed == 7);
-ok($heads == 9);
+ok($parsed == 11);
+ok($heads == 13);
 
-clean_dir $mdsrc;
+$folder->close;
+
+# No clean-dir: see how it behaves when the folder is not explictly
+# closed before the program terminates.  Terrible things can happen
+# during auto-cleanup
+#clean_dir $mdsrc;
