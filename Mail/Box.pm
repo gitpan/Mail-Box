@@ -9,7 +9,7 @@ use Mail::Box::Message;
 use Mail::Box::Locker;
 use File::Spec;
 
-our $VERSION = 2.011;
+our $VERSION = 2.012;
 
 use Carp;
 use Scalar::Util 'weaken';
@@ -47,7 +47,7 @@ Mail::Box - manage a message-folder.
  # Delete the third message
  $folder->message(3)->delete;
 
- # Get the number of undeleted messages in scalar context.
+ # Get the number of messages in scalar context.
  my $emails = $folder->messages;
 
  # Iterate over the messages.
@@ -344,7 +344,7 @@ messages, otherwise your parts (I<attachments>) will not be split-up.
 
 For instance:
 
- $mgr->open(body_type => \&which_body);
+ $mgr->open('InBox', body_type => \&which_body);
 
  sub which_body($) {
      my $head = shift;
@@ -456,9 +456,13 @@ sub init($)
     $self->{MB_init_options} = $args->{init_options};
     $self->{MB_coerce_opts}  = $args->{coerce_options}    || [];
     $self->{MB_access}       = $args->{access}            || 'r';
-    $self->{MB_remove_empty} = $args->{remove_when_empty} || 1;
+    $self->{MB_remove_empty}
+         = defined $args->{remove_when_empty} ? $args->{remove_when_empty} : 1;
+
+    $self->{MB_save_on_exit}
+         = defined $args->{save_on_exit} ? $args->{save_on_exit} : 1;
+
     $self->{MB_messages}     = [];
-    $self->{MB_save_on_exit} = $args->{save_on_exit}      || 1;
     $self->{MB_organization} = $args->{organization}      || 'FILE';
     $self->{MB_head_wrap}    = $args->{head_wrap} if defined $args->{head_wrap};
     $self->{MB_linesep}      = "\n";
@@ -1036,28 +1040,28 @@ sub listSubFolders(@) {shift->notImplemented}
 
 #-------------------------------------------
 
-=item AUTOLOAD
+#=item AUTOLOAD
 
-There are more mathods available for a C<Mail::Box>, which are
-supplied in C<Mail::Box::HTML>.  That package adds methods to
-general use for any C<Mail::Box> type and is autoloaded on
-demand.
+#There are more mathods available for a C<Mail::Box>, which are
+#supplied in C<Mail::Box::HTML>.  That package adds methods to
+#general use for any C<Mail::Box> type and is autoloaded on
+#demand.
+#
+#=cut
 
-=cut
+#sub AUTOLOAD(@)
+#{   my $self  = shift;
+#    our $AUTOLOAD;
+#    (my $call = $AUTOLOAD) =~ s/.*\:\://g;
+#    use Mail::Box::HTML;
 
-sub AUTOLOAD(@)
-{   my $self  = shift;
-    our $AUTOLOAD;
-    (my $call = $AUTOLOAD) =~ s/.*\:\://g;
-    require Mail::Box::HTML;
-
-    no strict 'refs';
-    return $self->$call(@_) if $self->can($call);
-
-    our @ISA;
-    $call = "${ISA[0]}::$call";   # $call on base class.
-    $self->$call(@_);
-}
+#    no strict 'refs';
+#    return $self->$call(@_) if $self->can($call);
+#
+#    our @ISA;
+#    $call = "${ISA[0]}::$call";   # $call on base class.
+#    $self->$call(@_);
+#}
 
 #-------------------------------------------
 
@@ -1717,7 +1721,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.011.
+This code is beta, version 2.012.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

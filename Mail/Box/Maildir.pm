@@ -5,7 +5,7 @@ use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
 
-our $VERSION = 2.011;
+our $VERSION = 2.012;
 
 use Carp;
 use File::Copy;
@@ -45,7 +45,7 @@ L<Mail::Box> (MB), L<Mail::Reporter> (MR), L<Mail::Box::Dir> (MBD).
 The general methods for C<Mail::Box::Maildir> objects:
 
    MB AUTOLOAD                          MB locker
-   MB addMessage  MESSAGE               MR log [LEVEL [,STRINGS]]
+      addMessage MESSAGE                MR log [LEVEL [,STRINGS]]
    MB addMessages MESSAGE [, MESS...    MB message INDEX [,MESSAGE]
    MB allMessageIds                     MB messageId MESSAGE-ID [,MESS...
    MB close OPTIONS                     MB messages
@@ -147,6 +147,38 @@ sub init($)
 
 #-------------------------------------------
 
+=item addMessage MESSAGE
+
+Add a message to this folder.  This requires it to be written into
+the right directory, because maildir is keeping the states in the
+filenames.
+
+=cut
+
+my $uniq = rand 1000;
+
+sub coerce($)
+{   my ($self, $message) = @_;
+    my $coerced  = $self->SUPER::coerce($message);
+
+    my $filename = $message->filename;
+    my $basename
+     = $filename && $filename =~ m!(\d+\..+?\.\w+)(\:[12],[A-Z]*)?$!
+     ? $1
+     : $message->timestamp .'.'. hostname .'.'. $uniq++;
+
+    my $dir = $self->directory;
+    my $tmp = File::Spec->catfile($dir, tmp => $basename);
+    my $new = File::Spec->catfile($dir, cur => $basename);
+
+    if($message->create($tmp) && $message->create($new))
+         {$self->log(PROGRESS => "Added message in $new") }
+    else {$self->log(ERROR    => "Cannot create $new") }
+    $coerced;
+}
+
+#-------------------------------------------
+
 =item createDirs FOLDERDIR
 
 (Instance or class method)
@@ -221,7 +253,7 @@ sub folderIsEmpty($)
     opendir DIR, $dir or return 1;
     while(my $entry = readdir DIR)
     {   next if $entry =~
-           m/^(?:tmp|cur|new|\.qmail|bulletin(?:time|lock)|seriallock)$/;
+           m/^(?:tmp|cur|new|bulletin(?:time|lock)|seriallock|\..?)$/;
 
         closedir DIR;
         return 0;
@@ -438,10 +470,7 @@ sub writeMessages($)
     {   next unless $message->modified;
 
         my $filename = $message->filename;
-warn ref $message;
-warn $filename;
         my $basename = (File::Spec->splitpath($filename))[2];
-warn join("#",File::Spec->splitpath($filename)), "\n";
 
         my $newtmp   = File::Spec->catfile($directory, 'tmp', $basename);
         my $new      = FileHandle->new($newtmp, 'w')
@@ -472,8 +501,6 @@ warn join("#",File::Spec->splitpath($filename)), "\n";
 }
 
 #-------------------------------------------
-
-my $uniq = rand 1000;
 
 sub appendMessages(@)
 {   my $class  = shift;
@@ -588,7 +615,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.011.
+This code is beta, version 2.012.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

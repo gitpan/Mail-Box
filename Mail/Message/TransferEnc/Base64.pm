@@ -5,7 +5,7 @@ use warnings;
 package Mail::Message::TransferEnc::Base64;
 use base 'Mail::Message::TransferEnc';
 
-our $VERSION = 2.011;
+our $VERSION = 2.012;
 
 =head1 NAME
 
@@ -165,20 +165,20 @@ sub encode($@)
 
     local $_;
     my $in = $body->file || return $body;
+    binmode $in, ':raw' if ref $in eq 'GLOB' || $in->can('BINMODE');
 
     my (@lines, $bytes);
 
     while(my $read = $in->read($bytes, 57))
     {   for(pack 'u57', $bytes)
-        {   chop;
-            s/^.//;
-            tr|` -_|AA-Za-z0-9+/|s;
+        {   s/^.//;
+            tr|` -_|AA-Za-z0-9+/|;
 
             if(my $align = $read % 3)
             {    if($align==1) { s/..$/==/ } else { s/.$/=/ }
             }
 
-            push @lines, "$_\n";
+            push @lines, $_;
         }
     }
 
@@ -219,7 +219,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.011.
+This code is beta, version 2.012.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

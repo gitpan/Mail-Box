@@ -21,7 +21,7 @@ create C<Mail::Box::Mbox> objects directly. Similarly, if the user program
 is only manipulating a single message, a C<Mail::Message>.
 
 The C<Mail::Box> package has special features to help MUA's access folder
-data quickly in random order.  You will not really benevit (neither
+data quickly in random order.  You will not really benefit (neither
 slower) if you need the full folder sequencially.
 
 This code is beta, which means that there are no serious applications

@@ -58,8 +58,6 @@ die "There are only ",scalar $folder->messages, " messages in $filename.\n"
 
 my $orig = $folder->message($msgnr);
 
-$folder->close;   # the message $orig is kept alive!  Neat, isn't it?
-
 #
 # Create the reply prelude.
 # The default only produces the quotePrelude line, but we extend it
@@ -126,3 +124,5 @@ my $reply = $orig->reply
 # And now
 $reply->print;
 # or $reply->send;
+
+$folder->close;

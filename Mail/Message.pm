@@ -11,7 +11,7 @@ use Mail::Message::Body::Lines;
 use Carp;
 use IO::ScalarArray;
 
-our $VERSION = 2.011;
+our $VERSION = 2.012;
 
 =head1 NAME
 
@@ -58,15 +58,15 @@ L<Mail::Reporter> (MR), L<Mail::Message::Construct> (MMC).
 
 The general methods for C<Mail::Message> objects:
 
-      bcc                               MR log [LEVEL [,STRINGS]]
-  MMC bounce OPTIONS                       messageId
-  MMC build [MESSAGE|BODY], CONTENT        modified [BOOL]
-  MMC buildFromBody BODY, HEADERS          new OPTIONS
-      cc                                   nrLines
-      date                                 parent
-      decoded OPTIONS                      parts
-      destinations                         print [FILEHANDLE]
-      encode OPTIONS                       printUndisclosed [FILEHANDLE]
+      bcc                                  messageId
+  MMC bounce OPTIONS                       modified [BOOL]
+  MMC build [MESSAGE|BODY], CONTENT        new OPTIONS
+  MMC buildFromBody BODY, HEADERS          nrLines
+      cc                                   parent
+      date                                 parts
+      decoded OPTIONS                      print [FILEHANDLE]
+      destinations                         printUndisclosed [FILEHANDLE]
+      encode OPTIONS                   MMC read FILEHANDLE|SCALAR|REF-...
    MR errors                           MMC reply OPTIONS
   MMC forward OPTIONS                  MMC replyPrelude [STRING|FIELD|...
   MMC forwardPostlude                  MMC replySubject STRING
@@ -79,6 +79,7 @@ The general methods for C<Mail::Message> objects:
       isMultipart                          to
       isPart                               toplevel
       label LABEL [,VALUE [LABEL,...    MR trace [LEVEL]
+   MR log [LEVEL [,STRINGS]]            MR warnings
 
 The extra methods for extension writers:
 
@@ -86,8 +87,8 @@ The extra methods for extension writers:
       DESTROY                           MR logPriority LEVEL
       body [BODY]                       MR logSettings
       clone                             MR notImplemented
-      coerce MESSAGE                       read PARSER, [BODYTYPE]
-      head [HEAD]                          readBody PARSER, HEAD [, BO...
+      coerce MESSAGE                       readBody PARSER, HEAD [, BO...
+      head [HEAD]                          readFromParser PARSER, [BOD...
    MR inGlobalDestruction                  readHead PARSER [,CLASS]
       isDelayed                            statusToLabels
       labels                               storeBody BODY
@@ -1291,7 +1292,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.011.
+This code is beta, version 2.012.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

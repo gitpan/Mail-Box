@@ -16,6 +16,10 @@ use Tools;
 use File::Compare;
 use File::Copy;
 
+# under development
+BEGIN {plan tests => 0};
+__END__
+
 BEGIN {plan tests => 28}
 
 my $mdsrc = File::Spec->catfile('t', 'maildir.src');

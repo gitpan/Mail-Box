@@ -5,7 +5,7 @@ use strict;
 
 package Mail::Message;
 
-our $VERSION = 2.011;
+our $VERSION = 2.012;
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -45,9 +45,9 @@ The general methods for C<Mail::Message::Construct> objects:
 
       bounce OPTIONS                       forwardPrelude
       build [MESSAGE|BODY], CONTENT        forwardSubject STRING
-      buildFromBody BODY, HEADERS          reply OPTIONS
-      forward OPTIONS                      replyPrelude [STRING|FIELD|...
-      forwardPostlude                      replySubject STRING
+      buildFromBody BODY, HEADERS          read FILEHANDLE|SCALAR|REF-...
+      forward OPTIONS                      reply OPTIONS
+      forwardPostlude                      replyPrelude [STRING|FIELD|...
 
 =head1 METHODS
 
@@ -284,6 +284,16 @@ the subject of the original message as only argument.  By default,
 the C<replySubject> method (described below) is used.
 
 =back
+
+Example:
+
+  my $reply = $msg->reply
+   ( prelude         => "No spam, please!\n\n"
+   , postlude        => "\nGreetings\n"
+   , strip_signature => 1
+   , signature       => $my_pgp_key
+   , group_reply     => 1
+   );
 
 =cut
 
@@ -933,7 +943,7 @@ to create a C<Mail::Message::Body>.
  file => \*MYINPUTFILE                   # file handle
  file => $in                             # IO::Handle
 
-=item attach =E<gt> BODY|MESSAGE
+=item attach =E<gt> BODY|MESSAGE|ARRAY-OF-BODY
 
 One ATTACHMENT to the message.  Each ATTACHMENT can be full message or a body.
 
@@ -971,7 +981,7 @@ sub build(@)
         if($key eq 'data')
         {   push @parts, Mail::Message::Body->new(data => $value) }
         elsif($key eq 'file')
-        {   push @parts, Mail::Message::Body->new(filename => $value) }
+        {   push @parts, Mail::Message::Body->new(file => $value) }
         elsif($key eq 'attach')
         {   push @parts, ref $value eq 'ARRAY' ? @$value : $value }
         elsif($key =~ m/^[A-Z]/)
@@ -1013,11 +1023,15 @@ Example:
  my $type = Mail::Message::Field->new('Content-Type', 'text/html'
    , 'charset="us-ascii"');
 
- my $msg = Mail::Message->buildFromBody
+ my @to   = ( Mail::Address->new('Your name', 'you@example.com')
+            , 'world@example.info'
+            );
+
+ my $msg  = Mail::Message->buildFromBody
    ( $body
    , From => 'me@example.nl'
+   , To   => \@to
    , $type
-   , To   => Mail::Address->new('Your name', 'you@example.com')
    );
 
 =cut
@@ -1147,7 +1161,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.011.
+This code is beta, version 2.012.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

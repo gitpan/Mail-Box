@@ -6,6 +6,48 @@ specified differently.
 Soon to be implemented
  updateMessages for Mail::Box::Mbox
  updateMessages for Mail::Box::MH
+ demoting messages which stay when their folder closes.
+ Mail::Box::Maildir is progressing but not ready yet.
+
+Updates will take place more often.  A mailinglist will be started
+in May 2002.
+
+version 2.012: Mon Apr 22 15:53:05 CEST 2002
+
+	Fixes:
+
+	- [alex] found-out that remove_when_empty and save_on_exit
+	  could not be set to false for Mail::Box'es.
+
+	- [Cory Johns] examples/reply.pl closed the folder but
+	  later still used one of its messages.  This is not
+	  permitted, but may be allowed later.
+
+	- [Robin Berjon] multiple improvements to the Maildir
+	  implementation.  Not finalized yet.
+
+	- Mail::Message::Construct->build
+	  called          Body->new(filename =>
+	  which must be   Body->new(file =>
+
+	- Two fixes in Base64 encoding....  Problem reported by
+	  [Bernd Patolla]
+
+	- Forgot to use File::Copy in Mail::Message::Body::File.
+	  reported by [Andre Schultze]
+
+	Improvements:
+
+	- Creation of new message-files for Mail::Box::Dir::Message
+	  extensions implemented by a create($filename) method which
+	  tries to be very smart.
+
+	- [Mark Ethan Trostler] Mail::Message::Field::attribute
+	  with value of <undef> gave complaints.  For now, these
+	  calls with <undef> will be ingnored.  In the close future
+	  they will remove the attribute.
+
+	- Removed references to HTML.pm from all files...
 
 version 2.011: Sun Mar  3 23:51:41 CET 2002
 

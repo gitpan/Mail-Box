@@ -3,15 +3,14 @@ use strict;
 package Mail::Box::MH;
 use base 'Mail::Box::Dir';
 
-our $VERSION = 2.011;
+our $VERSION = 2.012;
 
 use Mail::Box::MH::Index;
 use Mail::Box::MH::Message;
 use Mail::Box::MH::Labels;
 
 use Carp;
-use FileHandle;
-use File::Copy;
+use IO::File;
 use File::Spec;
 use File::Basename;
 
@@ -518,60 +517,29 @@ sub writeMessages($)
     #       to remove the original before we are sure that the new version
     #       is on disk.
 
-    my $writer    = 0;
-
     my $locker    = $self->locker;
-    unless($locker->lock)
-    {   $self->log(ERROR => "Couldn't write without lock.");
-        return;
-    }
+    $self->log(ERROR => "Cannot write without lock."), return
+        unless $locker->lock;
 
     my $renumber  = exists $args->{renumber} ? $args->{renumber} : 1;
     my $directory = $self->directory;
     my @messages  = @{$args->{messages}};
 
+    my $writer    = 0;
     foreach my $message (@messages)
     {
         my $filename = $message->filename;
 
         my $newfile;
         if($renumber || !$filename)
-        {    $newfile = $directory . '/' . ++$writer;
+        {   $newfile = $directory . '/' . ++$writer;
         }
         else
-        {    $newfile = $filename;
-             $writer  = basename $filename;
+        {   $newfile = $filename;
+            $writer  = basename $filename;
         }
 
-        if(!$filename)
-        {   # New message for this folder.  Messages are only
-            # added to the back, so shouldn't cause a problem.
-
-            my $new = FileHandle->new($newfile, 'w') or die;
-            $message->print($new);
-            $new->close;
-            $message->filename($newfile);
-        }
-        elsif($message->modified)
-        {   # Write modified messages.
-            my $oldtmp   = $filename . '.old';
-            move $filename, $oldtmp;
-
-            my $new = FileHandle->new($newfile, 'w') or die;
-            $message->print($new);
-            $new->close;
-
-            unlink $oldtmp;
-            $message->filename($newfile);
-        }
-        elsif($filename eq $newfile)
-        {   # Nothing changed: content nor message-number.
-        }
-        else
-        {   # Unmodified messages, but name changed.
-            move $filename, $newfile;
-            $message->filename($newfile);
-        }
+        $message->create($newfile);
     }
 
     # Write the labels- and the index-file.
@@ -619,18 +587,9 @@ sub appendMessages(@)
     my $msgnr    = $self->highestMessageNumber +1;
 
     foreach my $message (@messages)
-    {
-        my $filename = File::Spec->catfile($directory,$msgnr);
-
-        if(my $new = FileHandle->new($filename, 'w'))
-        {   $message->print($new);
-            $message->filename($filename);
-            $new->close;
-        }
-        else
-        {   $self->log(ERROR =>
-                "Unable to write message $msgnr to $filename: $!\n");
-        }
+    {   my $filename = File::Spec->catfile($directory,$msgnr);
+        $message->create($filename)
+          or $self->log(ERROR => "Unable to write message to $filename: $!\n");
 
         $msgnr++;
     }
@@ -721,7 +680,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.011.
+This code is beta, version 2.012.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

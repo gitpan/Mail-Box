@@ -8,7 +8,7 @@ use Mail::Message::Field;
 use Mail::Message::Body::Lines;
 use Mail::Message::Body::File;
 
-our $VERSION = 2.011;
+our $VERSION = 2.012;
 
 use overload bool  => sub {1}   # $body->print if $body
            , '""'  => 'string'
@@ -179,7 +179,7 @@ The extra methods for extension writers:
  eol               Mail::Message::Body   'NATIVE'
  data              Mail::Message::Body   undef
  disposition       Mail::Message::Body   undef
- filename          Mail::Message::Body   undef
+ file              Mail::Message::Body   undef
  log               Mail::Reporter        'WARNINGS'
  message           Mail::Message::Body   undef
  mime_type         Mail::Message::Body   'text/plain'
@@ -412,7 +412,7 @@ sub init($)
 
 =item type
 
-Returns the type of information the body contains.  The is taken from
+Returns the type of information the body contains.  The type is taken from
 the header field C<Content-Type>, but may have changed during encoding
 --or decoding-- of the body (see the C<encode> method).
 
@@ -887,7 +887,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.011.
+This code is beta, version 2.012.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

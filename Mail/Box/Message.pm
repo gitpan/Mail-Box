@@ -7,7 +7,7 @@ use base 'Mail::Message';
 use Date::Parse;
 use Scalar::Util 'weaken';
 
-our $VERSION = 2.011;
+our $VERSION = 2.012;
 
 =head1 NAME
 
@@ -48,16 +48,16 @@ L<Mail::Message> (MM), L<Mail::Reporter> (MR), L<Mail::Message::Construct> (MMC)
 
 The general methods for C<Mail::Box::Message> objects:
 
-   MM bcc                               MM label LABEL [,VALUE [LABEL,...
-  MMC bounce OPTIONS                    MR log [LEVEL [,STRINGS]]
-  MMC build [MESSAGE|BODY], CONTENT     MM messageId
-  MMC buildFromBody BODY, HEADERS       MM modified [BOOL]
-   MM cc                                   new OPTIONS
-      copyTo FOLDER                     MM nrLines
-   MM date                              MM parent
-   MM decoded OPTIONS                   MM parts
-      delete                            MM print [FILEHANDLE]
-      deleted [BOOL]                    MM printUndisclosed [FILEHANDLE]
+   MM bcc                               MR log [LEVEL [,STRINGS]]
+  MMC bounce OPTIONS                    MM messageId
+  MMC build [MESSAGE|BODY], CONTENT     MM modified [BOOL]
+  MMC buildFromBody BODY, HEADERS          new OPTIONS
+   MM cc                                MM nrLines
+      copyTo FOLDER                     MM parent
+   MM date                              MM parts
+   MM decoded OPTIONS                   MM print [FILEHANDLE]
+      delete                            MM printUndisclosed [FILEHANDLE]
+      deleted [BOOL]                   MMC read FILEHANDLE|SCALAR|REF-...
    MM destinations                     MMC reply OPTIONS
    MM encode OPTIONS                   MMC replyPrelude [STRING|FIELD|...
    MR errors                           MMC replySubject STRING
@@ -72,6 +72,7 @@ The general methods for C<Mail::Box::Message> objects:
    MM isDummy                           MM to
    MM isMultipart                       MM toplevel
    MM isPart                            MR trace [LEVEL]
+   MM label LABEL [,VALUE [LABEL,...    MR warnings
 
 The extra methods for extension writers:
 
@@ -79,8 +80,8 @@ The extra methods for extension writers:
    MM DESTROY                           MR logPriority LEVEL
    MM body [BODY]                       MR logSettings
    MM clone                             MR notImplemented
-   MM coerce MESSAGE                    MM read PARSER, [BODYTYPE]
-      diskDelete                           readBody PARSER, HEAD [, BO...
+   MM coerce MESSAGE                       readBody PARSER, HEAD [, BO...
+      diskDelete                        MM readFromParser PARSER, [BOD...
    MM head [HEAD]                       MM readHead PARSER [,CLASS]
    MR inGlobalDestruction               MM statusToLabels
    MM isDelayed                         MM storeBody BODY
@@ -400,7 +401,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.011.
+This code is beta, version 2.012.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

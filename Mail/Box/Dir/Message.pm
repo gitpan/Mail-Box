@@ -55,35 +55,35 @@ The general methods for C<Mail::Box::Dir::Message> objects:
    MM decoded OPTIONS                   MM parts
   MBM delete                            MM print [FILEHANDLE]
   MBM deleted [BOOL]                    MM printUndisclosed [FILEHANDLE]
-   MM destinations                     MMC reply OPTIONS
-   MM encode OPTIONS                   MMC replyPrelude [STRING|FIELD|...
-   MR errors                           MMC replySubject STRING
-      filename [FILENAME]               MR report [LEVEL]
-  MBM folder [FOLDER]                   MR reportAll [LEVEL]
-  MMC forward OPTIONS                   MM send [MAILER], OPTIONS
-  MMC forwardPostlude                  MBM seqnr [INTEGER]
-  MMC forwardPrelude                   MBM shortString
-  MMC forwardSubject STRING             MM size
-   MM from                              MM subject
-   MM get FIELD                         MM timestamp
-   MM guessTimestamp                    MM to
-   MM isDummy                           MM toplevel
-   MM isMultipart                       MR trace [LEVEL]
-   MM isPart                            MR warnings
+   MM destinations                     MMC read FILEHANDLE|SCALAR|REF-...
+   MM encode OPTIONS                   MMC reply OPTIONS
+   MR errors                           MMC replyPrelude [STRING|FIELD|...
+      filename [FILENAME]              MMC replySubject STRING
+  MBM folder [FOLDER]                   MR report [LEVEL]
+  MMC forward OPTIONS                   MR reportAll [LEVEL]
+  MMC forwardPostlude                   MM send [MAILER], OPTIONS
+  MMC forwardPrelude                   MBM seqnr [INTEGER]
+  MMC forwardSubject STRING            MBM shortString
+   MM from                              MM size
+   MM get FIELD                         MM subject
+   MM guessTimestamp                    MM timestamp
+   MM isDummy                           MM to
+   MM isMultipart                       MM toplevel
+   MM isPart                            MR trace [LEVEL]
 
 The extra methods for extension writers:
 
-   MR AUTOLOAD                             loadHead
-   MM DESTROY                           MR logPriority LEVEL
-   MM body [BODY]                       MR logSettings
-   MM clone                             MR notImplemented
-   MM coerce MESSAGE                       parser
-  MBM diskDelete                        MM read PARSER, [BODYTYPE]
-   MM head [HEAD]                      MBM readBody PARSER, HEAD [, BO...
+   MR AUTOLOAD                          MM labelsToStatus
+   MM DESTROY                              loadHead
+   MM body [BODY]                       MR logPriority LEVEL
+   MM clone                             MR logSettings
+   MM coerce MESSAGE                    MR notImplemented
+      create FILENAME                      parser
+  MBM diskDelete                       MBM readBody PARSER, HEAD [, BO...
+   MM head [HEAD]                       MM readFromParser PARSER, [BOD...
    MR inGlobalDestruction               MM readHead PARSER [,CLASS]
    MM isDelayed                         MM statusToLabels
    MM labels                            MM storeBody BODY
-   MM labelsToStatus                    MM takeMessageId [STRING]
 
 =head1 METHODS
 
@@ -282,6 +282,46 @@ sub loadBody()
 
 #-------------------------------------------
 
+=item create FILENAME
+
+Create the message in the specified file.  If the message already has
+a filename and is not modified, then a move is tried.  Otherwise the
+message is printed to the file.  If the FILENAME already exists for
+this message, nothing is done.  In any case, the new FILENAME is set
+as well.
+
+=cut
+
+sub create($)
+{   my ($self, $filename) = @_;
+    my $old = $self->filename || '';
+
+    return $self if $filename eq $old && !$self->modified;
+
+    my $oldtmp;
+    if($old && $self->modified)
+    {   $oldtmp = $old . '.old';
+        move $old, $oldtmp;
+        $old    = '';
+    }
+
+    unless($old && move($old, $filename))
+    {   my $new = IO::File->new($filename, 'w');
+        $self->log(ERROR => "Cannot write message to $filename: $!"), return
+           unless $new;
+
+        $self->print($new);
+        $new->close;
+    }
+
+    $self->filename($filename);
+    unlink $oldtmp if $oldtmp;
+
+    $self;
+}
+ 
+#-------------------------------------------
+
 =back
 
 =head1 SEE ALSO
@@ -296,7 +336,7 @@ it and/or modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-This code is beta, version 2.011.
+This code is beta, version 2.012.
 
 Copyright (c) 2001 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
