@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Box::Locker;
-our $VERSION = 2.031;  # Part of Mail::Box
+our $VERSION = 2.032;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -83,6 +83,10 @@ sub unlock() { shift->{MBL_has_lock} = 0 }
 
 sub folder() {shift->{MBL_folder}}
 
-sub filename() { shift->{MBL_filename} }
+sub filename(;$)
+{   my $self = shift;
+    $self->{MBL_filename} = shift if @_;
+    $self->{MBL_filename};
+}
 
 1;

@@ -1,5 +1,5 @@
 package Mail::Box::Search::IMAP;
-our $VERSION = 2.031;  # Part of Mail::Box
+our $VERSION = 2.032;  # Part of Mail::Box
 use base 'Mail::Box::Search';
 
 use strict;

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Multipart;
-our $VERSION = 2.031;  # Part of Mail::Box
+our $VERSION = 2.032;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -174,21 +174,24 @@ sub foreachComponent($)
     my @new_parts;
     foreach (@new_bodies)
     {   my ($part, $body) = @$_;
-        my $new_part = Mail::Message::Part->new(head => $part->head->clone,
-            parent => undef);
+        my $new_part = Mail::Message::Part->new
+           ( head   => $part->head->clone,
+             parent => $self->message
+           );
         $new_part->body($body);
         push @new_parts, $new_part;
     }
 
-    my $encoded = (ref $self)->new
+#   my $encoded =
+    (ref $self)->new
       ( preamble => $new_preamble
       , parts    => \@new_parts
       , epilogue => $new_epilogue
       , based_on => $self
       );
 
-    $_->parent($encoded) foreach @new_parts;
-    $encoded;
+#   $_->parent($encoded) foreach @new_parts;
+#   $encoded;
 }
 
 sub preamble() {shift->{MMBM_preamble}}
@@ -197,15 +200,15 @@ sub epilogue() {shift->{MMBM_epilogue}}
 
 sub parts(;$)
 {   my $self  = shift;
-    return @{$self->{MMBM_parts}} unless $@;
+    return @{$self->{MMBM_parts}} unless @_;
 
     my $what  = shift;
     my @parts = @{$self->{MMBM_parts}};
 
       $what eq 'RECURSE' ? (map {$_->parts('RECURSE')} @parts)
     : $what eq 'ALL'     ? @parts
-    : $what eq 'DELETED' ? (map {$_->deleted} @parts)
-    : $what eq 'ACTIVE'  ? (map {not $_->deleted} @parts)
+    : $what eq 'DELETED' ? (grep {$_->deleted} @parts)
+    : $what eq 'ACTIVE'  ? (grep {not $_->deleted} @parts)
     : ref $what eq 'CODE'? (grep {$what->($_)} @parts)
     : confess "Select with what?";
 }

@@ -821,7 +821,7 @@ Examples:
     text/plain (164 bytes)
     message/rfc822 (1043 bytes)
        multipart/alternative: A multipart alternative (942 bytes)
-          text/plain (148 bytes)
+          text/plain (148 bytes, deleted)
           text/html (358 bytes)
 
 =item B<report> [LEVEL]
@@ -881,7 +881,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.031.
+This code is beta, version 2.032.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -3,7 +3,7 @@ use strict;
 # file Mail::Message::Construct extends functionalities from Mail::Message
 
 package Mail::Message;
-our $VERSION = 2.031;  # Part of Mail::Box
+our $VERSION = 2.032;  # Part of Mail::Box
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -586,7 +586,9 @@ sub printStructure(;$$)
 
     my $type    = $self->get('Content-Type') || '';
     my $size    = $self->size;
-    $fh->print("$indent$type$subject ($size bytes)\n");
+    my $deleted = $self->can('deleted') && $self->deleted ? ', deleted' : '';
+
+    $fh->print("$indent$type$subject ($size bytes$deleted)\n");
 
     my $body    = $self->body;
     my @parts

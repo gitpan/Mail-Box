@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::POP3;
-our $VERSION = 2.031;  # Part of Mail::Box
+our $VERSION = 2.032;  # Part of Mail::Box
 use base 'Mail::Transport::Receive';
 
 use IO::Socket  ();

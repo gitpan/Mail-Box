@@ -179,9 +179,10 @@ Examples:
 
 =over 4
 
-=item B<filename>  X<filename>
+=item B<filename> [FILENAME] X<filename>
 
-Returns the filename which is used to lock the folder.
+Returns the filename which is used to lock the folder, optionally after
+setting it to the specified FILENAME.
 
 Examples:
 
@@ -302,7 +303,7 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.031.
+This code is beta, version 2.032.
 
 Copyright (c) 2001-2002 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::TransferEnc::SevenBit;
-our $VERSION = 2.031;  # Part of Mail::Box
+our $VERSION = 2.032;  # Part of Mail::Box
 use base 'Mail::Message::TransferEnc';
 
 sub name() { '7bit' }
