@@ -178,7 +178,7 @@ Look for a binary with the specified NAME in the directories which
 are defined to be safe.  The list of standard directories is followed
 by the optional DIRECTORIES.  The full pathname is returned.
 
-You may specify L<new(proxy)|"METHODS">, which specifies the absolute name
+You may specify L<new(proxy)|Mail::Transport/"METHODS">, which specifies the absolute name
 of the binary to be used.
 
 =back
@@ -350,7 +350,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

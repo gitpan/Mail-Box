@@ -204,7 +204,7 @@ produced by default.
 =over 4
 
 Sets the default write policy, as default for a later call to
-L<write(policy)|"Internals">.  With C<undef>, the best policy is autodetected.
+L<write(policy)|Mail::Box::File/"Internals">.  With C<undef>, the best policy is autodetected.
 
 =back
 
@@ -592,7 +592,7 @@ $obj-E<gt>B<write>(OPTIONS)
 =over 4
 
 In what way will the mail folder be updated.  If not specified during the
-write, the value of the L<new(write_policy)|"METHODS"> at folder creation is taken.
+write, the value of the L<new(write_policy)|Mail::Box::File/"METHODS"> at folder creation is taken.
 
 Valid values:
 
@@ -647,6 +647,32 @@ $obj-E<gt>B<writeMessages>(OPTIONS)
 See L<Mail::Box/"Internals">
 
 =back
+
+=head3 File based folders
+
+File based folders maintain a folder (a set of messages) in one
+single file.  The advantage is that your folder has only one
+single name, which speeds-up access to all messages at once.
+
+The disadvantage over directory based folder (see L<Mail::Box::Dir|Mail::Box::Dir>)
+is that you have to construct some means to keep all message apart,
+for instance by adding a message separator, and this will cause
+problems.  Where access to all messages at once is faster in file
+based folders, access to a single message is (much) slower, because
+the whole folder must be read.
+
+=head3 File based folders
+
+File based folders maintain a folder (a set of messages) in one
+single file.  The advantage is that your folder has only one
+single name, which speeds-up access to all messages at once.
+
+The disadvantage over directory based folder (see L<Mail::Box::Dir|Mail::Box::Dir>)
+is that you have to construct some means to keep all message apart,
+for instance by adding a message separator, and this will cause
+problems.  Where access to all messages at once is faster in file
+based folders, access to a single message is (much) slower, because
+the whole folder must be read.
 
 =head2 Other methods
 
@@ -823,8 +849,8 @@ I<Warning:> Changes not written to read-only folder $self.
 
 You have opened the folder read-only --which is the default set
 by L<new(access)|Mail::Box/"Constructors">--, made modifications, and now want to close it.
-Set L<close(force)|"The folder"> if you want to overrule the access mode, or close
-the folder with L<close(write)|"The folder"> set to C<NEVER>.
+Set L<close(force)|Mail::Box/"The folder"> if you want to overrule the access mode, or close
+the folder with L<close(write)|Mail::Box/"The folder"> set to C<NEVER>.
 
 I<Error:> Copying failed for one message.
 
@@ -905,19 +931,6 @@ error messages to indicate the real problem.
 =head1 DETAILS
 
 
-=head2 How file based folders work
-
-File based folders maintain a folder (a set of messages) in one
-single file.  The advantage is that your folder has only one
-single name, which speeds-up access to all messages at once.
-
-The disadvantage over directory based folder (see L<Mail::Box::Dir|Mail::Box::Dir>)
-is that you have to construct some means to keep all message apart,
-for instance by adding a message separator, and this will cause
-problems.  Where access to all messages at once is faster in file
-based folders, access to a single message is (much) slower, because
-the whole folder must be read.
-
 
 
 
@@ -928,7 +941,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

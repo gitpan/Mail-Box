@@ -4,8 +4,6 @@
 Mail::Message::Construct::Bounce - bounce a Mail::Message
 
 
-=head1 INHERITANCE
-
 
 =head1 SYNOPSIS
 
@@ -40,14 +38,14 @@ which are added to the resent group of that received field.  C<Resent->
 is prepended before the field-names automatically, unless already present.
 
 You may also specify an instantiated L<Mail::Message::Head::ResentGroup|Mail::Message::Head::ResentGroup> (RG)
-object.  See L<Mail::Message::Head::ResentGroup::new()|"METHODS"> for the available
+object.  See L<Mail::Message::Head::ResentGroup::new()|Mail::Message::Head::ResentGroup/"METHODS"> for the available
 options.  This is required if you want to add a new resent group: create
 a new C<Received> line in the header as well.
 
 If you are planning to change the body of a bounce message, don't!  Bounced
 messages have the same message-id as the original message, and therefore
 should have the same content (message-ids are universally unique).  If you
-still insist, use L<Mail::Message::body()|"The body">.
+still insist, use L<Mail::Message::body()|Mail::Message/"The body">.
 
 I<Example:> 
 
@@ -75,7 +73,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message::Dummy;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
 use base 'Mail::Message';
 
 use Carp;
@@ -27,15 +27,16 @@ sub isDummy()    { 1 }
 
 #-------------------------------------------
 
+
 sub head()
-{    shift->log(INTERNAL => "You cannot take the head of a dummy");
+{    shift->log(ERROR => "You cannot take the head of a dummy message");
      ();
 }
 
 #-------------------------------------------
 
 sub body()
-{    shift->log(INTERNAL => "You cannot take the body of a dummy");
+{    shift->log(ERROR => "You cannot take the body of a dummy message");
      ();
 }
 

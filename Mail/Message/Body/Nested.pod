@@ -620,6 +620,9 @@ not.  Probably you should investigate this and probably inform the author
 of the package.
 
 
+=head1 DETAILS
+
+
 
 
 
@@ -630,7 +633,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

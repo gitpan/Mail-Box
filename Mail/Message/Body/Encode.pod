@@ -4,8 +4,6 @@
 Mail::Message::Body::Encode - organize general message encodings
 
 
-=head1 INHERITANCE
-
 
 =head1 SYNOPSIS
 
@@ -23,7 +21,7 @@ Mail::Message::Body::Encode - organize general message encodings
 
 Manages the message's body encodings and decodings on request of the
 main program.  This package adds functionality to the L<Mail::Message::Body|Mail::Message::Body>
-class when the L<decoded()|"Constructing a body"> or L<encode()|"Constructing a body"> method is called.
+class when the L<decoded()|Mail::Message::Body/"Constructing a body"> or L<encode()|Mail::Message::Body::Encode/"Constructing a body"> method is called.
 
 Four types of encodings are handled (in the right order)
 
@@ -223,7 +221,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -4,8 +4,6 @@
 Mail::Box-Overview - objects used by Mail::Box
 
 
-=head1 INHERITANCE
-
 
 
 =head1 DESCRIPTION
@@ -55,7 +53,6 @@ their follow-ups.
          `---------------------*  L<Mail::Box::Thread::Manager|Mail::Box::Thread::Manager>
                       (<has-a>)
 
-
 Each folder maintains a list of messages.  Much effort is made to hide
 differences between folder types and kinds of messages.  Your program can
 be used for MBOX, MH, Maildir, and POP3 folders with no change at all (as
@@ -97,7 +94,7 @@ for the mail boxes
                           |
                      Mail::Message
 
-=head2 The Manager:
+=head2 The Manager
 
 The mailbox manager L<Mail::Box::Manager|Mail::Box::Manager> encapsulates folder management
 issues. It maintains a set of open mail folders (mailboxes), and provides
@@ -322,7 +319,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

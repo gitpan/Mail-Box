@@ -35,43 +35,6 @@ B<ATTENTION!!!> most functionality about e-mail headers is described
 in L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>, which is a matured header object.
 Other kinds of headers will be translated to that type when time comes.
 
-The header of a MIME message object contains a set of lines, which are
-called I<fields> (by default represented by L<Mail::Message::Field|Mail::Message::Field>
-objects).  Dependent on the situation, the knowledge about the fields can
-be in one of three situations, each represented by a sub-class of this
-module:
-
-=over 4
-
-=item * L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>
-
-In this case, it is sure that all knowledge about the header is available.
-When you L<get()|"Access to the header"> information from the header and it is not there, it will
-never be there.
-
-=item * L<Mail::Message::Head::Subset|Mail::Message::Head::Subset>
-
-There is no certainty whether all header lines are known (probably not).  This
-may be caused as result of reading a fast index file, as described in
-L<Mail::Box::MH::Index|Mail::Box::MH::Index>.  The object is automatically transformed
-into a L<Mail::Message::Head::Complete|Mail::Message::Head::Complete> when all header lines must be known.
-
-=item * L<Mail::Message::Head::Partial|Mail::Message::Head::Partial>
-
-A partial header is like a subset header: probably the header is incomplete.
-The means that you are not sure whether a L<get()|"Access to the header"> for a field fails because
-the field is not a part of the message or that it fails because it is not
-yet known to the program.  Where the subset header knows where to get the
-other fields, the partial header does not know it.  It cannot hide its
-imperfection.
-
-=item * L<Mail::Message::Head::Delayed|Mail::Message::Head::Delayed>
-
-In this case, there is no single field known.  Access to this header will
-always trigger the loading of the full header.
-
-=back
-
 On this page, the general methods which are available on any header are
 described.  Read about differences in the sub-class specific pages.
 
@@ -84,7 +47,7 @@ overload: B<"">
 =over 4
 
 (stringifaction) The header, when used as string, will format as if
-L<Mail::Message::Head::Complete::string()|"Access to the header"> was called, so return a
+L<Mail::Message::Head::Complete::string()|Mail::Message::Head::Complete/"Access to the header"> was called, so return a
 nicely folder full header.  An exception is made for Carp, which will
 get a simplified string to avoid unreadible messages from C<croak>
 and C<confess>.
@@ -123,7 +86,7 @@ $obj-E<gt>B<build>(FIELDS)
 A fast way to construct a header with many lines.
 The FIELDS are (name, content) pairs of the header.   A
 L<Mail::Message::Head::Complete|Mail::Message::Head::Complete> header is created by simply calling
-L<Mail::Message::Head::Complete::build()|"Constructors">, and then each field
+L<Mail::Message::Head::Complete::build()|Mail::Message::Head/"Constructors">, and then each field
 is added.  Double field names are permitted.
 
 I<Example:> 
@@ -226,7 +189,7 @@ $obj-E<gt>B<knownNames>
 
 =over 4
 
-Like L<Mail::Message::Head::Complete::names()|"Access to the header">, but only returns the known
+Like L<Mail::Message::Head::Complete::names()|Mail::Message::Head::Complete/"Access to the header">, but only returns the known
 header fields, which may be less than C<names> for header types which are
 partial.  C<names()> will trigger completion, where C<knownNames()> does not.
 
@@ -246,7 +209,7 @@ $obj-E<gt>B<modified>([BOOLEAN])
 =over 4
 
 Sets the modified flag to BOOLEAN.  Without value, the current setting is
-returned, but in that case you can better use L<isModified()|"The header">.
+returned, but in that case you can better use L<isModified()|Mail::Message::Head/"The header">.
 Changing this flag will not trigger header completion.
 
 I<Example:> 
@@ -299,6 +262,18 @@ I<Example:>
 
 =back
 
+$obj-E<gt>B<study>(NAME [,INDEX])
+
+=over 4
+
+Like L<get()|Mail::Message::Head/"Access to the header">, but puts more effort in understanding the contents of the
+field.  L<Mail::Message::Field::study()|Mail::Message::Field/"Access to the content"> will be called for the field
+with the specified FIELDNAME, which returns L<Mail::Message::Field::Full|Mail::Message::Field::Full>
+objects. In scalar context only the last field with that name is returned.
+When an INDEX is specified, that element is returned.
+
+=back
+
 =head2 About the body
 
 
@@ -329,7 +304,7 @@ $obj-E<gt>B<addNoRealize>(FIELD)
 
 =over 4
 
-Add a field, like L<Mail::Message::Head::Complete::add()|"Access to the header"> does, but
+Add a field, like L<Mail::Message::Head::Complete::add()|Mail::Message::Head::Complete/"Access to the header"> does, but
 avoid the loading of a possibly partial header.  This method does not
 test the validity of the argument, nor flag the header as changed.
 This does not trigger completion.
@@ -518,6 +493,60 @@ not.  Probably you should investigate this and probably inform the author
 of the package.
 
 
+=head1 DETAILS
+
+
+=head2 Ordered header fields
+
+Many Perl implementations make a big mistake by disturbing the order
+of header fields.  For some fields (especially the I<resent groups>,
+see L<Mail::Message::Head::ResentGroup|Mail::Message::Head::ResentGroup>) the order shall be
+maintained.
+
+MailBox will keep the order of the fields as they were found in the
+source.  When your add a new field, it will be added at the end.  If
+your replace a field with a new value, it will stay in the original
+order.
+
+=head2 Head class implementation
+
+The header of a MIME message object contains a set of lines, which are
+called I<fields> (by default represented by L<Mail::Message::Field|Mail::Message::Field>
+objects).  Dependent on the situation, the knowledge about the fields can
+be in one of three situations, each represented by a sub-class of this
+module:
+
+=over 4
+
+=item * L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>
+
+In this case, it is sure that all knowledge about the header is available.
+When you L<get()|Mail::Message::Head/"Access to the header"> information from the header and it is not there, it will
+never be there.
+
+=item * L<Mail::Message::Head::Subset|Mail::Message::Head::Subset>
+
+There is no certainty whether all header lines are known (probably not).  This
+may be caused as result of reading a fast index file, as described in
+L<Mail::Box::MH::Index|Mail::Box::MH::Index>.  The object is automatically transformed
+into a L<Mail::Message::Head::Complete|Mail::Message::Head::Complete> when all header lines must be known.
+
+=item * L<Mail::Message::Head::Partial|Mail::Message::Head::Partial>
+
+A partial header is like a subset header: probably the header is incomplete.
+The means that you are not sure whether a L<get()|Mail::Message::Head/"Access to the header"> for a field fails because
+the field is not a part of the message or that it fails because it is not
+yet known to the program.  Where the subset header knows where to get the
+other fields, the partial header does not know it.  It cannot hide its
+imperfection.
+
+=item * L<Mail::Message::Head::Delayed|Mail::Message::Head::Delayed>
+
+In this case, there is no single field known.  Access to this header will
+always trigger the loading of the full header.
+
+=back
+
 
 
 
@@ -528,7 +557,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

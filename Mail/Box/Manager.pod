@@ -68,7 +68,7 @@ Mail::Box::Manager-E<gt>B<new>(ARGS)
 
 Specifies the default folder type for newly created folders.  If this
 option is not specified, the most recently registered type is used (see
-L<registerType()|"Manage folders"> and the L<new(folder_types)|"METHODS"> option.
+L<registerType()|Mail::Box::Manager/"Manage folders"> and the L<new(folder_types)|Mail::Box::Manager/"METHODS"> option.
 
 =back
 
@@ -116,8 +116,8 @@ $obj-E<gt>B<close>(FOLDER, OPTIONS)
 
 C<close> removes the specified folder from the list of open folders.
 Indirectly it will update the files on disk if needed (depends on
-the L<Mail::Box::new(save_on_exit)|"Constructors"> flag for each folder). OPTIONS are
-passed to L<Mail::Box::close()|"The folder"> of the folder.
+the L<Mail::Box::new(save_on_exit)|Mail::Box/"Constructors"> flag for each folder). OPTIONS are
+passed to L<Mail::Box::close()|Mail::Box/"The folder"> of the folder.
 
 The folder's messages will also be withdrawn from the known message threads.
 You may also close the folder directly. The manager will be informed
@@ -146,7 +146,7 @@ $obj-E<gt>B<delete>(FOLDERNAME [,OPTIONS])
 =over 4
 
 Remove the named folder, including all its sub-folders.  The OPTIONS
-are the same as those for L<open()|"Manage folders">.
+are the same as those for L<open()|Mail::Box::Manager/"Manage folders">.
 
 The deletion of a folder can take some time.  Dependent on the type of
 folder, the folder must be read first.  For some folder-types this will
@@ -189,7 +189,7 @@ the C<type> is specified.
 C<open> carries options for the manager which are described here, but
 may also have additional options for the folder type.  For a
 description of the folder options, see the options to the constructor
-L<Mail::Box::new()|"Constructors"> for each type of mail box.
+L<Mail::Box::new()|Mail::Box/"Constructors"> for each type of mail box.
 
  Option     Defined in       Default                 
  create                      <false>                 
@@ -561,7 +561,7 @@ at all.
 I<Warning:> Folder does not exist, failed opening $type folder $name.
 
 The folder does not exist and creating is not permitted (see
-L<open(create)|"Manage folders">) or did not succeed.  When you do not have sufficient
+L<open(create)|Mail::Box::Manager/"Manage folders">) or did not succeed.  When you do not have sufficient
 access rights to the folder (for instance wrong password for POP3),
 this warning will be produced as well.
 
@@ -572,7 +572,7 @@ to this report, and provides more details.
 
 I<Warning:> Folder type $type is unknown, using autodetect.
 
-The specified folder type (see L<open(type)|"Manage folders">, possibly derived from
+The specified folder type (see L<open(type)|Mail::Box::Manager/"Manage folders">, possibly derived from
 the folder name when specified as url) is not known to the manager.
 This may mean that you forgot to require the L<Mail::Box|Mail::Box> extension
 which implements this folder type, but probably it is a typo.  Usually,
@@ -581,7 +581,7 @@ the manager is able to figure-out which type to use by itself.
 I<Error:> Illegal folder URL '$url'.
 
 The folder name was specified as URL, but not according to the syntax.
-See L<decodeFolderURL()|"Internals"> for an description of the syntax.
+See L<decodeFolderURL()|Mail::Box::Manager/"Internals"> for an description of the syntax.
 
 I<Error:> No foldername specified to open.
 
@@ -612,9 +612,9 @@ both will clone the message (not the body, because they are immutable).
 
 I<Error:> Will never create a folder $name without having write access.
 
-You have set L<open(create)|"Manage folders">, but only want to read the folder.  Create is
+You have set L<open(create)|Mail::Box::Manager/"Manage folders">, but only want to read the folder.  Create is
 only useful for folders which have write or append access modes
-(see L<Mail::Box::new(access)|"Constructors">).
+(see L<Mail::Box::new(access)|Mail::Box/"Constructors">).
 
 
 
@@ -627,7 +627,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

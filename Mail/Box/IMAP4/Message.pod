@@ -322,7 +322,7 @@ See L<Mail::Message/"The header">
 
 =back
 
-$obj-E<gt>B<get>(FIELD)
+$obj-E<gt>B<get>(FIELDNAME)
 
 =over 4
 
@@ -355,6 +355,14 @@ See L<Mail::Message/"The header">
 =back
 
 $obj-E<gt>B<sender>
+
+=over 4
+
+See L<Mail::Message/"The header">
+
+=back
+
+$obj-E<gt>B<study>(FIELDNAME)
 
 =over 4
 
@@ -538,23 +546,7 @@ See L<Mail::Message/"Flags">
 
 =back
 
-$obj-E<gt>B<labelsToStatus>
-
-=over 4
-
-See L<Mail::Message/"Flags">
-
-=back
-
 $obj-E<gt>B<modified>([BOOLEAN])
-
-=over 4
-
-See L<Mail::Message/"Flags">
-
-=back
-
-$obj-E<gt>B<statusToLabels>
 
 =over 4
 
@@ -788,6 +780,14 @@ See L<Mail::Message/"Cleanup">
 
 =back
 
+$obj-E<gt>B<destruct>
+
+=over 4
+
+See L<Mail::Box::Message/"Cleanup">
+
+=back
+
 $obj-E<gt>B<inGlobalDestruction>
 
 =over 4
@@ -802,12 +802,12 @@ See L<Mail::Reporter/"Cleanup">
 
 I<Error:> Cannot include forward source as $include.
 
-Unknown alternative for the L<forward(include)|"Constructing a message">.  Valid choices are
+Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
 C<NO>, C<INLINE>, and C<ATTACH>.
 
 I<Error:> Cannot include reply source as $include.
 
-Unknown alternative for the C<include> option of L<reply()|"Constructing a message">.  Valid
+Unknown alternative for the C<include> option of L<reply()|Mail::Message::Construct::Reply/"Constructing a message">.  Valid
 choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
 I<Error:> No address to create forwarded to.
@@ -816,7 +816,7 @@ If a forward message is created, a destination address must be specified.
 
 I<Error:> No default mailer found to send message.
 
-The message L<send()|"The Message"> mechanism had not enough information to automatically
+The message L<send()|Mail::Message/"The Message"> mechanism had not enough information to automatically
 find a mail transfer agent to sent this message.  Specify a mailer
 explicitly using the C<via> options.
 
@@ -841,6 +841,40 @@ I<Error:> no rebuild rule $name defined.
 =head1 DETAILS
 
 
+=head2 Labels
+
+
+=head3 IMAP protocol flags
+
+Labels (or flags) are known to all folder formats, but differ how they
+are stored.  Some folder types use message header lines to keep the
+labels, other use a seperate file.  The IMAP protocol does not specify
+how the labels are kept, but does specify how they are named.
+
+The label names as defined by the IMAP protocol are are standardized into
+the MailBox standard to hide folder differences.  The following translations
+are performed always:
+
+ \Seen     => seen
+ \Answered => replied
+ \Flagged  => flagged
+ \Deleted  => deleted
+ \Draft    => draft
+ \Recent   => NOT old
+
+Other flags may be used as well, but will be translated into lower-case,
+because IMAP servers may behave case-insensive.
+
+I<Example:> of label translations
+
+
+ $imap->message(3)->label(replied => 1, draft => 0);
+
+will result in a IMAP protocol statements like
+
+ A003 STORE 4 +FLAGS (\Answered)
+ A003 STORE 4 -FLAGS (\Draft)
+
 
 
 
@@ -851,7 +885,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

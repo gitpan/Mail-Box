@@ -63,15 +63,6 @@ wrapping from RFC2231.  If you do not need the latter two, then the
 L<Mail::Message::Field::Fast|Mail::Message::Field::Fast> and L<Mail::Message::Field::Flex|Mail::Message::Field::Flex>
 are enough for your application.
 
-=head2 Header fields
-
-
-=head2 Folding
-
-
-=head2 Performance consideration
-
-
 
 =head1 OVERLOADED
 
@@ -142,7 +133,7 @@ again.  Usually, the string which is parsed is exactly the line (or lines)
 as found in the original input source, which is a good thing because Full
 fields are much more carefull with the actual content.
 
-OPTIONS are passed to the constructor (see L<new()|"METHODS">).  In any case, some
+OPTIONS are passed to the constructor (see L<new()|Mail::Message::Field::Full/"METHODS">).  In any case, some
 extensions of this Full field class is returned.  It depends on which
 field is created what kind of class we get.
 
@@ -218,7 +209,7 @@ L<Mail::Message::Field::Attribute|Mail::Message::Field::Attribute> objects.
 
 The body is specified in utf8, and must become 7-bits ascii to be
 transmited.  Specify a charset to which the multi-byte utf8 is converted
-before it gets encoded.  See L<encode()|"Internals">, which does the job.
+before it gets encoded.  See L<encode()|Mail::Message::Field::Full/"Internals">, which does the job.
 
 =back
 
@@ -284,6 +275,122 @@ I<Example:>
  my @attrs   = (Mail::Message::Field::Attribute->new(...), ...);
  my @options = (extra => 'the color blue');
  my $t = Mail::Message::Field::Full->new(To => \@addrs, @attrs, @options);
+
+=back
+
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Message::Field::Full-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<errors>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Message::Field::Full-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Message::Field::Full-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -392,7 +499,7 @@ $obj-E<gt>B<decodedBody>(OPTIONS)
 
 Returns the unfolded body of the field, where encodings are resolved.  The
 returned line will still contain comments and such.  The OPTIONS are passed
-to the decoder, see L<decode()|"Internals">.
+to the decoder, see L<decode()|Mail::Message::Field::Full/"Internals">.
 
 BE WARNED: if the field is a structured field, the content may change syntax,
 because of encapsulated special characters.  By default, the body is decoded
@@ -455,7 +562,7 @@ and encodings.
 As third possibility, you can specify an attribute NAME and its VALUE.
 An attribute object will be created for you implicitly in both
 cases where such object is not supplied, passing the OPTIONS.  See
-L<Mail::Message::Field::Attribute::new()|"Constructors"> about the available OPTIONS.
+L<Mail::Message::Field::Attribute::new()|Mail::Message::Field::Attribute/"Constructors"> about the available OPTIONS.
 
 The attribute object is returned, however, when continuations are used this
 may be an object you already know about.  C<undef> is returned when
@@ -474,7 +581,7 @@ $obj-E<gt>B<addComment>(COMMENT, OPTIONS)
 
 =over 4
 
-Creates a comment (see L<createComment()|"Access to the content">) and adds it immediately to
+Creates a comment (see L<createComment()|Mail::Message::Field::Full/"Access to the content">) and adds it immediately to
 this field.  Empty or undefined COMMENTs are ignored.  The created comment
 is returned.
 
@@ -493,7 +600,7 @@ $obj-E<gt>B<addPhrase>(STRING, OPTIONS)
 
 =over 4
 
-Create a phrase (see L<createPhrase()|"Access to the content">) and immediately add it to this field.
+Create a phrase (see L<createPhrase()|Mail::Message::Field::Full/"Access to the content">) and immediately add it to this field.
 Empty or undefined values of STRING are ignored.  The created phrase is
 returned.
 
@@ -548,7 +655,7 @@ These backslashes will be added automatically if needed (don't worry!).
 Backslashes will stay, except at the end, where it will be doubled.
 
 The OPTIONS are C<charset>, C<language>, and C<encoding> as always.
-See L<addComment()|"Access to the content">.  The created comment is returned.
+See L<addComment()|Mail::Message::Field::Full/"Access to the content">.  The created comment is returned.
 
 =back
 
@@ -565,6 +672,14 @@ quotes: do not specify them yourself.
 
 The OPTIONS are C<charset>, C<language>, and C<encoding> as always.
 See addPhrase().
+
+=back
+
+$obj-E<gt>B<study>
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the content">
 
 =back
 
@@ -776,122 +891,6 @@ See L<Mail::Message::Field/"Internals">
 
 =back
 
-=head2 Error handling
-
-
-$obj-E<gt>B<AUTOLOAD>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
-
-Mail::Message::Field::Full-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
-
-Mail::Message::Field::Full-E<gt>B<log>([LEVEL [,STRINGS]])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
-
-Mail::Message::Field::Full-E<gt>B<logPriority>(LEVEL)
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-=head2 Cleanup
-
-
-$obj-E<gt>B<DESTROY>
-
-=over 4
-
-See L<Mail::Reporter/"Cleanup">
-
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
-
-See L<Mail::Reporter/"Cleanup">
-
-=back
-
 
 
 =head1 DIAGNOSTICS
@@ -952,6 +951,9 @@ not.  Probably you should investigate this and probably inform the author
 of the package.
 
 
+=head1 DETAILS
+
+
 
 
 
@@ -962,7 +964,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

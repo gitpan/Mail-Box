@@ -231,7 +231,7 @@ $obj-E<gt>B<addMessages>(MESSAGES)
 
 =over 4
 
-As useless as L<addMessage()|"METHODS">.  The only acceptable call to this method
+As useless as L<addMessage()|Mail::Box::POP3/"METHODS">.  The only acceptable call to this method
 is without any message.
 
 =back
@@ -751,8 +751,8 @@ I<Warning:> Changes not written to read-only folder $self.
 
 You have opened the folder read-only --which is the default set
 by L<new(access)|Mail::Box/"Constructors">--, made modifications, and now want to close it.
-Set L<close(force)|"The folder"> if you want to overrule the access mode, or close
-the folder with L<close(write)|"The folder"> set to C<NEVER>.
+Set L<close(force)|Mail::Box/"The folder"> if you want to overrule the access mode, or close
+the folder with L<close(write)|Mail::Box/"The folder"> set to C<NEVER>.
 
 I<Error:> Copying failed for one message.
 
@@ -825,6 +825,33 @@ but the standard protocol only implements retreival.  Feel invited to extend our
 implementation with writing.
 
 
+=head1 DETAILS
+
+
+=head2 How POP3 folders work
+
+Rfc1939 defines how POP3 works.  POP3 is a really simple protocol to
+receive messages from a server to a user's client.  POP3 is also
+really limited: it can only be used to fetch messages, but has not
+many ways to limit the amount of network traffic, like the IMAP4
+protocol has.
+
+One POP3 account represents only one folder: there is no way of
+sub-folders in POP3.  POP3 doesn't support writing (except for
+some message status flags).
+
+=head2 This implementation
+
+The protocol specifics are implemented in L<Mail::Transport::POP3|Mail::Transport::POP3>,
+written by Liz Mattijsen.  That module does not use any of the
+other POP3 modules available on CPAN for the reason that MailBox
+tries to be smarter: it is capable of re-establishing broken POP3
+connection when the server supports UIDs.
+
+The implementation has shown to work with many different POP servers.
+In the test directory of the distribution, you will find a small
+server implementation, which is used to test the client.
+
 
 
 
@@ -835,7 +862,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

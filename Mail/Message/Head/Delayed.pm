@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message::Head::Delayed;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
 use base 'Mail::Message::Head';
 
 use Object::Realize::Later
@@ -46,6 +46,10 @@ sub modified(;$)
 #------------------------------------------
 
 sub isModified() { 0 }
+
+#------------------------------------------
+
+sub isEmpty() { 0 }
 
 #------------------------------------------
 

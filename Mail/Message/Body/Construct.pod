@@ -4,8 +4,6 @@
 Mail::Message::Body::Construct - adds functionality to Mail::Message::Body
 
 
-=head1 INHERITANCE
-
 
 =head1 SYNOPSIS
 
@@ -36,7 +34,7 @@ take a look at L<Mail::Message::Body::Multipart|Mail::Message::Body::Multipart>.
 
 The message-parts will be coerced into a L<Mail::Message::Part|Mail::Message::Part>, so you
 may attach Mail::Internet or MIME::Entity objects if you want --see
-L<Mail::Message::coerce()|"Constructors">.  A new body with attached messages is
+L<Mail::Message::coerce()|Mail::Message/"Constructors">.  A new body with attached messages is
 returned.
 
 I<Example:> 
@@ -99,7 +97,8 @@ I<Example:>
  my $nonempty = $content->foreachLine( \&filled );
 
  my $wrong    = $content->foreachLine( sub {s/a/A/} );  # WRONG!!!
- my $right    = $content->foreachLine( sub {(my $x=$_) =~ s/a/A/} );
+ my $right    = $content->foreachLine(
+        sub {(my $x=$_) =~ s/a/A/; $x} );
 
 =back
 
@@ -180,7 +179,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

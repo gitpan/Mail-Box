@@ -3,12 +3,13 @@ use warnings;
 
 package Mail::Message::Field;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
 use base 'Mail::Reporter';
 
 use Carp;
 use Mail::Address;
 use Date::Parse;
+use Date::Format ();
 
 our %_structured;  # not to be used directly: call isStructured!
 my $default_wrap_length = 78;
@@ -275,13 +276,27 @@ sub toDate(@)
 {   my $class = shift;
     use POSIX 'strftime';
     my @time  = @_== 0 ? localtime() : @_==1 ? localtime(shift) : @_;
-    strftime "$weekday[$time[6]], %d $month[$time[4]] %Y %H:%M:%S %z", @time;
+    my $time  = strftime("$weekday[$time[6]], %d $month[$time[4]] %Y %H:%M:%S %z", @time);
+
+    Date::Format::Generic->strftime($time, @time)
+       if $time =~ m/\%z/;
+
+    $time; 
 }
 
 #------------------------------------------
 
 
 sub addresses() { Mail::Address->parse(shift->unfoldedBody) }
+
+#------------------------------------------
+
+
+sub study()
+{   my $self = shift;
+    require Mail::Message::Field::Full;
+    Mail::Message::Field::Full->new($self->folded);
+}
 
 #------------------------------------------
 

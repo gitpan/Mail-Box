@@ -39,15 +39,6 @@ messages.
 When you try to create constructs which are not allowed for a certain
 kind of field, you will be warned.
 
-=head2 Header fields
-
-
-=head2 Folding
-
-
-=head2 Performance consideration
-
-
 
 =head1 OVERLOADED
 
@@ -162,147 +153,6 @@ object.
 
 =back
 
-=head2 The field
-
-
-$obj-E<gt>B<isStructured>
-
-Mail::Message::Field::Addresses-E<gt>B<isStructured>
-
-=over 4
-
-See L<Mail::Message::Field/"The field">
-
-=back
-
-$obj-E<gt>B<length>
-
-=over 4
-
-See L<Mail::Message::Field/"The field">
-
-=back
-
-$obj-E<gt>B<nrLines>
-
-=over 4
-
-See L<Mail::Message::Field/"The field">
-
-=back
-
-$obj-E<gt>B<print>([FILEHANDLE])
-
-=over 4
-
-See L<Mail::Message::Field/"The field">
-
-=back
-
-$obj-E<gt>B<size>
-
-=over 4
-
-See L<Mail::Message::Field/"The field">
-
-=back
-
-$obj-E<gt>B<string>([WRAP])
-
-=over 4
-
-See L<Mail::Message::Field/"The field">
-
-=back
-
-$obj-E<gt>B<toDisclose>
-
-=over 4
-
-See L<Mail::Message::Field/"The field">
-
-=back
-
-=head2 Access to the name
-
-
-$obj-E<gt>B<Name>
-
-=over 4
-
-See L<Mail::Message::Field/"Access to the name">
-
-=back
-
-$obj-E<gt>B<name>
-
-=over 4
-
-See L<Mail::Message::Field/"Access to the name">
-
-=back
-
-$obj-E<gt>B<wellformedName>([STRING])
-
-=over 4
-
-See L<Mail::Message::Field/"Access to the name">
-
-=back
-
-=head2 Access to the body
-
-
-$obj-E<gt>B<body>
-
-=over 4
-
-See L<Mail::Message::Field/"Access to the body">
-
-=back
-
-$obj-E<gt>B<decodedBody>(OPTIONS)
-
-=over 4
-
-See L<Mail::Message::Field::Full/"Access to the body">
-
-=back
-
-$obj-E<gt>B<folded>
-
-=over 4
-
-See L<Mail::Message::Field/"Access to the body">
-
-=back
-
-$obj-E<gt>B<foldedBody>([BODY])
-
-=over 4
-
-See L<Mail::Message::Field/"Access to the body">
-
-=back
-
-$obj-E<gt>B<stripCFWS>([STRING])
-
-Mail::Message::Field::Addresses-E<gt>B<stripCFWS>([STRING])
-
-=over 4
-
-See L<Mail::Message::Field/"Access to the body">
-
-=back
-
-$obj-E<gt>B<unfoldedBody>([BODY, [WRAP]])
-
-=over 4
-
-See L<Mail::Message::Field/"Access to the body">
-
-=back
-
 =head2 Access to the content
 
 
@@ -314,7 +164,7 @@ Add an ADDRESS to the field.  The addresses are organized in groups.  If no
 group is specified, the default group is taken to store the address in.  If
 no ADDRESS is specified, the option must be sufficient to create a
 L<Mail::Message::Field::Address|Mail::Message::Field::Address> from.  See the OPTIONS of
-L<Mail::Message::Field::Address::new()|"METHODS">.
+L<Mail::Message::Field::Address::new()|Mail::Message::Field::Address/"METHODS">.
 
  Option  Defined in  Default
  group               C<''>  
@@ -455,6 +305,14 @@ element is a L<Mail::Message::Field::AddrGroup|Mail::Message::Field::AddrGroup> 
 
 =back
 
+$obj-E<gt>B<study>
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the content">
+
+=back
+
 $obj-E<gt>B<toDate>([TIME])
 
 Mail::Message::Field::Addresses-E<gt>B<toDate>([TIME])
@@ -470,19 +328,6 @@ $obj-E<gt>B<toInt>
 =over 4
 
 See L<Mail::Message::Field/"Access to the content">
-
-=back
-
-=head2 Other methods
-
-
-$obj-E<gt>B<dateToTimestamp>(STRING)
-
-Mail::Message::Field::Addresses-E<gt>B<dateToTimestamp>(STRING)
-
-=over 4
-
-See L<Mail::Message::Field/"Other methods">
 
 =back
 
@@ -710,6 +555,166 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
+=head2 The field
+
+
+$obj-E<gt>B<isStructured>
+
+Mail::Message::Field::Addresses-E<gt>B<isStructured>
+
+=over 4
+
+See L<Mail::Message::Field/"The field">
+
+=back
+
+$obj-E<gt>B<length>
+
+=over 4
+
+See L<Mail::Message::Field/"The field">
+
+=back
+
+$obj-E<gt>B<nrLines>
+
+=over 4
+
+See L<Mail::Message::Field/"The field">
+
+=back
+
+$obj-E<gt>B<print>([FILEHANDLE])
+
+=over 4
+
+See L<Mail::Message::Field/"The field">
+
+=back
+
+$obj-E<gt>B<size>
+
+=over 4
+
+See L<Mail::Message::Field/"The field">
+
+=back
+
+$obj-E<gt>B<string>([WRAP])
+
+=over 4
+
+See L<Mail::Message::Field/"The field">
+
+=back
+
+$obj-E<gt>B<toDisclose>
+
+=over 4
+
+See L<Mail::Message::Field/"The field">
+
+=back
+
+=head2 Access to the name
+
+
+$obj-E<gt>B<Name>
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the name">
+
+=back
+
+$obj-E<gt>B<name>
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the name">
+
+=back
+
+$obj-E<gt>B<wellformedName>([STRING])
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the name">
+
+=back
+
+=head2 Access to the body
+
+
+$obj-E<gt>B<body>
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the body">
+
+=back
+
+$obj-E<gt>B<decodedBody>(OPTIONS)
+
+=over 4
+
+See L<Mail::Message::Field::Full/"Access to the body">
+
+=back
+
+$obj-E<gt>B<folded>
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the body">
+
+=back
+
+$obj-E<gt>B<foldedBody>([BODY])
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the body">
+
+=back
+
+$obj-E<gt>B<stripCFWS>([STRING])
+
+Mail::Message::Field::Addresses-E<gt>B<stripCFWS>([STRING])
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the body">
+
+=back
+
+$obj-E<gt>B<unfoldedBody>([BODY, [WRAP]])
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the body">
+
+=back
+
+=head2 Access to the content
+
+
+=head2 Other methods
+
+
+$obj-E<gt>B<dateToTimestamp>(STRING)
+
+Mail::Message::Field::Addresses-E<gt>B<dateToTimestamp>(STRING)
+
+=over 4
+
+See L<Mail::Message::Field/"Other methods">
+
+=back
+
+=head2 Internals
+
+
 
 
 =head1 DIAGNOSTICS
@@ -771,6 +776,9 @@ not.  Probably you should investigate this and probably inform the author
 of the package.
 
 
+=head1 DETAILS
+
+
 
 
 
@@ -781,7 +789,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

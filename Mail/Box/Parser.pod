@@ -470,7 +470,7 @@ When a message parser starts working, it takes size and modification time
 of the file at hand.  If the folder is written, it checks wether there
 were changes in the file made by external programs.
 
-Calling L<Mail::Box::update()|"The folder"> on a folder before it being closed
+Calling L<Mail::Box::update()|Mail::Box/"The folder"> on a folder before it being closed
 will read these new messages.  But the real source of this problem is
 locking: some external program (for instance the mail transfer agent,
 like sendmail) uses a different locking mechanism as you do and therefore
@@ -501,7 +501,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

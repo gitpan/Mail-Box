@@ -28,8 +28,8 @@ Mail::Message::TransferEnc - message transfer encoder/decoder
 
 This class is the base for various encoders and decoders, which are
 used during transport of the message.  This packages, and all which are
-derived, are invoked by the message's L<Mail::Message::decoded()|"The body"> and
-L<Mail::Message::encode()|"The body"> methods:
+derived, are invoked by the message's L<Mail::Message::decoded()|Mail::Message/"The body"> and
+L<Mail::Message::encode()|Mail::Message/"The body"> methods:
 
  my $message = $folder->message(3);
  my $decoded_body = $message->decoded;
@@ -315,7 +315,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

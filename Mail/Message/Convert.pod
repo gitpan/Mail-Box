@@ -92,7 +92,7 @@ Mail::Message::Convert-E<gt>B<new>(OPTIONS)
 
 Select the fields of a header which are to be handled.  Other
 fields will not be used.  The value of this option is passed to
-L<Mail::Message::Head::Complete::grepNames()|"Access to the header"> whenever converters feel
+L<Mail::Message::Head::Complete::grepNames()|Mail::Message::Head::Complete/"Access to the header"> whenever converters feel
 a need for header line selection.
 By default, the C<To>, C<From>, C<Cc>, C<Bcc>, C<Date>, C<Subject>, and their
 C<Resent-> counterparts will be selected.  Specify an empty list to get all
@@ -115,7 +115,7 @@ $obj-E<gt>B<selectedFields>(HEAD)
 
 Returns a list of fields to be included in the format.  The list is
 an ordered selection of the fields in the actual header, and filtered
-through the information as specified with L<new(fields)|"METHODS">.
+through the information as specified with L<new(fields)|Mail::Message::Convert/"METHODS">.
 
 =back
 
@@ -258,7 +258,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

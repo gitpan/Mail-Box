@@ -497,7 +497,7 @@ $obj-E<gt>B<parser>
 =over 4
 
 The parsing of messages is a combined job for the Mail::Transport::Dbx
-module (to get the right data) and L<read()|"Internals">.  Asking for the parser
+module (to get the right data) and L<read()|Mail::Box/"Internals">.  Asking for the parser
 will provide the transporter object.  If asked more than once, each time
 the same object will be returned.
 
@@ -566,6 +566,9 @@ $obj-E<gt>B<writeMessages>(OPTIONS)
 See L<Mail::Box/"Internals">
 
 =back
+
+=head3 File based folders
+
 
 =head2 Other methods
 
@@ -728,8 +731,8 @@ I<Warning:> Changes not written to read-only folder $self.
 
 You have opened the folder read-only --which is the default set
 by L<new(access)|Mail::Box/"Constructors">--, made modifications, and now want to close it.
-Set L<close(force)|"The folder"> if you want to overrule the access mode, or close
-the folder with L<close(write)|"The folder"> set to C<NEVER>.
+Set L<close(force)|Mail::Box/"The folder"> if you want to overrule the access mode, or close
+the folder with L<close(write)|Mail::Box/"The folder"> set to C<NEVER>.
 
 I<Error:> Copying failed for one message.
 
@@ -807,14 +810,18 @@ error messages to indicate the real problem.
 =head1 DETAILS
 
 
-=head2 How file based folders work
-
-
-=head2 Accessing dbx folders
+=head2 How DBX folders work
 
 DBX files are create by Outlook Express.  I can not tell you too much
 about it, because me (as author) never use Windows or MicroSoft tools.
 Still, it is possible to access some Outlook created folders from Unix.
+
+The folder structure for dbx starts with a single C<Folders.dbx>
+file.  This folder contains names of sub-folders.  Each folder can
+either contain messages, or contains sub-folders.  Combinations are
+not possible.
+
+=head2 This implementation
 
 The ol2mbox project (see L<http://sourceforge.net/project/ol2mbox/>)
 has created a C<libdbx> which can read dbx files using nearly any
@@ -823,15 +830,8 @@ to Unix/Linux and the read all the messages from it.
 
 Tassilo von Parseval wrote a Perl wrapper around this C-library,
 and distributes it as Mail::Transport::Dbx.  Although it named in
-one the Mail::Box namespaces, it is a separate product, because it
+one the MailBox namespaces, it is a separate product, because it
 requires a C compiler.  Besides, the module will have its own life.
-
-=head2 How DBX folders work
-
-The folder structure for dbx starts with a single C<Folders.dbx>
-file.  This folder contains names of sub-folders.  Each folder can
-either contain messages, or contains sub-folders.  Combinations are
-not possible.
 
 =head2 Converting DBX folders to MBOX
 
@@ -860,7 +860,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

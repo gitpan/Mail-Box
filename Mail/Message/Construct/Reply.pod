@@ -4,8 +4,6 @@
 Mail::Message::Construct::Reply - reply to a Mail::Message
 
 
-=head1 INHERITANCE
-
 
 =head1 SYNOPSIS
 
@@ -43,23 +41,23 @@ reply immediately, or you may do that later with C<set> on the header.
 ADDRESSES may be specified as string, or
 a Mail::Address object, or as array of Mail::Address objects.
 
- Option           Defined in       Default                                   
- Bcc                               undef                                     
- Cc                                <'cc' in current>                         
- From                              <'to' in current>                         
- Message-ID                        <uniquely generated>                      
- Subject                           L<replySubject()|"Constructing a message">
- To                                <sender in current>                       
- body                              undef                                     
- group_reply                       <true>                                    
- include                           C<'INLINE'>                               
- max_signature                     C<10>                                     
- message_type                      L<Mail::Message|Mail::Message>            
- postlude                          undef                                     
- prelude                           undef                                     
- quote                             '=E<gt> '                                 
- signature                         undef                                     
- strip_signature                   C<qr/^--\s/>                              
+ Option           Defined in       Default                                                                   
+ Bcc                               undef                                                                     
+ Cc                                <'cc' in current>                                                         
+ From                              <'to' in current>                                                         
+ Message-ID                        <uniquely generated>                                                      
+ Subject                           L<replySubject()|Mail::Message::Construct::Reply/"Constructing a message">
+ To                                <sender in current>                                                       
+ body                              undef                                                                     
+ group_reply                       <true>                                                                    
+ include                           C<'INLINE'>                                                               
+ max_signature                     C<10>                                                                     
+ message_type                      L<Mail::Message|Mail::Message>                                            
+ postlude                          undef                                                                     
+ prelude                           undef                                                                     
+ quote                             '=E<gt> '                                                                 
+ signature                         undef                                                                     
+ strip_signature                   C<qr/^--\s/>                                                              
 
 . Bcc ADDRESSES
 
@@ -105,7 +103,7 @@ added.
 Force the subject line to the specific STRING, or the result of the
 subroutine specified by CODE.  The subroutine will be called passing
 the subject of the original message as only argument.  By default,
-L<Mail::Message::replySubject()|"Constructing a message"> is used.
+L<Mail::Message::replySubject()|Mail::Message::Construct::Reply/"Constructing a message"> is used.
 
 =back
 
@@ -190,7 +188,7 @@ reply is INLINEd.
 =over 4
 
 The line(s) which will be added before the quoted reply lines.  If nothing
-is specified, the result of the L<replyPrelude()|"Constructing a message"> method
+is specified, the result of the L<replyPrelude()|Mail::Message::Construct::Reply/"Constructing a message"> method
 is taken.  When C<undef> is specified, no prelude will be added.
 
 =back
@@ -224,7 +222,7 @@ before it, and added behind the epilogue.
 =over 4
 
 Remove the signature of the sender.  The value of this parameter is
-passed to L<Mail::Message::Body::stripSignature(pattern)|"Constructing a body"> unless the
+passed to L<Mail::Message::Body::stripSignature(pattern)|Mail::Message::Body::Construct/"Constructing a body"> unless the
 source text is not included.  The signature is stripped from the message
 before quoting.
 
@@ -292,7 +290,7 @@ I<Example:>
 
 I<Error:> Cannot include reply source as $include.
 
-Unknown alternative for the C<include> option of L<reply()|"Constructing a message">.  Valid
+Unknown alternative for the C<include> option of L<reply()|Mail::Message::Construct::Reply/"Constructing a message">.  Valid
 choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
 
@@ -306,7 +304,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

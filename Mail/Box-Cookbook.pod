@@ -4,8 +4,6 @@
 Mail::Box-Cookbook - Examples how to use Mail::Box
 
 
-=head1 INHERITANCE
-
 
 
 =head1 DESCRIPTION
@@ -177,15 +175,15 @@ There are three ways to create a message which is not a reply:
 
 =over 4
 
-=item * L<Mail::Message::buildFromBody()|"Constructing a message">
+=item * L<Mail::Message::buildFromBody()|Mail::Message::Construct::Build/"Constructing a message">
 
 Start with creating a body, and transform that into a message.
 
-=item * L<Mail::Message::build()|"Constructing a message">
+=item * L<Mail::Message::build()|Mail::Message::Construct::Build/"Constructing a message">
 
 create the whole message at once.
 
-=item * L<Mail::Message::read()|"Constructing a message">
+=item * L<Mail::Message::read()|Mail::Message::Construct::Read/"Constructing a message">
 
 read a message from a file-handle, scalar, or array of lines.
 
@@ -273,7 +271,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -92,7 +92,7 @@ $obj-E<gt>B<fieldToHtml>(FIELD, [SUBJECT])
 
 Reformat one header line field to HTML.  The FIELD's name
 is printed in bold, followed by the formatted field content,
-which is produced by L<fieldContentsToHtml()|"Converting">.
+which is produced by L<fieldContentsToHtml()|Mail::Message::Convert::Html/"Converting">.
 
 =back
 
@@ -130,7 +130,7 @@ $obj-E<gt>B<headToHtmlTable>(HEAD, [TABLE-PARAMS])
 
 =over 4
 
-Produce a display of the L<selectedFields()|"Converting"> of the header in a
+Produce a display of the L<selectedFields()|Mail::Message::Convert/"Converting"> of the header in a
 table shape.  The optional TABLE-PARAMS are added as parameters to the
 produced TABLE tag.  In list context, the separate lines are returned.
 In scalar context, everything is returned as one.
@@ -299,7 +299,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -276,7 +276,7 @@ See L<Mail::Message/"The header">
 
 =back
 
-$obj-E<gt>B<get>(FIELD)
+$obj-E<gt>B<get>(FIELDNAME)
 
 =over 4
 
@@ -309,6 +309,14 @@ See L<Mail::Message/"The header">
 =back
 
 $obj-E<gt>B<sender>
+
+=over 4
+
+See L<Mail::Message/"The header">
+
+=back
+
+$obj-E<gt>B<study>(FIELDNAME)
 
 =over 4
 
@@ -490,23 +498,7 @@ See L<Mail::Message/"Flags">
 
 =back
 
-$obj-E<gt>B<labelsToStatus>
-
-=over 4
-
-See L<Mail::Message/"Flags">
-
-=back
-
 $obj-E<gt>B<modified>([BOOLEAN])
-
-=over 4
-
-See L<Mail::Message/"Flags">
-
-=back
-
-$obj-E<gt>B<statusToLabels>
 
 =over 4
 
@@ -764,6 +756,14 @@ See L<Mail::Message/"Cleanup">
 
 =back
 
+$obj-E<gt>B<destruct>
+
+=over 4
+
+See L<Mail::Box::Message/"Cleanup">
+
+=back
+
 $obj-E<gt>B<inGlobalDestruction>
 
 =over 4
@@ -783,12 +783,12 @@ to create a message parser for the specified filename.
 
 I<Error:> Cannot include forward source as $include.
 
-Unknown alternative for the L<forward(include)|"Constructing a message">.  Valid choices are
+Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
 C<NO>, C<INLINE>, and C<ATTACH>.
 
 I<Error:> Cannot include reply source as $include.
 
-Unknown alternative for the C<include> option of L<reply()|"Constructing a message">.  Valid
+Unknown alternative for the C<include> option of L<reply()|Mail::Message::Construct::Reply/"Constructing a message">.  Valid
 choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
 I<Error:> Cannot write message to $filename: $!
@@ -809,7 +809,7 @@ If a forward message is created, a destination address must be specified.
 
 I<Error:> No default mailer found to send message.
 
-The message L<send()|"The Message"> mechanism had not enough information to automatically
+The message L<send()|Mail::Message/"The Message"> mechanism had not enough information to automatically
 find a mail transfer agent to sent this message.  Specify a mailer
 explicitly using the C<via> options.
 
@@ -842,6 +842,43 @@ I<Error:> no rebuild rule $name defined.
 =head1 DETAILS
 
 
+=head2 Labels
+
+
+=head3 The .mh_sequences file
+
+Typically, the file which contains the labels is called C<.mh_sequences>.
+The MH messages are numbered from C<1>.  As example content for
+C<.mh_sequences>:
+
+ cur: 93
+ unseen: 32 35-56 67-80
+
+To generalize labels on messages, two are treated specially:
+
+=over 4
+
+=item * cur
+
+The C<cur> specifies the number of the message where the user stopped
+reading mail from this folder at last access.  Internally in these
+modules referred to as label C<current>.
+
+=item * unseen
+
+With C<unseen> is listed which message was never read.
+This must be a mistake in the design of MH: it must be a source of
+confusion.  People should never use labels with a negation in the
+name:
+
+ if($seen)           if(!$unseen)    #yuk!
+ if(!$seen)          if($unseen)
+ unless($seen)       unless($unseen) #yuk!
+
+So: label C<unseen> is translated into C<seen> for internal use.
+
+=back
+
 
 
 
@@ -852,7 +889,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -23,7 +23,7 @@ Mail::Transport::POP3 - receive messages via POP3
 Receive messages via the POP3 protocol from one remote server, as specified
 in rfc1939.  This object hides much of the complications in the protocol and
 recovers broken connections automatically.  Although it is part of the
-Mail::Box module, this object can be used separately.
+MailBox distribution, this object can be used separately.
 
 
 
@@ -112,8 +112,8 @@ $obj-E<gt>B<deleteFetched>
 
 =over 4
 
-Mark all messages that have been fetched with L<message()|"Exchanging information"> for deletion.
-See L<fetched()|"Exchanging information">.
+Mark all messages that have been fetched with L<message()|Mail::Transport::POP3/"Exchanging information"> for deletion.
+See L<fetched()|Mail::Transport::POP3/"Exchanging information">.
 
 =back
 
@@ -145,7 +145,7 @@ $obj-E<gt>B<fetched>
 =over 4
 
 Returns a reference to a list of ID's that have been fetched using
-L<message()|"Exchanging information">.  This can be used to update a database of messages that
+L<message()|Mail::Transport::POP3/"Exchanging information">.  This can be used to update a database of messages that
 were fetched (but maybe not yet deleted) from the mailbox.
 
 Please note that if the POP3 server did not support the UIDL command, this
@@ -153,7 +153,7 @@ method will always return undef because it is not possibly to reliably
 identify messages between sessions (other than looking at the contents of
 the messages themselves).
 
-See also L<deleteFetched()|"Exchanging information">.
+See also L<deleteFetched()|Mail::Transport::POP3/"Exchanging information">.
 
 =back
 
@@ -523,7 +523,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -24,7 +24,7 @@ Mail::Message::Convert::HtmlFormatText - Convert HTML into Text
 Convert HTML/XHTML message body objects into plain text bodies using
 HTML::FormatText.  This package requires HTML::TreeBuilder and
 HTML::FormatText which are not installed by default together with
-Mail::Box.  See also L<Mail::Message::rebuild()|"Constructing a message"> with rule
+Mail::Box.  See also L<Mail::Message::rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> with rule
 C<text_alternative_for_html>.
 
 
@@ -229,7 +229,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

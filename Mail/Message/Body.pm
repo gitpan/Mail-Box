@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
 use base 'Mail::Reporter';
 
 use Mail::Message::Field;
@@ -389,5 +389,6 @@ sub AUTOLOAD(@)
 }   
 
 #------------------------------------------
+
 
 1;

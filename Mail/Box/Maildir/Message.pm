@@ -1,7 +1,7 @@
 
 package Mail::Box::Maildir::Message;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
 use base 'Mail::Box::Dir::Message';
 
 use strict;
@@ -68,6 +68,7 @@ sub deleted($)
 
 #-------------------------------------------
 
+
 sub label(@)
 {   my $self   = shift;
     return $self->SUPER::label unless @_;
@@ -75,25 +76,6 @@ sub label(@)
     my $return = $self->SUPER::label(@_);
     $self->labelsToFilename;
     $return;
-}
-
-#-------------------------------------------
-
-
-sub accept($)
-{   my $self   = shift;
-    my $old    = $self->filename;
-
-    unless($old =~ m!(.*)/(new|cur|tmp)/([^:]*)(\:[^:]*)?$! )
-    {   $self->log(ERROR => "Message $old is not in a Maildir folder.\n");
-        return undef;
-    }
-
-    return $self if $2 eq 'cur';
-    my $new = "$1/cur/$3";
-
-    $self->log(PROGRESS => "Message $old is accepted.\n");
-    $self->filename($new);
 }
 
 #-------------------------------------------
@@ -129,5 +111,25 @@ sub labelsToFilename()
 }
 
 #-------------------------------------------
+
+
+sub accept($)
+{   my $self   = shift;
+    my $old    = $self->filename;
+
+    unless($old =~ m!(.*)/(new|cur|tmp)/([^:]*)(\:[^:]*)?$! )
+    {   $self->log(ERROR => "Message $old is not in a Maildir folder.\n");
+        return undef;
+    }
+
+    return $self if $2 eq 'cur';
+    my $new = "$1/cur/$3";
+
+    $self->log(PROGRESS => "Message $old is accepted.\n");
+    $self->filename($new);
+}
+
+#-------------------------------------------
+
 
 1;

@@ -263,7 +263,7 @@ $obj-E<gt>B<printMatch>([FILEHANDLE], HASH)
 
 =over 4
 
-Print the information about the match (see L<new(deliver)|"METHODS">) in
+Print the information about the match (see L<new(deliver)|Mail::Box::Search/"METHODS">) in
 some understandable way.  If no file handle
 is specified, the output will go to the selected filehandle (see
 C<perldoc -f select>).
@@ -392,12 +392,12 @@ See L<Mail::Reporter/"Cleanup">
 
 I<Error:> Cannot search in body.
 
-Th search object does not implement L<inBody()|"Searching">, and can therefore
+Th search object does not implement L<inBody()|Mail::Box::Search/"Searching">, and can therefore
 not search a message body.
 
 I<Error:> Cannot search in header.
 
-Th search object does not implement L<inHead()|"Searching">, and can therefore
+Th search object does not implement L<inHead()|Mail::Box::Search/"Searching">, and can therefore
 not search a message header.
 
 I<Error:> Don't know how to deliver via results in $way.
@@ -428,7 +428,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -21,7 +21,7 @@ BEGIN
    {   plan(skip_all => 'Mail::Box::Dbx is not installed');
        exit 0;
    }
-   elsif(! -d '45dbx/testfolders')
+   elsif(not (-d '45dbx/testfolders' || -d 'tests/45dbx/testfolders'))
    {   plan(skip_all => 'dbx test folders are not distributed');
        exit 0;
    }

@@ -3,43 +3,47 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
+
+use Mail::Box::FastScalar;
 
 
 sub read($@)
-{   my ($class, $from) = (shift, shift);
+{   my ($class, $from, %args) = @_;
     my ($filename, $file);
     my $ref       = ref $from;
 
-    require IO::Scalar;
-
     if(!$ref)
     {   $filename = 'scalar';
-        $file     = IO::Scalar->new(\$from);
+        $file     = Mail::Box::FastScalar->new(\$from);
     }
     elsif($ref eq 'SCALAR')
     {   $filename = 'ref scalar';
-        $file     = IO::Scalar->new($from);
+        $file     = Mail::Box::FastScalar->new($from);
     }
     elsif($ref eq 'ARRAY')
     {   $filename = 'array of lines';
         my $buffer= join '', @$from;
-        $file     = IO::Scalar->new(\$buffer);
+        $file     = Mail::Box::FastScalar->new(\$buffer);
     }
     elsif($ref eq 'GLOB')
     {   $filename = 'file (GLOB)';
         local $/;
         my $buffer= <$from>;
-        $file     = IO::Scalar->new(\$buffer);
+        $file     = Mail::Box::FastScalar->new(\$buffer);
     }
     elsif($ref && $from->isa('IO::Handle'))
     {   $filename = 'file ('.ref($from).')';
         my $buffer= join '', $from->getlines;
-        $file     = IO::Scalar->new(\$buffer);
+        $file     = Mail::Box::FastScalar->new(\$buffer);
     }
     else
     {   croak "Cannot read from $from";
     }
+
+    my $strip_status = exists $args{strip_status_fields}
+                     ? delete $args{strip_status_fields}
+                     : 1;
 
     require Mail::Box::Parser::Perl;  # not parseable by C parser
     my $parser = Mail::Box::Parser::Perl->new
@@ -48,7 +52,7 @@ sub read($@)
      , trusted   => 1
      );
 
-    my $self = $class->new(@_);
+    my $self = $class->new(%args);
     $self->readFromParser($parser);
     $parser->stop;
 
@@ -56,7 +60,8 @@ sub read($@)
     $head->set('Message-ID' => $self->messageId)
         unless $head->get('Message-ID');
 
-    $self->statusToLabels;
+    $head->delete('Status', 'X-Status') if $strip_status;
+
     $self;
 }
 

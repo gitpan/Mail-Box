@@ -45,7 +45,7 @@ $obj-E<gt>B<printEscapedFrom>(FILEHANDLE)
 =over 4
 
 Prints the message part, but all lines which start with 'From ' will get
-a leading C<gt>.  See L<Mail::Message::Body::printEscapedFrom()|"Access to the payload">.
+a leading C<gt>.  See L<Mail::Message::Body::printEscapedFrom()|Mail::Message::Body/"Access to the payload">.
 
 =back
 
@@ -68,7 +68,7 @@ Transforms a BODY or MESSAGE to a real message part.  The MULTIPART
 refers to the parental body.
 
 When ta BODY is specified, extra HEADERS can be supplied as well.
-Bodies are coerced into message parts by calling L<buildFromBody()|"METHODS">.
+Bodies are coerced into message parts by calling L<buildFromBody()|Mail::Message::Part/"METHODS">.
 If you specify a MESSAGE residing in a folder, this message will
 automatically be cloned.
 
@@ -352,7 +352,7 @@ See L<Mail::Message/"The header">
 
 =back
 
-$obj-E<gt>B<get>(FIELD)
+$obj-E<gt>B<get>(FIELDNAME)
 
 =over 4
 
@@ -385,6 +385,14 @@ See L<Mail::Message/"The header">
 =back
 
 $obj-E<gt>B<sender>
+
+=over 4
+
+See L<Mail::Message/"The header">
+
+=back
+
+$obj-E<gt>B<study>(FIELDNAME)
 
 =over 4
 
@@ -474,7 +482,7 @@ $obj-E<gt>B<delete>
 
 =over 4
 
-Do not print or send this part of the message anymore.  See L<deleted()|"Flags">.
+Do not print or send this part of the message anymore.  See L<deleted()|Mail::Message::Part/"Flags">.
 The time stamp of the moment of deletion is stored as value.  When the same
 message is deleted more than once, the first time stamp will stay.
 
@@ -491,8 +499,8 @@ $obj-E<gt>B<deleted>([BOOLEAN])
 =over 4
 
 Set the delete flag for this part of the multipart message body.  Without
-argument, the method returns the same is the L<isDeleted()|"Flags"> method, which is
-prefered.  When a true value is given, L<delete()|"Flags"> is called.
+argument, the method returns the same is the L<isDeleted()|Mail::Message::Part/"Flags"> method, which is
+prefered.  When a true value is given, L<delete()|Mail::Message::Part/"Flags"> is called.
 
 =back
 
@@ -537,23 +545,7 @@ See L<Mail::Message/"Flags">
 
 =back
 
-$obj-E<gt>B<labelsToStatus>
-
-=over 4
-
-See L<Mail::Message/"Flags">
-
-=back
-
 $obj-E<gt>B<modified>([BOOLEAN])
-
-=over 4
-
-See L<Mail::Message/"Flags">
-
-=back
-
-$obj-E<gt>B<statusToLabels>
 
 =over 4
 
@@ -763,6 +755,17 @@ See L<Mail::Message/"Cleanup">
 
 =back
 
+$obj-E<gt>B<destruct>
+
+=over 4
+
+Message parts can not be destructed per part: only whole messages can
+be forcefully freed from memory.  Of course, you can L<delete()|Mail::Message::Part/"Flags"> separate
+parts, which only sets a flag not to write a part again.  Furthermore,
+you may cosider L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> to get rit of deleted parts.
+
+=back
+
 $obj-E<gt>B<inGlobalDestruction>
 
 =over 4
@@ -777,12 +780,12 @@ See L<Mail::Reporter/"Cleanup">
 
 I<Error:> Cannot include forward source as $include.
 
-Unknown alternative for the L<forward(include)|"Constructing a message">.  Valid choices are
+Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
 C<NO>, C<INLINE>, and C<ATTACH>.
 
 I<Error:> Cannot include reply source as $include.
 
-Unknown alternative for the C<include> option of L<reply()|"Constructing a message">.  Valid
+Unknown alternative for the C<include> option of L<reply()|Mail::Message::Construct::Reply/"Constructing a message">.  Valid
 choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
 I<Error:> No address to create forwarded to.
@@ -791,7 +794,7 @@ If a forward message is created, a destination address must be specified.
 
 I<Error:> No default mailer found to send message.
 
-The message L<send()|"The Message"> mechanism had not enough information to automatically
+The message L<send()|Mail::Message/"The Message"> mechanism had not enough information to automatically
 find a mail transfer agent to sent this message.  Specify a mailer
 explicitly using the C<via> options.
 
@@ -802,6 +805,11 @@ implement this method where it should. This message means that some other
 related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
+
+I<Error:> You cannot destruct message parts, only whole messages
+
+Message parts can not be destructed per part: only whole messages can
+be forcefully freed from memory. Consider L<delete()|Mail::Message::Part/"Flags"> or L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message">.
 
 I<Error:> no rebuild rule $name defined.
 
@@ -820,7 +828,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

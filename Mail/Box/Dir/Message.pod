@@ -110,7 +110,7 @@ The file where the message is stored in.
 
 =over 4
 
-See L<Mail::Box::new(fix_headers)|"Constructors">.
+See L<Mail::Box::new(fix_headers)|Mail::Box/"Constructors">.
 
 =back
 
@@ -353,7 +353,7 @@ See L<Mail::Message/"The header">
 
 =back
 
-$obj-E<gt>B<get>(FIELD)
+$obj-E<gt>B<get>(FIELDNAME)
 
 =over 4
 
@@ -386,6 +386,14 @@ See L<Mail::Message/"The header">
 =back
 
 $obj-E<gt>B<sender>
+
+=over 4
+
+See L<Mail::Message/"The header">
+
+=back
+
+$obj-E<gt>B<study>(FIELDNAME)
 
 =over 4
 
@@ -563,23 +571,7 @@ See L<Mail::Message/"Flags">
 
 =back
 
-$obj-E<gt>B<labelsToStatus>
-
-=over 4
-
-See L<Mail::Message/"Flags">
-
-=back
-
 $obj-E<gt>B<modified>([BOOLEAN])
-
-=over 4
-
-See L<Mail::Message/"Flags">
-
-=back
-
-$obj-E<gt>B<statusToLabels>
 
 =over 4
 
@@ -843,6 +835,14 @@ See L<Mail::Message/"Cleanup">
 
 =back
 
+$obj-E<gt>B<destruct>
+
+=over 4
+
+See L<Mail::Box::Message/"Cleanup">
+
+=back
+
 $obj-E<gt>B<inGlobalDestruction>
 
 =over 4
@@ -862,12 +862,12 @@ to create a message parser for the specified filename.
 
 I<Error:> Cannot include forward source as $include.
 
-Unknown alternative for the L<forward(include)|"Constructing a message">.  Valid choices are
+Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
 C<NO>, C<INLINE>, and C<ATTACH>.
 
 I<Error:> Cannot include reply source as $include.
 
-Unknown alternative for the C<include> option of L<reply()|"Constructing a message">.  Valid
+Unknown alternative for the C<include> option of L<reply()|Mail::Message::Construct::Reply/"Constructing a message">.  Valid
 choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
 I<Error:> Cannot write message to $filename: $!
@@ -888,7 +888,7 @@ If a forward message is created, a destination address must be specified.
 
 I<Error:> No default mailer found to send message.
 
-The message L<send()|"The Message"> mechanism had not enough information to automatically
+The message L<send()|Mail::Message/"The Message"> mechanism had not enough information to automatically
 find a mail transfer agent to sent this message.  Specify a mailer
 explicitly using the C<via> options.
 
@@ -931,7 +931,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -4,8 +4,6 @@
 Mail::Message::Construct::Forward - forwarding a Mail::Message
 
 
-=head1 INHERITANCE
-
 
 =head1 SYNOPSIS
 
@@ -39,23 +37,23 @@ You may forward a whole message, but also message parts.
 You may wish to overrule some of the default header settings for the
 reply immediately, or you may do that later with C<set> on the header.
 
- Option           Defined in       Default                                     
- Bcc                               undef                                       
- Cc                                undef                                       
- Date                              <now>                                       
- From                              <'to' in current>                           
- Message-ID                        <uniquely generated>                        
- Subject                           L<forwardSubject()|"Constructing a message">
- To                                <required>                                  
- body                              undef                                       
- include                           C<'INLINE'>                                 
- max_signature                     C<10>                                       
- message_type                      L<Mail::Message|Mail::Message>              
- postlude                          undef                                       
- prelude                           undef                                       
- quote                             undef                                       
- signature                         undef                                       
- strip_signature                   C<qr/^--\s/>                                
+ Option           Defined in       Default                                                                       
+ Bcc                               undef                                                                         
+ Cc                                undef                                                                         
+ Date                              <now>                                                                         
+ From                              <'to' in current>                                                             
+ Message-ID                        <uniquely generated>                                                          
+ Subject                           L<forwardSubject()|Mail::Message::Construct::Forward/"Constructing a message">
+ To                                <required>                                                                    
+ body                              undef                                                                         
+ include                           C<'INLINE'>                                                                   
+ max_signature                     C<10>                                                                         
+ message_type                      L<Mail::Message|Mail::Message>                                                
+ postlude                          undef                                                                         
+ prelude                           undef                                                                         
+ quote                             undef                                                                         
+ signature                         undef                                                                         
+ strip_signature                   C<qr/^--\s/>                                                                  
 
 . Bcc ADDRESSES
 
@@ -108,7 +106,7 @@ added.
 Force the subject line to the specific STRING, or the result of the
 subroutine specified by CODE.  The subroutine will be called passing
 the subject of the original message as only argument.  By default,
-the L<forwardSubject()|"Constructing a message"> method is used.
+the L<forwardSubject()|Mail::Message::Construct::Forward/"Constructing a message"> method is used.
 
 =back
 
@@ -147,7 +145,7 @@ messages will always be enclosed as attachment.
 
 =over 4
 
-Passed to L<Mail::Message::Body::stripSignature(max_lines)|"Constructing a body">.  Only
+Passed to L<Mail::Message::Body::stripSignature(max_lines)|Mail::Message::Body::Construct/"Constructing a body">.  Only
 effective for single-part messages.
 
 =back
@@ -178,7 +176,7 @@ forwarded message is C<INLINE>d.
 =over 4
 
 The line(s) which will be added before the quoted forwarded lines.
-If nothing is specified, the result of the L<forwardPrelude()|"Constructing a message"> method
+If nothing is specified, the result of the L<forwardPrelude()|Mail::Message::Construct::Forward/"Constructing a message"> method
 is used.  When C<undef> is specified, no prelude will be added.
 
 =back
@@ -212,7 +210,7 @@ before it, and added behind the epilogue.
 =over 4
 
 Remove the signature of the sender.  The value of this parameter is
-passed to L<Mail::Message::Body::stripSignature(pattern)|"Constructing a body">, unless the
+passed to L<Mail::Message::Body::stripSignature(pattern)|Mail::Message::Body::Construct/"Constructing a body">, unless the
 source text is not included.  The signature is stripped from the message
 before quoting.
 
@@ -279,7 +277,7 @@ I<Example:>
 
 I<Error:> Cannot include forward source as $include.
 
-Unknown alternative for the L<forward(include)|"Constructing a message">.  Valid choices are
+Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
 C<NO>, C<INLINE>, and C<ATTACH>.
 
 I<Error:> No address to create forwarded to.
@@ -297,7 +295,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -874,5 +874,6 @@ sub DESTROY
 # MB_save_on_exit: new(save_on_exit)
 
 #-------------------------------------------
+
 
 1;

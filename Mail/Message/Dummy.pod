@@ -25,7 +25,7 @@ As long as the referenced messages are not found inside the mailbox,
 their place is occupied by a dummy.
 
 Be careful when using modules which may create dummies.  Before trying to
-access the header or body use L<isDummy()|"The Message"> to check if the message is a
+access the header or body use L<isDummy()|Mail::Message/"The Message"> to check if the message is a
 dummy message.
 
 
@@ -317,7 +317,7 @@ See L<Mail::Message/"The header">
 
 =back
 
-$obj-E<gt>B<get>(FIELD)
+$obj-E<gt>B<get>(FIELDNAME)
 
 =over 4
 
@@ -333,11 +333,9 @@ See L<Mail::Message/"The header">
 
 =back
 
-$obj-E<gt>B<head>([HEAD])
+$obj-E<gt>B<head>(...)
 
 =over 4
-
-See L<Mail::Message/"The header">
 
 =back
 
@@ -350,6 +348,14 @@ See L<Mail::Message/"The header">
 =back
 
 $obj-E<gt>B<sender>
+
+=over 4
+
+See L<Mail::Message/"The header">
+
+=back
+
+$obj-E<gt>B<study>(FIELDNAME)
 
 =over 4
 
@@ -435,6 +441,14 @@ See L<Mail::Message/"The body">
 =head2 Flags
 
 
+$obj-E<gt>B<isDeleted>
+
+=over 4
+
+See L<Mail::Message/"Flags">
+
+=back
+
 $obj-E<gt>B<isModified>
 
 =over 4
@@ -459,23 +473,7 @@ See L<Mail::Message/"Flags">
 
 =back
 
-$obj-E<gt>B<labelsToStatus>
-
-=over 4
-
-See L<Mail::Message/"Flags">
-
-=back
-
 $obj-E<gt>B<modified>([BOOLEAN])
-
-=over 4
-
-See L<Mail::Message/"Flags">
-
-=back
-
-$obj-E<gt>B<statusToLabels>
 
 =over 4
 
@@ -685,6 +683,14 @@ See L<Mail::Message/"Cleanup">
 
 =back
 
+$obj-E<gt>B<destruct>
+
+=over 4
+
+See L<Mail::Message/"Cleanup">
+
+=back
+
 $obj-E<gt>B<inGlobalDestruction>
 
 =over 4
@@ -699,12 +705,12 @@ See L<Mail::Reporter/"Cleanup">
 
 I<Error:> Cannot include forward source as $include.
 
-Unknown alternative for the L<forward(include)|"Constructing a message">.  Valid choices are
+Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
 C<NO>, C<INLINE>, and C<ATTACH>.
 
 I<Error:> Cannot include reply source as $include.
 
-Unknown alternative for the C<include> option of L<reply()|"Constructing a message">.  Valid
+Unknown alternative for the C<include> option of L<reply()|Mail::Message::Construct::Reply/"Constructing a message">.  Valid
 choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
 I<Error:> Message-Id is required for a dummy.
@@ -718,7 +724,7 @@ If a forward message is created, a destination address must be specified.
 
 I<Error:> No default mailer found to send message.
 
-The message L<send()|"The Message"> mechanism had not enough information to automatically
+The message L<send()|Mail::Message/"The Message"> mechanism had not enough information to automatically
 find a mail transfer agent to sent this message.  Specify a mailer
 explicitly using the C<via> options.
 
@@ -729,6 +735,14 @@ implement this method where it should. This message means that some other
 related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
+
+I<Error:> You cannot take the head/body of a dummy message
+
+Dummy messages are place-holders in message threads: the thread detected
+the existence of the message, because it found the message-id in a
+Reply-To or References field, however it did not find the header and
+body of the message yet.  Use L<isDummy()|Mail::Message/"The Message"> to check whether the thread
+node returned a dummy or not.
 
 I<Error:> no rebuild rule $name defined.
 
@@ -747,7 +761,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -25,15 +25,6 @@ any way.  RFC2822 defines some unstructured fields, but by default all
 unknown fields are unstructured as well.  Things like attributes and
 comments have no meaning for unstructured fields, but encoding does.
 
-=head2 Header fields
-
-
-=head2 Folding
-
-
-=head2 Performance consideration
-
-
 
 =head1 OVERLOADED
 
@@ -155,6 +146,122 @@ I<Example:>
  # Use autodetect
  my $s = Mail::Message::Field::Full->new('Comment', 'Hi!');
  my $s = Mail::Message::Field::Full->new('Comment: Hi!');
+
+=back
+
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Message::Field::Unstructured-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<errors>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Message::Field::Unstructured-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Message::Field::Unstructured-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -386,6 +493,14 @@ See L<Mail::Message::Field::Full/"Access to the content">
 
 =back
 
+$obj-E<gt>B<study>
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the content">
+
+=back
+
 $obj-E<gt>B<toDate>([TIME])
 
 Mail::Message::Field::Unstructured-E<gt>B<toDate>([TIME])
@@ -506,122 +621,6 @@ See L<Mail::Message::Field/"Internals">
 
 =back
 
-=head2 Error handling
-
-
-$obj-E<gt>B<AUTOLOAD>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
-
-Mail::Message::Field::Unstructured-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
-
-Mail::Message::Field::Unstructured-E<gt>B<log>([LEVEL [,STRINGS]])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
-
-Mail::Message::Field::Unstructured-E<gt>B<logPriority>(LEVEL)
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-=head2 Cleanup
-
-
-$obj-E<gt>B<DESTROY>
-
-=over 4
-
-See L<Mail::Reporter/"Cleanup">
-
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
-
-See L<Mail::Reporter/"Cleanup">
-
-=back
-
 
 
 =head1 DIAGNOSTICS
@@ -664,6 +663,9 @@ not.  Probably you should investigate this and probably inform the author
 of the package.
 
 
+=head1 DETAILS
+
+
 
 
 
@@ -674,7 +676,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

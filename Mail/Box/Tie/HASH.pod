@@ -4,8 +4,6 @@
 Mail::Box::Tie::HASH - access an existing message folder as a hash
 
 
-=head1 INHERITANCE
-
 
 =head1 SYNOPSIS
 
@@ -113,7 +111,7 @@ $obj-E<gt>B<FIRSTKEY>
 
 =over 4
 
-See L<NEXTKEY()|"Tied Interface">.
+See L<NEXTKEY()|Mail::Box::Tie::HASH/"Tied Interface">.
 
 =back
 
@@ -121,12 +119,12 @@ $obj-E<gt>B<NEXTKEY>(PREVIOUS)
 
 =over 4
 
-L<FIRSTKEY()|"Tied Interface"> returns the first message-id/message pair from the folder,
+L<FIRSTKEY()|Mail::Box::Tie::HASH/"Tied Interface"> returns the first message-id/message pair from the folder,
 and NEXTKEY returns the message-id/message pair for the next message,
 in the order in which the message is stored in the folder.
 
 Messages flagged for deletion will B<not> be returned. See the
-L<Mail::Box::messages()|"The messages"> method of the folder type for more information
+L<Mail::Box::messages()|Mail::Box/"The messages"> method of the folder type for more information
 about the folder message order.
 
 I<Example:> 
@@ -172,7 +170,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

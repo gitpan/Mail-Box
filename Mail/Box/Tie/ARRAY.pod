@@ -4,8 +4,6 @@
 Mail::Box::Tie::ARRAY - access an existing message folder as array
 
 
-=head1 INHERITANCE
-
 
 =head1 SYNOPSIS
 
@@ -136,7 +134,7 @@ $obj-E<gt>B<STORE>(INDEX, MESSAGE)
 Random message replacement is is not permitted--doing so would disturb threads
 etc.  An error occurs if you try to do this. The only thing which is allowed
 is to store a message at the first free index at the end of the folder (which
-is also achievable with L<PUSH()|"Tied Interface">).
+is also achievable with L<PUSH()|Mail::Box::Tie::ARRAY/"Tied Interface">).
 
 I<Example:> 
 
@@ -159,6 +157,12 @@ Sets all messages behind from LENGTH to the end of folder to be deleted.
 
 =head1 DETAILS
 
+
+=head2 Folder tied as array
+
+
+=head3 Limitations
+
 This module implements C<TIEARRAY>, C<FETCH>, C<STORE>, C<FETCHSIZE>,
 C<STORESIZE>, C<DELETE>, C<PUSH>, and C<DESTROY>.
 
@@ -176,7 +180,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

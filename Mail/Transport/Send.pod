@@ -136,7 +136,7 @@ this is used to overrule the addresses within the message.  If the ADDRESS
 is C<undef> it is ignored.
 
 If no ADDRESS is specified, the message is scanned for resent groups
-(see L<Mail::Message::Head::Complete::resentGroups()|"Access to the header">).  The addresses
+(see L<Mail::Message::Head::Complete::resentGroups()|Mail::Message::Head::Complete/"Access to the header">).  The addresses
 found in the first (is latest added) group are used.  If no resent groups
 are found, the normal C<To>, C<Cc>, and C<Bcc> lines are taken.
 
@@ -370,7 +370,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

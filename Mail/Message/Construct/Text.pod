@@ -4,8 +4,6 @@
 Mail::Message::Construct::Text - capture a Mail::Message as text
 
 
-=head1 INHERITANCE
-
 
 =head1 SYNOPSIS
 
@@ -101,7 +99,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -70,50 +70,6 @@ file withing the same directory.
 No object in your program will be of type C<Mail::Box>: it is only used
 as base class for the real folder types.  C<Mail::Box> is extended by
 
-=over 4
-
-=item * L<Mail::Box::Mbox|Mail::Box::Mbox>
-
-a folder type in which all related messages are stored in one file.  This
-is very common folder type for UNIX.
-
-=item * L<Mail::Box::MH|Mail::Box::MH>
-
-this folder creates a directory for each folder, and a message is one
-file inside that directory.  The message files are numbered sequentially
-on order of arrival.  A special C<.mh_sequences> file maintains flags
-about the messages.
-
-=item * L<Mail::Box::Maildir|Mail::Box::Maildir>
-
-maildir folders have a directory for each folder, although the first
-implementation only supported one folder in total.  A folder directory
-contains a C<tmp>, C<new>, and C<cur> subdirectory, each containting
-messages with a different purpose.  New messages are created in C<tmp>,
-then moved to C<new> (ready to be accepted).  Later, they are moved to
-the C<cur> directory (accepted).  Each message is one file with a name
-starting with timestamp.  The name also contains flags about the status
-of the message.
-
-=item * L<Mail::Box::POP3|Mail::Box::POP3>
-
-Pop3 is a protocol which can be used to retreive messages from a
-remote system.  After the connection to a POP server is made, the
-messages can be looked at and removed as if they are on the local
-system.
-
-=item * L<Mail::Box::Dbx|Mail::Box::Dbx>
-
-Dbx files are created by Outlook Express. Using the external (optional)
-Mail::Transport::Dbx module, you can read these folders.  Writing and
-deletion of messages is not supported. Read access is enough to do
-folder conversions, for instance.
-
-=back
-
-Other folder types are on the (long) wishlist to get implemented.  Please,
-help implementing more of them.
-
 
 =head1 OVERLOADED
 
@@ -142,7 +98,7 @@ overload: B<@{}>
 =over 4
 
 When the folder is used as if it is a reference to an array, it will
-show the messages, like L<messages()|"The messages"> and L<message()|"The messages"> would do.
+show the messages, like L<messages()|Mail::Box/"The messages"> and L<message()|Mail::Box/"The messages"> would do.
 
 I<Example:> use overloaded folder as array
 
@@ -316,7 +272,7 @@ Automatically create the folder when it does not exist yet.  This will only
 work when access is granted for writing or appending to the folder.
 
 Be careful: you may create a different folder type than you expect unless you
-explicitly specify L<Mail::Box::Manager::open(type)|"Manage folders">.
+explicitly specify L<Mail::Box::Manager::open(type)|Mail::Box::Manager/"Manage folders">.
 
 =back
 
@@ -345,8 +301,8 @@ body or not. The subroutine is called with the following arguments:
 where FOLDER is a reference to the folder we are reading.  HEAD refers to the
 L<Mail::Message::Head::Complete|Mail::Message::Head::Complete> head of the message at hand.  The routine must
 return a C<true> value (extract now) or a C<false> value (be lazy, do not
-parse yet).  Think about using the L<Mail::Message::Head::guessBodySize()|"About the body"> and
-L<Mail::Message::guessTimestamp()|"The header"> on the header to determine your choice.
+parse yet).  Think about using the L<Mail::Message::Head::guessBodySize()|Mail::Message::Head/"About the body"> and
+L<Mail::Message::guessTimestamp()|Mail::Message/"The header"> on the header to determine your choice.
 
 The third possibility is to specify the NAME of a method.  In that case,
 for each message is called:
@@ -399,7 +355,7 @@ L<Mail::Message::Field|Mail::Message::Field>.
 Broken MIME headers usually stop the parser: all lines not parsed are
 added to the body of the message.  With this flag set, the erroneous line
 is added to the previous header field and parsing is continued.
-See L<Mail::Box::Parser::Perl::new(fix_header_errors)|"METHODS">.
+See L<Mail::Box::Parser::Perl::new(fix_header_errors)|Mail::Box::Parser::Perl/"METHODS">.
 
 =back
 
@@ -552,7 +508,7 @@ messages nor sub-folders.
 =over 4
 
 Sets the policy for saving the folder when it is closed.
-A folder can be closed manually (see L<close()|"The folder">) or in a number of
+A folder can be closed manually (see L<close()|Mail::Box/"The folder">) or in a number of
 implicit ways, including on the moment the program is terminated.
 
 =back
@@ -566,7 +522,7 @@ implicit ways, including on the moment the program is terminated.
 Flags whether to trust the data in the folder or not.  Folders which
 reside in your C<folderdir> will be trusted by default (even when the
 names if not specified staring with C<=>).  Folders which are outside
-the folderdir or read from STDIN (L<Mail::Message::Construct::read()|"Constructing a message">) are
+the folderdir or read from STDIN (L<Mail::Message::Construct::read()|Mail::Message::Construct::Read/"Constructing a message">) are
 not trused by default, and require some extra checking.
 
 If you do not check encodings of received messages, you may print
@@ -592,8 +548,8 @@ $obj-E<gt>B<addMessages>(MESSAGE [, MESSAGE, ...])
 Add a message to the folder.  A message is usually a
 L<Mail::Box::Message|Mail::Box::Message> object or a sub-class thereof.  The message
 shall not be in an other folder, when you use this method.
-In case it is, use L<Mail::Box::Manager::moveMessage()|"Move messages to folders"> or
-L<Mail::Box::Manager::copyMessage()|"Move messages to folders"> via the manager.
+In case it is, use L<Mail::Box::Manager::moveMessage()|Mail::Box::Manager/"Move messages to folders"> or
+L<Mail::Box::Manager::copyMessage()|Mail::Box::Manager/"Move messages to folders"> via the manager.
 
 Messages with id's which already exist in this folder are not added.
 
@@ -609,12 +565,12 @@ Mail::Box-E<gt>B<appendMessages>(OPTIONS)
 =over 4
 
 Append one or more messages to an unopened folder.
-Usually, this method is called by the L<Mail::Box::Manager::appendMessage()|"Move messages to folders">,
+Usually, this method is called by the L<Mail::Box::Manager::appendMessage()|Mail::Box::Manager/"Move messages to folders">,
 in which case the correctness of the folder type is checked.
 
 This method takes a list of labeled parameters, which may contain
 any option which can be used when a folder is opened, most importantly
-L<new(folderdir)|"Constructors">.
+L<new(folderdir)|Mail::Box/"Constructors">.
 
  Option    Defined in       Default   
  folder                     <required>
@@ -680,7 +636,7 @@ you may lose data if the system crashes or if there are software problems.
 
 =over 4
 
-Override the L<new(access)|"Constructors"> setting which was specified when the folder
+Override the L<new(access)|Mail::Box/"Constructors"> setting which was specified when the folder
 was opened. This option only has an effect if its value is TRUE. NOTE:
 Writing to the folder may not be permitted by the operating system,
 in which case even C<force> will not help.
@@ -693,7 +649,7 @@ in which case even C<force> will not help.
 
 Do also write messages which where flagged to be deleted to their folder.  The
 flag for deletion is conserved (when possible), which means that a re-open of
-the folder may remove the messages for real.  See L<write(save_deleted)|"Internals">.
+the folder may remove the messages for real.  See L<write(save_deleted)|Mail::Box/"Internals">.
 
 =back
 
@@ -747,7 +703,7 @@ folder is closed.
 
 =over 4
 
-Which messages are to be copied. See the description of L<messages()|"The messages">
+Which messages are to be copied. See the description of L<messages()|Mail::Box/"The messages">
 about how this works.
 
 =back
@@ -888,7 +844,7 @@ the wrong kind of locks.  This method reads the changes (not always
 failsafe) and incorporates them in the open folder administration.
 
 The OPTIONS are extra values which are passed to the
-L<updateMessages()|"Internals"> method which is doing the actual work here.
+L<updateMessages()|Mail::Box/"Internals"> method which is doing the actual work here.
 
 =back
 
@@ -897,7 +853,7 @@ $obj-E<gt>B<url>
 =over 4
 
 Represent the folder as a URL (Universal Resource Locator) string.  You may
-pass such a URL as folder name to L<Mail::Box::Manager::open()|"Manage folders">.
+pass such a URL as folder name to L<Mail::Box::Manager::open()|Mail::Box::Manager/"Manage folders">.
 
 I<Example:> 
 
@@ -965,7 +921,7 @@ $obj-E<gt>B<find>(MESSAGE-ID)
 
 =over 4
 
-Like L<messageId()|"The messages">, this method searches for a message with the
+Like L<messageId()|Mail::Box/"The messages">, this method searches for a message with the
 MESSAGE-ID, returning the corresponding message object.  However, C<find>
 will cause unparsed message in the folder to be parsed until the message-id
 is found.  The folder will be scanned back to front.
@@ -1003,7 +959,7 @@ case blanks (which origin from header line folding) are removed too.  Other
 info around the angles will be removed too.
 
 WARNING: when the message headers are delay-parsed, the message might be in
-the folder but not yet parsed into memory. In this case, use L<find()|"The messages">
+the folder but not yet parsed into memory. In this case, use L<find()|Mail::Box/"The messages">
 instead of C<messageId()> if you really need a thorough search.
 
 I<Example:> 
@@ -1096,7 +1052,7 @@ These messages are known by their MESSAGE-IDS and you want to find
 them in the folder.
 
 When all message-ids are known, then looking-up messages is simple:
-they are found in a plain hash using L<messageId()|"The messages">.  But Mail::Box
+they are found in a plain hash using L<messageId()|Mail::Box/"The messages">.  But Mail::Box
 is lazy where it can, so many messages may not have been read from
 file yet, and that's the prefered situation, because that saves
 time and memory.
@@ -1112,7 +1068,7 @@ enclosed in the message.  When the constant string C<EVER> is used as
 TIMESPAN, then the search is not limited by that.  When an integer
 is specified, it will be used as absolute time in time-ticks as
 provided by your platform dependent C<time> function.  In other cases,
-it is passed to L<timespan2seconds()|"Other methods"> to determine the threshold
+it is passed to L<timespan2seconds()|Mail::Box/"Other methods"> to determine the threshold
 as time relative to the message's time.
 
 The WINDOW is used to limit the search in number of messages to be
@@ -1141,7 +1097,7 @@ Mail::Box-E<gt>B<listSubFolders>(OPTIONS)
 =over 4
 
 List the names of all sub-folders to this folder, not recursively
-decending.  Use these names as argument to L<openSubFolder()|"Sub-folders">, to get
+decending.  Use these names as argument to L<openSubFolder()|Mail::Box/"Sub-folders">, to get
 access to that folder.
 
 For MBOX folders, sub-folders are simulated.
@@ -1284,7 +1240,7 @@ when you open the folder via the manager or instantiate a folder
 object directly.
 
 NOTE: if you are copying messages from one folder to another, use
-L<addMessages()|"The folder"> instead of C<read()>.
+L<addMessages()|Mail::Box/"The folder"> instead of C<read()>.
 
 I<Example:> 
 
@@ -1298,13 +1254,13 @@ $obj-E<gt>B<readMessages>(OPTIONS)
 
 =over 4
 
-Called by L<read()|"Internals"> to actually read the messages from one specific
-folder type.  The L<read()|"Internals"> organizes the general activities.
+Called by L<read()|Mail::Box/"Internals"> to actually read the messages from one specific
+folder type.  The L<read()|Mail::Box/"Internals"> organizes the general activities.
 
 The OPTIONS are C<trusted>, C<head_type>, C<field_type>,
 C<message_type>, C<body_delayed_type>, and C<head_delayed_type> as
 defined by the folder at hand.  The defaults are the constructor
-defaults (see L<new()|"Constructors">).
+defaults (see L<new()|Mail::Box/"Constructors">).
 
 =back
 
@@ -1313,7 +1269,7 @@ $obj-E<gt>B<storeMessage>(MESSAGE)
 =over 4
 
 Store the message in the folder without the checks as performed by
-L<addMessage()|"The folder">.
+L<addMessage()|Mail::Box/"The folder">.
 
 =back
 
@@ -1341,7 +1297,7 @@ $obj-E<gt>B<updateMessages>(OPTIONS)
 
 =over 4
 
-Called by L<update()|"The folder"> to read messages which arrived in the folder
+Called by L<update()|Mail::Box/"The folder"> to read messages which arrived in the folder
 after it was opened.  Sometimes, external applications dump messages
 in a folder without locking (or using a different lock than your
 application does).
@@ -1350,7 +1306,7 @@ Although this is quite a dangerous, it only fails when a folder is
 updated (reordered or message removed) at exactly the same time as
 new messages arrive.  These collisions are sparse.
 
-The options are the same as for L<readMessages()|"Internals">.
+The options are the same as for L<readMessages()|Mail::Box/"Internals">.
 
 =back
 
@@ -1363,12 +1319,12 @@ successful.  Deleted messages are transformed into destroyed messages:
 their memory is freed.
 
 WARNING: When moving messages from one folder to another, be sure to
-write (or L<close()|"The folder">) the destination folder before writing (or closing)
+write (or L<close()|Mail::Box/"The folder">) the destination folder before writing (or closing)
 the source folder: otherwise you may lose data if the system crashes or
 if there are software problems.
 
 To write a folder to a different file, you must first create a new folder,
-then move all the messages, and then write or L<close()|"The folder"> that new folder.
+then move all the messages, and then write or L<close()|Mail::Box/"The folder"> that new folder.
 
  Option        Defined in       Default
  force                          <false>
@@ -1378,7 +1334,7 @@ then move all the messages, and then write or L<close()|"The folder"> that new f
 
 =over 4
 
-Override write-protection with L<new(access)|"Constructors"> while opening the folder
+Override write-protection with L<new(access)|Mail::Box/"Constructors"> while opening the folder
 (whenever possible, it may still be blocked by the operating system).
 
 =back
@@ -1389,7 +1345,7 @@ Override write-protection with L<new(access)|"Constructors"> while opening the f
 
 Do also write messages which where flagged to be deleted to their folder.  The
 flag for deletion is conserved (when possible), which means that a re-open of
-the folder may remove the messages for real.  See L<close(save_deleted)|"The folder">.
+the folder may remove the messages for real.  See L<close(save_deleted)|Mail::Box/"The folder">.
 
 =back
 
@@ -1399,9 +1355,9 @@ $obj-E<gt>B<writeMessages>(OPTIONS)
 
 =over 4
 
-Called by L<write()|"Internals"> to actually write the messages from one specific
+Called by L<write()|Mail::Box/"Internals"> to actually write the messages from one specific
 folder type.  The C<write> organizes the general activities.  All options
-to L<write()|"Internals"> are passed to C<writeMessages> as well.  Besides, a few extra
+to L<write()|Mail::Box/"Internals"> are passed to C<writeMessages> as well.  Besides, a few extra
 are added by C<write> itself.
 
  Option    Defined in  Default   
@@ -1557,9 +1513,9 @@ See L<Mail::Reporter/"Cleanup">
 I<Warning:> Changes not written to read-only folder $self.
 
 You have opened the folder read-only --which is the default set
-by L<new(access)|"Constructors">--, made modifications, and now want to close it.
-Set L<close(force)|"The folder"> if you want to overrule the access mode, or close
-the folder with L<close(write)|"The folder"> set to C<NEVER>.
+by L<new(access)|Mail::Box/"Constructors">--, made modifications, and now want to close it.
+Set L<close(force)|Mail::Box/"The folder"> if you want to overrule the access mode, or close
+the folder with L<close(write)|Mail::Box/"The folder"> set to C<NEVER>.
 
 I<Error:> Copying failed for one message.
 
@@ -1570,7 +1526,7 @@ proceed for the other messages.
 I<Error:> Destination folder $name is not writable.
 
 The folder where the messages are copied to is not opened with write
-access (see L<new(access)|"Constructors">).  This has no relation with write permission
+access (see L<new(access)|Mail::Box/"Constructors">).  This has no relation with write permission
 to the folder which is controled by your operating system.
 
 I<Warning:> Different messages with id $msgid.
@@ -1582,11 +1538,11 @@ each message must be unique.
 I<Error:> Folder $name is opened read-only
 
 You can not write to this folder unless you have opened the folder to
-write or append with L<new(access)|"Constructors">, or the C<force> option is set true.
+write or append with L<new(access)|Mail::Box/"Constructors">, or the C<force> option is set true.
 
 I<Error:> Folder $name not deleted: not writable.
 
-The folder must be opened with write access via L<new(access)|"Constructors">, otherwise
+The folder must be opened with write access via L<new(access)|Mail::Box/"Constructors">, otherwise
 removing it will be refused.  So, you may have write-access according to
 the operating system, but that will not automatically mean that this
 C<delete> method permits you to.  The reverse remark is valid as well.
@@ -1606,7 +1562,7 @@ missing from the string.
 I<Error:> No folder name specified.
 
 You did not specify the name of a folder to be opened.  Use the
-L<new(folder)|"Constructors"> option or set the C<MAIL> environment variable.
+L<new(folder)|Mail::Box/"Constructors"> option or set the C<MAIL> environment variable.
 
 I<Error:> Package $package does not implement $method.
 
@@ -1628,6 +1584,146 @@ it is impossible to write the folder, although you should because there
 were changes made.
 
 
+=head1 DETAILS
+
+
+=head2 Different kinds of folders
+
+In general, there are three classes of folders: those who group messages
+per file, those who group messages in a directory, and those do not
+provide direct access to the message data.  These folder types are
+each based on a different base class.
+
+=over 4
+
+=item * File based folders L<Mail::Box::File|Mail::Box::File>
+
+File based folders maintain a folder (a set of messages) in one
+single file.  The advantage is that your folder has only one
+single file to access, which speeds-up things when all messages
+must be accessed at once.
+
+One of the main disadvantages over directory based folders
+is that you have to construct some means to keep all message apart.
+For instance MBOX adds a message separator line between the messages
+in the file, and this line can cause confusion with the message's
+contents.
+
+Where access to all messages at once is faster in file based folders,
+access to a single message is (much) slower, because the whole folder
+must be read.  However, in directory based folders you have to figure-out
+which message you need, which may be a hassle as well.
+
+Examples of file based folders are MBOX, DBX, and NetScape.
+
+=item * Directory based folders L<Mail::Box::Dir|Mail::Box::Dir>
+
+In stead of collecting multiple messages in one file, you can also
+put each message in a separate file and collect those files in a
+directory to represent a folder.
+
+The main disadvantages of these folders are the enormous amount of
+tiny files you usually get in your file-system.  It is extremely
+slow to search through your whole folder, because many files have
+to be opened to do so.
+
+The best feature of this organization is that each message is kept
+exactly as it was received, and can be processed with external scripts
+as well: you do not need any mail user agent (MUA).
+
+Examples of directoy organized folders are MH, Maildir, EMH, and XMH.
+
+=item * Network (external) folders L<Mail::Box::Net|Mail::Box::Net>
+
+Where both types described before provide direct access to the
+message data, maintain these folder types the message data for you:
+you have to request for messages or parts of them.  These folders
+do not have a filename, file-system privileges and system locking
+to worry about, but typically require a hostname, folder and message
+IDs, and authorization.
+
+Examples of these folder types are the popular POP and IMAP, and
+database oriented message storage.
+
+=back
+
+=head2 Supported folder types
+
+=over 4
+
+=item * L<Mail::Box::Dbx|Mail::Box::Dbx> (read only)
+
+Dbx files are created by Outlook Express. Using the external (optional)
+Mail::Transport::Dbx module, you can read these folders, even
+when you are running MailBox on a UNIX/Linux platform.
+
+Writing and deleting messages is not supported by the library, and
+therefore not by MailBox. Read access is enough to do folder conversions,
+for instance.
+
+=item * L<Mail::Box::IMAP4|Mail::Box::IMAP4> (under development)
+
+=item * L<Mail::Box::Maildir|Mail::Box::Maildir>
+
+Maildir folders have a directory for each folder.  A folder directory
+contains C<tmp>, C<new>, and C<cur> sub-directories, each containting
+messages with a different purpose.  Files with new messages are created
+in C<tmp>, then moved to C<new> (ready to be accepted).  Later, they are
+moved to the C<cur> directory (accepted).  Each message is one file with
+a name starting with timestamp.  The name also contains flags about the
+status of the message.
+
+Maildir folders can not be used on Windows by reason of file-name
+limitations on that platform.
+
+=item * L<Mail::Box::Mbox|Mail::Box::Mbox>
+
+A folder type in which all related messages are stored in one file.  This
+is a very common folder type for UNIX.
+
+=item * L<Mail::Box::MH|Mail::Box::MH>
+
+This folder creates a directory for each folder, and a message is one
+file inside that directory.  The message files are numbered sequentially
+on order of arrival.  A special C<.mh_sequences> file maintains flags
+about the messages.
+
+=item * L<Mail::Box::POP3|Mail::Box::POP3> (read/delete only)
+
+POP3 is a protocol which can be used to retreive messages from a
+remote system.  After the connection to a POP server is made, the
+messages can be looked at and removed as if they are on the local
+system.
+
+=back
+
+Other folder types are on the (long) wishlist to get implemented.  Please,
+help implementing more of them.
+
+=head2 Folder class implementation
+
+The class structure of folders is very close to that of messages.  For
+instance, a L<Mail::Box::File::Message|Mail::Box::File::Message> relates to a L<Mail::Box::File|Mail::Box::File>
+folder.  The folder types are:
+
+ L<Mail::Box::Mbox|Mail::Box::Mbox>    L<Mail::Box::Maildir|Mail::Box::Maildir>  L<Mail::Box::POP3|Mail::Box::POP3>
+ |  L<Mail::Box::Dbx|Mail::Box::Dbx>  |  L<Mail::Box::MH|Mail::Box::MH>    |  L<Mail::Box::IMAP4|Mail::Box::IMAP4>
+ |  |               |  |                |  |
+ |  |               |  |                |  |
+ L<Mail::Box::File|Mail::Box::File>    L<Mail::Box::Dir|Mail::Box::Dir>      L<Mail::Box::Net|Mail::Box::Net>
+       |                  |                   |
+       `--------------.   |   .---------------'
+                      |   |   |
+                      L<Mail::Box|Mail::Box>
+                          |
+                          |
+                    L<Mail::Reporter|Mail::Reporter> (general base class)
+
+By far most folder features are implemented in L<Mail::Box|Mail::Box>, so
+available to all folder types.  Sometimes, features which appear
+in only some of the folder types are simulated for folders that miss
+them, like sub-folder support for MBOX.
+
 
 
 
@@ -1638,7 +1734,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

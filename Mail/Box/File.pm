@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::File;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
 use base 'Mail::Box';
 
 use Mail::Box::File::Message;
@@ -181,7 +181,7 @@ sub appendMessages(@)
         return ();
     }
 
-    my $msgtype = 'Mail::Box::File::Message';
+    my $msgtype = $class.'::Message';
     my @coerced;
 
     foreach my $msg (@messages)

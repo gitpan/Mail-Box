@@ -4,30 +4,6 @@
 Mail::Reporter - base-class and error reporter for Mail::Box
 
 
-=head1 INHERITANCE
-
- Mail::Reporter is extended by
-   Mail::Box
-   Mail::Box::Locker
-   Mail::Box::MH::Index
-   Mail::Box::MH::Labels
-   Mail::Box::Manager
-   Mail::Box::Parser
-   Mail::Box::Search
-   Mail::Box::Thread::Manager
-   Mail::Box::Thread::Node
-   Mail::Message
-   Mail::Message::Body
-   Mail::Message::Body::Delayed
-   Mail::Message::Convert
-   Mail::Message::Field
-   Mail::Message::Field::AddrGroup
-   Mail::Message::Field::Address
-   Mail::Message::Head
-   Mail::Message::Head::ResentGroup
-   Mail::Message::TransferEnc
-   Mail::Transport
-
 
 =head1 SYNOPSIS
 
@@ -51,7 +27,7 @@ and logging error messages.
 
 The C<Mail::Reporter> class is the base for nearly all other
 objects.  It can store and report problems, and contains the general
-constructor L<new()|"Constructors">.
+constructor L<new()|Mail::Reporter/"Constructors">.
 
 =head2 Constructors
 
@@ -74,7 +50,7 @@ the following OPTIONS related to error reports.
 
 Log messages which have a priority higher or equal to the specified
 level are stored internally and can be retrieved later.  The global
-default for this option can be changed with L<defaultTrace()|"Error handling">.
+default for this option can be changed with L<defaultTrace()|Mail::Reporter/"Error handling">.
 
 Known levels are C<INTERNAL>, C<ERRORS>, C<WARNINGS>, C<PROGRESS>,
 C<NOTICES> C<DEBUG>, and C<NONE>.  The C<PROGRESS> level relates to
@@ -91,7 +67,7 @@ for C<WARNINGS>, and C<NOTICE> for C<NOTICES>.
 
 Trace messages which have a level higher or equal to the specified level
 are directly printed using warn.  The global default for this option can
-be changed with L<defaultTrace()|"Error handling">.
+be changed with L<defaultTrace()|Mail::Reporter/"Error handling">.
 
 =back
 
@@ -165,7 +141,7 @@ of one of the predefined strings).  With more arguments, it is a report
 which may need to be logged or traced.
 
 As class method, only a message can be passed.  The global configuration
-value set with L<defaultTrace()|"Error handling"> is used to decide whether the message is
+value set with L<defaultTrace()|Mail::Reporter/"Error handling"> is used to decide whether the message is
 shown or ignored.
 
 Each log-entry has a LEVEL and a text string which will
@@ -229,7 +205,7 @@ $obj-E<gt>B<notImplemented>
 
 =over 4
 
-A special case of L<log()|"Error handling">, which logs a C<INTERNAL>-error
+A special case of L<log()|Mail::Reporter/"Error handling">, which logs a C<INTERNAL>-error
 and then croaks.  This is used by extension writers.
 
 =back
@@ -294,7 +270,7 @@ $obj-E<gt>B<trace>([LEVEL])
 Change the trace LEVEL of the object. When no arguments are specified, the
 current level is returned only.  It will be returned in one scalar which
 contains both the number which is internally used to represent the level,
-and the string which represents it.  See L<logPriority()|"Error handling">.
+and the string which represents it.  See L<logPriority()|Mail::Reporter/"Error handling">.
 
 =back
 
@@ -323,7 +299,7 @@ $obj-E<gt>B<inGlobalDestruction>
 
 =over 4
 
-Returns whether the program is breaking down.  This is used in L<DESTROY()|"Cleanup">,
+Returns whether the program is breaking down.  This is used in L<DESTROY()|Mail::Reporter/"Cleanup">,
 where during global destructions references cannot be used.
 
 =back
@@ -351,7 +327,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

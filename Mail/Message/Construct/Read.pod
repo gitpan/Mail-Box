@@ -4,8 +4,6 @@
 Mail::Message::Construct::Read - read a Mail::Message from a file handle
 
 
-=head1 INHERITANCE
-
 
 =head1 SYNOPSIS
 
@@ -32,10 +30,10 @@ Mail::Message-E<gt>B<read>(FILEHANDLE|SCALAR|REF-SCALAR|ARRAY-OF-LINES, OPTIONS)
 =over 4
 
 Read a message from a FILEHANDLE, SCALAR, a reference to a SCALAR, or
-a reference to an array of LINES.  The OPTIONS are passed to the L<new()|"Constructors">
-of the message which is created.
+a reference to an array of LINES.  Most OPTIONS are passed to the L<new()|Mail::Message/"Constructors">
+of the message which is created, but a few extra are defined.
 
-Please have a look at L<build()|"Constructing a message"> and L<buildFromBody()|"Constructing a message"> before thinking about
+Please have a look at L<build()|Mail::Message::Construct::Build/"Constructing a message"> and L<buildFromBody()|Mail::Message::Construct::Build/"Constructing a message"> before thinking about
 this C<read> method.  Use this C<read> only when you have a file-handle
 like STDIN to parse from, or some external source of message lines.
 When you already have a separate set of head and body lines, then C<read>
@@ -46,6 +44,25 @@ at stdin, so we only have a filehandle.  In this case, you are stuck
 with this method.  The message is preceeded by a line which can be used
 as message separator in mbox folders.  See the example how to handle
 that one.
+
+This method will remove C<Status> and C<X-Status> fields when they appear
+in the source, to avoid the risk that these fields accidentally interfere
+with your internal administration, which may have security implications.
+
+ Option               Defined in  Default
+ strip_status_fields              <true> 
+
+. strip_status_fields BOOLEAN
+
+=over 4
+
+Remove the C<Status> and C<X-Status> fields from the message after
+reading, to lower the risk that received messages from external
+sources interfere with your internal administration.  If you want
+fields not to be stripped (you would like to disable the stripping)
+you probably process folders yourself, which is a Bad Thing!
+
+=back
 
 I<Example:> 
 
@@ -81,7 +98,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

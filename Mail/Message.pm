@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -242,6 +242,14 @@ sub get($)
     $field->body;
 }
 
+#------------------------------------------
+
+
+sub study($)
+{  my $head = shift->head or return;
+   scalar $head->study(@_);    # return only last
+}
+
 #-------------------------------------------
 
 
@@ -433,8 +441,6 @@ sub parts(;$)
     : confess "Select parts via $what?";
 }
 
-sub isDeleted() {0} # needed for parts('ACTIVE'|'DELETED') on non-folder messages.
-
 #------------------------------------------
 
 
@@ -499,50 +505,8 @@ sub labels()
 #------------------------------------------
 
 
-sub labelsToStatus()
-{   my $self    = shift;
-    my $head    = $self->head;
-    my $labels  = $self->labels;
-
-    my $status  = $head->get('status') || '';
-    my $newstatus
-      = $labels->{seen}    ? 'RO'
-      : $labels->{old}     ? 'O'
-      : '';
-
-    $head->set(Status => $newstatus)
-        if $newstatus ne $status;
-
-    my $xstatus = $head->get('x-status') || '';
-    my $newxstatus
-      = ($labels->{replied} ? 'A' : '')
-      . ($labels->{flagged} ? 'F' : '');
-
-    $head->set('X-Status' => $newxstatus)
-        if $newxstatus ne $xstatus;
-
-    $self;
-}
-
-#-------------------------------------------
-
-
-sub statusToLabels()
-{   my $self    = shift;
-    my $head    = $self->head;
-
-    if(my $status  = $head->get('status'))
-    {   $self->{MM_labels}{seen} = ($status  =~ /R/ ? 1 : 0);
-        $self->{MM_labels}{old}  = ($status  =~ /O/ ? 1 : 0);
-    }
-
-    if(my $xstatus = $head->get('x-status'))
-    {   $self->{MM_labels}{replied} = ($xstatus  =~ /A/ ? 1 : 0);
-        $self->{MM_labels}{flagged} = ($xstatus  =~ /F/ ? 1 : 0);
-    }
-
-    $self;
-}
+# needed for parts('ACTIVE'|'DELETED') on non-folder messages.
+sub isDeleted() {0}
 
 #------------------------------------------
 
@@ -580,8 +544,7 @@ sub readHead($;$)
 {   my ($self, $parser) = (shift, shift);
 
     my $headtype = shift
-      || $self->{MM_head_type}
-      || 'Mail::Message::Head::Complete';
+      || $self->{MM_head_type} || 'Mail::Message::Head::Complete';
 
     $headtype->new
       ( message     => $self
@@ -691,6 +654,11 @@ sub DESTROY()
     $self->head(undef);
     $self->body(undef);
 }
+
+#------------------------------------------
+
+
+sub destruct() { $_[0] = undef }
 
 #------------------------------------------
 

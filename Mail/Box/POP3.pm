@@ -1,7 +1,7 @@
 
 package Mail::Box::POP3;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
 use base 'Mail::Box::Net';
 
 use strict;
@@ -9,8 +9,8 @@ use warnings;
 
 use Mail::Box::POP3::Message;
 use Mail::Box::Parser::Perl;
+use Mail::Box::FastScalar;
 
-use IO::File;
 use File::Spec;
 use File::Basename;
 use Carp;
@@ -181,7 +181,7 @@ sub getHead($)
 
     my $parser = Mail::Box::Parser::Perl->new   # not parseable by C parser
      ( filename  => "$pop"
-     , file      => IO::ScalarArray->new($lines)
+     , file      => Mail::Box::FastScalar->new(join '', @$lines)
      , fix_headers => $self->{MB_fix_headers}
      );
 
@@ -251,5 +251,7 @@ sub writeMessages($@)
 }
 
 #-------------------------------------------
+
+
 
 1;

@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::IMAP4::Message;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
 use base 'Mail::Box::Net::Message';
 
 use File::Copy;
@@ -82,5 +82,6 @@ sub loadBody()
 }
 
 #-------------------------------------------
+
 
 1;

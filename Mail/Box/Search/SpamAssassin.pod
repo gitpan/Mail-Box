@@ -64,7 +64,6 @@ Mail::Box::Search::SpamAssassin-E<gt>B<new>(OPTIONS)
 Create a spam filter.  Internally, a Mail::SpamAssassin object is
 maintained.
 
-
 Only the whole message can be searched; this is a limitation of
 the Mail::SpamAssassin module.
 
@@ -345,7 +344,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

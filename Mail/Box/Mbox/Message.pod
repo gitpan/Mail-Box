@@ -274,7 +274,7 @@ See L<Mail::Message/"The header">
 
 =back
 
-$obj-E<gt>B<get>(FIELD)
+$obj-E<gt>B<get>(FIELDNAME)
 
 =over 4
 
@@ -307,6 +307,14 @@ See L<Mail::Message/"The header">
 =back
 
 $obj-E<gt>B<sender>
+
+=over 4
+
+See L<Mail::Message/"The header">
+
+=back
+
+$obj-E<gt>B<study>(FIELDNAME)
 
 =over 4
 
@@ -483,23 +491,7 @@ See L<Mail::Message/"Flags">
 
 =back
 
-$obj-E<gt>B<labelsToStatus>
-
-=over 4
-
-See L<Mail::Message/"Flags">
-
-=back
-
 $obj-E<gt>B<modified>([BOOLEAN])
-
-=over 4
-
-See L<Mail::Message/"Flags">
-
-=back
-
-$obj-E<gt>B<statusToLabels>
 
 =over 4
 
@@ -749,11 +741,44 @@ See L<Mail::Message/"Cleanup">
 
 =back
 
+$obj-E<gt>B<destruct>
+
+=over 4
+
+See L<Mail::Box::Message/"Cleanup">
+
+=back
+
 $obj-E<gt>B<inGlobalDestruction>
 
 =over 4
 
 See L<Mail::Reporter/"Cleanup">
+
+=back
+
+=head2 Labels
+
+
+$obj-E<gt>B<labelsToStatus>
+
+=over 4
+
+When the labels were changed, that may effect the C<Status> and/or
+C<X-Status> header lines of mbox messages.  Read about the relation
+between these fields and the labels in the DETAILS chapter.
+
+The method will carefully only affect the result of L<modified()|Mail::Message/"Flags"> when
+there is a real change of flags, so not for each call to L<label()|Mail::Message/"Flags">.
+
+=back
+
+$obj-E<gt>B<statusToLabels>
+
+=over 4
+
+Update the labels according the status lines in the header.  See the
+description in the DETAILS chapter.
 
 =back
 
@@ -763,12 +788,12 @@ See L<Mail::Reporter/"Cleanup">
 
 I<Error:> Cannot include forward source as $include.
 
-Unknown alternative for the L<forward(include)|"Constructing a message">.  Valid choices are
+Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
 C<NO>, C<INLINE>, and C<ATTACH>.
 
 I<Error:> Cannot include reply source as $include.
 
-Unknown alternative for the C<include> option of L<reply()|"Constructing a message">.  Valid
+Unknown alternative for the C<include> option of L<reply()|Mail::Message::Construct::Reply/"Constructing a message">.  Valid
 choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
 I<Error:> No address to create forwarded to.
@@ -777,7 +802,7 @@ If a forward message is created, a destination address must be specified.
 
 I<Error:> No default mailer found to send message.
 
-The message L<send()|"The Message"> mechanism had not enough information to automatically
+The message L<send()|Mail::Message/"The Message"> mechanism had not enough information to automatically
 find a mail transfer agent to sent this message.  Specify a mailer
 explicitly using the C<via> options.
 
@@ -799,6 +824,29 @@ I<Error:> no rebuild rule $name defined.
 =head1 DETAILS
 
 
+=head2 Labels
+
+
+=head3 Status and X-Status fields
+
+Mbox folders have no special means of storing information about messages
+(except the message separator line), and therefore have to revert to
+adding fields to the message header when something special comes up.
+
+Most applications which can handle mbox folders support the C<Status> and
+C<X-Status> field convensions which are implemented by L<Mail::Box::Mbox|Mail::Box::Mbox>.
+The following encoding is used:
+
+ Flag   Field       Label
+ R      Status   => seen    (Read)
+ O      Status   => old     (not recent)
+ A      X-Status => replied (Answered)
+ F      X-Status => flagged
+
+There is no special flag for C<deleted>, which most other folders support:
+messages flagged to be deleted will never be written to a folder file when
+it is closed.
+
 
 
 
@@ -809,7 +857,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -4,8 +4,6 @@
 Mail::Message::Construct::Build - building a Mail::Message from components
 
 
-=head1 INHERITANCE
-
 
 =head1 SYNOPSIS
 
@@ -44,7 +42,7 @@ fields are used for other purposes as listed below.  Each field may be used
 more than once.  If more than one C<data>, C<file>, and C<attach> is
 specified, a multi-parted message is created.
 
-This C<build> method will use L<buildFromBody()|"Constructing a message"> when the body object has
+This C<build> method will use L<buildFromBody()|Mail::Message::Construct::Build/"Constructing a message"> when the body object has
 been constructed.  Together, they produce your message.
 
  Option  Defined in       Default
@@ -71,7 +69,7 @@ One attachment to the message.  Each attachment can be full MESSAGE or a BODY.
 
 The text for one part, specified as one STRING, or an ARRAY of lines.  Each
 line, including the last, must be terminated by a newline.  This argument
-is passed to L<Mail::Message::Body::new(data)|"Constructors"> to
+is passed to L<Mail::Message::Body::new(data)|Mail::Message::Body/"Constructors"> to
 construct one.
 
   data => [ "line 1\n", "line 2\n" ]     # array of lines
@@ -181,7 +179,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -722,8 +722,8 @@ I<Warning:> Changes not written to read-only folder $self.
 
 You have opened the folder read-only --which is the default set
 by L<new(access)|Mail::Box/"Constructors">--, made modifications, and now want to close it.
-Set L<close(force)|"The folder"> if you want to overrule the access mode, or close
-the folder with L<close(write)|"The folder"> set to C<NEVER>.
+Set L<close(force)|Mail::Box/"The folder"> if you want to overrule the access mode, or close
+the folder with L<close(write)|Mail::Box/"The folder"> set to C<NEVER>.
 
 I<Error:> Copying failed for one message.
 
@@ -803,9 +803,6 @@ were changes made.
 =head2 How IMAP4 folders work
 
 
-=head2 This implementation
-
-
 
 
 
@@ -816,7 +813,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

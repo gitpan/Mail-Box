@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Maildir;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
 use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
@@ -304,7 +304,7 @@ sub updateMessages($)
         $message->storeBody($body) if $body;
         $self->storeMessage($message);
 
-        $message->statusToLabels->labelsToFilename;
+        $message->labelsToFilename;
         push @newmsgs, $message->accept;
     }
 
@@ -341,7 +341,6 @@ sub writeMessages($)
         my $new      = IO::File->new($newtmp, 'w')
            or croak "Cannot create file $newtmp: $!";
 
-        $message->labelsToStatus;  # just for fun
         $message->write($new);
         $new->close;
 

@@ -45,87 +45,13 @@ Mail::Message::Body - the data of a body in a message
 The encoding and decoding functionality of a L<Mail::Message::Body|Mail::Message::Body> is
 implemented in the L<Mail::Message::Body::Encode|Mail::Message::Body::Encode> package.  That package is
 automatically loaded when encoding and decoding of messages needs to take
-place.
+place.  Methods to simply build an process body objects are implemented
+in L<Mail::Message::Body::Construct|Mail::Message::Body::Construct>.
 
 The body of a message (a L<Mail::Message|Mail::Message> object) is stored in one of the
-body types.  The functionality of each body type is equivalent, but there
+many body types.  The functionality of each body type is equivalent, but there
 are performance differences.  Each body type has its own documentation
-which contains details about its implementation.
-
-A body can be contained in a message, but may also live without a message.
-In both cases it stores data, and the same questions can be asked: what
-type of data it is, how many bytes and lines, what encoding is used.  Any
-body can be encoded and decoded, returning a new body object.  However, 
-bodies which are part of a message will always be in a shape that they can
-be written to a file or send to somewhere: they will be encoded if needed.
-
-For example:
-
- my $body    = L<Mail::Message::Body::String|Mail::Message::Body::String>->new(mime_type => 'image/gif');
- $body->print(\*OUT);    # this is binary image data...
-
- my $encoded = $message->body($body);
- $encoded->print(\*OUT); # ascii data, encoded image
-
-Now encoded refers to the body of the C<$message> which is the content of
-C<$body> in a shape that it can be transmitted.  Usually C<base64> encoding
-is used.
-  
-=over 4
-
-=item * L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>
-
-Each line of the message body is stored as single scalar.  This is a
-useful representation for a detailed look in the message body, which is
-usually line-organized.
-
-=item * L<Mail::Message::Body::String|Mail::Message::Body::String>
-
-The whole message body is stored in one scalar.  Small messages can be
-contained this way without performance penalties.
-
-=item * L<Mail::Message::Body::File|Mail::Message::Body::File>
-
-The message body is stored in an external temporary file.  This type of
-storage is especially useful when the body is large, the total folder is
-large, or memory is limited.
-
-=item * L<Mail::Message::Body::Delayed|Mail::Message::Body::Delayed>
-
-The message-body is not yet read, but the exact location of the
-body is known so the message can be read when needed.
-
-=item * L<Mail::Message::Body::Multipart|Mail::Message::Body::Multipart>
-
-The message body contains a set of sub-messages (which can contain
-multipart bodies themselves).  Each sub-message is an instance
-of L<Mail::Message::Part|Mail::Message::Part>, which is an extension of L<Mail::Message|Mail::Message>.
-
-=item * L<Mail::Message::Body::Nested|Mail::Message::Body::Nested>
-
-Nested messages, like C<message/rfc822>: they contain a message in
-the body.  For most code, they simply behave like multiparts.
-
-=item * Mail::Message::Body::InFolder
-
-NOT IMPLEMENTED YET.
-The message is kept in the folder, and is only taken out when the
-content is changed.
-
-=item * Mail::Message::Body::External
-
-NOT IMPLEMENTED YET.
-The message is kept in a separate file, usually because the message body
-is large.  The difference with the C<::External> object is that this external
-storage stays this way between closing and opening of a folder. The
-C<::External> object only uses a file when the folder is open.
-
-=back
-
-Each body type has methods to produce the storage of the other types.
-As example, you can ask any body type for the message as a list of lines,
-but this call will be most efficient for the L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>
-type.
+with details about its implementation.
 
 
 =head1 OVERLOADED
@@ -173,7 +99,7 @@ overload: B<@{}>
 =over 4
 
 When a body object is used as being an array reference, the lines of
-the body are returned.  This is the same as using L<lines()|"Access to the payload">.
+the body are returned.  This is the same as using L<lines()|Mail::Message::Body/"Access to the payload">.
 
 I<Example:> using a body as array
 
@@ -208,7 +134,7 @@ $obj-E<gt>B<clone>
 =over 4
 
 Return a copy of this body, usually to be included in a cloned
-message. Use L<Mail::Message::clone()|"Constructors"> for a whole message.
+message. Use L<Mail::Message::clone()|Mail::Message/"Constructors"> for a whole message.
 
 =back
 
@@ -219,7 +145,7 @@ Mail::Message::Body-E<gt>B<new>(OPTIONS)
 BE WARNED that, what you specify here are encodings and such which are
 already in place.  The options will not trigger conversions.  When you
 need conversions, first create a body with options which tell what you've
-got, and then call L<encode()|"Constructing a body"> for what you need.
+got, and then call L<encode()|Mail::Message::Body::Encode/"Constructing a body"> for what you need.
 
  Option             Defined in       Default        
  based_on                            undef          
@@ -369,7 +295,7 @@ Whether the body is flagged modified, directly from its creation.
 =over 4
 
 The encoding that the data has.  If the data is to be encoded, than you
-will have to call L<encode()|"Constructing a body"> after the body is created.  That will
+will have to call L<encode()|Mail::Message::Body::Encode/"Constructing a body"> after the body is created.  That will
 return a new encoded body.  This field is case-insensitive and relates
 to the C<Content-Transfer-Encoding> field in the header.
 
@@ -434,7 +360,7 @@ is equivalent with
  my $dec = $body->encode(mime_type => 'text/plain', charset => 'us-ascii',
     transfer_encoding => 'NONE');
 
-The C<$dec> which is returned is a body.  Ask with the L<mimeType()|"About the payload"> method
+The C<$dec> which is returned is a body.  Ask with the L<mimeType()|Mail::Message::Body/"About the payload"> method
 what is produced.  This C<$dec> body is B<not related to a header>.
 
  Option       Defined in  Default          
@@ -613,7 +539,7 @@ $obj-E<gt>B<size>
 The total number of bytes in the message body. The size of the body
 is computed in the shape it is in. For example, if this is a base64
 encoded message, the size of the encoded data is returned; you may
-want to call L<Mail::Message::decoded()|"The body"> first.
+want to call L<Mail::Message::decoded()|Mail::Message/"The body"> first.
 
 =back
 
@@ -622,7 +548,7 @@ $obj-E<gt>B<transferEncoding>([STRING|FIELD])
 =over 4
 
 Returns the transfer-encoding of the data within this body.  If it
-needs to be changed, call the L<encode()|"Constructing a body"> or L<decoded()|"Constructing a body"> method.
+needs to be changed, call the L<encode()|Mail::Message::Body::Encode/"Constructing a body"> or L<decoded()|Mail::Message::Body/"Constructing a body"> method.
 
 The optional STRING or FIELD enforces a new encoding to be set, without the
 actual required translations.
@@ -645,7 +571,7 @@ the header field C<Content-Type>, but may have changed during encoding
 
 The returned is a reference to a L<Mail::Message::Field|Mail::Message::Field> object, where
 you can ask for the C<body> (main content of the field) and the comment
-(after a semicolon).  To get to the body, you can better use L<mimeType()|"About the payload">.
+(after a semicolon).  To get to the body, you can better use L<mimeType()|Mail::Message::Body/"About the payload">.
 
 I<Example:> 
 
@@ -693,7 +619,7 @@ reference to an array of lines (in SCALAR context).  In scalar context the
 array of lines is cached to avoid needless copying and therefore provide
 much faster access for large messages.
 
-To just get the number of lines in the body, use the L<nrLines()|"About the payload"> method,
+To just get the number of lines in the body, use the L<nrLines()|Mail::Message::Body/"About the payload"> method,
 which is usually much more efficient.
 
 BE WARNED: For some types of bodies the reference will refer to the
@@ -808,7 +734,7 @@ Especially be warned that you have to change the message-id when you
 change the body of the message: no two messages should have the same id.
 
 Without value, the current setting is returned, although you can better use
-L<isModified()|"Internals">.
+L<isModified()|Mail::Message::Body/"Internals">.
 
 =back
 
@@ -985,6 +911,100 @@ not.  Probably you should investigate this and probably inform the author
 of the package.
 
 
+=head1 DETAILS
+
+
+=head2 Access to the body
+
+A body can be contained in a message, but may also live without a message.
+In both cases it stores data, and the same questions can be asked: what
+type of data it is, how many bytes and lines, what encoding is used.  Any
+body can be encoded and decoded, returning a new body object.  However, 
+bodies which are part of a message will always be in a shape that they can
+be written to a file or send to somewhere: they will be encoded if needed.
+
+I<Example:> 
+
+ my $body    = L<Mail::Message::Body::String|Mail::Message::Body::String>->new(mime_type => 'image/gif');
+ $body->print(\*OUT);    # this is binary image data...
+
+ my $encoded = $message->body($body);
+ $encoded->print(\*OUT); # ascii data, encoded image
+
+Now encoded refers to the body of the C<$message> which is the content of
+C<$body> in a shape that it can be transmitted.  Usually C<base64> encoding
+is used.
+
+=head2 Body class implementation
+
+The body of a message can be stored in many ways.  Roughtly, the
+implementations can be split in two groups: the data collectors and
+the complex bodies.  The primer implement various ways to access data,
+and are full compatible: they only differ in performance and memory
+footprint under different circumstances.  The latter are created to
+handle complex multiparts and lazy extraction.
+
+=head3 Data collector bodies
+
+=over 4
+
+=item * L<Mail::Message::Body::String|Mail::Message::Body::String>
+
+The whole message body is stored in one scalar.  Small messages can be
+contained this way without performance penalties.
+
+=item * L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>
+
+Each line of the message body is stored as single scalar.  This is a
+useful representation for a detailed look in the message body, which is
+usually line-organized.
+
+=item * L<Mail::Message::Body::File|Mail::Message::Body::File>
+
+The message body is stored in an external temporary file.  This type of
+storage is especially useful when the body is large, the total folder is
+large, or memory is limited.
+
+=item * Mail::Message::Body::InFolder
+
+NOT IMPLEMENTED YET.
+The message is kept in the folder, and is only taken out when the
+content is changed.
+
+=item * Mail::Message::Body::External
+
+NOT IMPLEMENTED YET.
+The message is kept in a separate file, usually because the message body
+is large.  The difference with the C<::External> object is that this external
+storage stays this way between closing and opening of a folder. The
+C<::External> object only uses a file when the folder is open.
+
+=back
+
+=head3 Complex bodies
+
+=over 4
+
+=item * L<Mail::Message::Body::Delayed|Mail::Message::Body::Delayed>
+
+The message-body is not yet read, but the exact location of the
+body is known so the message can be read when needed.  This is part of
+the lazy extraction mechanism.  Once extracted, the object can become
+any simple or complex body.
+
+=item * L<Mail::Message::Body::Multipart|Mail::Message::Body::Multipart>
+
+The message body contains a set of sub-messages (which can contain
+multipart bodies themselves).  Each sub-message is an instance
+of L<Mail::Message::Part|Mail::Message::Part>, which is an extension of L<Mail::Message|Mail::Message>.
+
+=item * L<Mail::Message::Body::Nested|Mail::Message::Body::Nested>
+
+Nested messages, like C<message/rfc822>: they contain a message in
+the body.  For most code, they simply behave like multiparts.
+
+=back
+
 
 
 
@@ -995,7 +1015,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

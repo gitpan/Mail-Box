@@ -5,11 +5,9 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
 
 use Carp;
-use IO::Scalar;
-
 use Mail::Message::Body::String;
 use Mail::Message::Body::Lines;
 

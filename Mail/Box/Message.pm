@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::Message;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
 use base 'Mail::Message';
 
 use Date::Parse;
@@ -177,6 +177,14 @@ sub shortString()
     chomp $subject;
 
     sprintf "%4s(%2d) %-30.30s", $self->shortSize, $subject;
+}
+
+#-------------------------------------------
+
+
+sub destruct()
+{   require Mail::Box::Message::Destructed;
+    Mail::Box::Message::Destructed->coerce(shift);
 }
 
 #-------------------------------------------

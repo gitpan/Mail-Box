@@ -13,6 +13,7 @@ Mail::Box::Message - manage one message within a mail-folder
  Mail::Box::Message is extended by
    Mail::Box::Dir::Message
    Mail::Box::File::Message
+   Mail::Box::Message::Destructed
    Mail::Box::Net::Message
 
 
@@ -357,7 +358,7 @@ See L<Mail::Message/"The header">
 
 =back
 
-$obj-E<gt>B<get>(FIELD)
+$obj-E<gt>B<get>(FIELDNAME)
 
 =over 4
 
@@ -390,6 +391,14 @@ See L<Mail::Message/"The header">
 =back
 
 $obj-E<gt>B<sender>
+
+=over 4
+
+See L<Mail::Message/"The header">
+
+=back
+
+$obj-E<gt>B<study>(FIELDNAME)
 
 =over 4
 
@@ -504,7 +513,7 @@ $obj-E<gt>B<moveTo>(FOLDER)
 =over 4
 
 Move the message from this folder to the FOLDER specified.  This will
-create a copy using L<clone()|"Constructors"> first, and flag this original message
+create a copy using L<clone()|Mail::Message/"Constructors"> first, and flag this original message
 to be deleted.  So until the source folder is closed, two copies of
 the message stay in memory.  The newly created message (part of the
 destination folder) is returned.
@@ -528,7 +537,7 @@ $obj-E<gt>B<delete>
 =over 4
 
 Flag the message to be deleted.  The real deletion only takes place on
-a synchronization of the folder.  See L<deleted()|"Flags"> as well.
+a synchronization of the folder.  See L<deleted()|Mail::Box::Message/"Flags"> as well.
 
 The time stamp of the moment of deletion is stored as value.  When the same
 message is deleted more than once, the first time stamp will stay.
@@ -546,8 +555,8 @@ $obj-E<gt>B<deleted>([BOOLEAN])
 =over 4
 
 Set the delete flag for this message.  Without argument, the method
-returns the same as L<isDeleted()|"Flags">, which is prefered.  When a true
-value is given, L<delete()|"Flags"> is called.
+returns the same as L<isDeleted()|Mail::Box::Message/"Flags">, which is prefered.  When a true
+value is given, L<delete()|Mail::Box::Message/"Flags"> is called.
 
 I<Example:> 
 
@@ -602,23 +611,7 @@ See L<Mail::Message/"Flags">
 
 =back
 
-$obj-E<gt>B<labelsToStatus>
-
-=over 4
-
-See L<Mail::Message/"Flags">
-
-=back
-
 $obj-E<gt>B<modified>([BOOLEAN])
-
-=over 4
-
-See L<Mail::Message/"Flags">
-
-=back
-
-$obj-E<gt>B<statusToLabels>
 
 =over 4
 
@@ -687,12 +680,12 @@ $obj-E<gt>B<readBody>(PARSER, HEAD [, BODYTYPE])
 =over 4
 
 Read the body of one message.  The PARSER gives access to the folder file.
-The HEAD has been read with L<readHead()|"Internals">.  The optional BODYTYPE supplies
+The HEAD has been read with L<readHead()|Mail::Message/"Internals">.  The optional BODYTYPE supplies
 the class name of the body to be created, or a code reference to a
 routine which can produce a body type based on the head (passed as
 first argument).
 
-By default, the BODYTYPE will call L<Mail::Box::determineBodyType()|"Internals">
+By default, the BODYTYPE will call L<Mail::Box::determineBodyType()|Mail::Box/"Internals">
 where the message will be added to.
 
 =back
@@ -854,6 +847,17 @@ See L<Mail::Message/"Cleanup">
 
 =back
 
+$obj-E<gt>B<destruct>
+
+=over 4
+
+Removes most of the memory occupied by the message by detaching the header
+and body.  Then, the object changes into a L<Mail::Box::Message::Destructed|Mail::Box::Message::Destructed>
+which will catch all attempts to access the header and body.  Be careful
+with the usage of this method.
+
+=back
+
 $obj-E<gt>B<inGlobalDestruction>
 
 =over 4
@@ -868,12 +872,12 @@ See L<Mail::Reporter/"Cleanup">
 
 I<Error:> Cannot include forward source as $include.
 
-Unknown alternative for the L<forward(include)|"Constructing a message">.  Valid choices are
+Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
 C<NO>, C<INLINE>, and C<ATTACH>.
 
 I<Error:> Cannot include reply source as $include.
 
-Unknown alternative for the C<include> option of L<reply()|"Constructing a message">.  Valid
+Unknown alternative for the C<include> option of L<reply()|Mail::Message::Construct::Reply/"Constructing a message">.  Valid
 choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
 I<Error:> No address to create forwarded to.
@@ -882,7 +886,7 @@ If a forward message is created, a destination address must be specified.
 
 I<Error:> No default mailer found to send message.
 
-The message L<send()|"The Message"> mechanism had not enough information to automatically
+The message L<send()|Mail::Message/"The Message"> mechanism had not enough information to automatically
 find a mail transfer agent to sent this message.  Specify a mailer
 explicitly using the C<via> options.
 
@@ -911,7 +915,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Part;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
 use base 'Mail::Message';
 use Scalar::Util 'weaken';
 
@@ -138,5 +138,12 @@ sub deleted(;$)
 sub isDeleted() { shift->{MMP_deleted} }
 
 #------------------------------------------
+
+
+sub destruct()
+{  my $self = shift;
+   $self->log(ERROR =>'You cannot destruct message parts, only whole messages');
+   undef;
+}
 
 1;

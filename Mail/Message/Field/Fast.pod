@@ -23,15 +23,6 @@ The data is stored in an array, and some hacks are made to speeds
 things up.  Be gentle with me, and consider that each message contains
 many of these lines, so speed is very important here.
 
-=head2 Header fields
-
-
-=head2 Folding
-
-
-=head2 Performance consideration
-
-
 
 =head1 OVERLOADED
 
@@ -97,7 +88,7 @@ Mail::Message::Field::Fast-E<gt>B<new>(DATA)
 
 The constructor of this object does not follow the usual practise within
 the Mail::Box suite: it does not use the constructor
-L<Mail::Reporter::new()|"Constructors">.
+L<Mail::Reporter::new()|Mail::Reporter/"Constructors">.
 Therefor it has no logging or tracing facilities.
 
 The method can be used in one of the following ways:
@@ -169,8 +160,124 @@ But in practice, you can simply call
            , charset => 'utf8');
 
 which implicitly calls this constructor (when needed).  You can specify
-the same things for L<Mail::Message::Head::Complete::add()|"Access to the header"> as this
+the same things for L<Mail::Message::Head::Complete::add()|Mail::Message::Head::Complete/"Access to the header"> as this
 C<new> accepts.
+
+=back
+
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Message::Field::Fast-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<errors>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Message::Field::Fast-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Message::Field::Fast-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -334,6 +441,14 @@ See L<Mail::Message::Field/"Access to the content">
 
 =back
 
+$obj-E<gt>B<study>
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the content">
+
+=back
+
 $obj-E<gt>B<toDate>([TIME])
 
 Mail::Message::Field::Fast-E<gt>B<toDate>([TIME])
@@ -408,122 +523,6 @@ See L<Mail::Message::Field/"Internals">
 
 =back
 
-=head2 Error handling
-
-
-$obj-E<gt>B<AUTOLOAD>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
-
-Mail::Message::Field::Fast-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
-
-Mail::Message::Field::Fast-E<gt>B<log>([LEVEL [,STRINGS]])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
-
-Mail::Message::Field::Fast-E<gt>B<logPriority>(LEVEL)
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-=head2 Cleanup
-
-
-$obj-E<gt>B<DESTROY>
-
-=over 4
-
-See L<Mail::Reporter/"Cleanup">
-
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
-
-See L<Mail::Reporter/"Cleanup">
-
-=back
-
 
 
 =head1 DIAGNOSTICS
@@ -549,6 +548,9 @@ not.  Probably you should investigate this and probably inform the author
 of the package.
 
 
+=head1 DETAILS
+
+
 
 
 
@@ -559,7 +561,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

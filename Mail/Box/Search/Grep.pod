@@ -98,7 +98,7 @@ In case of a CODE reference, that routine is called for each match. The
 first argument is this search object and the second a reference to same
 hash as would be stored in the array.
 
-The C<PRINT> will call L<printMatchedHead()|"The Results"> or L<printMatchedBody()|"The Results"> when
+The C<PRINT> will call L<printMatchedHead()|Mail::Box::Search::Grep/"The Results"> or L<printMatchedBody()|Mail::Box::Search::Grep/"The Results"> when
 any matching header resp body line was found.  The output is minimized
 by not reprinting the message info on multiple matches in the same
 message.
@@ -358,7 +358,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

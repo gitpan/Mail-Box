@@ -186,8 +186,8 @@ The references to field objects in the hash are real, those in the ordered
 list are weak.  So when field objects are removed from the hash, their
 references in the ordered list are automagically undef'd.
 
-When many fields are removed, for instance with L<removeFields()|"Access to the header"> or
-L<removeFieldsExcept()|"Access to the header">, then it is useful to remove the list of undefs
+When many fields are removed, for instance with L<removeFields()|Mail::Message::Head::Partial/"Access to the header"> or
+L<removeFieldsExcept()|Mail::Message::Head::Partial/"Access to the header">, then it is useful to remove the list of undefs
 from the ordered list as well.  In those cases, this method is called
 automatically, however you may have your own reasons to call this method.
 
@@ -265,7 +265,7 @@ Remove the fields from the header which are exactly named 'STRING' (case
 insensitive) or match the REGular EXPresssion.  Do not forget to add the
 'i' modifier to the REGEXP, because fields are case insensitive.
 
-See also L<removeField()|"Access to the header"> which is used to remove one field object from
+See also L<removeField()|Mail::Message::Head::Complete/"Access to the header"> which is used to remove one field object from
 the header.  The reverse specification can be made with
 C<removeFieldsExcept()>.
 
@@ -285,7 +285,7 @@ specified STRINGs (case-insensitive) and which are not matching one of
 the REGular EXPressions.  Do not forget to add the 'i' modifier to the
 REGEXP, because fields are case insensitive.
 
-See also L<removeField()|"Access to the header"> which is used to remove one field object from
+See also L<removeField()|Mail::Message::Head::Complete/"Access to the header"> which is used to remove one field object from
 the header.  The reverse specification can be made with C<removeFields()>.
 
 I<Example:> 
@@ -302,7 +302,7 @@ $obj-E<gt>B<removeResentGroups>
 Removes all header lines which are member of a I<resent group>, which
 are explained in L<Mail::Message::Head::ResentGroup|Mail::Message::Head::ResentGroup>.  For removing single
 groups (for instance because you want to keep the last), use
-L<Mail::Message::Head::ResentGroup::delete()|"The header">.
+L<Mail::Message::Head::ResentGroup::delete()|Mail::Message::Head::ResentGroup/"The header">.
 
 =back
 
@@ -335,6 +335,14 @@ $obj-E<gt>B<string>
 =over 4
 
 See L<Mail::Message::Head::Complete/"Access to the header">
+
+=back
+
+$obj-E<gt>B<study>(NAME [,INDEX])
+
+=over 4
+
+See L<Mail::Message::Head/"Access to the header">
 
 =back
 
@@ -579,7 +587,7 @@ See L<Mail::Reporter/"Cleanup">
 I<Warning:> Cannot remove field $name from header: not found.
 
 You ask to remove a field which is not known in the header.  Using
-L<delete()|"Access to the header">, L<reset()|"Access to the header">, or L<set()|"Access to the header"> to do the job will not result
+L<delete()|Mail::Message::Head::Complete/"Access to the header">, L<reset()|Mail::Message::Head::Complete/"Access to the header">, or L<set()|Mail::Message::Head::Complete/"Access to the header"> to do the job will not result
 in warnings: those methods check the existence of the field first.
 
 I<Error:> Package $package does not implement $method.
@@ -589,6 +597,9 @@ implement this method where it should. This message means that some other
 related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
+
+
+=head1 DETAILS
 
 
 
@@ -601,7 +612,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -26,7 +26,7 @@ headers of a set of C<Mail::Box::MH::Message> messages which are
 part of a single C<Mail::Box::MH> folder in one file.
 
 When the C<Mail::Box::MH::Index> functionality is enabled by specifying
-L<Mail::Box::MH::new(keep_index)|"METHODS"> when opening a folder, the index file
+L<Mail::Box::MH::new(keep_index)|Mail::Box::MH/"METHODS"> when opening a folder, the index file
 is automatically read.  When the folder is closed, a new index file is
 created.
 
@@ -106,7 +106,7 @@ $obj-E<gt>B<get>(MSGFILE)
 
 Look if there is header info for the specified MSGFILE.  The filename
 represents one message in folder type which are organized as directory.
-This method will return an object of the L<new(head_type)|"Constructors"> as specified
+This method will return an object of the L<new(head_type)|Mail::Box::MH::Index/"Constructors"> as specified
 during creation of the index object, or C<undef> if the information
 is not known or not trustworthy -i.e. the file size changed.
 
@@ -269,7 +269,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

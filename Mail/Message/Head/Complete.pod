@@ -161,7 +161,7 @@ $obj-E<gt>B<size>
 
 Return the number of bytes needed to display this header (including
 the trailing newline).  On systems which use CRLF as line separator,
-the number of lines in the header (see L<nrLines()|"The header">) must be added to
+the number of lines in the header (see L<nrLines()|Mail::Message::Head::Complete/"The header">) must be added to
 find the actual size in the file.
 
 =back
@@ -238,7 +238,7 @@ $obj-E<gt>B<delete>(NAME)
 
 Remove the field with the specified name.  If the header contained
 multiple lines with the same name, they will be replaced all together.
-This method simply calls L<reset()|"Access to the header"> without replacement fields.
+This method simply calls L<reset()|Mail::Message::Head::Complete/"Access to the header"> without replacement fields.
 
 =back
 
@@ -285,7 +285,7 @@ $obj-E<gt>B<print>([FILEHANDLE])
 =over 4
 
 Print all headers to the specified FILEHANDLE, by default the selected
-filehandle.  See L<printUndisclosed()|"Access to the header"> to limit the headers to include
+filehandle.  See L<printUndisclosed()|Mail::Message::Head::Complete/"Access to the header"> to limit the headers to include
 only the public headers.
 
 I<Example:> 
@@ -302,7 +302,7 @@ $obj-E<gt>B<printUndisclosed>([FILEHANDLE])
 
 =over 4
 
-Like the usual L<print()|"Access to the header">, the header lines are printed to the specified
+Like the usual L<print()|Mail::Message::Head::Complete/"Access to the header">, the header lines are printed to the specified
 FILEHANDLE, by default the selected filehandle.  In this case, however,
 C<Bcc> and C<Resent-Bcc> lines are included.
 
@@ -314,10 +314,10 @@ $obj-E<gt>B<removeField>(FIELD)
 
 Remove the specified FIELD object from the header.  This is useful when
 there are possible more than one fields with the same name, and you
-need to remove exactly one of them.  Also have a look at L<delete()|"Access to the header">,
-L<reset()|"Access to the header">, and L<set()|"Access to the header">.
+need to remove exactly one of them.  Also have a look at L<delete()|Mail::Message::Head::Complete/"Access to the header">,
+L<reset()|Mail::Message::Head::Complete/"Access to the header">, and L<set()|Mail::Message::Head::Complete/"Access to the header">.
 
-See also L<Mail::Message::Head::Partial::removeFields()|"Access to the header"> (mind the 's'
+See also L<Mail::Message::Head::Partial::removeFields()|Mail::Message::Head::Partial/"Access to the header"> (mind the 's'
 at the end of the name), which accepts a string or regular expression
 as argument to select the fields to be removed.
 
@@ -329,7 +329,7 @@ $obj-E<gt>B<removeFields>(STRING|REGEXP, [STRING|REGEXP, ...])
 
 The header object is turned into a L<Mail::Message::Head::Partial|Mail::Message::Head::Partial> object
 which has a set of fields removed.  Read about the implications and the
-possibilities in L<Mail::Message::Head::Partial::removeFields()|"Access to the header">.
+possibilities in L<Mail::Message::Head::Partial::removeFields()|Mail::Message::Head::Partial/"Access to the header">.
 
 =back
 
@@ -339,7 +339,7 @@ $obj-E<gt>B<removeFieldsExcept>(STRING|REGEXP, [STRING|REGEXP, ...])
 
 The header object is turned into a L<Mail::Message::Head::Partial|Mail::Message::Head::Partial> object
 which has a set of fields removed.  Read about the implications and the
-possibilities in L<Mail::Message::Head::Partial::removeFieldsExcept()|"Access to the header">.
+possibilities in L<Mail::Message::Head::Partial::removeFieldsExcept()|Mail::Message::Head::Partial/"Access to the header">.
 
 =back
 
@@ -349,7 +349,7 @@ $obj-E<gt>B<removeResentGroups>
 
 Removes all resent groups at once.  The header object is turned into
 a L<Mail::Message::Head::Partial|Mail::Message::Head::Partial> object.  Read about the implications and the
-possibilities in L<Mail::Message::Head::Partial::removeResentGroups()|"Access to the header">.
+possibilities in L<Mail::Message::Head::Partial::removeResentGroups()|Mail::Message::Head::Partial/"Access to the header">.
 
 =back
 
@@ -379,12 +379,12 @@ repeated fields.
 For C<Received> fields, you should take a look at I<resent groups>, as
 implemented in L<Mail::Message::Head::ResentGroup|Mail::Message::Head::ResentGroup>.  Removing those
 lines without their related lines is not a smart idea.  Read the
-details L<Mail::Message::Head::ResentGroup::delete()|"The header">.
+details L<Mail::Message::Head::ResentGroup::delete()|Mail::Message::Head::ResentGroup/"The header">.
 
 If FIELDS is empty, the corresponding NAME fields will
 be removed. The location of removed fields in the header order will be
 remembered. Fields with the same name which are added later will appear at
-the remembered position.  This is equivalent to the L<delete()|"Access to the header"> method.
+the remembered position.  This is equivalent to the L<delete()|Mail::Message::Head::Complete/"Access to the header"> method.
 
 I<Example:> 
 
@@ -403,7 +403,7 @@ $obj-E<gt>B<set>(FIELD | LINE | (NAME, BODY [,ATTRS]))
 
 =over 4
 
-The C<set> method is similar to the L<add()|"Access to the header"> method, and takes the same
+The C<set> method is similar to the L<add()|Mail::Message::Head::Complete/"Access to the header"> method, and takes the same
 options. However, existing values for fields will be removed before a new
 value is added.
 
@@ -415,6 +415,14 @@ $obj-E<gt>B<string>
 
 Returns the whole header as one scalar (in scalar context) or list
 of lines (list context).  Triggers completion.
+
+=back
+
+$obj-E<gt>B<study>(NAME [,INDEX])
+
+=over 4
+
+See L<Mail::Message::Head/"Access to the header">
 
 =back
 
@@ -436,7 +444,7 @@ $obj-E<gt>B<guessTimeStamp>
 Make a guess about when the message was origanally posted, based on the
 information found in the header.
 
-For some kinds of folders, L<Mail::Message::guessTimestamp()|"The header"> may produce
+For some kinds of folders, L<Mail::Message::guessTimestamp()|Mail::Message/"The header"> may produce
 a better result, for instance by looking at the modification time of the
 file in which the message is stored.  Also some protocols, like POP can
 supply that information.
@@ -499,7 +507,7 @@ $obj-E<gt>B<createMessageId>
 Creates a message-id for this message.  This method will be run when
 a new message is created, or a message is discovered without the
 message-id header field.  Message-ids are required for detection of
-message-threads.  See L<messageIdPrefix()|"Internals">.
+message-threads.  See L<messageIdPrefix()|Mail::Message::Head::Complete/"Internals">.
 
 =back
 
@@ -525,7 +533,7 @@ $obj-E<gt>B<messageIdPrefix>([STRING])
 
 Sets/returns the message-id start.  The rest of the message-id is an
 integer which is derived from the current time and the local host.
-See L<createMessageId()|"Internals">.
+See L<createMessageId()|Mail::Message::Head::Complete/"Internals">.
 
 =back
 
@@ -676,7 +684,7 @@ See L<Mail::Reporter/"Cleanup">
 I<Warning:> Cannot remove field $name from header: not found.
 
 You ask to remove a field which is not known in the header.  Using
-L<delete()|"Access to the header">, L<reset()|"Access to the header">, or L<set()|"Access to the header"> to do the job will not result
+L<delete()|Mail::Message::Head::Complete/"Access to the header">, L<reset()|Mail::Message::Head::Complete/"Access to the header">, or L<set()|Mail::Message::Head::Complete/"Access to the header"> to do the job will not result
 in warnings: those methods check the existence of the field first.
 
 I<Error:> Package $package does not implement $method.
@@ -686,6 +694,9 @@ implement this method where it should. This message means that some other
 related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
+
+
+=head1 DETAILS
 
 
 
@@ -698,7 +709,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

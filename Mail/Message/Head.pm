@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Head;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Complete;
@@ -140,6 +140,18 @@ sub get($;$)
 
 sub get_all(@) { my @all = shift->get(@_) }   # compatibility, force list
 sub setField($$) {shift->add(@_)} # compatibility
+
+#------------------------------------------
+
+
+sub study($;$)
+{   my $self = shift;
+    return map {$_->study} $self->get(@_)
+       if wantarray;
+
+    my $got  = $self->get(@_);
+    defined $got ? $got->study : undef;
+}
 
 #------------------------------------------
 

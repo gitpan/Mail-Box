@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.042';
+$VERSION = '2.043';
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -13,7 +13,7 @@ use Mail::Address;
 use Carp;
 use Scalar::Util 'blessed';
 use List::Util   'first';
-use IO::Scalar;
+use Mail::Box::FastScalar;
 
 
 my @default_rules =
@@ -169,7 +169,7 @@ sub replaceDeletedParts($@)
             || $part->isDeleted;
 
     my $structure = '';
-    my $output    = IO::Scalar->new(\$structure, '  ');
+    my $output    = Mail::Box::FastScalar->new(\$structure, '  ');
     $part->printStructure($output);
 
     Mail::Message::Part->build

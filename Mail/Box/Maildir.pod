@@ -710,8 +710,8 @@ I<Warning:> Changes not written to read-only folder $self.
 
 You have opened the folder read-only --which is the default set
 by L<new(access)|Mail::Box/"Constructors">--, made modifications, and now want to close it.
-Set L<close(force)|"The folder"> if you want to overrule the access mode, or close
-the folder with L<close(write)|"The folder"> set to C<NEVER>.
+Set L<close(force)|Mail::Box/"The folder"> if you want to overrule the access mode, or close
+the folder with L<close(write)|Mail::Box/"The folder"> set to C<NEVER>.
 
 I<Error:> Copying failed for one message.
 
@@ -780,7 +780,7 @@ were changes made.
 The explanation is complicated, but for normal use you should bother
 yourself with all details.
 
-=head2 How Maildir folders work
+=head2 How MAILDIR folders work
 
 Maildir-type folders use a directory to store the messages of one folder.
 Each message is stored in a separate file.  This seems useful, because
@@ -796,38 +796,6 @@ your messages as threads is desired.  Maildir maintains a tiny amount
 of info visible in the filename, which may make it perform just a little
 bit faster than MH.
 
-The following information was found at F<http://cr.yp.to/proto/maildir.html>.
-Each message is written in a separate file.  The filename is
-constructed from the time-of-arrival, a unique component, hostname,
-a syntax marker, and flags. For example C<1014220791.meteor.42:2,DF>.
-The filename must match:
-
- my ($time, $unique, $hostname, $info)
-    = $filename =~ m!^(\d+)\.(.*)\.(\w+)(\:.*)?$!;
- my ($semantics, $flags)
-    = $info =~ m!([12])\,([RSTDF]+)$!;
- my @flags = split //, $flags;
-
-The C<@flags> are sorted alphabetically, with the following meanings:
-
- D = draft, to be sent later
- F = flagged for user-defined purpose
- R = has been replied
- S = seen / (partially) read by the user
- T = trashed, flagged to be deleted later
-
-=head2 Labels
-
-The filename contains flags, and those flags are translated into labels
-when the folder is opened.  Labels can be changed by the application using
-L<Mail::Message::labels()|"Flags">.
-
-Changes will directly reflect in a filename change.
-The C<Status> and C<X-Status> lines in the header, which are used by
-Mbox kind of folders, are ignored except when a new message is received
-in the C<new> directory.  In case a message has to be written to file
-for some reason, the status header lines are updated as well.
-
 
 
 
@@ -838,7 +806,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-Mail::Transport::IMAP4 - handle messages via the IMAP4 protocol
+Mail::Transport::IMAP4 - proxy to Mail::IMAPClient
 
 
 =head1 INHERITANCE
@@ -21,17 +21,19 @@ Mail::Transport::IMAP4 - handle messages via the IMAP4 protocol
 
 =head1 DESCRIPTION
 
-UNDER DEVELOPMENT: Cannot be used yet.
+****** UNDER DEVELOPMENT *****, cannot be used (yet)
 
 The IMAP4 protocol is quite complicated: it is feature rich and allows
 verious asynchronous actions.  The main document describing IMAP is
-rfc2060.
+rfc3501 (which obsoleted the original specification of protocol 4r1
+in rfc2060 in March 2003).
 
 This package, as part of Mail::Box, does not implement the actual
-protocol itself, but uses Mail::IMAPClient to do the work.  The task
-for this package is to hide as much differences between that module's
-interface and the common L<Mail::Box|Mail::Box> folder types.  This package is used
-by L<Mail::Box::IMAP4|Mail::Box::IMAP4> for the real work.
+protocol itself but uses Mail::IMAPClient to do the work.  The task
+for this package is to hide as many differences between that module's
+interface and the common L<Mail::Box|Mail::Box> folder types.  Multiple
+L<Mail::Box::IMAP4|Mail::Box::IMAP4> folders can share one L<Mail::Transport::IMAP4|Mail::Transport::IMAP4>
+connection.
 
 
 
@@ -70,14 +72,20 @@ may get shared.  This is sharing is hidden for the user.
  timeout       L<Mail::Transport>  C<120>        
  trace         L<Mail::Reporter>  C<'WARNINGS'> 
  username      L<Mail::Transport>  undef         
- via           L<Mail::Transport>  C<'sendmail'> 
+ via           L<Mail::Transport>  C<'imap'>     
 
-. authenticate 'KERBEROS_V4'|'GSSAPI'|'SKEY'|'AUTO'
+. authenticate 'PLAIN'|'CRAM-MD5'|'NTLM'|'AUTO'|CODE
 
 =over 4
 
-Authenthication method.  RFC1731 defines a few authentication methods
-to be (optionally) used with IMAP. NOT IMPLEMENTED YET.
+Authenthication method.  C<AUTO> will try all known methods.
+The NTLM authentication requires Authen::NTLM to be installed.  If this
+module is not installed, it will be skipped by AUTO.
+
+You can also specify your own mechan$^O eq 'MSWin32' ? "\n" : ism as CODE reference.  The
+Mail::IMAPClient documentation refers to this code as I<Authcallback>.
+In case you have your own implementation, please consider to contribute
+it to Mail::Box.
 
 =back
 
@@ -298,11 +306,13 @@ Returns a list of subfolders for this server.
 
 =back
 
-$obj-E<gt>B<getFlag>(ID, LABEL)
+$obj-E<gt>B<getFlags>(ID)
 
 =over 4
 
-Returns the value of the LABEL for the message with this ID.
+Returns the values of all flags which are related to the message with the
+specified ID.  These flags are translated into the names which are
+standard for the Mail::Box suite
 
 =back
 
@@ -351,7 +361,7 @@ $obj-E<gt>B<socket>
 Returns a connection to the IMAP4 server.  If there was no connection yet,
 it will be created transparently.  If the connection with the IMAP4 server
 was lost, it will be reconnected and the assures that internal
-state information (STAT and UIDL) is up-to-date in the object.
+state information (STAT and UID) is up-to-date in the object.
 
 If the contact to the server was still present, or could be established,
 an IO::Socket::INET object is returned.  Else, C<undef> is returned and
@@ -489,7 +499,7 @@ It is not possible to retreive all messages on a remote IMAP4 folder
 at once: each shall be taken separately.  The IMAP4 folder will hide this
 for you.
 
-I<Error:> Cannot re-connect reliably to server which doesn't support UIDL.
+I<Error:> Cannot re-connect reliably to server which doesn't support UID.
 
 The connection to the remote IMAP4 was lost, and cannot be re-established
 because the server's protocol implementation lacks the necessary information.
@@ -515,6 +525,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+I<Error:> module Authen::NTLM is not installed
+
+You try to establish an IMAP4 connection which explicitly uses NTLM
+authentication, but the optional Authen::NTLM, which implements this is
+not installed on your system.
+
 
 
 
@@ -526,7 +542,7 @@ See the Mail::Box website at L<http://perl.overmeer.net/mailbox/> for more detai
 
 =head1 COPYRIGHTS
 
-Module version 2.042.
+Module version 2.043.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
