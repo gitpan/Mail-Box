@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.044';
+$VERSION = '2.045';
 use base 'Mail::Transport::Receive';
 
 my $CRLF = $^O eq 'MSWin32' ? "\n" : "\015\012";

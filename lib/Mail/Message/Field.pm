@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field;
 use vars '$VERSION';
-$VERSION = '2.044';
+$VERSION = '2.045';
 use base 'Mail::Reporter';
 
 use Carp;

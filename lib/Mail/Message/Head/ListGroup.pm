@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message::Head::ListGroup;
 use vars '$VERSION';
-$VERSION = '2.044';
+$VERSION = '2.045';
 use base 'Mail::Reporter';
 
 use Mail::Message::Field::Fast;
