@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Message::TransferEnc::Base64;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Message::TransferEnc';
 
 use MIME::Base64;
@@ -25,11 +25,7 @@ sub check($@)
 sub decode($@)
 {   my ($self, $body, %args) = @_;
 
-    my $lines
-      = $body->isa('Mail::Message::Body::File')
-      ? $self->_decode_from_file($body)
-      : $self->_decode_from_lines($body);
-
+    my $lines = decode_base64($body->string);
     unless($lines)
     {   $body->transferEncoding('none');
         return $body;
@@ -45,21 +41,6 @@ sub decode($@)
      , transfer_encoding => 'none'
      , data              => $lines
      );
-}
-
-sub _decode_from_file($)
-{   my ($self, $body) = @_;
-    local $_;
-
-    my $in = $body->file || return;
-    my $unpacked = decode_base64(join '', $in->getlines);
-    $in->close;
-    $unpacked;
-}
-
-sub _decode_from_lines($)
-{   my ($self, $body) = @_;
-    join '', map { decode_base64($_) } $body->lines;
 }
 
 #------------------------------------------

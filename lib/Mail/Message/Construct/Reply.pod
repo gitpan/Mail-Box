@@ -112,9 +112,9 @@ L<Mail::Message::replySubject()|Mail::Message::Construct::Reply/"Constructing a 
 =over 4
 
 The destination of your message.  By default taken from the C<Reply-To>
-field in the source message.  If that field is not present, the C<Sender>
-field is taken.  If that field is not present as well, the C<From> line
-is scanned.  If they all fail, C<undef> is returned.
+field in the source message.  If that field is not present as well, the
+C<From> line is scanned.  If they all fail, C<undef> is returned by this
+method: no reply message produced.
 
 =back
 
@@ -304,7 +304,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field::Structured;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Message::Field::Full';
 
 use Mail::Message::Field::Attribute;
@@ -11,11 +11,12 @@ use Mail::Message::Field::Attribute;
 
 sub init($)
 {   my ($self, $args) = @_;
+    $self->{MMFS_attrs} = {};
 
     $self->SUPER::init($args);
 
-    $self->addExtra($args->{extra})
-        if exists $args->{extra};
+    $self->datum($args->{datum})
+        if defined $args->{datum};
 
     my $attr = $args->{attributes} || [];
     $attr    = [ %$attr ] if ref $attr eq 'HASH';
@@ -26,8 +27,6 @@ sub init($)
         else          { $self->attribute($name, shift @$attr) }
     }
 
-    $self->{MMFS_attrs} = {};
-    $self->{MMFS_extra} = ();
     $self;
 }
 
@@ -69,5 +68,58 @@ sub attributes() { values %{shift->{MMFS_attrs}} }
 sub beautify() { delete shift->{MMFF_body} }
 
 #------------------------------------------
+
+
+sub parse($)
+{   my ($self, $string) = @_;
+    my $datum = '';
+    while(length $string && substr($string, 0, 1) ne ';')
+    {   (undef, $string)  = $self->consumeComment($string);
+        $datum .= $1 if $string =~ s/^([^;(]+)//;
+    }
+    $self->datum($datum);
+
+    my $found = '';
+    until($string eq '')
+    {   if($string =~ s/^\;\s*// && length $found)
+        {   my $attr = Mail::Message::Field::Attribute->new($found);
+            $self->attribute($attr);
+            $found = '';
+        }
+
+        (undef, $string) = $self->consumeComment($string);
+        $string =~ s/^\n//;
+        (my $text, $string) = $self->consumePhrase($string);
+        $found .= $text if defined $text;
+    }
+
+    if(length $found)
+    {   my $attr = Mail::Message::Field::Attribute->new($found);
+        $self->attribute($attr);
+    }
+
+    1;
+}
+
+#------------------------------------------
+
+sub produceBody()
+{   my $self  = shift;
+    my $attrs = $self->{MMFS_attrs};
+    my $datum = $self->datum;
+
+    join '; '
+       , (defined $datum ? $datum : '')
+       , map {$_->string} @{$attrs}{sort keys %$attrs};
+}
+
+#------------------------------------------
+
+
+sub datum(;$)
+{   my $self = shift;
+    @_ ? ($self->{MMFS_datum} = shift) : $self->{MMFS_datum};
+}
+*body = \&datum;
 
 1;

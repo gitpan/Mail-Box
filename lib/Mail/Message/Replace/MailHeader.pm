@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Message::Replace::MailHeader;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Message::Head::Complete';
 
 
@@ -176,7 +176,8 @@ sub cleanup() { shift }
 
 
 BEGIN
-{ *Mail::Header::new =
+{   no warnings 'redefined';
+    *Mail::Header::new =
      sub { my $class = shift;
            Mail::Message::Replace::MailHeader->new(@_);
          }

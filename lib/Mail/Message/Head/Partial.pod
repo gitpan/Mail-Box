@@ -61,11 +61,11 @@ See L<Mail::Message::Head/"OVERLOADED">
 =head2 Constructors
 
 
-$obj-E<gt>B<build>(FIELDS)
+$obj-E<gt>B<build>([PAIR|FIELD]-LIST)
 
 =over 4
 
-See L<Mail::Message::Head/"Constructors">
+See L<Mail::Message::Head::Complete/"Constructors">
 
 =back
 
@@ -264,6 +264,14 @@ See L<Mail::Message::Head::Complete/"Access to the header">
 =back
 
 $obj-E<gt>B<print>([FILEHANDLE])
+
+=over 4
+
+See L<Mail::Message::Head::Complete/"Access to the header">
+
+=back
+
+$obj-E<gt>B<printSelected>(FILEHANDLE, (STRING|REGEXP)s)
 
 =over 4
 
@@ -516,7 +524,9 @@ See L<Mail::Message::Head/"Internals">
 
 =back
 
-$obj-E<gt>B<messageIdPrefix>([STRING])
+$obj-E<gt>B<messageIdPrefix>([PREFIX, [HOSTNAME]|CODE])
+
+Mail::Message::Head::Partial-E<gt>B<messageIdPrefix>([PREFIX, [HOSTNAME]|CODE])
 
 =over 4
 
@@ -690,6 +700,9 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+I<Warning:> field objects have an implied name ($name)
+
+
 
 =head1 DETAILS
 
@@ -731,7 +744,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

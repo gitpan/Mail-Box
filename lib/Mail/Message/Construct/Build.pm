@@ -3,17 +3,15 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 
-use Mail::Message::Head::Complete;
-use Mail::Message::Body::Lines;
-use Mail::Message::Body::Multipart;
-use Mail::Message::Field;
+use Mail::Message::Head::Complete  ();
+use Mail::Message::Body::Lines     ();
+use Mail::Message::Body::Multipart ();
+use Mail::Message::Body::Nested    ();
+use Mail::Message::Field           ();
 
-use Mail::Address;
-use Carp;
-use Scalar::Util 'blessed';
-use IO::Lines;
+use Mail::Address  ();
 
 
 sub build(@)
@@ -25,11 +23,15 @@ sub build(@)
       : $_[0]->isa('Mail::Message::Body') ? shift
       :               ();
 
-    my ($head, $type, @headerlines);
+    my ($head, @headerlines);
+    my ($type, $transfenc, $dispose);
     while(@_)
     {   my $key = shift;
         if(ref $key && $key->isa('Mail::Message::Field'))
-        {   if($key->name eq 'content-type') { $type = $key }
+        {   my $name = $key->name;
+               if($name eq 'content-type')              { $type      = $key }
+            elsif($name eq 'content-transfer-encoding') { $transfenc = $key }
+            elsif($name eq 'content-disposition')       { $dispose   = $key }
             else { push @headerlines, $key }
             next;
         }
@@ -48,9 +50,19 @@ sub build(@)
         elsif($key eq 'files')
         {   @data = map {Mail::Message::Body->new(file => $_) } @$value }
         elsif($key eq 'attach')
-        {   @data = ref $value eq 'ARRAY' ? @$value : $value }
-        elsif(lc $key eq 'content-type')
-        {   $type = Mail::Message::Field->new($key, $value) }
+        {   foreach my $c (ref $value eq 'ARRAY' ? @$value : $value)
+	    {   push @data, $c->isa('Mail::Message')
+		          ? Mail::Message::Body::Nested->new(nested => $c)
+			  : $c;
+            }
+	}
+        elsif($key =~ m/^content\-(type|transfer\-encoding|disposition)$/i )
+        {   my $k     = lc $1;
+            my $field = Mail::Message::Field->new($key, $value);
+               if($k eq 'type') { $type = $field }
+            elsif($k eq 'disposition' ) { $dispose = $field }
+            else { $transfenc = $field }
+        }
         elsif($key =~ m/^[A-Z]/)
         {   push @headerlines, $key, $value }
         else
@@ -66,6 +78,8 @@ sub build(@)
 
     # Setting the type explicitly, only after the body object is finalized
     $body->type($type) if defined $type;
+    $body->disposition($dispose) if defined $dispose;
+    $body->transferEncoding($transfenc) if defined $transfenc;
 
     $class->buildFromBody($body, $head, @headerlines);
 }
@@ -108,5 +122,8 @@ sub buildFromBody(@)
 
     $message;
 }
+
+#------------------------------------------
+
 
 1;

@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Transport::Receive';
 
 use Digest::HMAC_MD5;   # only availability check for CRAM_MD5
@@ -235,13 +235,19 @@ sub ids($)
 
 
 # Explanation in Mail::Box::IMAP4::Message chapter DETAILS
+
 my %flags2labels =
- ( '\Seen'     => [seen     => 1]
+ ( # Standard IMAP4 labels
+   '\Seen'     => [seen     => 1]
  , '\Answered' => [replied  => 1]
  , '\Flagged'  => [flagged  => 1]
  , '\Deleted'  => [deleted  => 1]
  , '\Draft'    => [draft    => 1]
  , '\Recent'   => [old      => 0]
+
+   # For the Netzwert extension (Mail::Box::Netzwert), some labels were
+   # added.  You'r free to support them as well.
+ , '\Spam'     => [spam     => 1]
  );
 
 my %labels2flags;
@@ -254,18 +260,15 @@ while(my ($k, $v) = each %flags2labels)
 
 sub getFlags($$)
 {   my ($self, $id) = @_;
-    my $imap  = $self->imapClient or return ();
+    my $imap   = $self->imapClient or return ();
+    my $labels = $self->flagsToLabels($imap->flags($id));
 
-    my %flags;
-    $flags{$_}++ foreach $imap->flags($id);
-
-    my @labels;
-    while(my ($k, $v) = each %flags2labels)
-    {   my ($label, $positive) = @$v;
-        push @labels, $label => (exists $flags{$k} ? $positive : !$positive);
+    # Add default values for missing flags
+    foreach  my $s (values %flags2labels)
+    {   $labels->{$_->[0]} = not $_->[1] unless exists $labels->{$_->[0]};
     }
 
-    @labels;
+    $labels;
 }
 
 #------------------------------------------
@@ -320,7 +323,28 @@ sub labelsToFlags(@)
         }
     }
 
-    join(" ", @set);
+    join " ", @set;
+}
+
+#------------------------------------------
+
+
+sub flagsToLabels(@)
+{   my $thing   = shift;
+
+    # Process the list
+    my %labels;
+    foreach my $f (@_)
+    {   if(my $lab = $flags2labels{$f})
+        {   $labels{$lab->[0]} = $lab->[1];
+        }
+        else
+        {   (my $lab = $f) =~ s,^\\,,;
+            $labels{$lab}++;
+        }
+    }
+
+    wantarray ? %labels : \%labels;
 }
 
 #------------------------------------------
@@ -432,7 +456,7 @@ sub DESTROY()
 
 package Mail::IMAPClient::Debug;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 
 # Tied filehandle translates IMAP's debug system into Mail::Reporter
 # calls.

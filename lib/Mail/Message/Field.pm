@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -40,6 +40,8 @@ sub new(@)
 #------------------------------------------
 
 
+sub length { length shift->folded }
+
 #------------------------------------------
 
 
@@ -49,7 +51,7 @@ BEGIN {
      Resent-Date Resent-From Resent-Sender Resent-To Return-Path
      List-Help List-Post List-Unsubscribe Mailing-List
      Received References Message-ID In-Reply-To
-     Content-Length Content-Type
+     Content-Length Content-Type Content-Disposition
      Delivered-To
      Lines
      MIME-Version
@@ -105,7 +107,7 @@ sub nrLines() { my @l = shift->foldedBody; scalar @l }
 #------------------------------------------
 
 
-sub size() {length shift->toString}
+*size = \&length;
 
 #------------------------------------------
 
@@ -171,7 +173,7 @@ sub stripCFWS($)
     while(@s)
     {   my $s = shift @s;
 
-           if(length $r && substr($r, -1) eq "\\") { $r .= $s } # esc'd special
+           if(CORE::length($r)&& substr($r, -1) eq "\\")  { $r .= $s }
         elsif($s eq '"')   { $in_dquotes = not $in_dquotes; $r .= $s }
         elsif($s eq '(' && !$in_dquotes) { $open_paren++ }
         elsif($s eq ')' && !$in_dquotes) { $open_paren-- }
@@ -201,7 +203,7 @@ sub comment(;$)
     if(@_)
     {   my $comment = shift;
         $body    =~ s/\s*\;.*//;
-        $body   .= "; $comment" if defined $comment && length $comment;
+        $body   .= "; $comment" if defined $comment && CORE::length($comment);
         $self->unfoldedBody($body);
         return $comment;
     }
@@ -225,7 +227,7 @@ sub attribute($;$)
            $body =~ m/\b$attr\s*\=\s*
                        ( "( (?: [^"]|\\" )* )"
                        | '( (?: [^']|\\' )* )'
-                       | (\S*)
+                       | ([^;\s]*)
                        )
                   /xi ? $+ : undef;
     }
@@ -235,7 +237,7 @@ sub attribute($;$)
     {   for($body)
         {      s/\b$attr\s*=\s*'([^']|\\')*'//i
             or s/\b$attr\s*=\s*"([^"]|\\")*"//i
-            or s/\b$attr\s*=\s*\S*//i;
+            or s/\b$attr\s*=\s*[;\s]*//i;
         }
         $self->unfoldedBody($body);
         return undef;
@@ -245,12 +247,32 @@ sub attribute($;$)
     for($body)
     {       s/\b$attr\s*=\s*'([^']|\\')*'/$attr="$quoted"/i
          or s/\b$attr\s*=\s*"([^"]|\\")*"/$attr="$quoted"/i
-         or s/\b$attr\s*=\s*\S+/$attr="$quoted"/i
+         or s/\b$attr\s*=\s*[^;\s]+/$attr="$quoted"/i
          or do { $_ .= qq(; $attr="$quoted") }
     }
 
     $self->unfoldedBody($body);
     $value;
+}
+
+#------------------------------------------
+
+
+sub attributes()
+{   my $self  = shift;
+    my $body  = $self->unfoldedBody;
+
+    my @attrs;
+    while($body =~ m/\b(\w+)\s*\=\s*
+                       ( "( (?: [^"]|\\" )* )"
+                       | '( (?: [^']|\\' )* )'
+                       | ([^;\s]*)
+                       )
+                    /xig)
+    {   push @attrs, $1 => $+;
+    }
+
+    @attrs;
 }
 
 #------------------------------------------
@@ -422,13 +444,13 @@ sub fold($$;$)
     my $wrap  = shift || $default_wrap_length;
 
     $line    =~ s/\n\s/ /gms;            # Remove accidental folding
-    return " \n" unless length $line;    # empty field
+    return " \n" unless CORE::length($line);  # empty field
 
     my @folded;
     while(1)
-    {  my $max = $wrap - (@folded ? 1 : length($name) + 2);
+    {  my $max = $wrap - (@folded ? 1 : CORE::length($name) + 2);
        my $min = $max >> 2;
-       last if length $line < $max;
+       last if CORE::length($line) < $max;
 
           $line =~ s/^ ( .{$min,$max}   # $max to 30 chars
                         [;,]            # followed at a ; or ,
@@ -445,7 +467,7 @@ sub fold($$;$)
        push @folded, " $1\n";
     }
 
-    push @folded, " $line\n" if length $line;
+    push @folded, " $line\n" if CORE::length($line);
     wantarray ? @folded : join('', @folded);
 }
 

@@ -8,13 +8,13 @@ Mail::Message - general message object
 
  Mail::Message has extra code in
    Mail::Message::Construct::Forward
-   Mail::Message::Construct::Text
-   Mail::Message::Construct::Build
-   Mail::Message::Construct::Rebuild
    Mail::Message::Construct::Bounce
-   Mail::Message::Construct
-   Mail::Message::Construct::Reply
    Mail::Message::Construct::Read
+   Mail::Message::Construct::Build
+   Mail::Message::Construct::Reply
+   Mail::Message::Construct::Rebuild
+   Mail::Message::Construct::Text
+   Mail::Message::Construct
 
  Mail::Message
    is a Mail::Reporter
@@ -261,7 +261,7 @@ See L<Mail::Message::Construct::Bounce/"Constructing a message">
 
 =back
 
-Mail::Message-E<gt>B<build>([MESSAGE|BODY], CONTENT)
+Mail::Message-E<gt>B<build>([MESSAGE|PART|BODY], CONTENT)
 
 =over 4
 
@@ -583,13 +583,14 @@ $obj-E<gt>B<from>
 
 =over 4
 
-Returns the address of the sender.  It is possible to have more than
-one address specified in the C<From> field of the message. Therefore a
-list of Mail::Address objects is returned, which usually has
-length 1.
+Returns the addresses from the senders.  It is possible to have more than
+one address specified in the C<From> field of the message, according
+to the specification. Therefore a list of Mail::Address objects is
+returned, which usually has length 1.
 
-If you need one address of a sender, for instance to create a reply to,
-then use L<sender()|Mail::Message/"The header">.
+If you need only one address from a sender, for instance to create a
+"original message by" line in constructed forwarded message body, then use
+L<sender()|Mail::Message/"The header">.
 
 I<Example:> using from() to get all sender addresses
 
@@ -735,8 +736,8 @@ unreal dates to influence their location in the displayed folder.
 
 To start, the received headers are tried for a date (see
 L<Mail::Message::Head::Complete::recvstamp()|Mail::Message::Head::Complete/"About the body">) and only then the C<Date>
-field.  When no date was found, C<undef> will be returned.  This may be
-very usual, because MailBox message constructors add a Date automatically.
+field.  In very rare cases, only with some locally produced messages,
+no stamp can be found.
 
 =back
 
@@ -1269,8 +1270,9 @@ $obj-E<gt>B<shortString>
 
 =over 4
 
-Convert the message header to a short string, representing the most
-important facts (for debugging purposes only).
+Convert the message header to a short string (without trailing newline),
+representing the most important facts (for debugging purposes only).  For
+now, it only reports size and subject.
 
 =back
 
@@ -1544,6 +1546,11 @@ so was not recently added to the folder.  This flag will never automatically
 be set by MailBox, because it would probably conflict with the user's
 idea of what is old.
 
+=item * passed
+
+Not often used or kept, this flag indicates that the message was bounced
+or forwarded to someone else.
+
 =item * replied
 
 The user (or application) has sent a message back to the sender of
@@ -1589,7 +1596,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

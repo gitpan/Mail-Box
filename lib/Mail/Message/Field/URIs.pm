@@ -1,9 +1,8 @@
-use strict;
 use warnings;
 
 package Mail::Message::Field::URIs;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Message::Field::Structured';
 use Carp 'confess';
 
@@ -71,15 +70,6 @@ sub URIs() { @{shift->{MMFU_uris}} }
 sub addAttribute($;@)
 {   my $self = shift;
     $self->log(ERROR => 'No attributes for URI fields.');
-    $self;
-}
-
-#------------------------------------------
-
-
-sub addExtra($@)
-{   my $self = shift;
-    $self->log(ERROR => 'No extras in URI fields.');
     $self;
 }
 

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body::Nested;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -36,7 +36,7 @@ sub isNested() {1}
 
 #------------------------------------------
 
-sub isBinary() {shift->nested->body->isBinary}
+sub isBinary() { shift->nested->body->isBinary }
 
 #------------------------------------------
 

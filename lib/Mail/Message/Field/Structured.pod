@@ -20,8 +20,6 @@ Mail::Message::Field::Structured - one line of a structured message header
 
  my $f = Mail::Message::Field::Full
             ->new('Content-Type' => 'text/html');
- # $f is now a Mail::Message::Field::Structured
- # NOT READY YET!!!
 
  my @encode = (charset => 'jp', use_continuations => 1);
  $f->attribute('filename=passwd');
@@ -136,8 +134,8 @@ objects.  Finally, there are some OPTIONS.
  Option      Defined in       Default      
  attributes                   C<[]>        
  charset     L<Mail::Message::Field::Full>  undef        
+ datum                        C<undef>     
  encoding    L<Mail::Message::Field::Full>  C<'q'>       
- extra                        undef        
  force       L<Mail::Message::Field::Full>  false        
  language    L<Mail::Message::Field::Full>  undef        
  log         L<Mail::Reporter>  C<'WARNINGS'>
@@ -156,15 +154,22 @@ L<Mail::Message::Field::Attribute|Mail::Message::Field::Attribute> objects.
 
 . charset STRING
 
-. encoding 'q'|'Q'|'b'|'B'
-
-. extra STRING
+. datum STRING
 
 =over 4
 
-Text which is appended after the line (preceded by a semicolon).
+The method name I<body> is very confusing, even in the RFC.  In MailBox,
+for historical reasons, L<body()|Mail::Message::Field/"Access to the body"> returns the past of the field contents
+before the first semi-colon.  L<foldedBody()|Mail::Message::Field/"Access to the body"> and L<unfoldedBody()|Mail::Message::Field/"Access to the body">
+address the whole field.
+
+There is no common name for the piece of data before the parameters
+(attributes) in the field-content mentioned in the RFCs, so let's call
+it B<datum>.
 
 =back
+
+. encoding 'q'|'Q'|'b'|'B'
 
 . force BOOLEAN
 
@@ -556,7 +561,23 @@ See L<Mail::Message::Field::Full/"Parsing">
 
 =back
 
+$obj-E<gt>B<datum>([VALUE])
+
+=over 4
+
+Equivalent to L<body()|Mail::Message::Field/"Access to the body">, but maybe less confusing.
+
+=back
+
 $obj-E<gt>B<parse>(STRING)
+
+=over 4
+
+See L<Mail::Message::Field::Full/"Parsing">
+
+=back
+
+$obj-E<gt>B<produceBody>
 
 =over 4
 
@@ -743,7 +764,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -3,17 +3,19 @@ use warnings;
 
 package Mail::Message::Field::Full;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Message::Field';
-
-use Mail::Message::Field::Attribute;
 
 use utf8;
 use Encode ();
 use MIME::QuotedPrint ();
 use Storable 'dclone';
 
-use Carp;
+use Mail::Message::Field::Structured;
+use Mail::Message::Field::Unstructured;
+use Mail::Message::Field::Addresses;
+use Mail::Message::Field::URIs;
+
 my $atext = q[a-zA-Z0-9!#\$%&'*+\-\/=?^_`{|}~];  # from RFC
 
 
@@ -34,6 +36,8 @@ BEGIN {
    $implementation{$_} = 'URIs' foreach
       qw/list-help list-post list-subscribe list-unsubscribe list-archive
          list-owner/;
+   $implementation{$_} = 'Structured' foreach
+      qw/content-disposition content-type/;
 #  $implementation{$_} = 'Date' foreach
 #     qw/date resent-date/;
 }
@@ -57,9 +61,6 @@ sub new($;$$@)
     my $myclass = 'Mail::Message::Field::'
                 . ($implementation{lc $name} || 'Unstructured');
 
-    eval "require $myclass";
-    return if $@;
-
     $myclass->SUPER::new(%args, name => $name, body => $body);
 }
 
@@ -82,13 +83,6 @@ sub init($)
 #------------------------------------------
 
 sub clone() { dclone(shift) }
-
-#------------------------------------------
-
-sub length()
-{   my $self = shift;
-    croak;
-}
 
 #------------------------------------------
 
@@ -381,6 +375,11 @@ sub consumeDotAtom($)
 
     ($atom, $string, $comment);
 }
+
+#------------------------------------------
+
+                                                                                
+sub produceBody() { die }
 
 #------------------------------------------
 

@@ -149,13 +149,14 @@ Examples:
 =head2 About the payload
 
 
-$obj-E<gt>B<dispositionFilename>(DIRECTORY)
+$obj-E<gt>B<dispositionFilename>([DIRECTORY])
 
 =over 4
 
 Returns the name which can be used as filename to store the information
 in the indicated DIRECTORY. To get a filename, various fields are searched
-for C<filename> and C<name> attributes.
+for C<filename> and C<name> attributes.  Without DIRECTORY, the name found
+will be returned.
 
 Only the basename of the found name will be used, for security reasons:
 otherwise, it may be possible to access other directories than the
@@ -236,7 +237,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field::Addresses;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Message::Field::Structured';
 
 use Mail::Message::Field::AddrGroup;
@@ -113,15 +113,6 @@ sub addAttribute($;@)
 #------------------------------------------
 
 
-sub addExtra($@)
-{   my $self = shift;
-    $self->log(ERROR => 'No extras in address fields.');
-    $self;
-}
-
-#------------------------------------------
-
-
 sub parse($)
 {   my ($self, $string) = @_;
     my ($group, $email) = ('', undef);
@@ -186,7 +177,6 @@ sub parse($)
 }
 
 #------------------------------------------
-
 
 sub produceBody()
 {  my @groups = sort {$a->name cmp $b->name} shift->groups;

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Reporter';
 
 use Mail::Message::Field;
@@ -279,6 +279,7 @@ sub disposition(;$)
     return $self->{MMB_disposition} if !@_ && $self->{MMB_disposition};
 
     my $disp = defined $_[0] ? shift : 'none';
+
     $self->{MMB_disposition} = ref $disp ? $disp->clone
        : Mail::Message::Field->new('Content-Disposition' => $disp);
 }

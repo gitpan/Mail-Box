@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -136,7 +136,7 @@ sub init($)
           ( folder   => $self
           , method   => $args->{lock_type}
           , timeout  => $args->{lock_timeout}
-          , wait     => $args->{lock_wait}
+          , expires  => $args->{lock_wait}
           , file     => ($args->{lockfile} || $args->{lock_file})
           );
 
@@ -504,6 +504,10 @@ sub find($)
     if($msgid =~ m/\<([^>]*)\>/s)
     {   $msgid = $1;
         $msgid =~ s/\s//gs;
+    }
+    else
+    {   # Illegal message-id
+        $msgid =~ s/\s/+/gs;
     }
 
     $self->scanForMessages(undef, $msgid, 'EVER', 'ALL')

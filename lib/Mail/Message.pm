@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -228,7 +228,7 @@ sub head(;$)
         return undef;
     }
 
-    $self->log(INTERNAL => "wrong type of head for $self")
+    $self->log(INTERNAL => "wrong type of head for message $self")
         unless ref $head && $head->isa('Mail::Message::Head');
 
     $head->message($self);
@@ -263,7 +263,10 @@ sub study($)
 #-------------------------------------------
 
 
-sub from() { map {$_->addresses} shift->head->get('From') }
+sub from()
+{  my $from = shift->head->get('From') or return ();
+   map {$_->addresses} $from;
+}
 
 #-------------------------------------------
 
@@ -351,7 +354,7 @@ sub body(;$@)
         return $body;
     }
 
-    $self->log(INTERNAL => "wrong type of body for $rawbody")
+    $self->log(INTERNAL => "wrong type of body for message $rawbody")
         unless ref $rawbody && $rawbody->isa('Mail::Message::Body');
 
     # Bodies of real messages must be encoded for safe transmission.
@@ -646,6 +649,7 @@ sub readBody($$;$$)
         , checked           => $self->{MM_trusted}
         , $self->logSettings
         );
+
         $body->contentInfoFrom($head);
     }
 
@@ -715,10 +719,7 @@ sub shortSize(;$)
 
 sub shortString()
 {   my $self    = shift;
-    my $subject = $self->head->get('subject') || '';
-    chomp $subject;
-
-    sprintf "%4s(%2d) %-30.30s", $self->shortSize, $subject;
+    sprintf "%4s %-30.30s", $self->shortSize, $self->subject;
 }
 
 #------------------------------------------

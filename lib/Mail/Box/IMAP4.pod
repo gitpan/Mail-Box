@@ -20,21 +20,6 @@ Mail::Box::IMAP4 - handle IMAP4 folders as client
 
 =head1 DESCRIPTION
 
-UNDER DEVELOPMENT!!!! LIMITATIONS:
-
-=over 4
-=item * this implementation is close to NOT TESTED!
-Of course, some testing has been done, but this is far from complete. Please
-contribute with ideas are problem reports.
-
-=item * messages are all treated as separte items
-
-Performance can be improved combining request for multiple subjects. For
-instance, a preloadFields() or a preloadEnvelope() would speed-up most
-
-applications
-=back
-
 Maintain a folder which has its messages stored on a remote server.  The
 communication between the client application and the server is implemented
 using the IMAP4 protocol.
@@ -43,6 +28,11 @@ This class uses L<Mail::Transport::IMAP4|Mail::Transport::IMAP4> to hide the tra
 information, and focusses solely on the correct handling of messages
 within a IMAP4 folder.  More than one IMAP4 folder can be handled by
 one single IMAP4 connection.
+
+Helper class L<Mail::Box::IMAP4::Fetch|Mail::Box::IMAP4::Fetch> simplifies writing IMAP servers
+and clients by supplying code to handle the IMAP protocol's C<FETCH>
+command.  It is not complete, currently focussing on server side
+protocol handling.
 
 
 =head1 OVERLOADED
@@ -1002,7 +992,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

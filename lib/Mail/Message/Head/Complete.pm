@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Head::Complete;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Message::Head';
 
 use Mail::Box::Parser;
@@ -24,10 +24,28 @@ sub clone(;@)
 
 #------------------------------------------
 
+
 sub build(@)
 {   my $self = shift;
     my $head = $self->new;
-    $head->add(shift, shift) while @_;
+    while(@_)
+    {   my $name = shift;
+
+        if($name->isa('Mail::Message::Field'))
+        {   $head->add($name);
+            next;
+        }
+
+        my $content = shift;
+        if(ref $content && $content->isa('Mail::Message::Field'))
+        {   $self->log(WARNING => "field objects have an implied name ($name)");
+            $head->add($content);
+            next;
+        }
+
+        $head->add($name, $content);
+    }
+
     $head;
 }
 
@@ -296,6 +314,31 @@ sub printUndisclosed($)
 
 #------------------------------------------
 
+                                                                                
+sub printSelected($@)
+{   my ($self, $fh) = (shift, shift);
+
+    foreach my $field ($self->orderedFields)
+    {   my $Name = $field->Name;
+        my $name = $field->name;
+
+        my $found;
+        foreach my $pattern (@_)
+        {   $found = ref $pattern?($Name =~ $pattern):($name eq lc $pattern);
+            last if $found;
+        }
+
+           if(!$found)           { ; }
+        elsif(ref $fh eq 'GLOB') { print $fh "\n" }
+        else                     { $fh->print("\n") }
+    }
+                                                                                
+    $self;
+}
+
+
+#------------------------------------------
+
 
 sub toString() {shift->string}
 sub string()
@@ -413,7 +456,7 @@ sub recvstamp()
 
     my $stamp = Mail::Message::Field->dateToTimestamp($recvd->comment);
 
-    $self->{MMH_recvstamp} = $stamp > 0 ? $stamp : undef;
+    $self->{MMH_recvstamp} = defined $stamp && $stamp > 0 ? $stamp : undef;
 }
 
 #------------------------------------------
@@ -435,7 +478,7 @@ sub guessTimestamp()
         }
     }
 
-    $self->{MMH_timestamp} = $stamp > 0 ? $stamp : undef;
+    $self->{MMH_timestamp} = defined $stamp && $stamp > 0 ? $stamp : undef;
 }
 
 #------------------------------------------
@@ -467,32 +510,46 @@ sub createFromLine()
 #------------------------------------------
 
 
-my $unique_id     = time;
-my $hostname;
+my $msgid_creator;
 
 sub createMessageId()
-{   my $mid = shift->messageIdPrefix . '-' . $unique_id++;
+{   $msgid_creator ||= $_[0]->messageIdPrefix;
+    $msgid_creator->(@_);
+}
 
+#------------------------------------------
+
+
+sub messageIdPrefix(;$$)
+{   my $thing = shift;
+    return $msgid_creator
+       unless @_ || !defined $msgid_creator;
+
+    return $msgid_creator = shift
+       if @_==1 && ref $_[0] eq 'CODE';
+
+    my $prefix   = shift || "mailbox-$$";
+
+    my $hostname = shift;
     unless(defined $hostname)
     {   require Sys::Hostname;
         $hostname = Sys::Hostname::hostname() || 'localhost';
     }
 
-    $mid . '@' . $hostname;
+    eval {require Time::HiRes};
+    if(Time::HiRes->can('gettimeofday'))
+    {
+        return $msgid_creator
+          = sub { my ($sec, $micro) = Time::HiRes::gettimeofday();
+                  "$prefix-$sec-$micro\@$hostname";
+                };
+    }
+
+    my $unique_id = time;
+    $msgid_creator
+      = sub { $unique_id++;
+              "$prefix-$unique_id\@$hostname";
+            };
 }
-
-#------------------------------------------
-
-
-our $unique_prefix;
-
-sub messageIdPrefix(;$)
-{   my $self = shift;
-    return $unique_prefix if !@_ && defined $unique_prefix;
-
-    $unique_prefix = shift || "mailbox-$$";
-}
-
-#------------------------------------------
 
 1;

@@ -4,11 +4,12 @@ use warnings;
 
 package Mail::Box::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Box::Net';
 
 use Mail::Box::IMAP4::Message;
 use Mail::Box::IMAP4::Head;
+use Mail::Box::IMAP4::Fetch;
 use Mail::Transport::IMAP4;
 
 use Mail::Box::Parser::Perl;

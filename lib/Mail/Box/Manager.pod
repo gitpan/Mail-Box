@@ -105,7 +105,7 @@ the manager.
 =over 4
 
 The default directory, or directories, where folders are
-located.  C<Mail::Box::Manager> can autodetect the existing folder-types.
+located. The C<Mail::Box::Manager> can autodetect the existing folder-types.
 There may be different kinds of folders opened at the same time, and
 messages can be moved between those types, although that may result in
 a loss of information depending on the folder types.
@@ -154,7 +154,7 @@ cleanup).
 
 =back
 
-$obj-E<gt>B<delete>(FOLDERNAME [,OPTIONS])
+$obj-E<gt>B<delete>(FOLDERNAME, OPTIONS)
 
 =over 4
 
@@ -660,7 +660,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

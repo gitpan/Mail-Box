@@ -27,11 +27,11 @@ functionality related to building of messages from various components.
 =head2 Constructing a message
 
 
-Mail::Message-E<gt>B<build>([MESSAGE|BODY], CONTENT)
+Mail::Message-E<gt>B<build>([MESSAGE|PART|BODY], CONTENT)
 
 =over 4
 
-Simplified message object builder.  In case a MESSAGE is
+Simplified message object builder.  In case a MESSAGE or message PART is
 specified, a new message is created with the same body to start with, but
 new headers.  A BODY may be specified as well.  However, there are more
 ways to add data simply.
@@ -41,13 +41,13 @@ The keys which start with a capital are used as header-lines.  Lower-cased
 fields are used for other purposes as listed below.  Each field may be used
 more than once.  Pairs where the value is C<undef> are ignored.
 
-If more than one C<data>, C<file>, and C<attach> is specified, a multi-parted
-message is created.  The C<Content-Type> field is treated separately: to
-set the type of the produced message body after it has been created.  For
-instance, to explicitly state that you wish a C<multipart/alternative>
-in stead of the default C<multipart/mixed>.  If
-you wish to specify the type per datum, you need to start playing with
-L<Mail::Message::Body|Mail::Message::Body> objects yourself.
+If more than one C<data>, C<file>, and C<attach> is specified,
+a multi-parted message is created.  Some C<Content-> fields are
+treated separately: to enforce the content lines of the produced
+message body B<after> it has been created.  For instance, to explicitly
+state that you wish a C<multipart/alternative> in stead of the default
+C<multipart/mixed>.  If you wish to specify the type per datum, you need
+to start playing with L<Mail::Message::Body|Mail::Message::Body> objects yourself.
 
 This C<build> method will use L<buildFromBody()|Mail::Message::Construct::Build/"Constructing a message"> when the body object has
 been constructed.  Together, they produce your message.
@@ -59,14 +59,18 @@ been constructed.  Together, they produce your message.
  files                    C<[ ]> 
  head                     undef  
 
-. attach BODY|MESSAGE|ARRAY-OF-BODY
+. attach BODY|PART|MESSAGE|ARRAY
 
 =over 4
 
-One attachment to the message.  Each attachment can be full MESSAGE or a BODY.
+One attachment to the message.  Each attachment can be full MESSAGE, a
+PART, or a BODY.
+Any MESSAGE will get encapsulated into a C<message/rfc822> body.
+You can specify many items (may be of different types) at once.
 
  attach => $folder->message(3)->decoded  # body
  attach => $folder->message(3)           # message
+ attach => [ $msg1, $msg2->part(6), $msg3->body ];
 
 =back
 
@@ -184,6 +188,133 @@ I<Example:>
 
 
 
+=head1 DETAILS
+
+
+=head2 Building a message
+
+
+=head3 Rapid building
+
+Most messages you need to construct are relatively simple.  Therefore,
+this module provides a method to prepare a message with only one method
+call: L<build()|Mail::Message::Construct::Build/"Constructing a message">.
+
+=head3 Compared to MIME::Entity::build()
+
+The C<build> method in MailBox is modelled after the C<build> method
+as provided by MIMETools, but with a few simplifications:
+
+=over 4
+
+=item When a keys starts with a capital, than it is always a header field
+
+=item When a keys is lower-cased, it is always something else
+
+=item You use the real field-names, not abbreviations
+
+=item All field names are accepted
+
+=item You may specify field objects between key-value pairs
+
+=item A lot of facts are auto-detected, like content-type and encoding
+
+=item You can create a multipart at once
+
+=back
+
+Hum, reading the list above... what is equivalent?  L<MIME::Entity> is
+not that simple after all!  Let's look at an example from MIME::Entity's
+manual page:
+
+ ### Create the top-level, and set up the mail headers:
+ $top = MIME::Entity->build(Type     => "multipart/mixed",
+                            From     => 'me@myhost.com',
+                            To       => 'you@yourhost.com',
+                            Subject  => "Hello, nurse!");
+                                                                                
+ ### Attachment #1: a simple text document:
+ $top->attach(Path=>"./testin/short.txt");
+                                                                                
+ ### Attachment #2: a GIF file:
+ $top->attach(Path        => "./docs/mime-sm.gif",
+              Type        => "image/gif",
+              Encoding    => "base64");
+                                                                                
+ ### Attachment #3: text we'll create with text we have on-hand:
+ $top->attach(Data => $contents);
+                                                                                
+The MailBox equivalent could be
+
+ my $msg = Mail::Message->build
+   ( From     => 'me@myhost.com'
+   , To       => 'you@yourhost.com'
+   , Subject  => "Hello, nurse!"
+
+   , file     => "./testin/short.txt"
+   , file     => "./docs/mime-sm.gif"
+   , data     => $contents
+   );
+
+One of the simplifications is that L<MIME::Types|MIME::Types> is used to lookup
+the right content type and optimal transfer encoding.  Good values
+for content-disposition and such are added as well.
+
+=head3 build, starting with nothing
+
+See L<build()|Mail::Message::Construct::Build/"Constructing a message">.
+
+=head3 buildFromBody, body becomes message
+
+See L<buildFromBody()|Mail::Message::Construct::Build/"Constructing a message">.
+
+=head3 The Content-* fields
+
+The various C<Content-*> fields are not as harmless as they look.  For
+instance, the "Content-Type" field will have an effect on the default
+transfer encoding.
+
+When a message is built this way:
+
+ my $msg = Mail::Message->build
+  ( 'Content-Type' => 'video/mpeg3'
+  , 'Content-Transfer-Encoding' => 'base64'
+  , 'Content-Disposition' => 'attachment'
+  , file => '/etc/passwd'
+  );
+
+then first a C<text/plain> body is constructed (MIME::Types does not
+find an extension on the filename so defaults to C<text/plain>), with
+no encoding.  Only when that body is ready, the new type and requested
+encodings are set.  The content of the body will get base64 encoded,
+because it is requested that way.
+
+What basically happens is this:
+
+ my $head = ...other header lines...;
+ my $body = Mail::Message::Body::Lines->new(file => '/etc/passwd');
+ $body->type('video/mpeg3');
+ $body->transferEncoding('base64');
+ $body->diposition('attachment');
+ my $msg  = Mail::Message->buildFromBody($body, $head);
+ 
+A safer way to construct the message is:
+
+ my $body = Mail::Message::Body::Lines->new
+  ( file              => '/etc/passwd'
+  , mime_type         => 'video/mpeg3'
+  , transfer_encoding => 'base64'
+  , disposition       => 'attachment'
+  );
+
+ my $msg  = Mail::Message->buildFromBody
+  ( $body
+  , ...other header lines...
+  );
+
+In the latter program, you will immediately start with a body of
+the right type.
+
 
 
 
@@ -194,7 +325,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

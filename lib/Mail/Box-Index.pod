@@ -123,16 +123,14 @@ Only the HTML version of this manual page will list the sections.
 <li><strong><a name="process">Message processing</a></strong>
   <ul>
   <li>Reading a message (Mail::Message::Construct::Read)
-  <li>Building a message (Mail::Message::Construct::Build)
+  <li>Building a message
+      (Mail::Message::Construct::Build)
   <li>Reply to a message (Mail::Message::Construct::Reply)
   <li>Creating a forward
+      (Mail::Message::Construct::Forward)
   <li>Bounce a message (Mail::Message::Construct::Bounce)
-  <li>Rebuilding a message (Mail::Message::Construct::Rebuild)
-      <ul>
-      <li>General rules
-      <li>Conversion rules
-      <li>Adding your own rules
-      </ul>
+  <li>Rebuilding a message
+      (Mail::Message::Construct::Rebuild)
   <li>Convert messages
       <ul>
       <li>To and from Mail::Internet objects (Mail::Message::Convert::MailInternet)
@@ -245,6 +243,7 @@ Only the HTML version of this manual page will list the sections.
       <li>Reducing the header size
           (Mail::Message::Head::Partial)
       <li>
+      </ul>
   <li>Destructing messages (Mail::Box::Message::Destructed)
   </ul>
 <li><strong>Additional modules</strong>
@@ -281,7 +280,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

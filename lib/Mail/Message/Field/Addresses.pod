@@ -128,8 +128,8 @@ Mail::Message::Field::Addresses-E<gt>B<new>
  Option      Defined in       Default      
  attributes  L<Mail::Message::Field::Structured>  <ignored>    
  charset     L<Mail::Message::Field::Full>  undef        
+ datum       L<Mail::Message::Field::Structured>  C<undef>     
  encoding    L<Mail::Message::Field::Full>  C<'q'>       
- extra       L<Mail::Message::Field::Structured>  <ignored>    
  force       L<Mail::Message::Field::Full>  false        
  language    L<Mail::Message::Field::Full>  undef        
  log         L<Mail::Reporter>  C<'WARNINGS'>
@@ -139,9 +139,9 @@ Mail::Message::Field::Addresses-E<gt>B<new>
 
 . charset STRING
 
-. encoding 'q'|'Q'|'b'|'B'
+. datum STRING
 
-. extra STRING
+. encoding 'q'|'Q'|'b'|'B'
 
 . force BOOLEAN
 
@@ -322,14 +322,6 @@ Attributes are not supported for address fields.
 
 =back
 
-$obj-E<gt>B<addExtra>(...)
-
-=over 4
-
-Extras are not permitted in address fields.
-
-=back
-
 $obj-E<gt>B<addGroup>(GROUP|OPTIONS)
 
 =over 4
@@ -488,25 +480,6 @@ See L<Mail::Message::Field/"Internals">
 
 =back
 
-$obj-E<gt>B<consumeAddress>(STRING, OPTIONS)
-
-=over 4
-
-Try to destilate address information from the STRING.   Returned are
-an address B<object> and the left-over string.  If no address was found,
-the first returned value is C<undef>.
-
-=back
-
-$obj-E<gt>B<consumeDomain>(STRING)
-
-=over 4
-
-Try to get a valid domain representation from STRING.  Returned are the
-domain string as found (or C<undef>) and the rest of the string.
-
-=back
-
 $obj-E<gt>B<decode>(STRING, OPTIONS)
 
 Mail::Message::Field::Addresses-E<gt>B<decode>(STRING, OPTIONS)
@@ -543,15 +516,6 @@ See L<Mail::Message::Field/"Internals">
 
 =back
 
-$obj-E<gt>B<produceBody>
-
-=over 4
-
-Produce the text for the field.  This will start with the single addresses,
-and end in the groups.
-
-=back
-
 $obj-E<gt>B<setWrapLength>([LENGTH])
 
 =over 4
@@ -579,6 +543,16 @@ See L<Mail::Message::Field/"Internals">
 =head2 Parsing
 
 
+$obj-E<gt>B<consumeAddress>(STRING, OPTIONS)
+
+=over 4
+
+Try to destilate address information from the STRING.   Returned are
+an address B<object> and the left-over string.  If no address was found,
+the first returned value is C<undef>.
+
+=back
+
 $obj-E<gt>B<consumeComment>(STRING)
 
 Mail::Message::Field::Addresses-E<gt>B<consumeComment>(STRING)
@@ -586,6 +560,15 @@ Mail::Message::Field::Addresses-E<gt>B<consumeComment>(STRING)
 =over 4
 
 See L<Mail::Message::Field::Full/"Parsing">
+
+=back
+
+$obj-E<gt>B<consumeDomain>(STRING)
+
+=over 4
+
+Try to get a valid domain representation from STRING.  Returned are the
+domain string as found (or C<undef>) and the rest of the string.
 
 =back
 
@@ -607,7 +590,23 @@ See L<Mail::Message::Field::Full/"Parsing">
 
 =back
 
+$obj-E<gt>B<datum>([VALUE])
+
+=over 4
+
+See L<Mail::Message::Field::Structured/"Parsing">
+
+=back
+
 $obj-E<gt>B<parse>(STRING)
+
+=over 4
+
+See L<Mail::Message::Field::Full/"Parsing">
+
+=back
+
+$obj-E<gt>B<produceBody>
 
 =over 4
 
@@ -777,10 +776,6 @@ I<Error:> No attributes for address fields.
 Is is not possible to add attributes to address fields: it is not permitted
 by the RFCs.
 
-I<Error:> No extras in address fields.
-
-It is not permitted to have free-format text parts in address fields.
-
 I<Error:> Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
@@ -803,7 +798,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

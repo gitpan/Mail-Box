@@ -9,7 +9,7 @@ Mail::Message::Field::Attribute - one attribute of a full field
 
  my $field    = $msg->head->get('Content-Disposition') or return;
  my $full     = $field->study;   # full understanding in unicode
- my $filename = $full->attribute(filename)             or return;
+ my $filename = $full->attribute('filename')           or return;
 
  print ref $filename;     # this class name
  print $filename;         # the attributes content in utf-8
@@ -123,9 +123,7 @@ what is coming in if you can.
 
 I<Example:> 
 
- my $param = Mail::Message::Field::Attribute
-               ->new('Content-Type');
-
+ my $param = Mail::Message::Field::Attribute->new;
  $param->addComponent("filename*=iso10646'nl-BE'%Re\47u");
 
 =back
@@ -235,7 +233,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -17,11 +17,9 @@ Mail::Message::Field::Full - construct one smart line in a message header
 
 =head1 SYNOPSIS
 
- !!
  !! UNDER CONSTRUCTION
  !! The details of this module are NOT FINISHED yet
- !! Some parts are already usable, however.  With care!
- !!
+ !! Most parts are already usable, however.  With care!
 
  # Getting to understand the complexity of a header field ...
 
@@ -407,6 +405,14 @@ See L<Mail::Message::Field/"Access to the content">
 
 =back
 
+$obj-E<gt>B<attributes>
+
+=over 4
+
+See L<Mail::Message::Field/"Access to the content">
+
+=back
+
 $obj-E<gt>B<beautify>
 
 =over 4
@@ -694,7 +700,21 @@ $obj-E<gt>B<parse>(STRING)
 
 Get the detailed information from the STRING, and store the data found
 in the field object.  The accepted input is very field type dependent.
-Unstructured fields even do no parsing whatsoever.
+Unstructured fields do no parsing whatsoever.
+
+=back
+
+$obj-E<gt>B<produceBody>
+
+=over 4
+
+Produce the text for the field, based on the information stored within the
+field object.
+
+Usually, you wish the exact same line as was found in the input source
+of a message.  But when you have created a field yourself, it should get
+formatted.  You may call L<beautify()|Mail::Message::Field::Full/"Access to the content"> on a preformatted field to enforce
+a call to this method when the field is needed later.
 
 =back
 
@@ -877,7 +897,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

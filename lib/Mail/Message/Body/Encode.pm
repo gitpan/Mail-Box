@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -163,8 +163,8 @@ sub isText() { not shift->isBinary }
 #------------------------------------------
 
 
-sub dispositionFilename($)
-{   my ($self, $dir) = @_;
+sub dispositionFilename(;$)
+{   my $self = shift;
     my $raw;
 
     my $field;
@@ -180,6 +180,9 @@ sub dispositionFilename($)
              || $field->attribute('name');
     }
 
+    return $raw unless @_;
+
+    my $dir      = shift;
     my $filename = '';
     if(defined $raw)
     {   $filename = basename $raw;
@@ -196,6 +199,7 @@ sub dispositionFilename($)
         }
         $filename = "$unique.$ext";
     }
+
     File::Spec->catfile($dir, $filename);
 }
 

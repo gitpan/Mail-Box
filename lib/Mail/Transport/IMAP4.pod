@@ -21,7 +21,7 @@ Mail::Transport::IMAP4 - proxy to Mail::IMAPClient
 
 =head1 DESCRIPTION
 
-****** UNDER DEVELOPMENT *****, cannot be used (yet)
+****** UNDER DEVELOPMENT *****, please help testing
 
 The IMAP4 protocol is quite complicated: it is feature rich and allows
 verious asynchronous actions.  The main document describing IMAP is
@@ -279,6 +279,27 @@ parsed.
 
 =back
 
+$obj-E<gt>B<flagsToLabels>(FLAGS)
+
+Mail::Transport::IMAP4-E<gt>B<flagsToLabels>(FLAGS)
+
+=over 4
+
+In SCALAR context, a hash with labels is returned.  In LIST context, pairs
+are returned.  Flags which do not appear in the list will be ignored: their
+value may either by set or cleared.  See L<getFlags()|Mail::Transport::IMAP4/"Protocol [internals]">
+
+Unknown flags in LIST are stripped from their backslash and lower-cased.
+For instance, '\SomeWeirdFlag' will become `someweirdflag => 1'.
+
+I<Example:> translating IMAP4 flags into MailBox flags
+
+
+ my @flags  = ('\Seen', '\Flagged');
+ my $labels = Mail::Transport::IMAP4->flags2labels(@flags);
+
+=back
+
 $obj-E<gt>B<folder>([FOLDERNAME])
 
 =over 4
@@ -314,8 +335,10 @@ $obj-E<gt>B<getFlags>(FOLDER, ID)
 
 Returns the values of all flags which are related to the message with the
 specified ID.  These flags are translated into the names which are
-standard for the MailBox suite.  Names which do not appear will also provide
-a value in the return list: the negative for the value is it was present.
+standard for the MailBox suite.
+
+A HASH is returned.  Names which do not appear will also provide
+a value in the returned: the negative for the value is it was present.
 
 =back
 
@@ -549,7 +572,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

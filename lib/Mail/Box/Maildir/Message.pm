@@ -1,13 +1,13 @@
 
+use strict;
+use warnings;
+
 package Mail::Box::Maildir::Message;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Box::Dir::Message';
 
-use strict;
 use File::Copy;
-use Carp;
-use warnings;
 
 
 sub filename(;$)
@@ -32,11 +32,13 @@ sub filename(;$)
      , replied => ($flags{R} || 0)
      , seen    => ($flags{S} || 0)
      , deleted => ($flags{T} || 0)
+
+     , passed  => ($flags{P} || 0)   # uncommon
      );
 
-    if(defined $oldname)
-    {   move $oldname, $newname
-           or confess "Cannot move $oldname to $newname: $!";
+    if(defined $oldname && ! move $oldname, $newname)
+    {   $self->log(ERROR => "Cannot move $oldname to $newname: $!");
+        return undef;
     }
 
     $self->SUPER::filename($newname);
@@ -79,6 +81,7 @@ sub labelsToFilename()
     my $newflags    # alphabeticly ordered!
       = ($labels->{draft}   ? 'D' : '')
       . ($labels->{flagged} ? 'F' : '')
+      . ($labels->{passed}  ? 'P' : '')
       . ($labels->{replied} ? 'R' : '')
       . ($labels->{seen}    ? 'S' : '')
       . ($labels->{deleted} ? 'T' : '');
@@ -93,7 +96,7 @@ sub labelsToFilename()
 
     if($new ne $old)
     {   unless(move $old, $new)
-        {   warn "Cannot rename $old to $new: $!";
+        {   $self->log(ERROR => "Cannot rename $old to $new: $!");
             return;
         }
         $self->log(PROGRESS => "Moved $old to $new.");

@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::MH;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Box::Dir';
 
 use Mail::Box::MH::Index;
@@ -176,13 +176,6 @@ sub listSubFolders(@)
     return @dirs unless $args{check};
 
     grep { $class->foundIn("$dir/$_") } @dirs;
-}
-
-#-------------------------------------------
-
-sub nameOfSubFolder($@)
-{   my ($self, $name) = (shift, shift);
-    $self->directory . '/' . $name;
 }
 
 #-------------------------------------------

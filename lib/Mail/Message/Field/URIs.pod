@@ -114,8 +114,8 @@ Mail::Message::Field::URIs-E<gt>B<new>(DATA)
  Option      Defined in       Default      
  attributes  L<Mail::Message::Field::Structured>  <ignored>    
  charset     L<Mail::Message::Field::Full>  undef        
+ datum       L<Mail::Message::Field::Structured>  C<undef>     
  encoding    L<Mail::Message::Field::Full>  C<'q'>       
- extra       L<Mail::Message::Field::Structured>  <ignored>    
  force       L<Mail::Message::Field::Full>  false        
  language    L<Mail::Message::Field::Full>  undef        
  log         L<Mail::Reporter>  C<'WARNINGS'>
@@ -125,9 +125,9 @@ Mail::Message::Field::URIs-E<gt>B<new>(DATA)
 
 . charset STRING
 
-. encoding 'q'|'Q'|'b'|'B'
+. datum STRING
 
-. extra STRING
+. encoding 'q'|'Q'|'b'|'B'
 
 . force BOOLEAN
 
@@ -309,14 +309,6 @@ $obj-E<gt>B<addAttribute>(...)
 =over 4
 
 Attributes are not supported for URI fields.
-
-=back
-
-$obj-E<gt>B<addExtra>(...)
-
-=over 4
-
-Extras are not permitted in URI fields.
 
 =back
 
@@ -542,7 +534,23 @@ See L<Mail::Message::Field::Full/"Parsing">
 
 =back
 
+$obj-E<gt>B<datum>([VALUE])
+
+=over 4
+
+See L<Mail::Message::Field::Structured/"Parsing">
+
+=back
+
 $obj-E<gt>B<parse>(STRING)
+
+=over 4
+
+See L<Mail::Message::Field::Full/"Parsing">
+
+=back
+
+$obj-E<gt>B<produceBody>
 
 =over 4
 
@@ -712,10 +720,6 @@ I<Error:> No attributes for URI fields.
 Is is not possible to add attributes to URI fields: it is not permitted
 by the RFCs.
 
-I<Error:> No extras in URI fields.
-
-It is not permitted to have free-format text parts in URI fields.
-
 I<Error:> Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
@@ -738,7 +742,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

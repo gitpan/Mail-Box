@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::IMAP4::Message;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Box::Net::Message';
 
 use Date::Parse 'str2time';
@@ -59,12 +59,13 @@ sub label(@)
 	return $labels->{$label}
 	   if exists $labels->{$label} || exists $labels->{seen};
 
-	my %flags = $imap->getFlags($id);
+	my $flags = $imap->getFlags($id);
         if($self->{MBIM_cache_labels})
-	{   @{$labels}{keys %flags} = values %flags;
+	{   # the program may have added own labels
+            @{$labels}{keys %$flags} = values %$flags;
             delete $self->{MBIM_labels_changed};
 	}
-	return $flags{$label};
+	return $flags->{$label};
     }
 
     my @private;

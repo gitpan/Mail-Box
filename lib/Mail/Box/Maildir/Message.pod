@@ -67,7 +67,7 @@ See L<Mail::Message::Construct::Bounce/"Constructing a message">
 
 =back
 
-Mail::Box::Maildir::Message-E<gt>B<build>([MESSAGE|BODY], CONTENT)
+Mail::Box::Maildir::Message-E<gt>B<build>([MESSAGE|PART|BODY], CONTENT)
 
 =over 4
 
@@ -958,7 +958,7 @@ The filename must match:
  my ($time, $unique, $hostname, $info)
     = $filename =~ m!^(\d+)\.(.*)\.(\w+)(\:.*)?$!;
  my ($semantics, $flags)
-    = $info =~ m!([12])\,([RSTDF]+)$!;
+    = $info =~ m!([12])\,([DFPRST]*)$!;
  my @flags = split //, $flags;
 
 When an application opens the folder, there may be messages in C<new>
@@ -988,6 +988,9 @@ be in alphabetic order) mean
  S      => seen
  T      => deleted  (tagged for deletion)
 
+Some maildir clients support
+ P      => passed   (resent/forwarded/bounced to someone else)
+
 The flags will immediately change when L<label()|Mail::Message/"Flags"> or L<delete()|Mail::Message/"Flags"> is used,
 which differs from other message implementations: maildir is stateless,
 and should not break when applications crash.
@@ -1002,7 +1005,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

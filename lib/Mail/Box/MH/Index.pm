@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Box::MH::Index;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Subset;

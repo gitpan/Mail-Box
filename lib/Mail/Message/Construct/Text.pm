@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 
 use IO::Lines;
 

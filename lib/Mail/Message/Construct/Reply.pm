@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 
 use Mail::Message::Body::Multipart;
 use Mail::Address;
@@ -84,7 +84,13 @@ sub reply(@)
     {   my $reply = $mainhead->get('reply-to');
         $to       = [ $reply->addresses ] if defined $reply;
     }
-    $to  ||= $self->sender || return;
+
+    unless(defined $to)
+    {   my @from  = $self->from;
+        $to     ||= \@from if @from;
+    }
+
+    defined $to or return;
 
     # Add Cc
     my $cc = $args{Cc};

@@ -201,7 +201,8 @@ $obj-E<gt>B<size>
 
 =over 4
 
-Returns the number of bytes needed to display this header-line.
+Returns the number of bytes needed to display this header-line, Same
+as L<length()|Mail::Message::Field/"The field">.
 
 =back
 
@@ -278,7 +279,7 @@ cultural heritage, and should be avoided.
 
 Returns the body of the field.  When this field is structured, it will
 be B<stripped> from everything what is behind the first semi-color (C<;>).
-In aby case, the string is unfolded.  
+In any case, the string is unfolded.  
 Whether the field is structured is defined by L<isStructured()|Mail::Message::Field/"The field">.
 
 =back
@@ -376,7 +377,7 @@ $obj-E<gt>B<attribute>(NAME [, VALUE])
 Get the value of an attribute, optionally after setting it to a new value.
 Attributes are part of some header lines, and hide themselves in the
 comment field.  If the attribute does not exist, then C<undef> is
-returned.
+returned.  The attribute is still encoded.
 
 I<Example:> 
 
@@ -394,6 +395,18 @@ I<Example:>
    # --> Content-Type: text/plain; charset="us-ascii";
    #       filename="/tmp/xyz"
    # Automatically folded, and no doubles created.
+
+=back
+
+$obj-E<gt>B<attributes>
+
+=over 4
+
+Returns a list of key-value pairs, where the values are not yet decoded.
+
+I<Example:> 
+
+ my %attributes = $head->get('Content-Disposition')->attributes;
 
 =back
 
@@ -1097,7 +1110,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -144,7 +144,7 @@ See L<Mail::Message::Construct::Bounce/"Constructing a message">
 
 =back
 
-Mail::Box::Dbx::Message-E<gt>B<build>([MESSAGE|BODY], CONTENT)
+Mail::Box::Dbx::Message-E<gt>B<build>([MESSAGE|PART|BODY], CONTENT)
 
 =over 4
 
@@ -993,7 +993,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.055.
+Distribution version 2.056.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Wrapper::SpamAssassin;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 use base 'Mail::SpamAssassin::Message';
 
 use Carp;
@@ -32,7 +32,14 @@ sub get($) { $_[0]->get_header($_[1]) }
 
 sub get_header($)
 {   my ($self, $name) = @_;
-    my $field = $self->get_mail_object->head->get($name);
+    my $head = $self->get_mail_object->head;
+
+    # Return all fields unfolded in list context
+    return map { $_->unfoldedBody } $head->get($name)
+        if wantarray;
+
+    # Only one field is expected
+    my $field = $head->get($name);
     defined $field ? $field->unfoldedBody : undef;
 }
 

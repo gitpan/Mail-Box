@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Dir;
 use vars '$VERSION';
-$VERSION = '2.055';
+$VERSION = '2.056';
 
 use base 'Mail::Box';
 
@@ -69,6 +69,13 @@ sub organization() { 'DIRECTORY' }
 
 
 sub directory() { shift->{MBD_directory} }
+
+#-------------------------------------------
+                                                                                
+sub nameOfSubFolder($)
+{   my ($self, $name) = @_;
+    $self->directory.'/'.$name;
+}
 
 #-------------------------------------------
 

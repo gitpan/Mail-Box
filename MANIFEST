@@ -2,6 +2,7 @@ ChangeLog
 INSTALL
 LICENSE
 MANIFEST
+META.yml                                 Module meta-data (added by MakeMaker)
 Makefile.PL
 README
 README.FAQ
@@ -37,6 +38,8 @@ lib/Mail/Box/File/Message.pm
 lib/Mail/Box/File/Message.pod
 lib/Mail/Box/IMAP4.pm
 lib/Mail/Box/IMAP4.pod
+lib/Mail/Box/IMAP4/Fetch.pm
+lib/Mail/Box/IMAP4/Fetch.pod
 lib/Mail/Box/IMAP4/Head.pm
 lib/Mail/Box/IMAP4/Head.pod
 lib/Mail/Box/IMAP4/Message.pm
@@ -263,6 +266,7 @@ tests/13body/Definition.pm
 tests/14fieldu/10full.t
 tests/14fieldu/20attr.t
 tests/14fieldu/30unstr.t
+tests/14fieldu/31struct.t
 tests/14fieldu/40parse.t
 tests/14fieldu/50userid.t
 tests/14fieldu/51addr.t
@@ -322,6 +326,8 @@ tests/43pop3/original/0004
 tests/43pop3/server
 tests/44imap/10read.t
 tests/44imap/20write.t
+tests/44imap/30flags.t
+tests/44imap/40fetch.t
 tests/44imap/Definition.pm
 tests/45dbx/10read.t
 tests/45dbx/Definition.pm
@@ -363,4 +369,3 @@ tests/81bodyconv/Definition.pm
 tests/Tools.pm
 tests/folders/mbox.cpy
 tests/folders/mbox.src
-META.yml                                 Module meta-data (added by MakeMaker)
