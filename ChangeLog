@@ -11,9 +11,9 @@ wat als appendMessage faalt?
 filehandle als bron folder?
 MH index in append mode niet lezen.
 
-version 2.052:
+version 2.052: Wed Dec  3 21:04:45 CET 2003
 
-        Fixes: Wed Dec  3 21:04:45 CET 2003
+        Fixes:
 
         - Mail::Transport::Send did not pass the options to the various
           trySend() methods.  Now $msg->send(to => ...) will be respected.

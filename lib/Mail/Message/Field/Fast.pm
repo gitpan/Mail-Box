@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field::Fast;
 use vars '$VERSION';
-$VERSION = '2.052';
+$VERSION = '2.053';
 use base 'Mail::Message::Field';
 
 use Carp;

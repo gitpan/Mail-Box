@@ -1,7 +1,7 @@
 
 package Mail::Box::Search::IMAP;
 use vars '$VERSION';
-$VERSION = '2.052';
+$VERSION = '2.053';
 use base 'Mail::Box::Search';
 
 use strict;

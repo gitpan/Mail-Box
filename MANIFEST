@@ -37,12 +37,6 @@ lib/Mail/Box/File/Message.pm
 lib/Mail/Box/File/Message.pod
 lib/Mail/Box/IMAP4.pm
 lib/Mail/Box/IMAP4.pod
-lib/Mail/Box/IMAP4/Body.pm
-lib/Mail/Box/IMAP4/Body.pod
-lib/Mail/Box/IMAP4/DelayedBody.pm
-lib/Mail/Box/IMAP4/DelayedBody.pod
-lib/Mail/Box/IMAP4/DelayedHead.pm
-lib/Mail/Box/IMAP4/DelayedHead.pod
 lib/Mail/Box/IMAP4/Head.pm
 lib/Mail/Box/IMAP4/Head.pod
 lib/Mail/Box/IMAP4/Message.pm

@@ -103,6 +103,7 @@ my %prereq =
  , Digest::HMAC_MD5 => 0.0
  , User::Identity => 0.07
  , Time::Zone     => 0.0
+ , Mail::IMAPClient => 2.2
  );
 
 my $has_readkey;

@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.052';
+$VERSION = '2.053';
 use base 'Mail::Transport::Receive';
 
 use Digest::HMAC_MD5;   # only availability check for CRAM_MD5
@@ -432,7 +432,7 @@ sub DESTROY()
 
 package Mail::IMAPClient::Debug;
 use vars '$VERSION';
-$VERSION = '2.052';
+$VERSION = '2.053';
 
 # Tied filehandle translates IMAP's debug system into Mail::Reporter
 # calls.
