@@ -55,24 +55,31 @@ See Mail::Message::new()
 
 =over 4
 
-=item B<bounce> RG-OBJECT|OPTIONS X<bounce>
+=item B<bounce> [RG-OBJECT|OPTIONS] X<bounce>
 
-Creates a new message object, which has a resent-group added.  The
-program calling this considers itself as an intermediate step in the
-message delivery process.
+The program calling this method considers itself as an intermediate step
+in the message delivery process; it therefore leaves a resent group
+of header fields as trace.
 
-The resent-group is created by instantiating a
-Mail::Message::Head::ResentGroup object (RG), which you may also
-pass yourself.  See Mail::Message::Head::ResentGroup::new() for the
-available OPTIONS.
+When a message is received, the Mail Transfer Agent (MTA) adds a
+C<Received> field to the header.  As OPTIONS, you may specify lines
+which are added to the resent group of that received field.  C<Resent->
+is prepended before the field-names automatically, unless already present.
+
+You may also specify an instantiated Mail::Message::Head::ResentGroup (RG)
+object.  See Mail::Message::Head::ResentGroup::new() for the available
+options.  This is required if you want to add a new resent group: create
+a new C<Received> line in the header as well.
 
 Examples:
 
  my $bounce = $folder->message(3)->bounce(To => 'you', Bcc => 'everyone');
+
  $bounce->send;
  $outbox->addMessage($bounce);
 
- my $rg     = Mail::Message::Head::ResentGroup->new(To => 'you');
+ my $rg     = Mail::Message::Head::ResentGroup->new(To => 'you',
+    Received => 'from ... by ...');
  $msg->bounce($rg)->send;
 
 =item B<build> [MESSAGE|BODY], CONTENT X<build>
@@ -873,7 +880,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.025.
+This code is beta, version 2.026.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

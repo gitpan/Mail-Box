@@ -1,11 +1,13 @@
 use strict;
 
 package Mail::Message::Head::ResentGroup;
-our $VERSION = 2.025;  # Part of Mail::Box
+our $VERSION = 2.026;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Scalar::Util 'weaken';
 use Mail::Message::Field::Fast;
+
+use Sys::Hostname;
 
 my @ordered_field_names = qw/return_path received date from sender to
   cc bcc message_id/;
@@ -23,20 +25,11 @@ sub init($$)
 {   my ($self, $args) = @_;
     $self->SUPER::init($args);
 
-    my @fields = @{$args->{fields}};
-    foreach my $name (grep m!^[A-Z]!, keys %$args)
-    {   my $fn = $name =~ m!^(received|return\-path|resent\-\w*)$!i ? $name
-               : "Resent-$name";
+    $self->set($_)                     # add specified object fields
+        foreach @{$args->{fields}};
 
-        push @fields, Mail::Message::Field::Fast->new($fn, $args->{$name});
-    }
-
-    foreach my $field (@fields)
-    {   my $name = $field->name;
-        $name =~ s/^resent\-//;
-        $name =~ s/\-/_/g;
-        $self->{ "MMHR_$name" } = $field;
-    }
+    $self->set($_, $args->{$_})        # add key-value paired fields
+        foreach grep m/^[A-Z]/, keys %$args;
 
     my $head = $self->{MMHR_head} = $args->{head};
     $self->log(INTERNAL => "Message header required for ResentGroup")
@@ -44,21 +37,7 @@ sub init($$)
 
     weaken( $self->{MMHR_head} );
 
-    $self->log(ERROR => "No `Received' field specified."), return
-       unless defined $self->{MMHR_received};
-
-    my $mf = 'Mail::Message::Field';
-
-    $self->{MMHR_date}       ||= $mf->new('Resent-Date' => $mf->toDate);
-
-    # Be sure the message-id is good
-    my $msgid = defined $self->{MMHR_message_id}
-              ? "$self->{MMHR_message_id}"
-              : $head->createMessageId;
-
-    $msgid = "<$msgid>" unless $msgid =~ m!^\<.*\>$!;
-    $self->{MMHR_message_id} = $mf->new('Resent-Message-ID' => $msgid);
-
+    $self->createReceived unless defined $self->{MMHR_received};
     $self;
 }
 
@@ -70,6 +49,25 @@ sub delete()
 
     $head->removeField($_) foreach @fields;
     $self;
+}
+
+sub set($$)
+{   my $self  = shift;
+
+    my ($field, $name, $value);
+    if(@_==1) { $field = shift }
+    else
+    {   my ($fn, $value) = @_;
+        $name  = $fn =~ m!^(received|return\-path|resent\-\w*)$!i ? $fn
+               : "Resent-$fn";
+
+        $field = Mail::Message::Field::Fast->new($name, $value);
+    }
+
+    $name = $field->name;
+    $name =~ s/^resent\-//;
+    $name =~ s/\-/_/g;
+    $self->{ "MMHR_$name" } = $field;
 }
 
 sub returnPath() { shift->{MMHR_return_path} }
@@ -114,11 +112,40 @@ sub bcc()
     wantarray ? $bcc->addresses : $bcc;
 }
 
+sub destinations()
+{   my $self = shift;
+    ($self->to, $self->cc, $self->bcc);
+}
+
 sub messageId() { shift->{MMHR_message_id} }
 
 sub orderedFields()
 {   my $self   = shift;
     map { $self->{ "MMHR_$_" } || () } @ordered_field_names;
+}
+
+sub print(;$)
+{   my $self = shift;
+    my $fh   = shift || select;
+    $_->print($fh) foreach $self->orderedFields;
+}
+
+my $unique_received_id = 'rc'.time;
+
+sub createReceived()
+{   my $self   = shift;
+    my $head   = $self->{MMHR_head};
+    my $sender = $head->message->sender;
+
+    my $received
+      = 'from ' . $sender->format
+      . ' by '  . hostname
+      . ' with SMTP'
+      . ' id '  . $unique_received_id++
+      . ' for ' . $head->get('To')  # may be wrong
+      . '; '. Mail::Message::Field->toDate;
+
+    $self->set(Received => $received);
 }
 
 1;

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Reporter;
-our $VERSION = 2.025;  # Part of Mail::Box
+our $VERSION = 2.026;  # Part of Mail::Box
 
 use Carp;
 
@@ -143,9 +143,11 @@ sub DESTROY {shift}
 sub AUTOLOAD(@)
 {   my $self  = shift;
     our $AUTOLOAD;
+    my $class = ref $self;
+    (my $method = $AUTOLOAD) =~ s/^$class\:\://;
 
     $Carp::MaxArgLen=20;
-    confess "Method `$AUTOLOAD' is not defined for a ". (ref $self) . ".\n";
+    confess "Method $method() is not defined for a $class.\n";
 }
 
 1;

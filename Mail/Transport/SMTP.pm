@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::SMTP;
-our $VERSION = 2.025;  # Part of Mail::Box
+our $VERSION = 2.026;  # Part of Mail::Box
 use base 'Mail::Transport::Send';
 
 use Net::SMTP;
@@ -18,7 +18,8 @@ sub init($)
         $args->{hostname} = $hosts;
     }
 
-    $args->{via} = 'smtp';
+    $args->{via}  ||= 'smtp';
+    $args->{port} ||= '25';
 
     $self->SUPER::init($args);
 
@@ -39,14 +40,14 @@ sub trySend($@)
 
     # From whom is this message.
     my $from = $args{from} || $message->sender;
-    $from = ($from->address)[0] if ref $from;
+    $from = $from->address if $from->isa('Mail::Address');
 
     # Who are the destinations.
-    my $to   = $args{to}   || [$message->destinations];
-    my @to   = ref $to eq 'ARRAY' ? @$to : ($to);
-    foreach (@to)
-    {   $_ = $_->address if ref $_ && $_->isa('Mail::Address');
-    }
+    $self->log(ERROR =>
+        "Use option `to' to overrule the destination: `To' would refer to a field")
+            if defined $args{To};
+
+    my @to = map {$_->address} $self->destinations($message, $args{to});
 
     # Prepare the header
     my @header;
@@ -86,15 +87,12 @@ sub trySend($@)
                 $server->code);
     }
 
-warn "#1\n";
     # in SCALAR context
     my $server;
     return 0 unless $server = $self->contactAnyServer;
 
-warn "#2 $server\n";
     $server->quit, return 0
         unless $server->mail($from);
-warn "#3\n";
 
     foreach (@to)
     {     next if $server->to($_);
@@ -118,19 +116,30 @@ warn "#3\n";
 sub contactAnyServer()
 {   my $self = shift;
 
-    my ($interval, $count, $timeout) = $self->retry;
-    my ($host, $username, $password) = $self->remoteHost;
+    my ($enterval, $count, $timeout) = $self->retry;
+    my ($host, $port, $username, $password) = $self->remoteHost;
     my @hosts = ref $host ? @$host : $host;
 
     foreach my $host (@hosts)
     {   my $server = $self->tryConnectTo
-         ( $host
+         ( $host, Port => $port,
          , %{$self->{MTS_net_smtp_opts}}, Timeout => $timeout
          );
 
         defined $server or next;
 
         $self->log(PROGRESS => "Opened SMTP connection to $host.\n");
+
+        if(defined $username)
+        {   if($server->auth($username, $password))
+            {    $self->log(PROGRESS => "$host: Authentication succeeded.\n");
+            }
+            else
+            {    $self->log(ERROR => "Authentication failed.\n");
+                 return undef;
+            }
+        }
+
         return $server;
     }
 
@@ -140,6 +149,29 @@ sub contactAnyServer()
 sub tryConnectTo($@)
 {   my ($self, $host) = (shift, shift);
     Net::SMTP->new($host, @_);
+}
+
+sub destinations($;$)
+{   my ($self, $message, $overrule) = @_;
+    my @to;
+
+    if(defined $overrule)      # Destinations overruled by user.
+    {   my @addr = ref $overrule eq 'ARRAY' ? @$overrule : ($overrule);
+        @to = map { ref $_ && $_->isa('Mail::Address') ? ($_)
+                    : Mail::Address->parse($_) } @addr;
+    }
+    elsif(my @rgs = $message->head->resentGroups)
+    {   @to = $rgs[0]->destinations;
+        $self->log(ERROR => "Resent group does not defined destinations"), return ()
+            unless @to;
+    }
+    else
+    {   @to = $message->destinations;
+        $self->log(ERROR => "Message has no destinations"), return ()
+            unless @to;
+    }
+
+    @to;
 }
 
 1;

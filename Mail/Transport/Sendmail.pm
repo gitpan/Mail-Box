@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::Sendmail;
-our $VERSION = 2.025;  # Part of Mail::Box
+our $VERSION = 2.026;  # Part of Mail::Box
 use base 'Mail::Transport::Send';
 
 use Carp;
@@ -27,7 +27,7 @@ sub trySend($@)
 
     my $program = $self->{MTS_program};
     if(open(MAILER, '|-')==0)
-    {   { exec $program, '-t'; }
+    {   { exec $program, '-t'; }  # {} to avoid warning
         $self->log(NOTICE => "Errors when opening pipe to $program: $!");
         return 0;
     }

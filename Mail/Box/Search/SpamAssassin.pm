@@ -1,61 +1,54 @@
 package Mail::Box::Search::SpamAssassin;
-our $VERSION = 2.025;  # Part of Mail::Box
+our $VERSION = 2.026;  # Part of Mail::Box
 use base 'Mail::Box::Search';
 
 use strict;
 use warnings;
 
-use Carp;
+use Mail::SpamAssassin;
+use Mail::Message::Wrapper::SpamAssassin;
 
 sub init($)
 {   my ($self, $args) = @_;
 
-    $args->{in}    ||= 'MESSAGE';
-    $args->{found} ||= 'spam';
+    $args->{in}  ||= 'MESSAGE';
+    $args->{label} = 'spam' unless exists $args->{label};
 
     $self->SUPER::init($args);
 
-    my $found = $args->{found};
-    $self->{MBSS_action}
-       = ref $found         ? $found
-       : $found eq 'DELETE' ? sub { $_[0]->delete }
-       :                      sub { $_[0]->label($found => 1) };
+    $self->{MBSS_rewrite_mail}
+       = defined $args->{rewrite_mail} ? $args->{rewrite_mail} : 1;
+
+    $self->{MBSS_sa}
+       = defined $args->{spamassassin} ? $args->{spamassassin}
+       : Mail::SpamAssassin->new($args->{sa_options} || {});
 
     $self;
 }
 
-sub search(@)
-{   my ($self, $object, %args) = @_;
-    $self->SUPER::search($object, %args);
-}
+sub assassinator() { shift->{MBSS_sa} }
 
-sub inHead(@)
-{   my ($self, $part, $head, $args) = @_;
+sub searchPart($)
+{   my ($self, $message) = @_;
 
-    0;
-}
+    my @details = (message => $message);
 
-sub inBody(@)
-{   my ($self, $part, $body, $args) = @_;
+    my $sa      = Mail::Message::Wrapper::SpamAssassin->new($message);
+    my $status  = $self->assassinator->check($sa);
 
-    my @details = (message => $part->toplevel, part => $part);
-    my ($field_check, $match_check, $deliver)
-      = @$self{ qw/MBSG_field_check MBSG_match_check MBSG_deliver/ };
+    my $is_spam = $status->is_spam;
+    $status->rewrite_mail if $self->{MBSS_rewrite_mail};
 
-    my $matched = 0;
-    my $linenr  = 0;
-
-  LINES:
-    foreach my $line ($body->lines)
-    {   $linenr++;
-        next unless $match_check->($body, $line);
-
-        $matched++;
-        last LINES unless $deliver;  # no deliver: only one match needed
-        $deliver->( {@details, linenr => $linenr, line => $line} );
+    if($is_spam)
+    {   my $deliver = $self->{MBS_deliver};
+        $deliver->( {@details, status => $status} ) if defined $deliver;
     }
 
-    $matched;
+    $is_spam;
 }
+
+sub inHead(@) {shift->notImplemented}
+
+sub inBody(@) {shift->notImplemented}
 
 1;

@@ -2,7 +2,7 @@
 =head1 NAME
 
 
-Mail::Box::Search::SpamAssassin - select messages with Mail::SpamAssassin
+Mail::Box::Search::SpamAssassin - select spam messages with Mail::SpamAssassin
 
 =head1 CLASS INHERITANCE
 
@@ -17,16 +17,32 @@ Mail::Box::Search::SpamAssassin
  my $mgr    = Mail::Box::Manager->new;
  my $folder = $mgr->open('Inbox');
 
- my $filter = Mail::Box::Search::SpamAssassin->new
-    ( label => 'spam'
-    , in    => 'BODY'
-    );
+ my $spam = Mail::Box::Search::SpamAssassin->new;
+ if($spam->search($message)) {...}
 
  my @msgs   = $filter->search($folder);
- if($filter->search($message)) {...}
+ foreach my $msg ($folder->messages)
+ {   $msg->delete if $msg->label('spam');
+ }
+
+ my $spam2 = Mail::Box::Search::SpamAssassin->new(deliver => 'DELETE');
+ $spam2->search($folder);
+ $mgr->moveMessages($folder->messages('spam'), $spamfolder);
 
 =head1 DESCRIPTION
 
+
+I<Spam> means "unsollicited e-mail", and is as name derived from a
+Monty Python scatch.  Although Monty Python is fun, spam is a pain:
+it needlessly spoils minutes of time from most people: telephone
+bills, overful mailboxes which block honest e-mail, and accidentally
+removal of honest e-mail which looks like spam.  Spam is the pest
+of Internet.
+
+Happily, Mail::Box can be used as spam filter, in combination with
+the useful Mail::SpamAssassin module (which must be installed separately).
+Each message which is searched is wrapped in a
+Mail::Message::Wrapper::SpamAssassin object.
 
 =head1 METHODS
 
@@ -34,9 +50,19 @@ Mail::Box::Search::SpamAssassin
 
 =over 4
 
+=item B<assassinator>  X<assassinator>
+
+Returns the internally maintained assassinator object.  You may want
+to reach this object for complex configuration.
+
 =item B<new> OPTIONS X<new>
 
-Create a spam filter.
+Create a spam filter.  Internally, a Mail::SpamAssassin object is
+maintained.
+
+
+Only the whole message can be searched; this is a limitation of
+the Mail::SpamAssassin module.
 
  OPTION               DEFAULT
  binaries             <false>
@@ -44,12 +70,15 @@ Create a spam filter.
  delayed              <true>
  deleted              <false>
  deliver              undef
- in                   MESSAGE
- label                undef
+ in                   'MESSAGE'
+ label                'spam'
  limit                0
  log                  'WARNINGS'
  logical              'REPLACE'
  multiparts           <true>
+ rewrite_mail         <true>
+ sa_options           {}
+ spam_assassin        undef
  trace                'WARNINGS'
 
 =over 4
@@ -70,7 +99,7 @@ See Mail::Box::Search::new(delayed)
 
 See Mail::Box::Search::new(deleted)
 
-=item B<deliver> =E<gt> undef|CODE|'DELETE'|LABEL
+=item B<deliver> =E<gt> undef|CODE|'DELETE'
 
 See Mail::Box::Search::new(deliver)
 
@@ -78,9 +107,10 @@ See Mail::Box::Search::new(deliver)
 
 See Mail::Box::Search::new(in)
 
-=item B<label> =E<gt> STRING
+=item B<label> =E<gt> STRING|undef X<new(label)>
 
-See Mail::Box::Search::new(label)
+Mark all selected selected message with the specified STRING.  If this
+option is explicitly set to C<undef>, the label will not be set.
 
 =item B<limit> =E<gt> NUMBER
 
@@ -97,6 +127,22 @@ See Mail::Box::Search::new(logical)
 =item B<multiparts> =E<gt> BOOLEAN
 
 See Mail::Box::Search::new(multiparts)
+
+=item B<rewrite_mail> =E<gt> BOOLEAN X<new(rewrite_mail)>
+
+Add lines to the message header describing the results of the spam
+scan. See Mail::SpamAssassin::PerMessageStatus::rewrite_mail().
+
+=item B<sa_options> =E<gt> HASH_REF X<new(sa_options)>
+
+Options to create the internal Mail::SpamAssassin object; see its
+manual page for the available options.
+
+=item B<spam_assassin> =E<gt> OBJECT X<new(spam_assassin)>
+
+Provide a Mail::SpamAssassin object to be used for searching spam.  If
+none is specified, one is created internally.  The object can be
+retreived with assassinator().
 
 =item B<trace> =E<gt> LEVEL
 
@@ -221,7 +267,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.025.
+This code is beta, version 2.026.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify

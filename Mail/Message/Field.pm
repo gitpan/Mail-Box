@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Field;
-our $VERSION = 2.025;  # Part of Mail::Box
+our $VERSION = 2.026;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -50,11 +50,24 @@ sub isStructured(;$)
     exists $_structured{lc $name};
 }
 
+# attempt to change the case of a tag to that required by RFC822. That
+# being all characters are lowercase except the first of each
+# word. Also if the word is an `acronym' then all characters are
+# uppercase. We, rather arbitrarily, decide that a word is an acronym
+# if it does not contain a vowel and isn't the well-known 'Cc' or
+# 'Bcc' headers.
+
+my %wf_lookup
+  = qw/mime MIME  ldap LDAP  soap SOAP
+       bcc Bcc  cc Cc/;
+
 sub wellformedName(;$)
 {   my $thing = shift;
     my $name = @_ ? shift : $thing->name;
-    $name =~ s/(\w+)/\L\u$1/g;
-    $name;
+
+    join '-',
+       map { $wf_lookup{lc $_} || ( /[aeiouyAEIOUY]/ ? ucfirst lc : uc ) }
+          split /\-/, $name;
 }
 
 sub body()
@@ -192,6 +205,7 @@ sub toDisclose()
 {   shift->name !~ m!^(?: (?:x-)?status
                       |   (?:resent-)?bcc
                       |   Content-Length
+                      |   x-spam-
                       ) $!x;
 }
 
@@ -251,6 +265,8 @@ sub fold($$;$)
     my $name = shift;
     my $line = shift;
     my $wrap = shift || $default_wrap_length;
+
+    $line    =~ s/\ns*/ /gms;            # Remove accidental folding
 
     my @folded;
     while(1)

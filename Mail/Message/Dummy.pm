@@ -1,7 +1,7 @@
 use strict;
 
 package Mail::Message::Dummy;
-our $VERSION = 2.025;  # Part of Mail::Box
+our $VERSION = 2.026;  # Part of Mail::Box
 use base 'Mail::Message';
 
 use Carp;

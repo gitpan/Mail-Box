@@ -16,7 +16,7 @@ use Tools;
 use File::Compare;
 use File::Copy;
 
-BEGIN {plan tests => 30}
+BEGIN {plan tests => 31}
 
 #
 # We will work with a copy of the original to avoid that we write
@@ -102,6 +102,9 @@ $folder = $mgr->open
   , access    => 'rw'
   );
 
+ok($folder);
+cmp_ok($folder->messages, "==", 47);
+
 my $sec = $mgr->open
   ( folder    => '=empty'
   , folderdir => 't'
@@ -109,8 +112,6 @@ my $sec = $mgr->open
   , create    => 1
   );
 
-ok($folder);
-cmp_ok($folder->messages, "==", 47);
 ok($sec);
 cmp_ok($sec->messages, "==", 0);
 cmp_ok($mgr->openFolders, "==", 2);
@@ -134,9 +135,11 @@ isa_ok($copied[0], 'Mail::Box::Message');
 ok(!$copy->deleted);
 cmp_ok($folder->messages, "==", 47);
 cmp_ok($sec->messages, "==", 2);
+ok($sec->modified);
 
 $folder->close;
 $sec->close;
+
 ok(-f $empty);
 ok(-s $empty);
 

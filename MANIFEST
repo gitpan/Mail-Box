@@ -143,6 +143,8 @@ Mail/Message/TransferEnc/QuotedPrint.pm
 Mail/Message/TransferEnc/QuotedPrint.pod
 Mail/Message/TransferEnc/SevenBit.pm
 Mail/Message/TransferEnc/SevenBit.pod
+Mail/Message/Wrapper/SpamAssassin.pm
+Mail/Message/Wrapper/SpamAssassin.pod
 Mail/Reporter.pm
 Mail/Reporter.pod
 Mail/Transport.pm

@@ -189,7 +189,8 @@ value is added.
 
 Add a RESENT-GROUP (a Mail::Message::Head::ResentGroup object) to
 the header.  If you specify DATA, that is used to create such group
-first.
+first.  If no C<Received> line is specified, it will be created
+for you.
 
 These header lines have nothing to do with the user's sense
 of C<reply> or C<forward> actions: these lines trace the e-mail
@@ -443,7 +444,7 @@ Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>) with the help of m
 
 =head1 VERSION
 
-This code is beta, version 2.025.
+This code is beta, version 2.026.
 
 Copyright (c) 2001-2002 Mark Overmeer. All rights reserved.
 This program is free software; you can redistribute it and/or modify
