@@ -1,5 +1,5 @@
 package Mail::Box::POP3;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Box::Net';
 
 use strict;
@@ -142,6 +142,7 @@ sub getHead($)
     my $parser = Mail::Box::Parser::Perl->new   # not parseable by C parser
      ( filename  => "$pop"
      , file      => IO::ScalarArray->new($lines)
+     , fix_headers => $self->{MB_fix_headers}
      );
 
     $self->lazyPermitted(1);

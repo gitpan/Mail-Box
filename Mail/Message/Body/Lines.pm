@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Lines;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
@@ -67,7 +67,7 @@ sub size()
 
 sub string() { join '', @{shift->{MMBL_array}} }
 
-sub lines()  { wantarray ? @{shift->{MMBL_array}} : \@{shift->{MMBL_array}} }
+sub lines()  { wantarray ? @{shift->{MMBL_array}} : shift->{MMBL_array} }
 
 sub file() { IO::Lines->new(shift->{MMBL_array}) }
 

@@ -4,7 +4,7 @@ use warnings;
 # Mail::Message::Body::Construct adds functionality to Mail::Message::Body
 
 package Mail::Message::Body;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 
 use Carp;
 use IO::Scalar;

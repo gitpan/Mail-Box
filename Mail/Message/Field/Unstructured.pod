@@ -127,6 +127,10 @@ Comments are not supported for unstructured fields.
 
 Extras are not supported for unstructured fields.
 
+=item B<addPhrase> STRING, OPTIONS
+
+See Mail::Message::Field::Full::addPhrase()
+
 =item B<attributes> 
 
 See Mail::Message::Field::Full::attributes()
@@ -134,6 +138,14 @@ See Mail::Message::Field::Full::attributes()
 =item B<clone> 
 
 See Mail::Message::Field::clone()
+
+=item B<createComment> STRING, OPTIONS
+
+See Mail::Message::Field::Full::createComment()
+
+=item B<createPhrase> STRING, OPTIONS
+
+See Mail::Message::Field::Full::createPhrase()
 
 =item B<isStructured> 
 
@@ -239,6 +251,18 @@ See Mail::Message::Field::wellformedName()
 
 See Mail::Message::Field::consume()
 
+=item B<consumeComment> STRING
+
+See Mail::Message::Field::Full::consumeComment()
+
+=item B<consumeDotAtom> STRING
+
+See Mail::Message::Field::Full::consumeDotAtom()
+
+=item B<consumePhrase> STRING
+
+See Mail::Message::Field::Full::consumePhrase()
+
 =item B<decode> STRING, OPTIONS
 
 See Mail::Message::Field::Full::decode()
@@ -342,8 +366,8 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.035.
+This code is beta, version 2.036.
 
-Copyright (c) 2001-2002 by the authors. All rights reserved.
+Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

@@ -3,7 +3,7 @@ use strict;
 # file Mail::Message::Construct extends functionalities from Mail::Message
 
 package Mail::Message;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -576,7 +576,7 @@ sub lines()
     my @lines;
     my $file = IO::Lines->new(\@lines);
     $self->print($file);
-    @lines;
+    wantarray ? @lines : \@lines;
 }
 
 sub file()

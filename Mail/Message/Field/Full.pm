@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Field::Full;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Message::Field';
 
 use Mail::Message::Field::Attribute;
@@ -12,6 +12,7 @@ use Encode ();
 use MIME::QuotedPrint ();
 
 use Carp;
+my $atext = q[a-zA-Z0-9!#\$%&'*+\-\/=?^_`{|}~];  # from RFC
 
 my %implementation
  = ( from => 'Addresses', to  => 'Addresses', sender     => 'Addresses'
@@ -120,35 +121,42 @@ sub attribute($;$)
 
 sub attributes() { values %{shift->{MMFF_attrs}} }
 
+sub createComment($@)
+{   my ($thing, $comment) = (shift, shift);
+
+    $comment = $thing->encode($comment, @_)
+        if @_; # encoding required...
+
+    # Correct dangling parenthesis
+    local $_ = $comment;               # work with a copy
+    s#\\[()]#xx#g;                     # remove escaped parens
+    s#[^()]#x#g;                       # remove other chars
+    while( s#\(([^()]*)\)#x$1x# ) {;}  # remove pairs of parens
+
+    substr($comment, CORE::length($_), 0, '\\')
+        while s#[()][^()]*$##;         # add escape before remaining parens
+
+    $comment =~ s#\\+$##;              # backslash at end confuses
+    "($comment)";
+}
+
 sub addComment($@)
-{   my ($self, $comment) = (shift, shift);
+{   my $self = shift;
 
     unless($self->{MMFF_structured})
     {   $self->log(ERROR
             => "You can not add comment to an unstructured field:\n  "
-               . "Field: ".$self->Name. " Comment: ".$comment);
+               . "Field: ".$self->Name. " Comment: @_");
         return;
     }
 
-    if(@_)  # has encoding info?
-    {   # encoding required... simple case...
-        $comment = $self->encode($comment, @_);
-    }
-    else
-    {   # Correct dangling parenthesis
-        local $_ = $comment;
-        s#\\[()]#xx#g;                     # remove escaped parens
-        s#[^()]#x#g;                       # remove other chars
-        while( s#\(([^()]*)\)#x$1x# ) {;}  # remove pairs of parens
+    return undef
+       if ! defined $_[0] || ! CORE::length($_[0]);
 
-        substr($comment, CORE::length($_), 0, '\\')
-            while s#[()][^()]*$##;         # add escape before remaining parens
-
-        $comment =~ s#\\+$##;              # backslash at end confuses
-    }
-
-    push @{$self->{MMFF_parts}}, "($comment)";
+    my $comment = $self->createComment(@_);
+    push @{$self->{MMFF_parts}}, $comment;
     delete $self->{MMFF_body};
+
     $comment;
 }
 
@@ -168,6 +176,34 @@ sub addExtra($)
     }
 
     $self;
+}
+
+sub createPhrase($)
+{   my $self = shift;
+    local $_ = shift;
+    $_ =  $self->encode($_, @_)
+        if @_;  # encoding required...
+
+    if( m/[^$atext]/ )
+    {   s#\\#\\\\#g;
+        s#"#\\"#g;
+        $_ = qq["$_"];
+    }
+
+    $_;
+}
+
+sub addPhrase($)
+{   my ($self, $string) = (shift, shift);
+
+    return undef
+         unless defined $string && CORE::length($string);
+
+    my $phrase = $self->createPhrase($string);
+
+    push @{$self->{MMFF_parts}}, $phrase;
+    delete $self->{MMFF_body};
+    $phrase;
 }
 
 sub clone()
@@ -319,12 +355,67 @@ sub decode($@)
 
     if(defined $args{is_text} ? $args{is_text} : 1)
     {  # in text, blanks between encoding must be removed, but otherwise kept :(
-       # dirty trick to get this done.
+       # dirty trick to get this done: add an explicit blank.
        $encoded =~ s/\?\=\s(?!\s*\=\?|$)/_?= /gs;
     }
     $encoded =~ s/\=\?([^?\s]*)\?([^?\s]*)\?([^?\s]*)\?\=\s*/_decoder($1,$2,$3)/gse;
 
     $encoded;
+}
+
+sub consumePhrase($)
+{   my ($thing, $string) = @_;
+
+    if($string =~ s/^\s*\"((?:[^"\\]*|\\.)*)\"// )
+    {   (my $phrase = $1) =~ s/\\\"/"/g;
+        return ($phrase, $string);
+    }
+
+    if($string =~ s/^\s*([$atext\ \t.]+)//o )
+    {   (my $phrase = $1) =~ s/\s+$//;
+        $phrase =~ s/\s+$//g;
+        return CORE::length($phrase) ? ($phrase, $string) : (undef, $_[1]);
+    }
+
+    (undef, $string);
+}
+
+sub consumeComment($)
+{   my ($thing, $string) = @_;
+
+    return (undef, $string)
+        unless $string =~ s/^\s*\(((?:[^)\\]+|\\.)*)\)//;
+
+    my $comment = $1;
+    while(1)
+    {   (my $count = $comment) =~ s/\\./xx/g;
+
+        last if $count =~ tr/(//  ==  $count =~ tr/)//;
+
+        return (undef, $_[1])
+            unless $string =~ s/^((?:[^)\\]+|\\.)*)\)//;
+
+        $comment .= ')'.$1;
+    }
+
+    $comment =~ s/\\([()])/$1/g;
+    ($comment, $string);
+}
+
+sub consumeDotAtom($)
+{   my ($self, $string) = @_;
+    my ($atom, $comment);
+
+    while(1)
+    {   (my $c, $string) = $self->consumeComment($string);
+        if(defined $c) { $comment .= $c; next }
+
+        last unless $string =~ s/(\s*[$atext]+(?:\.[$atext]+)*)//o;
+
+        $atom .= $1;
+    }
+
+    ($atom, $string, $comment);
 }
 
 1;

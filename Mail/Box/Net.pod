@@ -50,6 +50,7 @@ UNDER DEVELOPMENT
  create               <false>
  extract              10240
  field_type           undef
+ fix_headers          <false>
  folder               '/'
  folderdir            <not used>
  head_delayed_type    'Mail::Message::Head::Delayed'
@@ -102,6 +103,10 @@ See Mail::Box::new(extract)
 =item B<field_type> =E<gt> CLASS
 
 See Mail::Box::new(field_type)
+
+=item B<fix_headers> =E<gt> BOOLEAN
+
+See Mail::Box::new(fix_headers)
 
 =item B<folder> =E<gt> FOLDERNAME
 
@@ -490,8 +495,8 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.035.
+This code is beta, version 2.036.
 
-Copyright (c) 2001-2002 by the authors. All rights reserved.
+Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

@@ -11,6 +11,7 @@ Mail::Message::Field::Full
    is a Mail::Reporter
 
 Mail::Message::Field::Full is extended by
+   Mail::Message::Field::Addresses
    Mail::Message::Field::Unstructured
 
 =head1 SYNOPSIS
@@ -223,21 +224,22 @@ Examples:
  my $attr = Mail::Message::Field::Attribute->new(...);
  $f->addAttribute($attr);
 
-=item B<addComment> STRING, OPTIONS X<addComment>
+=item B<addComment> COMMENT, OPTIONS X<addComment>
 
-Add a comment to the field.  Comments are automatically included within
-parenthesis.  Matching pairs of parenthesis are permitted within the STRING.
-When a non-matching parenthesis are used, it is only permitted with an escape
-(a backslash) in front of them.  These backslashes will be added automatically
-if needed (don't worry!).  Backslashes will stay, except at the end, where it
-will be doubled.
-
-The OPTIONS are C<charset>, C<language>, and C<encoding> as always.
+Creates a comment (see createComment()) and adds it immediately to
+this field.  Empty or undefined COMMENTs are ignored.  The created comment
+is returned.
 
 =item B<addExtra> STRING X<addExtra>
 
 Adds a string to the line, which is not an attribute however does start with
 a semi-colon.  Empty or undefined STRINGs are ignored.
+
+=item B<addPhrase> STRING, OPTIONS X<addPhrase>
+
+Create a phrase (see createPhrase()) and immediately add it to this field.
+Empty or undefined values of STRING are ignored.  The created phrase is
+returned.
 
 =item B<attributes>  X<attributes>
 
@@ -248,6 +250,30 @@ Double attributes or continuations are folded into one.
 =item B<clone> 
 
 See Mail::Message::Field::clone()
+
+=item B<createComment> STRING, OPTIONS X<createComment>
+
+(Class or Instance method)
+Create a comment to become part in a field.  Comments are automatically
+included within parenthesis.  Matching pairs of parenthesis are
+permitted within the STRING.  When a non-matching parenthesis are used,
+it is only permitted with an escape (a backslash) in front of them.
+These backslashes will be added automatically if needed (don't worry!).
+Backslashes will stay, except at the end, where it will be doubled.
+
+The OPTIONS are C<charset>, C<language>, and C<encoding> as always.
+See addComment().  The created comment is returned.
+
+=item B<createPhrase> STRING, OPTIONS X<createPhrase>
+
+(Class or instance method)
+A phrase is a text which plays a well defined role.  This is the main difference
+with comments, which have do specified meaning.  Some special characters
+in the phrase will cause it to be surrounded with double quotes: do not specify
+them yourself.
+
+The OPTIONS are C<charset>, C<language>, and C<encoding> as always.
+See addPhrase().
 
 =item B<isStructured> 
 
@@ -359,6 +385,35 @@ See Mail::Message::Field::wellformedName()
 =item B<consume> LINE | (NAME,BODY|OBJECTS)
 
 See Mail::Message::Field::consume()
+
+=item B<consumeComment> STRING X<consumeComment>
+
+(Class or Instance method)
+Try to read a comment from the STRING.  When successful, the comment
+without encapsulation parenthesis is returned, together with the rest
+of the string.
+
+=item B<consumeDotAtom> STRING X<consumeDotAtom>
+
+Returns three elemens: the atom-text, the rest string, and the
+concatenated comments.  Both atom and comments can be undef.
+
+=item B<consumePhrase> STRING X<consumePhrase>
+
+(Class or Instance method)
+Take the STRING, and try to strip-off a valid phrase.  In the obsolete
+phrase syntax, any sequence of words is accepted as phrase (as long as
+certain special characters are not used).  RFC2882 is stricter: only
+one word or a quoted string is allowed.  As always, the obsolete
+syntax is accepted, and the new syntax is produced.
+
+This method returns two elements: the phrase (or undef) followed
+by the resulting string.  The phrase will be removed from the optional
+quotes.  Be warned that C<""> will return an empty, valid phrase.
+
+Examples:
+
+ my ($phrase, $rest) = $field->consumePhrase( q["hi!" <sales@example.com>] );
 
 =item B<decode> STRING, OPTIONS X<decode>
 
@@ -525,8 +580,8 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.035.
+This code is beta, version 2.036.
 
-Copyright (c) 2001-2002 by the authors. All rights reserved.
+Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

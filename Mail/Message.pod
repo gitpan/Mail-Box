@@ -609,7 +609,7 @@ you have to test yourself.
 
 'ACTIVE' and 'DELETED' check for the deleted flag on messages and
 message parts.  The FILTER is a code reference, which is called for
-each message and message part (implies RECURSE).
+each part of the messagei; each part as C<RECURSE> would return.
 
 Examples:
 
@@ -823,8 +823,8 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.035.
+This code is beta, version 2.036.
 
-Copyright (c) 2001-2002 by the authors. All rights reserved.
+Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

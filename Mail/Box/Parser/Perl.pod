@@ -31,6 +31,7 @@ work on platforms where no C compiler is available.
  OPTION               DEFAULT
  file                 undef
  filename             <required>
+ fix_header_errors    <false>
  log                  'WARNINGS'
  mode                 'r'
  trace                'WARNINGS'
@@ -45,6 +46,13 @@ See Mail::Box::Parser::new(file)
 =item B<filename> =E<gt> FILENAME
 
 See Mail::Box::Parser::new(filename)
+
+=item B<fix_header_errors> =E<gt> BOOLEAN X<new(fix_header_errors)>
+
+When header errors are detected, the parsing of the header will
+be stopped.  Other header lines will become part of the body of
+the message.  Set this flag to have the erroneous line added to
+the previous header line.
 
 =item B<log> =E<gt> LEVEL
 
@@ -124,6 +132,17 @@ See Mail::Box::Parser::bodyDelayed()
 =item B<filePosition> [POSITION]
 
 See Mail::Box::Parser::filePosition()
+
+=item B<fixHeaderErrors> [BOOLEAN] X<fixHeaderErrors>
+
+If set to C<true>, parsing of a header will not stop on an error, but
+attempt to add the erroneous this line to previous field.  Without BOOLEAN,
+the current setting is returned.
+
+Examples:
+
+ $folder->parser->fixHeaderErrors(1);
+ my $folder = $mgr->open('folder', fix_header_errors => 1);
 
 =item B<lineSeparator> 
 
@@ -238,8 +257,8 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.035.
+This code is beta, version 2.036.
 
-Copyright (c) 2001-2002 by the authors. All rights reserved.
+Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

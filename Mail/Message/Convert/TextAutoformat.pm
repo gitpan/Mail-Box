@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::TextAutoformat;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Message::Convert';
 
 use Mail::Message::Body::String;

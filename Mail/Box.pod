@@ -123,6 +123,7 @@ we want delay-loading.
  create               <false>
  extract              10240
  field_type           undef
+ fix_headers          <false>
  folder               $ENV{MAIL}
  folderdir            undef
  head_delayed_type    'Mail::Message::Head::Delayed'
@@ -272,6 +273,13 @@ sure you always need all the messages in the folder.
 
 The type of the fields to be used in a header. Must extend
 Mail::Message::Field.
+
+=item B<fix_headers> =E<gt> BOOLEAN X<new(fix_headers)>
+
+Broken MIME headers usually stop the parser: all lines not parsed are
+added to the body of the message.  With this flag set, the erroneous line
+is added to the previous header field and parsing is continued.
+See Mail::Box::Parser::Perl(fix_header_errors).
 
 =item B<folder> =E<gt> FOLDERNAME X<new(folder)>
 
@@ -963,7 +971,7 @@ better:
 =item B<coerce> MESSAGE X<coerce>
 
 Coerce the MESSAGE to be of the correct type to be placed in the
-folder.  You are not may specify Mail::Internet and MIME::Entity
+folder.  You can specify Mail::Internet and MIME::Entity objects
 here: they will be translated into Mail::Message messages first.
 
 =item B<determineBodyType> MESSAGE, HEAD X<determineBodyType>
@@ -1133,8 +1141,8 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.035.
+This code is beta, version 2.036.
 
-Copyright (c) 2001-2002 by the authors. All rights reserved.
+Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::MH;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Box::Dir';
 
 use Mail::Box::MH::Index;
@@ -257,9 +257,10 @@ sub readMessages(@)
         $head     ||= $args{head_delayed_type}->new(@log);
 
         my $message = $args{message_type}->new
-         ( head      => $head
-         , filename  => $msgfile
-         , folder    => $self
+         ( head       => $head
+         , filename   => $msgfile
+         , folder     => $self
+         , fix_header => $self->{MB_fix_headers}
          );
 
         my $labref  = $labels ? $labels->get($msgnr) : ();

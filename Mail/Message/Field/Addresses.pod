@@ -1,0 +1,433 @@
+
+=head1 NAME
+
+
+Mail::Message::Field::Addresses - Fields with e-mail addresses
+
+=head1 CLASS INHERITANCE
+
+Mail::Message::Field::Addresses
+   is a Mail::Message::Field::Full
+   is a Mail::Message::Field
+   is a Mail::Reporter
+
+=head1 SYNOPSIS
+
+
+ my $f = Mail::Message::Field->new(Cc => 'Mail::Box <mailbox@overmeer.net>');
+
+ my $g = Mail::Message::Field->new('Cc');
+ $g->addAddress('Mail::Box <mailbox@overmeer.net>');
+ $g->addAddress
+   ( phrase  => 'Mail::Box'
+   , email   => 'mailbox@overmeer.net'
+   , comment => 'Our mailing list'     # deprecated, use phrase
+   );
+
+=head1 DESCRIPTION
+
+
+All header fields which contain e-mail addresses only.  Not all address
+fields have the same possibilities, but they are all parsed the same:
+you never know how broken the applications are which produce those
+messages.
+
+When you try to create constructs which are not allowed for a certain
+kind of field, you will be warned.
+
+=head1 METHODS
+
+=head2 Initiation
+
+=over 4
+
+=item B<from> FIELD, OPTIONS
+
+See Mail::Message::Field::Full::from()
+
+=item B<new> DATA X<new>
+
+ OPTION               DEFAULT
+ attributes           C<not accepted>
+ charset              C<undef>
+ encoding             'q'
+ extra                C<not accepted>
+ force                false
+ is_structured        1
+ language             C<undef>
+ log                  'WARNINGS'
+ trace                'WARNINGS'
+
+=over 4
+
+=item B<attributes> =E<gt> ATTRS
+
+See Mail::Message::Field::Full::new(attributes)
+
+=item B<charset> =E<gt> STRING
+
+See Mail::Message::Field::Full::new(charset)
+
+=item B<encoding> =E<gt> 'q'|'Q'|'b'|'B'
+
+See Mail::Message::Field::Full::new(encoding)
+
+=item B<extra> =E<gt> STRING
+
+See Mail::Message::Field::Full::new(extra)
+
+=item B<force> =E<gt> BOOLEAN
+
+See Mail::Message::Field::Full::new(force)
+
+=item B<is_structured> =E<gt> BOOLEAN
+
+See Mail::Message::Field::Full::new(is_structured)
+
+=item B<language> =E<gt> STRING
+
+See Mail::Message::Field::Full::new(language)
+
+=item B<log> =E<gt> LEVEL
+
+See Mail::Reporter::new(log)
+
+=item B<trace> =E<gt> LEVEL
+
+See Mail::Reporter::new(trace)
+
+=back
+
+Examples:
+
+=item B<parse> STRING X<parse>
+
+Parse the supplied address string, and store the found data in this
+object.
+
+=back
+
+=head2 The Field
+
+=over 4
+
+=item B<addAddress> [ADDRESS], OPTIONS X<addAddress>
+
+Add an ADDRESS to the field.  The addresses are organized in groups.  If no
+group is specified, the default group is taken to store the address in.  If
+no ADDRESS is specified, the option must be sufficient to create a
+Mail::Message::Field::Address from.  See the OPTIONS of
+Mail::Message::Field::Address::new().
+
+ OPTION               DEFAULT
+ group                ''
+
+=over 4
+
+=item B<group> =E<gt> STRING X<addAddress(group)>
+
+=back
+
+=item B<addAttribute> ... X<addAttribute>
+
+Attributes are not supported for address fields.
+
+=item B<addComment> COMMENT, OPTIONS
+
+See Mail::Message::Field::Full::addComment()
+
+=item B<addExtra> ... X<addExtra>
+
+Extras are not permitted in address fields.
+
+=item B<addGroup> GROUP|OPTIONS X<addGroup>
+
+Add a group of addresses to this field.  A GROUP can be specified, which
+is a Mail::Message::Field::AddrGroup object, or one is created for you
+using the OPTIONS.  The group is returned.
+
+ OPTION               DEFAULT
+ name                 ''
+
+=over 4
+
+=item B<name> =E<gt> STRING X<addGroup(name)>
+
+=back
+
+=item B<addPhrase> STRING, OPTIONS
+
+See Mail::Message::Field::Full::addPhrase()
+
+=item B<addresses>  X<addresses>
+
+Returns a list with all addresses defined in any group of addresses:
+all addresses which are specified on the line.  The addresses are
+Mail::Message::Field::Address objects.
+
+Examples:
+
+ my @addr = $field->addresses;
+
+=item B<attributes> 
+
+See Mail::Message::Field::Full::attributes()
+
+=item B<clone> 
+
+See Mail::Message::Field::clone()
+
+=item B<consumeAddress> STRING X<consumeAddress>
+
+Try to destilate address information from the STRING.   Returned are
+an address B<object> and the left-over string.  If no address was found,
+the first returned value is C<undef>.
+
+=item B<consumeDomain> STRING X<consumeDomain>
+
+Try to get a valid domain representation from STRING.  Returned are the
+domain string as found (or C<undef>) and the rest of the string.
+
+=item B<createComment> STRING, OPTIONS
+
+See Mail::Message::Field::Full::createComment()
+
+=item B<createPhrase> STRING, OPTIONS
+
+See Mail::Message::Field::Full::createPhrase()
+
+=item B<group> NAME X<group>
+
+Returns the group of addresses with the specified NAME, or C<undef>
+if it does not exist.  If NAME is C<undef>, then the default groep
+is returned.
+
+=item B<groupNames>  X<groupNames>
+
+Returns a list with all group names which are defined.
+
+=item B<groups>  X<groups>
+
+Returns all address groups which are defined in this field.  Each
+element is a Mail::Message::Field::AddrGroup object.
+
+=item B<isStructured> 
+
+See Mail::Message::Field::isStructured()
+
+=item B<length> 
+
+See Mail::Message::Field::length()
+
+=back
+
+=head2 Access to the Field
+
+=over 4
+
+=item B<Name> 
+
+See Mail::Message::Field::Name()
+
+=item B<attribute> NAME [, VALUE]
+
+See Mail::Message::Field::attribute()
+
+=item B<body> 
+
+See Mail::Message::Field::body()
+
+=item B<comment> [STRING]
+
+See Mail::Message::Field::comment()
+
+=item B<dateToTimestamp> STRING
+
+See Mail::Message::Field::dateToTimestamp()
+
+=item B<decodedBody> OPTIONS
+
+See Mail::Message::Field::Full::decodedBody()
+
+=item B<folded> 
+
+See Mail::Message::Field::folded()
+
+=item B<foldedBody> [BODY]
+
+See Mail::Message::Field::foldedBody()
+
+=item B<name> 
+
+See Mail::Message::Field::name()
+
+=item B<nrLines> 
+
+See Mail::Message::Field::nrLines()
+
+=item B<print> [FILEHANDLE]
+
+See Mail::Message::Field::print()
+
+=item B<size> 
+
+See Mail::Message::Field::size()
+
+=item B<string> [WRAP]
+
+See Mail::Message::Field::string()
+
+=item B<stripCFWS> [STRING]
+
+See Mail::Message::Field::stripCFWS()
+
+=item B<toDate> [TIME]
+
+See Mail::Message::Field::toDate()
+
+=item B<toDisclose> 
+
+See Mail::Message::Field::toDisclose()
+
+=item B<toInt> 
+
+See Mail::Message::Field::toInt()
+
+=item B<unfoldedBody> [BODY, [WRAP]]
+
+See Mail::Message::Field::unfoldedBody()
+
+=item B<wellformedName> [STRING]
+
+See Mail::Message::Field::wellformedName()
+
+=back
+
+=head2 Reading and Writing [internals]
+
+=over 4
+
+=item B<consume> LINE | (NAME,BODY|OBJECTS)
+
+See Mail::Message::Field::consume()
+
+=item B<consumeComment> STRING
+
+See Mail::Message::Field::Full::consumeComment()
+
+=item B<consumeDotAtom> STRING
+
+See Mail::Message::Field::Full::consumeDotAtom()
+
+=item B<consumePhrase> STRING
+
+See Mail::Message::Field::Full::consumePhrase()
+
+=item B<decode> STRING, OPTIONS
+
+See Mail::Message::Field::Full::decode()
+
+=item B<defaultWrapLength> [LENGTH]
+
+See Mail::Message::Field::defaultWrapLength()
+
+=item B<encode> STRING, OPTIONS
+
+See Mail::Message::Field::Full::encode()
+
+=item B<fold> NAME, BODY, [MAXCHARS]
+
+See Mail::Message::Field::fold()
+
+=item B<setWrapLength> [LENGTH]
+
+See Mail::Message::Field::setWrapLength()
+
+=item B<unfold> STRING
+
+See Mail::Message::Field::unfold()
+
+=back
+
+=head2 Logging and Tracing
+
+=over 4
+
+=item B<defaultTrace> [LEVEL, [LEVEL]
+
+See Mail::Reporter::defaultTrace()
+
+=item B<errors> 
+
+See Mail::Reporter::errors()
+
+=item B<log> [LEVEL [,STRINGS]]
+
+See Mail::Reporter::log()
+
+=item B<report> [LEVEL]
+
+See Mail::Reporter::report()
+
+=item B<reportAll> [LEVEL]
+
+See Mail::Reporter::reportAll()
+
+=item B<trace> [LEVEL]
+
+See Mail::Reporter::trace()
+
+=item B<warnings> 
+
+See Mail::Reporter::warnings()
+
+=back
+
+=head2 Other Methods
+
+=over 4
+
+=item B<AUTOLOAD> 
+
+See Mail::Reporter::AUTOLOAD()
+
+=item B<DESTROY> 
+
+See Mail::Reporter::DESTROY()
+
+=item B<inGlobalDestruction> 
+
+See Mail::Reporter::inGlobalDestruction()
+
+=item B<logPriority> LEVEL
+
+See Mail::Reporter::logPriority()
+
+=item B<logSettings> 
+
+See Mail::Reporter::logSettings()
+
+=item B<notImplemented> 
+
+See Mail::Reporter::notImplemented()
+
+=back
+
+=head1 SEE ALSO
+
+A good start to read is Mail::Box-Overview.
+More documentation and a mailinglist are available from the project's
+website at L<http://perl.overmeer.net/mailbox/>.
+
+=head1 AUTHOR
+
+Written by Mark Overmeer (L<mark@overmeer.net|mailto:mark@overmeer.net>)
+with the help of many.  See the ChangeLog for details.
+
+=head1 VERSION
+
+This code is beta, version 2.036.
+
+Copyright (c) 2001-2003 by the authors. All rights reserved.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

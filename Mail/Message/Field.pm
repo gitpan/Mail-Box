@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Field;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -183,7 +183,7 @@ sub stripCFWS($)
     while(@s)
     {   my $s = shift @s;
 
-           if(length $r && substr($r, -1) eq "\\") { $r .= $s } # escaped special
+           if(length $r && substr($r, -1) eq "\\") { $r .= $s } # esc'd special
         elsif($s eq '"')   { $in_dquotes = not $in_dquotes; $r .= $s }
         elsif($s eq '(' && !$in_dquotes) { $open_paren++ }
         elsif($s eq ')' && !$in_dquotes) { $open_paren-- }
@@ -267,7 +267,11 @@ sub consume($;$)
 
 sub setWrapLength(;$)
 {   my $self = shift;
-    $self->[1] = $self->fold($self->[0],$self->unfoldedBody, @_);
+
+    $self->[1] = $self->fold($self->[0],$self->unfoldedBody, @_)
+        if @_ || $self->[1] !~ m/\n$/;
+
+    $self;
 }
 
 sub defaultWrapLength(;$)
@@ -281,7 +285,7 @@ sub fold($$;$)
     my $line = shift;
     my $wrap = shift || $default_wrap_length;
 
-    $line    =~ s/\ns*/ /gms;            # Remove accidental folding
+    $line    =~ s/\n\s/ /gms;            # Remove accidental folding
     return " \n" unless length $line;    # empty field
 
     my @folded;
@@ -291,7 +295,7 @@ sub fold($$;$)
        last if length $line < $max;
 
           $line =~ s/^ ( .{$min,$max}   # $max to 30 chars
-                        [;,]            # followed by a; or ,
+                        [;,]            # followed at a ; or ,
                        )[ \t]           # and then a WSP
                     //x
        || $line =~ s/^ ( .{$min,$max} ) # $max to 30 chars

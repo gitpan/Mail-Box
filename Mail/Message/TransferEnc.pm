@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::TransferEnc;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 my %encoder =

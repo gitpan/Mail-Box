@@ -1,6 +1,6 @@
 use strict;
 package Mail::Box::Maildir;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
@@ -255,6 +255,7 @@ sub updateMessages($)
          ( head     => $head
          , filename => $msgpath
          , folder   => $self
+         , fix_header => $self->{MB_fix_headers}
          , @log
          );
 

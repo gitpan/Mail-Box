@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::Exim;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Transport::Send';
 
 use Carp;

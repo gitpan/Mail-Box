@@ -122,7 +122,7 @@ Some protocols require a user to login.
 
 Which CLASS (extending Mail::Transport) will transport the data.  Some
 predefined NAMEs avoid long class names: C<mail> and C<mailx> are handled
-by the Mail::Transport::Mailx module, C<sendmail> belongs to
+by the Mail::Transport::Mailx module, C<sendmail> and C<postfix> belong to
 C<::Sendmail>, and C<smtp> is implemented in C<::SMTP>.  The C<pop> or
 C<pop3> protocol implementation can be found in C<::POP3>.
 
@@ -231,8 +231,8 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.035.
+This code is beta, version 2.036.
 
-Copyright (c) 2001-2002 by the authors. All rights reserved.
+Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

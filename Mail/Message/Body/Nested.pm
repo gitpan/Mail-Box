@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body::Nested;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -41,12 +41,11 @@ sub isBinary() {shift->nested->body->isBinary}
 sub clone()
 {   my $self     = shift;
 
-    my $body     = ref($self)->new
+    ref($self)->new
      ( $self->logSettings
      , based_on => $self
      , nested   => $self->nested->clone
      );
-
 }
 
 sub nrLines() { shift->nested->nrLines }
@@ -62,7 +61,8 @@ sub string()
 
 sub lines()
 {    my $nested = shift->nested;
-     defined $nested ? $nested->lines : ();
+warn "Nested = ",ref $nested;
+     defined $nested ? ($nested->lines) : ();
 }
 
 sub file()

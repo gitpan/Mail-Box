@@ -25,26 +25,12 @@ my ($pattern, @mailboxes) = @ARGV;
 my $mgr = Mail::Box::Manager->new;
 
 foreach my $mailbox (@mailboxes)
-{   my $folder = $mgr->open($mailbox
-#, extract => 'ALWAYS'
-        );
-
-#my $msg0 = $folder->message(0);
-#warn "a: ",$msg0->isDelayed;
-#warn "1: ", $_->isDelayed foreach $msg0->parts;
-
-#my $msg = $folder->message(1);
-#warn "b: ", $msg->isDelayed;
-#warn "1: ", $_->isDelayed foreach $msg->parts;
-#warn "2: ",$_->isDelayed foreach ($msg->parts)[1]->parts;
+{   my $folder = $mgr->open($mailbox);
     unless(defined $folder)
     {   warn "*** Cannot open folder $mailbox.\n";
         next;
     }
 
-    $_->printStructure
-        foreach $folder->messages;
-    
     print "*** Scanning through $mailbox\n"
        if @mailboxes > 1;
 

@@ -59,6 +59,7 @@ Create a messages in a directory organized folder.
  deleted              <false>
  field_type           undef
  filename             undef
+ fix_header           C<false>
  folder               <required>
  head                 undef
  head_type            'Mail::Message::Head::Complete'
@@ -90,6 +91,10 @@ See Mail::Message::new(field_type)
 =item B<filename> =E<gt> FILENAME X<new(filename)>
 
 The file where the message is stored in.
+
+=item B<fix_header> =E<gt> BOOLEAN X<new(fix_header)>
+
+See Mail::Box::new(fix_headers).
 
 =item B<folder> =E<gt> FOLDER
 
@@ -531,8 +536,8 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.035.
+This code is beta, version 2.036.
 
-Copyright (c) 2001-2002 by the authors. All rights reserved.
+Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

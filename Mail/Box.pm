@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -38,7 +38,7 @@ USAGE
       , init_options => [ @_ ]  # for clone
       ) or return;
 
-    $self->read if $self->{MB_access} =~ /r/;
+    $self->read if $self->{MB_access} =~ /r|a/;
     $self;
 }
 
@@ -69,6 +69,7 @@ sub init($)
     $self->{MB_organization} = $args->{organization}      || 'FILE';
     $self->{MB_linesep}      = "\n";
     $self->{MB_keep_dups}    = !$self->writable || $args->{keep_dups};
+    $self->{MB_fix_headers}  = $args->{fix_headers};
 
     my $folderdir = $self->folderdir($args->{folderdir});
     $self->{MB_trusted}      = exists $args->{trusted} ? $args->{trusted}

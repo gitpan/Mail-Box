@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Transport;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Carp;
@@ -14,6 +14,7 @@ my %mailers =
  , mailx    => '::Mailx'
  , pop      => '::POP3'
  , pop3     => '::POP3'
+ , postfix  => '::Sendmail'
  , qmail    => '::Qmail'
  , sendmail => '::Sendmail'
  , smtp     => '::SMTP'

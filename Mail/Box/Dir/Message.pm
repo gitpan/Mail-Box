@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Dir::Message;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Box::Message';
 
 use Carp;
@@ -16,6 +16,7 @@ sub init($)
     $self->filename($args->{filename})
         if $args->{filename};
 
+    $self->{MBDM_fix_header} = $args->{fix_header};
     $self;
 }
 
@@ -76,8 +77,9 @@ sub parser()
 {   my $self   = shift;
 
     my $parser = Mail::Box::Parser->new
-      ( filename  => $self->{MBDM_filename}
-      , mode      => 'r'
+      ( filename => $self->{MBDM_filename}
+      , mode     => 'r'
+      , fix_header_errors => $self->{MBDM_fix_header}
       , $self->logSettings
       );
 

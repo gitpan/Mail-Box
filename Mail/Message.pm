@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -340,7 +340,7 @@ sub parts(;$)
     my $what    = shift || 'ACTIVE';
 
     my $body    = $self->body;
-    my $recurse = $what eq 'RECURSE';
+    my $recurse = $what eq 'RECURSE' || ref $what;
 
     my @parts
      = $body->isNested     ? $body->nested->parts($what)
@@ -354,6 +354,7 @@ sub parts(;$)
     : $recurse            ? @parts
     : confess "Select parts via $what?";
 }
+sub deleted() {0} # needed for parts('ACTIVE'|'DELETED') on non-folder messages.
 
 sub label($;$)
 {   my $self   = shift;

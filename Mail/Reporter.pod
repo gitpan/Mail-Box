@@ -23,6 +23,8 @@ Mail::Reporter is extended by
    Mail::Message::Body::Delayed
    Mail::Message::Convert
    Mail::Message::Field
+   Mail::Message::Field::AddrGroup
+   Mail::Message::Field::Address
    Mail::Message::Head
    Mail::Message::Head::ResentGroup
    Mail::Message::TransferEnc
@@ -117,13 +119,15 @@ Examples:
  my ($loglevel, $tracelevel) = Mail::Reporter->defaultTrace;
  Mail::Reporter->defaultTrace('NOTICES');
 
- my $(l, $t) = Mail::Reporter->defaultTrace('WARNINGS', 'DEBUG');
+ my ($l, $t) = Mail::Reporter->defaultTrace('WARNINGS', 'DEBUG');
  print $l;     # prints "WARNING"  (no S!)
  print $l+0;   # prints "4"
 
 =item B<errors>  X<errors>
 
-Equivalent to C<< $folder->report('ERRORS') >>
+Equivalent to
+
+ $folder->report('ERRORS')
 
 =item B<log> [LEVEL [,STRINGS]] X<log>
 
@@ -211,7 +215,9 @@ and the string which represents it.  See logPriority().
 
 =item B<warnings>  X<warnings>
 
-Equivalent to C<< $folder->report('WARNINGS') >>
+Equivalent to
+
+ $folder->report('WARNINGS')
 
 =back
 
@@ -281,8 +287,8 @@ with the help of many.  See the ChangeLog for details.
 
 =head1 VERSION
 
-This code is beta, version 2.035.
+This code is beta, version 2.036.
 
-Copyright (c) 2001-2002 by the authors. All rights reserved.
+Copyright (c) 2001-2003 by the authors. All rights reserved.
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

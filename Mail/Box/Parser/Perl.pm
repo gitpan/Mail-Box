@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Parser::Perl;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Box::Parser';
 
 use Mail::Message::Field;
@@ -15,7 +15,13 @@ sub init(@)
     $self->SUPER::init($args) or return;
 
     $self->{MBPP_trusted} = $args->{trusted};
+    $self->{MBPP_fix}     = $args->{fix_header_errors};
     $self;
+}
+
+sub fixHeaderErrors(;$)
+{   my $self = shift;
+    @_ ? ($self->{MBPP_fix} = shift) : $self->{MBPP_fix};
 }
 
 sub pushSeparator($)
@@ -56,8 +62,15 @@ LINE:
         {   $self->log(WARNING =>
                 "Unexpected end of header in ".$self->filename.":\n $line");
 
-            $file->seek(-length $line, 1);
-            last LINE;
+            if(@ret && $self->fixHeaderErrors)
+            {   $ret[-1][1] .= ' '.$line;  # glue erroneous line to previous field
+                $line = $file->getline;
+                next LINE;
+            }
+            else
+            {   $file->seek(-length $line, 1);
+                last LINE;
+            }
         }
 
         $body = "\n" unless length $body;

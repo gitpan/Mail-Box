@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::MimeEntity;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Message::Convert';
 
 use Mail::Message::Head::Complete;
@@ -22,7 +22,7 @@ sub export($$)
     my $me   = MIME::Entity->new;
     my $body = $message->body;
 
-    if($message->isMultipart)
+    if($body->isMultipart)
     {   my $preamble = $body->preamble->lines;
         $me->preamble($preamble) if $preamble;
 

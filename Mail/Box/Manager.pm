@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Manager;
-our $VERSION = 2.035;  # Part of Mail::Box
+our $VERSION = 2.036;  # Part of Mail::Box
 use base 'Mail::Reporter';
 
 use Mail::Box;
@@ -361,7 +361,7 @@ sub copyMessage(@)
     my @coerced
      = ref $folder
      ? map {$_->copyTo($folder)} @messages
-     :  $self->appendMessages(@messages, %options, folder => $folder);
+     : $self->appendMessages(@messages, %options, folder => $folder);
 
     # hidden option, do not use it: it's designed to optimize moveMessage
     if($options{_delete})
