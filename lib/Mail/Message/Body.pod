@@ -160,7 +160,7 @@ got, and then call L<encode()|Mail::Message::Body::Encode/"Constructing a body">
  mime_type                           C<'text/plain'>
  modified                            <false>        
  trace              L<Mail::Reporter>  C<'WARNINGS'>  
- transfer_encoding                   C<'NONE'>      
+ transfer_encoding                   C<'none'>      
 
 . based_on BODY
 
@@ -307,7 +307,7 @@ I<Example:>
     mime_type => 'text/html; charset="ISO-8859-1"');
 
  my $body = Mail::Message::Body::Lines->new(data => ['first', $second],
-    charset => 'ISO-10646', transfer_encoding => 'NONE');
+    charset => 'ISO-10646', transfer_encoding => 'none');
 
  my $body = Mail::Message::Body::Lines->new(data => \@lines,
     transfer_encoding => 'base64');
@@ -358,7 +358,7 @@ body of any type.
 is equivalent with
 
  my $dec = $body->encode(mime_type => 'text/plain', charset => 'us-ascii',
-    transfer_encoding => 'NONE');
+    transfer_encoding => 'none');
 
 The C<$dec> which is returned is a body.  Ask with the L<mimeType()|Mail::Message::Body/"About the payload"> method
 what is produced.  This C<$dec> body is B<not related to a header>.
@@ -486,10 +486,14 @@ $obj-E<gt>B<disposition>([STRING|FIELD])
 
 =over 4
 
-Returns (optionally after setting) how the message can be disposed (unpacked).
+Returns (optionally after setting) how the message can be disposed
+(unpacked).  The related header field is C<Content-Disposition>.
+A L<Mail::Message::Field|Mail::Message::Field> object is returned (which stringifies into
+the field content).  The field content will be C<none> if no disposition
+was specified.
+
 The argument can be a STRING (which is converted into a field), or a
-fully prepared header field.  The related header field is
-C<Content-Disposition>.
+fully prepared header field.
 
 =back
 
@@ -547,8 +551,10 @@ $obj-E<gt>B<transferEncoding>([STRING|FIELD])
 
 =over 4
 
-Returns the transfer-encoding of the data within this body.  If it
+Returns the transfer-encoding of the data within this body as
+L<Mail::Message::Field|Mail::Message::Field> (which stringifies to its content).  If it
 needs to be changed, call the L<encode()|Mail::Message::Body::Encode/"Constructing a body"> or L<decoded()|Mail::Message::Body/"Constructing a body"> method.
+When no encoding is present, the field contains the text C<none>.
 
 The optional STRING or FIELD enforces a new encoding to be set, without the
 actual required translations.
@@ -556,22 +562,24 @@ actual required translations.
 I<Example:> 
 
  my $transfer = $msg->decoded->transferEncoding;
- $transfer->print;
-    # --> Content-Encoding: base64
+ $transfer->print;   # --> Content-Encoding: base64
+ print $transfer;    # --> base64
+
+ if($msg->body->transferEncoding eq 'none') {...}
 
 =back
 
-$obj-E<gt>B<type>
+$obj-E<gt>B<type>([STRING|FIELD])
 
 =over 4
 
-Returns the type of information the body contains.  The type is taken from
-the header field C<Content-Type>, but may have changed during encoding
---or decoding-- of the body (see the C<encode> method).
+Returns the type of information the body contains as
+L<Mail::Message::Field|Mail::Message::Field> object.  The type is taken from the header
+field C<Content-Type>. If the header did not contain that field,
+then you will get a default field containing C<text/plain>.
 
-The returned is a reference to a L<Mail::Message::Field|Mail::Message::Field> object, where
-you can ask for the C<body> (main content of the field) and the comment
-(after a semicolon).  To get to the body, you can better use L<mimeType()|Mail::Message::Body/"About the payload">.
+You usually can better use L<mimeType()|Mail::Message::Body/"About the payload">, because that will return a
+clever object with type information.
 
 I<Example:> 
 
@@ -688,6 +696,24 @@ See L<Mail::Message::Body::Encode/"Internals">
 
 =back
 
+$obj-E<gt>B<contentInfoFrom>(HEAD)
+
+=over 4
+
+Transfer the body related info from the header into this body.
+
+=back
+
+$obj-E<gt>B<contentInfoTo>(HEAD)
+
+=over 4
+
+Copy the content information (the C<Content-*> fields) into the specified
+HEAD.  The body was created from raw data without the required information,
+which must be added.  See also L<contentInfoFrom()|Mail::Message::Body/"Internals">.
+
+=back
+
 $obj-E<gt>B<fileLocation>([BEGIN,END])
 
 =over 4
@@ -780,6 +806,14 @@ not be problematic.  For performance reasons, some methods are
 implemented in separate files, and only demand-loaded.  If this
 delayed compilation of additional modules does not help, an error
 will be produced.
+
+=back
+
+$obj-E<gt>B<addReport>(OBJECT)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
 
 =back
 
@@ -1015,7 +1049,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

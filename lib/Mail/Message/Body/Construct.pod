@@ -107,18 +107,17 @@ $obj-E<gt>B<stripSignature>(OPTIONS)
 =over 4
 
 Strip the signature from the body.  The body must already be decoded
-otherwise the wrong lines may get stripped.
-
-The signature is added by the sender to tell about him-
-or herself.  It is superfluous in some situations, for instance if you
-want to create a reply to the person's message you do not need to include
-that signature.
-
-C<stripSignature> returns the stripped version body, and in list context
-also the signature, encapsulated in its own body object.  If the body had
-no signature, the original body object is returned, and C<undef> for
-the signature body.  The signature separator is the first line of the
+otherwise the wrong lines may get stripped.  Returned is the stripped
+version body, and in list context also the signature, encapsulated in
+its own body object.  The signature separator is the first line of the
 returned signature body.
+
+The signature is added by the sender to tell about him- or herself.
+It is superfluous in some situations, for instance if you want to create
+a reply to the person's message you do not need to include that signature.
+
+If the body had no signature, the original body object is returned,
+and C<undef> for the signature body.
 
  Option       Defined in       Default          
  max_lines                     C<10>            
@@ -179,7 +178,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

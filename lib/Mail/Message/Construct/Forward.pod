@@ -15,7 +15,7 @@ Mail::Message::Construct::Forward - forwarding a Mail::Message
 
 Complex functionality on L<Mail::Message|Mail::Message> objects is implemented in
 different files which are autoloaded.  This file implements the
-functionality related to creating forwarded message.
+functionality related to creating forwarded messages.
 
 
 
@@ -31,29 +31,30 @@ $obj-E<gt>B<forward>(OPTIONS)
 
 Forward the content of this message.  The body of the message to be forwarded
 is encapsulated in some accompanying text (if you have no wish for that, than
-C<bounce> is your choice).
+C<bounce> is your choice).  A L<Mail::Message|Mail::Message> object is returned on success.
 
 You may forward a whole message, but also message parts.
 You may wish to overrule some of the default header settings for the
 reply immediately, or you may do that later with C<set> on the header.
 
- Option           Defined in       Default                                                                       
- Bcc                               undef                                                                         
- Cc                                undef                                                                         
- Date                              <now>                                                                         
- From                              <'to' in current>                                                             
- Message-ID                        <uniquely generated>                                                          
- Subject                           L<forwardSubject()|Mail::Message::Construct::Forward/"Constructing a message">
- To                                <required>                                                                    
- body                              undef                                                                         
- include                           C<'INLINE'>                                                                   
- max_signature                     C<10>                                                                         
- message_type                      L<Mail::Message|Mail::Message>                                                
- postlude                          undef                                                                         
- prelude                           undef                                                                         
- quote                             undef                                                                         
- signature                         undef                                                                         
- strip_signature                   C<qr/^--\s/>                                                                  
+When a multi-part body is encountered, and the message is included to
+ATTACH, the parts which look like signatures will be removed.  If only
+one message remains, it will be the added as single attachment, otherwise
+a nested multipart will be the result.  The value of this option does not
+matter, as long as it is present.  See C<Mail::Message::Body::Multipart>.
+
+ Option      Defined in       Default                                                                       
+ Bcc                          undef                                                                         
+ Cc                           undef                                                                         
+ Date                         <now>                                                                         
+ From                         <'to' in current>                                                             
+ Message-ID                   <uniquely generated>                                                          
+ Subject                      L<forwardSubject()|Mail::Message::Construct::Forward/"Constructing a message">
+ To                           <required>                                                                    
+ body                         undef                                                                         
+ include                      <if body then C<'NO'> else C<'INLINE'>>                                       
+ preamble                     C<constructed from prelude and postlude>                                      
+ signature                    undef                                                                         
 
 . Bcc ADDRESSES
 
@@ -93,9 +94,9 @@ source message.
 
 =over 4
 
-Supply a STRING as specific message-id for the reply.  By default, one is
-generated for you.  If there are no angles around your id, they will be
-added.
+Supply a STRING as specific message-id for the forwarded message.
+By default, one is generated for you.  If there are no angles around
+your id, they will be added.
 
 =back
 
@@ -129,17 +130,99 @@ message contents.  In this case, only the headers are constructed for you.
 
 =back
 
-. include 'INLINE'|'ATTACH'
+. include 'NO'|'INLINE'|'ATTACH'|'ENCAPSULATE'
 
 =over 4
 
 Must the message where this is a reply to be included in the message?
-With C<INLINE> a forward body is composed. C<ATTACH> will create a multi-part
-body, where the original message is added after the specified body.  It is
-only possible to inline textual messages, therefore binary or multi-part
-messages will always be enclosed as attachment.
+When C<INLINE> is given, you may pass the options of L<forwardInline()|Mail::Message::Construct::Forward/"Constructing a message">
+as well.
+
+In many applications, the forward option C<as attachment> results in a
+structure which is produced when this option is set to C<ENCAPSULATE>.
+Their default behavior is usually C<INLINE>.
+
+It is only possible to inline textual messages, therefore binary or
+multi-part messages will always be enclosed as attachment.
+Read the details about this choice in section L</Creating a forward>
+subsection L</Including the original message>.
 
 =back
+
+. preamble STRING|BODY
+
+=over 4
+
+Part which is attached before the forwarded message.  If no preamble
+is given, then it is constructed from the prelude and postlude.  When
+these are also not present, you will still get a one liner: the result
+of L<forwardPrelude()|Mail::Message::Construct::Forward/"Constructing a message">
+
+=back
+
+. signature BODY|MESSAGE
+
+=over 4
+
+The signature to be added in case of a multi-part forward.  The mime-type
+of the signature body should indicate this is a used as such.  However,
+in INLINE mode, the body will be taken, a line containing C<'-- '> added
+before it, and added behind the epilogue.
+
+=back
+
+=back
+
+$obj-E<gt>B<forwardAttach>(OPTIONS)
+
+=over 4
+
+Forward the message as I<flat> attachment to the specified C<preamble>.  You
+can specify all options available to C<forward()>, although a C<preamble>
+which is provided as body object is required, and any specified C<body>
+is ignored.
+
+ Option    Defined in  Default   
+ preamble              <required>
+
+. preamble BODY|PART
+
+=back
+
+$obj-E<gt>B<forwardEncapsulate>(OPTIONS)
+
+=over 4
+
+Like L<forwardAttach()|Mail::Message::Construct::Forward/"Constructing a message">, but in this case the original message is first
+encapsulated as nested message in a L<Mail::Message::Body::Nested|Mail::Message::Body::Nested>, and
+then joint into a multipart.
+
+You can specify all options available to C<forward()>, although a C<preamble>
+which is provided as body object is required, and any specified C<body>
+is ignored.  Signatures are not stripped.  Signatures are not stripped.
+
+ Option    Defined in  Default   
+ preamble              <required>
+
+. preamble BODY|PART
+
+=back
+
+$obj-E<gt>B<forwardInline>(OPTIONS)
+
+=over 4
+
+This method is equivalent in behavior to L<forward()|Mail::Message::Construct::Forward/"Constructing a message"> with the
+option C<include> set to C<'INLINE'>.  You can specify most of
+the fields which are available to L<forward()|Mail::Message::Construct::Forward/"Constructing a message"> except
+C<include> and C<body>.
+
+ Option           Defined in       Default     
+ max_signature                     C<10>       
+ postlude                          undef       
+ prelude                           undef       
+ quote                             undef       
+ strip_signature                   C<qr/^--\s/>
 
 . max_signature INTEGER
 
@@ -147,16 +230,6 @@ messages will always be enclosed as attachment.
 
 Passed to L<Mail::Message::Body::stripSignature(max_lines)|Mail::Message::Body::Construct/"Constructing a body">.  Only
 effective for single-part messages.
-
-=back
-
-. message_type CLASS
-
-=over 4
-
-Create a message with the requested type.  By default, it will be a
-L<Mail::Message|Mail::Message>.  This is correct, because it will be coerced into
-the correct folder message type when it is added to that folder.
 
 =back
 
@@ -194,17 +267,6 @@ after the body has been decoded.
 
 =back
 
-. signature BODY|MESSAGE
-
-=over 4
-
-The signature to be added in case of a multi-part forward.  The mime-type
-of the signature body should indicate this is a used as such.  However,
-in INLINE mode, the body will be taken, a line containing C<'-- '> added
-before it, and added behind the epilogue.
-
-=back
-
 . strip_signature REGEXP|STRING|CODE
 
 =over 4
@@ -214,13 +276,25 @@ passed to L<Mail::Message::Body::stripSignature(pattern)|Mail::Message::Body::Co
 source text is not included.  The signature is stripped from the message
 before quoting.
 
-When a multi-part body is encountered, and the message is included to
-ATTACH, the parts which look like signatures will be removed.  If only
-one message remains, it will be the added as single attachment, otherwise
-a nested multipart will be the result.  The value of this option does not
-matter, as long as it is present.  See C<Mail::Message::Body::Multipart>.
+=back
 
 =back
+
+$obj-E<gt>B<forwardNo>(OPTIONS)
+
+=over 4
+
+Construct a forward, where the whole body of the message is already
+constructed.  That complex body is usually produced in L<forwardInline()|Mail::Message::Construct::Forward/"Constructing a message">,
+L<forwardAttach()|Mail::Message::Construct::Forward/"Constructing a message">, or L<forwardEncapsulate()|Mail::Message::Construct::Forward/"Constructing a message">.
+
+The OPTIONS are the same as for C<forward()> except that C<body> is
+required.  Some other options, like C<preamble>, are ignored.
+
+ Option  Defined in  Default   
+ body                <required>
+
+. body BODY
 
 =back
 
@@ -278,12 +352,127 @@ I<Example:>
 I<Error:> Cannot include forward source as $include.
 
 Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
-C<NO>, C<INLINE>, and C<ATTACH>.
+C<NO>, C<INLINE>, C<ATTACH>, and C<ENCAPSULATE>.
 
 I<Error:> No address to create forwarded to.
 
 If a forward message is created, a destination address must be specified.
 
+I<Error:> forwardAttach requires a preamble object
+
+
+I<Error:> forwardEncapsulate requires a preamble object
+
+
+
+=head1 DETAILS
+
+
+=head2 Creating a forward
+
+
+=head3 Including the original message
+
+The main difference between L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> and L<forward()|Mail::Message::Construct::Forward/"Constructing a message"> is the reason
+for message processing.  The I<bounce> has no intention to modify the
+content of message: the same information is passed-on to someplace else.
+This may mean some conversions, but for instance, the Message-ID does
+not need to be changed.
+
+The purpose of I<forward()> is to pass on information which is
+modified: annotated or reduced.  The information is not sent back
+to the author of the original message (which is implemented by L<reply()|Mail::Message::Construct::Reply/"Constructing a message">),
+but to someone else.
+
+So: some information comes in, is modified, and than forwarded to someone
+else.  Currently, there are four ways to get the original information
+included:
+
+=over 4
+
+=item * specify a body
+
+When you specify L<forward(body)|Mail::Message::Construct::Forward/"Constructing a message">, you have created your own body object to
+be used as content of the forwarded message.  This implies that
+L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message"> is C<'NO'>: no automatic generation of the forwarded
+body.
+
+=item * inline the original
+
+The L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message"> is set to C<'INLINE'> (the default)
+This is the most complicated situation, but most often used by MUAs:
+the original message is inserted textually in the new body.  You can
+set-up automatic stripping of signatures, the way of encapsulation,
+and texts which should be added before and after the encapsulated part.
+
+However, the result may not always be what you expect.  For instance,
+some people use very long signatures which will not be automatically
+stripped because the pass the threshold.  So, you probably need some
+manual intervention after the message is created and before it is sent.
+
+When a binary message is encountered, inlining is impossible.  In that
+case, the message is treated as if C<'ENCAPSULATE'> was requested.
+
+=item * attach the original
+
+When L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message"> is explicitly set to C<'ATTACH'> the result
+will be a multipart which contains two parts.  The first part will
+be your message, and the second the body of the original message.
+
+This means that the headers of the forwarded message are used for
+the new message, and detached from the part which now contains the
+original body information.  Content related headers will (of course)
+still be part of that part, but lines line C<To> and C<Subject> will
+not be stored with that part.
+
+As example of the structural transformation:
+
+ # code: $original->printStructure;
+ multipart/alternative: The source message
+   text/plain: content in raw text
+   text/html: content as html
+
+ # code: $fwd = $original->forward(include => 'ATTACH');
+ # code: $fwd->printStructure
+ multipart/mixed: The source message
+   text/plain: prelude/postlude/signature
+   multipart/alternative
+     text/plain: content in raw text
+     text/html: content as html
+
+=item * encapsulate the original
+
+When L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message"> is explicitly set to C<'ENCAPSULATE'>, then
+the original message is left in-tact as good as possible.  The lines
+of the original message are used in the main message header but also
+enclosed in the part header.
+
+The encapsulation is implemented using a nested message, content type
+C<message/rfc822>.  As example of the structural transformation:
+
+ # code: $original->printStructure;
+ multipart/alternative: The source message
+   text/plain: content in raw text
+   text/html: content as html
+
+ # code: $fwd = $original->forward(include => 'ENCAPSULATE');
+ # code: $fwd->printStructure
+ multipart/mixed: The source message
+   text/plain: prelude/postlude/signature
+   message/rfc822
+      multipart/alternative: The source message
+         text/plain: content in raw text
+         text/html: content as html
+
+The message structure is much more complex, but no information is lost.
+This is probably the reason why many MUAs use this when the forward
+an original message as attachment.
+
+=back
+
+After the creation of the forward, you may want to L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> the
+message to remove unnecessary complexities.  Of course, that is not
+required.
 
 
 
@@ -295,7 +484,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -85,6 +85,17 @@ a method.
 
 =back
 
+$obj-E<gt>B<addReport>(OBJECT)
+
+=over 4
+
+Add the report from other OBJECT to the report of this object. This is
+useful when complex actions use temporary objects which are not returned
+to the main application but where the main application would like to know
+about any problems.
+
+=back
+
 $obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
 Mail::Reporter-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
@@ -327,7 +338,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

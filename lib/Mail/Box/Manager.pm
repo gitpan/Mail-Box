@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Box::Manager;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 use base 'Mail::Reporter';
 
 use Mail::Box;
@@ -98,6 +98,11 @@ sub open(@)
     $name    = defined $args{folder} ? $args{folder} : $ENV{MAIL}
         unless defined $name;
 
+    unless(defined $name)
+    {   $self->log(ERROR => "Don't know which folder I should open: no name.");
+        return undef;
+    }
+      
     if($name =~ m/^(\w+)\:/ && grep { $_ eq $1 } $self->folderTypes)
     {   # Complicated folder URL
         my %decoded = $self->decodeFolderURL($name);

@@ -7,6 +7,7 @@ Mail::Message::Head::ListGroup - mailinglist related header fields
 =head1 INHERITANCE
 
  Mail::Message::Head::ListGroup
+   is a Mail::Message::Head::FieldGroup
    is a Mail::Reporter
 
 
@@ -23,8 +24,7 @@ Mail::Message::Head::ListGroup - mailinglist related header fields
 =head1 DESCRIPTION
 
 A I<list group> is a set of header fields which are added by mailing-list
-managing software.  This class contains various kinds of knowledge about
-that software.
+managing software.  This class knowns various details about that software.
 
 The knowledge and test messages which are used to initially implement
 this module is taken from Mail::ListDetector, written by
@@ -39,13 +39,37 @@ add flexibility and use the powerful MailBox features.
 =head2 Constructors
 
 
+$obj-E<gt>B<address>
+
+=over 4
+
+Returns a L<Mail::Message::Field::Address|Mail::Message::Field::Address> object (or C<undef>) which
+defines the posting address of the mailing list.
+
+=back
+
 $obj-E<gt>B<clone>
 
 =over 4
 
-Make a copy of this object.  The collected fieldnames are copied and the
-list type information.  No deep copy is made for the header: this is
-only copied as reference.
+See L<Mail::Message::Head::FieldGroup/"Constructors">
+
+=back
+
+$obj-E<gt>B<collectFields>
+
+=over 4
+
+Scan the header for fields which are usually contained in mailing list
+software.  This method is automatically called when a list group is
+constructed L<from()|Mail::Message::Head::ListGroup/"Constructors"> an existing header or message.
+
+Returned are the names of the list header fields found, in scalar
+context the amount.  An empty list/zero indicates that this is not
+a mailing list message.
+
+Please warn the author of MailBox if you see that to few
+or too many fields are included.
 
 =back
 
@@ -58,26 +82,49 @@ or message HEAD.
 
 =back
 
+$obj-E<gt>B<implementedTypes>
+
+Mail::Message::Head::ListGroup-E<gt>B<implementedTypes>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Constructors">
+
+=back
+
+$obj-E<gt>B<isListGroupFieldName>(NAME)
+
+Mail::Message::Head::ListGroup-E<gt>B<isListGroupFieldName>(NAME)
+
+=over 4
+
+=back
+
+$obj-E<gt>B<listname>
+
+=over 4
+
+Returns the name of the mailing list, which is usually a part of the
+e-mail address which is used to post the messages to.
+
+=back
+
 Mail::Message::Head::ListGroup-E<gt>B<new>(FIELDS, OPTIONS)
 
 =over 4
 
-Construct an object which maintains one set of mailing list headers.  The
-FIELDS may be specified as C<Mail::Message::Field> objects or as key-value
-pairs.  The OPTIONS and FIELDS (as key-value pair) can be mixed: they are
-distinguished by their name, where the fields always start with a capital.
-The field objects must aways lead the OPTIONS.
+Construct an object which maintains one set of mailing list headers
 
  Option    Defined in       Default               
  address                    C<undef>              
- head                       C<undef>              
+ head      L<Mail::Message::Head::FieldGroup>  C<undef>              
  listname                   <derived from address>
  log       L<Mail::Reporter>  C<'WARNINGS'>         
  rfc                        C<undef>              
- software                   C<undef>              
+ software  L<Mail::Message::Head::FieldGroup>  C<undef>              
  trace     L<Mail::Reporter>  C<'WARNINGS'>         
- type                       C<undef>              
- version                    C<undef>              
+ type      L<Mail::Message::Head::FieldGroup>  C<undef>              
+ version   L<Mail::Message::Head::FieldGroup>  C<undef>              
 
 . address STRING|OBJECT
 
@@ -90,15 +137,6 @@ In any case, the data is converted into a L<Mail::Identity|Mail::Identity>.
 =back
 
 . head HEAD
-
-=over 4
-
-The header HEAD object is used to store the list fields in.  If no header
-is specified, a L<Mail::Message::Head::Partial|Mail::Message::Head::Partial> is created for you.  If
-you wish to scan the existing fields in a header, then use the L<from()|Mail::Message::Head::ListGroup/"Constructors">
-method.
-
-=back
 
 . listname STRING
 
@@ -120,143 +158,11 @@ Defines the mailing list software follows an rfc.
 
 . software STRING
 
-=over 4
-
-Name of the software which maintains the mailing list.
-
-=back
-
 . trace LEVEL
 
 . type STRING
 
-=over 4
-
-Group name for the mailing list software.  Often the same, or close
-to the same STRING, as the C<software> option contains.
-
-=back
-
 . version STRING
-
-=over 4
-
-Version number for the mailing list software.
-
-=back
-
-=back
-
-=head2 The header
-
-
-$obj-E<gt>B<attach>(HEAD)
-
-=over 4
-
-Add a list group to a message HEAD.  The fields will be cloned(!)
-into the header, so that the list group object can be used again.
-
-I<Example:> attaching a list group to a message
-
-
- my $lg = Mail::Message::Head::ListGroup->new(...);
- $lg->attach($msg->head);
- $msg->head->addListGroup($lg);   # same
-
-I<Example:> copying list information
-
-
- if(my $lg = $listmsg->head->listGroup)
- {   $msg->head->addListGroup($lg);
- }
-
-=back
-
-$obj-E<gt>B<delete>
-
-=over 4
-
-Remove all the header lines which are combined in this list group
-from the header.
-
-=back
-
-$obj-E<gt>B<head>
-
-=over 4
-
-Returns the header object, which includes these fields.
-
-=back
-
-=head2 Access to the header
-
-
-$obj-E<gt>B<add>((FIELD, VALUE) | OBJECT)
-
-=over 4
-
-Add a field to the header, using the list group.  When the list group
-is already attached to a real message header, it will appear in that
-one as well as being registed in this set.
-
-I<Example:> adding a field to a detached list group
-
-
- my $this = Mail::Message::Head::ListGroup->new(...);
- $this->add('List-Id' => 'mailbox');
- $msg->addListGroup($this);
- $msg->send;
-
-I<Example:> adding a field to an attached list group
-
-
- my $lg = Mail::Message::Head::ListGroup->from($msg);
- $lg->add('List-Id' => 'mailbox');
-
-=back
-
-$obj-E<gt>B<address>
-
-=over 4
-
-Returns a L<Mail::Message::Field::Address|Mail::Message::Field::Address> object (or C<undef>) which
-defines the posting address of the mailing list.
-
-=back
-
-$obj-E<gt>B<fields>
-
-=over 4
-
-Return the fields which are defined for this list group.
-
-=back
-
-$obj-E<gt>B<findListFields>
-
-=over 4
-
-Scan the header for fields which are usually contained in mailing list
-software.  This method is automatically called when a list group is
-constructed L<from()|Mail::Message::Head::ListGroup/"Constructors"> an existing header or message.
-
-Returned are the names of the list header fields found, in scalar
-context the amount.  An empty list/zero indicates that this is not
-a mailing list message.
-
-Please warn the author of MailBox if you see that to few
-or too many fields are included.
-
-=back
-
-$obj-E<gt>B<listname>
-
-=over 4
-
-Returns the name of the mailing list, which is usually a part of the
-e-mail address which is used to post the messages to.
 
 =back
 
@@ -270,13 +176,73 @@ be C<rfc2918>, C<rfc2369>, or C<undef>.
 
 =back
 
+=head2 The header
+
+
+$obj-E<gt>B<attach>(HEAD)
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"The header">
+
+=back
+
+$obj-E<gt>B<delete>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"The header">
+
+=back
+
+$obj-E<gt>B<head>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"The header">
+
+=back
+
+=head2 Access to the header
+
+
+$obj-E<gt>B<add>((FIELD, VALUE) | OBJECT)
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
+
+=back
+
+$obj-E<gt>B<addFields>([FIELDNAMES])
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
+
+=back
+
+$obj-E<gt>B<fieldNames>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
+
+=back
+
+$obj-E<gt>B<fields>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
+
+=back
+
 $obj-E<gt>B<software>
 
 =over 4
 
-Returns the name of the software as is defined in the headers.  The may
-be slightly different from the return value of L<type()|Mail::Message::Head::ListGroup/"Access to the header">, but usually
-not too different.
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
 =back
 
@@ -284,9 +250,7 @@ $obj-E<gt>B<type>
 
 =over 4
 
-Returns an abstract name for the list group; which mailing software is
-controling it.  C<undef> is returned in case the type is not known, and
-the other names are listed in L</Detected lists>.
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
 =back
 
@@ -294,9 +258,18 @@ $obj-E<gt>B<version>
 
 =over 4
 
-Returns the version number of the software used by the mailing list
-software.  This is ofthen not known, in which case C<undef> will be
-returned.
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
+
+=back
+
+=head2 Internals
+
+
+$obj-E<gt>B<detected>(TYPE, SOFTWARE, VERSION)
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Internals">
 
 =back
 
@@ -304,6 +277,14 @@ returned.
 
 
 $obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<addReport>(OBJECT)
 
 =over 4
 
@@ -378,9 +359,7 @@ $obj-E<gt>B<print>([FILEHANDLE])
 
 =over 4
 
-Print the group to the specified FILEHANDLE or GLOB.  This is probably only
-useful for debugging purposed.  The output defaults to the selected file
-handle.
+See L<Mail::Message::Head::FieldGroup/"Error handling">
 
 =back
 
@@ -472,7 +451,7 @@ fields, sometimes woth conflicting definitions.  There are also two
 RFCs about mailing list: C<rfc2918> and C<rfc2369>.
 
 The following lists are currently detected.  Between parenthesis is
-the string returned by L<type()|Mail::Message::Head::ListGroup/"Access to the header"> when that differs from the software
+the string returned by L<type()|Mail::Message::Head::FieldGroup/"Access to the header"> when that differs from the software
 name.
 
 =over 4
@@ -533,7 +512,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

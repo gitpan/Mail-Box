@@ -19,10 +19,11 @@ Mail::Message::Head::Partial - subset of header information of a message
  $partial->isDelayed                      # false
  $partial->isPartial                      # true
 
- $partial->removeFields( qw/^X-/ );
+ $partial->removeFields( qr/^X-/ );
  $partial->removeFieldsExcept( qw/To From/ );
  $partial->removeResentGroups;
  $partial->removeListGroup;
+ $partial->removeSpamGroups;
 
 
 =head1 DESCRIPTION
@@ -186,6 +187,14 @@ See L<Mail::Message::Head::Complete/"Access to the header">
 
 =back
 
+$obj-E<gt>B<addSpamGroup>(OBJECT)
+
+=over 4
+
+See L<Mail::Message::Head::Complete/"Access to the header">
+
+=back
+
 $obj-E<gt>B<cleanupOrderedFields>
 
 =over 4
@@ -270,6 +279,14 @@ See L<Mail::Message::Head::Complete/"Access to the header">
 
 =back
 
+$obj-E<gt>B<removeContentInfo>
+
+=over 4
+
+See L<Mail::Message::Head::Complete/"Access to the header">
+
+=back
+
 $obj-E<gt>B<removeField>(FIELD)
 
 =over 4
@@ -335,7 +352,17 @@ are explained in L<Mail::Message::Head::ResentGroup|Mail::Message::Head::ResentG
 number of removed lines.
 
 For removing single groups (for instance because you want to keep the
-last), use L<Mail::Message::Head::ResentGroup::delete()|Mail::Message::Head::ResentGroup/"The header">.
+last), use L<Mail::Message::Head::FieldGroup::delete()|Mail::Message::Head::FieldGroup/"The header">.
+
+=back
+
+$obj-E<gt>B<removeSpamGroups>
+
+=over 4
+
+Removes all header lines which were produced by spam detection and
+spam-fighting software.  Which fields that are is explained in
+L<Mail::Message::Head::SpamGroup|Mail::Message::Head::SpamGroup>.  Returned is the number of removed lines.
 
 =back
 
@@ -356,6 +383,14 @@ See L<Mail::Message::Head::Complete/"Access to the header">
 =back
 
 $obj-E<gt>B<set>(FIELD | LINE | (NAME, BODY [,ATTRS]))
+
+=over 4
+
+See L<Mail::Message::Head::Complete/"Access to the header">
+
+=back
+
+$obj-E<gt>B<spamGroups>([NAMES])
 
 =over 4
 
@@ -501,6 +536,14 @@ See L<Mail::Message::Head/"Internals">
 
 
 $obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<addReport>(OBJECT)
 
 =over 4
 
@@ -672,7 +715,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

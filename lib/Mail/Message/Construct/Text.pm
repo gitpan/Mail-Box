@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 
 use IO::Lines;
 
@@ -32,7 +32,7 @@ sub file()
     my @lines;
     my $file = IO::Lines->new(\@lines);
     $self->print($file);
-    $file->setpos(0,0);
+    $file->seek(0,0);
     $file;
 }
 

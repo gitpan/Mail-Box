@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body::Nested;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;

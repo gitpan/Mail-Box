@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Reporter;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 
 use Carp;
 use Scalar::Util 'dualvar';
@@ -136,6 +136,20 @@ sub report(;$)
     @reports;
 }
 
+#-------------------------------------------
+
+
+sub addReport($)
+{   my ($self, $other) = @_;
+    my $reports = $other->{MR_report} || return ();
+
+    for(my $prio = 1; $prio < @$reports; $prio++)
+    {   push @{$self->{MR_report}[$prio]}, @{$reports->[$prio]}
+            if exists $reports->[$prio];
+    }
+    $self;
+}
+    
 #-------------------------------------------
 
 

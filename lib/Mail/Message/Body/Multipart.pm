@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body::Multipart;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -365,7 +365,7 @@ sub stripSignature(@)
 {   my $self  = shift;
 
     my @allparts = $self->parts;
-    my @parts    = grep {$_->body->mimeType->isSignature} @allparts;
+    my @parts    = grep {! $_->body->mimeType->isSignature} @allparts;
 
     @allparts==@parts ? $self
     : (ref $self)->new(based_on => $self, parts => \@parts);

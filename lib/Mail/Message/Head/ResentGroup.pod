@@ -7,6 +7,7 @@ Mail::Message::Head::ResentGroup - header fields tracking message delivery
 =head1 INHERITANCE
 
  Mail::Message::Head::ResentGroup
+   is a Mail::Message::Head::FieldGroup
    is a Mail::Reporter
 
 
@@ -39,6 +40,37 @@ reply, forward, or bounce messages at all!
 =head2 Constructors
 
 
+$obj-E<gt>B<clone>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Constructors">
+
+=back
+
+$obj-E<gt>B<from>([HEAD|MESSAGE, OPTIONS])
+
+=over 4
+
+WARNING: this method has two very different purposes.  For backward
+compatibility reasons, without arguments L<resentFrom()|Mail::Message::Head::ResentGroup/"Access to the header"> is called to
+return the C<From> field of this resent group.
+
+With any arguments, a a list of C<Mail::Message::Head::ResentGroup> objects
+is returned, taken from the specified MESSAGE or message HEAD.
+
+=back
+
+$obj-E<gt>B<implementedTypes>
+
+Mail::Message::Head::ResentGroup-E<gt>B<implementedTypes>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Constructors">
+
+=back
+
 Mail::Message::Head::ResentGroup-E<gt>B<new>([FIELDS], OPTIONS)
 
 =over 4
@@ -50,20 +82,24 @@ OPTIONS which start with capitals will be used to construct additional
 fields.  These option names are prepended with C<Resent->, keeping the
 capitization of what is specified.
 
- Option        Defined in       Default           
- Bcc                            undef             
- Cc                             undef             
- Date                           <now>             
- Delivered-To                   undef             
- From                           <required>        
- Message-ID                     <uniquely created>
- Received                       <required>        
- Return-Path                    undef             
- Sender                         undef             
- To                             undef             
- head                           <required>        
- log           L<Mail::Reporter>  C<'WARNINGS'>     
- trace         L<Mail::Reporter>  C<'WARNINGS'>     
+ Option        Defined in       Default                
+ Bcc                            undef                  
+ Cc                             undef                  
+ Date                           <now>                  
+ Delivered-To                   undef                  
+ From                           <required>             
+ Message-ID                     <uniquely created>     
+ Received                       <created>              
+ Return-Path                    undef                  
+ Sender                         undef                  
+ To                             undef                  
+ head                           <created automatically>
+ log           L<Mail::Reporter>  C<'WARNINGS'>          
+ message_head                   C<undef>               
+ software      L<Mail::Message::Head::FieldGroup>  C<undef>               
+ trace         L<Mail::Reporter>  C<'WARNINGS'>          
+ type          L<Mail::Message::Head::FieldGroup>  C<undef>               
+ version       L<Mail::Message::Head::FieldGroup>  C<undef>               
 
 . Bcc STRING|OBJECT|OBJECTS
 
@@ -97,7 +133,7 @@ must contain a message id.
 =over 4
 
 The C<Received> field is the starting line for a resent group of header
-lines, therefore it is obligatory.
+lines. If it is not defined, one is created using L<createReceived()|Mail::Message::Head::ResentGroup/"Internals">.
 
 =back
 
@@ -118,25 +154,83 @@ it selects one of these addresses as the main originator of the message.
 
 =over 4
 
-The header where this resent group belongs to.
+The header where the data is stored in.  Be dafault a
+L<Mail::Message::Head::Partial|Mail::Message::Head::Partial> is created for you.
 
 =back
 
 . log LEVEL
 
+. message_head HEAD
+
+=over 4
+
+The real header of the message where this resent group is part of.  The
+C<head> used in this class is only a container for a subset of fields.
+
+=back
+
+. software STRING
+
 . trace LEVEL
+
+. type STRING
+
+. version STRING
 
 =back
 
 =head2 The header
 
 
+$obj-E<gt>B<add>((FIELD =E<gt> VALUE) | OBJECT)
+
+=over 4
+
+All fields appear only once, so C<add()> behaves as L<set()|Mail::Message::Head::ResentGroup/"The header">.
+
+=back
+
+$obj-E<gt>B<addFields>([FIELDNAMES])
+
+=over 4
+
+Not applicable to resent-groups: the same name can appear in more than
+one group.  Therefore, a FIELDNAME is sufficiently distinctive.
+
+=back
+
+$obj-E<gt>B<attach>(HEAD)
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"The header">
+
+=back
+
 $obj-E<gt>B<delete>
 
 =over 4
 
-Remove all the header lines which are combined in this resent group
-from the header.
+See L<Mail::Message::Head::FieldGroup/"The header">
+
+=back
+
+$obj-E<gt>B<head>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"The header">
+
+=back
+
+$obj-E<gt>B<messageHead>([HEAD])
+
+=over 4
+
+Returns (optionally after setting) the real header where this resent group
+belongs to.  This may be undef at creation, and then later filled in
+when L<Mail::Message::Head::Complete::addResentGroup()|Mail::Message::Head::Complete/"Access to the header"> is called.
 
 =back
 
@@ -151,9 +245,26 @@ must come first.  Only fields mentioned in the RFC are returned.
 
 =back
 
-$obj-E<gt>B<print>([FILEHANDLE])
+$obj-E<gt>B<set>((FIELD =E<gt> VALUE) | OBJECT)
 
 =over 4
+
+Set a FIELD to a (new) VALUE.  The FIELD names which do not start with
+'Resent-*' but need it will have that added.  It is also an option to
+specify a fully prepared message field OBJECT.  In any case, a field
+OBJECT is returned.
+
+I<Example:> 
+
+ my $this = Mail::Message::Head::ResentGroup->new;
+ $this->set(To => 'fish@tux.aq');
+ $msg->addResentGroup($this);
+ $msg->send;
+
+ $msg->bounce(To => 'fish@tux.aq')->send;   # the same
+
+ my $this = Mail::Message::Head::ResentGroup
+     ->new(To => 'fish@tux.aq');
 
 =back
 
@@ -215,13 +326,27 @@ C<-Bcc> fields of this resent group.
 
 =back
 
-$obj-E<gt>B<from>
+$obj-E<gt>B<fieldNames>
 
 =over 4
 
-In scalar context, the C<Resent-From> field is returned.  In list
-context, the addresses as specified within the from field are
-returned as Mail::Address objects.
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
+
+=back
+
+$obj-E<gt>B<fields>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
+
+=back
+
+$obj-E<gt>B<isResentGroupFieldName>(NAME)
+
+Mail::Message::Head::ResentGroup-E<gt>B<isResentGroupFieldName>(NAME)
+
+=over 4
 
 =back
 
@@ -250,6 +375,19 @@ local system time.
 
 =back
 
+$obj-E<gt>B<resentFrom>
+
+=over 4
+
+In scalar context, the C<Resent-From> field is returned.  In list
+context, the addresses as specified within the from field are
+returned as Mail::Address objects.
+
+For reasons of backward compatibility and consistency, the L<from()|Mail::Message::Head::ResentGroup/"METHODS">
+method will return the same as this method.
+
+=back
+
 $obj-E<gt>B<returnPath>
 
 =over 4
@@ -268,23 +406,11 @@ returned as Mail::Address objects.
 
 =back
 
-$obj-E<gt>B<set>((FIELD =E<gt> VALUE) | OBJECT)
+$obj-E<gt>B<software>
 
 =over 4
 
-Set a FIELD to a (new) VALUE.  The FIELD names which do not start with
-'Resent-*' but need it will have that added.  It is also an option to
-specify a fully prepared message field OBJECT.  In any case, a field
-OBJECT is returned.
-
-I<Example:> 
-
- my $this = Mail::Message::Head::ResentGroup->new;
- $this->set(To => 'fish@tux.aq');
- $msg->addResentGroup($this);
- $msg->send;
-
- $msg->bounce(To => 'fish@tux.aq')->send;   # the same
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
 =back
 
@@ -298,8 +424,32 @@ Mail::Address objects.
 
 =back
 
+$obj-E<gt>B<type>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
+
+=back
+
+$obj-E<gt>B<version>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
+
+=back
+
 =head2 Internals
 
+
+$obj-E<gt>B<collectFields>([NAME])
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Internals">
+
+=back
 
 $obj-E<gt>B<createReceived>([DOMAIN])
 
@@ -310,6 +460,14 @@ called if none was specified during creation of this resent group object.
 
 The content of this field is described in RFC2821 section 4.4.  It could use
 some improvement.
+
+=back
+
+$obj-E<gt>B<detected>(TYPE, SOFTWARE, VERSION)
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Internals">
 
 =back
 
@@ -324,6 +482,14 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
+$obj-E<gt>B<addReport>(OBJECT)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
 $obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
 Mail::Message::Head::ResentGroup-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
@@ -331,6 +497,14 @@ Mail::Message::Head::ResentGroup-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 =over 4
 
 See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<details>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Error handling">
 
 =back
 
@@ -375,6 +549,14 @@ $obj-E<gt>B<notImplemented>
 =over 4
 
 See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<print>([FILEHANDLE])
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Error handling">
 
 =back
 
@@ -459,7 +641,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -46,9 +46,12 @@ type detection then use Mail::Box::Manager.
 USAGE
     }
 
+    my %args = @_;
+    weaken $args{manager};   # otherwise, the manager object may live too long
+
     my $self = $class->SUPER::new
       ( @_
-      , init_options => [ @_ ]  # for clone
+      , init_options => \%args     # for clone
       ) or return;
 
     $self->read or return
@@ -335,7 +338,7 @@ sub close(@)
 
     # Inform manager that the folder is closed.
     $self->{MB_manager}->close($self)
-        if exists $self->{MB_manager} && !$args{close_by_manager};
+        if defined $self->{MB_manager} && !$args{close_by_manager};
 
     delete $self->{MB_manager};
 
@@ -621,7 +624,7 @@ sub listSubFolders(@) { () }   # by default no sub-folders
 
 sub openRelatedFolder(@)
 {   my $self    = shift;
-    my @options = (@{$self->{MB_init_options}}, @_);
+    my @options = (%{$self->{MB_init_options}}, @_);
 
     $self->{MB_manager}
     ?  $self->{MB_manager}->open(@options)

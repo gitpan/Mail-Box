@@ -1,7 +1,7 @@
 
 package Mail::Box::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 use base 'Mail::Box::Net';
 
 use strict;
@@ -214,7 +214,7 @@ sub getHeadAndBody($)
     $parser->stop;
 
     $self->log(PROGRESS => "Loaded message $uidl.");
-    ($head, $body);
+    ($head, $body->contentInfoFrom($head));
 }
 
 #-------------------------------------------

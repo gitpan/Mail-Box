@@ -275,6 +275,38 @@ See L<Mail::Message::Construct::Forward/"Constructing a message">
 
 =back
 
+$obj-E<gt>B<forwardAttach>(OPTIONS)
+
+=over 4
+
+See L<Mail::Message::Construct::Forward/"Constructing a message">
+
+=back
+
+$obj-E<gt>B<forwardEncapsulate>(OPTIONS)
+
+=over 4
+
+See L<Mail::Message::Construct::Forward/"Constructing a message">
+
+=back
+
+$obj-E<gt>B<forwardInline>(OPTIONS)
+
+=over 4
+
+See L<Mail::Message::Construct::Forward/"Constructing a message">
+
+=back
+
+$obj-E<gt>B<forwardNo>(OPTIONS)
+
+=over 4
+
+See L<Mail::Message::Construct::Forward/"Constructing a message">
+
+=back
+
 $obj-E<gt>B<forwardPostlude>
 
 =over 4
@@ -1036,7 +1068,7 @@ $obj-E<gt>B<storeBody>(BODY)
 
 =over 4
 
-Where the body() method can be used to set and get a body, with all
+Where the L<body()|Mail::Message/"The body"> method can be used to set and get a body, with all
 the necessary checks, this method is bluntly adding the specified body
 to the message.  No conversions, not checking.
 
@@ -1062,6 +1094,14 @@ $obj-E<gt>B<AUTOLOAD>
 =over 4
 
 See L<Mail::Message::Construct/"METHODS">
+
+=back
+
+$obj-E<gt>B<addReport>(OBJECT)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
 
 =back
 
@@ -1224,7 +1264,7 @@ See L<Mail::Reporter/"Cleanup">
 I<Error:> Cannot include forward source as $include.
 
 Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
-C<NO>, C<INLINE>, and C<ATTACH>.
+C<NO>, C<INLINE>, C<ATTACH>, and C<ENCAPSULATE>.
 
 I<Error:> Cannot include reply source as $include.
 
@@ -1248,6 +1288,12 @@ implement this method where it should. This message means that some other
 related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
+
+I<Error:> forwardAttach requires a preamble object
+
+
+I<Error:> forwardEncapsulate requires a preamble object
+
 
 I<Error:> no rebuild rule $name defined.
 
@@ -1463,7 +1509,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

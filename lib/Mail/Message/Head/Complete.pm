@@ -3,11 +3,11 @@ use warnings;
 
 package Mail::Message::Head::Complete;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 use base 'Mail::Message::Head';
 
 use Mail::Box::Parser;
-require Mail::Message::Head::Partial;
+use Mail::Message::Head::Partial;
 
 use Scalar::Util 'weaken';
 use List::Util   'sum';
@@ -188,8 +188,7 @@ sub delete($) { $_[0]->reset($_[1]) }
 
 sub removeField($)
 {   my ($self, $field) = @_;
-    my $name = $field->name;
-
+    my $name  = $field->name;
     my $known = $self->{MMH_fields};
 
     if(!defined $known->{$name})
@@ -229,6 +228,11 @@ sub removeFieldsExcept(@)
 #------------------------------------------
 
 
+sub removeContentInfo() { shift->removeFields(qr/^Content-/, 'Lines') }
+
+#------------------------------------------
+
+
 sub removeResentGroups(@)
 {   my $self = shift;
     (bless $self, 'Mail::Message::Head::Partial')->removeResentGroups(@_);
@@ -239,7 +243,15 @@ sub removeResentGroups(@)
 
 sub removeListGroup(@)
 {   my $self = shift;
-    (bless $self, 'Mail::Message::Head::Partial')->removeListGroups(@_);
+    (bless $self, 'Mail::Message::Head::Partial')->removeListGroup(@_);
+}
+
+#------------------------------------------
+
+
+sub removeSpamGroups(@)
+{   my $self = shift;
+    (bless $self, 'Mail::Message::Head::Partial')->removeSpamGroups(@_);
 }
 
 #------------------------------------------
@@ -291,32 +303,8 @@ sub string()
 
 sub resentGroups()
 {   my $self = shift;
-    my (@groups, $return_path, $delivered_to, @fields);
     require Mail::Message::Head::ResentGroup;
-
-    foreach my $field ($self->orderedFields)
-    {   my $name = $field->name;
-        if($name eq 'return-path')              { $return_path = $field }
-        elsif($name eq 'delivered-to')          { $delivered_to = $field }
-        elsif(substr($name, 0, 7) eq 'resent-') { push @fields, $field }
-        elsif($name eq 'received')
-        {   push @groups, Mail::Message::Head::ResentGroup->new
-               (@fields, head => $self)
-                   if @fields;
-
-            @fields = $field;
-            unshift @fields, $delivered_to if defined $delivered_to;
-            undef $delivered_to;
-
-            unshift @fields, $return_path  if defined $return_path;
-            undef $return_path;
-        }
-    }
-
-    push @groups, Mail::Message::Head::ResentGroup->new(@fields, head => $self)
-          if @fields;
-
-    @groups;
+    Mail::Message::Head::ResentGroup->from($self);
 }
 
 #------------------------------------------
@@ -326,32 +314,38 @@ sub addResentGroup(@)
 {   my $self  = shift;
 
     require Mail::Message::Head::ResentGroup;
-    my $rg = @_==1 ? (shift)
-      : Mail::Message::Head::ResentGroup->new(@_, head => $self);
+    my $rg = @_==1 ? (shift) : Mail::Message::Head::ResentGroup->new(@_);
 
     my @fields = $rg->orderedFields;
     my $order  = $self->{MMH_order};
 
+    # Look for the first line which relates to resent groups
     my $i;
     for($i=0; $i < @$order; $i++)
     {   next unless defined $order->[$i];
-        last if $order->[$i]->name =~ m!^(?:received|return-path|resent-)!;
+        last if $rg->isResentGroupFieldName($order->[$i]->name);
     }
 
     my $known = $self->{MMH_fields};
     while(@fields)
     {   my $f    = pop @fields;
+
+        # Add to the order of fields
         splice @$order, $i, 0, $f;
         weaken( $order->[$i] );
         my $name = $f->name;
 
-        # Adds *before* in the list.
+        # Adds *before* in the list for get().
            if(!defined $known->{$name})      {$known->{$name} = $f}
         elsif(ref $known->{$name} eq 'ARRAY'){unshift @{$known->{$name}},$f}
         else                       {$known->{$name} = [$f, $known->{$name}]}
     }
 
+    $rg->messageHead($self);
+
+    # Oh, the header has changed!
     $self->modified(1);
+
     $rg;
 }
 
@@ -370,6 +364,25 @@ sub listGroup()
 sub addListGroup($)
 {   my ($self, $lg) = @_;
     $lg->attach($self);
+}
+
+#------------------------------------------
+
+
+sub spamGroups(@)
+{   my $self = shift;
+    require Mail::Message::Head::SpamGroup;
+    my @types = @_ ? (types => \@_) : ();
+    my @sgs   = Mail::Message::Head::SpamGroup->from($self, @types);
+    wantarray || @_ != 1 ? @sgs : $sgs[0];
+}
+
+#------------------------------------------
+
+
+sub addSpamGroup($)
+{   my ($self, $sg) = @_;
+    $sg->attach($self);
 }
 
 #------------------------------------------

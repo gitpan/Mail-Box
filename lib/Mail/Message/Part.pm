@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Part;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 use base 'Mail::Message';
 use Scalar::Util 'weaken';
 
@@ -113,7 +113,7 @@ sub readFromParser($;$)
             || Mail::Message::Body::Lines->new(data => []);
 
     $self->head($head);
-    $self->storeBody($body);
+    $self->storeBody($body->contentInfoFrom($head));
     $self;
 }
 

@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::Net::Message;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 use base 'Mail::Box::Message';
 
 use File::Copy;
@@ -89,7 +89,7 @@ sub loadBody()
     }
 
     $self->log(PROGRESS => 'Loaded delayed body.');
-    $self->storeBody($newbody);
+    $self->storeBody($newbody->contentInfoFrom($head));
 }
 
 #-------------------------------------------

@@ -882,9 +882,12 @@ $obj-E<gt>B<isModified>
 
 =over 4
 
-Checks if the folder is modified.  A folder is modified when any of the
-messages is to be deleted, any of the messages has changed, or messages
-are added after the folder was read from file.
+Checks if the folder, as stored in memory, is modified.  A true value is
+returned when any of the messages is to be deleted, has changed, or messages
+were added after the folder was read from file.
+
+WARNING: this flag is not related to an external change to the folder
+structure on disk.  Have a look at L<update()|Mail::Box/"The folder"> for that.
 
 =back
 
@@ -1411,6 +1414,14 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
+$obj-E<gt>B<addReport>(OBJECT)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
 $obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
 Mail::Box-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
@@ -1745,7 +1756,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

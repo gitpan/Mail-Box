@@ -90,6 +90,38 @@ See L<Mail::Message::Construct::Forward/"Constructing a message">
 
 =back
 
+$obj-E<gt>B<forwardAttach>(OPTIONS)
+
+=over 4
+
+See L<Mail::Message::Construct::Forward/"Constructing a message">
+
+=back
+
+$obj-E<gt>B<forwardEncapsulate>(OPTIONS)
+
+=over 4
+
+See L<Mail::Message::Construct::Forward/"Constructing a message">
+
+=back
+
+$obj-E<gt>B<forwardInline>(OPTIONS)
+
+=over 4
+
+See L<Mail::Message::Construct::Forward/"Constructing a message">
+
+=back
+
+$obj-E<gt>B<forwardNo>(OPTIONS)
+
+=over 4
+
+See L<Mail::Message::Construct::Forward/"Constructing a message">
+
+=back
+
 $obj-E<gt>B<forwardPostlude>
 
 =over 4
@@ -652,6 +684,14 @@ See L<Mail::Message::Construct/"METHODS">
 
 =back
 
+$obj-E<gt>B<addReport>(OBJECT)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
 $obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
 Mail::Box::Mbox::Message-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
@@ -790,7 +830,7 @@ See L<Mail::Reporter/"Cleanup">
 I<Error:> Cannot include forward source as $include.
 
 Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
-C<NO>, C<INLINE>, and C<ATTACH>.
+C<NO>, C<INLINE>, C<ATTACH>, and C<ENCAPSULATE>.
 
 I<Error:> Cannot include reply source as $include.
 
@@ -818,6 +858,12 @@ of the package.
 I<Error:> Unable to read delayed body.
 
 
+I<Error:> forwardAttach requires a preamble object
+
+
+I<Error:> forwardEncapsulate requires a preamble object
+
+
 I<Error:> no rebuild rule $name defined.
 
 
@@ -835,7 +881,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

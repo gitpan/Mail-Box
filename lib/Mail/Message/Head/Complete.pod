@@ -184,7 +184,7 @@ field constructor is called for you.
 LINE or BODY specifications which are terminated by a new-line are considered 
 to be correctly folded.  Lines which are not terminated by a new-line will
 be folded when needed: new-lines will be added where required.  It is strongly
-adviced to let Mail::Box do the folding for you.
+adviced to let MailBox do the folding for you.
 
 The return value of this method is the L<Mail::Message::Field|Mail::Message::Field> object
 which is created (or was specified).
@@ -240,6 +240,26 @@ I<Example:>
  $head->addResentGroup($rg);
 
  my $rg = $head->addResentGroup(From => 'me');
+
+=back
+
+$obj-E<gt>B<addSpamGroup>(OBJECT)
+
+=over 4
+
+A I<spam fighting group> is a set of header fields which contains data
+which is used to fight spam.  See L<Mail::Message::Head::SpamGroup|Mail::Message::Head::SpamGroup>
+for details about the implementation of the OBJECT.
+
+When you have a spam group prepared, you can add it later using this
+method.  You will get your private copy of the spam group data in
+return, because the same group can be used for multiple messages.
+
+I<Example:> of adding a spam group to a header
+
+
+ my $sg = Mail::Message::Head::SpamGroup->new(...);
+ my $own_sg = $msg->head->addSpamGroup($sg);
 
 =back
 
@@ -349,6 +369,15 @@ C<Bcc> and C<Resent-Bcc> lines are included.
 
 =back
 
+$obj-E<gt>B<removeContentInfo>
+
+=over 4
+
+Remove all body related fields from the header.  The header will become
+partial.
+
+=back
+
 $obj-E<gt>B<removeField>(FIELD)
 
 =over 4
@@ -405,6 +434,17 @@ possibilities in L<Mail::Message::Head::Partial::removeResentGroups()|Mail::Mess
 
 =back
 
+$obj-E<gt>B<removeSpamGroups>
+
+=over 4
+
+Removes all fields which were added by various spam detection software
+at once.  The header object is turned into a L<Mail::Message::Head::Partial|Mail::Message::Head::Partial>
+object.  Read about the implications and the possibilities in
+L<Mail::Message::Head::Partial::removeSpamGroups()|Mail::Message::Head::Partial/"Access to the header">.
+
+=back
+
 $obj-E<gt>B<resentGroups>
 
 =over 4
@@ -429,10 +469,13 @@ Replace the values in the header fields named by NAME with the values
 specified in the list of FIELDS. A single name can correspond to multiple
 repeated fields.
 
-For C<Received> fields, you should take a look at I<resent groups>, as
-implemented in L<Mail::Message::Head::ResentGroup|Mail::Message::Head::ResentGroup>.  Removing those
-lines without their related lines is not a smart idea.  Read the
-details L<Mail::Message::Head::ResentGroup::delete()|Mail::Message::Head::ResentGroup/"The header">.
+Removing fields which are part of one of the predefined field groups is
+not a smart idea.  You can better remove these fields as group, all
+together.  For instance, the C<'Received'> lines are part of resent
+groups, C<'X-Spam'> is past of a spam group, and C<List-Post> belongs
+to a list group.  You can delete a whole group with
+L<Mail::Message::Head::FieldGroup::delete()|Mail::Message::Head::FieldGroup/"The header">, or with methods which
+are provided by L<Mail::Message::Head::Partial|Mail::Message::Head::Partial>.
 
 If FIELDS is empty, the corresponding NAME fields will
 be removed. The location of removed fields in the header order will be
@@ -459,6 +502,30 @@ $obj-E<gt>B<set>(FIELD | LINE | (NAME, BODY [,ATTRS]))
 The C<set> method is similar to the L<add()|Mail::Message::Head::Complete/"Access to the header"> method, and takes the same
 options. However, existing values for fields will be removed before a new
 value is added.
+
+=back
+
+$obj-E<gt>B<spamGroups>([NAMES])
+
+=over 4
+
+Returns a list of L<Mail::Message::Head::SpamGroup|Mail::Message::Head::SpamGroup> objects, each collecting
+some lines which contain spam fighting information.  When any NAMES are
+given, then only these groups are returned.
+See also L<addSpamGroup()|Mail::Message::Head::Complete/"Access to the header"> and L<removeSpamGroups()|Mail::Message::Head::Complete/"Access to the header">.
+
+In scalar context, with exactly one NAME specified, that group will be
+returned.  With more NAMES or without NAMES, a list will be returned
+(which defaults to the length of the list in scalar context).
+
+I<Example:> use of listGroup()
+
+
+ my @sg = $msg->head->spamGroups;
+ $sg[0]->print(\*STDERR);
+ $sg[-1]->delete;
+
+ my $sg = $msg->head->spamGroups('SpamAssassin');
 
 =back
 
@@ -625,6 +692,14 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
+$obj-E<gt>B<addReport>(OBJECT)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
 $obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
 Mail::Message::Head::Complete-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
@@ -762,7 +837,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

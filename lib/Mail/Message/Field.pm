@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -117,7 +117,7 @@ sub size() {length shift->toString}
 # 'Bcc' headers.
 
 my %wf_lookup
-  = qw/mime MIME  ldap LDAP  soap SOAP
+  = qw/mime MIME  ldap LDAP  soap SOAP  swe SWE
        bcc Bcc  cc Cc/;
 
 sub wellformedName(;$)

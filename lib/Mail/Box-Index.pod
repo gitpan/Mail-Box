@@ -76,6 +76,7 @@ Only the HTML version of this manual page will list the sections.
       <li>Using study() field
       <li>Using resent groups (Mail::Message::Head::ResentGroup)
       <li>Mailing list fields
+      <li>Spam fighting fields
       </ul>
   <li>The field's data
       <ul>
@@ -121,7 +122,8 @@ Only the HTML version of this manual page will list the sections.
   <li>Reading a message (Mail::Message::Construct::Read)
   <li>Building a message (Mail::Message::Construct::Build)
   <li>Reply to a message (Mail::Message::Construct::Reply)
-  <li>Forward a message (Mail::Message::Construct::Forward)
+  <li>
+  <li>Creating a forward
   <li>Bounce a message (Mail::Message::Construct::Bounce)
   <li>Rebuilding a message (Mail::Message::Construct::Rebuild)
       <ul>
@@ -269,7 +271,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

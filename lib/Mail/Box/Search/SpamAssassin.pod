@@ -28,7 +28,7 @@ Mail::Box::Search::SpamAssassin - select spam messages with Mail::SpamAssassin
  my $spam2 = Mail::Box::Search::SpamAssassin
                ->new(deliver => 'DELETE');
  $spam2->search($folder);
- $mgr->moveMessages($folder->messages('spam'), $spamfolder);
+ $mgr->moveMessages($spamfolder, $folder->messages('spam'));
 
 
 =head1 DESCRIPTION
@@ -127,7 +127,9 @@ scan. See Mail::SpamAssassin::PerMsgStatus subroutine rewrite_mail.
 =over 4
 
 Options to create the internal Mail::SpamAssassin object; see its
-manual page for the available options.
+manual page for the available options.  Other setting may be provided
+via SpamAssassins configuration file mechanism, which is explained in
+L<Mail::SpamAssassin::Conf>.
 
 =back
 
@@ -209,6 +211,14 @@ See L<Mail::Box::Search/"The Results">
 
 
 $obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<addReport>(OBJECT)
 
 =over 4
 
@@ -344,7 +354,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

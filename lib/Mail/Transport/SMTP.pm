@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport::SMTP;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 use base 'Mail::Transport::Send';
 
 use Net::SMTP;
@@ -112,7 +112,9 @@ sub trySend($@)
     $server->data;
     $server->datasend($_) foreach @header;
     my $bodydata = $message->body->file;
-    $server->datasend($_) while <$bodydata>;
+
+    if(ref $bodydata eq 'GLOB') { $server->datasend($_) while <$bodydata> }
+    else    { while(my $l = $bodydata->getline) { $server->datasend($l) } }
 
     $server->quit, return 0
         unless $server->dataend;

@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Maildir;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 use base 'Mail::Box::Dir';
 
 use Mail::Box::Maildir::Message;
@@ -221,7 +221,7 @@ sub readMessageFilenames
     opendir DIR, $dirname or return ();
 
     # unsorted list of untainted filenames.
-    my @files = map { /^(\d[\w.:,\-]+)$/
+    my @files = map { /^(\d[\w.:,=\-]+)$/
                       && -f File::Spec->catfile($dirname, $1) ? $1 : () }
                    readdir DIR;
     closedir DIR;

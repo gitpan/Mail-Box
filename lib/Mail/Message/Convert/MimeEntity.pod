@@ -54,28 +54,37 @@ See L<Mail::Message::Convert/"METHODS">
 =head2 Converting
 
 
-$obj-E<gt>B<export>(MESSAGE, OPTIONS)
+$obj-E<gt>B<export>(MESSAGE, [PARSER])
 
 =over 4
 
-Returns a new message object based on the information from
-a L<Mail::Message|Mail::Message> object.  The MESSAGE specified is an
-instance of a Mail::Message.
+Returns a new L<MIME::Entity> message object based on the
+information from the MESSAGE, which is a L<Mail::Message|Mail::Message> object.
+
+You may want to supply your own PARSER, which is a MIME::Parser
+object, to change the parser flags.  Without a PARSER object, one
+is created for you, with all the default settings.
+
+If C<undef> is passed, in place of a MESSAGE, then an empty list is
+returned.  When the parsing failes, then L<MIME::Parser> throws an
+exception.
 
 I<Example:> 
 
  my $convert = Mail::Message::Convert::MimeEntity->new;
  my Mail::Message $msg  = Mail::Message->new;
- my MIME::Entity  $copy = $convert->export($msg);
+ my manual MIME::Entity  $copy = $convert->export($msg);
 
 =back
 
-$obj-E<gt>B<from>(OBJECT, [CONTAINER])
+$obj-E<gt>B<from>(MIME-OBJECT)
 
 =over 4
 
 Returns a new L<Mail::Message|Mail::Message> object based on the information from
-an message-type which is foreign to the Mail::Box set of modules.
+the specified L<MIME::Entity>.  If the conversion fails, the C<undef>
+is returned.  If C<undef> is passed in place of an OBJECT, then an
+empty list is returned.
 
 I<Example:> 
 
@@ -97,6 +106,14 @@ See L<Mail::Message::Convert/"Converting">
 
 
 $obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<addReport>(OBJECT)
 
 =over 4
 
@@ -213,6 +230,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
+I<Error:> Converting from MIME::Entity but got a $type, return
+
+
 I<Error:> Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
@@ -232,7 +252,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

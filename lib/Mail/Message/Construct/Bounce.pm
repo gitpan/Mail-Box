@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Field;
@@ -30,7 +30,7 @@ sub bounce(@)
         }
     }
     else
-    {   $rg = Mail::Message::Head::ResentGroup->new(@_, head => $head);
+    {   $rg = Mail::Message::Head::ResentGroup->new(@_);
     }
  
     #

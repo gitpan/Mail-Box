@@ -305,7 +305,7 @@ Add an ADDRESS to the field.  The addresses are organized in groups.  If no
 group is specified, the default group is taken to store the address in.  If
 no ADDRESS is specified, the option must be sufficient to create a
 L<Mail::Message::Field::Address|Mail::Message::Field::Address> from.  See the OPTIONS of
-L<Mail::Message::Field::Address::new()|Mail::Identity/"Initiation">.
+L<Mail::Message::Field::Address::new()|Mail::Identity/"METHODS">.
 
  Option  Defined in  Default
  group               C<''>  
@@ -624,6 +624,14 @@ See L<Mail::Reporter/"Error handling">
 
 =back
 
+$obj-E<gt>B<addReport>(OBJECT)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
 $obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
 
 Mail::Message::Field::Addresses-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
@@ -793,7 +801,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

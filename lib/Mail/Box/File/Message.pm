@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::File::Message;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 use base 'Mail::Box::Message';
 
 use POSIX 'SEEK_SET';
@@ -101,7 +101,7 @@ sub loadBody()
     }
 
     $self->log(PROGRESS => 'Loaded delayed body.');
-    $self->storeBody($newbody);
+    $self->storeBody($newbody->contentInfoFrom($self->head));
 
     $newbody;
 }

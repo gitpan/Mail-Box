@@ -1,0 +1,450 @@
+
+=head1 NAME
+
+Mail::Message::Head::SpamGroup - spam fighting related header fields
+
+
+=head1 INHERITANCE
+
+ Mail::Message::Head::SpamGroup
+   is a Mail::Message::Head::FieldGroup
+   is a Mail::Reporter
+
+
+=head1 SYNOPSIS
+
+ my $sg = Mail::Message::Head::SpamGroup->new(head => $head, ...);
+ $head->addSpamGroup($sg);
+
+ my $sg = $head->addSpamGroup( <options> );
+ $sg->delete;
+ 
+ my @sgs = $head=>spamGroups;
+
+
+=head1 DESCRIPTION
+
+A I<spam group> is a set of header fields which are added by spam detection
+and spam fighting software.  This class knows various details about
+that software.
+
+
+
+=head1 METHODS
+
+
+=head2 Constructors
+
+
+$obj-E<gt>B<clone>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Constructors">
+
+=back
+
+$obj-E<gt>B<from>(HEAD|MESSAGE, OPTIONS)
+
+=over 4
+
+Returns a list of C<Mail::Message::Head::SpamGroup> objects, based on the
+specified MESSAGE or message HEAD.
+
+ Option  Defined in  Default 
+ types               C<undef>
+
+. types ARRAY-OF-NAMES
+
+=over 4
+
+Only the specified types will be tried.  If the ARRAY is empty, an empty
+list is returned.  Without this option, all sets are returned.
+
+=back
+
+=back
+
+$obj-E<gt>B<habeasSweFieldsCorrect>([MESSAGE|HEAD])
+
+Mail::Message::Head::SpamGroup-E<gt>B<habeasSweFieldsCorrect>([MESSAGE|HEAD])
+
+=over 4
+
+Returns a true value if the MESSAGE or HEAD contains C<Habeas-SWE> fields
+which are correct.  Without argument, this is used as instance method on
+an existing Spam-Group.
+
+I<Example:> checking Habeas-SWE fields
+
+
+ if(Mail::Message::Head::SpamGroup->habeasSweFieldsCorrect($message))
+ {   $message->label(spam => 0);
+ }
+
+ my $sg = $message->head->spamGroups('Habeas-SWE');
+ if($sg->habeasSweFieldsCorrect) { ... };
+
+ use List::Util 'first';
+ if(first {$_->habeasSweFieldsCorrect} $head->spamGroups)
+ {   ...
+ }
+
+=back
+
+$obj-E<gt>B<implementedTypes>
+
+Mail::Message::Head::SpamGroup-E<gt>B<implementedTypes>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Constructors">
+
+=back
+
+$obj-E<gt>B<isSpamGroupFieldName>(NAME)
+
+Mail::Message::Head::SpamGroup-E<gt>B<isSpamGroupFieldName>(NAME)
+
+=over 4
+
+=back
+
+Mail::Message::Head::SpamGroup-E<gt>B<new>(FIELDS, OPTIONS)
+
+=over 4
+
+Construct an object which maintains one set of fields which were added
+by spam fighting software.
+
+ Option    Defined in       Default      
+ head      L<Mail::Message::Head::FieldGroup>  C<undef>     
+ log       L<Mail::Reporter>  C<'WARNINGS'>
+ software  L<Mail::Message::Head::FieldGroup>  C<undef>     
+ trace     L<Mail::Reporter>  C<'WARNINGS'>
+ type      L<Mail::Message::Head::FieldGroup>  C<undef>     
+ version   L<Mail::Message::Head::FieldGroup>  C<undef>     
+
+. head HEAD
+
+. log LEVEL
+
+. software STRING
+
+. trace LEVEL
+
+. type STRING
+
+. version STRING
+
+=back
+
+=head2 The header
+
+
+$obj-E<gt>B<attach>(HEAD)
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"The header">
+
+=back
+
+$obj-E<gt>B<delete>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"The header">
+
+=back
+
+$obj-E<gt>B<head>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"The header">
+
+=back
+
+=head2 Access to the header
+
+
+$obj-E<gt>B<add>((FIELD, VALUE) | OBJECT)
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
+
+=back
+
+$obj-E<gt>B<addFields>([FIELDNAMES])
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
+
+=back
+
+$obj-E<gt>B<fieldNames>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
+
+=back
+
+$obj-E<gt>B<fields>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
+
+=back
+
+$obj-E<gt>B<software>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
+
+=back
+
+$obj-E<gt>B<type>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
+
+=back
+
+$obj-E<gt>B<version>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Access to the header">
+
+=back
+
+=head2 Internals
+
+
+$obj-E<gt>B<collectFields>([NAME])
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Internals">
+
+=back
+
+$obj-E<gt>B<detected>(TYPE, SOFTWARE, VERSION)
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Internals">
+
+=back
+
+=head2 Error handling
+
+
+$obj-E<gt>B<AUTOLOAD>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<addReport>(OBJECT)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+Mail::Message::Head::SpamGroup-E<gt>B<defaultTrace>([LEVEL, [LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<details>
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Error handling">
+
+=back
+
+$obj-E<gt>B<errors>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+
+Mail::Message::Head::SpamGroup-E<gt>B<log>([LEVEL [,STRINGS]])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logPriority>(LEVEL)
+
+Mail::Message::Head::SpamGroup-E<gt>B<logPriority>(LEVEL)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<logSettings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<notImplemented>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<print>([FILEHANDLE])
+
+=over 4
+
+See L<Mail::Message::Head::FieldGroup/"Error handling">
+
+=back
+
+$obj-E<gt>B<report>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<reportAll>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<trace>([LEVEL])
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+$obj-E<gt>B<warnings>
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
+
+=back
+
+=head2 Cleanup
+
+
+$obj-E<gt>B<DESTROY>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+$obj-E<gt>B<inGlobalDestruction>
+
+=over 4
+
+See L<Mail::Reporter/"Cleanup">
+
+=back
+
+
+
+=head1 DIAGNOSTICS
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+
+=head1 DETAILS
+
+
+=head2 Spam fighting fields
+
+
+=head3 Detected spam fighting software
+
+The L<Mail::Message::Head::SpamGroup|Mail::Message::Head::SpamGroup> class can be used to detect
+fields which were produced by different spam fighting software.
+
+=over 4
+
+=item * SpamAssassin
+
+These fields are added by L<Mail::SpamAssassin>, which is the central
+implementation of the spam-assassin package.  The homepage of this
+GPL'ed project can be found at L<http://spamassassin.org>.
+
+=item * Habeas-SWE
+
+Habeas tries to fight spam via the standard copyright protection
+mechanism: Sender Warranted E-mail (SWE). Only when you have a contract
+with Habeas, you are permitted to add a few copyrighted lines to your
+e-mail. Spam senders will be refused a contract.  Mail clients which
+see these nine lines are (quite) sure that the message is sincere.
+
+See L<http://www.habeas.com> for all the details on this commercial
+product.
+
+=back
+
+
+
+
+
+=head1 REFERENCES
+
+See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
+
+=head1 COPYRIGHTS
+
+Distribution version 2.048.
+Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
+other contributors.
+
+Copyright (c) 2001-2003 by the author(s). All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+

@@ -117,6 +117,51 @@ See L<User::Identity::Collection/"Attributes">
 
 =back
 
+=head2 Collections
+
+
+$obj-E<gt>B<add>(COLLECTION, ROLE)
+
+=over 4
+
+See L<User::Identity::Item/"Collections">
+
+=back
+
+$obj-E<gt>B<addCollection>(OBJECT | ([TYPE], OPTIONS))
+
+=over 4
+
+See L<User::Identity::Item/"Collections">
+
+=back
+
+$obj-E<gt>B<collection>(NAME)
+
+=over 4
+
+See L<User::Identity::Item/"Collections">
+
+=back
+
+$obj-E<gt>B<parent>([PARENT])
+
+=over 4
+
+See L<User::Identity::Item/"Collections">
+
+=back
+
+$obj-E<gt>B<type>
+
+Mail::Message::Field::AddrGroup-E<gt>B<type>
+
+=over 4
+
+See L<User::Identity::Item/"Collections">
+
+=back
+
 =head2 Searching
 
 
@@ -191,6 +236,11 @@ I<Example:> getting all addresses from a group
 
 =head1 DIAGNOSTICS
 
+I<Error:> $object is not a collection.
+
+The first argument is an object, but not of a class which extends
+L<User::Identity::Collection|User::Identity::Collection>.
+
 I<Error:> Cannot coerce a $type into a Mail::Message::Field::AddrGroup
 
 
@@ -198,6 +248,28 @@ I<Error:> Cannot create a $type to add this to my collection.
 
 Some options are specified to create a $type object, which is native to
 this collection.  However, for some reason this failed.
+
+I<Error:> Cannot load collection module for $type ($class).
+
+Either the specified $type does not exist, or that module named $class returns
+compilation errors.  If the type as specified in the warning is not
+the name of a package, you specified a nickname which was not defined.
+Maybe you forgot the 'require' the package which defines the nickname.
+
+I<Error:> Creation of a collection via $class failed.
+
+The $class did compile, but it was not possible to create an object
+of that class using the options you specified.
+
+I<Error:> Don't know what type of collection you want to add.
+
+If you add a collection, it must either by a collection object or a
+list of options which can be used to create a collection object.  In
+the latter case, the type of collection must be specified.
+
+I<Warning:> No collection $name
+
+The collection with $name does not exist and can not be created.
 
 I<Error:> Wrong type of role for $collection: requires a $expect but got a $type
 
@@ -215,7 +287,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

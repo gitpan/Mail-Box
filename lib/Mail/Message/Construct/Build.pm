@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Box::Parser::Perl;
 use vars '$VERSION';
-$VERSION = '2.047';
+$VERSION = '2.048';
 use base 'Mail::Box::Parser';
 
 use Mail::Message::Field;
@@ -20,7 +20,6 @@ sub init(@)
     $self->{MBPP_fix}     = $args->{fix_header_errors};
     $self;
 }
-
 
 #------------------------------------------
 
@@ -147,7 +146,6 @@ sub readSeparator()
     ();
 }
 
-
 #------------------------------------------
 
 sub _read_stripped_lines(;$$)
@@ -257,7 +255,6 @@ sub bodyAsString(;$$)
     my ($end, $lines) = $self->_read_stripped_lines($exp_chars, $exp_lines);
     return ($begin, $end, join('', @$lines));
 }
-
 
 #------------------------------------------
 

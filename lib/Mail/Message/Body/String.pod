@@ -95,7 +95,7 @@ Mail::Message::Body::String-E<gt>B<new>(OPTIONS)
  mime_type          L<Mail::Message::Body>  C<'text/plain'>
  modified           L<Mail::Message::Body>  <false>        
  trace              L<Mail::Reporter>  C<'WARNINGS'>  
- transfer_encoding  L<Mail::Message::Body>  C<'NONE'>      
+ transfer_encoding  L<Mail::Message::Body>  C<'none'>      
 
 . based_on BODY
 
@@ -318,7 +318,7 @@ See L<Mail::Message::Body/"About the payload">
 
 =back
 
-$obj-E<gt>B<type>
+$obj-E<gt>B<type>([STRING|FIELD])
 
 =over 4
 
@@ -379,6 +379,22 @@ Mail::Message::Body::String-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
 =over 4
 
 See L<Mail::Message::Body::Encode/"Internals">
+
+=back
+
+$obj-E<gt>B<contentInfoFrom>(HEAD)
+
+=over 4
+
+See L<Mail::Message::Body/"Internals">
+
+=back
+
+$obj-E<gt>B<contentInfoTo>(HEAD)
+
+=over 4
+
+See L<Mail::Message::Body/"Internals">
 
 =back
 
@@ -446,6 +462,14 @@ $obj-E<gt>B<AUTOLOAD>
 =over 4
 
 See L<Mail::Message::Body/"Error handling">
+
+=back
+
+$obj-E<gt>B<addReport>(OBJECT)
+
+=over 4
+
+See L<Mail::Reporter/"Error handling">
 
 =back
 
@@ -595,7 +619,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.047.
+Distribution version 2.048.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
