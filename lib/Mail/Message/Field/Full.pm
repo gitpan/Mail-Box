@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field::Full;
 use vars '$VERSION';
-$VERSION = '2.060';
+$VERSION = '2.061';
 use base 'Mail::Message::Field';
 
 use utf8;
@@ -48,7 +48,7 @@ sub new($;$$@)
     my $body   = @_ % 2 ? shift : undef;
     my %args   = @_;
 
-    $body    ||= delete $args{body};
+    $body      = delete $args{body} if defined $args{body};
     unless(defined $body)
     {   (my $n, $body) = split /\s*\:\s*/s, $name, 2;
         $name = $n if defined $body;

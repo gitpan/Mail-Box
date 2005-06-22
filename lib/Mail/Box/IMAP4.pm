@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.060';
+$VERSION = '2.061';
 use base 'Mail::Box::Net';
 
 use Mail::Box::IMAP4::Message;
@@ -43,11 +43,7 @@ sub init($)
 
     my $transport = $args->{transporter} || 'Mail::Transport::IMAP4';
     unless(ref $transport)
-    {   eval "require $transport";
-        $self->log(ERROR => "Cannot install transporter $transport:\n$@"),
-           return () if $@;
-
-        $transport = $self->createTransporter($transport, %$args)
+    {   $transport = $self->createTransporter($transport, %$args)
 	    or return undef;
     }
 

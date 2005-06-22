@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.060';
+$VERSION = '2.061';
 
 use Mail::Box::FastScalar;
 
@@ -62,7 +62,7 @@ sub read($@)
     $parser->stop;
 
     my $head = $self->head;
-    $head->set('Message-ID' => $self->messageId)
+    $head->set('Message-ID' => '<'.$self->messageId.'>')
         unless $head->get('Message-ID');
 
     $head->delete('Status', 'X-Status') if $strip_status;

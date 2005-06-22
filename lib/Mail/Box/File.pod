@@ -80,7 +80,7 @@ Mail::Box::File-E<gt>B<new>(OPTIONS)
  head_type          L<Mail::Box>     L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>  
  keep_dups          L<Mail::Box>     <false>                                                         
  lock_extension                      C<'.lock'>                                                      
- lock_file          L<Mail::Box>     <foldername>.<lock-extension>                                   
+ lock_file          L<Mail::Box>     <foldername><lock-extension>                                    
  lock_timeout       L<Mail::Box>     1 hour                                                          
  lock_type          L<Mail::Box>     L<Mail::Box::Locker::DotLock|Mail::Box::Locker::DotLock>        
  lock_wait          L<Mail::Box>     10 seconds                                                      
@@ -225,13 +225,24 @@ risky.  In practice, this is often done without locking the folder.  So,
 an other application may write to the folder at the same time... :(  Hopefully,
 all goes fast enough that the chance on collition is small.
 
- Option    Defined in       Default   
- folder    L<Mail::Box>     <required>
- message   L<Mail::Box>     undef     
- messages  L<Mail::Box>     undef     
- share     L<Mail::Box>     <false>   
+All OPTIONS of L<Mail::Box::Mbox::new()|Mail::Box::Mbox/"METHODS"> can be supplied.
+
+ Option     Defined in       Default   
+ folder     L<Mail::Box>     <required>
+ lock_type                   C<NONE>   
+ message    L<Mail::Box>     undef     
+ messages   L<Mail::Box>     undef     
+ share      L<Mail::Box>     <false>   
 
 . folder FOLDERNAME
+
+. lock_type ...
+
+=over 4
+
+See Mail::Box subroutine open for possible values.
+
+=back
 
 . message MESSAGE
 
@@ -1022,7 +1033,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.060.
+Distribution version 2.061.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

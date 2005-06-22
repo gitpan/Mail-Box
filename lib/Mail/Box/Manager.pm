@@ -3,14 +3,17 @@ use warnings;
 
 package Mail::Box::Manager;
 use vars '$VERSION';
-$VERSION = '2.060';
+$VERSION = '2.061';
 use base 'Mail::Reporter';
 
 use Mail::Box;
 
-use Carp;
 use List::Util   'first';
 use Scalar::Util 'weaken';
+
+# failed compilation will not complain a second time
+# so we need to keep track.
+my %require_failed;
 
 #-------------------------------------------
 
@@ -52,7 +55,6 @@ sub init($)
     $self->{MBM_default_type} = $args->{default_folder_type} || 'mbox';
 
     # Inventory on existing folder-directories.
-
     $self->{MBM_folderdirs} = [ ];
     if(exists $args->{folderdir})
     {   my @dirs = $args->{folderdir};
@@ -200,10 +202,15 @@ sub open(@)
     unless($folder_type)
     {   # Try to autodetect foldertype.
         foreach (@{$self->{MBM_folder_types}})
-        {   (my $abbrev, $class, @defaults) = @$_;
+        {   next unless $_;
+            (my $abbrev, $class, @defaults) = @$_;
+            next if $require_failed{$class};
 
-            eval("require $class");
-            next if $@;
+            eval "require $class";
+            if($@)
+            {   $require_failed{$class}++;
+                next;
+            }
 
             if($class->foundIn($name, @defaults, %args))
             {   $folder_type = $abbrev;
@@ -234,8 +241,13 @@ sub open(@)
     # Try to open the folder
     #
 
+    return if $require_failed{$class};
     eval "require $class";
-    croak $@ if $@;
+    if($@)
+    {   $self->log(ERROR => "Failed for folder default $class: $@");
+        $require_failed{$class}++;
+        return ();
+    }
 
     push @defaults, manager => $self;
     my $folder = $class->new(@defaults, %args);
@@ -358,8 +370,12 @@ sub appendMessages(@)
 
     foreach (@{$self->{MBM_folder_types}})
     {   ($name, $class, @gen_options) = @$_;
+        next if $require_failed{$class};
         eval "require $class";
-        next if $@;
+        if($@)
+        {   $require_failed{$class}++;
+            next;
+        }
 
         if($class->foundIn($folder, @gen_options, access => 'a'))
         {   $found++;
@@ -476,6 +492,7 @@ sub threads(@)
         # need to compile Mail::Box::Thread::Manager when no threads are needed.
         eval "require $type";
         $self->log(INTERNAL => "Unusable threader $type: $@") if $@;
+
         $self->log(INTERNAL => "You need to pass a $base derived")
             unless $type->isa($base);
 

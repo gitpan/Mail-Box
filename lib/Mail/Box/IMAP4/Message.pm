@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::IMAP4::Message;
 use vars '$VERSION';
-$VERSION = '2.060';
+$VERSION = '2.061';
 use base 'Mail::Box::Net::Message';
 
 use Date::Parse 'str2time';
@@ -102,8 +102,8 @@ sub labels()
 
     unless(exists $labels->{seen})
     {   my $imap = $self->folder->transporter or return;
-        my %flags = $imap->getFlags($self->unique);
-        @{$labels}{keys %flags} = values %flags;
+        my $flags = $imap->getFlags($self->unique);
+        @{$labels}{keys %$flags} = values %$flags;
     }
 
     $labels;

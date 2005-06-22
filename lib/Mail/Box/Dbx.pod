@@ -86,7 +86,7 @@ Mail::Box::Dbx-E<gt>B<new>(OPTIONS)
  head_type          L<Mail::Box>     L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>  
  keep_dups          L<Mail::Box>     <false>                                                         
  lock_extension     L<Mail::Box::File>  C<'.lock'>                                                      
- lock_file          L<Mail::Box>     <foldername>.<lock-extension>                                   
+ lock_file          L<Mail::Box>     <foldername><lock-extension>                                    
  lock_timeout       L<Mail::Box>     1 hour                                                          
  lock_type          L<Mail::Box>     C<'NONE'>                                                       
  lock_wait          L<Mail::Box>     10 seconds                                                      
@@ -925,7 +925,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.060.
+Distribution version 2.061.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

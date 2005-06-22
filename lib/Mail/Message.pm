@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.060';
+$VERSION = '2.061';
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -292,7 +292,7 @@ sub guessTimestamp() {shift->head->guessTimestamp}
 
 
 sub timestamp()
-{   my $head = shift->head or return;
+{   my $head = shift->head;
     $head->recvstamp || $head->timestamp;
 }
 

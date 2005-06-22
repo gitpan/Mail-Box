@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::File::Message;
 use vars '$VERSION';
-$VERSION = '2.060';
+$VERSION = '2.061';
 use base 'Mail::Box::Message';
 
 use POSIX 'SEEK_SET';

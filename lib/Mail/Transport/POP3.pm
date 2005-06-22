@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Transport::POP3;
 use vars '$VERSION';
-$VERSION = '2.060';
+$VERSION = '2.061';
 use base 'Mail::Transport::Receive';
 
 use IO::Socket  ();
@@ -230,7 +230,7 @@ sub sendList($$)
     return unless OK($response);
 
     my @list;
-    local $_; # make sure we don't spoil $_ for the outside world
+    local $_;
     while(<$socket>)
     {   last if m#^\.\r?\n#s;
         s#^\.##;

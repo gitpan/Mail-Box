@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport::Sendmail;
 use vars '$VERSION';
-$VERSION = '2.060';
+$VERSION = '2.061';
 use base 'Mail::Transport::Send';
 
 use Carp;
@@ -34,7 +34,10 @@ sub trySend($@)
     my $program = $self->{MTS_program};
     if(open(MAILER, '|-')==0)
     {   my $options = $args{sendmail_options} || [];
-        { exec $program, '-ti', @{$self->{MTS_opts}}; }  # {} to avoid warning
+
+        # {} to avoid warning
+        { exec $program, '-ti', @{$self->{MTS_opts}}, @$options; }
+
         $self->log(NOTICE => "Errors when opening pipe to $program: $!");
         exit 1;
     }
