@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Box::IMAP4::Head;
 use vars '$VERSION';
-$VERSION = '2.061';
+$VERSION = '2.062';
 use base 'Mail::Message::Head';
 
 use Date::Parse;

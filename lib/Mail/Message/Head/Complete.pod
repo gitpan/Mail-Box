@@ -62,6 +62,8 @@ $obj-E<gt>B<build>([PAIR|FIELD]-LIST)
 
 =over 4
 
+Undefined values are interpreted as empty field values, and therefore skipped.
+
 =back
 
 $obj-E<gt>B<clone>([FIELDS])
@@ -990,7 +992,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.061.
+Distribution version 2.062.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

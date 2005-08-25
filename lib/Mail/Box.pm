@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.061';
+$VERSION = '2.062';
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -489,7 +489,7 @@ sub messageId($;$)
         return $message->label(deleted => 1)
             if $subj1 eq $subj2 && $to1 eq $to2;
 
-        $self->log(WARNING => "Different messages with id $msgid.");
+        $self->log(WARNING => "Different messages with id $msgid");
         $msgid = $message->takeMessageId(undef);
     }
 

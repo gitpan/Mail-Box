@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Box::Locker;
 use vars '$VERSION';
-$VERSION = '2.061';
+$VERSION = '2.062';
 use base 'Mail::Reporter';
 
 use Carp;

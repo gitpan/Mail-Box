@@ -1,7 +1,7 @@
 
 package Mail::Box::Search::SpamAssassin;
 use vars '$VERSION';
-$VERSION = '2.061';
+$VERSION = '2.062';
 use base 'Mail::Box::Search';
 
 use strict;
@@ -43,7 +43,9 @@ sub searchPart($)
 
     my @details = (message => $message);
    
-    my $sa      = Mail::Message::Wrapper::SpamAssassin->new($message);
+    my $sa      = Mail::Message::Wrapper::SpamAssassin->new($message)
+        or return;
+
     my $status  = $self->assassinator->check($sa);
 
     my $is_spam = $status->is_spam;

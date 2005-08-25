@@ -742,7 +742,7 @@ The folder where the messages are copied to is not opened with write
 access (see L<new(access)|Mail::Box/"Constructors">).  This has no relation with write permission
 to the folder which is controled by your operating system.
 
-I<Warning:> Different messages with id $msgid.
+I<Warning:> Different messages with id $msgid
 
 The message id is discovered more than once within the same folder, but the
 content of the message seems to be different.  This should not be possible:
@@ -805,7 +805,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.061.
+Distribution version 2.062.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

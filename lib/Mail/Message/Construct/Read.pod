@@ -92,7 +92,7 @@ I<Example:>
  my $fromline = <STDIN>;
  my $msg      = Mail::Message->read(\*STDIN);
  my $coerced  = $mboxfolder->addMessage($msg);
- $coerced->fromLines($fromline);
+ $coerced->fromLine($fromline);
 
 =back
 
@@ -109,7 +109,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.061.
+Distribution version 2.062.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

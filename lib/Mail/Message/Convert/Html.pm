@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Convert::Html;
 use vars '$VERSION';
-$VERSION = '2.061';
+$VERSION = '2.062';
 use base 'Mail::Message::Convert';
 
 use Carp;
