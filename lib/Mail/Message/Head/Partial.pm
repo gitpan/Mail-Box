@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message::Head::Partial;
 use vars '$VERSION';
-$VERSION = '2.062';
+$VERSION = '2.063';
 use base 'Mail::Message::Head::Complete';
 
 use Scalar::Util 'weaken';

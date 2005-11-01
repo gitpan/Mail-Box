@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.062';
+$VERSION = '2.063';
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -26,7 +26,8 @@ sub rebuild(@)
     # Collect the rules to be run
 
     my @rules   = $args{rules} ? @{$args{rules}} : @default_rules;
-    unshift @rules, @{$args{extraRules}} if $args{extraRules};
+    unshift @rules, @{$args{extra_rules}} if $args{extra_rules};
+    unshift @rules, @{$args{extraRules}}  if $args{extraRules}; #old name
 
     foreach my $rule (@rules)
     {   next if ref $rule;

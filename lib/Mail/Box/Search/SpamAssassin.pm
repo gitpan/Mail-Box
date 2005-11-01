@@ -1,7 +1,7 @@
 
 package Mail::Box::Search::SpamAssassin;
 use vars '$VERSION';
-$VERSION = '2.062';
+$VERSION = '2.063';
 use base 'Mail::Box::Search';
 
 use strict;

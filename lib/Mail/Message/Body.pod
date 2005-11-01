@@ -152,6 +152,7 @@ got, and then call L<encode()|Mail::Message::Body::Encode/"Constructing a body">
  charset                             C<'us-ascii'>  
  checked                             <false>        
  data                                undef          
+ description                         undef          
  disposition                         undef          
  eol                                 C<'NATIVE'>    
  file                                undef          
@@ -206,6 +207,16 @@ characters are enclosed in text.
 Specify a reference to an ARRAY of lines, each terminated by a newline.
 Or one STRING which may contain multiple lines, separated and terminated
 by a newline.
+
+=back
+
+. description STRING|FIELD
+
+=over 4
+
+Informal information about the body content.  The data relates to the
+C<Content-Description> field.  Specify a STRING which will become the
+field content, or a real FIELD.
 
 =back
 
@@ -479,6 +490,21 @@ $obj-E<gt>B<checked>([BOOLEAN])
 
 Returns whether the body encoding has been checked or not (optionally
 after setting the flag to a new value).
+
+=back
+
+$obj-E<gt>B<description>([STRING|FIELD])
+
+=over 4
+
+Returns (optionally after setting) the informal description of the body
+content.  The related header field is C<Content-Description>.
+A L<Mail::Message::Field|Mail::Message::Field> object is returned (which stringifies into
+the field content).  The field content will be C<none> if no disposition
+was specified.
+
+The argument can be a STRING (which is converted into a field), or a
+fully prepared header field.
 
 =back
 
@@ -1088,7 +1114,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.062.
+Distribution version 2.063.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

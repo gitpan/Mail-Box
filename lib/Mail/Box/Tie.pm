@@ -1,7 +1,7 @@
 
 package Mail::Box::Tie;
 use vars '$VERSION';
-$VERSION = '2.062';
+$VERSION = '2.063';
 
 use strict;
 

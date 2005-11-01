@@ -91,6 +91,7 @@ Mail::Message::Body::Multipart-E<gt>B<new>(OPTIONS)
  charset            L<Mail::Message::Body>  C<'us-ascii'>       
  checked            L<Mail::Message::Body>  <false>             
  data               L<Mail::Message::Body>  undef               
+ description        L<Mail::Message::Body>  undef               
  disposition        L<Mail::Message::Body>  undef               
  eol                L<Mail::Message::Body>  C<'NATIVE'>         
  epilogue                            undef               
@@ -121,6 +122,8 @@ unusual).  If C<undef>, a nice unique boundary will be generated.
 . checked BOOLEAN
 
 . data ARRAY-OF-LINES | STRING
+
+. description STRING|FIELD
 
 . disposition STRING|FIELD
 
@@ -362,6 +365,14 @@ See L<Mail::Message::Body/"About the payload">
 =back
 
 $obj-E<gt>B<checked>([BOOLEAN])
+
+=over 4
+
+See L<Mail::Message::Body/"About the payload">
+
+=back
+
+$obj-E<gt>B<description>([STRING|FIELD])
 
 =over 4
 
@@ -817,7 +828,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.062.
+Distribution version 2.063.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

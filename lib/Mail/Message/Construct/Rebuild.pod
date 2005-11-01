@@ -47,11 +47,11 @@ nested messages come into play.  The rebuild method tries to simplify
 handing these messages for you.
 
  Option           Defined in       Default   
- extraRules                        []        
+ extra_rules                       []        
  keep_message_id                   <false>   
  rules                             <see text>
 
-. extraRules ARRAY
+. extra_rules ARRAY
 
 =over 4
 
@@ -105,7 +105,7 @@ I<Example:>
  # Replace deleted parts by a place-holder
  my $cleaned = $msg->rebuild
    ( keep_message_id => 1
-   , extraRules => [ 'removeEmpty', 'flattenMultiparts' ]
+   , extra_rules => [ 'removeEmpty', 'flattenMultiparts' ]
    );
 
 =back
@@ -236,7 +236,7 @@ by a message which says that the part is deleted.
 =back
 
 You can specify a selection of these rules with L<rebuild(rules)|Mail::Message::Construct::Rebuild/"Constructing a message"> and
-L<rebuild(extraRules)|Mail::Message::Construct::Rebuild/"Constructing a message">.
+L<rebuild(extra_rules)|Mail::Message::Construct::Rebuild/"Constructing a message">.
 
 =head3 Conversion rules
 
@@ -284,7 +284,7 @@ comparible routine.
 When you have your own routine, you simply call:
 
  my $rebuild_message = $message->rebuild
-  ( extraRules => [ \&my_own_rule, 'other_rule' ] );
+  ( extra_rules => [ \&my_own_rule, 'other_rule' ] );
 
 
 
@@ -296,7 +296,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.062.
+Distribution version 2.063.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

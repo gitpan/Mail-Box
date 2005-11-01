@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Head::Complete;
 use vars '$VERSION';
-$VERSION = '2.062';
+$VERSION = '2.063';
 use base 'Mail::Message::Head';
 
 use Mail::Box::Parser;
@@ -151,7 +151,9 @@ sub grepNames(@)
 #------------------------------------------
 
 
-my @skip_none = qw/content-transfer-encoding content-disposition/;
+my @skip_none = qw/content-transfer-encoding content-disposition
+                   content-description/;
+
 my %skip_none = map { ($_ => 1) } @skip_none;
 
 sub set(@)

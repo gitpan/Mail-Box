@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.062';
+$VERSION = '2.063';
 use base 'Mail::Reporter';
 
 use Mail::Message::Field;
@@ -90,8 +90,8 @@ sub init($)
 
     # Set the content info
 
-    my ($mime, $transfer, $disp, $charset)
-      = @$args{ qw/mime_type transfer_encoding disposition charset/ };
+    my ($mime, $transfer, $disp, $charset, $descr) = @$args{
+       qw/mime_type transfer_encoding disposition charset description/ }; 
 
     if(defined $filename)
     {   $disp = Mail::Message::Field->new
@@ -115,6 +115,7 @@ sub init($)
         $transfer = $based->transferEncoding unless defined $transfer;
         $disp     = $based->disposition      unless defined $disp;
         $charset  = $based->charset          unless defined $charset;
+        $descr    = $based->description      unless defined $descr;
 
         $self->{MMB_checked}
                = defined $args->{checked} ? $args->{checked} : $based->checked;
@@ -132,6 +133,7 @@ sub init($)
 
     $self->transferEncoding($transfer) if defined $transfer;
     $self->disposition($disp)          if defined $disp;
+    $self->description($descr)         if defined $descr;
 
     $self->{MMB_eol}   = $args->{eol} || 'NATIVE';
 
@@ -270,6 +272,19 @@ sub transferEncoding(;$)
        : Mail::Message::Field->new('Content-Transfer-Encoding' => $set);
 }
 
+
+#------------------------------------------
+
+
+sub description(;$)
+{   my $self = shift;
+    return $self->{MMB_description} if !@_ && $self->{MMB_description};
+
+    my $disp = defined $_[0] ? shift : 'none';
+    $self->{MMB_description} = ref $disp ? $disp->clone
+       : Mail::Message::Field->new('Content-Description' => $disp);
+}
+
 #------------------------------------------
 
 
@@ -370,6 +385,7 @@ sub contentInfoTo($)
 
     $head->set($self->transferEncoding);
     $head->set($self->disposition);
+    $head->set($self->description);
     $self;
 }
 
@@ -382,6 +398,7 @@ sub contentInfoFrom($)
     $self->type($head->get('Content-Type'));
     $self->transferEncoding($head->get('Content-Transfer-Encoding'));
     $self->disposition($head->get('Content-Disposition'));
+    $self->description($head->get('Content-Description'));
 
     delete $self->{MMB_mime};
     $self;
