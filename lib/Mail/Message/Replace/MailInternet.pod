@@ -1015,9 +1015,8 @@ $obj-E<gt>B<as_mbox_string>
 =over 4
 
 Returns the whole message as one string, which can be included in an
-MBOX folder (while not using L<Mail::Box::Mbox|Mail::Box::Mbox>).  The C<Content-Length>
-header field is removed and lines in the body which start with C<From >
-are escaped with an E<gt>.
+MBOX folder (while not using L<Mail::Box::Mbox|Mail::Box::Mbox>).  Lines in the body
+which start with C<From > are escaped with an E<gt>.
 
 =back
 
@@ -1359,7 +1358,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.063.
+Distribution version 2.064.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

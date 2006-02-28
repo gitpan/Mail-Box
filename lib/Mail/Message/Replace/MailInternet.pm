@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Message::Replace::MailInternet;
 use vars '$VERSION';
-$VERSION = '2.063';
+$VERSION = '2.064';
 use base 'Mail::Message';
 
 use Mail::Box::FastScalar;
@@ -328,14 +328,12 @@ sub smtpsend(@)
 
 
 sub as_mbox_string()
-{   my $self   = shift;
-    my $head   = $self->head->clone;
-    $head->delete('Content-Length');
+{   my $self    = shift;
+    my $mboxmsg = Mail::Box::Mbox->coerce($self);
 
-    my $buffer = '';
-    my $file   = Mail::Box::FastScalar->new(\$buffer);
-    $head->print($file);
-    $self->body->printEscapedFrom($file);
+    my $buffer  = '';
+    my $file    = Mail::Box::FastScalar->new(\$buffer);
+    $mboxmsg->print($file);
     $buffer;
 }
 

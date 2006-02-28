@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.063';
+$VERSION = '2.064';
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -671,12 +671,12 @@ sub readBody($$;$$)
         $body->contentInfoFrom($head);
     }
 
-    my $lines   = $head->get('Lines');
+    my $lines   = $head->get('Lines');  # usually off-by-one
     my $size    = $head->guessBodySize;
 
     $body->read
       ( $parser, $head, $getbodytype,
-      , $size, (defined $lines ? int $lines->body : undef)
+      , $size, (defined $lines ? $lines : undef)
       );
 }
 

@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Message::TransferEnc::SevenBit;
 use vars '$VERSION';
-$VERSION = '2.063';
+$VERSION = '2.064';
 use base 'Mail::Message::TransferEnc';
 
 

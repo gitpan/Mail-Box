@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body::Lines;
 use vars '$VERSION';
-$VERSION = '2.063';
+$VERSION = '2.064';
 use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
@@ -80,7 +80,7 @@ sub string() { join '', @{shift->{MMBL_array}} }
 
 #------------------------------------------
 
-sub lines()  { wantarray ? @{shift->{MMBL_array}} : shift->{MMBL_array} }
+sub lines() { wantarray ? @{shift->{MMBL_array}} : shift->{MMBL_array} }
 
 #------------------------------------------
 
@@ -98,27 +98,6 @@ sub print(;$)
 
 #------------------------------------------
 
-sub printEscapedFrom($)
-{   my ($self, $fh) = @_;
-
-    if(ref $fh eq 'GLOB')
-    {   foreach ( @{$self->{MMBL_array}} )
-        {   s/^(?=\>*From )/>/;
-            print $fh;
-        }
-    }
-    else
-    {   foreach ( @{$self->{MMBL_array}} )
-        {   s/^(?=\>*From )/>/;
-            $fh->print($_);
-        }
-    }
-
-    $self;
-}
-
-#------------------------------------------
-
 sub read($$;$@)
 {   my ($self, $parser, $head, $bodytype) = splice @_, 0, 4;
     my ($begin, $end, $lines) = $parser->bodyAsList(@_);
@@ -127,6 +106,13 @@ sub read($$;$@)
     $self->fileLocation($begin, $end);
     $self->{MMBL_array} = $lines;
     $self;
+}
+
+#------------------------------------------
+
+sub endsOnNewline()
+{   my $last = shift->{MMBL_array}[-1];
+    !defined $last || $last =~ m/\n$/;
 }
 
 #------------------------------------------

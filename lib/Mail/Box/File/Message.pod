@@ -257,6 +257,19 @@ See L<Mail::Box::Message/"The message">
 
 =back
 
+$obj-E<gt>B<escapedBody>
+
+=over 4
+
+Mbox folders contain multiple messages in one file, using a separator
+line to keep them apart.  Typically, these lines start with "From ".
+Lines within the message could interfere with this separator, and should
+therefore be translated.
+
+This method will return the escaped text of the body as reference.
+
+=back
+
 $obj-E<gt>B<folder>([FOLDER])
 
 =over 4
@@ -977,7 +990,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.063.
+Distribution version 2.064.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -348,6 +348,14 @@ See L<Mail::Message::Body/"About the payload">
 =head2 Access to the payload
 
 
+$obj-E<gt>B<endsOnNewline>
+
+=over 4
+
+See L<Mail::Message::Body/"Access to the payload">
+
+=back
+
 $obj-E<gt>B<file>
 
 =over 4
@@ -381,6 +389,14 @@ See L<Mail::Message::Body/"Access to the payload">
 =back
 
 $obj-E<gt>B<string>
+
+=over 4
+
+See L<Mail::Message::Body/"Access to the payload">
+
+=back
+
+$obj-E<gt>B<stripTrailingNewline>
 
 =over 4
 
@@ -646,7 +662,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.063.
+Distribution version 2.064.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

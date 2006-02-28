@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::Message;
 use vars '$VERSION';
-$VERSION = '2.063';
+$VERSION = '2.064';
 use base 'Mail::Message';
 
 use Date::Parse;
@@ -93,7 +93,7 @@ sub moveTo($@)
     $args{share} = 1
         unless exists $args{share} || exists $args{shallow_body};
 
-    my $added = $folder->copyTo($folder, %args);
+    my $added = $self->copyTo($folder, %args);
     $self->label(deleted => 1);
     $added;
 }

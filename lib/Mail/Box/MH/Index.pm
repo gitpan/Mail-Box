@@ -1,10 +1,11 @@
 
-use strict;
-
 package Mail::Box::MH::Index;
 use vars '$VERSION';
-$VERSION = '2.063';
+$VERSION = '2.064';
 use base 'Mail::Reporter';
+
+use strict;
+use warnings;
 
 use Mail::Message::Head::Subset;
 use Carp;
@@ -36,9 +37,8 @@ sub filename() {shift->{MBMI_filename}}
 
 
 sub write(@)
-{   my $self      = shift;
-    my $index     = $self->filename or return $self;
-    my $fieldtype = 'Mail::Message::Field';
+{   my $self  = shift;
+    my $index = $self->filename or return $self;
 
     # Remove empty index-file.
     unless(@_)
@@ -46,26 +46,57 @@ sub write(@)
         return $self;
     }
 
-    my $written    = 0;
-
     local *INDEX;
-    open INDEX, '>', $index or return;
+    open INDEX, '>', $index
+        or return $self;
+
+    my $fieldtype = 'Mail::Message::Field';
+    my $written    = 0;
 
     foreach my $msg (@_)
     {   my $head     = $msg->head;
-        next if $head->isDelayed;
+        next if $head->isDelayed && $head->isa('Mail::Message::Head::Subset');
 
         my $filename = $msg->filename;
-        $head->setNoRealize($fieldtype->new('X-MailBox-Filename' => $filename));
-        $head->setNoRealize($fieldtype->new('X-MailBox-Size'  => -s $filename));
+        print INDEX "X-MailBox-Filename: $filename\n"
+                  , 'X-MailBox-Size: ', (-s $filename), "\n";
+
         $head->print(\*INDEX);
         $written++;
     }
 
     close INDEX;
 
-    unlink $index unless $written;
+    $written or unlink $index;
 
+    $self;
+}
+
+#-------------------------------------------
+
+
+sub append(@)
+{   my $self      = shift;
+    my $index     = $self->filename or return $self;
+
+    local *INDEX;
+    open INDEX, '>>', $index
+        or return $self;
+
+    my $fieldtype = 'Mail::Message::Field';
+
+    foreach my $msg (@_)
+    {   my $head     = $msg->head;
+        next if $head->isDelayed && $head->isa('Mail::Message::Head::Subset');
+
+        my $filename = $msg->filename;
+        print INDEX "X-MailBox-Filename: $filename\n"
+                  , 'X-MailBox-Size: ', (-s $filename), "\n";
+
+        $head->print(\*INDEX);
+    }
+
+    close INDEX;
     $self;
 }
 
@@ -92,7 +123,7 @@ sub read(;$)
         my $msgfile = $head->get('x-mailbox-filename');
         my $size    = int $head->get('x-mailbox-size');
         next unless -f $msgfile && -s _ == $size;
-        next if defined $index_age && -M _ >= $index_age;
+        next if defined $index_age && -M _ < $index_age;
 
         # keep this one
         $index{$msgfile} = $head;

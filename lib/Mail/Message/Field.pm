@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field;
 use vars '$VERSION';
-$VERSION = '2.063';
+$VERSION = '2.064';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -51,9 +51,8 @@ BEGIN {
      Resent-Date Resent-From Resent-Sender Resent-To Return-Path
      List-Help List-Post List-Unsubscribe Mailing-List
      Received References Message-ID In-Reply-To
-     Content-Length Content-Type Content-Disposition
+     Content-Type Content-Disposition
      Delivered-To
-     Lines
      MIME-Version
      Precedence
      Status/;

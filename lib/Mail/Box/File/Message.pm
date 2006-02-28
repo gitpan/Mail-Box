@@ -2,11 +2,10 @@
 use strict;
 package Mail::Box::File::Message;
 use vars '$VERSION';
-$VERSION = '2.063';
+$VERSION = '2.064';
 use base 'Mail::Box::Message';
 
-use POSIX 'SEEK_SET';
-use Carp;
+use List::Util   qw/sum/;
 
 
 sub init($)
@@ -34,9 +33,17 @@ sub write(;$)
 {   my $self  = shift;
     my $out   = shift || select;
 
+    my $escaped = $self->escapedBody;
     $out->print($self->fromLine);
-    $self->head->print($out);
-    $self->body->printEscapedFrom($out);
+
+    my $size  = sum map {length($_)} @$escaped;
+
+    my $head  = $self->head;
+    $head->set('Content-Length' => $size); 
+    $head->set('Lines' => scalar @$escaped);
+    $head->print($out);
+
+    $out->print($_) for @$escaped;
     $out->print("\n");
     $self;
 }
@@ -58,6 +65,15 @@ sub fromLine(;$)
 
     $self->{MBMM_from_line} = shift if @_;
     $self->{MBMM_from_line} ||= $self->head->createFromLine;
+}
+
+#------------------------------------------
+
+
+sub escapedBody()
+{   my @lines = shift->body->lines;
+    s/^(\>*From )/>$1/ for @lines;
+    \@lines;
 }
 
 #------------------------------------------

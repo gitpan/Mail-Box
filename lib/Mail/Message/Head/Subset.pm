@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message::Head::Subset;
 use vars '$VERSION';
-$VERSION = '2.063';
+$VERSION = '2.064';
 use base 'Mail::Message::Head';
 
 use Object::Realize::Later
@@ -85,7 +85,7 @@ sub guessTimestamp()
 #-------------------------------------------
 
 
-sub load() {$_[0] = $_[0]->message->loadHead}
+sub load() { $_[0] = $_[0]->message->loadHead }
 
 #------------------------------------------
 

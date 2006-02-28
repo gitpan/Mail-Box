@@ -199,6 +199,14 @@ See L<Mail::Box::Message/"The message">
 
 =back
 
+$obj-E<gt>B<escapedBody>
+
+=over 4
+
+See L<Mail::Box::File::Message/"The message">
+
+=back
+
 $obj-E<gt>B<folder>([FOLDER])
 
 =over 4
@@ -902,7 +910,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.063.
+Distribution version 2.064.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body::File;
 use vars '$VERSION';
-$VERSION = '2.063';
+$VERSION = '2.064';
 use base 'Mail::Message::Body';
 
 use Mail::Box::Parser;
@@ -224,36 +224,6 @@ sub print(;$)
 
 #------------------------------------------
 
-sub printEscapedFrom($)
-{   my ($self, $fh) = @_;
-    my $file = $self->tempFilename;
-
-    local $_;
-    local *IN;
-
-    open IN, '<', $file
-        or croak "Cannot read from $file: $!\n";
-
-    if(ref $fh eq 'GLOB')
-    {   while( <IN> )
-        {   s/^(?=\>*From )/>/;
-            print $fh;
-        }
-    }
-    else
-    {   while( <IN> )
-        {   s/^(?=\>*From )/>/;
-            $fh->print($_);
-        }
-    }
-
-    close IN;
-
-    $self;
-}
-
-#------------------------------------------
-
 sub read($$;$@)
 {   my ($self, $parser, $head, $bodytype) = splice @_, 0, 4;
     my $file = $self->tempFilename;
@@ -269,6 +239,12 @@ sub read($$;$@)
     $self->fileLocation($begin, $end);
     $self;
 }
+
+#------------------------------------------
+
+# on UNIX always true.  Expensive to calculate on Windows: message size
+# may be off-by-one in rare cases.
+sub endsOnNewline() { shift->size==0 }
 
 #------------------------------------------
 

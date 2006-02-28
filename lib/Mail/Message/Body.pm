@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.063';
+$VERSION = '2.064';
 use base 'Mail::Reporter';
 
 use Mail::Message::Field;
@@ -69,7 +69,7 @@ sub init($)
         elsif($file->isa('IO::Handle'))
         {    $self->_data_from_filehandle($file) or return }
         else
-        {    croak "Illegal datatype for file option." }
+        {    croak "message body: illegal datatype for file option" }
     }
     elsif(defined(my $data = $args->{data}))
     {
@@ -81,7 +81,7 @@ sub init($)
         {   $self->_data_from_lines($data) or return;
         }
         else
-        {   croak "Illegal datatype for data option." }
+        {   croak "message body: illegal datatype for data option" }
     }
     elsif(! $self->isMultipart && ! $self->isNested)
     {   # Neither 'file' nor 'data', so empty body.
@@ -366,6 +366,16 @@ sub write(@)
 #------------------------------------------
 
 
+sub endsOnNewline() {shift->notImplemented}
+
+#------------------------------------------
+
+
+sub stripTrailingNewline() {shift->notImplemented}
+
+#------------------------------------------
+
+
 sub read(@) {shift->notImplemented}
 
 #------------------------------------------
@@ -380,9 +390,6 @@ sub contentInfoTo($)
     $size     += $lines if $Mail::Message::crlf_platform;
 
     $head->set($self->type);
-    $head->set('Content-Length' => $size);
-    $head->set(Lines            => $lines);
-
     $head->set($self->transferEncoding);
     $head->set($self->disposition);
     $head->set($self->description);

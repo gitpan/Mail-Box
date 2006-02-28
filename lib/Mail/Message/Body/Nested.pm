@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body::Nested;
 use vars '$VERSION';
-$VERSION = '2.063';
+$VERSION = '2.064';
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -88,11 +88,6 @@ sub print(;$)
 
 #------------------------------------------
 
-sub printEscapedFrom($)
-{   my $self = shift;
-    $self->nested->printEscapedFrom(shift);
-}
-
 sub check() { shift->forNested( sub {$_[1]->check} ) }
 
 #------------------------------------------
@@ -129,6 +124,10 @@ sub fileLocation()
     , ($nested->body->fileLocation)[1]
     );
 }
+
+#-------------------------------------------
+
+sub endsOnNewline() { shift->nested->body->endsOnNewline }
 
 #------------------------------------------
 

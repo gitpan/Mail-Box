@@ -1,10 +1,11 @@
 
-use strict;
 package Mail::Box::Dir;
 use vars '$VERSION';
-$VERSION = '2.063';
-
+$VERSION = '2.064';
 use base 'Mail::Box';
+
+use strict;
+use filetest 'access';
 
 use Mail::Box::Dir::Message;
 
