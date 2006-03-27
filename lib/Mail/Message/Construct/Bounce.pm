@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.064';
+$VERSION = '2.065';
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Field;
@@ -34,7 +34,8 @@ sub bounce(@)
     {   $rg = Mail::Message::Head::ResentGroup->new(@_);
     }
     else
-    {   croak "ERROR: bounce requires To, Cc, or Bcc";
+    {   $self->log(ERROR => "Method bounce requires To, Cc, or Bcc");
+        return undef;
     }
  
     #

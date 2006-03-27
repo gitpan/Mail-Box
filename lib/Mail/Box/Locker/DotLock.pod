@@ -111,19 +111,15 @@ See L<Mail::Box::Locker/"Locking">
 
 =back
 
-$obj-E<gt>B<lock>(FOLDER)
+$obj-E<gt>B<lock>
 
 =over 4
-
-See L<Mail::Box::Locker/"Locking">
 
 =back
 
 $obj-E<gt>B<unlock>
 
 =over 4
-
-See L<Mail::Box::Locker/"Locking">
 
 =back
 
@@ -255,6 +251,15 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
+I<Warning:> Couldn't remove lockfile $lock: $!
+
+
+I<Error:> Failed to remove expired lockfile $lockfile: $!
+
+
+I<Warning:> Folder already locked with file $lockfile
+
+
 I<Error:> Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
@@ -262,6 +267,9 @@ implement this method where it should. This message means that some other
 related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
+
+I<Warning:> Removed expired lockfile $lockfile
+
 
 
 
@@ -274,7 +282,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.064.
+Distribution version 2.065.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

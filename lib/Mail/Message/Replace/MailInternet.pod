@@ -1307,9 +1307,26 @@ I<Error:> Mail::Internet does not support this kind of data
 The ARGS data can only be a file handle or an ARRAY.  Other data types
 are not supported (see L<read()|Mail::Message::Replace::MailInternet/"Constructing a message"> if you want to have more).
 
+I<Error:> Method bounce requires To, Cc, or Bcc
+
+The message L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> method forwards a received message off to someone
+else without modification; you must specified it's new destination.
+If you have the urge not to specify any destination, you probably
+are looking for L<reply()|Mail::Message::Replace::MailInternet/"Constructing a message">. When you wish to modify the content, use
+L<forward()|Mail::Message::Construct::Forward/"Constructing a message">.
+
+I<Error:> Method forwardAttach requires a preamble
+
+
+I<Error:> Method forwardEncapsulate requires a preamble
+
+
 I<Error:> No address to create forwarded to.
 
 If a forward message is created, a destination address must be specified.
+
+I<Error:> No rebuild rule $name defined.
+
 
 I<Error:> Only build() Mail::Message's; they are not in a folder yet
 
@@ -1327,23 +1344,6 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Error:> bounce requires To, Cc, or Bcc
-
-The message L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> method forwards a received message off to someone
-else without modification; you must specified it's new destination.
-If you have the urge not to specify any destination, you probably
-are looking for L<reply()|Mail::Message::Replace::MailInternet/"Constructing a message">. When you wish to modify the content, use
-L<forward()|Mail::Message::Construct::Forward/"Constructing a message">.
-
-I<Error:> forwardAttach requires a preamble object
-
-
-I<Error:> forwardEncapsulate requires a preamble object
-
-
-I<Error:> no rebuild rule $name defined.
-
-
 
 =head1 DETAILS
 
@@ -1358,7 +1358,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.064.
+Distribution version 2.065.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Box::Locker;
 use vars '$VERSION';
-$VERSION = '2.064';
+$VERSION = '2.065';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -16,6 +16,7 @@ my %lockers =
   ( DOTLOCK => __PACKAGE__ .'::DotLock'
   , FLOCK   => __PACKAGE__ .'::Flock'
   , MULTI   => __PACKAGE__ .'::Multi'
+  , MUTT    => __PACKAGE__ .'::Mutt'
   , NFS     => __PACKAGE__ .'::NFS'
   , NONE    => __PACKAGE__
   , POSIX   => __PACKAGE__ .'::POSIX'
@@ -105,7 +106,7 @@ sub isLocked($) {0}
 #-------------------------------------------
 
 
-sub hasLock() {shift->{MBL_has_lock} }
+sub hasLock() {shift->{MBL_has_lock}}
 
 #-------------------------------------------
 

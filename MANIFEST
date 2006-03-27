@@ -54,6 +54,8 @@ lib/Mail/Box/Locker/Flock.pm
 lib/Mail/Box/Locker/Flock.pod
 lib/Mail/Box/Locker/Multi.pm
 lib/Mail/Box/Locker/Multi.pod
+lib/Mail/Box/Locker/Mutt.pm
+lib/Mail/Box/Locker/Mutt.pod
 lib/Mail/Box/Locker/NFS.pm
 lib/Mail/Box/Locker/NFS.pod
 lib/Mail/Box/Locker/POSIX.pm
@@ -372,6 +374,7 @@ tests/55locking/10dotlock.t
 tests/55locking/20flock.t
 tests/55locking/30nfslock.t
 tests/55locking/40posix.t
+tests/55locking/50mutt.t
 tests/55locking/90multi.t
 tests/55locking/Definition.pm
 tests/60imap/10fetch.t

@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.064';
+$VERSION = '2.065';
 use base 'Mail::Transport::Receive';
 
 use Digest::HMAC_MD5;   # only availability check for CRAM_MD5
@@ -79,9 +79,9 @@ sub authentication(@)
     my @clientside;
     foreach my $auth (@types)
     {   push @clientside
-           , ref $auth eq 'ARRAY' ? $auth
-           : $auth eq 'NTLM'      ? [NTLM  => \&Authen::NTLM::ntlm ]
-           :                        [$auth => undef];
+         , ref $auth eq 'ARRAY' ? $auth
+         : $auth eq 'NTLM'      ? [NTLM  => \&Authen::NTLM::ntlm ]
+         :                        [$auth => undef];
     }
 
     my %clientside = map { ($_->[0] => $_) } @clientside;

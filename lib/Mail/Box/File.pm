@@ -1,7 +1,7 @@
 
 package Mail::Box::File;
 use vars '$VERSION';
-$VERSION = '2.064';
+$VERSION = '2.065';
 use base 'Mail::Box';
 
 use strict;
@@ -208,7 +208,8 @@ sub appendMessages(@)
     }
 
     my $ok = $folder->close;
-    return 0 unless $out->close && $ok;
+    $out->close && $ok
+       or return 0;
 
     @coerced;
 }
@@ -421,7 +422,8 @@ sub _write_replace($)
     }
 
     my $ok = $new->close;
-    return 0 unless $old->close && $ok;
+    $old->close && $ok
+        or return 0;
 
     unlink $filename if $windows;
     unless(move $tmpnew, $filename)
@@ -460,7 +462,7 @@ sub _write_inplace($)
 
     $_->body->load foreach @messages;
 
-    my $mode     = $^O eq 'MSWin32' ? 'a' : '+<';
+    my $mode     = $^O eq 'MSWin32' ? 'a' : 'r+';
     my $filename = $self->filename;
 
     my $old      = IO::File->new($filename, $mode) or return 0;

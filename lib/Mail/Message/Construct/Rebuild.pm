@@ -3,16 +3,15 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.064';
+$VERSION = '2.065';
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
 use Mail::Message::Body::Multipart;
 
 use Mail::Address;
-use Carp;
-use Scalar::Util 'blessed';
-use List::Util   'first';
+use Scalar::Util    'blessed';
+use List::Util      'first';
 use Mail::Box::FastScalar;
 
 
@@ -31,8 +30,10 @@ sub rebuild(@)
 
     foreach my $rule (@rules)
     {   next if ref $rule;
-        croak "ERROR: no rebuild rule '$rule' defined.\n"
-           unless $self->can($rule);
+        unless($self->can($rule))
+        {   $self->log(ERROR => "No rebuild rule '$rule' defined.\n");
+            return 1;
+        }
     }
 
     # Start off with the message

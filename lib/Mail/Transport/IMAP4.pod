@@ -571,12 +571,6 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Error:> module Authen::NTLM is not installed
-
-You try to establish an IMAP4 connection which explicitly uses NTLM
-authentication, but the optional Authen::NTLM, which implements this is
-not installed on your system.
-
 
 
 
@@ -588,7 +582,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.064.
+Distribution version 2.065.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

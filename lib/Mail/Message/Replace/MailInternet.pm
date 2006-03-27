@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Message::Replace::MailInternet;
 use vars '$VERSION';
-$VERSION = '2.064';
+$VERSION = '2.065';
 use base 'Mail::Message';
 
 use Mail::Box::FastScalar;

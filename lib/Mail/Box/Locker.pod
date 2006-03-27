@@ -13,6 +13,7 @@ Mail::Box::Locker - manage the locking of mail folders
    Mail::Box::Locker::DotLock
    Mail::Box::Locker::Flock
    Mail::Box::Locker::Multi
+   Mail::Box::Locker::Mutt
    Mail::Box::Locker::NFS
    Mail::Box::Locker::POSIX
 
@@ -134,6 +135,10 @@ Use ALL available locking methods at the same time, to have a bigger
 chance that the folder will not be modified by some other application
 which uses an unspecified locking method.  When one of the locking
 methods disallows access, the locking fails.
+
+=item 'MUTT'| 'mutt'
+
+Use the external program 'mutt_dotlock' to lock and unlock.
 
 =item 'NFS' | 'nfs'
 
@@ -416,7 +421,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.064.
+Distribution version 2.065.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

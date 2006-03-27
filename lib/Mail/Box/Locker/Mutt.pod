@@ -1,171 +1,134 @@
 
 =head1 NAME
 
-Mail::Message::Body::Delayed - body of a Mail::Message but not read yet.
+Mail::Box::Locker::Mutt - lock a folder using mutt_dotlock
 
 
 =head1 INHERITANCE
 
- Mail::Message::Body::Delayed realizes a Mail::Message::Body
-
- Mail::Message::Body::Delayed
+ Mail::Box::Locker::Mutt
+   is a Mail::Box::Locker
    is a Mail::Reporter
 
 
 =head1 SYNOPSIS
 
- See Mail::Message::Body
+ See Mail::Box::Locker
 
 
 =head1 DESCRIPTION
 
-Message bodies of this type will be replaced by another type the moment you
-access the content.  In this documentation you will find the description of
-how a message body gets delay loaded.
+The C<mutt> mail reader includes an separate program which is specialized
+in locking folders.  This locker class uses this external program.
+Mutt is not automatically installed.
 
-
-=head1 OVERLOADED
-
-
-overload: B<"">
-
-=over 4
-
-(stringification) Returns the body as string --which will trigger
-completion-- unless called to produce a string for C<Carp>.  The latter
-to avoid deep recursions.
-
-I<Example:> stringification of delayed body
-
-
- print $msg->body;   # implicit by print
-
- my $body = $msg->body;
- my $x    = "$body"; # explicit by interpolation
-
-=back
-
-overload: B<@{}>
-
-=over 4
-
-When a body object is used as being an array reference, the lines of
-the body are returned.  This is the same as using the C<lines> method.
-
-=back
-
-overload: B<bool>
-
-=over 4
-
-Always returns a true value, which is needed to have overloaded
-objects to be used as in C<if($body)>.  Otherwise, C<if(defined $body)>
-would be needed to avoid a runtime error.
-
-=back
 
 
 =head1 METHODS
 
 
+$obj-E<gt>B<exe>
+
+=over 4
+
+Returns the name of the external binary.
+
+=back
+
 =head2 Constructors
 
 
-Mail::Message::Body::Delayed-E<gt>B<new>(OPTIONS)
+Mail::Box::Locker::Mutt-E<gt>B<new>(OPTIONS)
 
 =over 4
 
- Option   Defined in       Default      
- log      L<Mail::Reporter>  C<'WARNINGS'>
- message                   <required>   
- trace    L<Mail::Reporter>  C<'WARNINGS'>
+ Option   Defined in       Default        
+ exe                       C<mutt_dotlock>
+ expires  L<Mail::Box::Locker>  1 hour         
+ file     L<Mail::Box::Locker>  undef          
+ folder   L<Mail::Box::Locker>  <required>     
+ log      L<Mail::Reporter>  C<'WARNINGS'>  
+ method   L<Mail::Box::Locker>  C<'DOTLOCK'>   
+ timeout  L<Mail::Box::Locker>  10 seconds     
+ trace    L<Mail::Reporter>  C<'WARNINGS'>  
+
+. exe PATH
+
+=over 4
+
+The name of the program.  May be a relative or absolute path.
+
+=back
+
+. expires SECONDS
+
+. file FILENAME
+
+. folder FOLDER
 
 . log LEVEL
 
-. message MESSAGE
+. method STRING|CLASS|ARRAY
 
-=over 4
-
-The MESSAGE object which contains this delayed body.
-
-=back
+. timeout SECONDS|'NOTIMEOUT'
 
 . trace LEVEL
 
 =back
 
-=head2 The body
+=head2 The Locker
 
 
-$obj-E<gt>B<message>
+$obj-E<gt>B<filename>([FILENAME])
+
+=over 4
+
+See L<Mail::Box::Locker/"The Locker">
+
+=back
+
+$obj-E<gt>B<folder>
+
+=over 4
+
+See L<Mail::Box::Locker/"The Locker">
+
+=back
+
+$obj-E<gt>B<name>
+
+=over 4
+
+See L<Mail::Box::Locker/"The Locker">
+
+=back
+
+=head2 Locking
+
+
+$obj-E<gt>B<hasLock>
+
+=over 4
+
+See L<Mail::Box::Locker/"Locking">
+
+=back
+
+$obj-E<gt>B<isLocked>
+
+=over 4
+
+See L<Mail::Box::Locker/"Locking">
+
+=back
+
+$obj-E<gt>B<lock>
 
 =over 4
 
 =back
 
-=head2 About to the payload
-
-
-$obj-E<gt>B<guessSize>
-
-=over 4
-
-=back
-
-$obj-E<gt>B<isDelayed>
-
-=over 4
-
-=back
-
-$obj-E<gt>B<isModified>
-
-=over 4
-
-=back
-
-$obj-E<gt>B<isMultipart>
-
-=over 4
-
-=back
-
-$obj-E<gt>B<modified>
-
-=over 4
-
-=back
-
-$obj-E<gt>B<nrLines>
-
-=over 4
-
-=back
-
-=head2 Internals
-
-
-$obj-E<gt>B<fileLocation>([BEGIN, END])
-
-=over 4
-
-=back
-
-$obj-E<gt>B<load>
-
-=over 4
-
-Returns the loaded version of this body.
-
-=back
-
-$obj-E<gt>B<moveLocation>(DISTANCE)
-
-=over 4
-
-=back
-
-$obj-E<gt>B<read>(PARSER, HEAD, BODYTYPE)
+$obj-E<gt>B<unlock>
 
 =over 4
 
@@ -192,7 +155,7 @@ See L<Mail::Reporter/"Error handling">
 
 $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Message::Body::Delayed-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+Mail::Box::Locker::Mutt-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -210,7 +173,7 @@ See L<Mail::Reporter/"Error handling">
 
 $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Mail::Message::Body::Delayed-E<gt>B<log>([LEVEL [,STRINGS]])
+Mail::Box::Locker::Mutt-E<gt>B<log>([LEVEL [,STRINGS]])
 
 =over 4
 
@@ -220,7 +183,7 @@ See L<Mail::Reporter/"Error handling">
 
 $obj-E<gt>B<logPriority>(LEVEL)
 
-Mail::Message::Body::Delayed-E<gt>B<logPriority>(LEVEL)
+Mail::Box::Locker::Mutt-E<gt>B<logPriority>(LEVEL)
 
 =over 4
 
@@ -283,7 +246,7 @@ $obj-E<gt>B<DESTROY>
 
 =over 4
 
-See L<Mail::Reporter/"Cleanup">
+See L<Mail::Box::Locker/"Cleanup">
 
 =back
 
@@ -299,6 +262,15 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
+I<Warning:> Couldn't remove mutt-unlock $folder: $!
+
+
+I<Error:> Failed to remove expired mutt-lock $lockfile: $!
+
+
+I<Warning:> Folder $folder already mutt-locked
+
+
 I<Error:> Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
@@ -306,6 +278,9 @@ implement this method where it should. This message means that some other
 related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
+
+I<Warning:> Removed expired mutt-lock $lockfile
+
 
 
 

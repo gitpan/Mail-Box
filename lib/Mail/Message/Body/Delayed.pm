@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Body::Delayed;
 use vars '$VERSION';
-$VERSION = '2.064';
+$VERSION = '2.065';
 use base 'Mail::Reporter';
 
 use Object::Realize::Later

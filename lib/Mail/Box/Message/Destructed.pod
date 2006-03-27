@@ -892,6 +892,20 @@ Once a message is destructed, it can not be revived.  Destruction is an
 optimization in memory usage: if you need an undelete functionality, then
 you can not use L<Mail::Box::Message::destruct()|Mail::Box::Message/"Cleanup">.
 
+I<Error:> Method bounce requires To, Cc, or Bcc
+
+The message L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> method forwards a received message off to someone
+else without modification; you must specified it's new destination.
+If you have the urge not to specify any destination, you probably
+are looking for L<reply()|Mail::Message::Construct::Reply/"Constructing a message">. When you wish to modify the content, use
+L<forward()|Mail::Message::Construct::Forward/"Constructing a message">.
+
+I<Error:> Method forwardAttach requires a preamble
+
+
+I<Error:> Method forwardEncapsulate requires a preamble
+
+
 I<Error:> No address to create forwarded to.
 
 If a forward message is created, a destination address must be specified.
@@ -901,6 +915,9 @@ I<Error:> No default mailer found to send message.
 The message L<send()|Mail::Message/"The message"> mechanism had not enough information to automatically
 find a mail transfer agent to sent this message.  Specify a mailer
 explicitly using the C<via> options.
+
+I<Error:> No rebuild rule $name defined.
+
 
 I<Error:> Only build() Mail::Message's; they are not in a folder yet
 
@@ -931,23 +948,6 @@ forcefully by means of L<Mail::Box::Message::destruct()|Mail::Box::Message/"Clea
 your program still tries to get to the header or body data after this
 destruction, which is not possible.
 
-I<Error:> bounce requires To, Cc, or Bcc
-
-The message L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> method forwards a received message off to someone
-else without modification; you must specified it's new destination.
-If you have the urge not to specify any destination, you probably
-are looking for L<reply()|Mail::Message::Construct::Reply/"Constructing a message">. When you wish to modify the content, use
-L<forward()|Mail::Message::Construct::Forward/"Constructing a message">.
-
-I<Error:> forwardAttach requires a preamble object
-
-
-I<Error:> forwardEncapsulate requires a preamble object
-
-
-I<Error:> no rebuild rule $name defined.
-
-
 
 =head1 DETAILS
 
@@ -962,7 +962,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.064.
+Distribution version 2.065.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

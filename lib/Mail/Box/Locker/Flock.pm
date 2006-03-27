@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Box::Locker::Flock;
 use vars '$VERSION';
-$VERSION = '2.064';
+$VERSION = '2.065';
 use base 'Mail::Box::Locker';
 
 use IO::File;
@@ -36,15 +36,20 @@ sub _unlock($)
 my $lockfile_access_mode = ($^O eq 'solaris' || $^O eq 'aix') ? 'r+' : 'r';
 
 sub lock()
-{   my $self  = shift;
-    return 1 if $self->hasLock;
+{   my $self   = shift;
+    my $folder = $self->folder;
+
+    if($self->hasLock)
+    {   $self->log(WARNING => "Folder $folder already flocked.");
+        return 1;
+    }
 
     my $filename = $self->filename;
 
     my $file   = IO::File->new($filename, $lockfile_access_mode);
     unless($file)
     {   $self->log(ERROR =>
-           "Unable to open flock file $filename for $self->{MBL_folder}: $!");
+           "Unable to open flock file $filename for $folder: $!");
         return 0;
     }
 
@@ -59,7 +64,7 @@ sub lock()
 
         if($! != EAGAIN)
         {   $self->log(ERROR =>
-               "Will never get a flock on $filename for $self->{MBL_folder}: $!");
+               "Will never get a flock on $filename for $folder: $!");
             last;
         }
 
@@ -97,7 +102,7 @@ sub unlock()
 {   my $self = shift;
 
     $self->_unlock(delete $self->{MBLF_filehandle})
-       if $self->hasLock;
+        if $self->hasLock;
 
     $self;
 }

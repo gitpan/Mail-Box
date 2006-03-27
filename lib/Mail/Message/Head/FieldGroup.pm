@@ -1,7 +1,7 @@
 
 package Mail::Message::Head::FieldGroup;
 use vars '$VERSION';
-$VERSION = '2.064';
+$VERSION = '2.065';
 use base 'Mail::Reporter';
 
 use strict;

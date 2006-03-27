@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Message::Replace::MailHeader;
 use vars '$VERSION';
-$VERSION = '2.064';
+$VERSION = '2.065';
 use base 'Mail::Message::Head::Complete';
 
 

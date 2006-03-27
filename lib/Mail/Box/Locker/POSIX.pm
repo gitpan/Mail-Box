@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Box::Locker::POSIX;
 use vars '$VERSION';
-$VERSION = '2.064';
+$VERSION = '2.065';
 use base 'Mail::Box::Locker';
 
 use POSIX;
@@ -34,15 +34,21 @@ sub _unlock($)
 
 
 sub lock()
-{   my $self  = shift;
-    return 1 if $self->hasLock;
+{   my $self   = shift;
+
+    if($self->hasLock)
+    {   my $folder = $self->folder;
+        $self->log(WARNING => "Folder $folder already lockf'd");
+        return 1;
+    }
 
     my $filename = $self->filename;
 
     my $file   = IO::File->new($filename, 'r+');
     unless(defined $file)
-    {   $self->log(ERROR =>
-           "Unable to open POSIX lock file $filename for $self->{MBL_folder}: $!");
+    {   my $folder = $self->folder;
+        $self->log(ERROR =>
+           "Unable to open POSIX lock file $filename for $folder: $!");
         return 0;
     }
 

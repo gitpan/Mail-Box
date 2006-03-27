@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Box::Locker::NFS;
 use vars '$VERSION';
-$VERSION = '2.064';
+$VERSION = '2.065';
 use base 'Mail::Box::Locker';
 
 use Sys::Hostname;
@@ -75,9 +75,13 @@ sub _unlock($$)
 
 sub lock()
 {   my $self     = shift;
-    return 1 if $self->hasLock;
-
     my $folder   = $self->{MBL_folder};
+
+    if($self->hasLock)
+    {   $self->log(WARNING => "Folder $folder already locked over nfs");
+        return 1;
+    }
+
     my $lockfile = $self->filename;
     my $tmpfile  = $self->_construct_tmpfile or return;
     my $end      = $self->{MBL_timeout} eq 'NOTIMEOUT' ? -1

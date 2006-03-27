@@ -430,9 +430,8 @@ this folder.
 
 The type of the locker object.  This may be the full name of a CLASS
 which extends Mail::Box::Locker, or one of the known locker types
-C<DotLock>, C<Flock>, C<Multi>, C<NFS>, C<POSIX>, or C<NONE>.  If an
-ARRAY is specified, then a Multi locker is built which uses the specified
-list.
+C<DotLock>, C<Flock>, C<Mutt>, C<NFS>, C<POSIX>, or C<NONE>.  If an ARRAY
+is specified, then a Multi locker is built which uses the specified list.
 
 =back
 
@@ -1911,7 +1910,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.064.
+Distribution version 2.065.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

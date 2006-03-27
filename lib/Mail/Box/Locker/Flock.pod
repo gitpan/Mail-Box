@@ -249,6 +249,12 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
+I<Warning:> Folder $folder already flocked
+
+The folder is already locked, but you attempt to lock it again.  The
+behavior of double flock's is platform dependend, and therefore should
+not be attempted.  The second lock is ignored (but the unlock isn't)
+
 I<Error:> Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
@@ -285,7 +291,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.064.
+Distribution version 2.065.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

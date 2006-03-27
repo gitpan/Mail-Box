@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.064';
+$VERSION = '2.065';
 
 use Mail::Message::Body::Multipart;
 use Mail::Message::Body::Nested;
@@ -178,7 +178,7 @@ sub forwardAttach(@)
     }
 
     my $preamble = $args{preamble};
-    $self->log(ERROR => 'forwardAttach requires a preamble object'), return
+    $self->log(ERROR => 'Method forwardAttach requires a preamble'), return
        unless ref $preamble;
 
     my @parts = ($preamble, $body);
@@ -195,7 +195,7 @@ sub forwardEncapsulate(@)
 {   my ($self, %args) = @_;
 
     my $preamble = $args{preamble};
-    $self->log(ERROR => 'forwardEncapsulate requires a preamble object'), return
+    $self->log(ERROR => 'Method forwardEncapsulate requires a preamble'), return
        unless ref $preamble;
 
     my $nested= Mail::Message::Body::Nested->new(nested => $self->clone);
