@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Transport::SMTP;
 use vars '$VERSION';
-$VERSION = '2.065';
+$VERSION = '2.066';
 use base 'Mail::Transport::Send';
 
 use Net::SMTP;

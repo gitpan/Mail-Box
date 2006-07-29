@@ -265,13 +265,14 @@ multi-part message is produced.
 
 
 
+
 =head1 REFERENCES
 
 See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

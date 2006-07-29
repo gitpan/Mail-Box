@@ -4,11 +4,12 @@ use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.065';
+$VERSION = '2.066';
 use base 'Mail::Transport::Receive';
 
 use Digest::HMAC_MD5;   # only availability check for CRAM_MD5
 use Mail::IMAPClient;
+use List::Util        qw/first/;
 
 
 sub init($)
@@ -218,17 +219,45 @@ sub login(;$)
 #------------------------------------------
 
 
-sub folder(;$)
+sub currentFolder(;$)
 {   my $self = shift;
     return $self->{MTI_folder} unless @_;
 
     my $name = shift;
-    return $name if $name eq ($self->{MTI_folder} || '/');
+
+    if(exists $self->{MTI_folder} && $name eq $self->{MTI_folder})
+    {   $self->log(DEBUG => "Folder $name already selected.");
+        return $name;
+    }
+
+    # imap first deselects the old folder so if the next call
+    # fails the server will not have anything selected.
+    $self->{MTI_folder} = undef;
 
     my $imap = $self->imapClient or return;
-    $imap->select($name)         or return;
-    $self->{MTI_folder} = $name;
-    $imap;
+
+    if($name eq '/' || $imap->select($name))
+    {   $self->{MTI_folder} = $name;
+        $self->log(NOTICE => "Selected folder $name");
+        return 1;
+    }
+
+    # Just because we couldn't select the folder that doesn't mean it doesn't
+    # exist.  It just means that this particular imap client is warning us
+    # that it can't contain messages.  So we'll verify that it does exist
+    # and, if so, we'll pretend like we could have selected it as if it were
+    # a regular folder.
+    # IMAPClient::exists() only works reliably for leaf folders so we need
+    # to grep for it ourselves.
+
+    if(first { $_ eq $name } $self->folders)
+    {   $self->{MTI_folder} = $name;
+        $self->log(NOTICE => "Couldn't select $name but it does exist.");
+        return 0;
+    }
+
+    $self->log(NOTICE => "Folder $name does not exist!");
+    undef;
 }
 
 #------------------------------------------
@@ -236,9 +265,30 @@ sub folder(;$)
 
 sub folders(;$)
 {   my $self = shift;
+    my $top  = shift;
+
     my $imap = $self->imapClient or return ();
-    my @top  = @_ && $_[0] eq '/' ? () : shift;
-    $imap->folders(@top);
+    $top = undef if defined $top && $top eq '/';
+
+    # We need to force the remote IMAP client to only return folders
+    # *underneath* the folder we specify.  By default they want to return
+    # all folders.
+    # Alas IMAPClient always appends the separator so, despite what it says
+    # in its own docs, there's purpose to doing this.  We just need
+    # to get whatever we get and postprocess it.
+    my @folders = $imap->folders($top);
+
+    # We need to post-process the list returned by IMAPClient.
+    # This selects out the level of directories we're interested in.
+    my $sep   = $imap->separator;
+    my $level = 1 + (defined $top ? () = $top =~ m/\Q$sep\E/g : -1);
+
+    # There may be multiples thanks to subdirs so we uniq it
+    my %uniq;
+    $uniq{(split($sep, $_))[$level]||''}++ foreach @folders;
+    delete $uniq{''};
+
+    keys %uniq;
 }
 
 #------------------------------------------
@@ -474,6 +524,14 @@ sub appendMessage($$)
 sub destroyDeleted()
 {   my $imap = shift->imapClient or return ();
     $imap->expunge;
+}
+
+#------------------------------------------
+
+
+sub createFolder($)
+{   my $imap = shift->imapClient or return ();
+    $imap->create(shift);
 }
 
 #------------------------------------------

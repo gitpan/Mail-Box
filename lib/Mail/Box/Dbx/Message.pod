@@ -42,26 +42,26 @@ Mail::Box::Dbx::Message-E<gt>B<new>(OPTIONS)
 
 =over 4
 
- Option        Defined in       Default                                                       
- account_name                   <from dbx_record>                                             
- account_nr                     <from dbx_record>                                             
- body          L<Mail::Message>  undef                                                         
- body_type     L<Mail::Box::Message>  <from folder>                                                 
- dbx_record                     <required>                                                    
- deleted       L<Mail::Message>  <false>                                                       
- field_type    L<Mail::Message>  undef                                                         
- folder        L<Mail::Box::Message>  <required>                                                    
- from_line     L<Mail::Box::File::Message>  undef                                                         
- head          L<Mail::Message>  undef                                                         
+-Option      --Defined in     --Default
+ account_name                   <from dbx_record>
+ account_nr                     <from dbx_record>
+ body          L<Mail::Message>  undef
+ body_type     L<Mail::Box::Message>  <from folder>
+ dbx_record                     <required>
+ deleted       L<Mail::Message>  <false>
+ field_type    L<Mail::Message>  undef
+ folder        L<Mail::Box::Message>  <required>
+ from_line     L<Mail::Box::File::Message>  undef
+ head          L<Mail::Message>  undef
  head_type     L<Mail::Message>  L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>
- labels        L<Mail::Message>  {}                                                            
- log           L<Mail::Reporter>  C<'WARNINGS'>                                                 
- messageId     L<Mail::Message>  undef                                                         
- modified      L<Mail::Message>  <false>                                                       
- seen                           <from dbx_record>                                             
- size          L<Mail::Box::Message>  undef                                                         
- trace         L<Mail::Reporter>  C<'WARNINGS'>                                                 
- trusted       L<Mail::Message>  <false>                                                       
+ labels        L<Mail::Message>  {}
+ log           L<Mail::Reporter>  C<'WARNINGS'>
+ messageId     L<Mail::Message>  undef
+ modified      L<Mail::Message>  <false>
+ seen                           <from dbx_record>
+ size          L<Mail::Box::Message>  undef
+ trace         L<Mail::Reporter>  C<'WARNINGS'>
+ trusted       L<Mail::Message>  <false>
 
 . account_name STRING
 
@@ -947,6 +947,7 @@ a string representation of the same fact.
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Cannot include forward source as $include.
@@ -1022,7 +1023,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

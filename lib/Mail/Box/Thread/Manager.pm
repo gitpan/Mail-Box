@@ -2,7 +2,7 @@
 use strict;
 package Mail::Box::Thread::Manager;
 use vars '$VERSION';
-$VERSION = '2.065';
+$VERSION = '2.066';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -295,18 +295,16 @@ sub _process_delayed_message($$)
 
     my $replies;
     if(my $irt  = $head->get('in-reply-to'))
-    {   for($irt =~ m/\<([^>]*)\>/)
+    {   for($irt =~ m/\<(\S+\@\S+)\>/)
         {   my $msgid = $1;
-            $msgid    =~ s/\s+//g;
             $replies  = $self->{MBTM_ids}{$msgid} || $self->createDummy($msgid);
         }
     }
 
     my @refs;
     if(my $refs = $head->get('references'))
-    {   while($refs =~ s/\<([^>]*)\>//s)
+    {   while($refs =~ s/\<(\S+\@\S+)\>//s)
         {   my $msgid = $1;
-            $msgid    =~ s/\s//gs;
             push @refs, $self->{MBTM_ids}{$msgid} || $self->createDummy($msgid);
         }
     }

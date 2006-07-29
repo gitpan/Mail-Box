@@ -3,13 +3,14 @@ use warnings;
 
 package Mail::Message::Body::Multipart;
 use vars '$VERSION';
-$VERSION = '2.065';
+$VERSION = '2.066';
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
 use Mail::Message::Part;
 
 use Mail::Box::FastScalar;
+use Carp;
 
 
 #------------------------------------------
@@ -209,6 +210,15 @@ sub print(;$)
     if(my $epilogue = $self->epilogue) { $epilogue->print($out) }
 
     $self;
+}
+
+#------------------------------------------
+
+
+sub foreachLine($)
+{   my ($self, $code) = @_;
+    $self->log(ERROR => "You cannot use foreachLine on a multipart");
+    confess;
 }
 
 #------------------------------------------

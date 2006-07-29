@@ -38,21 +38,21 @@ Mail::Transport::SMTP-E<gt>B<new>(OPTIONS)
 
 =over 4
 
- Option      Defined in       Default           
- executable  L<Mail::Transport>  C<undef>          
+-Option    --Defined in     --Default
+ executable  L<Mail::Transport>  C<undef>
  helo                         <from Net::Config>
  hostname    L<Mail::Transport>  <from Net::Config>
- interval    L<Mail::Transport>  C<30>             
- log         L<Mail::Reporter>  C<'WARNINGS'>     
- password                     undef             
- port        L<Mail::Transport>  C<25>             
+ interval    L<Mail::Transport>  C<30>
+ log         L<Mail::Reporter>  C<'WARNINGS'>
+ password                     undef
+ port        L<Mail::Transport>  C<25>
  proxy       L<Mail::Transport>  <from Net::Config>
- retry       L<Mail::Transport>  <false>           
- smtp_debug                   <false>           
- timeout                      120               
- trace       L<Mail::Reporter>  C<'WARNINGS'>     
- username                     undef             
- via         L<Mail::Transport>  C<'smtp'>         
+ retry       L<Mail::Transport>  <false>
+ smtp_debug                   <false>
+ timeout                      120
+ trace       L<Mail::Reporter>  C<'WARNINGS'>
+ username                     undef
+ via         L<Mail::Transport>  C<'smtp'>
 
 . executable FILENAME
 
@@ -167,9 +167,9 @@ Success and quit success are booleans.  The error code and -text are
 protocol specific codes and texts.  The location tells where the
 problem occurred.
 
- Option  Defined in       Default    
+-Option--Defined in     --Default
  from                     E<lt> E<gt>
- to                       []         
+ to                       []
 
 . from ADDRESS
 
@@ -366,6 +366,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Warning:> Message has no destination
@@ -410,7 +411,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

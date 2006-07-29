@@ -62,22 +62,22 @@ may get shared.  This is sharing is hidden for the user.
 When an C<imap_client> is specified, then the options C<hostname>,
 C<port>, C<username>, and C<password> are extracted from it.
 
- Option        Defined in       Default                             
- authenticate                   C<'AUTO'>                           
- domain                         <server_name>                       
- executable    L<Mail::Transport>  C<undef>                            
- hostname      L<Mail::Transport>  C<'localhost'>                      
+-Option      --Defined in     --Default
+ authenticate                   C<'AUTO'>
+ domain                         <server_name>
+ executable    L<Mail::Transport>  C<undef>
+ hostname      L<Mail::Transport>  C<'localhost'>
  imap_client                    L<Mail::IMAPClient|Mail::IMAPClient>
- interval      L<Mail::Transport>  C<30>                               
- log           L<Mail::Reporter>  C<'WARNINGS'>                       
- password      L<Mail::Transport>  undef                               
- port          L<Mail::Transport>  143                                 
- proxy         L<Mail::Transport>  undef                               
- retry         L<Mail::Transport>  <false>                             
- timeout       L<Mail::Transport>  C<120>                              
- trace         L<Mail::Reporter>  C<'WARNINGS'>                       
- username      L<Mail::Transport>  undef                               
- via           L<Mail::Transport>  C<'imap'>                           
+ interval      L<Mail::Transport>  C<30>
+ log           L<Mail::Reporter>  C<'WARNINGS'>
+ password      L<Mail::Transport>  undef
+ port          L<Mail::Transport>  143
+ proxy         L<Mail::Transport>  undef
+ retry         L<Mail::Transport>  <false>
+ timeout       L<Mail::Transport>  C<120>
+ trace         L<Mail::Reporter>  C<'WARNINGS'>
+ username      L<Mail::Transport>  undef
+ via           L<Mail::Transport>  C<'imap'>
 
 . authenticate TYPE|ARRAY-OF-TYPES
 
@@ -241,11 +241,31 @@ Write the message to the server.
 
 =back
 
+$obj-E<gt>B<createFolder>(NAME)
+
+=over 4
+
+Add a folder.
+
+=back
+
 $obj-E<gt>B<createImapClient>(CLASS)
 
 =over 4
 
 Create an object of CLASS, which extends L<Mail::IMAPClient>.
+
+=back
+
+$obj-E<gt>B<currentFolder>([FOLDERNAME])
+
+=over 4
+
+Be sure that the specific FOLDER is the current one selected.  If the
+folder is already selected, no IMAP traffic will be produced.
+
+The boolean return value indicates whether the folder is selectable. It
+will return undef if it does not exist.
 
 =back
 
@@ -305,16 +325,6 @@ I<Example:> translating IMAP4 flags into MailBox flags
 
  my @flags  = ('\Seen', '\Flagged');
  my $labels = Mail::Transport::IMAP4->flags2labels(SET => @flags);
-
-=back
-
-$obj-E<gt>B<folder>([FOLDERNAME])
-
-=over 4
-
-Be sure that the specific FOLDER is the current one selected.
-If the folder is already selected, no IMAP traffic will be produced.
-The imap connection is returned on succes
 
 =back
 
@@ -546,6 +556,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Cannot connect to $host:$port for IMAP4: $!
@@ -582,7 +593,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

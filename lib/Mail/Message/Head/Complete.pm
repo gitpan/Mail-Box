@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Head::Complete;
 use vars '$VERSION';
-$VERSION = '2.065';
+$VERSION = '2.066';
 use base 'Mail::Message::Head';
 
 use Mail::Box::Parser;
@@ -86,6 +86,8 @@ sub add(@)
     my $field
       = @_==1 && ref $_[0] ? shift     # A fully qualified field is added.
       : ($self->{MMH_field_type} || 'Mail::Message::Field::Fast')->new(@_);
+
+    return if !defined $field;
 
     $field->setWrapLength;
 

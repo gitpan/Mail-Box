@@ -37,8 +37,8 @@ Mail::Server::IMAP4::Fetch-E<gt>B<new>(MESSAGE|PART, OPTIONS)
 
 =over 4
 
- Option        Defined in  Default
- md5checksums              0      
+-Option      --Defined in--Default
+ md5checksums              0
 
 . md5checksums BOOLEAN
 
@@ -134,6 +134,7 @@ I<Example:>
 
 
 
+
 =head1 DETAILS
 
 See
@@ -143,6 +144,7 @@ See
 =item RFC2060: "Internet Message Access Protocol IMAP4v1" section 7.4.2
 
 =item RFC2045: "MIME Part One: Format of Internet Message Bodies".
+
 =back
 
 
@@ -155,7 +157,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

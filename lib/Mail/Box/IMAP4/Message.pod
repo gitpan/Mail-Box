@@ -46,26 +46,26 @@ Mail::Box::IMAP4::Message-E<gt>B<new>(OPTIONS)
 
 =over 4
 
- Option        Defined in       Default                                                       
- body          L<Mail::Message>  undef                                                         
- body_type     L<Mail::Box::Message>  L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>      
- cache_body                     <false>                                                       
- cache_head                     <false>                                                       
- cache_labels                   <false>                                                       
- deleted       L<Mail::Message>  <false>                                                       
- field_type    L<Mail::Message>  undef                                                         
- folder        L<Mail::Box::Message>  <required>                                                    
- head          L<Mail::Message>  undef                                                         
+-Option      --Defined in     --Default
+ body          L<Mail::Message>  undef
+ body_type     L<Mail::Box::Message>  L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>
+ cache_body                     <false>
+ cache_head                     <false>
+ cache_labels                   <false>
+ deleted       L<Mail::Message>  <false>
+ field_type    L<Mail::Message>  undef
+ folder        L<Mail::Box::Message>  <required>
+ head          L<Mail::Message>  undef
  head_type     L<Mail::Message>  L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>
- labels        L<Mail::Message>  {}                                                            
- log           L<Mail::Reporter>  C<'WARNINGS'>                                                 
- messageId     L<Mail::Message>  undef                                                         
- modified      L<Mail::Message>  <false>                                                       
- size          L<Mail::Box::Message>  undef                                                         
- trace         L<Mail::Reporter>  C<'WARNINGS'>                                                 
- trusted       L<Mail::Message>  <false>                                                       
- unique        L<Mail::Box::Net::Message>  <unique string>                                               
- write_labels                   <true>                                                        
+ labels        L<Mail::Message>  {}
+ log           L<Mail::Reporter>  C<'WARNINGS'>
+ messageId     L<Mail::Message>  undef
+ modified      L<Mail::Message>  <false>
+ size          L<Mail::Box::Message>  undef
+ trace         L<Mail::Reporter>  C<'WARNINGS'>
+ trusted       L<Mail::Message>  <false>
+ unique        L<Mail::Box::Net::Message>  <unique string>
+ write_labels                   <true>
 
 . body OBJECT
 
@@ -935,6 +935,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Cannot include forward source as $include.
@@ -1060,7 +1061,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

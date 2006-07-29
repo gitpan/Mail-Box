@@ -12,6 +12,7 @@ Mail::Message::Wrapper::SpamAssassin - Connect a Mail::Message with Mail::SpamAs
 
 =head1 SYNOPSIS
 
+ # WARNING: requires OLD SpamAssassion 2.x, not the new 3.x
  # See Mail::Box::Search::SpamAssassin for the prefered interface
  # However, it is possible to do:
 
@@ -26,10 +27,13 @@ Mail::Message::Wrapper::SpamAssassin - Connect a Mail::Message with Mail::SpamAs
 
 =head1 DESCRIPTION
 
-The C<Mail::Message::Wrapper::SpamAssassin>
-class --sorry for the long package
-name-- is a wrapper around Mail::SpamAssassin::Message, which is an
-interface to the spam checking software of Mail::SpamAssassin.
+WARNING: This module only works with the old version of SpamAssassin:
+version 2.x.  The newer 3.x releases have changed the way that messages
+are kept. Please contribute improved code.
+
+The C<Mail::Message::Wrapper::SpamAssassin> class --sorry for the
+long package name-- is a wrapper around Mail::SpamAssassin::Message, which
+is an interface to the spam checking software of Mail::SpamAssassin.
 
 
 
@@ -53,13 +57,14 @@ removed first.
 
 
 
+
 =head1 REFERENCES
 
 See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

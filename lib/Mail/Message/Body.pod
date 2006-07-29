@@ -147,21 +147,21 @@ already in place.  The options will not trigger conversions.  When you
 need conversions, first create a body with options which tell what you've
 got, and then call L<encode()|Mail::Message::Body::Encode/"Constructing a body"> for what you need.
 
- Option             Defined in       Default        
- based_on                            undef          
- charset                             C<'us-ascii'>  
- checked                             <false>        
- data                                undef          
- description                         undef          
- disposition                         undef          
- eol                                 C<'NATIVE'>    
- file                                undef          
- log                L<Mail::Reporter>  C<'WARNINGS'>  
- message                             undef          
+-Option           --Defined in     --Default
+ based_on                            undef
+ charset                             C<'us-ascii'>
+ checked                             <false>
+ data                                undef
+ description                         undef
+ disposition                         undef
+ eol                                 C<'NATIVE'>
+ file                                undef
+ log                L<Mail::Reporter>  C<'WARNINGS'>
+ message                             undef
  mime_type                           C<'text/plain'>
- modified                            <false>        
- trace              L<Mail::Reporter>  C<'WARNINGS'>  
- transfer_encoding                   C<'none'>      
+ modified                            <false>
+ trace              L<Mail::Reporter>  C<'WARNINGS'>
+ transfer_encoding                   C<'none'>
 
 . based_on BODY
 
@@ -374,7 +374,7 @@ is equivalent with
 The C<$dec> which is returned is a body.  Ask with the L<mimeType()|Mail::Message::Body/"About the payload"> method
 what is produced.  This C<$dec> body is B<not related to a header>.
 
- Option       Defined in  Default          
+-Option     --Defined in--Default
  result_type              <same as current>
 
 . result_type CLASS
@@ -743,7 +743,7 @@ $obj-E<gt>B<write>(OPTIONS)
 Write the content of the body to a file.  Be warned that you may want to
 decode the body before writing it!
 
- Option    Defined in  Default   
+-Option  --Defined in--Default
  filename              <required>
 
 . filename FILENAME
@@ -1008,6 +1008,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Warning:> No decoder defined for transfer encoding $name.
@@ -1133,7 +1134,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

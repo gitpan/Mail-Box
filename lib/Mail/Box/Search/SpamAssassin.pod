@@ -67,21 +67,21 @@ maintained.
 Only the whole message can be searched; this is a limitation of
 the Mail::SpamAssassin module.
 
- Option         Defined in       Default      
- binaries       L<Mail::Box::Search>  <false>      
- decode         L<Mail::Box::Search>  <true>       
- delayed        L<Mail::Box::Search>  <true>       
- deleted        L<Mail::Box::Search>  <false>      
- deliver        L<Mail::Box::Search>  undef        
- in             L<Mail::Box::Search>  C<'MESSAGE'> 
- label                           c<'spam'>    
- limit          L<Mail::Box::Search>  C<0>         
+-Option       --Defined in     --Default
+ binaries       L<Mail::Box::Search>  <false>
+ decode         L<Mail::Box::Search>  <true>
+ delayed        L<Mail::Box::Search>  <true>
+ deleted        L<Mail::Box::Search>  <false>
+ deliver        L<Mail::Box::Search>  undef
+ in             L<Mail::Box::Search>  C<'MESSAGE'>
+ label                           c<'spam'>
+ limit          L<Mail::Box::Search>  C<0>
  log            L<Mail::Reporter>  C<'WARNINGS'>
- logical        L<Mail::Box::Search>  C<'REPLACE'> 
- multiparts     L<Mail::Box::Search>  <true>       
- rewrite_mail                    <true>       
- sa_options                      C<{ }>       
- spam_assassin                   undef        
+ logical        L<Mail::Box::Search>  C<'REPLACE'>
+ multiparts     L<Mail::Box::Search>  <true>
+ rewrite_mail                    <true>
+ sa_options                      C<{ }>
+ spam_assassin                   undef
  trace          L<Mail::Reporter>  C<'WARNINGS'>
 
 . binaries BOOLEAN
@@ -333,6 +333,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Package $package does not implement $method.
@@ -354,7 +355,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

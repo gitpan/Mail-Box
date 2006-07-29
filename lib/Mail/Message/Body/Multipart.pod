@@ -85,25 +85,25 @@ Mail::Message::Body::Multipart-E<gt>B<new>(OPTIONS)
 
 =over 4
 
- Option             Defined in       Default             
- based_on           L<Mail::Message::Body>  undef               
- boundary                            undef               
- charset            L<Mail::Message::Body>  C<'us-ascii'>       
- checked            L<Mail::Message::Body>  <false>             
- data               L<Mail::Message::Body>  undef               
- description        L<Mail::Message::Body>  undef               
- disposition        L<Mail::Message::Body>  undef               
- eol                L<Mail::Message::Body>  C<'NATIVE'>         
- epilogue                            undef               
- file               L<Mail::Message::Body>  undef               
- log                L<Mail::Reporter>  C<'WARNINGS'>       
- message            L<Mail::Message::Body>  undef               
+-Option           --Defined in     --Default
+ based_on           L<Mail::Message::Body>  undef
+ boundary                            undef
+ charset            L<Mail::Message::Body>  C<'us-ascii'>
+ checked            L<Mail::Message::Body>  <false>
+ data               L<Mail::Message::Body>  undef
+ description        L<Mail::Message::Body>  undef
+ disposition        L<Mail::Message::Body>  undef
+ eol                L<Mail::Message::Body>  C<'NATIVE'>
+ epilogue                            undef
+ file               L<Mail::Message::Body>  undef
+ log                L<Mail::Reporter>  C<'WARNINGS'>
+ message            L<Mail::Message::Body>  undef
  mime_type          L<Mail::Message::Body>  C<'multipart/mixed'>
- modified           L<Mail::Message::Body>  <false>             
- parts                               undef               
- preamble                            undef               
- trace              L<Mail::Reporter>  C<'WARNINGS'>       
- transfer_encoding  L<Mail::Message::Body>  C<'none'>           
+ modified           L<Mail::Message::Body>  <false>
+ parts                               undef
+ preamble                            undef
+ trace              L<Mail::Reporter>  C<'WARNINGS'>
+ transfer_encoding  L<Mail::Message::Body>  C<'none'>
 
 . based_on BODY
 
@@ -279,11 +279,13 @@ I<Example:>
 
 =back
 
-$obj-E<gt>B<foreachLine>(CODE)
+$obj-E<gt>B<foreachLine>((CODE))
 
 =over 4
 
-See L<Mail::Message::Body::Construct/"Constructing a body">
+It is NOT possible to call some code for each line of a multipart,
+because that would not only inflict damage to the body of each
+message part, but also to the headers and the part separators.
 
 =back
 
@@ -297,9 +299,9 @@ returned, containing the remaining parts.  No OPTIONS are defined yet,
 although some may be specified, because this method overrules the
 C<stripSignature> method for normal bodies.
 
- Option       Defined in       Default          
- max_lines    L<Mail::Message::Body::Construct>  C<10>            
- pattern      L<Mail::Message::Body::Construct>  C<qr/^--\s?$/>   
+-Option     --Defined in     --Default
+ max_lines    L<Mail::Message::Body::Construct>  C<10>
+ pattern      L<Mail::Message::Body::Construct>  C<qr/^--\s?$/>
  result_type  L<Mail::Message::Body::Construct>  <same as current>
 
 . max_lines INTEGER|undef
@@ -800,6 +802,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Data not convertible to a message (type is $type)
@@ -830,6 +833,12 @@ I<Error:> Unknown criterium $what to select parts.
 Valid choices fdr part selections are C<ALL>, C<ACTIVE>, C<DELETED>,
 C<RECURSE> or a code reference.  However, some other argument was passed.
 
+I<Error:> You cannot use foreachLine on a multipart
+
+L<foreachLine()|Mail::Message::Body::Multipart/"METHODS"> should be used on decoded message bodies only, because
+it would attempt to modify part-headers and separators as well, which is
+clearly not acceptible.
+
 
 =head1 DETAILS
 
@@ -844,7 +853,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

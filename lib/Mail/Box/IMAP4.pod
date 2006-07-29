@@ -78,42 +78,42 @@ Without folder name, no folder is selected.  Only few methods are
 available now, for instance L<listSubFolders()|Mail::Box/"Sub-folders"> to get the top-level
 folder names.  Usually, the folder named C<INBOX> will be present.
 
- Option             Defined in       Default                                                                                                           
- access             L<Mail::Box>     'r'                                                                                                               
- body_delayed_type  L<Mail::Box>     L<Mail::Message::Body::Delayed|Mail::Message::Body::Delayed>                                                      
- body_type          L<Mail::Box>     L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>                                                          
- cache_body                          C<NO>                                                                                                             
- cache_head                          C<NO> or C<DELAY>                                                                                                 
- cache_labels                        C<NO> or C<DELAY>                                                                                                 
- coerce_options     L<Mail::Box>     C<[]>                                                                                                             
- create             L<Mail::Box>     <false>                                                                                                           
- extract            L<Mail::Box>     C<10240>                                                                                                          
- field_type         L<Mail::Box>     undef                                                                                                             
- fix_headers        L<Mail::Box>     <false>                                                                                                           
- folder             L<Mail::Box>     C</>                                                                                                              
- folderdir          L<Mail::Box>     <not used>                                                                                                        
- head_delayed_type  L<Mail::Box>     L<Mail::Message::Head::Delayed|Mail::Message::Head::Delayed>                                                      
+-Option           --Defined in     --Default
+ access             L<Mail::Box>     'r'
+ body_delayed_type  L<Mail::Box>     L<Mail::Message::Body::Delayed|Mail::Message::Body::Delayed>
+ body_type          L<Mail::Box>     L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>
+ cache_body                          C<NO>
+ cache_head                          C<NO> or C<DELAY>
+ cache_labels                        C<NO> or C<DELAY>
+ coerce_options     L<Mail::Box>     C<[]>
+ create             L<Mail::Box>     <false>
+ extract            L<Mail::Box>     C<10240>
+ field_type         L<Mail::Box>     undef
+ fix_headers        L<Mail::Box>     <false>
+ folder             L<Mail::Box>     C</>
+ folderdir          L<Mail::Box>     <not used>
+ head_delayed_type  L<Mail::Box>     L<Mail::Message::Head::Delayed|Mail::Message::Head::Delayed>
  head_type          L<Mail::Box>     L<Mail::Box::IMAP4::Head|Mail::Box::IMAP4::Head> or L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>
- join_connection                     C<true>                                                                                                           
- keep_dups          L<Mail::Box>     <false>                                                                                                           
- lock_file          L<Mail::Box>     undef                                                                                                             
- lock_timeout       L<Mail::Box>     1 hour                                                                                                            
- lock_type          L<Mail::Box>     C<'NONE'>                                                                                                         
- lock_wait          L<Mail::Box>     10 seconds                                                                                                        
- locker             L<Mail::Box>     undef                                                                                                             
- log                L<Mail::Reporter>  C<'WARNINGS'>                                                                                                     
- manager            L<Mail::Box>     undef                                                                                                             
- message_type       L<Mail::Box>     L<Mail::Box::IMAP4::Message|Mail::Box::IMAP4::Message>                                                            
- multipart_type     L<Mail::Box>     L<Mail::Message::Body::Multipart|Mail::Message::Body::Multipart>                                                  
- password           L<Mail::Box::Net>  undef                                                                                                             
- remove_when_empty  L<Mail::Box>     <false>                                                                                                           
- save_on_exit       L<Mail::Box>     <true>                                                                                                            
- server_name        L<Mail::Box::Net>  undef                                                                                                             
- server_port        L<Mail::Box::Net>  143                                                                                                               
- trace              L<Mail::Reporter>  C<'WARNINGS'>                                                                                                     
- transporter                         L<Mail::Transport::IMAP4|Mail::Transport::IMAP4>                                                                  
- trusted            L<Mail::Box>     <false>                                                                                                           
- username           L<Mail::Box::Net>  undef                                                                                                             
+ join_connection                     C<true>
+ keep_dups          L<Mail::Box>     <false>
+ lock_file          L<Mail::Box>     undef
+ lock_timeout       L<Mail::Box>     1 hour
+ lock_type          L<Mail::Box>     C<'NONE'>
+ lock_wait          L<Mail::Box>     10 seconds
+ locker             L<Mail::Box>     undef
+ log                L<Mail::Reporter>  C<'WARNINGS'>
+ manager            L<Mail::Box>     undef
+ message_type       L<Mail::Box>     L<Mail::Box::IMAP4::Message|Mail::Box::IMAP4::Message>
+ multipart_type     L<Mail::Box>     L<Mail::Message::Body::Multipart|Mail::Message::Body::Multipart>
+ password           L<Mail::Box::Net>  undef
+ remove_when_empty  L<Mail::Box>     <false>
+ save_on_exit       L<Mail::Box>     <true>
+ server_name        L<Mail::Box::Net>  undef
+ server_port        L<Mail::Box::Net>  143
+ trace              L<Mail::Reporter>  C<'WARNINGS'>
+ transporter                         L<Mail::Transport::IMAP4|Mail::Transport::IMAP4>
+ trusted            L<Mail::Box>     <false>
+ username           L<Mail::Box::Net>  undef
 
 . access MODE
 
@@ -317,9 +317,9 @@ the connection to the server.  Only when no folder is using the
 connection anymore, a logout will be invoked by
 L<Mail::Transport::IMAP4::DESTROY()|Mail::Transport::IMAP4/"Cleanup">
 
- Option        Defined in       Default    
- force         L<Mail::Box>     <false>    
- save_deleted  L<Mail::Box>     C<false>   
+-Option      --Defined in     --Default
+ force         L<Mail::Box>     <false>
+ save_deleted  L<Mail::Box>     C<false>
  write         L<Mail::Box>     C<MODIFIED>
 
 . force BOOLEAN
@@ -597,7 +597,7 @@ CLASS defines the exact object type.  As OPTIONS, everything which is
 acceptable to a transporter initiation can be used (see
 L<Mail::Transport::IMAP4::new()|Mail::Transport::IMAP4/"METHODS">.
 
- Option           Defined in  Default
+-Option         --Defined in--Default
  join_connection              C<true>
 
 . join_connection BOOLEAN
@@ -750,7 +750,7 @@ because that's what the protocol wants.  However, some options to L<new()|Mail::
 may delay that to boost performance.  This method will, when the folder is
 being closed, write that info after all.
 
- Option        Defined in       Default
+-Option      --Defined in     --Default
  force         L<Mail::Box>     <false>
  save_deleted                   <false>
 
@@ -771,7 +771,7 @@ $obj-E<gt>B<writeMessages>(OPTIONS)
 
 =over 4
 
- Option       Defined in       Default   
+-Option     --Defined in     --Default
  messages     L<Mail::Box>     <required>
  transporter                   <required>
 
@@ -920,6 +920,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Warning:> Cannot find head back for $uidl in $folder.
@@ -937,6 +938,9 @@ I<Error:> Copying failed for one message.
 For some reason, for instance disc full, removed by external process, or
 read-protection, it is impossible to copy one of the messages.  Copying will
 proceed for the other messages.
+
+I<Error:> Couldn't select IMAP4 folder $name
+
 
 I<Error:> Destination folder $name is not writable.
 
@@ -985,6 +989,9 @@ then an C<@>, and then a domain name.  This is made to avoid the creation
 of two messages with the same id.  The warning emerges when the C<@> is
 missing from the string.
 
+I<Error:> No IMAP4 transporter configured
+
+
 I<Error:> Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
@@ -1015,7 +1022,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

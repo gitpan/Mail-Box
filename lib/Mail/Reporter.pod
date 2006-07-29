@@ -40,7 +40,7 @@ This error container is also the base constructor for all modules, (as long
 as there is no need for an other base object)  The constructor always accepts
 the following OPTIONS related to error reports.
 
- Option  Defined in       Default      
+-Option--Defined in     --Default
  log                      C<'WARNINGS'>
  trace                    C<'WARNINGS'>
 
@@ -336,6 +336,7 @@ where during global destructions references cannot be used.
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Package $package does not implement $method.
@@ -357,7 +358,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

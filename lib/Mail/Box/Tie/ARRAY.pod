@@ -155,6 +155,7 @@ Sets all messages behind from LENGTH to the end of folder to be deleted.
 
 
 
+
 =head1 DETAILS
 
 
@@ -180,7 +181,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

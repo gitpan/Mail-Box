@@ -54,21 +54,21 @@ Mail::Box::Message::Destructed-E<gt>B<new>(MESSAGE-ID, OPTIONS)
 You cannot instantiate a destructed message object.  Destruction is
 done by calling L<Mail::Box::Message::destruct()|Mail::Box::Message/"Cleanup">.
 
- Option      Defined in       Default                                                       
- body        L<Mail::Message>  undef                                                         
- body_type   L<Mail::Box::Message>  <from folder>                                                 
- deleted     L<Mail::Message>  <false>                                                       
- field_type  L<Mail::Message>  undef                                                         
- folder      L<Mail::Box::Message>  <required>                                                    
- head        L<Mail::Message>  undef                                                         
+-Option    --Defined in     --Default
+ body        L<Mail::Message>  undef
+ body_type   L<Mail::Box::Message>  <from folder>
+ deleted     L<Mail::Message>  <false>
+ field_type  L<Mail::Message>  undef
+ folder      L<Mail::Box::Message>  <required>
+ head        L<Mail::Message>  undef
  head_type   L<Mail::Message>  L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>
- labels      L<Mail::Message>  {}                                                            
- log         L<Mail::Reporter>  C<'WARNINGS'>                                                 
- messageId   L<Mail::Message>  undef                                                         
- modified    L<Mail::Message>  <false>                                                       
- size        L<Mail::Box::Message>  undef                                                         
- trace       L<Mail::Reporter>  C<'WARNINGS'>                                                 
- trusted     L<Mail::Message>  <false>                                                       
+ labels      L<Mail::Message>  {}
+ log         L<Mail::Reporter>  C<'WARNINGS'>
+ messageId   L<Mail::Message>  undef
+ modified    L<Mail::Message>  <false>
+ size        L<Mail::Box::Message>  undef
+ trace       L<Mail::Reporter>  C<'WARNINGS'>
+ trusted     L<Mail::Message>  <false>
 
 . body OBJECT
 
@@ -865,6 +865,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Cannot coerce a (class) into destruction
@@ -962,7 +963,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

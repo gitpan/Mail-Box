@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Server::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.065';
+$VERSION = '2.066';
 use base 'Mail::Server';
 
 use Mail::Server::IMAP4::List;

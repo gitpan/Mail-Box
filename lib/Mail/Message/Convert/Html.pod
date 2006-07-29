@@ -40,12 +40,12 @@ Mail::Message::Convert::Html-E<gt>B<new>(OPTIONS)
 
 =over 4
 
- Option       Defined in       Default          
+-Option     --Defined in     --Default
  fields       L<Mail::Message::Convert>  <see description>
- head_mailto                   <true>           
- log          L<Mail::Reporter>  C<'WARNINGS'>    
- produce                       C<HTML>          
- trace        L<Mail::Reporter>  C<'WARNINGS'>    
+ head_mailto                   <true>
+ log          L<Mail::Reporter>  C<'WARNINGS'>
+ produce                       C<HTML>
+ trace        L<Mail::Reporter>  C<'WARNINGS'>
 
 . fields NAMES|ARRAY-OF-NAMES|REGEXS
 
@@ -286,6 +286,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Package $package does not implement $method.
@@ -307,7 +308,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

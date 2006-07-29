@@ -55,16 +55,16 @@ L<Mail::Box::Manager|Mail::Box::Manager>.  One manager can produce more than one
 objects.  One thread manager can combine messages from a set of folders,
 which may be partially overlapping with other objects of the same type.
 
- Option       Defined in       Default                                           
- dummy_type                    L<Mail::Message::Dummy|Mail::Message::Dummy>      
- folder                        C<[ ]>                                            
- folders                       C<[ ]>                                            
- log          L<Mail::Reporter>  C<'WARNINGS'>                                     
- thread_body                   <false>                                           
+-Option     --Defined in     --Default
+ dummy_type                    L<Mail::Message::Dummy|Mail::Message::Dummy>
+ folder                        C<[ ]>
+ folders                       C<[ ]>
+ log          L<Mail::Reporter>  C<'WARNINGS'>
+ thread_body                   <false>
  thread_type                   L<Mail::Box::Thread::Node|Mail::Box::Thread::Node>
- timespan                      C<'3 days'>                                       
- trace        L<Mail::Reporter>  C<'WARNINGS'>                                     
- window                        C<10>                                             
+ timespan                      C<'3 days'>
+ trace        L<Mail::Reporter>  C<'WARNINGS'>
+ window                        C<10>
 
 . dummy_type CLASS
 
@@ -462,6 +462,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Package $package does not implement $method.
@@ -568,7 +569,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

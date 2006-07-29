@@ -3,11 +3,17 @@ use warnings;
 
 package Mail::Message::Wrapper::SpamAssassin;
 use vars '$VERSION';
-$VERSION = '2.065';
+$VERSION = '2.066';
 use base 'Mail::SpamAssassin::Message';
 
 use Carp;
 use Mail::Message::Body;
+
+BEGIN
+{   my $v = $Mail::SpamAssassin::VERSION;
+    die "ERROR: spam-assassin version $v is not supported (only versions 2.x)\n"
+       if $v >= 3.0;
+}
 
 #------------------------------------------
 

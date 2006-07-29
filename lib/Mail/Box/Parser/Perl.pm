@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Box::Parser::Perl;
 use vars '$VERSION';
-$VERSION = '2.065';
+$VERSION = '2.066';
 use base 'Mail::Box::Parser';
 
 use Mail::Message::Field;
@@ -46,7 +46,7 @@ sub filePosition(;$)
     @_ ? $self->{MBPP_file}->seek(shift, 0) : $self->{MBPP_file}->tell;
 }
 
-my $empty = qr/^[\015\012]*\z/;
+my $empty = qr/^\015?\012?$/;
 
 #------------------------------------------
 
@@ -61,7 +61,7 @@ sub readHeader()
 
 LINE:
     while(defined $line)
-    {   last if $line =~ $empty;
+    {   last LINE if $line =~ $empty;
         my ($name, $body) = split /\s*\:\s*/, $line, 2;
 
         unless(defined $body)

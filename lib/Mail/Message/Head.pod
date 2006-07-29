@@ -120,12 +120,12 @@ the fields may be stored differently internally.
 If you try to instantiate a L<Mail::Message::Head|Mail::Message::Head>, you will automatically
 be upgraded to a L<Mail::Message::Head::Complete|Mail::Message::Head::Complete> --a full head.
 
- Option      Defined in       Default                                                 
+-Option    --Defined in     --Default
  field_type                   L<Mail::Message::Field::Fast|Mail::Message::Field::Fast>
- log         L<Mail::Reporter>  C<'WARNINGS'>                                           
- message                      undef                                                   
- modified                     <false>                                                 
- trace       L<Mail::Reporter>  C<'WARNINGS'>                                           
+ log         L<Mail::Reporter>  C<'WARNINGS'>
+ message                      undef
+ modified                     <false>
+ trace       L<Mail::Reporter>  C<'WARNINGS'>
 
 . field_type CLASS
 
@@ -495,6 +495,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Package $package does not implement $method.
@@ -591,8 +592,8 @@ number of lines are added.
 
 A set of fields which contains header fields which are produced by
 spam detection software.  You may want to remove these fields when
-
 you store a message for a longer period of time.
+
 =back
 
 
@@ -605,7 +606,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

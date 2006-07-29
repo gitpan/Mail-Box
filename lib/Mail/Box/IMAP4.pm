@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.065';
+$VERSION = '2.066';
 use base 'Mail::Box::Net';
 
 use Mail::Box::IMAP4::Message;
@@ -21,11 +21,29 @@ use Scalar::Util 'weaken';
 sub init($)
 {   my ($self, $args) = @_;
 
-    # Need some prediction for correct defaults
+    my $folder = $args->{folder};
+
+    # MailBox names top folder directory '=', but IMAP needs '/'
+    $folder = '/'
+       if $folder eq '=';
+
+    # There's a disconnect between the URL parser and this code.
+    # The URL parser always produces a full path (beginning with /)
+    # while this code expects to NOT get a full path.  So, we'll
+    # trim the / from the front of the path.
+    # Also, this code can't handle a trailing slash and there's
+    # no reason to ever offer one.  Strip that too.
+    if($folder ne '/')
+    {   $folder =~ s#^/+##g;
+        $folder =~ s#/+$##g;
+    }
+
+    $args->{folder} = $folder;
+
     my $access    = $args->{access} ||= 'r';
     my $writeable = $access =~ m/w|a/;
     my $ch        = $self->{MBI_c_head}
-      = $args->{cache_head} || ($writeable ? 'NO' : 'DELAY');
+       = $args->{cache_head} || ($writeable ? 'NO' : 'DELAY');
 
     $args->{head_type} ||= 'Mail::Box::IMAP4::Head'
        if $ch eq 'NO' || $ch eq 'PARTIAL';
@@ -42,21 +60,29 @@ sub init($)
 
 
     my $transport = $args->{transporter} || 'Mail::Transport::IMAP4';
-    unless(ref $transport)
-    {   $transport = $self->createTransporter($transport, %$args)
-	    or return undef;
-    }
+    $transport = $self->createTransporter($transport, %$args)
+       unless ref $transport;
 
-    $self->transporter($transport);
-    $self;
+    defined $transport
+       or return;
+
+      $args->{create}
+    ? $self->create($transport, $args)
+    : $self;
 }
 
 #-------------------------------------------
 
 sub create($@)
-{   my ($class, %args) =  @_;
-    $class->log(INTERNAL => "Folder creation for IMAP4 not implemented yet");
-    undef;
+{   my($self, $name, $args) =  @_;
+
+    if($args->{access} !~ /w|a/)
+    {   $self->log(ERROR =>
+           "You must have write access to create folder $name.");
+        return undef;
+    }
+
+    $self->transporter->createFolder($name);
 }
 
 #-------------------------------------------
@@ -111,6 +137,8 @@ sub readMessages(@)
     return $self if $name eq '/';
 
     my $imap  = $self->transporter;
+    defined $imap or return ();
+
     my @log   = $self->logSettings;
     my $seqnr = 0;
 
@@ -120,6 +148,9 @@ sub readMessages(@)
     my $ch    = $self->{MBI_c_head};
     my $ht    = $ch eq 'DELAY' ? $args{head_delayed_type} : $args{head_type};
     my @ho    = $ch eq 'PARTIAL' ? (cache_fields => 1) : ();
+
+    $self->{MBI_selectable}
+        or return $self;
 
     foreach my $id ($imap->ids)
     {   my $head    = $ht->new(@log, @ho);
@@ -292,7 +323,7 @@ sub createTransporter($@)
         weaken($transporters{$linkid});
     }
 
-    $transporter;
+    $self->transporter($transporter);
 }
 
 #-------------------------------------------
@@ -300,13 +331,29 @@ sub createTransporter($@)
 
 sub transporter(;$)
 {   my $self = shift;
-    my $imap = @_ ? ($self->{MBI_transport} = shift) : $self->{MBI_transport};
-    return unless defined $imap;
+
+    my $imap;
+    if(@_)
+    {   $imap = $self->{MBI_transport} = shift;
+        defined $imap or return;
+    }
+    else
+    {   $imap = $self->{MBI_transport};
+    }
+
+    unless(defined $imap)
+    {   $self->log(ERROR => "No IMAP4 transporter configured");
+        return undef;
+    }
 
     my $name = $self->name;
-    $imap->folder($name) unless $name eq '/';
 
-    $imap;
+    $self->{MBI_selectable} = $imap->currentFolder($name);
+    return $imap
+        if defined $self->{MBI_selectable};
+
+    $self->log(ERROR => "Couldn't select IMAP4 folder $name");
+    undef;
 }
 
 #-------------------------------------------

@@ -7,7 +7,7 @@ Mail::Box::Identity - represents an unopened folder
 =head1 INHERITANCE
 
  Mail::Box::Identity
-   is a User::Identity::Item
+   is an User::Identity::Item
 
  Mail::Box::Identity
    is a Mail::Reporter
@@ -49,20 +49,20 @@ Mail::Box::Identity-E<gt>B<new>([NAME], OPTIONS)
 
 =over 4
 
- Option       Defined in       Default                        
- deleted                       <false>                        
- description  L<User::Identity::Item>  undef                          
- folder_type                   C<from parent>                 
- inferiors                     1                              
- location                      C<undef>                       
- log          L<Mail::Reporter>  C<'WARNINGS'>                  
- manager                       <from parent>                  
- marked                        C<undef>                       
- name         L<User::Identity::Item>  <required>                     
+-Option     --Defined in     --Default
+ deleted                       <false>
+ description  L<User::Identity::Item>  undef
+ folder_type                   C<from parent>
+ inferiors                     1
+ location                      C<undef>
+ log          L<Mail::Reporter>  C<'WARNINGS'>
+ manager                       <from parent>
+ marked                        C<undef>
+ name         L<User::Identity::Item>  <required>
  only_subs                     <foldertype and name dependent>
- parent       L<User::Identity::Item>  C<undef>                       
- subf_type                     <same as parent>               
- trace        L<Mail::Reporter>  C<'WARNINGS'>                  
+ parent       L<User::Identity::Item>  C<undef>
+ subf_type                     <same as parent>
+ trace        L<Mail::Reporter>  C<'WARNINGS'>
 
 . deleted BOOLEAN
 
@@ -539,6 +539,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> $object is not a collection.
@@ -605,7 +606,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

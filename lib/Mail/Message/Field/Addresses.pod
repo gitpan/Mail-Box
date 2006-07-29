@@ -125,13 +125,13 @@ Mail::Message::Field::Addresses-E<gt>B<new>
 
 =over 4
 
- Option      Defined in       Default      
- attributes  L<Mail::Message::Field::Structured>  <ignored>    
- charset     L<Mail::Message::Field::Full>  undef        
- datum       L<Mail::Message::Field::Structured>  C<undef>     
- encoding    L<Mail::Message::Field::Full>  C<'q'>       
- force       L<Mail::Message::Field::Full>  false        
- language    L<Mail::Message::Field::Full>  undef        
+-Option    --Defined in     --Default
+ attributes  L<Mail::Message::Field::Structured>  <ignored>
+ charset     L<Mail::Message::Field::Full>  undef
+ datum       L<Mail::Message::Field::Structured>  C<undef>
+ encoding    L<Mail::Message::Field::Full>  C<'q'>
+ force       L<Mail::Message::Field::Full>  false
+ language    L<Mail::Message::Field::Full>  undef
  log         L<Mail::Reporter>  C<'WARNINGS'>
  trace       L<Mail::Reporter>  C<'WARNINGS'>
 
@@ -307,8 +307,8 @@ no ADDRESS is specified, the option must be sufficient to create a
 L<Mail::Message::Field::Address|Mail::Message::Field::Address> from.  See the OPTIONS of
 L<Mail::Message::Field::Address::new()|Mail::Identity/"METHODS">.
 
- Option  Defined in  Default
- group               C<''>  
+-Option--Defined in--Default
+ group               C<''>
 
 . group STRING
 
@@ -330,8 +330,8 @@ Add a group of addresses to this field.  A GROUP can be specified, which
 is a L<Mail::Message::Field::AddrGroup|Mail::Message::Field::AddrGroup> object, or one is created for you
 using the OPTIONS.  The group is returned.
 
- Option  Defined in  Default
- name                C<''>  
+-Option--Defined in--Default
+ name                C<''>
 
 . name STRING
 
@@ -740,6 +740,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Warning:> Field content is not numerical: $content
@@ -798,7 +799,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

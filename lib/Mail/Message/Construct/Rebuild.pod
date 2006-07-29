@@ -46,9 +46,9 @@ Reconstructing is a hazardous task, where multi level multiparts and
 nested messages come into play.  The rebuild method tries to simplify
 handing these messages for you.
 
- Option           Defined in       Default   
- extra_rules                       []        
- keep_message_id                   <false>   
+-Option         --Defined in     --Default
+ extra_rules                       []
+ keep_message_id                   <false>
  rules                             <see text>
 
 . extra_rules ARRAY
@@ -117,7 +117,7 @@ $obj-E<gt>B<recursiveRebuildPart>(PART, OPTIONS)
 
 =over 4
 
- Option  Defined in  Default   
+-Option--Defined in--Default
  rules               <required>
 
 . rules ARRAY-OF-RULES
@@ -139,6 +139,7 @@ stop it.
 =back
 
 =back
+
 
 
 
@@ -296,7 +297,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

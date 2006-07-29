@@ -84,19 +84,19 @@ Mail::Transport::Send-E<gt>B<new>(OPTIONS)
 
 =over 4
 
- Option      Defined in       Default       
- executable  L<Mail::Transport>  C<undef>      
+-Option    --Defined in     --Default
+ executable  L<Mail::Transport>  C<undef>
  hostname    L<Mail::Transport>  C<'localhost'>
- interval    L<Mail::Transport>  C<30>         
- log         L<Mail::Reporter>  C<'WARNINGS'> 
- password    L<Mail::Transport>  undef         
- port        L<Mail::Transport>  undef         
- proxy       L<Mail::Transport>  undef         
- retry       L<Mail::Transport>  <false>       
- timeout     L<Mail::Transport>  C<120>        
- trace       L<Mail::Reporter>  C<'WARNINGS'> 
- username    L<Mail::Transport>  undef         
- via         L<Mail::Transport>  C<'sendmail'> 
+ interval    L<Mail::Transport>  C<30>
+ log         L<Mail::Reporter>  C<'WARNINGS'>
+ password    L<Mail::Transport>  undef
+ port        L<Mail::Transport>  undef
+ proxy       L<Mail::Transport>  undef
+ retry       L<Mail::Transport>  <false>
+ timeout     L<Mail::Transport>  C<120>
+ trace       L<Mail::Reporter>  C<'WARNINGS'>
+ username    L<Mail::Transport>  undef
+ via         L<Mail::Transport>  C<'sendmail'>
 
 . executable FILENAME
 
@@ -148,7 +148,7 @@ $obj-E<gt>B<putContent>(MESSAGE, FILEHANDLE, OPTIONS)
 
 Print the content of the MESSAGE to the FILEHANDLE.
 
- Option       Defined in       Default
+-Option     --Defined in     --Default
  body_only                     <false>
  undisclosed                   <false>
 
@@ -179,10 +179,10 @@ Transmit the MESSAGE, which may be anything what can be coerced into a
 L<Mail::Message|Mail::Message>, so including Mail::Internet and MIME::Entity
 messages.  It returns true when the transmission was successfully completed.
 
- Option    Defined in       Default                                   
+-Option  --Defined in     --Default
  interval                   L<new(interval)|Mail::Transport/"METHODS">
- retry                      L<new(retry)|Mail::Transport/"METHODS">   
- to                         C<undef>                                  
+ retry                      L<new(retry)|Mail::Transport/"METHODS">
+ to                         C<undef>
 
 . interval SECONDS
 
@@ -362,6 +362,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Warning:> Message has no destination
@@ -408,7 +409,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

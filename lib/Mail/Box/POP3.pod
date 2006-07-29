@@ -69,39 +69,39 @@ For authentications, you have three choices: specify a foldername which
 resembles an URL, or specify a pop-client object, or separate options
 for user, password, pop-server and server-port.
 
- Option             Defined in       Default                                                         
- access             L<Mail::Box>     C<'r'>                                                          
- authenticate                        C<'AUTO'>                                                       
- body_delayed_type  L<Mail::Box>     L<Mail::Message::Body::Delayed|Mail::Message::Body::Delayed>    
- body_type          L<Mail::Box>     L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>        
- coerce_options     L<Mail::Box>     C<[]>                                                           
- create             L<Mail::Box>     <not applicable>                                                
- extract            L<Mail::Box>     C<10240>                                                        
- field_type         L<Mail::Box>     undef                                                           
- fix_headers        L<Mail::Box>     <false>                                                         
- folder             L<Mail::Box>     <not applicable>                                                
- folderdir          L<Mail::Box>     <not used>                                                      
- head_delayed_type  L<Mail::Box>     L<Mail::Message::Head::Delayed|Mail::Message::Head::Delayed>    
- head_type          L<Mail::Box>     L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>  
- keep_dups          L<Mail::Box>     <false>                                                         
- lock_file          L<Mail::Box>     undef                                                           
- lock_timeout       L<Mail::Box>     1 hour                                                          
- lock_type          L<Mail::Box>     C<'NONE'>                                                       
- lock_wait          L<Mail::Box>     10 seconds                                                      
- locker             L<Mail::Box>     undef                                                           
- log                L<Mail::Reporter>  C<'WARNINGS'>                                                   
- manager            L<Mail::Box>     undef                                                           
- message_type       L<Mail::Box>     L<Mail::Box::POP3::Message|Mail::Box::POP3::Message>            
+-Option           --Defined in     --Default
+ access             L<Mail::Box>     C<'r'>
+ authenticate                        C<'AUTO'>
+ body_delayed_type  L<Mail::Box>     L<Mail::Message::Body::Delayed|Mail::Message::Body::Delayed>
+ body_type          L<Mail::Box>     L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>
+ coerce_options     L<Mail::Box>     C<[]>
+ create             L<Mail::Box>     <not applicable>
+ extract            L<Mail::Box>     C<10240>
+ field_type         L<Mail::Box>     undef
+ fix_headers        L<Mail::Box>     <false>
+ folder             L<Mail::Box>     <not applicable>
+ folderdir          L<Mail::Box>     <not used>
+ head_delayed_type  L<Mail::Box>     L<Mail::Message::Head::Delayed|Mail::Message::Head::Delayed>
+ head_type          L<Mail::Box>     L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>
+ keep_dups          L<Mail::Box>     <false>
+ lock_file          L<Mail::Box>     undef
+ lock_timeout       L<Mail::Box>     1 hour
+ lock_type          L<Mail::Box>     C<'NONE'>
+ lock_wait          L<Mail::Box>     10 seconds
+ locker             L<Mail::Box>     undef
+ log                L<Mail::Reporter>  C<'WARNINGS'>
+ manager            L<Mail::Box>     undef
+ message_type       L<Mail::Box>     L<Mail::Box::POP3::Message|Mail::Box::POP3::Message>
  multipart_type     L<Mail::Box>     L<Mail::Message::Body::Multipart|Mail::Message::Body::Multipart>
- password           L<Mail::Box::Net>  undef                                                           
- pop_client                          undef                                                           
- remove_when_empty  L<Mail::Box>     <false>                                                         
- save_on_exit       L<Mail::Box>     <true>                                                          
- server_name        L<Mail::Box::Net>  undef                                                           
- server_port        L<Mail::Box::Net>  110                                                             
- trace              L<Mail::Reporter>  C<'WARNINGS'>                                                   
- trusted            L<Mail::Box>     <false>                                                         
- username           L<Mail::Box::Net>  undef                                                           
+ password           L<Mail::Box::Net>  undef
+ pop_client                          undef
+ remove_when_empty  L<Mail::Box>     <false>
+ save_on_exit       L<Mail::Box>     <true>
+ server_name        L<Mail::Box::Net>  undef
+ server_port        L<Mail::Box::Net>  110
+ trace              L<Mail::Reporter>  C<'WARNINGS'>
+ trusted            L<Mail::Box>     <false>
+ username           L<Mail::Box::Net>  undef
 
 . access MODE
 
@@ -209,7 +209,7 @@ implemented (yet, patches welcome).
 C<undef> is returned, and an error displayed.  However, no complaint is
 given when the MESSAGE is C<undef> itself.
 
- Option  Defined in    Default   
+-Option--Defined in  --Default
  share   L<Mail::Box>  <not used>
 
 . share BOOLEAN
@@ -257,7 +257,7 @@ It is not possible to delete a POP3 folder remotely: the best we can do
 is remove all the messages in it... which is the action implemented here.
 A notice is logged about this.
 
- Option     Defined in    Default   
+-Option   --Defined in  --Default
  recursive  L<Mail::Box>  <not used>
 
 . recursive BOOLEAN
@@ -442,11 +442,11 @@ Mail::Box::POP3-E<gt>B<listSubFolders>(OPTIONS)
 The standard POP3 protocol does not support sub-folders, so an
 empty list will be returned in any case.
 
- Option      Defined in       Default              
- check       L<Mail::Box>     <false>              
+-Option    --Defined in     --Default
+ check       L<Mail::Box>     <false>
  folder      L<Mail::Box>     <from calling object>
- folderdir   L<Mail::Box>     <from folder>        
- skip_empty  L<Mail::Box>     <false>              
+ folderdir   L<Mail::Box>     <from folder>
+ skip_empty  L<Mail::Box>     <false>
 
 . check BOOLEAN
 
@@ -516,7 +516,7 @@ Mail::Box::POP3-E<gt>B<create>(FOLDER, OPTIONS)
 It is not possible to create a new folder on a POP3 server.  This method
 will always return C<false>.
 
- Option     Defined in    Default   
+-Option   --Defined in  --Default
  folderdir  L<Mail::Box>  <not used>
 
 . folderdir DIRECTORY
@@ -639,7 +639,7 @@ $obj-E<gt>B<writeMessages>(OPTIONS)
 
 =over 4
 
- Option    Defined in    Default   
+-Option  --Defined in  --Default
  messages  L<Mail::Box>  <required>
 
 . messages ARRAY
@@ -785,6 +785,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Cannot create POP3 client for $name.
@@ -923,7 +924,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

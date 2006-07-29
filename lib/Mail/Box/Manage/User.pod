@@ -49,20 +49,20 @@ Mail::Box::Manage::User-E<gt>B<new>(ARGS)
 Use L<new(default_folder_type)|Mail::Box::Manager/"METHODS"> to explicitly state which kind of folders
 you use.
 
- Option               Defined in       Default                                       
- autodetect           L<Mail::Box::Manager>  C<undef>                                      
+-Option             --Defined in     --Default
+ autodetect           L<Mail::Box::Manager>  C<undef>
  collection_type                       L<Mail::Box::Collection|Mail::Box::Collection>
- default_folder_type  L<Mail::Box::Manager>  C<'mbox'>                                     
- delimiter                             "/"                                           
- folder_id_type                        L<Mail::Box::Identity|Mail::Box::Identity>    
- folder_types         L<Mail::Box::Manager>  <all standard types>                          
- folderdir            L<Mail::Box::Manager>  C<[ '.' ]>                                    
- folderdirs           L<Mail::Box::Manager>  <synonym for C<folderdir>>                    
- identity                              <required>                                    
- inbox                                 C<undef>                                      
- log                  L<Mail::Reporter>  C<'WARNINGS'>                                 
- topfolder_name                        C<'='>                                        
- trace                L<Mail::Reporter>  C<'WARNINGS'>                                 
+ default_folder_type  L<Mail::Box::Manager>  C<'mbox'>
+ delimiter                             "/"
+ folder_id_type                        L<Mail::Box::Identity|Mail::Box::Identity>
+ folder_types         L<Mail::Box::Manager>  <all standard types>
+ folderdir            L<Mail::Box::Manager>  C<[ '.' ]>
+ folderdirs           L<Mail::Box::Manager>  <synonym for C<folderdir>>
+ identity                              <required>
+ inbox                                 C<undef>
+ log                  L<Mail::Reporter>  C<'WARNINGS'>
+ topfolder_name                        C<'='>
+ trace                L<Mail::Reporter>  C<'WARNINGS'>
 
 . autodetect TYPE|ARRAY-OF-TYPES
 
@@ -235,11 +235,11 @@ exists, a warning will be issued, and an empty list/undef returned.
 The OPTIONS are passed to L<Mail::Box::create()|Mail::Box/"Internals"> of your default folder
 type, except for the options intended for this method itself.
 
- Option         Defined in       Default
- create_real                     <true> 
+-Option       --Defined in     --Default
+ create_real                     <true>
  create_supers                   <false>
  deleted                         <false>
- id_options                      []     
+ id_options                      []
 
 . create_real BOOLEAN
 
@@ -291,7 +291,7 @@ which will call this method here.  OPTIONS, which are used for some
 other folder types, will be ignored here: the user's index contains the
 required details.
 
- Option     Defined in             Default           
+-Option   --Defined in           --Default
  recursive  L<Mail::Box::Manager>  <folder's default>
 
 . recursive BOOLEAN
@@ -327,7 +327,7 @@ $obj-E<gt>B<rename>(OLDNAME, NEWNAME, OPTIONS)
 Rename the folder with name OLDNAME to NEWNAME.  Both names are full
 pathnames.
 
- Option         Defined in  Default
+-Option       --Defined in--Default
  create_supers              <false>
 
 . create_supers BOOLEAN
@@ -540,6 +540,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Cannot create $name: higher levels missing
@@ -642,7 +643,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

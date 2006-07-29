@@ -57,21 +57,21 @@ Mail::Box::Search::Grep-E<gt>B<new>(OPTIONS)
 
 Create a UNIX-grep like search filter.
 
- Option      Defined in       Default                         
- binaries    L<Mail::Box::Search>  <false>                         
- decode      L<Mail::Box::Search>  <true>                          
- delayed     L<Mail::Box::Search>  <true>                          
- deleted     L<Mail::Box::Search>  <false>                         
- deliver                      undef                           
- field                        undef                           
+-Option    --Defined in     --Default
+ binaries    L<Mail::Box::Search>  <false>
+ decode      L<Mail::Box::Search>  <true>
+ delayed     L<Mail::Box::Search>  <true>
+ deleted     L<Mail::Box::Search>  <false>
+ deliver                      undef
+ field                        undef
  in          L<Mail::Box::Search>  <$field ? C<'HEAD'> : C<'BODY'>>
- label       L<Mail::Box::Search>  undef                           
- limit       L<Mail::Box::Search>  C<0>                            
- log         L<Mail::Reporter>  C<'WARNINGS'>                   
- logical     L<Mail::Box::Search>  C<'REPLACE'>                    
- match                        <required>                      
- multiparts  L<Mail::Box::Search>  <true>                          
- trace       L<Mail::Reporter>  C<'WARNINGS'>                   
+ label       L<Mail::Box::Search>  undef
+ limit       L<Mail::Box::Search>  C<0>
+ log         L<Mail::Reporter>  C<'WARNINGS'>
+ logical     L<Mail::Box::Search>  C<'REPLACE'>
+ match                        <required>
+ multiparts  L<Mail::Box::Search>  <true>
+ trace       L<Mail::Reporter>  C<'WARNINGS'>
 
 . binaries BOOLEAN
 
@@ -345,6 +345,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Package $package does not implement $method.
@@ -366,7 +367,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -82,24 +82,24 @@ OPTIONS which start with capitals will be used to construct additional
 fields.  These option names are prepended with C<Resent->, keeping the
 capitization of what is specified.
 
- Option        Defined in       Default                
- Bcc                            undef                  
- Cc                             undef                  
- Date                           <now>                  
- Delivered-To                   undef                  
- From                           <required>             
- Message-ID                     <uniquely created>     
- Received                       <created>              
- Return-Path                    undef                  
- Sender                         undef                  
- To                             undef                  
+-Option      --Defined in     --Default
+ Bcc                            undef
+ Cc                             undef
+ Date                           <now>
+ Delivered-To                   undef
+ From                           <required>
+ Message-ID                     <uniquely created>
+ Received                       <created>
+ Return-Path                    undef
+ Sender                         undef
+ To                             undef
  head                           <created automatically>
- log           L<Mail::Reporter>  C<'WARNINGS'>          
- message_head                   C<undef>               
- software      L<Mail::Message::Head::FieldGroup>  C<undef>               
- trace         L<Mail::Reporter>  C<'WARNINGS'>          
- type          L<Mail::Message::Head::FieldGroup>  C<undef>               
- version       L<Mail::Message::Head::FieldGroup>  C<undef>               
+ log           L<Mail::Reporter>  C<'WARNINGS'>
+ message_head                   C<undef>
+ software      L<Mail::Message::Head::FieldGroup>  C<undef>
+ trace         L<Mail::Reporter>  C<'WARNINGS'>
+ type          L<Mail::Message::Head::FieldGroup>  C<undef>
+ version       L<Mail::Message::Head::FieldGroup>  C<undef>
 
 . Bcc STRING|OBJECT|OBJECTS
 
@@ -613,6 +613,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Message header required for creation of ResentGroup.
@@ -641,7 +642,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

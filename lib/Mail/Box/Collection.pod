@@ -7,8 +7,8 @@ Mail::Box::Collection - a collection of subfolders
 =head1 INHERITANCE
 
  Mail::Box::Collection
-   is a User::Identity::Collection
-   is a User::Identity::Item
+   is an User::Identity::Collection
+   is an User::Identity::Item
 
  Mail::Box::Collection
    is a Mail::Reporter
@@ -56,16 +56,16 @@ Mail::Box::Collection-E<gt>B<new>([NAME], OPTIONS)
 
 =over 4
 
- Option       Defined in       Default                                   
- description  L<User::Identity::Item>  undef                                     
- folder_type                   <from parent>                             
+-Option     --Defined in     --Default
+ description  L<User::Identity::Item>  undef
+ folder_type                   <from parent>
  item_type    L<User::Identity::Collection>  L<Mail::Box::Identity|Mail::Box::Identity>
- log          L<Mail::Reporter>  C<'WARNINGS'>                             
- manager                       <from parent>                             
- name         L<User::Identity::Item>  C<'folders'>                              
- parent       L<User::Identity::Item>  C<undef>                                  
- roles        L<User::Identity::Collection>  undef                                     
- trace        L<Mail::Reporter>  C<'WARNINGS'>                             
+ log          L<Mail::Reporter>  C<'WARNINGS'>
+ manager                       <from parent>
+ name         L<User::Identity::Item>  C<'folders'>
+ parent       L<User::Identity::Item>  C<undef>
+ roles        L<User::Identity::Collection>  undef
+ trace        L<Mail::Reporter>  C<'WARNINGS'>
 
 . description STRING
 
@@ -379,6 +379,7 @@ See L<User::Identity::Collection/"Searching">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> $object is not a collection.
@@ -443,7 +444,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Box::IMAP4::Head;
 use vars '$VERSION';
-$VERSION = '2.065';
+$VERSION = '2.066';
 use base 'Mail::Message::Head';
 
 use Date::Parse;
@@ -35,9 +35,9 @@ sub get($;$)
 
     # Something here, playing with ENVELOPE, may improve the performance
     # as well.
-    my $imap   = $self->folder->transporter;
-
-    my @fields = $imap->getFields($name);
+    my $imap   = $self->message->folder->transporter;
+    my $uidl   = $self->message->unique;
+    my @fields = $imap->getFields($uidl, $name);
 
     if(@fields && $self->{MBIH_c_fields})
     {   $self->addNoRealize($_) for @fields

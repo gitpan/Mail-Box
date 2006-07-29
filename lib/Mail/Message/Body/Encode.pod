@@ -84,11 +84,11 @@ Encode (translate) a L<Mail::Message::Body|Mail::Message::Body> into a different
 See the DESCRIPTION above.  Options which are not specified will not trigger
 conversions.
 
- Option             Defined in       Default         
- charset                             undef           
- mime_type                           undef           
+-Option           --Defined in     --Default
+ charset                             undef
+ mime_type                           undef
  result_type                         <same as source>
- transfer_encoding                   undef           
+ transfer_encoding                   undef
 
 . charset STRING
 
@@ -214,6 +214,7 @@ undef if there is no such handler.
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Warning:> No decoder defined for transfer encoding $name.
@@ -237,7 +238,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

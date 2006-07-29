@@ -45,11 +45,11 @@ You will not call this method yourself. The L<Mail::Box::Thread::Manager|Mail::B
 object will call it to construct C<Mail::Box::Thread::Node> objects.
 Either a C<message> or a C<messageId> must be supplied.
 
- Option      Defined in       Default      
- dummy_type                   undef        
+-Option    --Defined in     --Default
+ dummy_type                   undef
  log         L<Mail::Reporter>  C<'WARNINGS'>
- message                      undef        
- messageId                    undef        
+ message                      undef
+ messageId                    undef
  trace       L<Mail::Reporter>  C<'WARNINGS'>
 
 . dummy_type CLASS
@@ -509,6 +509,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Package $package does not implement $method.
@@ -530,7 +531,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

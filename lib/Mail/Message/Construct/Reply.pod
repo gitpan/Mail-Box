@@ -41,23 +41,23 @@ reply immediately, or you may do that later with C<set> on the header.
 ADDRESSES may be specified as string, or
 a Mail::Address object, or as array of Mail::Address objects.
 
- Option           Defined in       Default                                                                   
- Bcc                               undef                                                                     
- Cc                                <'cc' in current>                                                         
- From                              <'to' in current>                                                         
- Message-ID                        <uniquely generated>                                                      
+-Option         --Defined in     --Default
+ Bcc                               undef
+ Cc                                <'cc' in current>
+ From                              <'to' in current>
+ Message-ID                        <uniquely generated>
  Subject                           L<replySubject()|Mail::Message::Construct::Reply/"Constructing a message">
- To                                <sender in current>                                                       
- body                              undef                                                                     
- group_reply                       <true>                                                                    
- include                           C<'INLINE'>                                                               
- max_signature                     C<10>                                                                     
- message_type                      L<Mail::Message|Mail::Message>                                            
- postlude                          undef                                                                     
- prelude                           undef                                                                     
- quote                             'E<gt> '                                                                  
- signature                         undef                                                                     
- strip_signature                   C<qr/^--\s/>                                                              
+ To                                <sender in current>
+ body                              undef
+ group_reply                       <true>
+ include                           C<'INLINE'>
+ max_signature                     C<10>
+ message_type                      L<Mail::Message|Mail::Message>
+ postlude                          undef
+ prelude                           undef
+ quote                             'E<gt> '
+ signature                         undef
+ strip_signature                   C<qr/^--\s/>
 
 . Bcc ADDRESSES
 
@@ -286,6 +286,7 @@ I<Example:>
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Cannot include reply source as $include.
@@ -304,7 +305,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

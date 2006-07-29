@@ -65,35 +65,35 @@ Mail::Box::Maildir-E<gt>B<new>(OPTIONS)
 
 =over 4
 
- Option             Defined in       Default                                                         
- accept_new                          <false>                                                         
- access             L<Mail::Box>     C<'r'>                                                          
- body_delayed_type  L<Mail::Box>     L<Mail::Message::Body::Delayed|Mail::Message::Body::Delayed>    
- body_type          L<Mail::Box>     L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>        
- coerce_options     L<Mail::Box>     C<[]>                                                           
- create             L<Mail::Box>     <false>                                                         
- directory          L<Mail::Box::Dir>  <derived from folder name>                                      
- extract            L<Mail::Box>     C<10240>                                                        
- field_type         L<Mail::Box>     undef                                                           
- fix_headers        L<Mail::Box>     <false>                                                         
- folder             L<Mail::Box>     C<$ENV{MAIL}>                                                   
- folderdir          L<Mail::Box>     C<$ENV{HOME}/.maildir>                                          
- head_delayed_type  L<Mail::Box>     L<Mail::Message::Head::Delayed|Mail::Message::Head::Delayed>    
- head_type          L<Mail::Box>     L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>  
- keep_dups          L<Mail::Box>     <false>                                                         
- lock_file          L<Mail::Box>     <not used>                                                      
- lock_timeout       L<Mail::Box>     <not used>                                                      
- lock_type          L<Mail::Box>     C<'NONE'> (constant)                                            
- lock_wait          L<Mail::Box>     <not used>                                                      
- locker             L<Mail::Box>     undef                                                           
- log                L<Mail::Reporter>  C<'WARNINGS'>                                                   
- manager            L<Mail::Box>     undef                                                           
- message_type       L<Mail::Box>     L<Mail::Box::Message|Mail::Box::Message>                        
+-Option           --Defined in     --Default
+ accept_new                          <false>
+ access             L<Mail::Box>     C<'r'>
+ body_delayed_type  L<Mail::Box>     L<Mail::Message::Body::Delayed|Mail::Message::Body::Delayed>
+ body_type          L<Mail::Box>     L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>
+ coerce_options     L<Mail::Box>     C<[]>
+ create             L<Mail::Box>     <false>
+ directory          L<Mail::Box::Dir>  <derived from folder name>
+ extract            L<Mail::Box>     C<10240>
+ field_type         L<Mail::Box>     undef
+ fix_headers        L<Mail::Box>     <false>
+ folder             L<Mail::Box>     C<$ENV{MAIL}>
+ folderdir          L<Mail::Box>     C<$ENV{HOME}/.maildir>
+ head_delayed_type  L<Mail::Box>     L<Mail::Message::Head::Delayed|Mail::Message::Head::Delayed>
+ head_type          L<Mail::Box>     L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>
+ keep_dups          L<Mail::Box>     <false>
+ lock_file          L<Mail::Box>     <not used>
+ lock_timeout       L<Mail::Box>     <not used>
+ lock_type          L<Mail::Box>     C<'NONE'> (constant)
+ lock_wait          L<Mail::Box>     <not used>
+ locker             L<Mail::Box>     undef
+ log                L<Mail::Reporter>  C<'WARNINGS'>
+ manager            L<Mail::Box>     undef
+ message_type       L<Mail::Box>     L<Mail::Box::Message|Mail::Box::Message>
  multipart_type     L<Mail::Box>     L<Mail::Message::Body::Multipart|Mail::Message::Body::Multipart>
- remove_when_empty  L<Mail::Box>     <true>                                                          
- save_on_exit       L<Mail::Box>     <true>                                                          
- trace              L<Mail::Reporter>  C<'WARNINGS'>                                                   
- trusted            L<Mail::Box>     <depends on folder location>                                    
+ remove_when_empty  L<Mail::Box>     <true>
+ save_on_exit       L<Mail::Box>     <true>
+ trace              L<Mail::Reporter>  C<'WARNINGS'>
+ trusted            L<Mail::Box>     <depends on folder location>
 
 . accept_new BOOLEAN
 
@@ -467,8 +467,8 @@ Mail::Box::Maildir-E<gt>B<create>(FOLDERNAME, OPTIONS)
 
 =over 4
 
- Option     Defined in    Default
- folderdir  L<Mail::Box>  undef  
+-Option   --Defined in  --Default
+ folderdir  L<Mail::Box>  undef
 
 . folderdir DIRECTORY
 
@@ -754,6 +754,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> Cannot append Maildir message in $new to folder $self.
@@ -883,7 +884,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

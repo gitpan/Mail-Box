@@ -7,9 +7,9 @@ Mail::Message::Field::AddrGroup - A group of Mail::Message::Field::Address objec
 =head1 INHERITANCE
 
  Mail::Message::Field::AddrGroup
-   is a User::Identity::Collection::Emails
-   is a User::Identity::Collection
-   is a User::Identity::Item
+   is an User::Identity::Collection::Emails
+   is an User::Identity::Collection
+   is an User::Identity::Item
 
 
 =head1 SYNOPSIS
@@ -274,6 +274,7 @@ I<Example:> getting all addresses from a group
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Error:> $object is not a collection.
@@ -333,7 +334,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

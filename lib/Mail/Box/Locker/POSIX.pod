@@ -35,13 +35,13 @@ Mail::Box::Locker::POSIX-E<gt>B<new>(OPTIONS)
 
 =over 4
 
- Option   Defined in       Default      
- expires  L<Mail::Box::Locker>  1 hour       
- file     L<Mail::Box::Locker>  undef        
- folder   L<Mail::Box::Locker>  <required>   
+-Option --Defined in     --Default
+ expires  L<Mail::Box::Locker>  1 hour
+ file     L<Mail::Box::Locker>  undef
+ folder   L<Mail::Box::Locker>  <required>
  log      L<Mail::Reporter>  C<'WARNINGS'>
- method   L<Mail::Box::Locker>  C<POSIX>     
- timeout  L<Mail::Box::Locker>  10 seconds   
+ method   L<Mail::Box::Locker>  C<POSIX>
+ timeout  L<Mail::Box::Locker>  10 seconds
  trace    L<Mail::Reporter>  C<'WARNINGS'>
 
 . expires SECONDS
@@ -244,6 +244,7 @@ See L<Mail::Reporter/"Cleanup">
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Warning:> Folder $folder already lockf'd
@@ -285,7 +286,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

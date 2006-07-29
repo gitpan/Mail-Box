@@ -1,7 +1,7 @@
 
 package Mail::Box::File;
 use vars '$VERSION';
-$VERSION = '2.065';
+$VERSION = '2.066';
 use base 'Mail::Box';
 
 use strict;

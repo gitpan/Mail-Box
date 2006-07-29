@@ -84,15 +84,15 @@ Mail::Message::Replace::MailHeader-E<gt>B<new>([ARG], OPTIONS)
 
 The ARG is an array with header lines.
 
- Option      Defined in       Default                                                 
- FoldLength                   79                                                      
- MailFrom                     C<'KEEP'>                                               
- Modify                       <false>                                                 
+-Option    --Defined in     --Default
+ FoldLength                   79
+ MailFrom                     C<'KEEP'>
+ Modify                       <false>
  field_type  L<Mail::Message::Head>  L<Mail::Message::Field::Fast|Mail::Message::Field::Fast>
- log         L<Mail::Reporter>  C<'WARNINGS'>                                           
- message     L<Mail::Message::Head>  undef                                                   
- modified    L<Mail::Message::Head>  <false>                                                 
- trace       L<Mail::Reporter>  C<'WARNINGS'>                                           
+ log         L<Mail::Reporter>  C<'WARNINGS'>
+ message     L<Mail::Message::Head>  undef
+ modified    L<Mail::Message::Head>  <false>
+ trace       L<Mail::Reporter>  C<'WARNINGS'>
 
 . FoldLength INTEGER
 
@@ -848,6 +848,7 @@ nasty trick.
 
 
 
+
 =head1 DIAGNOSTICS
 
 I<Warning:> Cannot remove field $name from header: not found.
@@ -881,7 +882,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.065.
+Distribution version 2.066.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
