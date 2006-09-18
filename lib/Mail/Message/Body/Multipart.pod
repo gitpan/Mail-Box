@@ -85,25 +85,25 @@ Mail::Message::Body::Multipart-E<gt>B<new>(OPTIONS)
 
 =over 4
 
--Option           --Defined in     --Default
- based_on           L<Mail::Message::Body>  undef
- boundary                            undef
- charset            L<Mail::Message::Body>  C<'us-ascii'>
- checked            L<Mail::Message::Body>  <false>
- data               L<Mail::Message::Body>  undef
- description        L<Mail::Message::Body>  undef
- disposition        L<Mail::Message::Body>  undef
- eol                L<Mail::Message::Body>  C<'NATIVE'>
- epilogue                            undef
- file               L<Mail::Message::Body>  undef
- log                L<Mail::Reporter>  C<'WARNINGS'>
- message            L<Mail::Message::Body>  undef
- mime_type          L<Mail::Message::Body>  C<'multipart/mixed'>
- modified           L<Mail::Message::Body>  <false>
- parts                               undef
- preamble                            undef
- trace              L<Mail::Reporter>  C<'WARNINGS'>
- transfer_encoding  L<Mail::Message::Body>  C<'none'>
+S<< Option           --Defined in     --Default >>
+S<< based_on           L<Mail::Message::Body>  undef >>
+S<< boundary                            undef >>
+S<< charset            L<Mail::Message::Body>  C<'us-ascii'> >>
+S<< checked            L<Mail::Message::Body>  <false> >>
+S<< data               L<Mail::Message::Body>  undef >>
+S<< description        L<Mail::Message::Body>  undef >>
+S<< disposition        L<Mail::Message::Body>  undef >>
+S<< eol                L<Mail::Message::Body>  C<'NATIVE'> >>
+S<< epilogue                            undef >>
+S<< file               L<Mail::Message::Body>  undef >>
+S<< log                L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< message            L<Mail::Message::Body>  undef >>
+S<< mime_type          L<Mail::Message::Body>  C<'multipart/mixed'> >>
+S<< modified           L<Mail::Message::Body>  <false> >>
+S<< parts                               undef >>
+S<< preamble                            undef >>
+S<< trace              L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< transfer_encoding  L<Mail::Message::Body>  C<'none'> >>
 
 . based_on BODY
 
@@ -299,10 +299,10 @@ returned, containing the remaining parts.  No OPTIONS are defined yet,
 although some may be specified, because this method overrules the
 C<stripSignature> method for normal bodies.
 
--Option     --Defined in     --Default
- max_lines    L<Mail::Message::Body::Construct>  C<10>
- pattern      L<Mail::Message::Body::Construct>  C<qr/^--\s?$/>
- result_type  L<Mail::Message::Body::Construct>  <same as current>
+S<< Option     --Defined in     --Default >>
+S<< max_lines    L<Mail::Message::Body::Construct>  C<10> >>
+S<< pattern      L<Mail::Message::Body::Construct>  C<qr/^--\s?$/> >>
+S<< result_type  L<Mail::Message::Body::Construct>  <same as current> >>
 
 . max_lines INTEGER|undef
 
@@ -853,11 +853,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

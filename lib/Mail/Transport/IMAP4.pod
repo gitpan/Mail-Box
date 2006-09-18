@@ -62,22 +62,22 @@ may get shared.  This is sharing is hidden for the user.
 When an C<imap_client> is specified, then the options C<hostname>,
 C<port>, C<username>, and C<password> are extracted from it.
 
--Option      --Defined in     --Default
- authenticate                   C<'AUTO'>
- domain                         <server_name>
- executable    L<Mail::Transport>  C<undef>
- hostname      L<Mail::Transport>  C<'localhost'>
- imap_client                    L<Mail::IMAPClient|Mail::IMAPClient>
- interval      L<Mail::Transport>  C<30>
- log           L<Mail::Reporter>  C<'WARNINGS'>
- password      L<Mail::Transport>  undef
- port          L<Mail::Transport>  143
- proxy         L<Mail::Transport>  undef
- retry         L<Mail::Transport>  <false>
- timeout       L<Mail::Transport>  C<120>
- trace         L<Mail::Reporter>  C<'WARNINGS'>
- username      L<Mail::Transport>  undef
- via           L<Mail::Transport>  C<'imap'>
+S<< Option      --Defined in     --Default >>
+S<< authenticate                   C<'AUTO'> >>
+S<< domain                         <server_name> >>
+S<< executable    L<Mail::Transport>  C<undef> >>
+S<< hostname      L<Mail::Transport>  C<'localhost'> >>
+S<< imap_client                    L<Mail::IMAPClient|Mail::IMAPClient> >>
+S<< interval      L<Mail::Transport>  C<30> >>
+S<< log           L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< password      L<Mail::Transport>  undef >>
+S<< port          L<Mail::Transport>  143 >>
+S<< proxy         L<Mail::Transport>  undef >>
+S<< retry         L<Mail::Transport>  <false> >>
+S<< timeout       L<Mail::Transport>  C<120> >>
+S<< trace         L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< username      L<Mail::Transport>  undef >>
+S<< via           L<Mail::Transport>  C<'imap'> >>
 
 . authenticate TYPE|ARRAY-OF-TYPES
 
@@ -593,11 +593,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

@@ -90,16 +90,16 @@ Mail::Message::Head::ListGroup-E<gt>B<new>(FIELDS, OPTIONS)
 
 Construct an object which maintains one set of mailing list headers
 
--Option  --Defined in     --Default
- address                    C<undef>
- head      L<Mail::Message::Head::FieldGroup>  C<undef>
- listname                   <derived from address>
- log       L<Mail::Reporter>  C<'WARNINGS'>
- rfc                        C<undef>
- software  L<Mail::Message::Head::FieldGroup>  C<undef>
- trace     L<Mail::Reporter>  C<'WARNINGS'>
- type      L<Mail::Message::Head::FieldGroup>  C<undef>
- version   L<Mail::Message::Head::FieldGroup>  C<undef>
+S<< Option  --Defined in     --Default >>
+S<< address                    C<undef> >>
+S<< head      L<Mail::Message::Head::FieldGroup>  C<undef> >>
+S<< listname                   <derived from address> >>
+S<< log       L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< rfc                        C<undef> >>
+S<< software  L<Mail::Message::Head::FieldGroup>  C<undef> >>
+S<< trace     L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< type      L<Mail::Message::Head::FieldGroup>  C<undef> >>
+S<< version   L<Mail::Message::Head::FieldGroup>  C<undef> >>
 
 . address STRING|OBJECT
 
@@ -523,11 +523,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

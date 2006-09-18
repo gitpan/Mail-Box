@@ -125,15 +125,15 @@ Mail::Message::Field::Addresses-E<gt>B<new>
 
 =over 4
 
--Option    --Defined in     --Default
- attributes  L<Mail::Message::Field::Structured>  <ignored>
- charset     L<Mail::Message::Field::Full>  undef
- datum       L<Mail::Message::Field::Structured>  C<undef>
- encoding    L<Mail::Message::Field::Full>  C<'q'>
- force       L<Mail::Message::Field::Full>  false
- language    L<Mail::Message::Field::Full>  undef
- log         L<Mail::Reporter>  C<'WARNINGS'>
- trace       L<Mail::Reporter>  C<'WARNINGS'>
+S<< Option    --Defined in     --Default >>
+S<< attributes  L<Mail::Message::Field::Structured>  <ignored> >>
+S<< charset     L<Mail::Message::Field::Full>  undef >>
+S<< datum       L<Mail::Message::Field::Structured>  C<undef> >>
+S<< encoding    L<Mail::Message::Field::Full>  C<'q'> >>
+S<< force       L<Mail::Message::Field::Full>  false >>
+S<< language    L<Mail::Message::Field::Full>  undef >>
+S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
 
 . attributes ATTRS
 
@@ -307,8 +307,8 @@ no ADDRESS is specified, the option must be sufficient to create a
 L<Mail::Message::Field::Address|Mail::Message::Field::Address> from.  See the OPTIONS of
 L<Mail::Message::Field::Address::new()|Mail::Identity/"METHODS">.
 
--Option--Defined in--Default
- group               C<''>
+S<< Option--Defined in--Default >>
+S<< group               C<''> >>
 
 . group STRING
 
@@ -330,8 +330,8 @@ Add a group of addresses to this field.  A GROUP can be specified, which
 is a L<Mail::Message::Field::AddrGroup|Mail::Message::Field::AddrGroup> object, or one is created for you
 using the OPTIONS.  The group is returned.
 
--Option--Defined in--Default
- name                C<''>
+S<< Option--Defined in--Default >>
+S<< name                C<''> >>
 
 . name STRING
 
@@ -799,11 +799,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

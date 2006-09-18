@@ -54,10 +54,10 @@ Get the SETTINGS of a certain spam-fighter, optionally after setting them.
 The L<knownFighters()> method returns the defined names.  The names
 are case-sensitive.
 
--Option --Defined in     --Default
- fields                    <required>
- isspam                    <required>
- version                   C<undef>
+S<< Option --Defined in     --Default >>
+S<< fields                    <required> >>
+S<< isspam                    <required> >>
+S<< version                   C<undef> >>
 
 . fields REGEXP
 
@@ -105,8 +105,8 @@ $obj-E<gt>B<from>(HEAD|MESSAGE, OPTIONS)
 Returns a list of C<Mail::Message::Head::SpamGroup> objects, based on the
 specified MESSAGE or message HEAD.
 
--Option--Defined in--Default
- types               C<undef>
+S<< Option--Defined in--Default >>
+S<< types               C<undef> >>
 
 . types ARRAY-OF-NAMES
 
@@ -183,13 +183,13 @@ Mail::Message::Head::SpamGroup-E<gt>B<new>(FIELDS, OPTIONS)
 Construct an object which maintains one set of fields which were added
 by spam fighting software.
 
--Option  --Defined in     --Default
- head      L<Mail::Message::Head::FieldGroup>  C<undef>
- log       L<Mail::Reporter>  C<'WARNINGS'>
- software  L<Mail::Message::Head::FieldGroup>  C<undef>
- trace     L<Mail::Reporter>  C<'WARNINGS'>
- type      L<Mail::Message::Head::FieldGroup>  C<undef>
- version   L<Mail::Message::Head::FieldGroup>  C<undef>
+S<< Option  --Defined in     --Default >>
+S<< head      L<Mail::Message::Head::FieldGroup>  C<undef> >>
+S<< log       L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< software  L<Mail::Message::Head::FieldGroup>  C<undef> >>
+S<< trace     L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< type      L<Mail::Message::Head::FieldGroup>  C<undef> >>
+S<< version   L<Mail::Message::Head::FieldGroup>  C<undef> >>
 
 . head HEAD
 
@@ -530,11 +530,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

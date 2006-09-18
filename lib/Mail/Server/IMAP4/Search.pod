@@ -41,19 +41,19 @@ Mail::Server::IMAP4::Search-E<gt>B<new>(OPTIONS)
 
 =over 4
 
--Option    --Defined in     --Default
- binaries    L<Mail::Box::Search>  <false>
- decode      L<Mail::Box::Search>  <true>
- delayed     L<Mail::Box::Search>  <true>
- deleted     L<Mail::Box::Search>  <false>
- deliver     L<Mail::Box::Search>  undef
- in          L<Mail::Box::Search>  C<'BODY'>
- label       L<Mail::Box::Search>  undef
- limit       L<Mail::Box::Search>  C<0>
- log         L<Mail::Reporter>  C<'WARNINGS'>
- logical     L<Mail::Box::Search>  C<'REPLACE'>
- multiparts  L<Mail::Box::Search>  <true>
- trace       L<Mail::Reporter>  C<'WARNINGS'>
+S<< Option    --Defined in     --Default >>
+S<< binaries    L<Mail::Box::Search>  <false> >>
+S<< decode      L<Mail::Box::Search>  <true> >>
+S<< delayed     L<Mail::Box::Search>  <true> >>
+S<< deleted     L<Mail::Box::Search>  <false> >>
+S<< deliver     L<Mail::Box::Search>  undef >>
+S<< in          L<Mail::Box::Search>  C<'BODY'> >>
+S<< label       L<Mail::Box::Search>  undef >>
+S<< limit       L<Mail::Box::Search>  C<0> >>
+S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< logical     L<Mail::Box::Search>  C<'REPLACE'> >>
+S<< multiparts  L<Mail::Box::Search>  <true> >>
+S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
 
 . binaries BOOLEAN
 
@@ -275,11 +275,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

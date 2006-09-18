@@ -35,19 +35,19 @@ Mail::Transport::Qmail-E<gt>B<new>(OPTIONS)
 
 =over 4
 
--Option    --Defined in     --Default
- executable  L<Mail::Transport>  C<undef>
- hostname    L<Mail::Transport>  C<'localhost'>
- interval    L<Mail::Transport>  C<30>
- log         L<Mail::Reporter>  C<'WARNINGS'>
- password    L<Mail::Transport>  undef
- port        L<Mail::Transport>  undef
- proxy       L<Mail::Transport>  C<'qmail-inject'>
- retry       L<Mail::Transport>  <false>
- timeout     L<Mail::Transport>  C<120>
- trace       L<Mail::Reporter>  C<'WARNINGS'>
- username    L<Mail::Transport>  undef
- via         L<Mail::Transport>  C<'qmail'>
+S<< Option    --Defined in     --Default >>
+S<< executable  L<Mail::Transport>  C<undef> >>
+S<< hostname    L<Mail::Transport>  C<'localhost'> >>
+S<< interval    L<Mail::Transport>  C<30> >>
+S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< password    L<Mail::Transport>  undef >>
+S<< port        L<Mail::Transport>  undef >>
+S<< proxy       L<Mail::Transport>  C<'qmail-inject'> >>
+S<< retry       L<Mail::Transport>  <false> >>
+S<< timeout     L<Mail::Transport>  C<120> >>
+S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< username    L<Mail::Transport>  undef >>
+S<< via         L<Mail::Transport>  C<'qmail'> >>
 
 . executable FILENAME
 
@@ -308,11 +308,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

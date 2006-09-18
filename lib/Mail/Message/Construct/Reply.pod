@@ -41,23 +41,23 @@ reply immediately, or you may do that later with C<set> on the header.
 ADDRESSES may be specified as string, or
 a Mail::Address object, or as array of Mail::Address objects.
 
--Option         --Defined in     --Default
- Bcc                               undef
- Cc                                <'cc' in current>
- From                              <'to' in current>
- Message-ID                        <uniquely generated>
- Subject                           L<replySubject()|Mail::Message::Construct::Reply/"Constructing a message">
- To                                <sender in current>
- body                              undef
- group_reply                       <true>
- include                           C<'INLINE'>
- max_signature                     C<10>
- message_type                      L<Mail::Message|Mail::Message>
- postlude                          undef
- prelude                           undef
- quote                             'E<gt> '
- signature                         undef
- strip_signature                   C<qr/^--\s/>
+S<< Option         --Defined in     --Default >>
+S<< Bcc                               undef >>
+S<< Cc                                <'cc' in current> >>
+S<< From                              <'to' in current> >>
+S<< Message-ID                        <uniquely generated> >>
+S<< Subject                           L<replySubject()|Mail::Message::Construct::Reply/"Constructing a message"> >>
+S<< To                                <sender in current> >>
+S<< body                              undef >>
+S<< group_reply                       <true> >>
+S<< include                           C<'INLINE'> >>
+S<< max_signature                     C<10> >>
+S<< message_type                      L<Mail::Message|Mail::Message> >>
+S<< postlude                          undef >>
+S<< prelude                           undef >>
+S<< quote                             'E<gt> ' >>
+S<< signature                         undef >>
+S<< strip_signature                   C<qr/^--\s/> >>
 
 . Bcc ADDRESSES
 
@@ -305,11 +305,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

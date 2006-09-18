@@ -84,11 +84,11 @@ Encode (translate) a L<Mail::Message::Body|Mail::Message::Body> into a different
 See the DESCRIPTION above.  Options which are not specified will not trigger
 conversions.
 
--Option           --Defined in     --Default
- charset                             undef
- mime_type                           undef
- result_type                         <same as source>
- transfer_encoding                   undef
+S<< Option           --Defined in     --Default >>
+S<< charset                             undef >>
+S<< mime_type                           undef >>
+S<< result_type                         <same as source> >>
+S<< transfer_encoding                   undef >>
 
 . charset STRING
 
@@ -238,11 +238,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

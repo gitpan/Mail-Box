@@ -46,22 +46,22 @@ Mail::Box::POP3::Message-E<gt>B<new>(OPTIONS)
 
 =over 4
 
--Option    --Defined in     --Default
- body        L<Mail::Message>  undef
- body_type   L<Mail::Box::Message>  L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>
- deleted     L<Mail::Message>  <false>
- field_type  L<Mail::Message>  undef
- folder      L<Mail::Box::Message>  <required>
- head        L<Mail::Message>  undef
- head_type   L<Mail::Message>  L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>
- labels      L<Mail::Message>  {}
- log         L<Mail::Reporter>  C<'WARNINGS'>
- messageId   L<Mail::Message>  undef
- modified    L<Mail::Message>  <false>
- size        L<Mail::Box::Message>  undef
- trace       L<Mail::Reporter>  C<'WARNINGS'>
- trusted     L<Mail::Message>  <false>
- unique      L<Mail::Box::Net::Message>  <unique string>
+S<< Option    --Defined in     --Default >>
+S<< body        L<Mail::Message>  undef >>
+S<< body_type   L<Mail::Box::Message>  L<Mail::Message::Body::Lines|Mail::Message::Body::Lines> >>
+S<< deleted     L<Mail::Message>  <false> >>
+S<< field_type  L<Mail::Message>  undef >>
+S<< folder      L<Mail::Box::Message>  <required> >>
+S<< head        L<Mail::Message>  undef >>
+S<< head_type   L<Mail::Message>  L<Mail::Message::Head::Complete|Mail::Message::Head::Complete> >>
+S<< labels      L<Mail::Message>  {} >>
+S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< messageId   L<Mail::Message>  undef >>
+S<< modified    L<Mail::Message>  <false> >>
+S<< size        L<Mail::Box::Message>  undef >>
+S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< trusted     L<Mail::Message>  <false> >>
+S<< unique      L<Mail::Box::Net::Message>  <unique string> >>
 
 . body OBJECT
 
@@ -941,11 +941,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

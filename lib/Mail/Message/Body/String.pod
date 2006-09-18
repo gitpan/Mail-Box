@@ -82,21 +82,21 @@ Mail::Message::Body::String-E<gt>B<new>(OPTIONS)
 
 =over 4
 
--Option           --Defined in     --Default
- based_on           L<Mail::Message::Body>  undef
- charset            L<Mail::Message::Body>  C<'us-ascii'>
- checked            L<Mail::Message::Body>  <false>
- data               L<Mail::Message::Body>  undef
- description        L<Mail::Message::Body>  undef
- disposition        L<Mail::Message::Body>  undef
- eol                L<Mail::Message::Body>  C<'NATIVE'>
- file               L<Mail::Message::Body>  undef
- log                L<Mail::Reporter>  C<'WARNINGS'>
- message            L<Mail::Message::Body>  undef
- mime_type          L<Mail::Message::Body>  C<'text/plain'>
- modified           L<Mail::Message::Body>  <false>
- trace              L<Mail::Reporter>  C<'WARNINGS'>
- transfer_encoding  L<Mail::Message::Body>  C<'none'>
+S<< Option           --Defined in     --Default >>
+S<< based_on           L<Mail::Message::Body>  undef >>
+S<< charset            L<Mail::Message::Body>  C<'us-ascii'> >>
+S<< checked            L<Mail::Message::Body>  <false> >>
+S<< data               L<Mail::Message::Body>  undef >>
+S<< description        L<Mail::Message::Body>  undef >>
+S<< disposition        L<Mail::Message::Body>  undef >>
+S<< eol                L<Mail::Message::Body>  C<'NATIVE'> >>
+S<< file               L<Mail::Message::Body>  undef >>
+S<< log                L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< message            L<Mail::Message::Body>  undef >>
+S<< mime_type          L<Mail::Message::Body>  C<'text/plain'> >>
+S<< modified           L<Mail::Message::Body>  <false> >>
+S<< trace              L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< transfer_encoding  L<Mail::Message::Body>  C<'none'> >>
 
 . based_on BODY
 
@@ -663,11 +663,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

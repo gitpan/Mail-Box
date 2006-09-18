@@ -38,21 +38,21 @@ Mail::Transport::SMTP-E<gt>B<new>(OPTIONS)
 
 =over 4
 
--Option    --Defined in     --Default
- executable  L<Mail::Transport>  C<undef>
- helo                         <from Net::Config>
- hostname    L<Mail::Transport>  <from Net::Config>
- interval    L<Mail::Transport>  C<30>
- log         L<Mail::Reporter>  C<'WARNINGS'>
- password                     undef
- port        L<Mail::Transport>  C<25>
- proxy       L<Mail::Transport>  <from Net::Config>
- retry       L<Mail::Transport>  <false>
- smtp_debug                   <false>
- timeout                      120
- trace       L<Mail::Reporter>  C<'WARNINGS'>
- username                     undef
- via         L<Mail::Transport>  C<'smtp'>
+S<< Option    --Defined in     --Default >>
+S<< executable  L<Mail::Transport>  C<undef> >>
+S<< helo                         <from Net::Config> >>
+S<< hostname    L<Mail::Transport>  <from Net::Config> >>
+S<< interval    L<Mail::Transport>  C<30> >>
+S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< password                     undef >>
+S<< port        L<Mail::Transport>  C<25> >>
+S<< proxy       L<Mail::Transport>  <from Net::Config> >>
+S<< retry       L<Mail::Transport>  <false> >>
+S<< smtp_debug                   <false> >>
+S<< timeout                      120 >>
+S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< username                     undef >>
+S<< via         L<Mail::Transport>  C<'smtp'> >>
 
 . executable FILENAME
 
@@ -167,9 +167,9 @@ Success and quit success are booleans.  The error code and -text are
 protocol specific codes and texts.  The location tells where the
 problem occurred.
 
--Option--Defined in     --Default
- from                     E<lt> E<gt>
- to                       []
+S<< Option--Defined in     --Default >>
+S<< from                     E<lt> E<gt> >>
+S<< to                       [] >>
 
 . from ADDRESS
 
@@ -411,11 +411,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

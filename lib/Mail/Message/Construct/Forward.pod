@@ -43,18 +43,18 @@ one message remains, it will be the added as single attachment, otherwise
 a nested multipart will be the result.  The value of this option does not
 matter, as long as it is present.  See C<Mail::Message::Body::Multipart>.
 
--Option    --Defined in     --Default
- Bcc                          undef
- Cc                           undef
- Date                         <now>
- From                         <'to' in current>
- Message-ID                   <uniquely generated>
- Subject                      L<forwardSubject()|Mail::Message::Construct::Forward/"Constructing a message">
- To                           <required>
- body                         undef
- include                      <if body then C<'NO'> else C<'INLINE'>>
- preamble                     C<constructed from prelude and postlude>
- signature                    undef
+S<< Option    --Defined in     --Default >>
+S<< Bcc                          undef >>
+S<< Cc                           undef >>
+S<< Date                         <now> >>
+S<< From                         <'to' in current> >>
+S<< Message-ID                   <uniquely generated> >>
+S<< Subject                      L<forwardSubject()|Mail::Message::Construct::Forward/"Constructing a message"> >>
+S<< To                           <required> >>
+S<< body                         undef >>
+S<< include                      <if body then C<'NO'> else C<'INLINE'>> >>
+S<< preamble                     C<constructed from prelude and postlude> >>
+S<< signature                    undef >>
 
 . Bcc ADDRESSES
 
@@ -181,8 +181,8 @@ can specify all options available to C<forward()>, although a C<preamble>
 which is provided as body object is required, and any specified C<body>
 is ignored.
 
--Option  --Defined in--Default
- preamble              <required>
+S<< Option  --Defined in--Default >>
+S<< preamble              <required> >>
 
 . preamble BODY|PART
 
@@ -200,8 +200,8 @@ You can specify all options available to C<forward()>, although a C<preamble>
 which is provided as body object is required, and any specified C<body>
 is ignored.  Signatures are not stripped.  Signatures are not stripped.
 
--Option  --Defined in--Default
- preamble              <required>
+S<< Option  --Defined in--Default >>
+S<< preamble              <required> >>
 
 . preamble BODY|PART
 
@@ -216,13 +216,13 @@ option C<include> set to C<'INLINE'>.  You can specify most of
 the fields which are available to L<forward()|Mail::Message::Construct::Forward/"Constructing a message"> except
 C<include> and C<body>.
 
--Option         --Defined in     --Default
- is_attached                       C<"[The forwarded message is attached]\n">
- max_signature                     C<10>
- postlude                          undef
- prelude                           undef
- quote                             undef
- strip_signature                   C<qr/^--\s/>
+S<< Option         --Defined in     --Default >>
+S<< is_attached                       C<"[The forwarded message is attached]\n"> >>
+S<< max_signature                     C<10> >>
+S<< postlude                          undef >>
+S<< prelude                           undef >>
+S<< quote                             undef >>
+S<< strip_signature                   C<qr/^--\s/> >>
 
 . is_attached STRING
 
@@ -304,8 +304,8 @@ L<forwardAttach()|Mail::Message::Construct::Forward/"Constructing a message">, o
 The OPTIONS are the same as for C<forward()> except that C<body> is
 required.  Some other options, like C<preamble>, are ignored.
 
--Option--Defined in--Default
- body                <required>
+S<< Option--Defined in--Default >>
+S<< body                <required> >>
 
 . body BODY
 
@@ -491,11 +491,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

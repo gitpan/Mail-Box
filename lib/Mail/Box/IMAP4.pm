@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.066';
+$VERSION = '2.067';
 use base 'Mail::Box::Net';
 
 use Mail::Box::IMAP4::Message;

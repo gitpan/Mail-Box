@@ -45,12 +45,12 @@ You will not call this method yourself. The L<Mail::Box::Thread::Manager|Mail::B
 object will call it to construct C<Mail::Box::Thread::Node> objects.
 Either a C<message> or a C<messageId> must be supplied.
 
--Option    --Defined in     --Default
- dummy_type                   undef
- log         L<Mail::Reporter>  C<'WARNINGS'>
- message                      undef
- messageId                    undef
- trace       L<Mail::Reporter>  C<'WARNINGS'>
+S<< Option    --Defined in     --Default >>
+S<< dummy_type                   undef >>
+S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< message                      undef >>
+S<< messageId                    undef >>
+S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
 
 . dummy_type CLASS
 
@@ -531,11 +531,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

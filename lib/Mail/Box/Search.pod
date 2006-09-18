@@ -66,19 +66,19 @@ Mail::Box::Search-E<gt>B<new>(OPTIONS)
 
 Create a filter.
 
--Option    --Defined in     --Default
- binaries                     <false>
- decode                       <true>
- delayed                      <true>
- deleted                      <false>
- deliver                      undef
- in                           C<'BODY'>
- label                        undef
- limit                        C<0>
- log         L<Mail::Reporter>  C<'WARNINGS'>
- logical                      C<'REPLACE'>
- multiparts                   <true>
- trace       L<Mail::Reporter>  C<'WARNINGS'>
+S<< Option    --Defined in     --Default >>
+S<< binaries                     <false> >>
+S<< decode                       <true> >>
+S<< delayed                      <true> >>
+S<< deleted                      <false> >>
+S<< deliver                      undef >>
+S<< in                           C<'BODY'> >>
+S<< label                        undef >>
+S<< limit                        C<0> >>
+S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< logical                      C<'REPLACE'> >>
+S<< multiparts                   <true> >>
+S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
 
 . binaries BOOLEAN
 
@@ -437,11 +437,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

@@ -72,24 +72,24 @@ Mail::Message::Replace::MailInternet-E<gt>B<new>([ARG], [OPTIONS])
 
 =over 4
 
--Option    --Defined in     --Default
- Body                         C<undef>
- FoldLength                   79
- Header                       C<undef>
- MailFrom                     C<'KEEP'>
- Modify                       0
- body        L<Mail::Message>  undef
- body_type   L<Mail::Message>  L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>
- deleted     L<Mail::Message>  <false>
- field_type  L<Mail::Message>  undef
- head        L<Mail::Message>  undef
- head_type   L<Mail::Message>  L<Mail::Message::Replace::MailHeader|Mail::Message::Replace::MailHeader>
- labels      L<Mail::Message>  {}
- log         L<Mail::Reporter>  C<'WARNINGS'>
- messageId   L<Mail::Message>  undef
- modified    L<Mail::Message>  <false>
- trace       L<Mail::Reporter>  C<'WARNINGS'>
- trusted     L<Mail::Message>  <false>
+S<< Option    --Defined in     --Default >>
+S<< Body                         C<undef> >>
+S<< FoldLength                   79 >>
+S<< Header                       C<undef> >>
+S<< MailFrom                     C<'KEEP'> >>
+S<< Modify                       0 >>
+S<< body        L<Mail::Message>  undef >>
+S<< body_type   L<Mail::Message>  L<Mail::Message::Body::Lines|Mail::Message::Body::Lines> >>
+S<< deleted     L<Mail::Message>  <false> >>
+S<< field_type  L<Mail::Message>  undef >>
+S<< head        L<Mail::Message>  undef >>
+S<< head_type   L<Mail::Message>  L<Mail::Message::Replace::MailHeader|Mail::Message::Replace::MailHeader> >>
+S<< labels      L<Mail::Message>  {} >>
+S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< messageId   L<Mail::Message>  undef >>
+S<< modified    L<Mail::Message>  <false> >>
+S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< trusted     L<Mail::Message>  <false> >>
 
 . Body ARRAY-OF-LINES
 
@@ -304,9 +304,9 @@ object method, L<Mail::Message::read()|Mail::Message::Construct::Read/"Construct
 As class method, the Mail::Internet compatible read is called.  OPTIONS are
 only available in the first case.
 
--Option             --Defined in     --Default
- body_type            L<Mail::Message::Construct::Read>  C<undef>
- strip_status_fields  L<Mail::Message::Construct::Read>  <true>
+S<< Option             --Defined in     --Default >>
+S<< body_type            L<Mail::Message::Construct::Read>  C<undef> >>
+S<< strip_status_fields  L<Mail::Message::Construct::Read>  <true> >>
 
 . body_type CLASS
 
@@ -346,28 +346,28 @@ BE WARNED: the main job for creating a reply is done by
 L<Mail::Message::reply()|Mail::Message::Construct::Reply/"Constructing a message">, which may produce a result which is compatible,
 but may be different from L<Mail::Internet>'s version.
 
--Option         --Defined in     --Default
- Bcc              L<Mail::Message::Construct::Reply>  undef
- Cc               L<Mail::Message::Construct::Reply>  <'cc' in current>
- Exclude                           []
- From             L<Mail::Message::Construct::Reply>  <'to' in current>
- Inline                            E<gt>
- Keep                              []
- Message-ID       L<Mail::Message::Construct::Reply>  <uniquely generated>
- ReplyAll                          <false>
- Subject          L<Mail::Message::Construct::Reply>  L<replySubject()|Mail::Message::Construct::Reply/"Constructing a message">
- To               L<Mail::Message::Construct::Reply>  <sender in current>
- body             L<Mail::Message::Construct::Reply>  undef
- group_reply      L<Mail::Message::Construct::Reply>  <true>
- header_template                   C<$ENV{HOME}/.mailhdr>
- include          L<Mail::Message::Construct::Reply>  C<'INLINE'>
- max_signature    L<Mail::Message::Construct::Reply>  C<10>
- message_type     L<Mail::Message::Construct::Reply>  L<Mail::Message|Mail::Message>
- postlude         L<Mail::Message::Construct::Reply>  undef
- prelude          L<Mail::Message::Construct::Reply>  undef
- quote            L<Mail::Message::Construct::Reply>  'E<gt> '
- signature        L<Mail::Message::Construct::Reply>  undef
- strip_signature  L<Mail::Message::Construct::Reply>  C<qr/^--\s/>
+S<< Option         --Defined in     --Default >>
+S<< Bcc              L<Mail::Message::Construct::Reply>  undef >>
+S<< Cc               L<Mail::Message::Construct::Reply>  <'cc' in current> >>
+S<< Exclude                           [] >>
+S<< From             L<Mail::Message::Construct::Reply>  <'to' in current> >>
+S<< Inline                            E<gt> >>
+S<< Keep                              [] >>
+S<< Message-ID       L<Mail::Message::Construct::Reply>  <uniquely generated> >>
+S<< ReplyAll                          <false> >>
+S<< Subject          L<Mail::Message::Construct::Reply>  L<replySubject()|Mail::Message::Construct::Reply/"Constructing a message"> >>
+S<< To               L<Mail::Message::Construct::Reply>  <sender in current> >>
+S<< body             L<Mail::Message::Construct::Reply>  undef >>
+S<< group_reply      L<Mail::Message::Construct::Reply>  <true> >>
+S<< header_template                   C<$ENV{HOME}/.mailhdr> >>
+S<< include          L<Mail::Message::Construct::Reply>  C<'INLINE'> >>
+S<< max_signature    L<Mail::Message::Construct::Reply>  C<10> >>
+S<< message_type     L<Mail::Message::Construct::Reply>  L<Mail::Message|Mail::Message> >>
+S<< postlude         L<Mail::Message::Construct::Reply>  undef >>
+S<< prelude          L<Mail::Message::Construct::Reply>  undef >>
+S<< quote            L<Mail::Message::Construct::Reply>  'E<gt> ' >>
+S<< signature        L<Mail::Message::Construct::Reply>  undef >>
+S<< strip_signature  L<Mail::Message::Construct::Reply>  C<qr/^--\s/> >>
 
 . Bcc ADDRESSES
 
@@ -471,9 +471,9 @@ $obj-E<gt>B<sign>(OPTIONS)
 
 Add a signature (a few extra lines) to the message.
 
--Option   --Defined in     --Default
- File                        C<undef>
- Signature                   ''
+S<< Option   --Defined in     --Default >>
+S<< File                        C<undef> >>
+S<< Signature                   '' >>
 
 . File FILENAME
 
@@ -535,10 +535,10 @@ $obj-E<gt>B<nntppost>(OPTIONS)
 Send an NNTP message (newsgroup message), which is equivalent to
 Mail::Transport::NNTP or L<Mail::Message::send()|Mail::Message/"The message"> with C<via 'nntp'>.
 
--Option--Defined in     --Default
- Debug                    <false>
- Host                     <from Net::Config>
- Port                     119
+S<< Option--Defined in     --Default >>
+S<< Debug                    <false> >>
+S<< Host                     <from Net::Config> >>
+S<< Port                     119 >>
 
 . Debug BOOLEAN
 
@@ -897,12 +897,12 @@ This method is calling L<Mail::Message::send()|Mail::Message/"The message"> via 
 implemented in L<Mail::Transport::SMTP|Mail::Transport::SMTP>.  The implementation is
 slightly different, so this method is not 100% compliant.
 
--Option  --Defined in     --Default
- Debug                      <false>
- Hello                      <helo_domain from Net::Config>
- Host                       C<$ENV{SMTPHOSTS} or from Net::Config>
- MailFrom                   C<$ENV{MAILADDRESS}> or $ENV{USER}
- Port                       25
+S<< Option  --Defined in     --Default >>
+S<< Debug                      <false> >>
+S<< Hello                      <helo_domain from Net::Config> >>
+S<< Host                       C<$ENV{SMTPHOSTS} or from Net::Config> >>
+S<< MailFrom                   C<$ENV{MAILADDRESS}> or $ENV{USER} >>
+S<< Port                       25 >>
 
 . Debug BOOLEAN
 
@@ -1359,11 +1359,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

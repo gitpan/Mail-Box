@@ -56,16 +56,16 @@ Mail::Box::Collection-E<gt>B<new>([NAME], OPTIONS)
 
 =over 4
 
--Option     --Defined in     --Default
- description  L<User::Identity::Item>  undef
- folder_type                   <from parent>
- item_type    L<User::Identity::Collection>  L<Mail::Box::Identity|Mail::Box::Identity>
- log          L<Mail::Reporter>  C<'WARNINGS'>
- manager                       <from parent>
- name         L<User::Identity::Item>  C<'folders'>
- parent       L<User::Identity::Item>  C<undef>
- roles        L<User::Identity::Collection>  undef
- trace        L<Mail::Reporter>  C<'WARNINGS'>
+S<< Option     --Defined in     --Default >>
+S<< description  L<User::Identity::Item>  undef >>
+S<< folder_type                   <from parent> >>
+S<< item_type    L<User::Identity::Collection>  L<Mail::Box::Identity|Mail::Box::Identity> >>
+S<< log          L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< manager                       <from parent> >>
+S<< name         L<User::Identity::Item>  C<'folders'> >>
+S<< parent       L<User::Identity::Item>  C<undef> >>
+S<< roles        L<User::Identity::Collection>  undef >>
+S<< trace        L<Mail::Reporter>  C<'WARNINGS'> >>
 
 . description STRING
 
@@ -444,11 +444,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

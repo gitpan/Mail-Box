@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Message::TransferEnc::QuotedPrint;
 use vars '$VERSION';
-$VERSION = '2.066';
+$VERSION = '2.067';
 use base 'Mail::Message::TransferEnc';
 
 use MIME::QuotedPrint;
@@ -25,13 +25,12 @@ sub check($@)
 sub decode($@)
 {   my ($self, $body, %args) = @_;
 
-    my @lines    = map decode_qp($_), $body->lines;
     my $bodytype = $args{result_type} || ref $body;
 
     $bodytype->new
      ( based_on          => $body
      , transfer_encoding => 'none'
-     , data              => \@lines
+     , data              => decode_qp($body->string)
      );
 }
 
@@ -41,13 +40,12 @@ sub decode($@)
 sub encode($@)
 {   my ($self, $body, %args) = @_;
 
-    my @lines    = map encode_qp($_), $body->lines;
     my $bodytype = $args{result_type} || ref $body;
 
     $bodytype->new
      ( based_on          => $body
      , transfer_encoding => 'quoted-printable'
-     , data              => \@lines
+     , data              => encode_qp($body->string)
      );
 }
 

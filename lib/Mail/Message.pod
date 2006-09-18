@@ -87,10 +87,10 @@ to be added.
 
 See also L<Mail::Box::Message::copyTo()|Mail::Box::Message/"The message"> and L<Mail::Box::Message::moveTo()|Mail::Box::Message/"The message">.
 
--Option      --Defined in     --Default
- shallow                        <false>
- shallow_body                   <false>
- shallow_head                   <false>
+S<< Option      --Defined in     --Default >>
+S<< shallow                        <false> >>
+S<< shallow_body                   <false> >>
+S<< shallow_head                   <false> >>
 
 . shallow BOOLEAN
 
@@ -136,19 +136,19 @@ Mail::Message-E<gt>B<new>(OPTIONS)
 
 =over 4
 
--Option    --Defined in     --Default
- body                         undef
- body_type                    L<Mail::Message::Body::Lines|Mail::Message::Body::Lines>
- deleted                      <false>
- field_type                   undef
- head                         undef
- head_type                    L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>
- labels                       {}
- log         L<Mail::Reporter>  C<'WARNINGS'>
- messageId                    undef
- modified                     <false>
- trace       L<Mail::Reporter>  C<'WARNINGS'>
- trusted                      <false>
+S<< Option    --Defined in     --Default >>
+S<< body                         undef >>
+S<< body_type                    L<Mail::Message::Body::Lines|Mail::Message::Body::Lines> >>
+S<< deleted                      <false> >>
+S<< field_type                   undef >>
+S<< head                         undef >>
+S<< head_type                    L<Mail::Message::Head::Complete|Mail::Message::Head::Complete> >>
+S<< labels                       {} >>
+S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< messageId                    undef >>
+S<< modified                     <false> >>
+S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
+S<< trusted                      <false> >>
 
 . body OBJECT
 
@@ -799,9 +799,9 @@ was no encoding, the body object as read from file is passed on, however,
 some more work will be needed when a serious encoding is encountered.
 The OPTIONS control how the conversion takes place.
 
--Option     --Defined in     --Default
- keep                          <false>
- result_type                   <type of body>
+S<< Option     --Defined in     --Default >>
+S<< keep                          <false> >>
+S<< result_type                   <type of body> >>
 
 . keep BOOLEAN
 
@@ -1661,11 +1661,11 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.066.
+Distribution version 2.067.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
-Copyright (c) 2001-2003 by the author(s). All rights reserved.
+Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
