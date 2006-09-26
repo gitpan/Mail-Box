@@ -40,12 +40,12 @@ Mail::Message::Convert::Html-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-S<< Option     --Defined in     --Default >>
-S<< fields       L<Mail::Message::Convert>  <see description> >>
-S<< head_mailto                   <true> >>
-S<< log          L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< produce                       C<HTML> >>
-S<< trace        L<Mail::Reporter>  C<'WARNINGS'> >>
+ Option     --Defined in     --Default
+ fields       Mail::Message::Convert  <see description>
+ head_mailto                   <true>
+ log          Mail::Reporter   'WARNINGS'
+ produce                       HTML
+ trace        Mail::Reporter   'WARNINGS'
 
 . fields NAMES|ARRAY-OF-NAMES|REGEXS
 
@@ -308,7 +308,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

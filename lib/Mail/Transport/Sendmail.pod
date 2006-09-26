@@ -40,20 +40,20 @@ Mail::Transport::Sendmail-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-S<< Option          --Defined in     --Default >>
-S<< executable        L<Mail::Transport>  C<undef> >>
-S<< hostname          L<Mail::Transport>  C<'localhost'> >>
-S<< interval          L<Mail::Transport>  C<30> >>
-S<< log               L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< password          L<Mail::Transport>  undef >>
-S<< port              L<Mail::Transport>  undef >>
-S<< proxy             L<Mail::Transport>  undef >>
-S<< retry             L<Mail::Transport>  <false> >>
-S<< sendmail_options                   [] >>
-S<< timeout           L<Mail::Transport>  C<120> >>
-S<< trace             L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< username          L<Mail::Transport>  undef >>
-S<< via               L<Mail::Transport>  C<'sendmail'> >>
+ Option          --Defined in     --Default
+ executable        Mail::Transport  undef
+ hostname          Mail::Transport  'localhost'
+ interval          Mail::Transport  30
+ log               Mail::Reporter   'WARNINGS'
+ password          Mail::Transport  undef
+ port              Mail::Transport  undef
+ proxy             Mail::Transport  undef
+ retry             Mail::Transport  <false>
+ sendmail_options                   []
+ timeout           Mail::Transport  120
+ trace             Mail::Reporter   'WARNINGS'
+ username          Mail::Transport  undef
+ via               Mail::Transport  'sendmail'
 
 . executable FILENAME
 
@@ -122,8 +122,8 @@ $obj-E<gt>B<trySend>(MESSAGE, OPTIONS)
 
 =over 4
 
-S<< Option          --Defined in--Default >>
-S<< sendmail_options              undef >>
+ Option          --Defined in--Default
+ sendmail_options              undef
 
 . sendmail_options ARRAY
 
@@ -329,7 +329,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

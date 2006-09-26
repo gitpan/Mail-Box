@@ -125,15 +125,15 @@ Mail::Message::Field::Addresses-E<gt>B<new>
 
 =over 4
 
-S<< Option    --Defined in     --Default >>
-S<< attributes  L<Mail::Message::Field::Structured>  <ignored> >>
-S<< charset     L<Mail::Message::Field::Full>  undef >>
-S<< datum       L<Mail::Message::Field::Structured>  C<undef> >>
-S<< encoding    L<Mail::Message::Field::Full>  C<'q'> >>
-S<< force       L<Mail::Message::Field::Full>  false >>
-S<< language    L<Mail::Message::Field::Full>  undef >>
-S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
+ Option    --Defined in     --Default
+ attributes  Mail::Message::Field::Structured  <ignored>
+ charset     Mail::Message::Field::Full  undef
+ datum       Mail::Message::Field::Structured  undef
+ encoding    Mail::Message::Field::Full  'q'
+ force       Mail::Message::Field::Full  false
+ language    Mail::Message::Field::Full  undef
+ log         Mail::Reporter   'WARNINGS'
+ trace       Mail::Reporter   'WARNINGS'
 
 . attributes ATTRS
 
@@ -307,8 +307,8 @@ no ADDRESS is specified, the option must be sufficient to create a
 L<Mail::Message::Field::Address|Mail::Message::Field::Address> from.  See the OPTIONS of
 L<Mail::Message::Field::Address::new()|Mail::Identity/"METHODS">.
 
-S<< Option--Defined in--Default >>
-S<< group               C<''> >>
+ Option--Defined in--Default
+ group               ''
 
 . group STRING
 
@@ -330,8 +330,8 @@ Add a group of addresses to this field.  A GROUP can be specified, which
 is a L<Mail::Message::Field::AddrGroup|Mail::Message::Field::AddrGroup> object, or one is created for you
 using the OPTIONS.  The group is returned.
 
-S<< Option--Defined in--Default >>
-S<< name                C<''> >>
+ Option--Defined in--Default
+ name                ''
 
 . name STRING
 
@@ -799,7 +799,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Box::Parser;
 use vars '$VERSION';
-$VERSION = '2.067';
+$VERSION = '2.068';
 use base 'Mail::Reporter';
 use Carp;
 
@@ -18,8 +18,6 @@ sub new(@)
 
 sub init(@)
 {   my ($self, $args) = @_;
-
-    $args->{trace}  ||= 'WARNING';
 
     $self->SUPER::init($args);
 

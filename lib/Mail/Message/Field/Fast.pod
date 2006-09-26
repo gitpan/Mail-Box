@@ -123,9 +123,9 @@ at once, quoted and formatted as required in RFC2822.  As alternative,
 list of key-value pairs can be used.  In this case, the values will get
 quoted if needed and everything formatted as the protocol demands.
 
-S<< Option--Defined in     --Default >>
-S<< log     L<Mail::Reporter>  <disabled> >>
-S<< trace   L<Mail::Reporter>  <disabled> >>
+ Option--Defined in     --Default
+ log     Mail::Reporter   <disabled>
+ trace   Mail::Reporter   <disabled>
 
 . log LEVEL
 
@@ -588,7 +588,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

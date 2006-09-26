@@ -113,8 +113,8 @@ Check whether the body is correctly encoded.  If so, the body reference is
 returned with the C<checked> flag set.  Otherwise, a new object is created
 and returned.
 
-S<< Option     --Defined in--Default >>
-S<< result_type              <type of source body> >>
+ Option     --Defined in--Default
+ result_type              <type of source body>
 
 . result_type CLASS
 
@@ -133,8 +133,8 @@ $obj-E<gt>B<decode>(BODY [, OPTIONS])
 
 Use the encoder to decode the content of BODY.  A new body is returned.
 
-S<< Option     --Defined in--Default >>
-S<< result_type              <type of source body> >>
+ Option     --Defined in--Default
+ result_type              <type of source body>
 
 . result_type CLASS
 
@@ -153,8 +153,8 @@ $obj-E<gt>B<encode>(BODY, OPTIONS)
 
 Use the encoder to encode the content of BODY.
 
-S<< Option     --Defined in--Default >>
-S<< result_type              <type of source body> >>
+ Option     --Defined in--Default
+ result_type              <type of source body>
 
 . result_type CLASS
 
@@ -324,7 +324,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

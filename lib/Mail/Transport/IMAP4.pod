@@ -62,22 +62,22 @@ may get shared.  This is sharing is hidden for the user.
 When an C<imap_client> is specified, then the options C<hostname>,
 C<port>, C<username>, and C<password> are extracted from it.
 
-S<< Option      --Defined in     --Default >>
-S<< authenticate                   C<'AUTO'> >>
-S<< domain                         <server_name> >>
-S<< executable    L<Mail::Transport>  C<undef> >>
-S<< hostname      L<Mail::Transport>  C<'localhost'> >>
-S<< imap_client                    L<Mail::IMAPClient|Mail::IMAPClient> >>
-S<< interval      L<Mail::Transport>  C<30> >>
-S<< log           L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< password      L<Mail::Transport>  undef >>
-S<< port          L<Mail::Transport>  143 >>
-S<< proxy         L<Mail::Transport>  undef >>
-S<< retry         L<Mail::Transport>  <false> >>
-S<< timeout       L<Mail::Transport>  C<120> >>
-S<< trace         L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< username      L<Mail::Transport>  undef >>
-S<< via           L<Mail::Transport>  C<'imap'> >>
+ Option      --Defined in     --Default
+ authenticate                   'AUTO'
+ domain                         <server_name>
+ executable    Mail::Transport  undef
+ hostname      Mail::Transport  'localhost'
+ imap_client                    Mail::IMAPClient
+ interval      Mail::Transport  30
+ log           Mail::Reporter   'WARNINGS'
+ password      Mail::Transport  undef
+ port          Mail::Transport  143
+ proxy         Mail::Transport  undef
+ retry         Mail::Transport  <false>
+ timeout       Mail::Transport  120
+ trace         Mail::Reporter   'WARNINGS'
+ username      Mail::Transport  undef
+ via           Mail::Transport  'imap'
 
 . authenticate TYPE|ARRAY-OF-TYPES
 
@@ -593,7 +593,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field::AddrGroup;
 use vars '$VERSION';
-$VERSION = '2.067';
+$VERSION = '2.068';
 use base 'User::Identity::Collection::Emails';
 
 

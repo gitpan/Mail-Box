@@ -57,14 +57,14 @@ Mail::Box::Manager-E<gt>B<new>(ARGS)
 
 =over 4
 
-S<< Option             --Defined in     --Default >>
-S<< autodetect                            C<undef> >>
-S<< default_folder_type                   C<'mbox'> >>
-S<< folder_types                          <all standard types> >>
-S<< folderdir                             C<[ '.' ]> >>
-S<< folderdirs                            <synonym for C<folderdir>> >>
-S<< log                  L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< trace                L<Mail::Reporter>  C<'WARNINGS'> >>
+ Option             --Defined in     --Default
+ autodetect                            undef
+ default_folder_type                   'mbox'
+ folder_types                          <all standard types>
+ folderdir                             [ '.' ]
+ folderdirs                            <synonym for C<folderdir>>
+ log                  Mail::Reporter   'WARNINGS'
+ trace                Mail::Reporter   'WARNINGS'
 
 . autodetect TYPE|ARRAY-OF-TYPES
 
@@ -189,8 +189,8 @@ The folder's messages will also be withdrawn from the known message threads.
 You may also close the folder directly. The manager will be informed
 about this event and take appropriate actions.
 
-S<< Option       --Defined in--Default >>
-S<< close_by_self              <false> >>
+ Option       --Defined in--Default
+ close_by_self              <false>
 
 . close_by_self BOOLEAN
 
@@ -244,12 +244,12 @@ may also have additional options for the folder type.  For a
 description of the folder options, see the options to the constructor
 L<Mail::Box::new()|Mail::Box/"Constructors"> for each type of mail box.
 
-S<< Option      --Defined in     --Default >>
-S<< authenticate                   C<'AUTO'> >>
-S<< create                         <false> >>
-S<< folder                         C<$ENV{MAIL}> >>
-S<< folderdir                      C<'.'> >>
-S<< type                           <first, usually C<mbox>> >>
+ Option      --Defined in     --Default
+ authenticate                   'AUTO'
+ create                         <false>
+ folder                         $ENV{MAIL}
+ folderdir                      '.'
+ type                           <first, usually C<mbox>>
 
 . authenticate TYPE|ARRAY-OF-TYPES|'AUTO'
 
@@ -354,8 +354,8 @@ The deletion of a folder can take some time.  Dependent on the type of
 folder, the folder must be read first.  For some folder-types this will
 be fast.
 
-S<< Option   --Defined in--Default >>
-S<< recursive              <folder's default> >>
+ Option   --Defined in--Default
+ recursive              <folder's default>
 
 . recursive BOOLEAN
 
@@ -418,8 +418,8 @@ You need to specify a folder's name or folder object as the first
 argument, or in the options list.  The options are the same as those
 which can be specified when opening a folder.
 
-S<< Option--Defined in--Default >>
-S<< share               <false> >>
+ Option--Defined in--Default
+ share               <false>
 
 . share BOOLEAN
 
@@ -462,8 +462,8 @@ is equivalent to
  $mgr->copyMessage($received, $inbox->message(1), share => 1);
  $inbox->message(1)->delete;
 
-S<< Option--Defined in--Default >>
-S<< share               <true> >>
+ Option--Defined in--Default
+ share               <true>
 
 . share BOOLEAN
 
@@ -797,7 +797,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -51,19 +51,19 @@ Mail::Message::Dummy-E<gt>B<new>(MESSAGE-ID, OPTIONS)
 Create a new dummy message to occupy the space for
 a real message with the specified MESSAGE-ID.
 
-S<< Option    --Defined in     --Default >>
-S<< body        L<Mail::Message>  <not used> >>
-S<< body_type   L<Mail::Message>  L<Mail::Message::Body::Lines|Mail::Message::Body::Lines> >>
-S<< deleted     L<Mail::Message>  <false> >>
-S<< field_type  L<Mail::Message>  <not used> >>
-S<< head        L<Mail::Message>  <not used> >>
-S<< head_type   L<Mail::Message>  <not used> >>
-S<< labels      L<Mail::Message>  {} >>
-S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< messageId   L<Mail::Message>  <required> >>
-S<< modified    L<Mail::Message>  <always false> >>
-S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< trusted     L<Mail::Message>  <always true> >>
+ Option    --Defined in     --Default
+ body        Mail::Message    <not used>
+ body_type   Mail::Message    Mail::Message::Body::Lines
+ deleted     Mail::Message    <false>
+ field_type  Mail::Message    <not used>
+ head        Mail::Message    <not used>
+ head_type   Mail::Message    <not used>
+ labels      Mail::Message    {}
+ log         Mail::Reporter   'WARNINGS'
+ messageId   Mail::Message    <required>
+ modified    Mail::Message    <always false>
+ trace       Mail::Reporter   'WARNINGS'
+ trusted     Mail::Message    <always true>
 
 . body OBJECT
 
@@ -888,7 +888,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

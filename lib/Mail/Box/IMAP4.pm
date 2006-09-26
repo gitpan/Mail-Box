@@ -4,7 +4,7 @@ use warnings;
 
 package Mail::Box::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.067';
+$VERSION = '2.068';
 use base 'Mail::Box::Net';
 
 use Mail::Box::IMAP4::Message;
@@ -62,6 +62,8 @@ sub init($)
     my $transport = $args->{transporter} || 'Mail::Transport::IMAP4';
     $transport = $self->createTransporter($transport, %$args)
        unless ref $transport;
+
+    $self->transporter($transport);
 
     defined $transport
        or return;
@@ -323,7 +325,7 @@ sub createTransporter($@)
         weaken($transporters{$linkid});
     }
 
-    $self->transporter($transporter);
+    $transporter;
 }
 
 #-------------------------------------------

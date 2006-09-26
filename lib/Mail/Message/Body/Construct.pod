@@ -119,10 +119,10 @@ a reply to the person's message you do not need to include that signature.
 If the body had no signature, the original body object is returned,
 and C<undef> for the signature body.
 
-S<< Option     --Defined in     --Default >>
-S<< max_lines                     C<10> >>
-S<< pattern                       C<qr/^--\s?$/> >>
-S<< result_type                   <same as current> >>
+ Option     --Defined in     --Default
+ max_lines                     10
+ pattern                       qr/^--\s?$/
+ result_type                   <same as current>
 
 . max_lines INTEGER|undef
 
@@ -182,7 +182,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

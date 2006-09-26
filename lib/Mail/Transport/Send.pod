@@ -84,19 +84,19 @@ Mail::Transport::Send-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-S<< Option    --Defined in     --Default >>
-S<< executable  L<Mail::Transport>  C<undef> >>
-S<< hostname    L<Mail::Transport>  C<'localhost'> >>
-S<< interval    L<Mail::Transport>  C<30> >>
-S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< password    L<Mail::Transport>  undef >>
-S<< port        L<Mail::Transport>  undef >>
-S<< proxy       L<Mail::Transport>  undef >>
-S<< retry       L<Mail::Transport>  <false> >>
-S<< timeout     L<Mail::Transport>  C<120> >>
-S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< username    L<Mail::Transport>  undef >>
-S<< via         L<Mail::Transport>  C<'sendmail'> >>
+ Option    --Defined in     --Default
+ executable  Mail::Transport  undef
+ hostname    Mail::Transport  'localhost'
+ interval    Mail::Transport  30
+ log         Mail::Reporter   'WARNINGS'
+ password    Mail::Transport  undef
+ port        Mail::Transport  undef
+ proxy       Mail::Transport  undef
+ retry       Mail::Transport  <false>
+ timeout     Mail::Transport  120
+ trace       Mail::Reporter   'WARNINGS'
+ username    Mail::Transport  undef
+ via         Mail::Transport  'sendmail'
 
 . executable FILENAME
 
@@ -148,9 +148,9 @@ $obj-E<gt>B<putContent>(MESSAGE, FILEHANDLE, OPTIONS)
 
 Print the content of the MESSAGE to the FILEHANDLE.
 
-S<< Option     --Defined in     --Default >>
-S<< body_only                     <false> >>
-S<< undisclosed                   <false> >>
+ Option     --Defined in     --Default
+ body_only                     <false>
+ undisclosed                   <false>
 
 . body_only BOOLEAN
 
@@ -179,10 +179,10 @@ Transmit the MESSAGE, which may be anything what can be coerced into a
 L<Mail::Message|Mail::Message>, so including Mail::Internet and MIME::Entity
 messages.  It returns true when the transmission was successfully completed.
 
-S<< Option  --Defined in     --Default >>
-S<< interval                   L<new(interval)|Mail::Transport/"METHODS"> >>
-S<< retry                      L<new(retry)|Mail::Transport/"METHODS"> >>
-S<< to                         C<undef> >>
+ Option  --Defined in     --Default
+ interval                   new(interval)
+ retry                      new(retry)
+ to                         undef
 
 . interval SECONDS
 
@@ -409,7 +409,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

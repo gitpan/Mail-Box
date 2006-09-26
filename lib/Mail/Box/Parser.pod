@@ -60,12 +60,12 @@ mbox-like mailboxes, this object can be used to read a whole folder.  In
 case of MH-like mailboxes, each message is contained in a single file,
 so each message has its own parser object.
 
-S<< Option  --Defined in     --Default >>
-S<< file                       undef >>
-S<< filename                   <required> >>
-S<< log       L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< mode                       C<'r'> >>
-S<< trace     L<Mail::Reporter>  C<'WARNINGS'> >>
+ Option  --Defined in     --Default
+ file                       undef
+ filename                   <required>
+ log       Mail::Reporter   'WARNINGS'
+ mode                       'r'
+ trace     Mail::Reporter   'WARNINGS'
 
 . file FILE-HANDLE
 
@@ -135,8 +135,8 @@ $obj-E<gt>B<start>(OPTIONS)
 
 Start the parser by opening a file.
 
-S<< Option--Defined in--Default >>
-S<< file                undef >>
+ Option--Defined in--Default
+ file                undef
 
 . file FILEHANDLE|undef
 
@@ -326,9 +326,9 @@ $obj-E<gt>B<openFile>(ARGS)
 
 Open the file to be parsed.  ARGS is a ref-hash of options.
 
-S<< Option  --Defined in     --Default >>
-S<< filename                   <required> >>
-S<< mode                       <required> >>
+ Option  --Defined in     --Default
+ filename                   <required>
+ mode                       <required>
 
 . filename FILENAME
 
@@ -510,7 +510,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

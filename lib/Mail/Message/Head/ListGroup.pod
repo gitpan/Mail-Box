@@ -90,16 +90,16 @@ Mail::Message::Head::ListGroup-E<gt>B<new>(FIELDS, OPTIONS)
 
 Construct an object which maintains one set of mailing list headers
 
-S<< Option  --Defined in     --Default >>
-S<< address                    C<undef> >>
-S<< head      L<Mail::Message::Head::FieldGroup>  C<undef> >>
-S<< listname                   <derived from address> >>
-S<< log       L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< rfc                        C<undef> >>
-S<< software  L<Mail::Message::Head::FieldGroup>  C<undef> >>
-S<< trace     L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< type      L<Mail::Message::Head::FieldGroup>  C<undef> >>
-S<< version   L<Mail::Message::Head::FieldGroup>  C<undef> >>
+ Option  --Defined in     --Default
+ address                    undef
+ head      Mail::Message::Head::FieldGroup  undef
+ listname                   <derived from address>
+ log       Mail::Reporter   'WARNINGS'
+ rfc                        undef
+ software  Mail::Message::Head::FieldGroup  undef
+ trace     Mail::Reporter   'WARNINGS'
+ type      Mail::Message::Head::FieldGroup  undef
+ version   Mail::Message::Head::FieldGroup  undef
 
 . address STRING|OBJECT
 
@@ -523,7 +523,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

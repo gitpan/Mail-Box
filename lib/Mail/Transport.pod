@@ -52,19 +52,19 @@ Mail::Transport-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-S<< Option    --Defined in     --Default >>
-S<< executable                   C<undef> >>
-S<< hostname                     C<'localhost'> >>
-S<< interval                     C<30> >>
-S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< password                     undef >>
-S<< port                         undef >>
-S<< proxy                        undef >>
-S<< retry                        <false> >>
-S<< timeout                      C<120> >>
-S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< username                     undef >>
-S<< via                          C<'sendmail'> >>
+ Option    --Defined in     --Default
+ executable                   undef
+ hostname                     'localhost'
+ interval                     30
+ log         Mail::Reporter   'WARNINGS'
+ password                     undef
+ port                         undef
+ proxy                        undef
+ retry                        <false>
+ timeout                      120
+ trace       Mail::Reporter   'WARNINGS'
+ username                     undef
+ via                          'sendmail'
 
 . executable FILENAME
 
@@ -359,7 +359,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

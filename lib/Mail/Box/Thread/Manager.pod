@@ -55,16 +55,16 @@ L<Mail::Box::Manager|Mail::Box::Manager>.  One manager can produce more than one
 objects.  One thread manager can combine messages from a set of folders,
 which may be partially overlapping with other objects of the same type.
 
-S<< Option     --Defined in     --Default >>
-S<< dummy_type                    L<Mail::Message::Dummy|Mail::Message::Dummy> >>
-S<< folder                        C<[ ]> >>
-S<< folders                       C<[ ]> >>
-S<< log          L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< thread_body                   <false> >>
-S<< thread_type                   L<Mail::Box::Thread::Node|Mail::Box::Thread::Node> >>
-S<< timespan                      C<'3 days'> >>
-S<< trace        L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< window                        C<10> >>
+ Option     --Defined in     --Default
+ dummy_type                    Mail::Message::Dummy
+ folder                        [ ]
+ folders                       [ ]
+ log          Mail::Reporter   'WARNINGS'
+ thread_body                   <false>
+ thread_type                   Mail::Box::Thread::Node
+ timespan                      '3 days'
+ trace        Mail::Reporter   'WARNINGS'
+ window                        10
 
 . dummy_type CLASS
 
@@ -569,7 +569,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -34,14 +34,14 @@ Mail::Box::Parser::Perl-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-S<< Option           --Defined in     --Default >>
-S<< file               L<Mail::Box::Parser>  undef >>
-S<< filename           L<Mail::Box::Parser>  <required> >>
-S<< fix_header_errors                   <false> >>
-S<< log                L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< mode               L<Mail::Box::Parser>  C<'r'> >>
-S<< trace              L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< trusted                             <false> >>
+ Option           --Defined in     --Default
+ file               Mail::Box::Parser  undef
+ filename           Mail::Box::Parser  <required>
+ fix_header_errors                   <false>
+ log                Mail::Reporter   'WARNINGS'
+ mode               Mail::Box::Parser  'r'
+ trace              Mail::Reporter   'WARNINGS'
+ trusted                             <false>
 
 . file FILE-HANDLE
 
@@ -424,7 +424,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

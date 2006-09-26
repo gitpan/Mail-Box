@@ -109,11 +109,11 @@ The ATTRIBUTES are a flat list of key-value pairs.  The body is
 specified as one BODY string, one OBJECT, or a reference to an array
 of OBJECTS.  See L<Mail::Message::Field|Mail::Message::Field>:
 
-S<< Option    --Defined in     --Default >>
-S<< attributes                   C<[]> >>
-S<< comment                      undef >>
-S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
+ Option    --Defined in     --Default
+ attributes                   []
+ comment                      undef
+ log         Mail::Reporter   'WARNINGS'
+ trace       Mail::Reporter   'WARNINGS'
 
 . attributes ATTRS
 
@@ -562,7 +562,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

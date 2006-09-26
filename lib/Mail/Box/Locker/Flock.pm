@@ -3,7 +3,7 @@ use strict;
 
 package Mail::Box::Locker::Flock;
 use vars '$VERSION';
-$VERSION = '2.067';
+$VERSION = '2.068';
 use base 'Mail::Box::Locker';
 
 use IO::File;

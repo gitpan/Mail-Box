@@ -140,33 +140,33 @@ To control delay-loading of messages, as well the headers as the bodies,
 a set of C<*_type> options are available. C<extract> determines whether
 we want delay-loading.
 
-S<< Option           --Defined in     --Default >>
-S<< access                              C<'r'> >>
-S<< body_delayed_type                   L<Mail::Message::Body::Delayed|Mail::Message::Body::Delayed> >>
-S<< body_type                           <folder specific> >>
-S<< coerce_options                      C<[]> >>
-S<< create                              <false> >>
-S<< extract                             C<10240> >>
-S<< field_type                          undef >>
-S<< fix_headers                         <false> >>
-S<< folder                              C<$ENV{MAIL}> >>
-S<< folderdir                           undef >>
-S<< head_delayed_type                   L<Mail::Message::Head::Delayed|Mail::Message::Head::Delayed> >>
-S<< head_type                           L<Mail::Message::Head::Complete|Mail::Message::Head::Complete> >>
-S<< keep_dups                           <false> >>
-S<< lock_file                           undef >>
-S<< lock_timeout                        1 hour >>
-S<< lock_type                           L<Mail::Box::Locker::DotLock|Mail::Box::Locker::DotLock> >>
-S<< lock_wait                           10 seconds >>
-S<< locker                              undef >>
-S<< log                L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< manager                             undef >>
-S<< message_type                        L<Mail::Box::Message|Mail::Box::Message> >>
-S<< multipart_type                      L<Mail::Message::Body::Multipart|Mail::Message::Body::Multipart> >>
-S<< remove_when_empty                   <true> >>
-S<< save_on_exit                        <true> >>
-S<< trace              L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< trusted                             <depends on folder location> >>
+ Option           --Defined in     --Default
+ access                              'r'
+ body_delayed_type                   Mail::Message::Body::Delayed
+ body_type                           <folder specific>
+ coerce_options                      []
+ create                              <false>
+ extract                             10240
+ field_type                          undef
+ fix_headers                         <false>
+ folder                              $ENV{MAIL}
+ folderdir                           undef
+ head_delayed_type                   Mail::Message::Head::Delayed
+ head_type                           Mail::Message::Head::Complete
+ keep_dups                           <false>
+ lock_file                           undef
+ lock_timeout                        1 hour
+ lock_type                           Mail::Box::Locker::DotLock
+ lock_wait                           10 seconds
+ locker                              undef
+ log                Mail::Reporter   'WARNINGS'
+ manager                             undef
+ message_type                        Mail::Box::Message
+ multipart_type                      Mail::Message::Body::Multipart
+ remove_when_empty                   <true>
+ save_on_exit                        <true>
+ trace              Mail::Reporter   'WARNINGS'
+ trusted                             <depends on folder location>
 
 . access MODE
 
@@ -536,8 +536,8 @@ L<Mail::Box::Manager::copyMessage()|Mail::Box::Manager/"Move messages to folders
 
 Messages with id's which already exist in this folder are not added.
 
-S<< Option--Defined in--Default >>
-S<< share               <not used> >>
+ Option--Defined in--Default
+ share               <not used>
 
 . share BOOLEAN
 
@@ -589,11 +589,11 @@ be used for appending.  This can be fast, but this can also be very
 slow (depends on the implementation).  All OPTIONS passed will also be
 used to open the folder, if needed.
 
-S<< Option  --Defined in     --Default >>
-S<< folder                     <required> >>
-S<< message                    undef >>
-S<< messages                   undef >>
-S<< share                      <false> >>
+ Option  --Defined in     --Default
+ folder                     <required>
+ message                    undef
+ messages                   undef
+ share                      <false>
 
 . folder FOLDERNAME
 
@@ -655,10 +655,10 @@ write the destination folder before writing and closing the source
 folder.  Otherwise you may lose data if the system crashes or if there
 are software problems.
 
-S<< Option      --Defined in     --Default >>
-S<< force                          <false> >>
-S<< save_deleted                   C<false> >>
-S<< write                          C<MODIFIED> >>
+ Option      --Defined in     --Default
+ force                          <false>
+ save_deleted                   false
+ write                          MODIFIED
 
 . force BOOLEAN
 
@@ -712,11 +712,11 @@ $obj-E<gt>B<copyTo>(FOLDER, OPTIONS)
 Copy the folder's messages to a new folder.  The new folder may be of
 a different type.
 
-S<< Option       --Defined in     --Default >>
-S<< delete_copied                   <false> >>
-S<< select                          'ACTIVE' >>
-S<< share                           <not used> >>
-S<< subfolders                      <folder type dependent> >>
+ Option       --Defined in     --Default
+ delete_copied                   <false>
+ select                          'ACTIVE'
+ share                           <not used>
+ subfolders                      <folder type dependent>
 
 . delete_copied BOOLEAN
 
@@ -783,8 +783,8 @@ WARNING: When moving messages from one folder to another, be sure to write the
 destination folder before deleting the source folder.  Otherwise you may lose
 data if the system crashes or if there are software problems.
 
-S<< Option   --Defined in--Default >>
-S<< recursive              1 >>
+ Option   --Defined in--Default
+ recursive              1
 
 . recursive BOOLEAN
 
@@ -1171,11 +1171,11 @@ access to that folder.
 
 For MBOX folders, sub-folders are simulated.
 
-S<< Option    --Defined in     --Default >>
-S<< check                        <false> >>
-S<< folder                       <from calling object> >>
-S<< folderdir                    <from folder> >>
-S<< skip_empty                   <false> >>
+ Option    --Defined in     --Default
+ check                        <false>
+ folder                       <from calling object>
+ folderdir                    <from folder>
+ skip_empty                   <false>
 
 . check BOOLEAN
 
@@ -1301,8 +1301,8 @@ The folder is created, but not opened!  If you want to open a file which
 may need to be created, then use L<Mail::Box::Manager::open()|Mail::Box::Manager/"Manage open folders"> with the
 create flag, or L<Mail::Box::new(create)|Mail::Box/"Constructors">.
 
-S<< Option   --Defined in--Default >>
-S<< folderdir              undef >>
+ Option   --Defined in--Default
+ folderdir              undef
 
 . folderdir DIRECTORY
 
@@ -1339,8 +1339,8 @@ OPTIONS is a list of extra information for the request.  Read
 the documentation for each type of folder for type specific options, but
 each folder class will at least support the C<folderdir> option:
 
-S<< Option   --Defined in--Default >>
-S<< folderdir              undef >>
+ Option   --Defined in--Default
+ folderdir              undef
 
 . folderdir DIRECTORY
 
@@ -1482,9 +1482,9 @@ if there are software problems.
 To write a folder to a different file, you must first create a new folder,
 then move all the messages, and then write or L<close()|Mail::Box/"The folder"> that new folder.
 
-S<< Option      --Defined in     --Default >>
-S<< force                          <false> >>
-S<< save_deleted                   <false> >>
+ Option      --Defined in     --Default
+ force                          <false>
+ save_deleted                   <false>
 
 . force BOOLEAN
 
@@ -1516,8 +1516,8 @@ folder type.  The C<write> organizes the general activities.  All options
 to L<write()|Mail::Box/"Internals"> are passed to C<writeMessages> as well.  Besides, a few extra
 are added by C<write> itself.
 
-S<< Option  --Defined in--Default >>
-S<< messages              <required> >>
+ Option  --Defined in--Default
+ messages              <required>
 
 . messages ARRAY
 
@@ -1911,7 +1911,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

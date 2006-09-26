@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Field::Address;
 use vars '$VERSION';
-$VERSION = '2.067';
+$VERSION = '2.068';
 use base 'Mail::Identity';
 
 use Mail::Message::Field::Addresses;

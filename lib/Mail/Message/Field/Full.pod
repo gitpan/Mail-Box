@@ -179,13 +179,13 @@ constructor of the field: the types which are accepted may differ.
 The optional ATTRIBUTE list contains L<Mail::Message::Field::Attribute|Mail::Message::Field::Attribute>
 objects.  Finally, there are some OPTIONS.
 
-S<< Option  --Defined in     --Default >>
-S<< charset                    undef >>
-S<< encoding                   C<'q'> >>
-S<< force                      false >>
-S<< language                   undef >>
-S<< log       L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< trace     L<Mail::Reporter>  C<'WARNINGS'> >>
+ Option  --Defined in     --Default
+ charset                    undef
+ encoding                   'q'
+ force                      false
+ language                   undef
+ log       Mail::Reporter   'WARNINGS'
+ trace     Mail::Reporter   'WARNINGS'
 
 . charset STRING
 
@@ -532,8 +532,8 @@ may interfere with your markup characters.
 
 Be warned: language information, which is defined in RFC2231, is ignored.
 
-S<< Option --Defined in--Default >>
-S<< is_text              C<1> >>
+ Option --Defined in--Default
+ is_text              1
 
 . is_text BOOLEAN
 
@@ -568,11 +568,11 @@ $obj-E<gt>B<encode>(STRING, OPTIONS)
 Encode the (possibly utf8 encoded) STRING to a string which is acceptable
 to the RFC2047 definition of a header: only containing us-ascii characters.
 
-S<< Option  --Defined in     --Default >>
-S<< charset                    C<'us-ascii'> >>
-S<< encoding                   C<'q'> >>
-S<< force                      <flase> >>
-S<< language                   undef >>
+ Option  --Defined in     --Default
+ charset                    'us-ascii'
+ encoding                   'q'
+ force                      <flase>
+ language                   undef
 
 . charset STRING
 
@@ -898,7 +898,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

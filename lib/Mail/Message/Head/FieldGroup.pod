@@ -81,13 +81,13 @@ pairs.  The OPTIONS and FIELDS (as key-value pair) can be mixed: they are
 distinguished by their name, where the fields always start with a capital.
 The field objects must aways lead the OPTIONS.
 
-S<< Option  --Defined in     --Default >>
-S<< head                       C<undef> >>
-S<< log       L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< software                   C<undef> >>
-S<< trace     L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< type                       C<undef> >>
-S<< version                    C<undef> >>
+ Option  --Defined in     --Default
+ head                       undef
+ log       Mail::Reporter   'WARNINGS'
+ software                   undef
+ trace     Mail::Reporter   'WARNINGS'
+ type                       undef
+ version                    undef
 
 . head HEAD
 
@@ -452,7 +452,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

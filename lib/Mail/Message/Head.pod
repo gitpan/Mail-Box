@@ -120,12 +120,12 @@ the fields may be stored differently internally.
 If you try to instantiate a L<Mail::Message::Head|Mail::Message::Head>, you will automatically
 be upgraded to a L<Mail::Message::Head::Complete|Mail::Message::Head::Complete> --a full head.
 
-S<< Option    --Defined in     --Default >>
-S<< field_type                   L<Mail::Message::Field::Fast|Mail::Message::Field::Fast> >>
-S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< message                      undef >>
-S<< modified                     <false> >>
-S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
+ Option    --Defined in     --Default
+ field_type                   Mail::Message::Field::Fast
+ log         Mail::Reporter   'WARNINGS'
+ message                      undef
+ modified                     <false>
+ trace       Mail::Reporter   'WARNINGS'
 
 . field_type CLASS
 
@@ -606,7 +606,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -39,12 +39,12 @@ Mail::Message::Convert::HtmlFormatText-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-S<< Option     --Defined in     --Default >>
-S<< fields       L<Mail::Message::Convert>  <see description> >>
-S<< leftmargin                    C<3> >>
-S<< log          L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< rightmargin                   C<72> >>
-S<< trace        L<Mail::Reporter>  C<'WARNINGS'> >>
+ Option     --Defined in     --Default
+ fields       Mail::Message::Convert  <see description>
+ leftmargin                    3
+ log          Mail::Reporter   'WARNINGS'
+ rightmargin                   72
+ trace        Mail::Reporter   'WARNINGS'
 
 . fields NAMES|ARRAY-OF-NAMES|REGEXS
 
@@ -238,7 +238,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

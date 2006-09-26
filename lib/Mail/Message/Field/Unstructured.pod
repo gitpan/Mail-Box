@@ -116,13 +116,13 @@ separated list).  Each BODY element is interpreted with the specified encoding.
 When the BODY is empty, the construction of the object fails: C<undef> is
 returned.
 
-S<< Option  --Defined in     --Default >>
-S<< charset   L<Mail::Message::Field::Full>  undef >>
-S<< encoding  L<Mail::Message::Field::Full>  C<'q'> >>
-S<< force     L<Mail::Message::Field::Full>  false >>
-S<< language  L<Mail::Message::Field::Full>  undef >>
-S<< log       L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< trace     L<Mail::Reporter>  C<'WARNINGS'> >>
+ Option  --Defined in     --Default
+ charset   Mail::Message::Field::Full  undef
+ encoding  Mail::Message::Field::Full  'q'
+ force     Mail::Message::Field::Full  false
+ language  Mail::Message::Field::Full  undef
+ log       Mail::Reporter   'WARNINGS'
+ trace     Mail::Reporter   'WARNINGS'
 
 . charset STRING
 
@@ -687,7 +687,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

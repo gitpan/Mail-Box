@@ -37,11 +37,11 @@ a certain user, based upon a set of folders.  The data is kept by
 L<Mail::Box::Identity|Mail::Box::Identity> and L<Mail::Box::Collection|Mail::Box::Collection> objects, which
 mean that the folders will not be opened to answer these questions.
 
-S<< Option   --Defined in     --Default >>
-S<< delimeter                   '/' >>
-S<< folders                     <from user> >>
-S<< inbox                       <from user> >>
-S<< user                        <undef> >>
+ Option   --Defined in     --Default
+ delimeter                   '/'
+ folders                     <from user>
+ inbox                       <from user>
+ user                        <undef>
 
 . delimeter STRING|CODE
 
@@ -191,7 +191,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

@@ -40,9 +40,9 @@ This error container is also the base constructor for all modules, (as long
 as there is no need for an other base object)  The constructor always accepts
 the following OPTIONS related to error reports.
 
-S<< Option--Defined in     --Default >>
-S<< log                      C<'WARNINGS'> >>
-S<< trace                    C<'WARNINGS'> >>
+ Option--Defined in     --Default
+ log                      'WARNINGS'
+ trace                    'WARNINGS'
 
 . log LEVEL
 
@@ -358,7 +358,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

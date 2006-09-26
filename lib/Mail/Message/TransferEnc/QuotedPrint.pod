@@ -92,8 +92,8 @@ encoding split them up.  Characters which are not printable will be
 replaced by their octal value, and carriage returns (C<'=0D'>) at
 end of line are removed.
 
-S<< Option     --Defined in                   --Default >>
-S<< result_type  L<Mail::Message::TransferEnc>  <type of source body> >>
+ Option     --Defined in                --Default
+ result_type  Mail::Message::TransferEnc  <type of source body>
 
 . result_type CLASS
 
@@ -112,8 +112,8 @@ at the end of a line.
 The lines which are constructed which must be 76 characters max, not
 broken on encoded characters.
 
-S<< Option     --Defined in                   --Default >>
-S<< result_type  L<Mail::Message::TransferEnc>  <type of source body> >>
+ Option     --Defined in                --Default
+ result_type  Mail::Message::TransferEnc  <type of source body>
 
 . result_type CLASS
 
@@ -276,7 +276,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

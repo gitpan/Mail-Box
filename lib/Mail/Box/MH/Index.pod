@@ -47,12 +47,12 @@ Mail::Box::MH::Index-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-S<< Option   --Defined in     --Default >>
-S<< filename                    <required> >>
-S<< head_type                   L<Mail::Message::Head::Subset|Mail::Message::Head::Subset> >>
-S<< head_wrap                   72 >>
-S<< log        L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< trace      L<Mail::Reporter>  C<'WARNINGS'> >>
+ Option   --Defined in     --Default
+ filename                    <required>
+ head_type                   Mail::Message::Head::Subset
+ head_wrap                   72
+ log        Mail::Reporter   'WARNINGS'
+ trace      Mail::Reporter   'WARNINGS'
 
 . filename FILENAME
 
@@ -286,7 +286,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

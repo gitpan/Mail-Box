@@ -42,10 +42,10 @@ defines BottomMargin, FontFamily, FontScale, HorizontalMargin, Leading,
 LeftMargin, PageNo, PaperHeight, PaperSize, PaperWidth, RightMargin,
 TopMargin, and VerticalMargin.
 
-S<< Option--Defined in     --Default >>
-S<< fields  L<Mail::Message::Convert>  <not used> >>
-S<< log     L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< trace   L<Mail::Reporter>  C<'WARNINGS'> >>
+ Option--Defined in     --Default
+ fields  Mail::Message::Convert  <not used>
+ log     Mail::Reporter   'WARNINGS'
+ trace   Mail::Reporter   'WARNINGS'
 
 . fields NAMES|ARRAY-OF-NAMES|REGEXS
 
@@ -223,7 +223,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

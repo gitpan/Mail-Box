@@ -66,13 +66,13 @@ Mail::Box::IMAP4::Head-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-S<< Option      --Defined in     --Default >>
-S<< cache_fields                   C<false> >>
-S<< field_type    L<Mail::Message::Head>  L<Mail::Message::Field::Fast|Mail::Message::Field::Fast> >>
-S<< log           L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< message       L<Mail::Message::Head>  undef >>
-S<< modified      L<Mail::Message::Head>  <false> >>
-S<< trace         L<Mail::Reporter>  C<'WARNINGS'> >>
+ Option      --Defined in     --Default
+ cache_fields                   false
+ field_type    Mail::Message::Head  Mail::Message::Field::Fast
+ log           Mail::Reporter   'WARNINGS'
+ message       Mail::Message::Head  undef
+ modified      Mail::Message::Head  <false>
+ trace         Mail::Reporter   'WARNINGS'
 
 . cache_fields BOOLEAN
 
@@ -404,7 +404,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

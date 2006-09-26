@@ -60,12 +60,12 @@ characters, hence is never encoded.
 To speed things up, attributes are not derived from the L<Mail::Reporter|Mail::Reporter>
 base-class.
 
-S<< Option           --Defined in     --Default >>
-S<< charset                             C<'us-ascii'> >>
-S<< language                            undef >>
-S<< log                L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< trace              L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< use_continuations                   <true> >>
+ Option           --Defined in     --Default
+ charset                             'us-ascii'
+ language                            undef
+ log                Mail::Reporter   'WARNINGS'
+ trace              Mail::Reporter   'WARNINGS'
+ use_continuations                   <true>
 
 . charset STRING
 
@@ -374,7 +374,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

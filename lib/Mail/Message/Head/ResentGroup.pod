@@ -82,24 +82,24 @@ OPTIONS which start with capitals will be used to construct additional
 fields.  These option names are prepended with C<Resent->, keeping the
 capitization of what is specified.
 
-S<< Option      --Defined in     --Default >>
-S<< Bcc                            undef >>
-S<< Cc                             undef >>
-S<< Date                           <now> >>
-S<< Delivered-To                   undef >>
-S<< From                           <required> >>
-S<< Message-ID                     <uniquely created> >>
-S<< Received                       <created> >>
-S<< Return-Path                    undef >>
-S<< Sender                         undef >>
-S<< To                             undef >>
-S<< head                           <created automatically> >>
-S<< log           L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< message_head                   C<undef> >>
-S<< software      L<Mail::Message::Head::FieldGroup>  C<undef> >>
-S<< trace         L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< type          L<Mail::Message::Head::FieldGroup>  C<undef> >>
-S<< version       L<Mail::Message::Head::FieldGroup>  C<undef> >>
+ Option      --Defined in     --Default
+ Bcc                            undef
+ Cc                             undef
+ Date                           <now>
+ Delivered-To                   undef
+ From                           <required>
+ Message-ID                     <uniquely created>
+ Received                       <created>
+ Return-Path                    undef
+ Sender                         undef
+ To                             undef
+ head                           <created automatically>
+ log           Mail::Reporter   'WARNINGS'
+ message_head                   undef
+ software      Mail::Message::Head::FieldGroup  undef
+ trace         Mail::Reporter   'WARNINGS'
+ type          Mail::Message::Head::FieldGroup  undef
+ version       Mail::Message::Head::FieldGroup  undef
 
 . Bcc STRING|OBJECT|OBJECTS
 
@@ -642,7 +642,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

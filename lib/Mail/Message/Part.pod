@@ -66,20 +66,20 @@ Mail::Message::Part-E<gt>B<new>(OPTIONS)
 
 Create a message part.
 
-S<< Option    --Defined in     --Default >>
-S<< body        L<Mail::Message>  undef >>
-S<< body_type   L<Mail::Message>  L<Mail::Message::Body::Lines|Mail::Message::Body::Lines> >>
-S<< container                    <required> >>
-S<< deleted     L<Mail::Message>  <false> >>
-S<< field_type  L<Mail::Message>  undef >>
-S<< head        L<Mail::Message>  <empty header> >>
-S<< head_type   L<Mail::Message>  L<Mail::Message::Head::Complete|Mail::Message::Head::Complete> >>
-S<< labels      L<Mail::Message>  {} >>
-S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< messageId   L<Mail::Message>  undef >>
-S<< modified    L<Mail::Message>  <false> >>
-S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< trusted     L<Mail::Message>  <false> >>
+ Option    --Defined in     --Default
+ body        Mail::Message    undef
+ body_type   Mail::Message    Mail::Message::Body::Lines
+ container                    <required>
+ deleted     Mail::Message    <false>
+ field_type  Mail::Message    undef
+ head        Mail::Message    <empty header>
+ head_type   Mail::Message    Mail::Message::Head::Complete
+ labels      Mail::Message    {}
+ log         Mail::Reporter   'WARNINGS'
+ messageId   Mail::Message    undef
+ modified    Mail::Message    <false>
+ trace       Mail::Reporter   'WARNINGS'
+ trusted     Mail::Message    <false>
 
 . body OBJECT
 
@@ -920,7 +920,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

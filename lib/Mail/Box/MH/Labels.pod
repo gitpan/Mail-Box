@@ -39,10 +39,10 @@ Mail::Box::MH::Labels-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-S<< Option  --Defined in     --Default >>
-S<< filename                   <required> >>
-S<< log       L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< trace     L<Mail::Reporter>  C<'WARNINGS'> >>
+ Option  --Defined in     --Default
+ filename                   <required>
+ log       Mail::Reporter   'WARNINGS'
+ trace     Mail::Reporter   'WARNINGS'
 
 . filename FILENAME
 
@@ -260,7 +260,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

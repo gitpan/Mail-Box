@@ -111,15 +111,15 @@ Mail::Message::Field::URIs-E<gt>B<new>(DATA)
 
 =over 4
 
-S<< Option    --Defined in     --Default >>
-S<< attributes  L<Mail::Message::Field::Structured>  <ignored> >>
-S<< charset     L<Mail::Message::Field::Full>  undef >>
-S<< datum       L<Mail::Message::Field::Structured>  C<undef> >>
-S<< encoding    L<Mail::Message::Field::Full>  C<'q'> >>
-S<< force       L<Mail::Message::Field::Full>  false >>
-S<< language    L<Mail::Message::Field::Full>  undef >>
-S<< log         L<Mail::Reporter>  C<'WARNINGS'> >>
-S<< trace       L<Mail::Reporter>  C<'WARNINGS'> >>
+ Option    --Defined in     --Default
+ attributes  Mail::Message::Field::Structured  <ignored>
+ charset     Mail::Message::Field::Full  undef
+ datum       Mail::Message::Field::Structured  undef
+ encoding    Mail::Message::Field::Full  'q'
+ force       Mail::Message::Field::Full  false
+ language    Mail::Message::Field::Full  undef
+ log         Mail::Reporter   'WARNINGS'
+ trace       Mail::Reporter   'WARNINGS'
 
 . attributes ATTRS
 
@@ -743,7 +743,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.067.
+Distribution version 2.068.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 
