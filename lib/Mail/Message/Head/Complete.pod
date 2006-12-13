@@ -66,13 +66,13 @@ Undefined values are interpreted as empty field values, and therefore skipped.
 
 =back
 
-$obj-E<gt>B<clone>([FIELDS])
+$obj-E<gt>B<clone>([NAMES|ARRAY-OF-NAMES|REGEXS])
 
 =over 4
 
 Make a copy of the header, optionally limited only to the header lines
-specified by FIELDS.  The lines which are taken must start with one of the
-list.  If no list is specified, all will be taken.
+specified by NAMES.  See L<grepNames()|Mail::Message::Head::Complete/"Access to the header"> on the way these fields can be
+used.
 
 I<Example:> 
 
@@ -311,19 +311,19 @@ $obj-E<gt>B<grepNames>([NAMES|ARRAY-OF-NAMES|REGEXS])
 
 =over 4
 
-Filter from all header fields the names which start will any of the
-specified list.  When no names are specified, all names will be returned.
+Filter from all header fields those with names which start will any of the
+specified list.  When no names are specified, all fields will be returned.
 The list is ordered as they where read from file, or added later.
 
-The NAMES are regular expressions, and will all be matched case insensitive
-and attached to the front of the string only.  You may also specify
-one or more prepared regexes.
+The NAMES are considered regular expressions, and will all be matched
+case insensitive and attached to the front of the string only.  You may
+also specify one or more prepared regexes.
 
 I<Example:> 
 
- print $head->grepNames();         # same as $head->names
- print $head->grepNames('X-', 'Subject', ');
- print $head->grepNames('To\b');   # will only select To
+ my @f  = $head->grepNames();       # same as $head->orderedFields
+ my @f  = $head->grepNames('X-', 'Subject', ');
+ my @to = $head->grepNames('To\b'); # will only select To
 
 =back
 
@@ -993,7 +993,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.068.
+Distribution version 2.069.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

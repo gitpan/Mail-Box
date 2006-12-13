@@ -3,7 +3,7 @@ use warnings;
 
 package Mail::Message::Head::Complete;
 use vars '$VERSION';
-$VERSION = '2.068';
+$VERSION = '2.069';
 use base 'Mail::Message::Head';
 
 use Mail::Box::Parser;
@@ -17,7 +17,7 @@ sub clone(;@)
 {   my $self   = shift;
     my $copy   = ref($self)->new($self->logSettings);
 
-    $copy->addNoRealize($_->clone) foreach $self->orderedFields;
+    $copy->addNoRealize($_->clone) for $self->grepNames(@_);
     $copy->modified(1);
     $copy;
 }
@@ -135,7 +135,7 @@ sub grepNames(@)
     my @take;
     push @take, (ref $_ eq 'ARRAY' ? @$_ : $_) foreach @_;
 
-    return $self->names unless @take;
+    return $self->orderedFields unless @take;
 
     my $take;
     if(@take==1 && ref $take[0] eq 'Regexp')
@@ -147,7 +147,7 @@ sub grepNames(@)
         $take    = qr/^(?:(?:@take))/i;
     }
 
-    grep {$_->Name =~ $take} $self->orderedFields;
+    grep {$_->name =~ $take} $self->orderedFields;
 }
 
 #------------------------------------------

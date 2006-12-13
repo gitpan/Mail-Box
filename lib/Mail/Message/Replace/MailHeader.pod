@@ -70,7 +70,7 @@ See L<Mail::Message::Head::Complete/"Constructors">
 
 =back
 
-$obj-E<gt>B<clone>([FIELDS])
+$obj-E<gt>B<clone>([NAMES|ARRAY-OF-NAMES|REGEXS])
 
 =over 4
 
@@ -882,7 +882,7 @@ See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details
 
 =head1 COPYRIGHTS
 
-Distribution version 2.068.
+Distribution version 2.069.
 Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
 other contributors.
 

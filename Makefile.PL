@@ -112,12 +112,6 @@ my %prereq =
  , Time::Zone     => 0.0
  );
 
-my $has_readkey;
-BEGIN
-{   eval "require Term::ReadKey";
-    $has_readkey = not length $@;
-}
-
 my $default_install_answer
      = $ENV{MAILBOX_INSTALL_OPTIONALS}
     || $ENV{INSTALL_MAILBOX_OPTIONALS};      # deprecated
@@ -209,8 +203,8 @@ foreach my $optional (@optional)
     }
     
     my $install = $default_install_answer
-               || prompt( "Do you want to install $module? yes/no/all"
-                        , -t STDIN ? 'y' : 'n');
+     || prompt "Do you want to install $module? yes/no/all"
+             , (-t STDIN ? 'y' : 'n');
 
     $install = $default_install_answer = 'y'
         if $install eq 'a';
@@ -224,7 +218,7 @@ foreach my $optional (@optional)
 }
 
 my $tests = $ENV{MAILBOX_RUN_TESTS}
-         || prompt "Do you want to run the (large set of) tests? yes/no", "yes";
+ || prompt "Do you want to run the (large set of) tests? yes/no", "yes";
 
 if($tests =~ m/n/i)
 {   open F, ">", "skiptests";
