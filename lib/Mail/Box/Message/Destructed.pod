@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Box::Message::Destructed - a destructed message
-
 
 =head1 INHERITANCE
 
@@ -11,11 +9,9 @@ Mail::Box::Message::Destructed - a destructed message
    is a Mail::Message
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  $folder->message(3)->destruct;
-
 
 =head1 DESCRIPTION
 
@@ -31,13 +27,9 @@ enforces irreversable deletion from the folder.  If you have a folder opened
 for read-only, the message will stay in that folder, but otherwise it may
 be deleted.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<clone>(OPTIONS)
 
@@ -101,7 +93,6 @@ done by calling L<Mail::Box::Message::destruct()|Mail::Box::Message/"Cleanup">.
 =back
 
 =head2 Constructing a message
-
 
 $obj-E<gt>B<bounce>([RG-OBJECT|OPTIONS])
 
@@ -235,7 +226,6 @@ See L<Mail::Message::Construct::Reply/"Constructing a message">
 
 =head2 The message
 
-
 $obj-E<gt>B<container>
 
 =over 4
@@ -341,7 +331,6 @@ See L<Mail::Message/"The message">
 =back
 
 =head2 The header
-
 
 $obj-E<gt>B<bcc>
 
@@ -459,7 +448,6 @@ See L<Mail::Message/"The header">
 
 =head2 The body
 
-
 $obj-E<gt>B<body>([BODY])
 
 =over 4
@@ -511,7 +499,6 @@ See L<Mail::Message/"The body">
 =back
 
 =head2 Flags
-
 
 $obj-E<gt>B<delete>
 
@@ -587,7 +574,6 @@ See L<Mail::Message/"Flags">
 
 =head2 The whole message as text
 
-
 $obj-E<gt>B<file>
 
 =over 4
@@ -622,7 +608,6 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 
 =head2 Internals
 
-
 $obj-E<gt>B<clonedFrom>
 
 =over 4
@@ -638,7 +623,6 @@ Mail::Box::Message::Destructed-E<gt>B<coerce>(MESSAGE)
 Coerce a L<Mail::Box::Message|Mail::Box::Message> into destruction.
 
 I<Example:> of coercion to death
-
 
  Mail::Box::Message::Destructed->coerce($folder->message(1));
  $folder->message(1)->destruct;  # same
@@ -714,7 +698,6 @@ See L<Mail::Message/"Internals">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -838,7 +821,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -863,8 +845,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
+=head1 DETAILS
 
 =head1 DIAGNOSTICS
 
@@ -886,7 +867,6 @@ choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
 I<Error:> Destructed message has no labels except 'deleted'
 
-
 I<Error:> Destructed messages can not be undeleted
 
 Once a message is destructed, it can not be revived.  Destruction is an
@@ -903,9 +883,7 @@ L<forward()|Mail::Message::Construct::Forward/"Constructing a message">.
 
 I<Error:> Method forwardAttach requires a preamble
 
-
 I<Error:> Method forwardEncapsulate requires a preamble
-
 
 I<Error:> No address to create forwarded to.
 
@@ -918,7 +896,6 @@ find a mail transfer agent to sent this message.  Specify a mailer
 explicitly using the C<via> options.
 
 I<Error:> No rebuild rule $name defined.
-
 
 I<Error:> Only build() Mail::Message's; they are not in a folder yet
 
@@ -949,26 +926,16 @@ forcefully by means of L<Mail::Box::Message::destruct()|Mail::Box::Message/"Clea
 your program still tries to get to the header or body data after this
 destruction, which is not possible.
 
+=head1 SEE ALSO
 
-=head1 DETAILS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

@@ -1,15 +1,12 @@
-
 =head1 NAME
 
 Mail::Box::Manage::User - manage the folders of a user
-
 
 =head1 INHERITANCE
 
  Mail::Box::Manage::User
    is a Mail::Box::Manager
    is a Mail::Reporter
-
 
 =head1 SYNOPSIS
 
@@ -26,7 +23,6 @@ Mail::Box::Manage::User - manage the folders of a user
  my $inbox   = $user->open($user->inbox);
  my $top     = $user->topfolder;
 
-
 =head1 DESCRIPTION
 
 Where the L<Mail::Box::Manager|Mail::Box::Manager> takes care of some set of open folder,
@@ -34,13 +30,9 @@ this extension will add knowledge about some related person.  At the
 same time, it will try to cache some information about that person's
 folder files.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Box::Manage::User-E<gt>B<new>(ARGS)
 
@@ -124,7 +116,6 @@ The name of the user's inbox.
 
 =head2 Attributes
 
-
 $obj-E<gt>B<defaultFolderType>
 
 =over 4
@@ -177,7 +168,6 @@ See L<Mail::Box::Manager/"Attributes">
 
 =head2 Manage open folders
 
-
 $obj-E<gt>B<close>(FOLDER, OPTIONS)
 
 =over 4
@@ -220,7 +210,6 @@ See L<Mail::Box::Manager/"Manage open folders">
 
 =head2 Manage existing folders
 
-
 $obj-E<gt>B<create>(NAME, OPTIONS)
 
 =over 4
@@ -235,11 +224,11 @@ exists, a warning will be issued, and an empty list/undef returned.
 The OPTIONS are passed to L<Mail::Box::create()|Mail::Box/"Internals"> of your default folder
 type, except for the options intended for this method itself.
 
- Option       --Defined in     --Default
- create_real                     <true>
- create_supers                   <false>
- deleted                         <false>
- id_options                      []
+ Option       --Default
+ create_real    <true>
+ create_supers  <false>
+ deleted        <false>
+ id_options     []
 
 . create_real BOOLEAN
 
@@ -298,7 +287,6 @@ required details.
 
 I<Example:> how to delete a folder
 
-
  print "no xyz (anymore)\n" if $user->delete('xyz');
 
 =back
@@ -327,8 +315,8 @@ $obj-E<gt>B<rename>(OLDNAME, NEWNAME, OPTIONS)
 Rename the folder with name OLDNAME to NEWNAME.  Both names are full
 pathnames.
 
- Option       --Defined in--Default
- create_supers              <false>
+ Option       --Default
+ create_supers  <false>
 
 . create_supers BOOLEAN
 
@@ -350,7 +338,6 @@ Returns the top folder of the user's mailbox storage.
 =back
 
 =head2 Move messages to folders
-
 
 $obj-E<gt>B<appendMessage>([FOLDER|FOLDERNAME,] MESSAGES, OPTIONS)
 
@@ -378,7 +365,6 @@ See L<Mail::Box::Manager/"Move messages to folders">
 
 =head2 Manage message threads
 
-
 $obj-E<gt>B<threads>([FOLDERS], OPTIONS)
 
 =over 4
@@ -388,7 +374,6 @@ See L<Mail::Box::Manager/"Manage message threads">
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<decodeFolderURL>(URL)
 
@@ -415,7 +400,6 @@ See L<Mail::Box::Manager/"Internals">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -521,7 +505,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -538,8 +521,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
+=head1 DETAILS
 
 =head1 DIAGNOSTICS
 
@@ -611,7 +593,6 @@ of the package.
 
 I<Error:> Unable to remove folder $dir
 
-
 I<Error:> Use appendMessage() to add messages which are not in a folder.
 
 You do not need to copy this message into the folder, because you do
@@ -629,26 +610,16 @@ You have set L<open(create)|Mail::Box::Manager/"Manage open folders">, but only 
 only useful for folders which have write or append access modes
 (see L<Mail::Box::new(access)|Mail::Box/"Constructors">).
 
+=head1 SEE ALSO
 
-=head1 DETAILS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

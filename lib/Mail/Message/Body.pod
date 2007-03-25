@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Message::Body - the data of a body in a message
-
 
 =head1 INHERITANCE
 
@@ -23,7 +21,6 @@ Mail::Message::Body - the data of a body in a message
  Mail::Message::Body is realized by
    Mail::Message::Body::Delayed
 
-
 =head1 SYNOPSIS
 
  my Mail::Message $msg = ...;
@@ -39,7 +36,6 @@ Mail::Message::Body - the data of a body in a message
     charset => 'us-ascii', transfer_encoding => 'none');\n";
  my $decoded  = $body->decoded;
 
-
 =head1 DESCRIPTION
 
 The encoding and decoding functionality of a L<Mail::Message::Body|Mail::Message::Body> is
@@ -53,9 +49,7 @@ many body types.  The functionality of each body type is equivalent, but there
 are performance differences.  Each body type has its own documentation
 with details about its implementation.
 
-
 =head1 OVERLOADED
-
 
 overload: B<"">
 
@@ -66,7 +60,6 @@ completion-- unless called to produce a string for C<Carp>.  The latter
 to avoid deep recursions.
 
 I<Example:> stringification of body
-
 
  print $msg->body;   # implicit by print
 
@@ -85,7 +78,6 @@ are message references B<within the same folder>.
 
 I<Example:> use of numeric comparison on a body
 
-
  my $skip = $folder->message(3);
  foreach my $msg (@$folder)
  {   next if $msg == $skip;
@@ -102,7 +94,6 @@ When a body object is used as being an array reference, the lines of
 the body are returned.  This is the same as using L<lines()|Mail::Message::Body/"Access to the payload">.
 
 I<Example:> using a body as array
-
 
  print $body->lines->[1];  # second line
  print $body->[1];         # same
@@ -122,12 +113,9 @@ would be needed to avoid a runtime error.
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<clone>
 
@@ -330,7 +318,6 @@ I<Example:>
 
 =head2 Constructing a body
 
-
 $obj-E<gt>B<attach>(MESSAGES, OPTIONS)
 
 =over 4
@@ -374,8 +361,8 @@ is equivalent with
 The C<$dec> which is returned is a body.  Ask with the L<mimeType()|Mail::Message::Body/"About the payload"> method
 what is produced.  This C<$dec> body is B<not related to a header>.
 
- Option     --Defined in--Default
- result_type              <same as current>
+ Option     --Default
+ result_type  <same as current>
 
 . result_type CLASS
 
@@ -433,7 +420,6 @@ See L<Mail::Message::Body::Encode/"Constructing a body">
 
 =head2 The body
 
-
 $obj-E<gt>B<isDelayed>
 
 =over 4
@@ -473,7 +459,6 @@ disconnected from the message.
 =back
 
 =head2 About the payload
-
 
 $obj-E<gt>B<charset>
 
@@ -637,7 +622,6 @@ I<Example:>
 
 =head2 Access to the payload
 
-
 $obj-E<gt>B<endsOnNewline>
 
 =over 4
@@ -743,13 +727,12 @@ $obj-E<gt>B<write>(OPTIONS)
 Write the content of the body to a file.  Be warned that you may want to
 decode the body before writing it!
 
- Option  --Defined in--Default
- filename              <required>
+ Option  --Default
+ filename  <required>
 
 . filename FILENAME
 
 I<Example:> write the data to a file
-
 
  use File::Temp;
  my $fn = tempfile;
@@ -757,7 +740,6 @@ I<Example:> write the data to a file
     or die "Couldn't write to $fn: $!\n";
 
 I<Example:> using the content-disposition information to write
-
 
  use File::Temp;
  my $dir = tempdir; mkdir $dir or die;
@@ -768,7 +750,6 @@ I<Example:> using the content-disposition information to write
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
 
@@ -880,7 +861,6 @@ of the header.
 
 =head2 Error handling
 
-
 $obj-E<gt>B<AUTOLOAD>
 
 =over 4
@@ -989,7 +969,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -1006,32 +985,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
-
-=head1 DIAGNOSTICS
-
-I<Warning:> No decoder defined for transfer encoding $name.
-
-The data (message body) is encoded in a way which is not currently understood,
-therefore no decoding (or recoding) can take place.
-
-I<Warning:> No encoder defined for transfer encoding $name.
-
-The data (message body) has been decoded, but the required encoding is
-unknown.  The decoded data is returned.
-
-I<Error:> Package $package does not implement $method.
-
-Fatal error: the specific package (or one of its superclasses) does not
-implement this method where it should. This message means that some other
-related classes do implement this method however the class at hand does
-not.  Probably you should investigate this and probably inform the author
-of the package.
-
-
 =head1 DETAILS
-
 
 =head2 Access to the body
 
@@ -1124,22 +1078,36 @@ the body.  For most code, they simply behave like multiparts.
 
 =back
 
+=head1 DIAGNOSTICS
 
+I<Warning:> No decoder defined for transfer encoding $name.
 
+The data (message body) is encoded in a way which is not currently understood,
+therefore no decoding (or recoding) can take place.
 
+I<Warning:> No encoder defined for transfer encoding $name.
 
-=head1 REFERENCES
+The data (message body) has been decoded, but the required encoding is
+unknown.  The decoded data is returned.
 
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
+I<Error:> Package $package does not implement $method.
 
-=head1 COPYRIGHTS
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
 
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
+=head1 SEE ALSO
 
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+
+=head1 LICENSE
+
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

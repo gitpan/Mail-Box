@@ -1,8 +1,8 @@
 # http://module-build.sourceforge.net/META-spec.html
 #XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
 name:         Mail-Box
-version:      2.069
-version_from: lib/Mail/Box.pm
+version:      2.070
+version_from: 
 installdirs:  site
 requires:
     Date::Parse:                   0

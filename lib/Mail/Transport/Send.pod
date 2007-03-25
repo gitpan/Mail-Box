@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Transport::Send - send a message
-
 
 =head1 INHERITANCE
 
@@ -17,7 +15,6 @@ Mail::Transport::Send - send a message
    Mail::Transport::SMTP
    Mail::Transport::Sendmail
 
-
 =head1 SYNOPSIS
 
  my $message = Mail::Message->new(...);
@@ -28,7 +25,6 @@ Mail::Transport::Send - send a message
 
  my $sender = Mail::Transport::SMTP->new(...);
  $sender->send($message);
-
 
 =head1 DESCRIPTION
 
@@ -72,13 +68,9 @@ known to have exploitable security breaches.
 
 =back
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Transport::Send-E<gt>B<new>(OPTIONS)
 
@@ -126,7 +118,6 @@ Mail::Transport::Send-E<gt>B<new>(OPTIONS)
 
 =head2 Sending mail
 
-
 $obj-E<gt>B<destinations>(MESSAGE, [ADDRESS|ARRAY-OF-ADDRESSES])
 
 =over 4
@@ -148,9 +139,9 @@ $obj-E<gt>B<putContent>(MESSAGE, FILEHANDLE, OPTIONS)
 
 Print the content of the MESSAGE to the FILEHANDLE.
 
- Option     --Defined in     --Default
- body_only                     <false>
- undisclosed                   <false>
+ Option     --Default
+ body_only    <false>
+ undisclosed  <false>
 
 . body_only BOOLEAN
 
@@ -179,10 +170,10 @@ Transmit the MESSAGE, which may be anything what can be coerced into a
 L<Mail::Message|Mail::Message>, so including Mail::Internet and MIME::Entity
 messages.  It returns true when the transmission was successfully completed.
 
- Option  --Defined in     --Default
- interval                   new(interval)
- retry                      new(retry)
- to                         undef
+ Option  --Default
+ interval  new(interval)
+ retry     new(retry)
+ to        undef
 
 . interval SECONDS
 
@@ -211,7 +202,6 @@ the exit status of the command which was started.
 
 =head2 Server connection
 
-
 $obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
 
 =over 4
@@ -237,7 +227,6 @@ See L<Mail::Transport/"Server connection">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -343,7 +332,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -359,9 +347,6 @@ $obj-E<gt>B<inGlobalDestruction>
 See L<Mail::Reporter/"Cleanup">
 
 =back
-
-
-
 
 =head1 DIAGNOSTICS
 
@@ -398,23 +383,16 @@ I<Error:> Transporters of type $class cannot send.
 The L<Mail::Transport|Mail::Transport> object of the specified type can not send messages,
 but only receive message.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

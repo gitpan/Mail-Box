@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Message - general message object
-
 
 =head1 INHERITANCE
 
@@ -25,7 +23,6 @@ Mail::Message - general message object
    Mail::Message::Part
    Mail::Message::Replace::MailInternet
 
-
 =head1 SYNOPSIS
 
  use Mail::Box::Manager;
@@ -44,7 +41,6 @@ Mail::Message - general message object
  my Mail::Message::Body $body = $msg->decoded;
  $msg->decoded->print($outfile);
 
-
 =head1 DESCRIPTION
 
 A C<Mail::Message> object is a container for MIME-encoded message information,
@@ -62,13 +58,9 @@ implemented in separate packages which are autoloaded into this class.
 This means you can simply use these methods as if they are part of this class.
 Those package add functionality to all kinds of message objects.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<clone>(OPTIONS)
 
@@ -87,10 +79,10 @@ to be added.
 
 See also L<Mail::Box::Message::copyTo()|Mail::Box::Message/"The message"> and L<Mail::Box::Message::moveTo()|Mail::Box::Message/"The message">.
 
- Option      --Defined in     --Default
- shallow                        <false>
- shallow_body                   <false>
- shallow_head                   <false>
+ Option      --Default
+ shallow       <false>
+ shallow_body  <false>
+ shallow_head  <false>
 
 . shallow BOOLEAN
 
@@ -245,7 +237,6 @@ body data is decoded or used for transmission.
 
 =head2 Constructing a message
 
-
 $obj-E<gt>B<bounce>([RG-OBJECT|OPTIONS])
 
 =over 4
@@ -377,7 +368,6 @@ See L<Mail::Message::Construct::Reply/"Constructing a message">
 =back
 
 =head2 The message
-
 
 $obj-E<gt>B<container>
 
@@ -529,7 +519,6 @@ their body which starts with 'From ' will have an 'E<gt>' added in front.
 
 =head2 The header
 
-
 $obj-E<gt>B<bcc>
 
 =over 4
@@ -587,7 +576,6 @@ L<sender()|Mail::Message/"The header">.
 
 I<Example:> using from() to get all sender addresses
 
-
  my @from = $message->from;
 
 =back
@@ -607,7 +595,6 @@ call L<Mail::Message::Head::get()|Mail::Message::Head/"Access to the header"> yo
 want to be smart, doing the better (but slower) job.
 
 I<Example:> the get() short-cut for header fields
-
 
  print $msg->get('Content-Type'), "\n";
 
@@ -631,7 +618,6 @@ partially known.  If you require a time, then use the L<timestamp()|Mail::Messag
 method, described below.
 
 I<Example:> using guessTimestamp() to get a transmission date
-
 
  print "Receipt ", ($message->timestamp || 'unknown'), "\n";
 
@@ -674,7 +660,6 @@ an address, C<undef> is returned.
 
 I<Example:> using sender() to get exactly one sender address
 
-
  my $sender = $message->sender;
  print "Reply to: ", $sender->format, "\n" if defined $sender;
 
@@ -692,7 +677,6 @@ See L<Mail::Message::Field::study()|Mail::Message::Field/"Access to the content"
 
 I<Example:> the study() short-cut for header fields
 
-
  print $msg->study('to'), "\n";
 
 Is equivalent to:
@@ -709,7 +693,6 @@ $obj-E<gt>B<subject>
 Returns the message's subject, or the empty string.
 
 I<Example:> using subject() to get the message's subject
-
 
  print $msg->subject;
 
@@ -745,13 +728,11 @@ carefully.
 
 I<Example:> using to() to get all primar destination addresses
 
-
  my @to = $message->to;
 
 =back
 
 =head2 The body
-
 
 $obj-E<gt>B<body>([BODY])
 
@@ -799,9 +780,9 @@ was no encoding, the body object as read from file is passed on, however,
 some more work will be needed when a serious encoding is encountered.
 The OPTIONS control how the conversion takes place.
 
- Option     --Defined in     --Default
- keep                          <false>
- result_type                   <type of body>
+ Option     --Default
+ keep         <false>
+ result_type  <type of body>
 
 . keep BOOLEAN
 
@@ -897,7 +878,6 @@ I<Example:>
 =back
 
 =head2 Flags
-
 
 $obj-E<gt>B<delete>
 
@@ -1043,7 +1023,6 @@ description in the DETAILS chapter.
 
 =head2 The whole message as text
 
-
 $obj-E<gt>B<file>
 
 =over 4
@@ -1077,7 +1056,6 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<clonedFrom>
 
@@ -1215,7 +1193,6 @@ Angles (if present) are removed from the id.
 
 =head2 Error handling
 
-
 $obj-E<gt>B<AUTOLOAD>
 
 =over 4
@@ -1342,7 +1319,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -1370,7 +1346,6 @@ differently.
 
 I<Example:> of Mail::Message destruct
 
-
  my $msg = Mail::Message->read;
  $msg->destruct;
  $msg = undef;    # same
@@ -1385,67 +1360,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
-
-=head1 DIAGNOSTICS
-
-I<Error:> Cannot include forward source as $include.
-
-Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
-C<NO>, C<INLINE>, C<ATTACH>, and C<ENCAPSULATE>.
-
-I<Error:> Cannot include reply source as $include.
-
-Unknown alternative for the C<include> option of L<reply()|Mail::Message::Construct::Reply/"Constructing a message">.  Valid
-choices are C<NO>, C<INLINE>, and C<ATTACH>.
-
-I<Error:> Method bounce requires To, Cc, or Bcc
-
-The message L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> method forwards a received message off to someone
-else without modification; you must specified it's new destination.
-If you have the urge not to specify any destination, you probably
-are looking for L<reply()|Mail::Message::Construct::Reply/"Constructing a message">. When you wish to modify the content, use
-L<forward()|Mail::Message::Construct::Forward/"Constructing a message">.
-
-I<Error:> Method forwardAttach requires a preamble
-
-
-I<Error:> Method forwardEncapsulate requires a preamble
-
-
-I<Error:> No address to create forwarded to.
-
-If a forward message is created, a destination address must be specified.
-
-I<Error:> No default mailer found to send message.
-
-The message L<send()|Mail::Message/"The message"> mechanism had not enough information to automatically
-find a mail transfer agent to sent this message.  Specify a mailer
-explicitly using the C<via> options.
-
-I<Error:> No rebuild rule $name defined.
-
-
-I<Error:> Only build() Mail::Message's; they are not in a folder yet
-
-You may wish to construct a message to be stored in a some kind
-of folder, but you need to do that in two steps.  First, create a
-normal L<Mail::Message|Mail::Message>, and then add it to the folder.  During this
-L<Mail::Box::addMessage()|Mail::Box/"The folder"> process, the message will get L<coerce()|Mail::Message/"Internals">-d
-into the right message type, adding storage information and the like.
-
-I<Error:> Package $package does not implement $method.
-
-Fatal error: the specific package (or one of its superclasses) does not
-implement this method where it should. This message means that some other
-related classes do implement this method however the class at hand does
-not.  Probably you should investigate this and probably inform the author
-of the package.
-
-
 =head1 DETAILS
-
 
 =head2 Structure of a Message
 
@@ -1651,22 +1566,68 @@ There is no special flag for C<deleted>, which most other folders support:
 messages flagged to be deleted will never be written to a folder file when
 it is closed.
 
+=head1 DIAGNOSTICS
 
+I<Error:> Cannot include forward source as $include.
 
+Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
+C<NO>, C<INLINE>, C<ATTACH>, and C<ENCAPSULATE>.
 
+I<Error:> Cannot include reply source as $include.
 
-=head1 REFERENCES
+Unknown alternative for the C<include> option of L<reply()|Mail::Message::Construct::Reply/"Constructing a message">.  Valid
+choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
+I<Error:> Method bounce requires To, Cc, or Bcc
 
-=head1 COPYRIGHTS
+The message L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> method forwards a received message off to someone
+else without modification; you must specified it's new destination.
+If you have the urge not to specify any destination, you probably
+are looking for L<reply()|Mail::Message::Construct::Reply/"Constructing a message">. When you wish to modify the content, use
+L<forward()|Mail::Message::Construct::Forward/"Constructing a message">.
 
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
+I<Error:> Method forwardAttach requires a preamble
 
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
+I<Error:> Method forwardEncapsulate requires a preamble
+
+I<Error:> No address to create forwarded to.
+
+If a forward message is created, a destination address must be specified.
+
+I<Error:> No default mailer found to send message.
+
+The message L<send()|Mail::Message/"The message"> mechanism had not enough information to automatically
+find a mail transfer agent to sent this message.  Specify a mailer
+explicitly using the C<via> options.
+
+I<Error:> No rebuild rule $name defined.
+
+I<Error:> Only build() Mail::Message's; they are not in a folder yet
+
+You may wish to construct a message to be stored in a some kind
+of folder, but you need to do that in two steps.  First, create a
+normal L<Mail::Message|Mail::Message>, and then add it to the folder.  During this
+L<Mail::Box::addMessage()|Mail::Box/"The folder"> process, the message will get L<coerce()|Mail::Message/"Internals">-d
+into the right message type, adding storage information and the like.
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+=head1 SEE ALSO
+
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+
+=head1 LICENSE
+
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

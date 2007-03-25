@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Box::IMAP4::Head - header fields related IMAP interface
-
 
 =head1 INHERITANCE
 
@@ -10,10 +8,7 @@ Mail::Box::IMAP4::Head - header fields related IMAP interface
    is a Mail::Message::Head
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
-
-
 
 =head1 DESCRIPTION
 
@@ -27,9 +22,7 @@ get a message header which is capable of performing all possible
 games with headers.  On the other hand: the other settings are not
 100% safe...
 
-
 =head1 OVERLOADED
-
 
 overload: B<"">
 
@@ -47,12 +40,9 @@ See L<Mail::Message::Head/"OVERLOADED">
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<build>([PAIR|FIELD]-LIST)
 
@@ -97,7 +87,6 @@ this value is set to C<false> for C<NO> and C<true> for C<PARTIAL>..
 =back
 
 =head2 The header
-
 
 $obj-E<gt>B<isDelayed>
 
@@ -157,7 +146,6 @@ See L<Mail::Message::Head/"The header">
 
 =head2 Access to the header
 
-
 $obj-E<gt>B<get>(NAME [,INDEX])
 
 =over 4
@@ -177,7 +165,6 @@ See L<Mail::Message::Head/"Access to the header">
 
 =head2 About the body
 
-
 $obj-E<gt>B<guessBodySize>
 
 =over 4
@@ -195,7 +182,6 @@ See L<Mail::Message::Head/"About the body">
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<addNoRealize>(FIELD)
 
@@ -254,7 +240,6 @@ See L<Mail::Message::Head/"Internals">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -360,7 +345,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -377,8 +361,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
+=head1 DETAILS
 
 =head1 DIAGNOSTICS
 
@@ -390,26 +373,16 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=head1 SEE ALSO
 
-=head1 DETAILS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

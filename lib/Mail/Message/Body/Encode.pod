@@ -1,9 +1,6 @@
-
 =head1 NAME
 
 Mail::Message::Body::Encode - organize general message encodings
-
-
 
 =head1 SYNOPSIS
 
@@ -15,7 +12,6 @@ Mail::Message::Body::Encode - organize general message encodings
  my $body = $msg->body;
  my $decoded = $body->decoded;
  my $encoded = $body->encode(transfer_encoding => '7bit');
-
 
 =head1 DESCRIPTION
 
@@ -54,13 +50,9 @@ NOT IMPLEMENTED YET
 
 =back
 
-
-
 =head1 METHODS
 
-
 =head2 Constructing a body
-
 
 $obj-E<gt>B<check>
 
@@ -84,11 +76,11 @@ Encode (translate) a L<Mail::Message::Body|Mail::Message::Body> into a different
 See the DESCRIPTION above.  Options which are not specified will not trigger
 conversions.
 
- Option           --Defined in     --Default
- charset                             undef
- mime_type                           undef
- result_type                         <same as source>
- transfer_encoding                   undef
+ Option           --Default
+ charset            undef
+ mime_type          undef
+ result_type        <same as source>
+ transfer_encoding  undef
 
 . charset STRING
 
@@ -148,7 +140,6 @@ Examples:
 
 =head2 About the payload
 
-
 $obj-E<gt>B<dispositionFilename>([DIRECTORY])
 
 =over 4
@@ -185,7 +176,6 @@ text.
 
 =head2 Internals
 
-
 $obj-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
 
 Mail::Message::Body-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
@@ -212,9 +202,6 @@ undef if there is no such handler.
 
 =back
 
-
-
-
 =head1 DIAGNOSTICS
 
 I<Warning:> No decoder defined for transfer encoding $name.
@@ -227,23 +214,16 @@ I<Warning:> No encoder defined for transfer encoding $name.
 The data (message body) has been decoded, but the required encoding is
 unknown.  The decoded data is returned.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

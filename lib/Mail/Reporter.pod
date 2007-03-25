@@ -1,9 +1,6 @@
-
 =head1 NAME
 
 Mail::Reporter - base-class and error reporter for Mail::Box
-
-
 
 =head1 SYNOPSIS
 
@@ -13,15 +10,12 @@ Mail::Reporter - base-class and error reporter for Mail::Box
  print $folder->errors;
  print $folder->report('PROGRESS');
 
-
 =head1 DESCRIPTION
 
 The C<Mail::Reporter> class is the base class for all classes, except
 L<Mail::Message::Field::Fast|Mail::Message::Field::Fast> because it would become slow...  This
 base class is used during initiation of the objects, and for configuring
 and logging error messages.
-
-
 
 =head1 METHODS
 
@@ -31,7 +25,6 @@ constructor L<new()|Mail::Reporter/"Constructors">.
 
 =head2 Constructors
 
-
 Mail::Reporter-E<gt>B<new>(OPTIONS)
 
 =over 4
@@ -40,9 +33,9 @@ This error container is also the base constructor for all modules, (as long
 as there is no need for an other base object)  The constructor always accepts
 the following OPTIONS related to error reports.
 
- Option--Defined in     --Default
- log                      'WARNINGS'
- trace                    'WARNINGS'
+ Option--Default
+ log     'WARNINGS'
+ trace   'WARNINGS'
 
 . log LEVEL
 
@@ -74,7 +67,6 @@ be changed with L<defaultTrace()|Mail::Reporter/"Error handling">.
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -123,7 +115,6 @@ form!
 
 I<Example:> setting loglevels
 
-
  my ($loglevel, $tracelevel) = Mail::Reporter->defaultTrace;
  Mail::Reporter->defaultTrace('NOTICES');
 
@@ -138,7 +129,6 @@ I<Example:> setting loglevels
  $folder->trace('DEBUG');          # local default
 
 I<Example:> installing a callback
-
 
  Mail::Reporter->defaultTrace
 
@@ -316,7 +306,6 @@ Equivalent to
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -334,9 +323,6 @@ where during global destructions references cannot be used.
 
 =back
 
-
-
-
 =head1 DIAGNOSTICS
 
 I<Error:> Package $package does not implement $method.
@@ -347,23 +333,16 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

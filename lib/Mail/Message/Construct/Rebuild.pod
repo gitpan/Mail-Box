@@ -1,14 +1,10 @@
-
 =head1 NAME
 
 Mail::Message::Construct::Rebuild - modify a Mail::Message
 
-
-
 =head1 SYNOPSIS
 
  my $cleanup = $msg->rebuild;
-
 
 =head1 DESCRIPTION
 
@@ -17,13 +13,9 @@ done in an automated fashion.  The problems are especially had when
 multiparts have to be created or removed.  The L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> method
 tries to simplify this task and add some standard features.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructing a message
-
 
 $obj-E<gt>B<rebuild>(OPTIONS)
 
@@ -46,10 +38,10 @@ Reconstructing is a hazardous task, where multi level multiparts and
 nested messages come into play.  The rebuild method tries to simplify
 handing these messages for you.
 
- Option         --Defined in     --Default
- extra_rules                       []
- keep_message_id                   <false>
- rules                             <see text>
+ Option         --Default
+ extra_rules      []
+ keep_message_id  <false>
+ rules            <see text>
 
 . extra_rules ARRAY
 
@@ -112,13 +104,12 @@ I<Example:>
 
 =head2 Internals
 
-
 $obj-E<gt>B<recursiveRebuildPart>(PART, OPTIONS)
 
 =over 4
 
- Option--Defined in--Default
- rules               <required>
+ Option--Default
+ rules   <required>
 
 . rules ARRAY-OF-RULES
 
@@ -140,17 +131,7 @@ stop it.
 
 =back
 
-
-
-
-=head1 DIAGNOSTICS
-
-I<Error:> No rebuild rule $name defined.
-
-
-
 =head1 DETAILS
-
 
 =head2 Rebuilding a message
 
@@ -287,22 +268,20 @@ When you have your own routine, you simply call:
  my $rebuild_message = $message->rebuild
   ( extra_rules => [ \&my_own_rule, 'other_rule' ] );
 
+=head1 DIAGNOSTICS
 
+I<Error:> No rebuild rule $name defined.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
-=head1 REFERENCES
+=head1 LICENSE
 
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

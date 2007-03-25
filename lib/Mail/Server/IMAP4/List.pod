@@ -1,9 +1,6 @@
-
 =head1 NAME
 
 Mail::Server::IMAP4::List - folder related IMAP4 answers
-
-
 
 =head1 SYNOPSIS
 
@@ -16,17 +13,11 @@ Mail::Server::IMAP4::List - folder related IMAP4 answers
  my $imap = Mail::Server::IMAP4::List->new(user => $user);
  print $imap->list(...);        # for LIST command
 
-
 =head1 DESCRIPTION
-
-
-
 
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Server::IMAP4::List-E<gt>B<new>(USER)
 
@@ -37,11 +28,11 @@ a certain user, based upon a set of folders.  The data is kept by
 L<Mail::Box::Identity|Mail::Box::Identity> and L<Mail::Box::Collection|Mail::Box::Collection> objects, which
 mean that the folders will not be opened to answer these questions.
 
- Option   --Defined in     --Default
- delimeter                   '/'
- folders                     <from user>
- inbox                       <from user>
- user                        <undef>
+ Option   --Default
+ delimeter  '/'
+ folders    <from user>
+ inbox      <from user>
+ user       <undef>
 
 . delimeter STRING|CODE
 
@@ -86,7 +77,6 @@ must get reported.
 
 =head2 Attributes
 
-
 $obj-E<gt>B<delimiter>([FOLDERNAME])
 
 =over 4
@@ -95,7 +85,6 @@ Returns the delimiter string.  The foldername is only required when a
 CODE reference was specified at initiation.
 
 I<Example:> setting-up an IMAP4 delimeter
-
 
  sub delim($)
  {   my $path = shift;
@@ -140,7 +129,6 @@ Returns the L<Mail::Box::Manage::User|Mail::Box::Manage::User> object, if define
 
 =head2 IMAP Commands
 
-
 $obj-E<gt>B<list>(BASE, PATTERN)
 
 =over 4
@@ -149,7 +137,6 @@ IMAP's LIST command.  The request must be partially decoded, the answer
 will need to be encoded.
 
 I<Example:> using IMAP list
-
 
  my $imap  = Mail::Server::IMAP4::List->new(delimiter => \&delim, ...);
  local $"  = ';';
@@ -165,10 +152,6 @@ I<Example:> using IMAP list
 
 =back
 
-
-
-
-
 =head1 DETAILS
 
 See
@@ -181,22 +164,16 @@ sections 6.3.8 (LIST question) and 7.2.2 (LIST answer)
 
 =back
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

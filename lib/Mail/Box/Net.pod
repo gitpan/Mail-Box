@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Box::Net - handle folders which are stored remote.
-
 
 =head1 INHERITANCE
 
@@ -14,11 +12,9 @@ Mail::Box::Net - handle folders which are stored remote.
    Mail::Box::IMAP4
    Mail::Box::POP3
 
-
 =head1 SYNOPSIS
 
  # Do not instantiate this object directly
-
 
 =head1 DESCRIPTION
 
@@ -36,9 +32,7 @@ Implements the IMAP4 protocol.  B<UNDER DEVELOPMENT>
 
 =back
 
-
 =head1 OVERLOADED
-
 
 overload: B<"">
 
@@ -64,12 +58,9 @@ See L<Mail::Box/"OVERLOADED">
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Box::Net-E<gt>B<new>(OPTIONS)
 
@@ -195,7 +186,6 @@ The username which is to be used for the remote server.
 
 =head2 The folder
 
-
 $obj-E<gt>B<addMessage>(MESSAGE, OPTIONS)
 
 =over 4
@@ -303,7 +293,6 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
-
 $obj-E<gt>B<access>
 
 =over 4
@@ -337,7 +326,6 @@ See L<Mail::Box/"Folder flags">
 =back
 
 =head2 The messages
-
 
 $obj-E<gt>B<current>([NUMBER|MESSAGE|MESSAGE-ID])
 
@@ -413,7 +401,6 @@ See L<Mail::Box/"The messages">
 
 =head2 Sub-folders
 
-
 $obj-E<gt>B<listSubFolders>(OPTIONS)
 
 Mail::Box::Net-E<gt>B<listSubFolders>(OPTIONS)
@@ -461,7 +448,6 @@ See L<Mail::Box/"Sub-folders">
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
 
@@ -584,7 +570,6 @@ See L<Mail::Box/"Internals">
 
 =head2 Other methods
 
-
 $obj-E<gt>B<timespan2seconds>(TIME)
 
 Mail::Box::Net-E<gt>B<timespan2seconds>(TIME)
@@ -596,7 +581,6 @@ See L<Mail::Box/"Other methods">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -702,7 +686,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -719,8 +702,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
+=head1 DETAILS
 
 =head1 DIAGNOSTICS
 
@@ -792,26 +774,16 @@ For some reason (you probably got more error messages about this problem)
 it is impossible to write the folder, although you should because there
 were changes made.
 
+=head1 SEE ALSO
 
-=head1 DETAILS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

@@ -1,13 +1,8 @@
-
 =head1 NAME
 
 Mail::Message::Body::Construct - adds functionality to Mail::Message::Body
 
-
-
 =head1 SYNOPSIS
-
-
 
 =head1 DESCRIPTION
 
@@ -15,13 +10,9 @@ This package adds complex functionality to the L<Mail::Message::Body|Mail::Messa
 class.  This functions less often used, so many programs will not
 compile this package.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructing a body
-
 
 $obj-E<gt>B<attach>(MESSAGES, OPTIONS)
 
@@ -119,10 +110,10 @@ a reply to the person's message you do not need to include that signature.
 If the body had no signature, the original body object is returned,
 and C<undef> for the signature body.
 
- Option     --Defined in     --Default
- max_lines                     10
- pattern                       qr/^--\s?$/
- result_type                   <same as current>
+ Option     --Default
+ max_lines    10
+ pattern      qr/^--\s?$/
+ result_type  <same as current>
 
 . max_lines INTEGER|undef
 
@@ -168,26 +159,16 @@ I<Example:>
 
 =back
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

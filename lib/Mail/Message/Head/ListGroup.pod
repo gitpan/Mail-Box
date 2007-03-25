@@ -1,15 +1,12 @@
-
 =head1 NAME
 
 Mail::Message::Head::ListGroup - mailinglist related header fields
-
 
 =head1 INHERITANCE
 
  Mail::Message::Head::ListGroup
    is a Mail::Message::Head::FieldGroup
    is a Mail::Reporter
-
 
 =head1 SYNOPSIS
 
@@ -19,7 +16,6 @@ Mail::Message::Head::ListGroup - mailinglist related header fields
  my $lg = $head->addListGroup(...);
 
  $lg->delete;
-
 
 =head1 DESCRIPTION
 
@@ -31,13 +27,9 @@ this module is taken from Mail::ListDetector, written by
 Michael Stevens <mailto:michael@etla.org>.  The logic is redesigned to
 add flexibility and use the powerful MailBox features.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<address>
 
@@ -153,7 +145,6 @@ be C<rfc2919>, C<rfc2369>, or C<undef>.
 
 =head2 The header
 
-
 $obj-E<gt>B<add>((FIELD, VALUE) | OBJECT)
 
 =over 4
@@ -212,7 +203,6 @@ See L<Mail::Message::Head::FieldGroup/"The header">
 
 =head2 Access to the header
 
-
 $obj-E<gt>B<isListGroupFieldName>(NAME)
 
 Mail::Message::Head::ListGroup-E<gt>B<isListGroupFieldName>(NAME)
@@ -247,7 +237,6 @@ See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
 =head2 Internals
 
-
 $obj-E<gt>B<collectFields>
 
 =over 4
@@ -274,7 +263,6 @@ See L<Mail::Message::Head::FieldGroup/"Internals">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -397,7 +385,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -414,31 +401,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
-
-=head1 DIAGNOSTICS
-
-I<Error:> Cannot convert "$string" into an address object
-
-The L<new(address)|Mail::Message::Head::ListGroup/"Constructors"> is coerced into a L<Mail::Message::Field::Address|Mail::Message::Field::Address>,
-which fails.  Have a look at L<Mail::Message::Field::Address::coerce()|Mail::Message::Field::Address/"Constructors">
-to see what valid arguments are.
-
-I<Error:> Package $package does not implement $method.
-
-Fatal error: the specific package (or one of its superclasses) does not
-implement this method where it should. This message means that some other
-related classes do implement this method however the class at hand does
-not.  Probably you should investigate this and probably inform the author
-of the package.
-
-
 =head1 DETAILS
 
-
 =head2 Mailing list fields
-
 
 =head3 Detected lists
 
@@ -513,22 +478,32 @@ L<http://www.lsoft.com/>.
 
 =back
 
+=head1 DIAGNOSTICS
 
+I<Error:> Cannot convert "$string" into an address object
 
+The L<new(address)|Mail::Message::Head::ListGroup/"Constructors"> is coerced into a L<Mail::Message::Field::Address|Mail::Message::Field::Address>,
+which fails.  Have a look at L<Mail::Message::Field::Address::coerce()|Mail::Message::Field::Address/"Constructors">
+to see what valid arguments are.
 
+I<Error:> Package $package does not implement $method.
 
-=head1 REFERENCES
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
 
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
+=head1 SEE ALSO
 
-=head1 COPYRIGHTS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
+=head1 LICENSE
 
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

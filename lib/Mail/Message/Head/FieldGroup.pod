@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Message::Head::FieldGroup - a sub set of fields in a header
-
 
 =head1 INHERITANCE
 
@@ -14,11 +12,9 @@ Mail::Message::Head::FieldGroup - a sub set of fields in a header
    Mail::Message::Head::ResentGroup
    Mail::Message::Head::SpamGroup
 
-
 =head1 SYNOPSIS
 
 Never instantiated directly.
-
 
 =head1 DESCRIPTION
 
@@ -31,13 +27,9 @@ related software (implemented by L<Mail::Message::Head::SpamGroup|Mail::Message:
 Each set of fields can be extracted or added as group with objects
 which are based on the implementation in this class.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<clone>
 
@@ -133,7 +125,6 @@ Version number for the software which produced the fields.
 
 =head2 The header
 
-
 $obj-E<gt>B<add>((FIELD, VALUE) | OBJECT)
 
 =over 4
@@ -145,14 +136,12 @@ the field only appears internally.
 
 I<Example:> adding a field to a detached list group
 
-
  my $this = Mail::Message::Head::ListGroup->new(...);
  $this->add('List-Id' => 'mailbox');
  $msg->addListGroup($this);
  $msg->send;
 
 I<Example:> adding a field to an attached list group
-
 
  my $lg = Mail::Message::Head::ListGroup->from($msg);
  $lg->add('List-Id' => 'mailbox');
@@ -175,7 +164,6 @@ Add a group of fields to a message HEAD.  The fields will be cloned(!)
 into the header, so that the field group object can be used again.
 
 I<Example:> attaching a list group to a message
-
 
  my $lg = Mail::Message::Head::ListGroup->new(...);
  $lg->attach($msg->head);
@@ -220,7 +208,6 @@ Returns the header object, which includes these fields.
 
 =head2 Access to the header
 
-
 $obj-E<gt>B<software>
 
 =over 4
@@ -254,7 +241,6 @@ C<undef>
 
 =head2 Internals
 
-
 $obj-E<gt>B<collectFields>([NAME])
 
 =over 4
@@ -286,7 +272,6 @@ prossibly to C<undef>.
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -411,7 +396,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -428,9 +412,6 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
-
 =head1 DIAGNOSTICS
 
 I<Error:> Package $package does not implement $method.
@@ -441,23 +422,16 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

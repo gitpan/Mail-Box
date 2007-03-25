@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Box::Search - select messages within a mail box
-
 
 =head1 INHERITANCE
 
@@ -14,7 +12,6 @@ Mail::Box::Search - select messages within a mail box
    Mail::Box::Search::SpamAssassin
    Mail::Server::IMAP4::Search
 
-
 =head1 SYNOPSIS
 
  use Mail::Box::Manager;
@@ -24,7 +21,6 @@ Mail::Box::Search - select messages within a mail box
  my $filter = Mail::Box::Search::[something]->new;
  my @msgs   = $filter->search($folder, ...);
  if($filter->search($message)) {...}
-
 
 =head1 DESCRIPTION
 
@@ -52,13 +48,9 @@ UNDER CONSTRUCTION till L<Mail::Transport::IMAP4|Mail::Transport::IMAP4> is comp
 
 =back
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Box::Search-E<gt>B<new>(OPTIONS)
 
@@ -199,7 +191,6 @@ search will include the preamble and epilogue.
 
 =head2 Searching
 
-
 $obj-E<gt>B<inBody>(PART, BODY)
 
 =over 4
@@ -258,7 +249,6 @@ Search this message PART for matches.
 
 =head2 The Results
 
-
 $obj-E<gt>B<printMatch>([FILEHANDLE], HASH)
 
 =over 4
@@ -271,7 +261,6 @@ C<perldoc -f select>).
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -377,7 +366,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -393,9 +381,6 @@ $obj-E<gt>B<inGlobalDestruction>
 See L<Mail::Reporter/"Cleanup">
 
 =back
-
-
-
 
 =head1 DIAGNOSTICS
 
@@ -426,23 +411,16 @@ I<Error:> Search in BODY, HEAD or MESSAGE not $in.
 
 The C<in> option defines only three names.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

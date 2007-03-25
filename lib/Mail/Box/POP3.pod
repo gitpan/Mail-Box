@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Box::POP3 - handle POP3 folders as client
-
 
 =head1 INHERITANCE
 
@@ -11,12 +9,10 @@ Mail::Box::POP3 - handle POP3 folders as client
    is a Mail::Box
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  use Mail::Box::POP3;
  my $folder = new Mail::Box::POP3 folder => $ENV{MAIL}, ...;
-
 
 =head1 DESCRIPTION
 
@@ -26,9 +22,7 @@ using the POP3 protocol.  This class uses L<Mail::Transport::POP3|Mail::Transpor
 hide the transport of information, and focusses solely on the correct
 handling of messages within a POP3 folder.
 
-
 =head1 OVERLOADED
-
 
 overload: B<"">
 
@@ -54,12 +48,9 @@ See L<Mail::Box/"OVERLOADED">
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Box::POP3-E<gt>B<new>(OPTIONS)
 
@@ -197,7 +188,6 @@ I<Example:>
 
 =head2 The folder
 
-
 $obj-E<gt>B<addMessage>(MESSAGE)
 
 =over 4
@@ -322,7 +312,6 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
-
 $obj-E<gt>B<access>
 
 =over 4
@@ -356,7 +345,6 @@ See L<Mail::Box/"Folder flags">
 =back
 
 =head2 The messages
-
 
 $obj-E<gt>B<current>([NUMBER|MESSAGE|MESSAGE-ID])
 
@@ -432,7 +420,6 @@ See L<Mail::Box/"The messages">
 
 =head2 Sub-folders
 
-
 $obj-E<gt>B<listSubFolders>(OPTIONS)
 
 Mail::Box::POP3-E<gt>B<listSubFolders>(OPTIONS)
@@ -497,7 +484,6 @@ See L<Mail::Box/"Sub-folders">
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
 
@@ -648,7 +634,6 @@ $obj-E<gt>B<writeMessages>(OPTIONS)
 
 =head2 Other methods
 
-
 $obj-E<gt>B<timespan2seconds>(TIME)
 
 Mail::Box::POP3-E<gt>B<timespan2seconds>(TIME)
@@ -660,7 +645,6 @@ See L<Mail::Box/"Other methods">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -766,7 +750,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -783,8 +766,31 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
+=head1 DETAILS
 
+=head2 How POP3 folders work
 
+Rfc1939 defines how POP3 works.  POP3 is a really simple protocol to
+receive messages from a server to a user's client.  POP3 is also
+really limited: it can only be used to fetch messages, but has not
+many ways to limit the amount of network traffic, like the IMAP4
+protocol has.
+
+One POP3 account represents only one folder: there is no way of
+sub-folders in POP3.  POP3 doesn't support writing (except for
+some message status flags).
+
+=head2 This implementation
+
+The protocol specifics are implemented in L<Mail::Transport::POP3|Mail::Transport::POP3>,
+written by Liz Mattijsen.  That module does not use any of the
+other POP3 modules available on CPAN for the reason that MailBox
+tries to be smarter: it is capable of re-establishing broken POP3
+connection when the server supports UIDs.
+
+The implementation has shown to work with many different POP servers.
+In the test directory of the distribution, you will find a small
+server implementation, which is used to test the client.
 
 =head1 DIAGNOSTICS
 
@@ -886,50 +892,16 @@ Some extensions to the POP3 protocol do permit writing messages to the server,
 but the standard protocol only implements retreival.  Feel invited to extend our
 implementation with writing.
 
+=head1 SEE ALSO
 
-=head1 DETAILS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
-=head2 How POP3 folders work
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-Rfc1939 defines how POP3 works.  POP3 is a really simple protocol to
-receive messages from a server to a user's client.  POP3 is also
-really limited: it can only be used to fetch messages, but has not
-many ways to limit the amount of network traffic, like the IMAP4
-protocol has.
-
-One POP3 account represents only one folder: there is no way of
-sub-folders in POP3.  POP3 doesn't support writing (except for
-some message status flags).
-
-=head2 This implementation
-
-The protocol specifics are implemented in L<Mail::Transport::POP3|Mail::Transport::POP3>,
-written by Liz Mattijsen.  That module does not use any of the
-other POP3 modules available on CPAN for the reason that MailBox
-tries to be smarter: it is capable of re-establishing broken POP3
-connection when the server supports UIDs.
-
-The implementation has shown to work with many different POP servers.
-In the test directory of the distribution, you will find a small
-server implementation, which is used to test the client.
-
-
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

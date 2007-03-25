@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Transport::SMTP - transmit messages without external program
-
 
 =head1 INHERITANCE
 
@@ -11,7 +9,6 @@ Mail::Transport::SMTP - transmit messages without external program
    is a Mail::Transport
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  my $sender = Mail::Transport::SMTP->new(...);
@@ -19,20 +16,15 @@ Mail::Transport::SMTP - transmit messages without external program
 
  $message->send(via => 'smtp');
 
-
 =head1 DESCRIPTION
 
 This module implements transport of C<Mail::Message> objects by negotiating
 to the destination host directly by using the SMTP protocol, without help of
 C<sendmail>, C<mail>, or other programs on the local host.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Transport::SMTP-E<gt>B<new>(OPTIONS)
 
@@ -127,7 +119,6 @@ Authen::SASL object.
 
 =head2 Sending mail
 
-
 $obj-E<gt>B<destinations>(MESSAGE, [ADDRESS|ARRAY-OF-ADDRESSES])
 
 =over 4
@@ -167,9 +158,9 @@ Success and quit success are booleans.  The error code and -text are
 protocol specific codes and texts.  The location tells where the
 problem occurred.
 
- Option--Defined in     --Default
- from                     < >
- to                       []
+ Option--Default
+ from    < >
+ to      []
 
 . from ADDRESS
 
@@ -195,7 +186,6 @@ object.
 =back
 
 =head2 Server connection
-
 
 $obj-E<gt>B<contactAnyServer>
 
@@ -241,7 +231,6 @@ OPTIONS are passed to the C<new> method of Net::SMTP.
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -347,7 +336,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -364,9 +352,6 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
-
 =head1 DIAGNOSTICS
 
 I<Warning:> Message has no destination
@@ -375,7 +360,6 @@ It was not possible to figure-out where the message is intended to go
 to.
 
 I<Notice:> No addresses found to send the message to, no connection made
-
 
 I<Error:> Package $package does not implement $method.
 
@@ -400,23 +384,16 @@ As alternative, you may also specify the C<to> option to some of the senders
 (for instance L<Mail::Transport::SMTP::send(to)|Mail::Transport::Send/"Sending mail"> to overrule any information
 found in the message itself about the destination.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

@@ -1,14 +1,11 @@
-
 =head1 NAME
 
 Mail::Box::Thread::Manager - maintain threads within a set of folders
-
 
 =head1 INHERITANCE
 
  Mail::Box::Thread::Manager
    is a Mail::Reporter
-
 
 =head1 SYNOPSIS
 
@@ -24,7 +21,6 @@ Mail::Box::Thread::Manager - maintain threads within a set of folders
  $threads->includeFolder($folder);
  $threads->removeFolder($folder);
 
-
 =head1 DESCRIPTION
 
 A (message-)I<thread> is a message with links to messages which followed in
@@ -38,13 +34,9 @@ and speed), it also can maintain threads from messages residing in different
 opened folders.  Both facilities are rare for mail-agents.  The manager
 creates flexible trees with L<Mail::Box::Thread::Node|Mail::Box::Thread::Node> objects.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Box::Thread::Manager-E<gt>B<new>(OPTIONS)
 
@@ -163,7 +155,6 @@ I<Example:>
 
 =head2 Grouping Folders
 
-
 $obj-E<gt>B<folders>
 
 =over 4
@@ -205,7 +196,6 @@ I<Example:>
 =back
 
 =head2 The Threads
-
 
 $obj-E<gt>B<all>
 
@@ -286,7 +276,6 @@ to build solid knowledge about the thread where this message is in.
 
 =head2 Internals
 
-
 $obj-E<gt>B<createDummy>(MESSAGE-ID)
 
 =over 4
@@ -337,7 +326,6 @@ this object, if this folder is maintained by this thread-manager.
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -443,7 +431,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -459,20 +446,6 @@ $obj-E<gt>B<inGlobalDestruction>
 See L<Mail::Reporter/"Cleanup">
 
 =back
-
-
-
-
-=head1 DIAGNOSTICS
-
-I<Error:> Package $package does not implement $method.
-
-Fatal error: the specific package (or one of its superclasses) does not
-implement this method where it should. This message means that some other
-related classes do implement this method however the class at hand does
-not.  Probably you should investigate this and probably inform the author
-of the package.
-
 
 =head1 DETAILS
 
@@ -559,22 +532,26 @@ all messages in mbox-folders, the correct thread is determined
 immediately.  Also, all messages where the head get loaded later, are
 automatically included.
 
+=head1 DIAGNOSTICS
 
+I<Error:> Package $package does not implement $method.
 
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
 
+=head1 SEE ALSO
 
-=head1 REFERENCES
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
+=head1 LICENSE
 
-=head1 COPYRIGHTS
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

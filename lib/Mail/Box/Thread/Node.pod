@@ -1,21 +1,17 @@
-
 =head1 NAME
 
 Mail::Box::Thread::Node - one node in a message thread
-
 
 =head1 INHERITANCE
 
  Mail::Box::Thread::Node
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  my $node = Mail::Box::Thread::Node->new;
  $node->addMessage($message);
  ...
-
 
 =head1 DESCRIPTION
 
@@ -29,13 +25,9 @@ multiple folders, and merge there content, you may find the same message
 in more folders.  All versions of the same message (based on message-id)
 are stored in the same node.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Box::Thread::Node-E<gt>B<new>(OPTIONS)
 
@@ -86,7 +78,6 @@ specify it when you don't have the message yet.
 =back
 
 =head2 The thread node
-
 
 $obj-E<gt>B<addMessage>(MESSAGE)
 
@@ -157,7 +148,6 @@ listed in this node will have the same ID.
 =back
 
 =head2 The thread order
-
 
 $obj-E<gt>B<followUps>
 
@@ -385,7 +375,6 @@ Returns the sum of the size of all the messages in the thread.
 
 =head2 Error handling
 
-
 $obj-E<gt>B<AUTOLOAD>
 
 =over 4
@@ -490,7 +479,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -507,9 +495,6 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
-
 =head1 DIAGNOSTICS
 
 I<Error:> Package $package does not implement $method.
@@ -520,23 +505,16 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

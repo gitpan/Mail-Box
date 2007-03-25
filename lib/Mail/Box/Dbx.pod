@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Box::Dbx - read Outlook Express folders
-
 
 =head1 INHERITANCE
 
@@ -11,12 +9,10 @@ Mail::Box::Dbx - read Outlook Express folders
    is a Mail::Box
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  use Mail::Box::Dbx;
  my $folder = Mail::Box::Dbx->new(...);
-
 
 =head1 DESCRIPTION
 
@@ -32,9 +28,7 @@ be found at L<http://alioth.debian.org/projects/libpst/>.  The library does
 not support writing of dbx files, and therefore limits the possibilities
 of this package.
 
-
 =head1 OVERLOADED
-
 
 overload: B<"">
 
@@ -60,12 +54,9 @@ See L<Mail::Box/"OVERLOADED">
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Box::Dbx-E<gt>B<new>(OPTIONS)
 
@@ -160,7 +151,6 @@ Mail::Box::Dbx-E<gt>B<new>(OPTIONS)
 =back
 
 =head2 The folder
-
 
 $obj-E<gt>B<addMessage>(MESSAGE, OPTIONS)
 
@@ -276,7 +266,6 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
-
 $obj-E<gt>B<access>
 
 =over 4
@@ -310,7 +299,6 @@ See L<Mail::Box/"Folder flags">
 =back
 
 =head2 The messages
-
 
 $obj-E<gt>B<current>([NUMBER|MESSAGE|MESSAGE-ID])
 
@@ -386,7 +374,6 @@ See L<Mail::Box/"The messages">
 
 =head2 Sub-folders
 
-
 $obj-E<gt>B<listSubFolders>(OPTIONS)
 
 Mail::Box::Dbx-E<gt>B<listSubFolders>(OPTIONS)
@@ -450,7 +437,6 @@ See L<Mail::Box/"Sub-folders">
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
 
@@ -621,9 +607,7 @@ See L<Mail::Box/"Internals">
 
 =head3 File based folders
 
-
 =head2 Other methods
-
 
 $obj-E<gt>B<timespan2seconds>(TIME)
 
@@ -636,7 +620,6 @@ See L<Mail::Box/"Other methods">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -742,7 +725,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -759,8 +741,46 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
+=head1 DETAILS
 
+=head2 How DBX folders work
 
+DBX files are create by Outlook Express.  I can not tell you too much
+about it, because me (as author) never use Windows or MicroSoft tools.
+Still, it is possible to access some Outlook created folders from Unix.
+
+The folder structure for dbx starts with a single C<Folders.dbx>
+file.  This folder contains names of sub-folders.  Each folder can
+either contain messages, or contains sub-folders.  Combinations are
+not possible.
+
+=head2 This implementation
+
+The ol2mbox project (see L<http://sourceforge.net/project/ol2mbox/>)
+has created a C<libdbx> which can read dbx files using nearly any
+operating system.  You can simply transport a dbx file from Windows
+to Unix/Linux and the read all the messages from it.
+
+Tassilo von Parseval wrote a Perl wrapper around this C-library,
+and distributes it as Mail::Transport::Dbx.  Although it named in
+one the MailBox namespaces, it is a separate product, because it
+requires a C compiler.  Besides, the module will have its own life.
+
+=head2 Converting DBX folders to MBOX
+
+The title of this section is to attract your attension, but is does
+not describe anything special related to DBX or MBOX: you can convert
+any kind of mail folder into an other with the following code.
+
+I<Example:> converting folders
+
+ my $from = Mail::Box::Dbx->new(folder => 'Folder.dbx')
+    or exit;
+
+ my $to   = Mail::Box::Mbox->new(folder => '/tmp/mbox',
+    access => 'w', create => 1) or die;
+
+ $from->copyTo($to);
 
 =head1 DIAGNOSTICS
 
@@ -771,9 +791,7 @@ operating system does not allow write access to the file at hand.
 
 I<Error:> Cannot move away sub-folder $dir
 
-
 I<Error:> Cannot read dbx folder file $filename.
-
 
 I<Warning:> Cannot remove folder $name file $filename: $!
 
@@ -807,7 +825,6 @@ read-protection, it is impossible to copy one of the messages.  Copying will
 proceed for the other messages.
 
 I<Warning:> Dbx folders are read-only.
-
 
 I<Error:> Destination folder $name is not writable.
 
@@ -872,66 +889,16 @@ When a folder is to be written, both replace and inplace write policies are
 tried,  If both fail, the whole update fails.  You may see other, related,
 error messages to indicate the real problem.
 
+=head1 SEE ALSO
 
-=head1 DETAILS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
-=head2 How DBX folders work
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-DBX files are create by Outlook Express.  I can not tell you too much
-about it, because me (as author) never use Windows or MicroSoft tools.
-Still, it is possible to access some Outlook created folders from Unix.
-
-The folder structure for dbx starts with a single C<Folders.dbx>
-file.  This folder contains names of sub-folders.  Each folder can
-either contain messages, or contains sub-folders.  Combinations are
-not possible.
-
-=head2 This implementation
-
-The ol2mbox project (see L<http://sourceforge.net/project/ol2mbox/>)
-has created a C<libdbx> which can read dbx files using nearly any
-operating system.  You can simply transport a dbx file from Windows
-to Unix/Linux and the read all the messages from it.
-
-Tassilo von Parseval wrote a Perl wrapper around this C-library,
-and distributes it as Mail::Transport::Dbx.  Although it named in
-one the MailBox namespaces, it is a separate product, because it
-requires a C compiler.  Besides, the module will have its own life.
-
-=head2 Converting DBX folders to MBOX
-
-The title of this section is to attract your attension, but is does
-not describe anything special related to DBX or MBOX: you can convert
-any kind of mail folder into an other with the following code.
-
-I<Example:> converting folders
-
-
- my $from = Mail::Box::Dbx->new(folder => 'Folder.dbx')
-    or exit;
-
- my $to   = Mail::Box::Mbox->new(folder => '/tmp/mbox',
-    access => 'w', create => 1) or die;
-
- $from->copyTo($to);
-
-
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

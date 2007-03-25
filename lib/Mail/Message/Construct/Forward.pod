@@ -1,15 +1,11 @@
-
 =head1 NAME
 
 Mail::Message::Construct::Forward - forwarding a Mail::Message
-
-
 
 =head1 SYNOPSIS
 
  my Mail::Message $forward = $message->forward(To => 'you');
  $forward->send;
-
 
 =head1 DESCRIPTION
 
@@ -17,13 +13,9 @@ Complex functionality on L<Mail::Message|Mail::Message> objects is implemented i
 different files which are autoloaded.  This file implements the
 functionality related to creating forwarded messages.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructing a message
-
 
 $obj-E<gt>B<forward>(OPTIONS)
 
@@ -43,18 +35,18 @@ one message remains, it will be the added as single attachment, otherwise
 a nested multipart will be the result.  The value of this option does not
 matter, as long as it is present.  See C<Mail::Message::Body::Multipart>.
 
- Option    --Defined in     --Default
- Bcc                          undef
- Cc                           undef
- Date                         <now>
- From                         <'to' in current>
- Message-ID                   <uniquely generated>
- Subject                      forwardSubject()
- To                           <required>
- body                         undef
- include                      <if body then 'NO' else C<'INLINE'>>
- preamble                     constructed from prelude and postlude
- signature                    undef
+ Option    --Default
+ Bcc         undef
+ Cc          undef
+ Date        <now>
+ From        <'to' in current>
+ Message-ID  <uniquely generated>
+ Subject     forwardSubject()
+ To          <required>
+ body        undef
+ include     <if body then 'NO' else C<'INLINE'>>
+ preamble    constructed from prelude and postlude
+ signature   undef
 
 . Bcc ADDRESSES
 
@@ -181,8 +173,8 @@ can specify all options available to C<forward()>, although a C<preamble>
 which is provided as body object is required, and any specified C<body>
 is ignored.
 
- Option  --Defined in--Default
- preamble              <required>
+ Option  --Default
+ preamble  <required>
 
 . preamble BODY|PART
 
@@ -200,8 +192,8 @@ You can specify all options available to C<forward()>, although a C<preamble>
 which is provided as body object is required, and any specified C<body>
 is ignored.  Signatures are not stripped.  Signatures are not stripped.
 
- Option  --Defined in--Default
- preamble              <required>
+ Option  --Default
+ preamble  <required>
 
 . preamble BODY|PART
 
@@ -216,13 +208,13 @@ option C<include> set to C<'INLINE'>.  You can specify most of
 the fields which are available to L<forward()|Mail::Message::Construct::Forward/"Constructing a message"> except
 C<include> and C<body>.
 
- Option         --Defined in     --Default
- is_attached                       "[The forwarded message is attached]\n"
- max_signature                     10
- postlude                          undef
- prelude                           undef
- quote                             undef
- strip_signature                   qr/^--\s/
+ Option         --Default
+ is_attached      "[The forwarded message is attached]\n"
+ max_signature    10
+ postlude         undef
+ prelude          undef
+ quote            undef
+ strip_signature  qr/^--\s/
 
 . is_attached STRING
 
@@ -304,8 +296,8 @@ L<forwardAttach()|Mail::Message::Construct::Forward/"Constructing a message">, o
 The OPTIONS are the same as for C<forward()> except that C<body> is
 required.  Some other options, like C<preamble>, are ignored.
 
- Option--Defined in--Default
- body                <required>
+ Option--Default
+ body    <required>
 
 . body BODY
 
@@ -358,29 +350,7 @@ I<Example:>
 
 =back
 
-
-
-
-=head1 DIAGNOSTICS
-
-I<Error:> Cannot include forward source as $include.
-
-Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
-C<NO>, C<INLINE>, C<ATTACH>, and C<ENCAPSULATE>.
-
-I<Error:> Method forwardAttach requires a preamble
-
-
-I<Error:> Method forwardEncapsulate requires a preamble
-
-
-I<Error:> No address to create forwarded to.
-
-If a forward message is created, a destination address must be specified.
-
-
 =head1 DETAILS
-
 
 =head2 Creating a forward
 
@@ -481,22 +451,31 @@ The message structure is much more complex, but no information is lost.
 This is probably the reason why many MUAs use this when the forward
 an original message as attachment.
 
+=head1 DIAGNOSTICS
 
+I<Error:> Cannot include forward source as $include.
 
+Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
+C<NO>, C<INLINE>, C<ATTACH>, and C<ENCAPSULATE>.
 
+I<Error:> Method forwardAttach requires a preamble
 
-=head1 REFERENCES
+I<Error:> Method forwardEncapsulate requires a preamble
 
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
+I<Error:> No address to create forwarded to.
 
-=head1 COPYRIGHTS
+If a forward message is created, a destination address must be specified.
 
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
+=head1 SEE ALSO
 
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+
+=head1 LICENSE
+
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

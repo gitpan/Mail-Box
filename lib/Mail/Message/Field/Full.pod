@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Message::Field::Full - construct one smart line in a message header
-
 
 =head1 INHERITANCE
 
@@ -13,7 +11,6 @@ Mail::Message::Field::Full - construct one smart line in a message header
  Mail::Message::Field::Full is extended by
    Mail::Message::Field::Structured
    Mail::Message::Field::Unstructured
-
 
 =head1 SYNOPSIS
 
@@ -36,7 +33,6 @@ Mail::Message::Field::Full - construct one smart line in a message header
  my $f = Mail::Message::Field::Full->new('Subject: hi!');
  my $f = Mail::Message::Field::Full->new(Subject => 'hi!');
 
-
 =head1 DESCRIPTION
 
 This is the I<full> implementation of a header field: it has I<full>
@@ -52,9 +48,7 @@ wrapping from RFC2231.  If you do not need the latter two, then the
 L<Mail::Message::Field::Fast|Mail::Message::Field::Fast> and L<Mail::Message::Field::Flex|Mail::Message::Field::Flex>
 are enough for your application.
 
-
 =head1 OVERLOADED
-
 
 overload: B<"">
 
@@ -105,12 +99,9 @@ would have been called.
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<clone>
 
@@ -240,7 +231,6 @@ I<Example:>
 
 =head2 The field
 
-
 $obj-E<gt>B<isStructured>
 
 Mail::Message::Field::Full-E<gt>B<isStructured>
@@ -301,7 +291,6 @@ See L<Mail::Message::Field/"The field">
 
 =head2 Access to the name
 
-
 $obj-E<gt>B<Name>
 
 =over 4
@@ -327,7 +316,6 @@ See L<Mail::Message::Field/"Access to the name">
 =back
 
 =head2 Access to the body
-
 
 $obj-E<gt>B<body>
 
@@ -387,7 +375,6 @@ See L<Mail::Message::Field/"Access to the body">
 =back
 
 =head2 Access to the content
-
 
 $obj-E<gt>B<addresses>
 
@@ -493,7 +480,6 @@ See L<Mail::Message::Field/"Access to the content">
 
 =head2 Other methods
 
-
 $obj-E<gt>B<dateToTimestamp>(STRING)
 
 Mail::Message::Field::Full-E<gt>B<dateToTimestamp>(STRING)
@@ -505,7 +491,6 @@ See L<Mail::Message::Field/"Other methods">
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<consume>(LINE | (NAME,BODY|OBJECTS))
 
@@ -532,8 +517,8 @@ may interfere with your markup characters.
 
 Be warned: language information, which is defined in RFC2231, is ignored.
 
- Option --Defined in--Default
- is_text              1
+ Option --Default
+ is_text  1
 
 . is_text BOOLEAN
 
@@ -568,11 +553,11 @@ $obj-E<gt>B<encode>(STRING, OPTIONS)
 Encode the (possibly utf8 encoded) STRING to a string which is acceptable
 to the RFC2047 definition of a header: only containing us-ascii characters.
 
- Option  --Defined in     --Default
- charset                    'us-ascii'
- encoding                   'q'
- force                      <flase>
- language                   undef
+ Option  --Default
+ charset   'us-ascii'
+ encoding  'q'
+ force     <flase>
+ language  undef
 
 . charset STRING
 
@@ -650,7 +635,6 @@ See L<Mail::Message::Field/"Internals">
 
 =head2 Parsing
 
-
 $obj-E<gt>B<consumeComment>(STRING)
 
 Mail::Message::Field::Full-E<gt>B<consumeComment>(STRING)
@@ -719,7 +703,6 @@ a call to this method when the field is needed later.
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -825,7 +808,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -842,8 +824,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
+=head1 DETAILS
 
 =head1 DIAGNOSTICS
 
@@ -884,26 +865,16 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=head1 SEE ALSO
 
-=head1 DETAILS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

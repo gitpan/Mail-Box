@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Message::Field - one line of a message header
-
 
 =head1 INHERITANCE
 
@@ -13,7 +11,6 @@ Mail::Message::Field - one line of a message header
    Mail::Message::Field::Fast
    Mail::Message::Field::Flex
    Mail::Message::Field::Full
-
 
 =head1 SYNOPSIS
 
@@ -26,7 +23,6 @@ Mail::Message::Field - one line of a message header
  print $field->string;
  print "$field\n";
  print $field->attribute('charset') || 'us-ascii';
-
 
 =head1 DESCRIPTION
 
@@ -50,9 +46,7 @@ added methods of a message:
 
  my $other   = $message->get('Reply-To');
 
-
 =head1 OVERLOADED
-
 
 overload: B<"">
 
@@ -113,12 +107,9 @@ field or a string, using the buildin C<cmp>.
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<clone>
 
@@ -148,7 +139,6 @@ By default, a C<Fast> field is produced.
 =back
 
 =head2 The field
-
 
 $obj-E<gt>B<isStructured>
 
@@ -229,7 +219,6 @@ See also L<Mail::Message::Head::Complete::printUndisclosed()|Mail::Message::Head
 
 =head2 Access to the name
 
-
 $obj-E<gt>B<Name>
 
 =over 4
@@ -267,7 +256,6 @@ I<Example:>
 =back
 
 =head2 Access to the body
-
 
 $obj-E<gt>B<body>
 
@@ -354,7 +342,6 @@ I<Example:>
 =back
 
 =head2 Access to the content
-
 
 $obj-E<gt>B<addresses>
 
@@ -480,7 +467,6 @@ performed whether this is right.
 
 =head2 Other methods
 
-
 $obj-E<gt>B<dateToTimestamp>(STRING)
 
 Mail::Message::Field-E<gt>B<dateToTimestamp>(STRING)
@@ -493,7 +479,6 @@ a timestamp like is produced by the C<time> function.
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<consume>(LINE | (NAME,BODY|OBJECTS))
 
@@ -546,7 +531,6 @@ the field object.
 
 I<Example:> refolding the field
 
-
  $field->setWrapLength(99);
 
 =back
@@ -571,7 +555,6 @@ Possible leading blanks on the first line are removed as well.
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -677,7 +660,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -694,34 +676,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
-
-=head1 DIAGNOSTICS
-
-I<Warning:> Field content is not numerical: $content
-
-The numeric value of a field is requested (for instance the C<Lines> or
-C<Content-Length> fields should be numerical), however the data contains
-weird characters.
-
-I<Warning:> Illegal character in field name $name
-
-A new field is being created which does contain characters not permitted
-by the RFCs.  Using this field in messages may break other e-mail clients
-or transfer agents, and therefore mutulate or extinguish your message.
-
-I<Error:> Package $package does not implement $method.
-
-Fatal error: the specific package (or one of its superclasses) does not
-implement this method where it should. This message means that some other
-related classes do implement this method however the class at hand does
-not.  Probably you should investigate this and probably inform the author
-of the package.
-
-
 =head1 DETAILS
-
 
 =head2 Field syntax
 
@@ -736,7 +691,6 @@ a separate semi-colon ("C<;>").  Names of fields are case-insensitive and
 cannot contain blanks.
 
 I<Example:> of fields
-
 
 Correct fields:
 
@@ -771,7 +725,6 @@ want the unfolded value.
 
 I<Example:> of field folding
 
-
  Subject: this is a short line, and not folded
 
  Subject: this subject field is much longer, and therefore
@@ -798,7 +751,6 @@ and must be ignored be the application.  Not all applications are capable
 of handling comments correctly in all circumstances.
 
 I<Example:> of field comments
-
 
  To: mailbox (Mail::Box mailinglist) <mailbox@overmeer.net>
  Date: Thu, 13 Sep 2001 09:40:48 +0200 (CEST)
@@ -851,7 +803,6 @@ is lost.
 
 I<Example:> of using get()
 
-
  print $msg->get('subject') || 'no subject';
  print $msg->head->get('subject') || 'no subject';
 
@@ -870,7 +821,6 @@ L<Mail::Message::Field::study()|Mail::Message::Field/"Access to the content"> re
 context.
 
 I<Example:> of using study()
-
 
  print $msg->study('subject') || 'no subject';
  my @rec  = $msg->head->study('Received');
@@ -892,7 +842,6 @@ these related fields.  These resent groups can be deleted as a whole,
 or correctly constructed.
 
 I<Example:> of using resent groups
-
 
  my $rgs = $msg->head->resentGroups;
  $rgs[0]->delete if @rgs;
@@ -951,7 +900,6 @@ provide simplified access.  All these methods are called upon a message
 directly.
 
 I<Example:> of simplified field access
-
 
  print $message->subject;
  print $message->get('subject') || '';  # same
@@ -1027,12 +975,10 @@ comma's inbetween, you will have to process the array yourself.
 
 I<Example:> specifying simple field data
 
-
  my $f = Mail::Message::Field->new(Subject => 'hi!');
  my $b = Mail::Message->build(Subject => 'monkey');
 
 I<Example:> s specifying e-mail addresses for a field
-
 
  use Mail::Address;
  my $fish = Mail::Address->new('Mail::Box', 'fish@tux.aq');
@@ -1049,7 +995,6 @@ I<Example:> s specifying e-mail addresses for a field
  my $b = $msg->build(To => [ "xyz", @all ]);
 
 I<Example:> specifying identities for a field
-
 
  use User::Identity;
  my $patrik = User::Identity->new
@@ -1098,22 +1043,38 @@ from fast or flex header fields when L<study()|Mail::Message::Field/"Access to t
 
 =back
 
+=head1 DIAGNOSTICS
 
+I<Warning:> Field content is not numerical: $content
 
+The numeric value of a field is requested (for instance the C<Lines> or
+C<Content-Length> fields should be numerical), however the data contains
+weird characters.
 
+I<Warning:> Illegal character in field name $name
 
-=head1 REFERENCES
+A new field is being created which does contain characters not permitted
+by the RFCs.  Using this field in messages may break other e-mail clients
+or transfer agents, and therefore mutulate or extinguish your message.
 
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
+I<Error:> Package $package does not implement $method.
 
-=head1 COPYRIGHTS
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
 
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
+=head1 SEE ALSO
 
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+
+=head1 LICENSE
+
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

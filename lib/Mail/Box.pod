@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Box - manage a mailbox, a folder with messages
-
 
 =head1 INHERITANCE
 
@@ -13,7 +11,6 @@ Mail::Box - manage a mailbox, a folder with messages
    Mail::Box::Dir
    Mail::Box::File
    Mail::Box::Net
-
 
 =head1 SYNOPSIS
 
@@ -53,7 +50,6 @@ Tied-interface:
  $inbox{$msgid}->print;            # tied
  $folder->messageId($msgid)->print;# usual
 
-
 =head1 DESCRIPTION
 
 A L<Mail::Box::Manager|Mail::Box::Manager> creates C<Mail::Box> objects.  But you already
@@ -70,9 +66,7 @@ file withing the same directory.
 No object in your program will be of type C<Mail::Box>: it is only used
 as base class for the real folder types.  C<Mail::Box> is extended by
 
-
 =head1 OVERLOADED
-
 
 overload: B<"">
 
@@ -83,7 +77,6 @@ The folder objects stringify to their name.  This simplifies especially
 print statements and sorting a lot.
 
 I<Example:> use overloaded folder as string
-
 
  # Three lines with overloading: resp. cmp, @{}, and ""
  foreach my $folder (sort @folders)
@@ -102,7 +95,6 @@ show the messages, like L<messages()|Mail::Box/"The messages"> and L<message()|M
 
 I<Example:> use overloaded folder as array
 
-
  my $msg = $folder->[3];
  my $msg = $folder->message(3);          # same
 
@@ -120,12 +112,9 @@ rules are those of the build-in C<cmp>.
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Box-E<gt>B<new>(OPTIONS)
 
@@ -523,7 +512,6 @@ binary data to the screen, which is a security risk.
 
 =head2 The folder
 
-
 $obj-E<gt>B<addMessage>(MESSAGE, OPTIONS)
 
 =over 4
@@ -536,8 +524,8 @@ L<Mail::Box::Manager::copyMessage()|Mail::Box::Manager/"Move messages to folders
 
 Messages with id's which already exist in this folder are not added.
 
- Option--Defined in--Default
- share               <not used>
+ Option--Default
+ share   <not used>
 
 . share BOOLEAN
 
@@ -589,11 +577,11 @@ be used for appending.  This can be fast, but this can also be very
 slow (depends on the implementation).  All OPTIONS passed will also be
 used to open the folder, if needed.
 
- Option  --Defined in     --Default
- folder                     <required>
- message                    undef
- messages                   undef
- share                      <false>
+ Option  --Default
+ folder    <required>
+ message   undef
+ messages  undef
+ share     <false>
 
 . folder FOLDERNAME
 
@@ -655,10 +643,10 @@ write the destination folder before writing and closing the source
 folder.  Otherwise you may lose data if the system crashes or if there
 are software problems.
 
- Option      --Defined in     --Default
- force                          <false>
- save_deleted                   false
- write                          MODIFIED
+ Option      --Default
+ force         <false>
+ save_deleted  false
+ write         MODIFIED
 
 . force BOOLEAN
 
@@ -712,11 +700,11 @@ $obj-E<gt>B<copyTo>(FOLDER, OPTIONS)
 Copy the folder's messages to a new folder.  The new folder may be of
 a different type.
 
- Option       --Defined in     --Default
- delete_copied                   <false>
- select                          'ACTIVE'
- share                           <not used>
- subfolders                      <folder type dependent>
+ Option       --Default
+ delete_copied  <false>
+ select         'ACTIVE'
+ share          <not used>
+ subfolders     <folder type dependent>
 
 . delete_copied BOOLEAN
 
@@ -783,20 +771,18 @@ WARNING: When moving messages from one folder to another, be sure to write the
 destination folder before deleting the source folder.  Otherwise you may lose
 data if the system crashes or if there are software problems.
 
- Option   --Defined in--Default
- recursive              1
+ Option   --Default
+ recursive  1
 
 . recursive BOOLEAN
 
 I<Example:> removing an open folder
-
 
  my $folder = Mail::Box::Mbox->new(folder => 'InBox', access => 'rw');
  ... some other code ...
  $folder->delete;
 
 I<Example:> removing an closed folder
-
 
  my $folder = Mail::Box::Mbox->new(folder => 'INBOX', access => 'd');
  $folder->delete;
@@ -892,7 +878,6 @@ I<Example:>
 
 =head2 Folder flags
 
-
 $obj-E<gt>B<access>
 
 =over 4
@@ -936,7 +921,6 @@ I<Example:>
 
 =head2 The messages
 
-
 $obj-E<gt>B<current>([NUMBER|MESSAGE|MESSAGE-ID])
 
 =over 4
@@ -975,7 +959,6 @@ be found.  By default, a true value is searched for.  When a message
 does not have the requested label, it is taken as false.
 
 I<Example:> looking for a labeled message
-
 
  my $current = $folder->findFirstLabeled('current');
 
@@ -1149,7 +1132,6 @@ found: check that first.
 
 I<Example:> scanning through a folder for a message
 
-
  my $refs   = $msg->get('References') or return;
  my @msgids = $ref =~ m/\<([^>]+\>/g;
  my @failed = $folder->scanForMessages($msg, \@msgids, '3 days', 50);
@@ -1157,7 +1139,6 @@ I<Example:> scanning through a folder for a message
 =back
 
 =head2 Sub-folders
-
 
 $obj-E<gt>B<listSubFolders>(OPTIONS)
 
@@ -1171,11 +1152,11 @@ access to that folder.
 
 For MBOX folders, sub-folders are simulated.
 
- Option    --Defined in     --Default
- check                        <false>
- folder                       <from calling object>
- folderdir                    <from folder>
- skip_empty                   <false>
+ Option    --Default
+ check       <false>
+ folder      <from calling object>
+ folderdir   <from folder>
+ skip_empty  <false>
 
 . check BOOLEAN
 
@@ -1229,7 +1210,6 @@ as instance method, or specify a PARENTNAME.
 
 I<Example:> how to get the name of a subfolder
 
-
  my $sub = Mail::Box::Mbox->nameOfSubfolder('xyz', 'abc');
  print $sub;                        # abc/xyz
 
@@ -1279,7 +1259,6 @@ can't.
 
 =head2 Internals
 
-
 $obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
 
 =over 4
@@ -1301,8 +1280,8 @@ The folder is created, but not opened!  If you want to open a file which
 may need to be created, then use L<Mail::Box::Manager::open()|Mail::Box::Manager/"Manage open folders"> with the
 create flag, or L<Mail::Box::new(create)|Mail::Box/"Constructors">.
 
- Option   --Defined in--Default
- folderdir              undef
+ Option   --Default
+ folderdir  undef
 
 . folderdir DIRECTORY
 
@@ -1339,8 +1318,8 @@ OPTIONS is a list of extra information for the request.  Read
 the documentation for each type of folder for type specific options, but
 each folder class will at least support the C<folderdir> option:
 
- Option   --Defined in--Default
- folderdir              undef
+ Option   --Default
+ folderdir  undef
 
 . folderdir DIRECTORY
 
@@ -1482,9 +1461,9 @@ if there are software problems.
 To write a folder to a different file, you must first create a new folder,
 then move all the messages, and then write or L<close()|Mail::Box/"The folder"> that new folder.
 
- Option      --Defined in     --Default
- force                          <false>
- save_deleted                   <false>
+ Option      --Default
+ force         <false>
+ save_deleted  <false>
 
 . force BOOLEAN
 
@@ -1516,8 +1495,8 @@ folder type.  The C<write> organizes the general activities.  All options
 to L<write()|Mail::Box/"Internals"> are passed to C<writeMessages> as well.  Besides, a few extra
 are added by C<write> itself.
 
- Option  --Defined in--Default
- messages              <required>
+ Option  --Default
+ messages  <required>
 
 . messages ARRAY
 
@@ -1532,7 +1511,6 @@ current folder.
 
 =head2 Other methods
 
-
 $obj-E<gt>B<timespan2seconds>(TIME)
 
 Mail::Box-E<gt>B<timespan2seconds>(TIME)
@@ -1546,7 +1524,6 @@ words 'hour', 'hours', 'day', 'days', 'week', or 'weeks'.  For instance:
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -1652,7 +1629,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -1670,87 +1646,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
-
-=head1 DIAGNOSTICS
-
-I<Warning:> Changes not written to read-only folder $self.
-
-You have opened the folder read-only --which is the default set
-by L<new(access)|Mail::Box/"Constructors">--, made modifications, and now want to close it.
-Set L<close(force)|Mail::Box/"The folder"> if you want to overrule the access mode, or close
-the folder with L<close(write)|Mail::Box/"The folder"> set to C<NEVER>.
-
-I<Error:> Copying failed for one message.
-
-For some reason, for instance disc full, removed by external process, or
-read-protection, it is impossible to copy one of the messages.  Copying will
-proceed for the other messages.
-
-I<Error:> Destination folder $name is not writable.
-
-The folder where the messages are copied to is not opened with write
-access (see L<new(access)|Mail::Box/"Constructors">).  This has no relation with write permission
-to the folder which is controled by your operating system.
-
-I<Warning:> Different messages with id $msgid
-
-The message id is discovered more than once within the same folder, but the
-content of the message seems to be different.  This should not be possible:
-each message must be unique.
-
-I<Error:> Folder $name is opened read-only
-
-You can not write to this folder unless you have opened the folder to
-write or append with L<new(access)|Mail::Box/"Constructors">, or the C<force> option is set true.
-
-I<Error:> Folder $name not deleted: not writable.
-
-The folder must be opened with write access via L<new(access)|Mail::Box/"Constructors">, otherwise
-removing it will be refused.  So, you may have write-access according to
-the operating system, but that will not automatically mean that this
-C<delete> method permits you to.  The reverse remark is valid as well.
-
-I<Error:> Invalid timespan '$timespan' specified.
-
-The string does not follow the strict rules of the time span syntax which
-is permitted as parameter.
-
-I<Warning:> Message-id '$msgid' does not contain a domain.
-
-According to the RFCs, message-ids need to contain a unique random part,
-then an C<@>, and then a domain name.  This is made to avoid the creation
-of two messages with the same id.  The warning emerges when the C<@> is
-missing from the string.
-
-I<Error:> No folder name specified.
-
-You did not specify the name of a folder to be opened.  Use the
-L<new(folder)|Mail::Box/"Constructors"> option or set the C<MAIL> environment variable.
-
-I<Error:> Package $package does not implement $method.
-
-Fatal error: the specific package (or one of its superclasses) does not
-implement this method where it should. This message means that some other
-related classes do implement this method however the class at hand does
-not.  Probably you should investigate this and probably inform the author
-of the package.
-
-I<Error:> Unable to create subfolder $name of $folder.
-
-The copy includes the subfolders, but for some reason it was not possible
-to copy one of these.  Copying will proceed for all other sub-folders.
-
-I<Error:> Writing folder $name failed
-
-For some reason (you probably got more error messages about this problem)
-it is impossible to write the folder, although you should because there
-were changes made.
-
-
 =head1 DETAILS
-
 
 =head2 Different kinds of folders
 
@@ -1901,22 +1797,91 @@ available to all folder types.  Sometimes, features which appear
 in only some of the folder types are simulated for folders that miss
 them, like sub-folder support for MBOX.
 
+=head1 DIAGNOSTICS
 
+I<Warning:> Changes not written to read-only folder $self.
 
+You have opened the folder read-only --which is the default set
+by L<new(access)|Mail::Box/"Constructors">--, made modifications, and now want to close it.
+Set L<close(force)|Mail::Box/"The folder"> if you want to overrule the access mode, or close
+the folder with L<close(write)|Mail::Box/"The folder"> set to C<NEVER>.
 
+I<Error:> Copying failed for one message.
 
-=head1 REFERENCES
+For some reason, for instance disc full, removed by external process, or
+read-protection, it is impossible to copy one of the messages.  Copying will
+proceed for the other messages.
 
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
+I<Error:> Destination folder $name is not writable.
 
-=head1 COPYRIGHTS
+The folder where the messages are copied to is not opened with write
+access (see L<new(access)|Mail::Box/"Constructors">).  This has no relation with write permission
+to the folder which is controled by your operating system.
 
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
+I<Warning:> Different messages with id $msgid
 
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
+The message id is discovered more than once within the same folder, but the
+content of the message seems to be different.  This should not be possible:
+each message must be unique.
+
+I<Error:> Folder $name is opened read-only
+
+You can not write to this folder unless you have opened the folder to
+write or append with L<new(access)|Mail::Box/"Constructors">, or the C<force> option is set true.
+
+I<Error:> Folder $name not deleted: not writable.
+
+The folder must be opened with write access via L<new(access)|Mail::Box/"Constructors">, otherwise
+removing it will be refused.  So, you may have write-access according to
+the operating system, but that will not automatically mean that this
+C<delete> method permits you to.  The reverse remark is valid as well.
+
+I<Error:> Invalid timespan '$timespan' specified.
+
+The string does not follow the strict rules of the time span syntax which
+is permitted as parameter.
+
+I<Warning:> Message-id '$msgid' does not contain a domain.
+
+According to the RFCs, message-ids need to contain a unique random part,
+then an C<@>, and then a domain name.  This is made to avoid the creation
+of two messages with the same id.  The warning emerges when the C<@> is
+missing from the string.
+
+I<Error:> No folder name specified.
+
+You did not specify the name of a folder to be opened.  Use the
+L<new(folder)|Mail::Box/"Constructors"> option or set the C<MAIL> environment variable.
+
+I<Error:> Package $package does not implement $method.
+
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
+
+I<Error:> Unable to create subfolder $name of $folder.
+
+The copy includes the subfolders, but for some reason it was not possible
+to copy one of these.  Copying will proceed for all other sub-folders.
+
+I<Error:> Writing folder $name failed
+
+For some reason (you probably got more error messages about this problem)
+it is impossible to write the folder, although you should because there
+were changes made.
+
+=head1 SEE ALSO
+
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+
+=head1 LICENSE
+
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Box::File::Message - one message in a Mbox folder
-
 
 =head1 INHERITANCE
 
@@ -15,25 +13,19 @@ Mail::Box::File::Message - one message in a Mbox folder
    Mail::Box::Dbx::Message
    Mail::Box::Mbox::Message
 
-
 =head1 SYNOPSIS
 
  my $folder  = new Mail::Box::File folder => $ENV{MAIL}, ...;
  my $message = $folder->message(0);
-
 
 =head1 DESCRIPTION
 
 Maintain one message in an file based folder, any L<Mail::Box::File|Mail::Box::File>
 extension.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<clone>(OPTIONS)
 
@@ -106,7 +98,6 @@ this line, but this is just how things were invented...
 =back
 
 =head2 Constructing a message
-
 
 $obj-E<gt>B<bounce>([RG-OBJECT|OPTIONS])
 
@@ -239,7 +230,6 @@ See L<Mail::Message::Construct::Reply/"Constructing a message">
 =back
 
 =head2 The message
-
 
 $obj-E<gt>B<container>
 
@@ -382,7 +372,6 @@ I<Example:>
 
 =head2 The header
 
-
 $obj-E<gt>B<bcc>
 
 =over 4
@@ -497,7 +486,6 @@ See L<Mail::Message/"The header">
 
 =head2 The body
 
-
 $obj-E<gt>B<body>([BODY])
 
 =over 4
@@ -547,7 +535,6 @@ See L<Mail::Message/"The body">
 =back
 
 =head2 Flags
-
 
 $obj-E<gt>B<delete>
 
@@ -623,7 +610,6 @@ See L<Mail::Message/"Flags">
 
 =head2 The whole message as text
 
-
 $obj-E<gt>B<file>
 
 =over 4
@@ -657,7 +643,6 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<clonedFrom>
 
@@ -767,7 +752,6 @@ See L<Mail::Message/"Internals">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -891,7 +875,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -916,8 +899,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
+=head1 DETAILS
 
 =head1 DIAGNOSTICS
 
@@ -941,9 +923,7 @@ L<forward()|Mail::Message::Construct::Forward/"Constructing a message">.
 
 I<Error:> Method forwardAttach requires a preamble
 
-
 I<Error:> Method forwardEncapsulate requires a preamble
-
 
 I<Error:> No address to create forwarded to.
 
@@ -956,7 +936,6 @@ find a mail transfer agent to sent this message.  Specify a mailer
 explicitly using the C<via> options.
 
 I<Error:> No rebuild rule $name defined.
-
 
 I<Error:> Only build() Mail::Message's; they are not in a folder yet
 
@@ -976,27 +955,16 @@ of the package.
 
 I<Error:> Unable to read delayed body.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
-=head1 DETAILS
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

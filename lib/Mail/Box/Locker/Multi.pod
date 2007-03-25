@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Box::Locker::Multi - lock a folder in all ways which work
-
 
 =head1 INHERITANCE
 
@@ -10,11 +8,9 @@ Mail::Box::Locker::Multi - lock a folder in all ways which work
    is a Mail::Box::Locker
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  See Mail::Box::Locker
-
 
 =head1 DESCRIPTION
 
@@ -26,13 +22,9 @@ NFS-lock and Flock are tried.  More may be added when the ways to
 lock are extended.  DotLock overlaps with NFS-lock, but NFS-lock is
 safer, so that version is preferred.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Box::Locker::Multi-E<gt>B<new>(OPTIONS)
 
@@ -76,13 +68,11 @@ not be excluded from the default list (NFS POSIX Flock).
 
 I<Example:> using a subset of multi-lockers
 
-
  my $locker = Mail::Box::Locker::Multy->new(use => ['DOTLOCK','FLOCK']);
 
 =back
 
 =head2 The Locker
-
 
 $obj-E<gt>B<filename>([FILENAME])
 
@@ -118,7 +108,6 @@ See L<Mail::Box::Locker/"The Locker">
 
 =head2 Locking
 
-
 $obj-E<gt>B<hasLock>
 
 =over 4
@@ -152,7 +141,6 @@ See L<Mail::Box::Locker/"Locking">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -258,7 +246,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -275,9 +262,6 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
-
 =head1 DIAGNOSTICS
 
 I<Error:> Package $package does not implement $method.
@@ -288,23 +272,16 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

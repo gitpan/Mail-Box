@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Box::Manager - manage a set of folders
-
 
 =head1 INHERITANCE
 
@@ -11,7 +9,6 @@ Mail::Box::Manager - manage a set of folders
 
  Mail::Box::Manager is extended by
    Mail::Box::Manage::User
-
 
 =head1 SYNOPSIS
 
@@ -37,7 +34,6 @@ Mail::Box::Manager - manage a set of folders
 
  $mgr->registerType(mbox => 'Mail::Box::MyType');
 
-
 =head1 DESCRIPTION
 
 The manager keeps track on a set of open folders and a set of message-thread
@@ -45,13 +41,9 @@ supporting objects.  You are not obliged to use this object (you can
 directly create a L<Mail::Box::Mbox|Mail::Box::Mbox> if you prefer), but you will create
 more portable and safer code if you do use it.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Box::Manager-E<gt>B<new>(ARGS)
 
@@ -125,7 +117,6 @@ a loss of information depending on the folder types.
 
 =head2 Attributes
 
-
 $obj-E<gt>B<defaultFolderType>
 
 =over 4
@@ -175,7 +166,6 @@ I<Example:>
 
 =head2 Manage open folders
 
-
 $obj-E<gt>B<close>(FOLDER, OPTIONS)
 
 =over 4
@@ -189,8 +179,8 @@ The folder's messages will also be withdrawn from the known message threads.
 You may also close the folder directly. The manager will be informed
 about this event and take appropriate actions.
 
- Option       --Defined in--Default
- close_by_self              <false>
+ Option       --Default
+ close_by_self  <false>
 
 . close_by_self BOOLEAN
 
@@ -244,12 +234,12 @@ may also have additional options for the folder type.  For a
 description of the folder options, see the options to the constructor
 L<Mail::Box::new()|Mail::Box/"Constructors"> for each type of mail box.
 
- Option      --Defined in     --Default
- authenticate                   'AUTO'
- create                         <false>
- folder                         $ENV{MAIL}
- folderdir                      '.'
- type                           <first, usually C<mbox>>
+ Option      --Default
+ authenticate  'AUTO'
+ create        <false>
+ folder        $ENV{MAIL}
+ folderdir     '.'
+ type          <first, usually C<mbox>>
 
 . authenticate TYPE|ARRAY-OF-TYPES|'AUTO'
 
@@ -314,7 +304,6 @@ used.)
 
 I<Example:> opening folders via the manager
 
-
  my $jack  = $manager->open(folder => '=jack',
     type => 'mbox');
 
@@ -343,7 +332,6 @@ Returns a list of all open folders.
 
 =head2 Manage existing folders
 
-
 $obj-E<gt>B<delete>(FOLDERNAME, OPTIONS)
 
 =over 4
@@ -354,8 +342,8 @@ The deletion of a folder can take some time.  Dependent on the type of
 folder, the folder must be read first.  For some folder-types this will
 be fast.
 
- Option   --Defined in--Default
- recursive              <folder's default>
+ Option   --Default
+ recursive  <folder's default>
 
 . recursive BOOLEAN
 
@@ -368,7 +356,6 @@ Some folder can only be recursively deleted, other have more flexibility.
 =back
 
 =head2 Move messages to folders
-
 
 $obj-E<gt>B<appendMessage>([FOLDER|FOLDERNAME,] MESSAGES, OPTIONS)
 
@@ -418,8 +405,8 @@ You need to specify a folder's name or folder object as the first
 argument, or in the options list.  The options are the same as those
 which can be specified when opening a folder.
 
- Option--Defined in--Default
- share               <false>
+ Option--Default
+ share   <false>
 
 . share BOOLEAN
 
@@ -462,15 +449,14 @@ is equivalent to
  $mgr->copyMessage($received, $inbox->message(1), share => 1);
  $inbox->message(1)->delete;
 
- Option--Defined in--Default
- share               <true>
+ Option--Default
+ share   <true>
 
 . share BOOLEAN
 
 =back
 
 =head2 Manage message threads
-
 
 $obj-E<gt>B<threads>([FOLDERS], OPTIONS)
 
@@ -490,7 +476,6 @@ I<Example:>
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<decodeFolderURL>(URL)
 
@@ -522,7 +507,6 @@ or going out.
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -628,7 +612,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -645,8 +628,68 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
+=head1 DETAILS
 
+On many places in the documentation you can read that it is useful to
+have a manager object.  There are two of them: the L<Mail::Box::Manager|Mail::Box::Manager>,
+which maintains a set of open folders, and an extension of it: the
+L<Mail::Box::Manage::User|Mail::Box::Manage::User>.
 
+=head2 Managing open folders
+
+It is useful to start your program by creating a folder manager object,
+an L<Mail::Box::Manager|Mail::Box::Manager>.  The object takes a few burdons from your neck:
+
+=over 4
+
+=item * autodetect the type of folder which is used.
+
+This means that your application can be fully folder type independent.
+
+=item * autoload the required modules
+
+There are so many modules involved in MailBox, that it is useful to
+have some lazy autoloading of code.  The manager knows which modules
+belong to which type of folder.
+
+=item * avoid double openings
+
+Your programming mistakes may cause the same folder to be opened twice.
+The result of that could be very destructive.  Therefore, the manager
+keeps track on all open folders and avoids the same folder to be opened
+for the second time.
+
+=item * close folders at clean-up
+
+When the program is ending, the manager will cleanly close all folders
+which are still open.  This is required, because the autodestruct
+sequence of Perl works in an unpredicatable order.
+
+=item * message thread detection
+
+MailBox can discover message threads which span multiple folders. Any set
+of open folders may be grouped in a tree of replies on replies on replies.
+When a folder is closed, it will automatically be removed from the threads,
+and a new folder can dynamically be added to the structure.
+
+=back
+
+The manager is really simplifying things, and should therefore be the
+base of all programs. However, it is possible to write useful programs
+without it.
+
+=head2 Managing a user
+
+One step further is the L<Mail::Box::Manage::User|Mail::Box::Manage::User> object (since MailBox
+v2.057), which not only keeps track on open folders, but also collects
+information about not-open folders.
+
+The user class is, as the name says, targeted on managing one single user.
+Where the L<Mail::Box::Manager|Mail::Box::Manager> will open any set of folder files, probably
+from multiple users, the user class want one root folder directory.
+
+In many aspects, the user manager simplifies the task for user-based servers
+and other user-centric applications by setting smart defaults.
 
 =head1 DIAGNOSTICS
 
@@ -723,86 +766,16 @@ You have set L<open(create)|Mail::Box::Manager/"Manage open folders">, but only 
 only useful for folders which have write or append access modes
 (see L<Mail::Box::new(access)|Mail::Box/"Constructors">).
 
+=head1 SEE ALSO
 
-=head1 DETAILS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
-On many places in the documentation you can read that it is useful to
-have a manager object.  There are two of them: the L<Mail::Box::Manager|Mail::Box::Manager>,
-which maintains a set of open folders, and an extension of it: the
-L<Mail::Box::Manage::User|Mail::Box::Manage::User>.
+=head1 LICENSE
 
-=head2 Managing open folders
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-It is useful to start your program by creating a folder manager object,
-an L<Mail::Box::Manager|Mail::Box::Manager>.  The object takes a few burdons from your neck:
-
-=over 4
-
-=item * autodetect the type of folder which is used.
-
-This means that your application can be fully folder type independent.
-
-=item * autoload the required modules
-
-There are so many modules involved in MailBox, that it is useful to
-have some lazy autoloading of code.  The manager knows which modules
-belong to which type of folder.
-
-=item * avoid double openings
-
-Your programming mistakes may cause the same folder to be opened twice.
-The result of that could be very destructive.  Therefore, the manager
-keeps track on all open folders and avoids the same folder to be opened
-for the second time.
-
-=item * close folders at clean-up
-
-When the program is ending, the manager will cleanly close all folders
-which are still open.  This is required, because the autodestruct
-sequence of Perl works in an unpredicatable order.
-
-=item * message thread detection
-
-MailBox can discover message threads which span multiple folders. Any set
-of open folders may be grouped in a tree of replies on replies on replies.
-When a folder is closed, it will automatically be removed from the threads,
-and a new folder can dynamically be added to the structure.
-
-=back
-
-The manager is really simplifying things, and should therefore be the
-base of all programs. However, it is possible to write useful programs
-without it.
-
-=head2 Managing a user
-
-One step further is the L<Mail::Box::Manage::User|Mail::Box::Manage::User> object (since MailBox
-v2.057), which not only keeps track on open folders, but also collects
-information about not-open folders.
-
-The user class is, as the name says, targeted on managing one single user.
-Where the L<Mail::Box::Manager|Mail::Box::Manager> will open any set of folder files, probably
-from multiple users, the user class want one root folder directory.
-
-In many aspects, the user manager simplifies the task for user-based servers
-and other user-centric applications by setting smart defaults.
-
-
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

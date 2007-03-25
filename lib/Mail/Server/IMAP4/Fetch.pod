@@ -1,9 +1,6 @@
-
 =head1 NAME
 
 Mail::Server::IMAP4::Fetch - message info for IMAP protocol speed-up
-
-
 
 =head1 SYNOPSIS
 
@@ -12,7 +9,6 @@ Mail::Server::IMAP4::Fetch - message info for IMAP protocol speed-up
  print $imap->fetchBody;      # for FETCH BODY
  print $imap->fetchEnvelope;  # for FETCH ENVELOPE
  print $imap->fetchSize;
-
 
 =head1 DESCRIPTION
 
@@ -25,27 +21,22 @@ L<Mail::Box::Message|Mail::Box::Message> object.  It does not maintain headers a
 not refer to the folder.  It only works with messages stored in a file.
 Therefore, this object can be frozen by L<Storable> if you want to.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Server::IMAP4::Fetch-E<gt>B<new>(MESSAGE|PART, OPTIONS)
 
 =over 4
 
- Option      --Defined in--Default
- md5checksums              0
+ Option      --Default
+ md5checksums  0
 
 . md5checksums BOOLEAN
 
 =back
 
 =head2 Attributes
-
 
 $obj-E<gt>B<bodyLocation>
 
@@ -66,7 +57,6 @@ $obj-E<gt>B<partLocation>
 =back
 
 =head2 IMAP Commands
-
 
 $obj-E<gt>B<fetchBody>(EXTENDED)
 
@@ -130,11 +120,6 @@ I<Example:>
 
 =head2 Internals
 
-
-
-
-
-
 =head1 DETAILS
 
 See
@@ -147,22 +132,16 @@ See
 
 =back
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

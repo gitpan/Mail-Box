@@ -1,15 +1,12 @@
-
 =head1 NAME
 
 Mail::Message::Replace::MailInternet - fake Mail::Internet
-
 
 =head1 INHERITANCE
 
  Mail::Message::Replace::MailInternet
    is a Mail::Message
    is a Mail::Reporter
-
 
 =head1 SYNOPSIS
 
@@ -22,7 +19,6 @@ Mail::Message::Replace::MailInternet - fake Mail::Internet
  # in existing code, and the code should still work, but
  # with the Mail::Message features.
 
-
 =head1 DESCRIPTION
 
 This module is a wrapper around a L<Mail::Message|Mail::Message>, which simulates
@@ -32,16 +28,11 @@ and many methods are added.
 Most methods will work without any change, but you may need to have
 a look at your L<smtpsend()|Mail::Message::Replace::MailInternet/"The body"> and L<send()|Mail::Message::Replace::MailInternet/"The message"> calls.
 
-
 =head1 OVERLOADED
-
-
 
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<clone>(OPTIONS)
 
@@ -163,7 +154,6 @@ Passed to L<Mail::Message::Replace::MailHeader::new(Modify)|Mail::Message::Repla
 
 I<Example:> replace traditional Mail::Internet by this wrapper
 
-
   # was
   use Mail::Internet;
   my $mi = Mail::Internet->new(@options);
@@ -176,7 +166,6 @@ I<Example:> replace traditional Mail::Internet by this wrapper
 
 =head2 Attributes
 
-
 $obj-E<gt>B<MailFrom>([STRING])
 
 =over 4
@@ -186,7 +175,6 @@ Your email address.
 =back
 
 =head2 Constructing a message
-
 
 $obj-E<gt>B<add_signature>([FILENAME])
 
@@ -471,9 +459,9 @@ $obj-E<gt>B<sign>(OPTIONS)
 
 Add a signature (a few extra lines) to the message.
 
- Option   --Defined in     --Default
- File                        undef
- Signature                   ''
+ Option   --Default
+ File       undef
+ Signature  ''
 
 . File FILENAME
 
@@ -494,7 +482,6 @@ The signature in memory.
 =back
 
 =head2 The message
-
 
 $obj-E<gt>B<container>
 
@@ -535,10 +522,10 @@ $obj-E<gt>B<nntppost>(OPTIONS)
 Send an NNTP message (newsgroup message), which is equivalent to
 Mail::Transport::NNTP or L<Mail::Message::send()|Mail::Message/"The message"> with C<via 'nntp'>.
 
- Option--Defined in     --Default
- Debug                    <false>
- Host                     <from Net::Config>
- Port                     119
+ Option--Default
+ Debug   <false>
+ Host    <from Net::Config>
+ Port    119
 
 . Debug BOOLEAN
 
@@ -591,7 +578,6 @@ See L<Mail::Message/"The message">
 =back
 
 =head2 The header
-
 
 $obj-E<gt>B<add>(LINES)
 
@@ -806,7 +792,6 @@ See L<Mail::Message/"The header">
 
 =head2 The body
 
-
 $obj-E<gt>B<body>([ARRAY-OF-LINES|LIST-OF-LINES])
 
 =over 4
@@ -897,12 +882,12 @@ This method is calling L<Mail::Message::send()|Mail::Message/"The message"> via 
 implemented in L<Mail::Transport::SMTP|Mail::Transport::SMTP>.  The implementation is
 slightly different, so this method is not 100% compliant.
 
- Option  --Defined in     --Default
- Debug                      <false>
- Hello                      <helo_domain from Net::Config>
- Host                       $ENV{SMTPHOSTS} or from Net::Config
- MailFrom                   $ENV{MAILADDRESS} or $ENV{USER}
- Port                       25
+ Option  --Default
+ Debug     <false>
+ Hello     <helo_domain from Net::Config>
+ Host      $ENV{SMTPHOSTS} or from Net::Config
+ MailFrom  $ENV{MAILADDRESS} or $ENV{USER}
+ Port      25
 
 . Debug BOOLEAN
 
@@ -941,7 +926,6 @@ Removes blank lines from begin and end of the body.
 =back
 
 =head2 Flags
-
 
 $obj-E<gt>B<deleted>([BOOLEAN])
 
@@ -1009,7 +993,6 @@ See L<Mail::Message/"Flags">
 
 =head2 The whole message as text
 
-
 $obj-E<gt>B<as_mbox_string>
 
 =over 4
@@ -1054,7 +1037,6 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 
 =head2 The nasty bits
 
-
 $obj-E<gt>B<isa>(CLASS)
 
 Mail::Message::Replace::MailInternet-E<gt>B<isa>(CLASS)
@@ -1067,7 +1049,6 @@ nasty trick.
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<clonedFrom>
 
@@ -1144,7 +1125,6 @@ See L<Mail::Message/"Internals">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -1268,7 +1248,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -1293,8 +1272,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
+=head1 DETAILS
 
 =head1 DIAGNOSTICS
 
@@ -1318,16 +1296,13 @@ L<forward()|Mail::Message::Construct::Forward/"Constructing a message">.
 
 I<Error:> Method forwardAttach requires a preamble
 
-
 I<Error:> Method forwardEncapsulate requires a preamble
-
 
 I<Error:> No address to create forwarded to.
 
 If a forward message is created, a destination address must be specified.
 
 I<Error:> No rebuild rule $name defined.
-
 
 I<Error:> Only build() Mail::Message's; they are not in a folder yet
 
@@ -1345,26 +1320,16 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=head1 SEE ALSO
 
-=head1 DETAILS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

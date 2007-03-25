@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Box::MH - handle MH folders
-
 
 =head1 INHERITANCE
 
@@ -11,21 +9,17 @@ Mail::Box::MH - handle MH folders
    is a Mail::Box
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  use Mail::Box::MH;
  my $folder = new Mail::Box::MH folder => $ENV{MAIL}, ...;
-
 
 =head1 DESCRIPTION
 
 This documentation describes how MH mailboxes work, and what you
 can do with the MH folder object C<Mail::Box::MH>.
 
-
 =head1 OVERLOADED
-
 
 overload: B<"">
 
@@ -51,12 +45,9 @@ See L<Mail::Box/"OVERLOADED">
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Box::MH-E<gt>B<new>(OPTIONS)
 
@@ -214,7 +205,6 @@ be overruled with this flag.
 
 =head2 The folder
 
-
 $obj-E<gt>B<addMessage>(MESSAGE, OPTIONS)
 
 =over 4
@@ -343,7 +333,6 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
-
 $obj-E<gt>B<access>
 
 =over 4
@@ -377,7 +366,6 @@ See L<Mail::Box/"Folder flags">
 =back
 
 =head2 The messages
-
 
 $obj-E<gt>B<current>([NUMBER|MESSAGE|MESSAGE-ID])
 
@@ -453,7 +441,6 @@ See L<Mail::Box/"The messages">
 
 =head2 Sub-folders
 
-
 $obj-E<gt>B<listSubFolders>(OPTIONS)
 
 Mail::Box::MH-E<gt>B<listSubFolders>(OPTIONS)
@@ -501,7 +488,6 @@ See L<Mail::Box/"Sub-folders">
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
 
@@ -678,7 +664,6 @@ unknown reason, you may be thinking that messages should not be renumbered.
 
 =head2 Other methods
 
-
 $obj-E<gt>B<timespan2seconds>(TIME)
 
 Mail::Box::MH-E<gt>B<timespan2seconds>(TIME)
@@ -690,7 +675,6 @@ See L<Mail::Box/"Other methods">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -796,7 +780,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -813,8 +796,58 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
+=head1 DETAILS
 
+=head2 How MH folders work
 
+MH-type folders use a directory to store the messages of one folder.  Each
+message is stored in a separate file.  This seems useful, because changes
+in a folder change only a few of these small files, in contrast with
+file-based folders where changes in a folder cause rewrites of huge
+folder files.
+
+However, MH-based folders perform very bad if you need header information
+of all messages.  For instance, if you want to have full knowledge about
+all message-threads (see L<Mail::Box::Thread::Manager|Mail::Box::Thread::Manager>) in the folder, it
+requires to read all header lines in all message files.  And usually, reading
+your messages in threads is desired.
+
+So, each message is written in a separate file.  The filenames are
+numbers, which count from C<1>.  Next to these message files, a
+directory may contain a file named C<.mh_sequences>, storing labels which
+relate to the messages.  Furthermore, a folder-directory may contain
+sub-directories, which are seen as sub-folders.
+
+=head2 This implementation
+
+This implementation supports the C<.mh-sequences> file and sub-folders.
+Next to this, considerable effort it made to avoid reading each message-file.
+This should boost performance of the MailBox distribution over other
+Perl-modules which are able to read folders.
+
+Folder types which store their messages each in one file, together in
+one directory, are bad for performance.  Consider that you want to know
+the subjects of all messages, while browser through a folder with your
+mail-reading client.  This would cause all message-files to be read.
+
+L<Mail::Box::MH|Mail::Box::MH> has two ways to try improve performance.  You can use
+an index-file, and use on delay-loading.  The combination performs even
+better.  Both are explained in the next sections.
+
+=head2 An index-file
+
+If you specify L<new(keep_index)|Mail::Box::MH/"METHODS">, then all header-lines of all messages
+from the folder which have been read once, will also be written into
+one dedicated index-file (one file per folder).  The default filename
+is C<.index>
+
+However, index-files are not supported by any other reader which supports
+MH (as far as I know).  If you read the folders with such I client, it
+will not cause unrecoverable conflicts with this index-file, but at most
+be bad for performance.
+
+If you do not (want to) use an index-file, then delay-loading may
+save your day.
 
 =head1 DIAGNOSTICS
 
@@ -910,77 +943,16 @@ For some reason (you probably got more error messages about this problem)
 it is impossible to write the folder, although you should because there
 were changes made.
 
+=head1 SEE ALSO
 
-=head1 DETAILS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
-=head2 How MH folders work
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-MH-type folders use a directory to store the messages of one folder.  Each
-message is stored in a separate file.  This seems useful, because changes
-in a folder change only a few of these small files, in contrast with
-file-based folders where changes in a folder cause rewrites of huge
-folder files.
-
-However, MH-based folders perform very bad if you need header information
-of all messages.  For instance, if you want to have full knowledge about
-all message-threads (see L<Mail::Box::Thread::Manager|Mail::Box::Thread::Manager>) in the folder, it
-requires to read all header lines in all message files.  And usually, reading
-your messages in threads is desired.
-
-So, each message is written in a separate file.  The filenames are
-numbers, which count from C<1>.  Next to these message files, a
-directory may contain a file named C<.mh_sequences>, storing labels which
-relate to the messages.  Furthermore, a folder-directory may contain
-sub-directories, which are seen as sub-folders.
-
-=head2 This implementation
-
-This implementation supports the C<.mh-sequences> file and sub-folders.
-Next to this, considerable effort it made to avoid reading each message-file.
-This should boost performance of the MailBox distribution over other
-Perl-modules which are able to read folders.
-
-Folder types which store their messages each in one file, together in
-one directory, are bad for performance.  Consider that you want to know
-the subjects of all messages, while browser through a folder with your
-mail-reading client.  This would cause all message-files to be read.
-
-L<Mail::Box::MH|Mail::Box::MH> has two ways to try improve performance.  You can use
-an index-file, and use on delay-loading.  The combination performs even
-better.  Both are explained in the next sections.
-
-=head2 An index-file
-
-If you specify L<new(keep_index)|Mail::Box::MH/"METHODS">, then all header-lines of all messages
-from the folder which have been read once, will also be written into
-one dedicated index-file (one file per folder).  The default filename
-is C<.index>
-
-However, index-files are not supported by any other reader which supports
-MH (as far as I know).  If you read the folders with such I client, it
-will not cause unrecoverable conflicts with this index-file, but at most
-be bad for performance.
-
-If you do not (want to) use an index-file, then delay-loading may
-save your day.
-
-
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

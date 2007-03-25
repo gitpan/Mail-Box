@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Message::Field::AddrGroup - A group of Mail::Message::Field::Address objects
-
 
 =head1 INHERITANCE
 
@@ -10,7 +8,6 @@ Mail::Message::Field::AddrGroup - A group of Mail::Message::Field::Address objec
    is an User::Identity::Collection::Emails
    is an User::Identity::Collection
    is an User::Identity::Item
-
 
 =head1 SYNOPSIS
 
@@ -22,15 +19,12 @@ Mail::Message::Field::AddrGroup - A group of Mail::Message::Field::Address objec
  my $f = Mail::Message::Field::Addresses->new;
  $f->addGroup($g);
 
-
 =head1 DESCRIPTION
 
 An address group collects a set of e-mail addresses (in this case they
 are L<Mail::Message::Field::Address|Mail::Message::Field::Address> objects).
 
-
 =head1 OVERLOADED
-
 
 overload: B<@{}>
 
@@ -48,9 +42,7 @@ Returns the L<string()|Mail::Message::Field::AddrGroup/"METHODS"> value.
 
 =back
 
-
 =head1 METHODS
-
 
 $obj-E<gt>B<string>
 
@@ -64,7 +56,6 @@ where included and there is no name, then C<undef> is returned.
 =back
 
 =head2 Constructors
-
 
 $obj-E<gt>B<coerce>(OBJECT)
 
@@ -85,7 +76,6 @@ See L<User::Identity::Collection::Emails/"Constructors">
 =back
 
 =head2 Attributes
-
 
 $obj-E<gt>B<description>
 
@@ -120,7 +110,6 @@ See L<User::Identity::Collection/"Attributes">
 =back
 
 =head2 Collections
-
 
 $obj-E<gt>B<add>(COLLECTION, ROLE)
 
@@ -182,7 +171,6 @@ See L<User::Identity::Item/"Collections">
 
 =head2 Maintaining roles
 
-
 $obj-E<gt>B<addRole>(ROLE| ( [NAME],OPTIONS ) | ARRAY-OF-OPTIONS)
 
 =over 4
@@ -217,7 +205,6 @@ See L<User::Identity::Collection/"Maintaining roles">
 
 =head2 Searching
 
-
 $obj-E<gt>B<find>(NAME|CODE|undef)
 
 =over 4
@@ -227,7 +214,6 @@ See L<User::Identity::Collection/"Searching">
 =back
 
 =head2 Addresses
-
 
 $obj-E<gt>B<addAddress>(STRING|ADDRESS|OPTIONS)
 
@@ -240,7 +226,6 @@ L<Mail::Message::Field::Address::coerce()|Mail::Message::Field::Address/"Constru
 will create such an object.
 
 I<Example:> of adding an address to an address group
-
 
  my @data = (full_name => "Myself", address => 'me@tux.org');
  $group->addAddress(@data);
@@ -263,17 +248,12 @@ stored in a hash, so have an unpredictable order by default.
 
 I<Example:> getting all addresses from a group
 
-
  my @addrs = $group->addresses;
  my @addrs = map { $_->address } $self->roles; #same
 
 =back
 
 =head2 Error handling
-
-
-
-
 
 =head1 DIAGNOSTICS
 
@@ -283,7 +263,6 @@ The first argument is an object, but not of a class which extends
 L<User::Identity::Collection|User::Identity::Collection>.
 
 I<Error:> Cannot coerce a $type into a Mail::Message::Field::AddrGroup
-
 
 I<Error:> Cannot create a $type to add this to my collection.
 
@@ -299,9 +278,7 @@ Maybe you forgot the 'require' the package which defines the nickname.
 
 I<Error:> Cannot rename $name into $newname: already exists
 
-
 I<Error:> Cannot rename $name into $newname: doesn't exist
-
 
 I<Error:> Creation of a collection via $class failed.
 
@@ -323,23 +300,16 @@ I<Error:> Wrong type of role for $collection: requires a $expect but got a $type
 Each $collection groups sets of roles of one specific type ($expect).  You
 cannot add objects of a different $type.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

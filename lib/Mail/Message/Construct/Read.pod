@@ -1,15 +1,11 @@
-
 =head1 NAME
 
 Mail::Message::Construct::Read - read a Mail::Message from a file handle
-
-
 
 =head1 SYNOPSIS
 
  my $msg1 = Mail::Message->read(\*STDIN);
  my $msg2 = Mail::Message->read(\@lines);
-
 
 =head1 DESCRIPTION
 
@@ -17,13 +13,9 @@ When complex methods are called on a C<Mail::Message> object, this package
 is autoloaded to support the reading of messages directly from any file
 handle.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructing a message
-
 
 Mail::Message-E<gt>B<read>(FILEHANDLE|SCALAR|REF-SCALAR|ARRAY-OF-LINES, OPTIONS)
 
@@ -49,9 +41,9 @@ This method will remove C<Status> and C<X-Status> fields when they appear
 in the source, to avoid the risk that these fields accidentally interfere
 with your internal administration, which may have security implications.
 
- Option             --Defined in     --Default
- body_type                             undef
- strip_status_fields                   <true>
+ Option             --Default
+ body_type            undef
+ strip_status_fields  <true>
 
 . body_type CLASS
 
@@ -96,26 +88,16 @@ I<Example:>
 
 =back
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

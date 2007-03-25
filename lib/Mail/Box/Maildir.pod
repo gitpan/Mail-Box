@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Box::Maildir - handle Maildir folders
-
 
 =head1 INHERITANCE
 
@@ -11,12 +9,10 @@ Mail::Box::Maildir - handle Maildir folders
    is a Mail::Box
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  use Mail::Box::Maildir;
  my $folder = new Mail::Box::Maildir folder => $ENV{MAIL}, ...;
-
 
 =head1 DESCRIPTION
 
@@ -26,9 +22,7 @@ can do with the Maildir folder object C<Mail::Box::Maildir>.
 Maildir is B<not supported for Windows>, because it create filenames
 which are not accepted by the Windows system.
 
-
 =head1 OVERLOADED
-
 
 overload: B<"">
 
@@ -54,12 +48,9 @@ See L<Mail::Box/"OVERLOADED">
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Box::Maildir-E<gt>B<new>(OPTIONS)
 
@@ -163,7 +154,6 @@ to call L<acceptMessages()|Mail::Box::Maildir/"Internals"> or L<Mail::Box::Maild
 =back
 
 =head2 The folder
-
 
 $obj-E<gt>B<addMessage>(MESSAGE, OPTIONS)
 
@@ -279,7 +269,6 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
-
 $obj-E<gt>B<access>
 
 =over 4
@@ -313,7 +302,6 @@ See L<Mail::Box/"Folder flags">
 =back
 
 =head2 The messages
-
 
 $obj-E<gt>B<current>([NUMBER|MESSAGE|MESSAGE-ID])
 
@@ -389,7 +377,6 @@ See L<Mail::Box/"The messages">
 
 =head2 Sub-folders
 
-
 $obj-E<gt>B<listSubFolders>(OPTIONS)
 
 Mail::Box::Maildir-E<gt>B<listSubFolders>(OPTIONS)
@@ -437,7 +424,6 @@ See L<Mail::Box/"Sub-folders">
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<acceptMessages>
 
@@ -617,7 +603,6 @@ See L<Mail::Box/"Internals">
 
 =head2 Other methods
 
-
 $obj-E<gt>B<timespan2seconds>(TIME)
 
 Mail::Box::Maildir-E<gt>B<timespan2seconds>(TIME)
@@ -629,7 +614,6 @@ See L<Mail::Box/"Other methods">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -735,7 +719,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -752,8 +735,26 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
+=head1 DETAILS
 
+The explanation is complicated, but for normal use you should bother
+yourself with all details.
 
+=head2 How MAILDIR folders work
+
+Maildir-type folders use a directory to store the messages of one folder.
+Each message is stored in a separate file.  This seems useful, because
+changes in a folder change only a few of these small files, in contrast with
+file-based folders where changes in a folder cause rewrites of huge
+folder-files.
+
+However, Maildir based folders perform very bad if you need header information
+of all messages.  For instance, if you want to have full knowledge about
+all message-threads (see L<Mail::Box::Thread::Manager|Mail::Box::Thread::Manager>) in the folder, it
+requires to read all header lines in all message files.  And usually, reading
+your messages as threads is desired.  Maildir maintains a tiny amount
+of info visible in the filename, which may make it perform just a little
+bit faster than MH.
 
 =head1 DIAGNOSTICS
 
@@ -852,44 +853,16 @@ For some reason (you probably got more error messages about this problem)
 it is impossible to write the folder, although you should because there
 were changes made.
 
+=head1 SEE ALSO
 
-=head1 DETAILS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
-The explanation is complicated, but for normal use you should bother
-yourself with all details.
+=head1 LICENSE
 
-=head2 How MAILDIR folders work
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-Maildir-type folders use a directory to store the messages of one folder.
-Each message is stored in a separate file.  This seems useful, because
-changes in a folder change only a few of these small files, in contrast with
-file-based folders where changes in a folder cause rewrites of huge
-folder-files.
-
-However, Maildir based folders perform very bad if you need header information
-of all messages.  For instance, if you want to have full knowledge about
-all message-threads (see L<Mail::Box::Thread::Manager|Mail::Box::Thread::Manager>) in the folder, it
-requires to read all header lines in all message files.  And usually, reading
-your messages as threads is desired.  Maildir maintains a tiny amount
-of info visible in the filename, which may make it perform just a little
-bit faster than MH.
-
-
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

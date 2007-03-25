@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Message::Field::Structured - one line of a structured message header
-
 
 =head1 INHERITANCE
 
@@ -14,7 +12,6 @@ Mail::Message::Field::Structured - one line of a structured message header
  Mail::Message::Field::Structured is extended by
    Mail::Message::Field::Addresses
    Mail::Message::Field::URIs
-
 
 =head1 SYNOPSIS
 
@@ -28,13 +25,9 @@ Mail::Message::Field::Structured - one line of a structured message header
  my $attr = Mail::Message::Field::Attribute->new(...);
  $f->attribute($attr);
 
-
 =head1 DESCRIPTION
 
-
-
 =head1 OVERLOADED
-
 
 overload: B<"">
 
@@ -84,12 +77,9 @@ See L<Mail::Message::Field::Full/"OVERLOADED">
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<clone>
 
@@ -181,7 +171,6 @@ it B<datum>.
 
 I<Example:> of a structured field
 
-
  my @attrs   = (Mail::Message::Field::Attribute->new(...), ...);
  my @options = (extra => 'the color blue');
  my $t = Mail::Message::Field::Full->new(To => \@addrs, @attrs, @options);
@@ -189,7 +178,6 @@ I<Example:> of a structured field
 =back
 
 =head2 The field
-
 
 $obj-E<gt>B<isStructured>
 
@@ -251,7 +239,6 @@ See L<Mail::Message::Field/"The field">
 
 =head2 Access to the name
 
-
 $obj-E<gt>B<Name>
 
 =over 4
@@ -277,7 +264,6 @@ See L<Mail::Message::Field/"Access to the name">
 =back
 
 =head2 Access to the body
-
 
 $obj-E<gt>B<body>
 
@@ -330,7 +316,6 @@ See L<Mail::Message::Field/"Access to the body">
 =back
 
 =head2 Access to the content
-
 
 $obj-E<gt>B<addresses>
 
@@ -448,7 +433,6 @@ See L<Mail::Message::Field/"Access to the content">
 
 =head2 Other methods
 
-
 $obj-E<gt>B<dateToTimestamp>(STRING)
 
 Mail::Message::Field::Structured-E<gt>B<dateToTimestamp>(STRING)
@@ -460,7 +444,6 @@ See L<Mail::Message::Field/"Other methods">
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<consume>(LINE | (NAME,BODY|OBJECTS))
 
@@ -532,7 +515,6 @@ See L<Mail::Message::Field/"Internals">
 
 =head2 Parsing
 
-
 $obj-E<gt>B<consumeComment>(STRING)
 
 Mail::Message::Field::Structured-E<gt>B<consumeComment>(STRING)
@@ -586,7 +568,6 @@ See L<Mail::Message::Field::Full/"Parsing">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -692,7 +673,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -709,8 +689,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
+=head1 DETAILS
 
 =head1 DIAGNOSTICS
 
@@ -751,26 +730,16 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=head1 SEE ALSO
 
-=head1 DETAILS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

@@ -1,21 +1,17 @@
-
 =head1 NAME
 
 Mail::Box::MH::Index - keep index files for messages.
-
 
 =head1 INHERITANCE
 
  Mail::Box::MH::Index
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  my $index = Mail::Box::MH::Index->new;
  $index->read(...)
  $index->write(...)
-
 
 =head1 DESCRIPTION
 
@@ -35,13 +31,9 @@ or removes message files without updating the index. If the index is not
 trustworthy it will not be used (costing some performance for the reader
 of the folder).
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Box::MH::Index-E<gt>B<new>(OPTIONS)
 
@@ -91,7 +83,6 @@ The preferred number of character in each header line.
 
 =head2 The Index
 
-
 $obj-E<gt>B<append>(MESSAGES)
 
 =over 4
@@ -139,7 +130,6 @@ Write an index file containing the headers specified MESSAGES
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -245,7 +235,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -262,9 +251,6 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
-
 =head1 DIAGNOSTICS
 
 I<Error:> Package $package does not implement $method.
@@ -275,23 +261,16 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

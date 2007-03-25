@@ -1,15 +1,12 @@
-
 =head1 NAME
 
 Mail::Message::Field::Address - One e-mail address
-
 
 =head1 INHERITANCE
 
  Mail::Message::Field::Address
    is a Mail::Identity
    is an User::Identity::Item
-
 
 =head1 SYNOPSIS
 
@@ -25,16 +22,13 @@ Mail::Message::Field::Address - One e-mail address
  print $addr->fullName;   # possibly unicode!
  print $addr->domain;
 
-
 =head1 DESCRIPTION
 
 Many header fields can contain e-mail addresses.  Each e-mail address
 can be represented by an object of this class.  These objects will
 handle interpretation and character set encoding and decoding for you.
 
-
 =head1 OVERLOADED
-
 
 overload: B<boolean>
 
@@ -53,12 +47,9 @@ representation of the e-mail address, just like L<string()|Mail::Message::Field:
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<coerce>(STRING|OBJECT, OPTIONS)
 
@@ -106,7 +97,6 @@ one is taken at random.
 =back
 
 =head2 Attributes
-
 
 $obj-E<gt>B<address>
 
@@ -198,7 +188,6 @@ See L<Mail::Identity/"Attributes">
 
 =head2 Collections
 
-
 $obj-E<gt>B<add>(COLLECTION, ROLE)
 
 =over 4
@@ -267,7 +256,6 @@ See L<User::Identity::Item/"Collections">
 
 =head2 Access to the content
 
-
 $obj-E<gt>B<string>
 
 =over 4
@@ -282,9 +270,6 @@ I<Example:>
  print $address;          # via overloading
 
 =back
-
-
-
 
 =head1 DIAGNOSTICS
 
@@ -322,23 +307,16 @@ I<Warning:> No collection $name
 
 The collection with $name does not exist and can not be created.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

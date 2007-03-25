@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Box::Locker::Flock - lock a folder using kernel file-locking
-
 
 =head1 INHERITANCE
 
@@ -10,11 +8,9 @@ Mail::Box::Locker::Flock - lock a folder using kernel file-locking
    is a Mail::Box::Locker
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  See Mail::Box::Locker
-
 
 =head1 DESCRIPTION
 
@@ -26,13 +22,9 @@ is reading.
 File locking does not work in some situations, for instance for
 operating systems do not support C<flock>.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Box::Locker::Flock-E<gt>B<new>(OPTIONS)
 
@@ -65,7 +57,6 @@ Mail::Box::Locker::Flock-E<gt>B<new>(OPTIONS)
 
 =head2 The Locker
 
-
 $obj-E<gt>B<filename>([FILENAME])
 
 =over 4
@@ -91,7 +82,6 @@ See L<Mail::Box::Locker/"The Locker">
 =back
 
 =head2 Locking
-
 
 $obj-E<gt>B<hasLock>
 
@@ -122,7 +112,6 @@ See L<Mail::Box::Locker/"Locking">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -228,7 +217,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -244,9 +232,6 @@ $obj-E<gt>B<inGlobalDestruction>
 See L<Mail::Reporter/"Cleanup">
 
 =back
-
-
-
 
 =head1 DIAGNOSTICS
 
@@ -281,23 +266,16 @@ Tried to flock the folder, but it did not succeed.  The error code received
 from the OS indicates that it will not succeed ever, so we do not need to
 try again.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

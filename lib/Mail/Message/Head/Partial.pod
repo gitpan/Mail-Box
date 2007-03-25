@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Message::Head::Partial - subset of header information of a message
-
 
 =head1 INHERITANCE
 
@@ -10,7 +8,6 @@ Mail::Message::Head::Partial - subset of header information of a message
    is a Mail::Message::Head::Complete
    is a Mail::Message::Head
    is a Mail::Reporter
-
 
 =head1 SYNOPSIS
 
@@ -25,7 +22,6 @@ Mail::Message::Head::Partial - subset of header information of a message
  $partial->removeListGroup;
  $partial->removeSpamGroups;
 
-
 =head1 DESCRIPTION
 
 Header information consumes a considerable amount of memory.  Most of this
@@ -34,9 +30,7 @@ or sometimes it is not used at all.  You then can decide to remove most
 of the header information.  However, be warned that it will be lost
 permanently: the header (and therefore the messsage) gets mutulated!
 
-
 =head1 OVERLOADED
-
 
 overload: B<"">
 
@@ -54,12 +48,9 @@ See L<Mail::Message::Head/"OVERLOADED">
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<build>([PAIR|FIELD]-LIST)
 
@@ -86,7 +77,6 @@ See L<Mail::Message::Head/"Constructors">
 =back
 
 =head2 The header
-
 
 $obj-E<gt>B<isDelayed>
 
@@ -169,7 +159,6 @@ See L<Mail::Message::Head::Complete/"The header">
 =back
 
 =head2 Access to the header
-
 
 $obj-E<gt>B<add>(FIELD | LINE | (NAME,BODY[,ATTRS]))
 
@@ -440,7 +429,6 @@ See L<Mail::Message::Head/"Access to the header">
 
 =head2 About the body
 
-
 $obj-E<gt>B<guessBodySize>
 
 =over 4
@@ -482,7 +470,6 @@ See L<Mail::Message::Head::Complete/"About the body">
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<addNoRealize>(FIELD)
 
@@ -567,7 +554,6 @@ See L<Mail::Message::Head/"Internals">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -673,7 +659,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -690,31 +675,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
-
-=head1 DIAGNOSTICS
-
-I<Warning:> Cannot remove field $name from header: not found.
-
-You ask to remove a field which is not known in the header.  Using
-L<delete()|Mail::Message::Head::Complete/"Access to the header">, L<reset()|Mail::Message::Head::Complete/"Access to the header">, or L<set()|Mail::Message::Head::Complete/"Access to the header"> to do the job will not result
-in warnings: those methods check the existence of the field first.
-
-I<Warning:> Field objects have an implied name ($name)
-
-
-I<Error:> Package $package does not implement $method.
-
-Fatal error: the specific package (or one of its superclasses) does not
-implement this method where it should. This message means that some other
-related classes do implement this method however the class at hand does
-not.  Probably you should investigate this and probably inform the author
-of the package.
-
-
 =head1 DETAILS
-
 
 =head2 Reducing the header size
 
@@ -737,28 +698,39 @@ store a the list administration lines for each message as well.
 
 I<Example:> see examples/reduce.pl in distribution
 
-
  foreach my $msg ($folder->messages)
  {  $msg->head->removeResentGroups;
     $msg->head->removeResentList;
  }
 
+=head1 DIAGNOSTICS
 
+I<Warning:> Cannot remove field $name from header: not found.
 
+You ask to remove a field which is not known in the header.  Using
+L<delete()|Mail::Message::Head::Complete/"Access to the header">, L<reset()|Mail::Message::Head::Complete/"Access to the header">, or L<set()|Mail::Message::Head::Complete/"Access to the header"> to do the job will not result
+in warnings: those methods check the existence of the field first.
 
+I<Warning:> Field objects have an implied name ($name)
 
-=head1 REFERENCES
+I<Error:> Package $package does not implement $method.
 
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
 
-=head1 COPYRIGHTS
+=head1 SEE ALSO
 
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
+=head1 LICENSE
+
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

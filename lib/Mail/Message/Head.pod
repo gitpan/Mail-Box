@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Message::Head - the header of one message
-
 
 =head1 INHERITANCE
 
@@ -15,7 +13,6 @@ Mail::Message::Head - the header of one message
    Mail::Message::Head::Delayed
    Mail::Message::Head::Subset
 
-
 =head1 SYNOPSIS
 
  my $head = Mail::Message::Head->new;
@@ -25,7 +22,6 @@ Mail::Message::Head - the header of one message
  my Mail::Message::Field $subject = $head->get('subject');
  my Mail::Message::Field @rec = $head->get('received');
  $head->delete('From');
-
 
 =head1 DESCRIPTION
 
@@ -39,9 +35,7 @@ Other kinds of headers will be translated to that type when time comes.
 On this page, the general methods which are available on any header are
 described.  Read about differences in the sub-class specific pages.
 
-
 =head1 OVERLOADED
-
 
 overload: B<"">
 
@@ -54,7 +48,6 @@ get a simplified string to avoid unreadible messages from C<croak>
 and C<confess>.
 
 I<Example:> using a header object as string
-
 
  print $head;     # implicit stringification by print
  $head->print;    # the same
@@ -73,12 +66,9 @@ produced.
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<build>([PAIR|FIELD]-LIST)
 
@@ -155,7 +145,6 @@ message() method later to set it.
 =back
 
 =head2 The header
-
 
 $obj-E<gt>B<isDelayed>
 
@@ -235,7 +224,6 @@ Retuns the fields ordered the way they were read or added.
 
 =head2 Access to the header
 
-
 $obj-E<gt>B<get>(NAME [,INDEX])
 
 =over 4
@@ -281,7 +269,6 @@ When an INDEX is specified, that element is returned.
 
 =head2 About the body
 
-
 $obj-E<gt>B<guessBodySize>
 
 =over 4
@@ -303,7 +290,6 @@ May trigger completion, when the C<Content-Type> field is not defined.
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<addNoRealize>(FIELD)
 
@@ -370,7 +356,6 @@ header as changed.  This does not trigger completion.
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -476,7 +461,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -493,22 +477,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
-
-=head1 DIAGNOSTICS
-
-I<Error:> Package $package does not implement $method.
-
-Fatal error: the specific package (or one of its superclasses) does not
-implement this method where it should. This message means that some other
-related classes do implement this method however the class at hand does
-not.  Probably you should investigate this and probably inform the author
-of the package.
-
-
 =head1 DETAILS
-
 
 =head2 Ordered header fields
 
@@ -596,22 +565,26 @@ you store a message for a longer period of time.
 
 =back
 
+=head1 DIAGNOSTICS
 
+I<Error:> Package $package does not implement $method.
 
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
 
+=head1 SEE ALSO
 
-=head1 REFERENCES
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
+=head1 LICENSE
 
-=head1 COPYRIGHTS
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

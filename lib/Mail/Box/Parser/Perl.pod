@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Box::Parser::Perl - reading messages from file using Perl
-
 
 =head1 INHERITANCE
 
@@ -10,10 +8,7 @@ Mail::Box::Parser::Perl - reading messages from file using Perl
    is a Mail::Box::Parser
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
-
-
 
 =head1 DESCRIPTION
 
@@ -22,13 +17,9 @@ in Perl.  This may be a little slower than the C<C> based parser
 Mail::Box::Parser::C, but will also work on platforms where no C
 compiler is available.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Box::Parser::Perl-E<gt>B<new>(OPTIONS)
 
@@ -76,7 +67,6 @@ tests.  Related to L<Mail::Box::new(trusted)|Mail::Box/"Constructors">.
 =back
 
 =head2 The parser
-
 
 $obj-E<gt>B<fileChanged>
 
@@ -134,7 +124,6 @@ See L<Mail::Box::Parser/"The parser">
 =back
 
 =head2 Parsing
-
 
 $obj-E<gt>B<bodyAsFile>(FILEHANDLE [,CHARS [,LINES]])
 
@@ -216,7 +205,6 @@ See L<Mail::Box::Parser/"Parsing">
 
 =head2 Internals
 
-
 $obj-E<gt>B<closeFile>
 
 =over 4
@@ -252,7 +240,6 @@ See L<Mail::Box::Parser/"Internals">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -358,7 +345,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -374,9 +360,6 @@ $obj-E<gt>B<inGlobalDestruction>
 See L<Mail::Reporter/"Cleanup">
 
 =back
-
-
-
 
 =head1 DIAGNOSTICS
 
@@ -413,23 +396,16 @@ lines after the erroneous line, they will be added to the body of the message.
 In case of new(fix_headers) set, the parsing of the header will be continued.
 The erroneous line will be added to the preceding field.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

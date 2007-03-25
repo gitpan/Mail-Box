@@ -1,14 +1,11 @@
-
 =head1 NAME
 
 Mail::Message::Wrapper::SpamAssassin - Connect a Mail::Message with Mail::SpamAssassin
-
 
 =head1 INHERITANCE
 
  Mail::Message::Wrapper::SpamAssassin
    is a Mail::SpamAssassin::Message
-
 
 =head1 SYNOPSIS
 
@@ -24,7 +21,6 @@ Mail::Message::Wrapper::SpamAssassin - Connect a Mail::Message with Mail::SpamAs
  $msg->label(spam => 1) if $status->is_spam;
  $status->rewrite_mail;  # Adds spam lines to header
 
-
 =head1 DESCRIPTION
 
 WARNING: This module only works with the old version of SpamAssassin:
@@ -35,10 +31,7 @@ The C<Mail::Message::Wrapper::SpamAssassin> class --sorry for the
 long package name-- is a wrapper around Mail::SpamAssassin::Message, which
 is an interface to the spam checking software of Mail::SpamAssassin.
 
-
-
 =head1 METHODS
-
 
 Mail::Message::Wrapper::SpamAssassin-E<gt>B<new>(MESSAGE, OPTIONS)
 
@@ -50,26 +43,16 @@ removed first.
 
 =back
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

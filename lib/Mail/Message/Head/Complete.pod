@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Message::Head::Complete - the header of one message
-
 
 =head1 INHERITANCE
 
@@ -18,12 +16,10 @@ Mail::Message::Head::Complete - the header of one message
    Mail::Message::Head::Delayed
    Mail::Message::Head::Subset
 
-
 =head1 SYNOPSIS
 
  my $head = Mail::Message::Head::Complete->new;
  See Mail::Message::Head
-
 
 =head1 DESCRIPTION
 
@@ -31,9 +27,7 @@ E-mail's message can be in various states: unread, partially read, and
 fully read.  The class stores a message of which all header lines are
 known for sure.
 
-
 =head1 OVERLOADED
-
 
 overload: B<"">
 
@@ -51,12 +45,9 @@ See L<Mail::Message::Head/"OVERLOADED">
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<build>([PAIR|FIELD]-LIST)
 
@@ -89,7 +80,6 @@ See L<Mail::Message::Head/"Constructors">
 =back
 
 =head2 The header
-
 
 $obj-E<gt>B<isDelayed>
 
@@ -176,13 +166,11 @@ characters per line.
 
 I<Example:> re-folding a header
 
-
  $msg->head->wrap(78);
 
 =back
 
 =head2 Access to the header
-
 
 $obj-E<gt>B<add>(FIELD | LINE | (NAME,BODY[,ATTRS]))
 
@@ -230,7 +218,6 @@ return, because the same group can be used for multiple messages.
 
 I<Example:> of adding a list group to a header
 
-
  my $lg = Mail::Message::Head::ListGroup->new(...);
  my $own_lg = $msg->head->addListGroup($lg);
 
@@ -271,7 +258,6 @@ method.  You will get your private copy of the spam group data in
 return, because the same group can be used for multiple messages.
 
 I<Example:> of adding a spam group to a header
-
 
  my $sg = Mail::Message::Head::SpamGroup->new(...);
  my $own_sg = $msg->head->addSpamGroup($sg);
@@ -337,7 +323,6 @@ message.  See also L<addListGroup()|Mail::Message::Head::Complete/"Access to the
 
 I<Example:> use of listGroup()
 
-
  if(my $lg = $msg->head->listGroup)
  {  $lg->print(\*STDERR);
     $lg->delete;
@@ -385,7 +370,6 @@ STRING (case insensative) or REGEXP are printed.  They will stay the in-order
 of the source header.
 
 I<Example:> printing only a subset of the fields
-
 
  $head->printSelected(STDOUT, qw/Subject From To/, qr/^x\-(spam|xyz)\-/i)
 
@@ -599,7 +583,6 @@ returned.  With more NAMES or without NAMES, a list will be returned
 
 I<Example:> use of listGroup()
 
-
  my @sg = $msg->head->spamGroups;
  $sg[0]->print(\*STDERR);
  $sg[-1]->delete;
@@ -626,7 +609,6 @@ See L<Mail::Message::Head/"Access to the header">
 =back
 
 =head2 About the body
-
 
 $obj-E<gt>B<guessBodySize>
 
@@ -676,13 +658,11 @@ time), and as such usable for the C<gmtime> and C<localtime> methods.
 
 I<Example:> of time-sorting folders with received messages
 
-
  my $folder = $mgr->open('InBox');
  my @messages = sort {$a->recvstamp <=> $b->recvstamp}
                    $folder->messages;
 
 I<Example:> of time-sorting messages of mixed origin
-
 
  my $folder = $mgr->open('MyFolder');
 
@@ -713,7 +693,6 @@ and C<localtime> methods.
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<addNoRealize>(FIELD)
 
@@ -794,7 +773,6 @@ but no subroutine is defined yet, one will be created.
 
 I<Example:> setting a message prefix
 
-
   $head->messageIdPrefix('prefix');
   Mail::Message::Head::Complete->messageIdPrefix('prefix');
   my $code = $head->messageIdPrefix('mailbox', 'nohost');
@@ -834,7 +812,6 @@ See L<Mail::Message::Head/"Internals">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -940,7 +917,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -957,8 +933,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
+=head1 DETAILS
 
 =head1 DIAGNOSTICS
 
@@ -970,7 +945,6 @@ in warnings: those methods check the existence of the field first.
 
 I<Warning:> Field objects have an implied name ($name)
 
-
 I<Error:> Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
@@ -979,26 +953,16 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=head1 SEE ALSO
 
-=head1 DETAILS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Box::IMAP4 - handle IMAP4 folders as client
-
 
 =head1 INHERITANCE
 
@@ -11,12 +9,10 @@ Mail::Box::IMAP4 - handle IMAP4 folders as client
    is a Mail::Box
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  use Mail::Box::IMAP4;
  my $folder = new Mail::Box::IMAP4 folder => $ENV{MAIL}, ...;
-
 
 =head1 DESCRIPTION
 
@@ -29,9 +25,7 @@ information, and focusses solely on the correct handling of messages
 within a IMAP4 folder.  More than one IMAP4 folder can be handled by
 one single IMAP4 connection.
 
-
 =head1 OVERLOADED
-
 
 overload: B<"">
 
@@ -57,12 +51,9 @@ See L<Mail::Box/"OVERLOADED">
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Box::IMAP4-E<gt>B<new>(OPTIONS)
 
@@ -282,7 +273,6 @@ I<Example:>
 
 =head2 The folder
 
-
 $obj-E<gt>B<addMessage>(MESSAGE, OPTIONS)
 
 =over 4
@@ -404,7 +394,6 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
-
 $obj-E<gt>B<access>
 
 =over 4
@@ -438,7 +427,6 @@ See L<Mail::Box/"Folder flags">
 =back
 
 =head2 The messages
-
 
 $obj-E<gt>B<current>([NUMBER|MESSAGE|MESSAGE-ID])
 
@@ -514,7 +502,6 @@ See L<Mail::Box/"The messages">
 
 =head2 Sub-folders
 
-
 $obj-E<gt>B<listSubFolders>(OPTIONS)
 
 Mail::Box::IMAP4-E<gt>B<listSubFolders>(OPTIONS)
@@ -563,7 +550,6 @@ See L<Mail::Box/"Sub-folders">
 
 =head2 Internals
 
-
 $obj-E<gt>B<body>([BODY])
 
 =over 4
@@ -597,8 +583,8 @@ CLASS defines the exact object type.  As OPTIONS, everything which is
 acceptable to a transporter initiation can be used (see
 L<Mail::Transport::IMAP4::new()|Mail::Transport::IMAP4/"METHODS">.
 
- Option         --Defined in--Default
- join_connection              true
+ Option         --Default
+ join_connection  true
 
 . join_connection BOOLEAN
 
@@ -783,7 +769,6 @@ $obj-E<gt>B<writeMessages>(OPTIONS)
 
 =head2 Other methods
 
-
 $obj-E<gt>B<timespan2seconds>(TIME)
 
 Mail::Box::IMAP4-E<gt>B<timespan2seconds>(TIME)
@@ -795,7 +780,6 @@ See L<Mail::Box/"Other methods">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -901,7 +885,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -918,8 +901,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
+=head1 DETAILS
 
-
+=head2 How IMAP4 folders work
 
 =head1 DIAGNOSTICS
 
@@ -940,7 +924,6 @@ read-protection, it is impossible to copy one of the messages.  Copying will
 proceed for the other messages.
 
 I<Error:> Couldn't select IMAP4 folder $name
-
 
 I<Error:> Destination folder $name is not writable.
 
@@ -991,7 +974,6 @@ missing from the string.
 
 I<Error:> No IMAP4 transporter configured
 
-
 I<Error:> Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
@@ -1005,29 +987,16 @@ I<Error:> Unable to create subfolder $name of $folder.
 The copy includes the subfolders, but for some reason it was not possible
 to copy one of these.  Copying will proceed for all other sub-folders.
 
+=head1 SEE ALSO
 
-=head1 DETAILS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
-=head2 How IMAP4 folders work
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

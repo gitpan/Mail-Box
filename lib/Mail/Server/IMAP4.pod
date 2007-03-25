@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Server::IMAP4 - IMAP4 server implementation (not completed)
-
 
 =head1 INHERITANCE
 
@@ -10,12 +8,10 @@ Mail::Server::IMAP4 - IMAP4 server implementation (not completed)
    is a Mail::Server
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  !!!Partially implemented!!!!
  my $server = Mail::Server::IMAP4->new($msg);
-
 
 =head1 DESCRIPTION
 
@@ -43,13 +39,9 @@ the SEARCH request.  Not implemented yet... looking for a volunteer.
 
 =back
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Server::IMAP4-E<gt>B<new>(OPTIONS)
 
@@ -60,7 +52,6 @@ See L<Mail::Reporter/"Constructors">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -166,7 +157,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -183,8 +173,15 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
+=head1 DETAILS
 
+See
 
+=over 4
+
+=item RFC2060: "Internet Message Access Protocol IMAP4v1"
+
+=back
 
 =head1 DIAGNOSTICS
 
@@ -196,33 +193,16 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=head1 SEE ALSO
 
-=head1 DETAILS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
-See
+=head1 LICENSE
 
-=over 4
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-=item RFC2060: "Internet Message Access Protocol IMAP4v1"
-
-=back
-
-
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

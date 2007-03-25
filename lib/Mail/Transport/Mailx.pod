@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Transport::Mailx - transmit messages using external mailx program
-
 
 =head1 INHERITANCE
 
@@ -11,12 +9,10 @@ Mail::Transport::Mailx - transmit messages using external mailx program
    is a Mail::Transport
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  my $sender = Mail::Transport::Mailx->new(...);
  $sender->send($message);
-
 
 =head1 DESCRIPTION
 
@@ -35,13 +31,9 @@ standard,  what may cause many headers to be lost.  For these platforms (and
 probably for other platforms as well), you can better not use this transport
 mechanism.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Transport::Mailx-E<gt>B<new>(OPTIONS)
 
@@ -104,7 +96,6 @@ distributions).
 
 =head2 Sending mail
 
-
 $obj-E<gt>B<destinations>(MESSAGE, [ADDRESS|ARRAY-OF-ADDRESSES])
 
 =over 4
@@ -137,7 +128,6 @@ $obj-E<gt>B<trySend>(MESSAGE, OPTIONS)
 
 =head2 Server connection
 
-
 $obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
 
 =over 4
@@ -163,7 +153,6 @@ See L<Mail::Transport/"Server connection">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -269,7 +258,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -285,9 +273,6 @@ $obj-E<gt>B<inGlobalDestruction>
 See L<Mail::Reporter/"Cleanup">
 
 =back
-
-
-
 
 =head1 DIAGNOSTICS
 
@@ -324,23 +309,16 @@ I<Error:> Sending via mailx mailer $program failed: $! ($?)
 Mailx (in some shape: there are many different implementations) did start
 accepting messages, but did not succeed sending it.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

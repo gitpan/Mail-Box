@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Message::Convert::HtmlFormatText - Convert HTML into Text
-
 
 =head1 INHERITANCE
 
@@ -10,14 +8,12 @@ Mail::Message::Convert::HtmlFormatText - Convert HTML into Text
    is a Mail::Message::Convert
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  use Mail::Message::Convert::HtmlFormatText;
  my $af = Mail::Message::Convert::HtmlFormatText->new;
 
  my $plain_body = $af->format($body);
-
 
 =head1 DESCRIPTION
 
@@ -27,13 +23,9 @@ HTML::FormatText which are not installed by default together with
 Mail::Box.  See also L<Mail::Message::rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> with rule
 C<text_alternative_for_html>.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Message::Convert::HtmlFormatText-E<gt>B<new>(OPTIONS)
 
@@ -72,7 +64,6 @@ The column of the right margin, passed to the formatter.
 
 =head2 Converting
 
-
 $obj-E<gt>B<format>(BODY)
 
 =over 4
@@ -91,7 +82,6 @@ See L<Mail::Message::Convert/"Converting">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -197,7 +187,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -214,9 +203,6 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
-
 =head1 DIAGNOSTICS
 
 I<Error:> Package $package does not implement $method.
@@ -227,23 +213,16 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

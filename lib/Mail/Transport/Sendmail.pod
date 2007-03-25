@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Transport::Sendmail - transmit messages using external Sendmail program
-
 
 =head1 INHERITANCE
 
@@ -11,12 +9,10 @@ Mail::Transport::Sendmail - transmit messages using external Sendmail program
    is a Mail::Transport
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  my $sender = Mail::Transport::Sendmail->new(...);
  $sender->send($message);
-
 
 =head1 DESCRIPTION
 
@@ -28,13 +24,9 @@ Some people use Postfix as MTA.  Postfix can be installed as replacement
 for Sendmail: is provides a program with the same name and options.  So,
 this module supports postfix as well.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Transport::Sendmail-E<gt>B<new>(OPTIONS)
 
@@ -93,7 +85,6 @@ because the latter will be taken by sendmail as one word only.
 
 =head2 Sending mail
 
-
 $obj-E<gt>B<destinations>(MESSAGE, [ADDRESS|ARRAY-OF-ADDRESSES])
 
 =over 4
@@ -122,15 +113,14 @@ $obj-E<gt>B<trySend>(MESSAGE, OPTIONS)
 
 =over 4
 
- Option          --Defined in--Default
- sendmail_options              undef
+ Option          --Default
+ sendmail_options  undef
 
 . sendmail_options ARRAY
 
 =back
 
 =head2 Server connection
-
 
 $obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
 
@@ -157,7 +147,6 @@ See L<Mail::Transport/"Server connection">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -263,7 +252,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -279,9 +267,6 @@ $obj-E<gt>B<inGlobalDestruction>
 See L<Mail::Reporter/"Cleanup">
 
 =back
-
-
-
 
 =head1 DIAGNOSTICS
 
@@ -318,23 +303,16 @@ As alternative, you may also specify the C<to> option to some of the senders
 (for instance L<Mail::Transport::SMTP::send(to)|Mail::Transport::Send/"Sending mail"> to overrule any information
 found in the message itself about the destination.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Message::Replace::MailHeader - fake Mail::Header
-
 
 =head1 INHERITANCE
 
@@ -10,7 +8,6 @@ Mail::Message::Replace::MailHeader - fake Mail::Header
    is a Mail::Message::Head::Complete
    is a Mail::Message::Head
    is a Mail::Reporter
-
 
 =head1 SYNOPSIS
 
@@ -24,7 +21,6 @@ Mail::Message::Replace::MailHeader - fake Mail::Header
  # in existing code, and the code should still work, but
  # with the Mail::Message features.
 
-
 =head1 DESCRIPTION
 
 This module is a wrapper around a L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>,
@@ -35,9 +31,7 @@ Most methods will work without any change, but you should test your
 software again.  Small changes have been made to L<fold_length()|Mail::Message::Replace::MailHeader/"Simulating Mail::Header">,
 L<header_hashref()|Mail::Message::Replace::MailHeader/"Simulating Mail::Header">.
 
-
 =head1 OVERLOADED
-
 
 overload: B<"">
 
@@ -55,12 +49,9 @@ See L<Mail::Message::Head/"OVERLOADED">
 
 =back
 
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<build>([PAIR|FIELD]-LIST)
 
@@ -125,7 +116,6 @@ Reformat all header lines when they come in: change the folding.
 =back
 
 =head2 The header
-
 
 $obj-E<gt>B<isDelayed>
 
@@ -208,7 +198,6 @@ See L<Mail::Message::Head::Complete/"The header">
 =back
 
 =head2 Access to the header
-
 
 $obj-E<gt>B<add>(LINE, [INDEX])
 
@@ -444,7 +433,6 @@ See L<Mail::Message::Head/"Access to the header">
 
 =head2 About the body
 
-
 $obj-E<gt>B<guessBodySize>
 
 =over 4
@@ -486,7 +474,6 @@ See L<Mail::Message::Head::Complete/"About the body">
 =back
 
 =head2 Internals
-
 
 $obj-E<gt>B<addNoRealize>(FIELD)
 
@@ -563,7 +550,6 @@ See L<Mail::Message::Head/"Internals">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -669,7 +655,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -688,9 +673,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =head2 Access to the header
 
-
 =head2 Simulating Mail::Header
-
 
 $obj-E<gt>B<as_string>
 
@@ -834,7 +817,6 @@ Remove the folding for all instances of TAG, or all fields at once.
 
 =head2 The nasty bits
 
-
 $obj-E<gt>B<isa>(CLASS)
 
 Mail::Message::Replace::MailHeader-E<gt>B<isa>(CLASS)
@@ -846,8 +828,7 @@ nasty trick.
 
 =back
 
-
-
+=head1 DETAILS
 
 =head1 DIAGNOSTICS
 
@@ -859,7 +840,6 @@ in warnings: those methods check the existence of the field first.
 
 I<Warning:> Field objects have an implied name ($name)
 
-
 I<Error:> Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
@@ -868,26 +848,16 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=head1 SEE ALSO
 
-=head1 DETAILS
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

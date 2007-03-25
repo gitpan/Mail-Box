@@ -1,15 +1,12 @@
-
 =head1 NAME
 
 Mail::Message::Head::SpamGroup - spam fighting related header fields
-
 
 =head1 INHERITANCE
 
  Mail::Message::Head::SpamGroup
    is a Mail::Message::Head::FieldGroup
    is a Mail::Reporter
-
 
 =head1 SYNOPSIS
 
@@ -21,20 +18,15 @@ Mail::Message::Head::SpamGroup - spam fighting related header fields
  
  my @sgs = $head->spamGroups;
 
-
 =head1 DESCRIPTION
 
 A I<spam group> is a set of header fields which are added by spam detection
 and spam fighting software.  This class knows various details about
 that software.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 $obj-E<gt>B<clone>
 
@@ -54,10 +46,10 @@ Get the SETTINGS of a certain spam-fighter, optionally after setting them.
 The L<knownFighters()> method returns the defined names.  The names
 are case-sensitive.
 
- Option --Defined in     --Default
- fields                    <required>
- isspam                    <required>
- version                   undef
+ Option --Default
+ fields   <required>
+ isspam   <required>
+ version  undef
 
 . fields REGEXP
 
@@ -90,7 +82,6 @@ the spamgroup object (under construction) and the header which is inspected.
 
 I<Example:> adding your own spam-fighter definitions
 
-
  Mail::Message::Head::SpamGroup->fighter( 'MY-OWN',
     fields => qw/^x-MY-SPAM-DETECTOR-/,
     isspam => sub { my ($sg, $head) = @_; $head->fields > 100 }
@@ -105,8 +96,8 @@ $obj-E<gt>B<from>(HEAD|MESSAGE, OPTIONS)
 Returns a list of C<Mail::Message::Head::SpamGroup> objects, based on the
 specified MESSAGE or message HEAD.
 
- Option--Defined in--Default
- types               undef
+ Option--Default
+ types   undef
 
 . types ARRAY-OF-NAMES
 
@@ -130,7 +121,6 @@ which are correct.  Without argument, this is used as instance method on
 an existing Spam-Group.
 
 I<Example:> checking Habeas-SWE fields
-
 
  if(Mail::Message::Head::SpamGroup->habeasSweFieldsCorrect($message))
  {   $message->label(spam => 0);
@@ -224,7 +214,6 @@ I<Example:>
 
 =head2 The header
 
-
 $obj-E<gt>B<add>((FIELD, VALUE) | OBJECT)
 
 =over 4
@@ -283,7 +272,6 @@ See L<Mail::Message::Head::FieldGroup/"The header">
 
 =head2 Access to the header
 
-
 $obj-E<gt>B<software>
 
 =over 4
@@ -310,7 +298,6 @@ See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
 =head2 Internals
 
-
 $obj-E<gt>B<collectFields>([NAME])
 
 =over 4
@@ -328,7 +315,6 @@ See L<Mail::Message::Head::FieldGroup/"Internals">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -450,7 +436,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -467,25 +452,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
-
-=head1 DIAGNOSTICS
-
-I<Error:> Package $package does not implement $method.
-
-Fatal error: the specific package (or one of its superclasses) does not
-implement this method where it should. This message means that some other
-related classes do implement this method however the class at hand does
-not.  Probably you should investigate this and probably inform the author
-of the package.
-
-
 =head1 DETAILS
 
-
 =head2 Spam fighting fields
-
 
 =head3 Detected spam fighting software
 
@@ -520,22 +489,26 @@ is provided via L<http://www.mailscanner.biz>.
 
 =back
 
+=head1 DIAGNOSTICS
 
+I<Error:> Package $package does not implement $method.
 
+Fatal error: the specific package (or one of its superclasses) does not
+implement this method where it should. This message means that some other
+related classes do implement this method however the class at hand does
+not.  Probably you should investigate this and probably inform the author
+of the package.
 
+=head1 SEE ALSO
 
-=head1 REFERENCES
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
+=head1 LICENSE
 
-=head1 COPYRIGHTS
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

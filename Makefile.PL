@@ -235,12 +235,34 @@ print <<'MAKEFILE';
 MAKEFILE
 
 WriteMakefile
- ( NAME         => 'Mail::Box'
- , VERSION_FROM => 'lib/Mail/Box.pm'
- , AUTHOR       => 'Mark Overmeer'
- , ABSTRACT     => 'E-mail handling'
- , PREREQ_PM    => \%prereq
+ ( NAME       => 'Mail::Box'
+ , VERSION    => '2.070'
+ , AUTHOR     => 'Mark Overmeer'
+ , ABSTRACT   => 'E-mail handling'
+ , PREREQ_PM  => \%prereq
  );
+
+### used by oodist during production of distribution
+sub MY::postamble { <<'__POSTAMBLE' }
+
+# for DIST
+RAWDIR          = ../public_html/mailbox/raw
+DISTDIR         = ../public_html/mailbox/source
+
+LICENSE         = artistic
+EXTENDS		= ../UserIdentity:../MimeTypes:../ORL
+
+# for POD
+FIRST_YEAR      = 2001
+EMAIL           = mailbox@overmeer.net
+WEBSITE         = http://perl.overmeer.net/mailbox/
+
+# for HTML
+HTML_OUTPUT     = ../public_html/mailbox/html
+HTML_DOCROOT    = /mailbox/html
+HTML_PACKAGE	= ../public_html/mailbox/htmlpkg
+
+__POSTAMBLE
 
 print <<'DONE';
 

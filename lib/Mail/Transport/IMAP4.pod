@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Transport::IMAP4 - proxy to Mail::IMAPClient
-
 
 =head1 INHERITANCE
 
@@ -11,13 +9,11 @@ Mail::Transport::IMAP4 - proxy to Mail::IMAPClient
    is a Mail::Transport
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  my $imap = Mail::Transport::IMAP4->new(...);
  my $message = $imap->receive($id);
  $imap->send($message);
-
 
 =head1 DESCRIPTION
 
@@ -35,10 +31,7 @@ interface and the common L<Mail::Box|Mail::Box> folder types.  Multiple
 L<Mail::Box::IMAP4|Mail::Box::IMAP4> folders can share one L<Mail::Transport::IMAP4|Mail::Transport::IMAP4>
 connection.
 
-
-
 =head1 METHODS
-
 
 $obj-E<gt>B<url>
 
@@ -49,7 +42,6 @@ Represent this imap4 connection as URL.
 =back
 
 =head2 Constructors
-
 
 Mail::Transport::IMAP4-E<gt>B<new>(OPTIONS)
 
@@ -140,7 +132,6 @@ defined by L<Mail::IMAPClient|Mail::IMAPClient>.
 
 =head2 Receiving mail
 
-
 $obj-E<gt>B<receive>([UNIQUE-MESSAGE-ID])
 
 =over 4
@@ -150,7 +141,6 @@ See L<Mail::Transport::Receive/"Receiving mail">
 =back
 
 =head2 Server connection
-
 
 $obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
 
@@ -177,7 +167,6 @@ See L<Mail::Transport/"Server connection">
 =back
 
 =head2 Attributes
-
 
 $obj-E<gt>B<authentication>(['AUTO'|TYPE|LIST-OF-TYPES])
 
@@ -226,7 +215,6 @@ server's name.
 =back
 
 =head2 Exchanging Information
-
 
 =head2 Protocol [internals]
 
@@ -321,7 +309,6 @@ Unknown flags in LIST are stripped from their backslash and lower-cased.
 For instance, '\SomeWeirdFlag' will become `someweirdflag => 1'.
 
 I<Example:> translating IMAP4 flags into MailBox flags
-
 
  my @flags  = ('\Seen', '\Flagged');
  my $labels = Mail::Transport::IMAP4->flags2labels(SET => @flags);
@@ -431,7 +418,6 @@ the IMAP server.  These values may be cached in a different way.
 
 =head2 Error handling
 
-
 $obj-E<gt>B<AUTOLOAD>
 
 =over 4
@@ -536,7 +522,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -554,25 +539,17 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
-
-
-
 =head1 DIAGNOSTICS
 
 I<Error:> Cannot connect to $host:$port for IMAP4: $!
 
-
 I<Error:> IMAP cannot connect to $host: $@
-
 
 I<Notice:> IMAP4 authenication $mechanism to $host:$port successful
 
-
 I<Error:> IMAP4 requires a username and password
 
-
 I<Error:> IMAP4 username $username requires a password
-
 
 I<Error:> Package $package does not implement $method.
 
@@ -582,23 +559,16 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

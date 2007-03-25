@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Message::TransferEnc::SevenBit - encode/decode 7bit message bodies
-
 
 =head1 INHERITANCE
 
@@ -10,13 +8,11 @@ Mail::Message::TransferEnc::SevenBit - encode/decode 7bit message bodies
    is a Mail::Message::TransferEnc
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  my Mail::Message $msg = ...;
  my $decoded = $msg->decoded;
  my $encoded = $msg->encode(transfer => '7bit');
-
 
 =head1 DESCRIPTION
 
@@ -35,13 +31,9 @@ RFC-2045 Section 2.7 defines legal `7bit' data:
 As you can safely conclude: decoding of these bodies is no work
 at all.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Message::TransferEnc::SevenBit-E<gt>B<new>(OPTIONS)
 
@@ -52,7 +44,6 @@ See L<Mail::Reporter/"Constructors">
 =back
 
 =head2 The Encoder
-
 
 Mail::Message::TransferEnc::SevenBit-E<gt>B<addTransferEncoder>(TYPE, CLASS)
 
@@ -80,7 +71,6 @@ See L<Mail::Message::TransferEnc/"The Encoder">
 
 =head2 Encoding
 
-
 $obj-E<gt>B<check>(BODY, OPTIONS)
 
 =over 4
@@ -106,7 +96,6 @@ See L<Mail::Message::TransferEnc/"Encoding">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -212,7 +201,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -228,9 +216,6 @@ $obj-E<gt>B<inGlobalDestruction>
 See L<Mail::Reporter/"Cleanup">
 
 =back
-
-
-
 
 =head1 DIAGNOSTICS
 
@@ -251,23 +236,16 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 

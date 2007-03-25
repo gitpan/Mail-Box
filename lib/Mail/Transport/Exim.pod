@@ -1,8 +1,6 @@
-
 =head1 NAME
 
 Mail::Transport::Exim - transmit messages using external Exim program
-
 
 =head1 INHERITANCE
 
@@ -11,12 +9,10 @@ Mail::Transport::Exim - transmit messages using external Exim program
    is a Mail::Transport
    is a Mail::Reporter
 
-
 =head1 SYNOPSIS
 
  my $sender = Mail::Transport::Exim->new(...);
  $sender->send($message);
-
 
 =head1 DESCRIPTION
 
@@ -24,13 +20,9 @@ Implements mail transport using the external C<'Exim'> program.
 When instantiated, the mailer will look for the binary in specific system
 directories, and the first version found is taken.
 
-
-
 =head1 METHODS
 
-
 =head2 Constructors
-
 
 Mail::Transport::Exim-E<gt>B<new>(OPTIONS)
 
@@ -81,7 +73,6 @@ specify the path, using L<new(proxy)|Mail::Transport/"METHODS">.
 
 =head2 Sending mail
 
-
 $obj-E<gt>B<destinations>(MESSAGE, [ADDRESS|ARRAY-OF-ADDRESSES])
 
 =over 4
@@ -114,7 +105,6 @@ $obj-E<gt>B<trySend>(MESSAGE, OPTIONS)
 
 =head2 Server connection
 
-
 $obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
 
 =over 4
@@ -140,7 +130,6 @@ See L<Mail::Transport/"Server connection">
 =back
 
 =head2 Error handling
-
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -246,7 +235,6 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-
 $obj-E<gt>B<DESTROY>
 
 =over 4
@@ -262,9 +250,6 @@ $obj-E<gt>B<inGlobalDestruction>
 See L<Mail::Reporter/"Cleanup">
 
 =back
-
-
-
 
 =head1 DIAGNOSTICS
 
@@ -301,23 +286,16 @@ As alternative, you may also specify the C<to> option to some of the senders
 (for instance L<Mail::Transport::SMTP::send(to)|Mail::Transport::Send/"Sending mail"> to overrule any information
 found in the message itself about the destination.
 
+=head1 SEE ALSO
 
+This module is part of Mail-Box distribution version 2.070,
+built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
+=head1 LICENSE
 
+Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
 
-
-=head1 REFERENCES
-
-See the MailBox website at L<http://perl.overmeer.net/mailbox/> for more details.
-
-=head1 COPYRIGHTS
-
-Distribution version 2.069.
-Written by Mark Overmeer (mark@overmeer.net).  See the ChangeLog for
-other contributors.
-
-Copyright (c) 2001-2006 by the author(s). All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
+See F<http://www.perl.com/perl/misc/Artistic.html>
 
