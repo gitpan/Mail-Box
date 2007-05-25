@@ -157,7 +157,7 @@ we want delay-loading.
  trace              Mail::Reporter   'WARNINGS'
  trusted                             <depends on folder location>
 
-. access MODE
+. access => MODE
 
 =over 4
 
@@ -185,7 +185,7 @@ folder.  The permissions and owner of the file may get changed by this.
 
 =back
 
-. body_delayed_type CLASS
+. body_delayed_type => CLASS
 
 =over 4
 
@@ -194,7 +194,7 @@ is needed, but not before.
 
 =back
 
-. body_type CLASS|CODE
+. body_type => CLASS|CODE
 
 =over 4
 
@@ -229,7 +229,7 @@ manual pages.
 
 =back
 
-. coerce_options ARRAY
+. coerce_options => ARRAY
 
 =over 4
 
@@ -241,7 +241,7 @@ does not need to be kept here.
 
 =back
 
-. create BOOLEAN
+. create => BOOLEAN
 
 =over 4
 
@@ -253,7 +253,7 @@ explicitly specify L<Mail::Box::Manager::open(type)|Mail::Box::Manager/"Manage o
 
 =back
 
-. extract INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
+. extract => INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
 
 =over 4
 
@@ -316,7 +316,7 @@ sure you always need all the messages in the folder.
 
 =back
 
-. field_type CLASS
+. field_type => CLASS
 
 =over 4
 
@@ -325,7 +325,7 @@ L<Mail::Message::Field|Mail::Message::Field>.
 
 =back
 
-. fix_headers BOOLEAN
+. fix_headers => BOOLEAN
 
 =over 4
 
@@ -336,7 +336,7 @@ See L<Mail::Box::Parser::Perl::new(fix_header_errors)|Mail::Box::Parser::Perl/"M
 
 =back
 
-. folder FOLDERNAME
+. folder => FOLDERNAME
 
 =over 4
 
@@ -352,7 +352,7 @@ taken as relative or absolute path.
 
 =back
 
-. folderdir DIRECTORY
+. folderdir => DIRECTORY
 
 =over 4
 
@@ -364,7 +364,7 @@ folder-file is C<'/tmp/abc'>.  Each folder type has already some default set.
 
 =back
 
-. head_delayed_type CLASS
+. head_delayed_type => CLASS
 
 =over 4
 
@@ -373,7 +373,7 @@ is needed, but not before.
 
 =back
 
-. head_type CLASS
+. head_type => CLASS
 
 =over 4
 
@@ -382,7 +382,7 @@ L<Mail::Message::Head::Complete|Mail::Message::Head::Complete>.
 
 =back
 
-. keep_dups BOOLEAN
+. keep_dups => BOOLEAN
 
 =over 4
 
@@ -394,7 +394,7 @@ because it is considered useless to store the same message twice.
 
 =back
 
-. lock_file FILENAME
+. lock_file => FILENAME
 
 =over 4
 
@@ -403,7 +403,7 @@ locking is to be used.
 
 =back
 
-. lock_timeout SECONDS
+. lock_timeout => SECONDS
 
 =over 4
 
@@ -413,7 +413,7 @@ this folder.
 
 =back
 
-. lock_type CLASS|STRING|ARRAY
+. lock_type => CLASS|STRING|ARRAY
 
 =over 4
 
@@ -424,7 +424,7 @@ is specified, then a Multi locker is built which uses the specified list.
 
 =back
 
-. lock_wait SECONDS
+. lock_wait => SECONDS
 
 =over 4
 
@@ -432,7 +432,7 @@ SECONDS to wait before failing on opening this folder.
 
 =back
 
-. locker OBJECT
+. locker => OBJECT
 
 =over 4
 
@@ -441,9 +441,9 @@ replacing the default lock behavior.
 
 =back
 
-. log LEVEL
+. log => LEVEL
 
-. manager MANAGER
+. manager => MANAGER
 
 =over 4
 
@@ -452,7 +452,7 @@ L<Mail::Box::Manager|Mail::Box::Manager> instance.
 
 =back
 
-. message_type CLASS
+. message_type => CLASS
 
 =over 4
 
@@ -462,7 +462,7 @@ The class you offer must be an extension of L<Mail::Box::Message|Mail::Box::Mess
 
 =back
 
-. multipart_type CLASS
+. multipart_type => CLASS
 
 =over 4
 
@@ -471,7 +471,7 @@ bodies.
 
 =back
 
-. remove_when_empty BOOLEAN
+. remove_when_empty => BOOLEAN
 
 =over 4
 
@@ -481,7 +481,7 @@ messages nor sub-folders.
 
 =back
 
-. save_on_exit BOOLEAN
+. save_on_exit => BOOLEAN
 
 =over 4
 
@@ -491,9 +491,9 @@ implicit ways, including on the moment the program is terminated.
 
 =back
 
-. trace LEVEL
+. trace => LEVEL
 
-. trusted BOOLEAN
+. trusted => BOOLEAN
 
 =over 4
 
@@ -527,7 +527,7 @@ Messages with id's which already exist in this folder are not added.
  Option--Default
  share   <not used>
 
-. share BOOLEAN
+. share => BOOLEAN
 
 =over 4
 
@@ -583,7 +583,7 @@ used to open the folder, if needed.
  messages  undef
  share     <false>
 
-. folder FOLDERNAME
+. folder => FOLDERNAME
 
 =over 4
 
@@ -593,9 +593,9 @@ resource consuming.
 
 =back
 
-. message MESSAGE
+. message => MESSAGE
 
-. messages ARRAY-OF-MESSAGES
+. messages => ARRAY-OF-MESSAGES
 
 =over 4
 
@@ -605,7 +605,7 @@ message type to fit in the folder, and then will be added to it.
 
 =back
 
-. share BOOLEAN
+. share => BOOLEAN
 
 =over 4
 
@@ -648,7 +648,7 @@ are software problems.
  save_deleted  false
  write         MODIFIED
 
-. force BOOLEAN
+. force => BOOLEAN
 
 =over 4
 
@@ -659,7 +659,7 @@ in which case even C<force> will not help.
 
 =back
 
-. save_deleted BOOLEAN
+. save_deleted => BOOLEAN
 
 =over 4
 
@@ -669,7 +669,7 @@ the folder may remove the messages for real.  See L<write(save_deleted)|Mail::Bo
 
 =back
 
-. write 'ALWAYS'|'NEVER'|'MODIFIED'
+. write => 'ALWAYS'|'NEVER'|'MODIFIED'
 
 =over 4
 
@@ -706,7 +706,7 @@ a different type.
  share          <not used>
  subfolders     <folder type dependent>
 
-. delete_copied BOOLEAN
+. delete_copied => BOOLEAN
 
 =over 4
 
@@ -716,7 +716,7 @@ folder is closed.
 
 =back
 
-. select 'ACTIVE'|'DELETED'|'ALL'|LABEL|!LABEL|FILTER
+. select => 'ACTIVE'|'DELETED'|'ALL'|LABEL|!LABEL|FILTER
 
 =over 4
 
@@ -725,7 +725,7 @@ about how this works.
 
 =back
 
-. share BOOLEAN
+. share => BOOLEAN
 
 =over 4
 
@@ -734,7 +734,7 @@ folder types do support it by creating a hardlink (on UNIX/Linux).
 
 =back
 
-. subfolders BOOLEAN|'FLATTEN'|'RECURSE'
+. subfolders => BOOLEAN|'FLATTEN'|'RECURSE'
 
 =over 4
 
@@ -774,7 +774,7 @@ data if the system crashes or if there are software problems.
  Option   --Default
  recursive  1
 
-. recursive BOOLEAN
+. recursive => BOOLEAN
 
 I<Example:> removing an open folder
 
@@ -1158,7 +1158,7 @@ For MBOX folders, sub-folders are simulated.
  folderdir   <from folder>
  skip_empty  <false>
 
-. check BOOLEAN
+. check => BOOLEAN
 
 =over 4
 
@@ -1168,7 +1168,7 @@ with a folder type dependent penalty (in some cases very expensive).
 
 =back
 
-. folder FOLDERNAME
+. folder => FOLDERNAME
 
 =over 4
 
@@ -1176,9 +1176,9 @@ The folder whose sub-folders should be listed.
 
 =back
 
-. folderdir DIRECTORY
+. folderdir => DIRECTORY
 
-. skip_empty BOOL
+. skip_empty => BOOL
 
 =over 4
 
@@ -1283,7 +1283,7 @@ create flag, or L<Mail::Box::new(create)|Mail::Box/"Constructors">.
  Option   --Default
  folderdir  undef
 
-. folderdir DIRECTORY
+. folderdir => DIRECTORY
 
 =over 4
 
@@ -1321,7 +1321,7 @@ each folder class will at least support the C<folderdir> option:
  Option   --Default
  folderdir  undef
 
-. folderdir DIRECTORY
+. folderdir => DIRECTORY
 
 =over 4
 
@@ -1465,7 +1465,7 @@ then move all the messages, and then write or L<close()|Mail::Box/"The folder"> 
  force         <false>
  save_deleted  <false>
 
-. force BOOLEAN
+. force => BOOLEAN
 
 =over 4
 
@@ -1474,7 +1474,7 @@ Override write-protection with L<new(access)|Mail::Box/"Constructors"> while ope
 
 =back
 
-. save_deleted BOOLEAN
+. save_deleted => BOOLEAN
 
 =over 4
 
@@ -1498,7 +1498,7 @@ are added by C<write> itself.
  Option  --Default
  messages  <required>
 
-. messages ARRAY
+. messages => ARRAY
 
 =over 4
 
@@ -1874,12 +1874,12 @@ were changes made.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

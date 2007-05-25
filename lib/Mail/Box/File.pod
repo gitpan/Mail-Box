@@ -85,11 +85,11 @@ Mail::Box::File-E<gt>B<new>(OPTIONS)
  trusted            Mail::Box        <depends on folder location>
  write_policy                        undef
 
-. access MODE
+. access => MODE
 
-. body_delayed_type CLASS
+. body_delayed_type => CLASS
 
-. body_type CLASS|CODE
+. body_type => CLASS|CODE
 
 =over 4
 
@@ -106,27 +106,27 @@ in memory, is implemented like this:
 
 =back
 
-. coerce_options ARRAY
+. coerce_options => ARRAY
 
-. create BOOLEAN
+. create => BOOLEAN
 
-. extract INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
+. extract => INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
 
-. field_type CLASS
+. field_type => CLASS
 
-. fix_headers BOOLEAN
+. fix_headers => BOOLEAN
 
-. folder FOLDERNAME
+. folder => FOLDERNAME
 
-. folderdir DIRECTORY
+. folderdir => DIRECTORY
 
-. head_delayed_type CLASS
+. head_delayed_type => CLASS
 
-. head_type CLASS
+. head_type => CLASS
 
-. keep_dups BOOLEAN
+. keep_dups => BOOLEAN
 
-. lock_extension FILENAME|STRING
+. lock_extension => FILENAME|STRING
 
 =over 4
 
@@ -150,33 +150,33 @@ produced by default.
 
 =back
 
-. lock_file FILENAME
+. lock_file => FILENAME
 
-. lock_timeout SECONDS
+. lock_timeout => SECONDS
 
-. lock_type CLASS|STRING|ARRAY
+. lock_type => CLASS|STRING|ARRAY
 
-. lock_wait SECONDS
+. lock_wait => SECONDS
 
-. locker OBJECT
+. locker => OBJECT
 
-. log LEVEL
+. log => LEVEL
 
-. manager MANAGER
+. manager => MANAGER
 
-. message_type CLASS
+. message_type => CLASS
 
-. multipart_type CLASS
+. multipart_type => CLASS
 
-. remove_when_empty BOOLEAN
+. remove_when_empty => BOOLEAN
 
-. save_on_exit BOOLEAN
+. save_on_exit => BOOLEAN
 
-. trace LEVEL
+. trace => LEVEL
 
-. trusted BOOLEAN
+. trusted => BOOLEAN
 
-. write_policy 'REPLACE'|'INPLACE'|undef
+. write_policy => 'REPLACE'|'INPLACE'|undef
 
 =over 4
 
@@ -223,9 +223,9 @@ All OPTIONS of L<Mail::Box::Mbox::new()|Mail::Box::Mbox/"METHODS"> can be suppli
  messages   Mail::Box        undef
  share      Mail::Box        <false>
 
-. folder FOLDERNAME
+. folder => FOLDERNAME
 
-. lock_type ...
+. lock_type => ...
 
 =over 4
 
@@ -233,11 +233,11 @@ See L<Mail::Box::new(lock_type)|Mail::Box/"Constructors"> for possible values.
 
 =back
 
-. message MESSAGE
+. message => MESSAGE
 
-. messages ARRAY-OF-MESSAGES
+. messages => ARRAY-OF-MESSAGES
 
-. share BOOLEAN
+. share => BOOLEAN
 
 =back
 
@@ -509,7 +509,7 @@ Mail::Box::File-E<gt>B<create>(FOLDERNAME, OPTIONS)
  Option   --Defined in--Default
  folderdir  Mail::Box   undef
 
-. folderdir DIRECTORY
+. folderdir => DIRECTORY
 
 =back
 
@@ -648,9 +648,9 @@ $obj-E<gt>B<write>(OPTIONS)
  policy                         undef
  save_deleted  Mail::Box        <false>
 
-. force BOOLEAN
+. force => BOOLEAN
 
-. policy 'REPLACE'|'INPLACE'|undef
+. policy => 'REPLACE'|'INPLACE'|undef
 
 =over 4
 
@@ -700,7 +700,7 @@ possible as well.
 
 =back
 
-. save_deleted BOOLEAN
+. save_deleted => BOOLEAN
 
 =back
 
@@ -1002,12 +1002,12 @@ error messages to indicate the real problem.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

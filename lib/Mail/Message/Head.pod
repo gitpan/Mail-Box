@@ -117,7 +117,7 @@ be upgraded to a L<Mail::Message::Head::Complete|Mail::Message::Head::Complete> 
  modified                     <false>
  trace       Mail::Reporter   'WARNINGS'
 
-. field_type CLASS
+. field_type => CLASS
 
 =over 4
 
@@ -126,9 +126,9 @@ an extension of L<Mail::Message::Field|Mail::Message::Field>.
 
 =back
 
-. log LEVEL
+. log => LEVEL
 
-. message MESSAGE
+. message => MESSAGE
 
 =over 4
 
@@ -138,9 +138,9 @@ message() method later to set it.
 
 =back
 
-. modified BOOLEAN
+. modified => BOOLEAN
 
-. trace LEVEL
+. trace => LEVEL
 
 =back
 
@@ -577,12 +577,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

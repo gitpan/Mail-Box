@@ -65,15 +65,15 @@ Create a UNIX-grep like search filter.
  multiparts  Mail::Box::Search  <true>
  trace       Mail::Reporter   'WARNINGS'
 
-. binaries BOOLEAN
+. binaries => BOOLEAN
 
-. decode BOOLEAN
+. decode => BOOLEAN
 
-. delayed BOOLEAN
+. delayed => BOOLEAN
 
-. deleted BOOLEAN
+. deleted => BOOLEAN
 
-. deliver undef|CODE|'DELETE'|LABEL|'PRINT'|REF-ARRAY
+. deliver => undef|CODE|'DELETE'|LABEL|'PRINT'|REF-ARRAY
 
 =over 4
 
@@ -101,7 +101,7 @@ is matched, the whole message will be flagged for deletion.
 
 =back
 
-. field undef|STRING|REGEX|CODE
+. field => undef|STRING|REGEX|CODE
 
 =over 4
 
@@ -114,17 +114,17 @@ message is selected.
 
 =back
 
-. in 'HEAD'|'BODY'|'MESSAGE'
+. in => 'HEAD'|'BODY'|'MESSAGE'
 
-. label STRING
+. label => STRING
 
-. limit NUMBER
+. limit => NUMBER
 
-. log LEVEL
+. log => LEVEL
 
-. logical 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT'
+. logical => 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT'
 
-. match STRING|REGEX|CODE
+. match => STRING|REGEX|CODE
 
 =over 4
 
@@ -147,9 +147,9 @@ both formats.
 
 =back
 
-. multiparts BOOLEAN
+. multiparts => BOOLEAN
 
-. trace LEVEL
+. trace => LEVEL
 
 =back
 
@@ -343,12 +343,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

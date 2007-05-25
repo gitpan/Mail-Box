@@ -59,7 +59,7 @@ so each message has its own parser object.
  mode                       'r'
  trace     Mail::Reporter   'WARNINGS'
 
-. file FILE-HANDLE
+. file => FILE-HANDLE
 
 =over 4
 
@@ -68,7 +68,7 @@ case this option is specified, the C<filename> is informational only.
 
 =back
 
-. filename FILENAME
+. filename => FILENAME
 
 =over 4
 
@@ -76,9 +76,9 @@ The name of the file to be read.
 
 =back
 
-. log LEVEL
+. log => LEVEL
 
-. mode OPENMODE
+. mode => OPENMODE
 
 =over 4
 
@@ -88,7 +88,7 @@ when no C<file> is specified.
 
 =back
 
-. trace LEVEL
+. trace => LEVEL
 
 =back
 
@@ -129,7 +129,7 @@ Start the parser by opening a file.
  Option--Default
  file    undef
 
-. file FILEHANDLE|undef
+. file => FILEHANDLE|undef
 
 =over 4
 
@@ -319,9 +319,9 @@ Open the file to be parsed.  ARGS is a ref-hash of options.
  filename  <required>
  mode      <required>
 
-. filename FILENAME
+. filename => FILENAME
 
-. mode STRING
+. mode => STRING
 
 =back
 
@@ -485,12 +485,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

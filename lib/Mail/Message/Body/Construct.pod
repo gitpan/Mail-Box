@@ -115,7 +115,7 @@ and C<undef> for the signature body.
  pattern      qr/^--\s?$/
  result_type  <same as current>
 
-. max_lines INTEGER|undef
+. max_lines => INTEGER|undef
 
 =over 4
 
@@ -124,7 +124,7 @@ Specify C<undef> to remove the limit.
 
 =back
 
-. pattern REGEX|STRING|CODE
+. pattern => REGEX|STRING|CODE
 
 =over 4
 
@@ -138,7 +138,7 @@ TRUE when the separator is found.
 
 =back
 
-. result_type CLASS
+. result_type => CLASS
 
 =over 4
 
@@ -161,12 +161,12 @@ I<Example:>
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

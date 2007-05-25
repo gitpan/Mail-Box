@@ -44,7 +44,7 @@ Either a C<message> or a C<messageId> must be supplied.
  messageId                    undef
  trace       Mail::Reporter   'WARNINGS'
 
-. dummy_type CLASS
+. dummy_type => CLASS
 
 =over 4
 
@@ -53,9 +53,9 @@ placeholders in a L<Mail::Box::Thread::Manager|Mail::Box::Thread::Manager> data 
 
 =back
 
-. log LEVEL
+. log => LEVEL
 
-. message MESSAGE
+. message => MESSAGE
 
 =over 4
 
@@ -64,7 +64,7 @@ must be a Mail::Box::Message.
 
 =back
 
-. messageId MESSAGE-ID
+. messageId => MESSAGE-ID
 
 =over 4
 
@@ -73,7 +73,7 @@ specify it when you don't have the message yet.
 
 =back
 
-. trace LEVEL
+. trace => LEVEL
 
 =back
 
@@ -507,12 +507,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

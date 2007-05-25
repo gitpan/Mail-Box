@@ -51,7 +51,7 @@ a Mail::Address object, or as array of Mail::Address objects.
  signature        undef
  strip_signature  qr/^--\s/
 
-. Bcc ADDRESSES
+. Bcc => ADDRESSES
 
 =over 4
 
@@ -60,7 +60,7 @@ other message receivers.
 
 =back
 
-. Cc ADDRESSES
+. Cc => ADDRESSES
 
 =over 4
 
@@ -69,7 +69,7 @@ the source message.
 
 =back
 
-. From ADDRESSES
+. From => ADDRESSES
 
 =over 4
 
@@ -78,7 +78,7 @@ source message.
 
 =back
 
-. Message-ID STRING
+. Message-ID => STRING
 
 =over 4
 
@@ -88,7 +88,7 @@ added.
 
 =back
 
-. Subject STRING|CODE
+. Subject => STRING|CODE
 
 =over 4
 
@@ -99,7 +99,7 @@ L<Mail::Message::replySubject()|Mail::Message::Construct::Reply/"Constructing a 
 
 =back
 
-. To ADDRESSES
+. To => ADDRESSES
 
 =over 4
 
@@ -110,7 +110,7 @@ method: no reply message produced.
 
 =back
 
-. body BODY
+. body => BODY
 
 =over 4
 
@@ -122,7 +122,7 @@ in this case.
 
 =back
 
-. group_reply BOOLEAN
+. group_reply => BOOLEAN
 
 =over 4
 
@@ -132,7 +132,7 @@ copy?
 
 =back
 
-. include 'NO'|'INLINE'|'ATTACH'
+. include => 'NO'|'INLINE'|'ATTACH'
 
 =over 4
 
@@ -145,7 +145,7 @@ enclosed as attachment.
 
 =back
 
-. max_signature INTEGER
+. max_signature => INTEGER
 
 =over 4
 
@@ -154,7 +154,7 @@ effective for single-part messages.
 
 =back
 
-. message_type CLASS
+. message_type => CLASS
 
 =over 4
 
@@ -164,7 +164,7 @@ the correct folder message type when it is added to that folder.
 
 =back
 
-. postlude BODY|LINES
+. postlude => BODY|LINES
 
 =over 4
 
@@ -175,7 +175,7 @@ reply is INLINEd.
 
 =back
 
-. prelude BODY|LINES
+. prelude => BODY|LINES
 
 =over 4
 
@@ -185,7 +185,7 @@ is taken.  When C<undef> is specified, no prelude will be added.
 
 =back
 
-. quote CODE|STRING
+. quote => CODE|STRING
 
 =over 4
 
@@ -198,7 +198,7 @@ disable quoting.  This option is processed after the body has been decoded.
 
 =back
 
-. signature BODY|MESSAGE
+. signature => BODY|MESSAGE
 
 =over 4
 
@@ -209,7 +209,7 @@ before it, and added behind the epilogue.
 
 =back
 
-. strip_signature REGEXP|STRING|CODE
+. strip_signature => REGEXP|STRING|CODE
 
 =over 4
 
@@ -285,12 +285,12 @@ choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

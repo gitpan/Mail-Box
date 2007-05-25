@@ -54,7 +54,7 @@ Mail::Box::Dbx::Message-E<gt>B<new>(OPTIONS)
  trace         Mail::Reporter   'WARNINGS'
  trusted       Mail::Message    <false>
 
-. account_name STRING
+. account_name => STRING
 
 =over 4
 
@@ -63,7 +63,7 @@ message.
 
 =back
 
-. account_nr INTEGER
+. account_nr => INTEGER
 
 =over 4
 
@@ -72,33 +72,33 @@ the message.
 
 =back
 
-. body OBJECT
+. body => OBJECT
 
-. body_type CODE|CLASS
+. body_type => CODE|CLASS
 
-. dbx_record C<Mail::Transport::Dbx::Email>
+. dbx_record => C<Mail::Transport::Dbx::Email>
 
-. deleted BOOLEAN
+. deleted => BOOLEAN
 
-. field_type CLASS
+. field_type => CLASS
 
-. folder FOLDER
+. folder => FOLDER
 
-. from_line STRING
+. from_line => STRING
 
-. head OBJECT
+. head => OBJECT
 
-. head_type CLASS
+. head_type => CLASS
 
-. labels ARRAY|HASH
+. labels => ARRAY|HASH
 
-. log LEVEL
+. log => LEVEL
 
-. messageId STRING
+. messageId => STRING
 
-. modified BOOLEAN
+. modified => BOOLEAN
 
-. seen BOOLEAN
+. seen => BOOLEAN
 
 =over 4
 
@@ -108,11 +108,11 @@ I<seen>.  Folders store this flag in different ways.
 
 =back
 
-. size INTEGER
+. size => INTEGER
 
-. trace LEVEL
+. trace => LEVEL
 
-. trusted BOOLEAN
+. trusted => BOOLEAN
 
 =back
 
@@ -986,12 +986,12 @@ I<Error:> Unable to read delayed body.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

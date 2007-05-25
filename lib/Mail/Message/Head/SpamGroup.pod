@@ -51,7 +51,7 @@ are case-sensitive.
  isspam   <required>
  version  undef
 
-. fields REGEXP
+. fields => REGEXP
 
 =over 4
 
@@ -60,7 +60,7 @@ added by the spam fighter software.
 
 =back
 
-. isspam CODE
+. isspam => CODE
 
 =over 4
 
@@ -70,7 +70,7 @@ the spamgroup object (under construction) and the header which is inspected.
 
 =back
 
-. version CODE
+. version => CODE
 
 =over 4
 
@@ -99,7 +99,7 @@ specified MESSAGE or message HEAD.
  Option--Default
  types   undef
 
-. types ARRAY-OF-NAMES
+. types => ARRAY-OF-NAMES
 
 =over 4
 
@@ -181,17 +181,17 @@ by spam fighting software.
  type      Mail::Message::Head::FieldGroup  undef
  version   Mail::Message::Head::FieldGroup  undef
 
-. head HEAD
+. head => HEAD
 
-. log LEVEL
+. log => LEVEL
 
-. software STRING
+. software => STRING
 
-. trace LEVEL
+. trace => LEVEL
 
-. type STRING
+. type => STRING
 
-. version STRING
+. version => STRING
 
 =back
 
@@ -501,12 +501,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

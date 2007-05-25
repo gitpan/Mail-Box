@@ -58,7 +58,7 @@ which may be partially overlapping with other objects of the same type.
  trace        Mail::Reporter   'WARNINGS'
  window                        10
 
-. dummy_type CLASS
+. dummy_type => CLASS
 
 =over 4
 
@@ -68,7 +68,7 @@ not in the folder.
 
 =back
 
-. folder FOLDER | REF-ARRAY-FOLDERS
+. folder => FOLDER | REF-ARRAY-FOLDERS
 
 =over 4
 
@@ -79,7 +79,7 @@ your threads.
 
 =back
 
-. folders FOLDER | REF-ARRAY-FOLDERS
+. folders => FOLDER | REF-ARRAY-FOLDERS
 
 =over 4
 
@@ -87,9 +87,9 @@ Equivalent to the C<folder> option.
 
 =back
 
-. log LEVEL
+. log => LEVEL
 
-. thread_body BOOLEAN
+. thread_body => BOOLEAN
 
 =over 4
 
@@ -100,7 +100,7 @@ will cause many messages to be parsed. NOT IMPLEMENTED YET.
 
 =back
 
-. thread_type CLASS
+. thread_type => CLASS
 
 =over 4
 
@@ -108,7 +108,7 @@ Type of the thread nodes.
 
 =back
 
-. timespan TIME | 'EVER'
+. timespan => TIME | 'EVER'
 
 =over 4
 
@@ -122,9 +122,9 @@ will only be limited by the window-size.
 
 =back
 
-. trace LEVEL
+. trace => LEVEL
 
-. window INTEGER|'ALL'
+. window => INTEGER|'ALL'
 
 =over 4
 
@@ -544,12 +544,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

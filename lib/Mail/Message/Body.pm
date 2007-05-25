@@ -1,13 +1,13 @@
 # Copyrights 2001-2007 by Mark Overmeer.
-# For other contributors see ChangeLog.
+#  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 0.99.
+# Pod stripped from pm file by OODoc 1.00.
 use strict;
 use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.070';
+$VERSION = '2.071';
 use base 'Mail::Reporter';
 
 use Mail::Message::Field;
@@ -15,7 +15,7 @@ use Mail::Message::Body::Lines;
 use Mail::Message::Body::File;
 
 use Carp;
-use Scalar::Util     'weaken';
+use Scalar::Util     qw/weaken refaddr/;
 use File::Basename   'basename';
 
 use MIME::Types;
@@ -26,8 +26,8 @@ my $mime_plain = $mime_types->type('text/plain');
 use overload bool  => sub {1}   # $body->print if $body
            , '""'  => 'string_unless_carp'
            , '@{}' => 'lines'
-           , '=='  => sub {$_[0]->{MMB_seqnr}==$_[1]->{MMB_seqnr}}
-           , '!='  => sub {$_[0]->{MMB_seqnr}!=$_[1]->{MMB_seqnr}};
+           , '=='  => sub {ref $_[1] && refaddr $_[0] == refaddr $_[1]}
+           , '!='  => sub {ref $_[1] && refaddr $_[0] != refaddr $_[1]};
 
 #------------------------------------------
 

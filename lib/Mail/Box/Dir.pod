@@ -106,17 +106,17 @@ Mail::Box::Dir-E<gt>B<new>(OPTIONS)
  trace              Mail::Reporter   'WARNINGS'
  trusted            Mail::Box        <depends on folder location>
 
-. access MODE
+. access => MODE
 
-. body_delayed_type CLASS
+. body_delayed_type => CLASS
 
-. body_type CLASS|CODE
+. body_type => CLASS|CODE
 
-. coerce_options ARRAY
+. coerce_options => ARRAY
 
-. create BOOLEAN
+. create => BOOLEAN
 
-. directory DIRECTORY
+. directory => DIRECTORY
 
 =over 4
 
@@ -125,47 +125,47 @@ name.
 
 =back
 
-. extract INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
+. extract => INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
 
-. field_type CLASS
+. field_type => CLASS
 
-. fix_headers BOOLEAN
+. fix_headers => BOOLEAN
 
-. folder FOLDERNAME
+. folder => FOLDERNAME
 
-. folderdir DIRECTORY
+. folderdir => DIRECTORY
 
-. head_delayed_type CLASS
+. head_delayed_type => CLASS
 
-. head_type CLASS
+. head_type => CLASS
 
-. keep_dups BOOLEAN
+. keep_dups => BOOLEAN
 
-. lock_file FILENAME
+. lock_file => FILENAME
 
-. lock_timeout SECONDS
+. lock_timeout => SECONDS
 
-. lock_type CLASS|STRING|ARRAY
+. lock_type => CLASS|STRING|ARRAY
 
-. lock_wait SECONDS
+. lock_wait => SECONDS
 
-. locker OBJECT
+. locker => OBJECT
 
-. log LEVEL
+. log => LEVEL
 
-. manager MANAGER
+. manager => MANAGER
 
-. message_type CLASS
+. message_type => CLASS
 
-. multipart_type CLASS
+. multipart_type => CLASS
 
-. remove_when_empty BOOLEAN
+. remove_when_empty => BOOLEAN
 
-. save_on_exit BOOLEAN
+. save_on_exit => BOOLEAN
 
-. trace LEVEL
+. trace => LEVEL
 
-. trusted BOOLEAN
+. trusted => BOOLEAN
 
 =back
 
@@ -794,12 +794,12 @@ were changes made.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -34,7 +34,7 @@ mean that the folders will not be opened to answer these questions.
  inbox      <from user>
  user       <undef>
 
-. delimeter STRING|CODE
+. delimeter => STRING|CODE
 
 =over 4
 
@@ -45,7 +45,7 @@ See L<delimiter()|Mail::Server::IMAP4::List/"Attributes"> for an example.
 
 =back
 
-. folders OBJECT
+. folders => OBJECT
 
 =over 4
 
@@ -54,7 +54,7 @@ user. Some L<Mail::Box::Identity|Mail::Box::Identity> OBJECT is needed.
 
 =back
 
-. inbox BOOLEAN
+. inbox => BOOLEAN
 
 =over 4
 
@@ -64,7 +64,7 @@ C<$user->inbox> is defined.
 
 =back
 
-. user OBJECT
+. user => OBJECT
 
 =over 4
 
@@ -166,12 +166,12 @@ sections 6.3.8 (LIST question) and 7.2.2 (LIST answer)
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

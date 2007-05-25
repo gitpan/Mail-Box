@@ -93,11 +93,11 @@ capitization of what is specified.
  type          Mail::Message::Head::FieldGroup  undef
  version       Mail::Message::Head::FieldGroup  undef
 
-. Bcc STRING|OBJECT|OBJECTS
+. Bcc => STRING|OBJECT|OBJECTS
 
-. Cc STRING|OBJECT|OBJECTS
+. Cc => STRING|OBJECT|OBJECTS
 
-. Date STRING
+. Date => STRING
 
 =over 4
 
@@ -107,11 +107,11 @@ actually transported.
 
 =back
 
-. Delivered-To STRING|FIELD
+. Delivered-To => STRING|FIELD
 
-. From STRING|OBJECT|OBJECTS
+. From => STRING|OBJECT|OBJECTS
 
-. Message-ID STRING|FIELD
+. Message-ID => STRING|FIELD
 
 =over 4
 
@@ -120,7 +120,7 @@ must contain a message id.
 
 =back
 
-. Received STRING
+. Received => STRING
 
 =over 4
 
@@ -129,9 +129,9 @@ lines. If it is not defined, one is created using L<createReceived()|Mail::Messa
 
 =back
 
-. Return-Path STRING|FIELD
+. Return-Path => STRING|FIELD
 
-. Sender STRING|OBJECT
+. Sender => STRING|OBJECT
 
 =over 4
 
@@ -140,9 +140,9 @@ it selects one of these addresses as the main originator of the message.
 
 =back
 
-. To STRING|OBJECT|OBJECTS
+. To => STRING|OBJECT|OBJECTS
 
-. head OBJECT
+. head => OBJECT
 
 =over 4
 
@@ -151,9 +151,9 @@ L<Mail::Message::Head::Partial|Mail::Message::Head::Partial> is created for you.
 
 =back
 
-. log LEVEL
+. log => LEVEL
 
-. message_head HEAD
+. message_head => HEAD
 
 =over 4
 
@@ -162,13 +162,13 @@ C<head> used in this class is only a container for a subset of fields.
 
 =back
 
-. software STRING
+. software => STRING
 
-. trace LEVEL
+. trace => LEVEL
 
-. type STRING
+. type => STRING
 
-. version STRING
+. version => STRING
 
 =back
 
@@ -617,12 +617,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

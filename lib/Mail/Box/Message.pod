@@ -65,9 +65,9 @@ Mail::Box::Message-E<gt>B<new>(OPTIONS)
  trace       Mail::Reporter   'WARNINGS'
  trusted     Mail::Message    <false>
 
-. body OBJECT
+. body => OBJECT
 
-. body_type CODE|CLASS
+. body_type => CODE|CLASS
 
 =over 4
 
@@ -77,11 +77,11 @@ delaying the load must specify the algorithm to determine that type.
 
 =back
 
-. deleted BOOLEAN
+. deleted => BOOLEAN
 
-. field_type CLASS
+. field_type => CLASS
 
-. folder FOLDER
+. folder => FOLDER
 
 =over 4
 
@@ -90,19 +90,19 @@ an instance of (a sub-class of) a L<Mail::Box|Mail::Box>.
 
 =back
 
-. head OBJECT
+. head => OBJECT
 
-. head_type CLASS
+. head_type => CLASS
 
-. labels ARRAY|HASH
+. labels => ARRAY|HASH
 
-. log LEVEL
+. log => LEVEL
 
-. messageId STRING
+. messageId => STRING
 
-. modified BOOLEAN
+. modified => BOOLEAN
 
-. size INTEGER
+. size => INTEGER
 
 =over 4
 
@@ -111,9 +111,9 @@ message separators which may be used by the folder type.
 
 =back
 
-. trace LEVEL
+. trace => LEVEL
 
-. trusted BOOLEAN
+. trusted => BOOLEAN
 
 =back
 
@@ -273,7 +273,7 @@ is returned.
  shallow_head  <false>
  share         <false>
 
-. shallow BOOLEAN
+. shallow => BOOLEAN
 
 =over 4
 
@@ -281,7 +281,7 @@ Used for L<clone(shallow)|Mail::Message/"Constructors">.
 
 =back
 
-. shallow_body BOOLEAN
+. shallow_body => BOOLEAN
 
 =over 4
 
@@ -289,7 +289,7 @@ Used for L<clone(shallow_body)|Mail::Message/"Constructors">.
 
 =back
 
-. shallow_head BOOLEAN
+. shallow_head => BOOLEAN
 
 =over 4
 
@@ -297,7 +297,7 @@ Used for L<clone(shallow_head)|Mail::Message/"Constructors">.
 
 =back
 
-. share BOOLEAN
+. share => BOOLEAN
 
 =over 4
 
@@ -363,7 +363,7 @@ is returned.  All OPTIONS are passed to L<copyTo()|Mail::Box::Message/"The messa
  shallow_body  <undef>
  share         <true unless shallow_body exists>
 
-. shallow_body BOOLEAN
+. shallow_body => BOOLEAN
 
 =over 4
 
@@ -373,7 +373,7 @@ explicitly stated.
 
 =back
 
-. share BOOLEAN
+. share => BOOLEAN
 
 =over 4
 
@@ -1013,12 +1013,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

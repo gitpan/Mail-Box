@@ -46,9 +46,9 @@ Mail::Transport::SMTP-E<gt>B<new>(OPTIONS)
  username                     undef
  via         Mail::Transport  'smtp'
 
-. executable FILENAME
+. executable => FILENAME
 
-. helo HOST
+. helo => HOST
 
 =over 4
 
@@ -60,13 +60,13 @@ C<From> line of the message is assumed.
 
 =back
 
-. hostname HOSTNAME|ARRAY-OF-HOSTNAMES
+. hostname => HOSTNAME|ARRAY-OF-HOSTNAMES
 
-. interval SECONDS
+. interval => SECONDS
 
-. log LEVEL
+. log => LEVEL
 
-. password STRING
+. password => STRING
 
 =over 4
 
@@ -75,13 +75,13 @@ server.
 
 =back
 
-. port INTEGER
+. port => INTEGER
 
-. proxy PATH
+. proxy => PATH
 
-. retry NUMBER|undef
+. retry => NUMBER|undef
 
-. smtp_debug BOOLEAN
+. smtp_debug => BOOLEAN
 
 =over 4
 
@@ -90,7 +90,7 @@ screen.
 
 =back
 
-. timeout SECONDS
+. timeout => SECONDS
 
 =over 4
 
@@ -99,9 +99,9 @@ failing.
 
 =back
 
-. trace LEVEL
+. trace => LEVEL
 
-. username STRING
+. username => STRING
 
 =over 4
 
@@ -113,7 +113,7 @@ Authen::SASL object.
 
 =back
 
-. via CLASS|NAME
+. via => CLASS|NAME
 
 =back
 
@@ -162,7 +162,7 @@ problem occurred.
  from    < >
  to      []
 
-. from ADDRESS
+. from => ADDRESS
 
 =over 4
 
@@ -173,7 +173,7 @@ field.  This defaults to "E<lt> E<gt>", which represents "no address".
 
 =back
 
-. to ADDRESS|[ADDRESSES]
+. to => ADDRESS|[ADDRESSES]
 
 =over 4
 
@@ -386,12 +386,12 @@ found in the message itself about the destination.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

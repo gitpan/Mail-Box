@@ -58,7 +58,7 @@ Mail::Transport-E<gt>B<new>(OPTIONS)
  username                     undef
  via                          'sendmail'
 
-. executable FILENAME
+. executable => FILENAME
 
 =over 4
 
@@ -70,7 +70,7 @@ which otherwise would work auto-detect and unmodified.
 
 =back
 
-. hostname HOSTNAME|ARRAY-OF-HOSTNAMES
+. hostname => HOSTNAME|ARRAY-OF-HOSTNAMES
 
 =over 4
 
@@ -79,7 +79,7 @@ of alternatives for this option.
 
 =back
 
-. interval SECONDS
+. interval => SECONDS
 
 =over 4
 
@@ -88,9 +88,9 @@ receiving a message in SECONDS.  This number must be larger than 0.
 
 =back
 
-. log LEVEL
+. log => LEVEL
 
-. password STRING
+. password => STRING
 
 =over 4
 
@@ -99,7 +99,7 @@ with a password.
 
 =back
 
-. port INTEGER
+. port => INTEGER
 
 =over 4
 
@@ -107,7 +107,7 @@ The port number behind which the service is hiding on the remote server.
 
 =back
 
-. proxy PATH
+. proxy => PATH
 
 =over 4
 
@@ -117,7 +117,7 @@ software.
 
 =back
 
-. retry NUMBER|undef
+. retry => NUMBER|undef
 
 =over 4
 
@@ -126,7 +126,7 @@ number of retries is unlimited.
 
 =back
 
-. timeout SECONDS
+. timeout => SECONDS
 
 =over 4
 
@@ -134,9 +134,9 @@ SECONDS till time-out while establishing the connection to a remote server.
 
 =back
 
-. trace LEVEL
+. trace => LEVEL
 
-. username STRING
+. username => STRING
 
 =over 4
 
@@ -144,7 +144,7 @@ Some protocols require a user to login.
 
 =back
 
-. via CLASS|NAME
+. via => CLASS|NAME
 
 =over 4
 
@@ -336,12 +336,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

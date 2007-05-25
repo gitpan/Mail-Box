@@ -1,13 +1,13 @@
 # Copyrights 2001-2007 by Mark Overmeer.
-# For other contributors see ChangeLog.
+#  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 0.99.
+# Pod stripped from pm file by OODoc 1.00.
 
 use strict;
 
 package Mail::Box::IMAP4::Head;
 use vars '$VERSION';
-$VERSION = '2.070';
+$VERSION = '2.071';
 use base 'Mail::Message::Head';
 
 use Date::Parse;

@@ -84,7 +84,7 @@ See also L<Mail::Box::Message::copyTo()|Mail::Box::Message/"The message"> and L<
  shallow_body  <false>
  shallow_head  <false>
 
-. shallow BOOLEAN
+. shallow => BOOLEAN
 
 =over 4
 
@@ -100,7 +100,7 @@ original message cannot get undeleted after the move.
 
 =back
 
-. shallow_body BOOLEAN
+. shallow_body => BOOLEAN
 
 =over 4
 
@@ -109,7 +109,7 @@ message: you may only set a new body with L<body()|Mail::Message/"The body">.
 
 =back
 
-. shallow_head BOOLEAN
+. shallow_head => BOOLEAN
 
 =over 4
 
@@ -142,7 +142,7 @@ Mail::Message-E<gt>B<new>(OPTIONS)
  trace       Mail::Reporter   'WARNINGS'
  trusted                      <false>
 
-. body OBJECT
+. body => OBJECT
 
 =over 4
 
@@ -152,7 +152,7 @@ of Mail::Message::Body.  See also L<body()|Mail::Message/"The body"> and L<store
 
 =back
 
-. body_type CLASS
+. body_type => CLASS
 
 =over 4
 
@@ -160,7 +160,7 @@ Default type of body to be created for L<readBody()|Mail::Message/"Internals">.
 
 =back
 
-. deleted BOOLEAN
+. deleted => BOOLEAN
 
 =over 4
 
@@ -168,9 +168,9 @@ Is the file deleted from the start?
 
 =back
 
-. field_type CLASS
+. field_type => CLASS
 
-. head OBJECT
+. head => OBJECT
 
 =over 4
 
@@ -180,7 +180,7 @@ of L<Mail::Message::Head|Mail::Message::Head>. See also L<head()|Mail::Message/"
 
 =back
 
-. head_type CLASS
+. head_type => CLASS
 
 =over 4
 
@@ -188,7 +188,7 @@ Default type of head to be created for L<readHead()|Mail::Message/"Internals">.
 
 =back
 
-. labels ARRAY|HASH
+. labels => ARRAY|HASH
 
 =over 4
 
@@ -199,9 +199,9 @@ will take care of the folder specifics once the message is added to one.
 
 =back
 
-. log LEVEL
+. log => LEVEL
 
-. messageId STRING
+. messageId => STRING
 
 =over 4
 
@@ -211,7 +211,7 @@ to the message to be able to pass unique message-ids between objects.
 
 =back
 
-. modified BOOLEAN
+. modified => BOOLEAN
 
 =over 4
 
@@ -221,9 +221,9 @@ explicit.
 
 =back
 
-. trace LEVEL
+. trace => LEVEL
 
-. trusted BOOLEAN
+. trusted => BOOLEAN
 
 =over 4
 
@@ -784,7 +784,7 @@ The OPTIONS control how the conversion takes place.
  keep         <false>
  result_type  <type of body>
 
-. keep BOOLEAN
+. keep => BOOLEAN
 
 =over 4
 
@@ -794,7 +794,7 @@ resources...
 
 =back
 
-. result_type BODYTYPE
+. result_type => BODYTYPE
 
 =over 4
 
@@ -1620,12 +1620,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

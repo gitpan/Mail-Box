@@ -76,19 +76,19 @@ the Mail::SpamAssassin module.
  spam_assassin                   undef
  trace          Mail::Reporter   'WARNINGS'
 
-. binaries BOOLEAN
+. binaries => BOOLEAN
 
-. decode BOOLEAN
+. decode => BOOLEAN
 
-. delayed BOOLEAN
+. delayed => BOOLEAN
 
-. deleted BOOLEAN
+. deleted => BOOLEAN
 
-. deliver undef|CODE|'DELETE'
+. deliver => undef|CODE|'DELETE'
 
-. in 'HEAD'|'BODY'|'MESSAGE'
+. in => 'HEAD'|'BODY'|'MESSAGE'
 
-. label STRING|undef
+. label => STRING|undef
 
 =over 4
 
@@ -97,15 +97,15 @@ option is explicitly set to C<undef>, the label will not be set.
 
 =back
 
-. limit NUMBER
+. limit => NUMBER
 
-. log LEVEL
+. log => LEVEL
 
-. logical 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT'
+. logical => 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT'
 
-. multiparts BOOLEAN
+. multiparts => BOOLEAN
 
-. rewrite_mail BOOLEAN
+. rewrite_mail => BOOLEAN
 
 =over 4
 
@@ -114,7 +114,7 @@ scan. See Mail::SpamAssassin::PerMsgStatus subroutine rewrite_mail.
 
 =back
 
-. sa_options HASH
+. sa_options => HASH
 
 =over 4
 
@@ -125,7 +125,7 @@ L<Mail::SpamAssassin::Conf>.
 
 =back
 
-. spam_assassin OBJECT
+. spam_assassin => OBJECT
 
 =over 4
 
@@ -135,7 +135,7 @@ retreived with assassinator().
 
 =back
 
-. trace LEVEL
+. trace => LEVEL
 
 I<Example:> 
 
@@ -331,12 +331,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

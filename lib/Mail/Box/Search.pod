@@ -72,7 +72,7 @@ Create a filter.
  multiparts                   <true>
  trace       Mail::Reporter   'WARNINGS'
 
-. binaries BOOLEAN
+. binaries => BOOLEAN
 
 =over 4
 
@@ -80,7 +80,7 @@ Whether to include binary bodies in the search.
 
 =back
 
-. decode BOOLEAN
+. decode => BOOLEAN
 
 =over 4
 
@@ -90,7 +90,7 @@ results.  However, decoding will slow-down the search.
 
 =back
 
-. delayed BOOLEAN
+. delayed => BOOLEAN
 
 =over 4
 
@@ -99,7 +99,7 @@ set this to false, you may find fewer hits.
 
 =back
 
-. deleted BOOLEAN
+. deleted => BOOLEAN
 
 =over 4
 
@@ -109,7 +109,7 @@ you can specify you want them to be searched too.
 
 =back
 
-. deliver undef|CODE|'DELETE'
+. deliver => undef|CODE|'DELETE'
 
 =over 4
 
@@ -124,7 +124,7 @@ of hashes, one hash per match.
 
 =back
 
-. in 'HEAD'|'BODY'|'MESSAGE'
+. in => 'HEAD'|'BODY'|'MESSAGE'
 
 =over 4
 
@@ -132,7 +132,7 @@ Where to look for the match.
 
 =back
 
-. label STRING
+. label => STRING
 
 =over 4
 
@@ -142,7 +142,7 @@ a list of selected messages.
 
 =back
 
-. limit NUMBER
+. limit => NUMBER
 
 =over 4
 
@@ -153,9 +153,9 @@ is set to zero, there is no limit.
 
 =back
 
-. log LEVEL
+. log => LEVEL
 
-. logical 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT'
+. logical => 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT'
 
 =over 4
 
@@ -174,7 +174,7 @@ be labeled and returned.
 
 =back
 
-. multiparts BOOLEAN
+. multiparts => BOOLEAN
 
 =over 4
 
@@ -185,7 +185,7 @@ search will include the preamble and epilogue.
 
 =back
 
-. trace LEVEL
+. trace => LEVEL
 
 =back
 
@@ -413,12 +413,12 @@ The C<in> option defines only three names.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

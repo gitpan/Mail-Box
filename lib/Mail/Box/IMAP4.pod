@@ -106,13 +106,13 @@ folder names.  Usually, the folder named C<INBOX> will be present.
  trusted            Mail::Box        <false>
  username           Mail::Box::Net   undef
 
-. access MODE
+. access => MODE
 
-. body_delayed_type CLASS
+. body_delayed_type => CLASS
 
-. body_type CLASS|CODE
+. body_type => CLASS|CODE
 
-. cache_body 'NO'|'YES'|'DELAY'
+. cache_body => 'NO'|'YES'|'DELAY'
 
 =over 4
 
@@ -130,7 +130,7 @@ C<DELAY> will send the whole message when the folder is closed.
 
 =back
 
-. cache_head 'NO'|'PARTIAL'|'DELAY'
+. cache_head => 'NO'|'PARTIAL'|'DELAY'
 
 =over 4
 
@@ -159,7 +159,7 @@ header access.  A L<Mail::Message::Head::Delayed|Mail::Message::Head::Delayed> w
 
 =back
 
-. cache_labels 'NO'|'WRITE'|'DELAY'
+. cache_labels => 'NO'|'WRITE'|'DELAY'
 
 =over 4
 
@@ -182,25 +182,25 @@ C<NO>.
 
 =back
 
-. coerce_options ARRAY
+. coerce_options => ARRAY
 
-. create BOOLEAN
+. create => BOOLEAN
 
-. extract INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
+. extract => INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
 
-. field_type CLASS
+. field_type => CLASS
 
-. fix_headers BOOLEAN
+. fix_headers => BOOLEAN
 
-. folder FOLDERNAME
+. folder => FOLDERNAME
 
-. folderdir DIRECTORY
+. folderdir => DIRECTORY
 
-. head_delayed_type CLASS
+. head_delayed_type => CLASS
 
-. head_type CLASS
+. head_type => CLASS
 
-. join_connection BOOLEAN
+. join_connection => BOOLEAN
 
 =over 4
 
@@ -211,39 +211,39 @@ same server will try to reuse one connection.
 
 =back
 
-. keep_dups BOOLEAN
+. keep_dups => BOOLEAN
 
-. lock_file FILENAME
+. lock_file => FILENAME
 
-. lock_timeout SECONDS
+. lock_timeout => SECONDS
 
-. lock_type CLASS|STRING|ARRAY
+. lock_type => CLASS|STRING|ARRAY
 
-. lock_wait SECONDS
+. lock_wait => SECONDS
 
-. locker OBJECT
+. locker => OBJECT
 
-. log LEVEL
+. log => LEVEL
 
-. manager MANAGER
+. manager => MANAGER
 
-. message_type CLASS
+. message_type => CLASS
 
-. multipart_type CLASS
+. multipart_type => CLASS
 
-. password STRING
+. password => STRING
 
-. remove_when_empty BOOLEAN
+. remove_when_empty => BOOLEAN
 
-. save_on_exit BOOLEAN
+. save_on_exit => BOOLEAN
 
-. server_name HOSTNAME
+. server_name => HOSTNAME
 
-. server_port INTEGER
+. server_port => INTEGER
 
-. trace LEVEL
+. trace => LEVEL
 
-. transporter OBJECT|CLASS
+. transporter => OBJECT|CLASS
 
 =over 4
 
@@ -254,9 +254,9 @@ CLASS.  When an OBJECT is given, most other options will be ignored.
 
 =back
 
-. trusted BOOLEAN
+. trusted => BOOLEAN
 
-. username STRING
+. username => STRING
 
 I<Example:> 
 
@@ -312,11 +312,11 @@ L<Mail::Transport::IMAP4::DESTROY()|Mail::Transport::IMAP4/"Cleanup">
  save_deleted  Mail::Box        false
  write         Mail::Box        MODIFIED
 
-. force BOOLEAN
+. force => BOOLEAN
 
-. save_deleted BOOLEAN
+. save_deleted => BOOLEAN
 
-. write 'ALWAYS'|'NEVER'|'MODIFIED'
+. write => 'ALWAYS'|'NEVER'|'MODIFIED'
 
 =back
 
@@ -586,7 +586,7 @@ L<Mail::Transport::IMAP4::new()|Mail::Transport::IMAP4/"METHODS">.
  Option         --Default
  join_connection  true
 
-. join_connection BOOLEAN
+. join_connection => BOOLEAN
 
 =over 4
 
@@ -740,9 +740,9 @@ being closed, write that info after all.
  force         Mail::Box        <false>
  save_deleted                   <false>
 
-. force BOOLEAN
+. force => BOOLEAN
 
-. save_deleted BOOLEAN
+. save_deleted => BOOLEAN
 
 =over 4
 
@@ -761,9 +761,9 @@ $obj-E<gt>B<writeMessages>(OPTIONS)
  messages     Mail::Box        <required>
  transporter                   <required>
 
-. messages ARRAY
+. messages => ARRAY
 
-. transporter OBJECT
+. transporter => OBJECT
 
 =back
 
@@ -989,12 +989,12 @@ to copy one of these.  Copying will proceed for all other sub-folders.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

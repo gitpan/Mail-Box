@@ -178,7 +178,7 @@ objects.  Finally, there are some OPTIONS.
  log       Mail::Reporter   'WARNINGS'
  trace     Mail::Reporter   'WARNINGS'
 
-. charset STRING
+. charset => STRING
 
 =over 4
 
@@ -188,7 +188,7 @@ before it gets encoded.  See L<encode()|Mail::Message::Field::Full/"Internals">,
 
 =back
 
-. encoding 'q'|'Q'|'b'|'B'
+. encoding => 'q'|'Q'|'b'|'B'
 
 =over 4
 
@@ -197,7 +197,7 @@ Base64 ('b' or 'B') encoding.
 
 =back
 
-. force BOOLEAN
+. force => BOOLEAN
 
 =over 4
 
@@ -206,7 +206,7 @@ because the body does not contain any non-ascii characters.
 
 =back
 
-. language STRING
+. language => STRING
 
 =over 4
 
@@ -214,9 +214,9 @@ The language used can be specified, however is rarely used my mail clients.
 
 =back
 
-. log LEVEL
+. log => LEVEL
 
-. trace LEVEL
+. trace => LEVEL
 
 I<Example:> 
 
@@ -520,7 +520,7 @@ Be warned: language information, which is defined in RFC2231, is ignored.
  Option --Default
  is_text  1
 
-. is_text BOOLEAN
+. is_text => BOOLEAN
 
 =over 4
 
@@ -559,7 +559,7 @@ to the RFC2047 definition of a header: only containing us-ascii characters.
  force     <flase>
  language  undef
 
-. charset STRING
+. charset => STRING
 
 =over 4
 
@@ -569,7 +569,7 @@ characters.
 
 =back
 
-. encoding 'q'|'Q'|'b'|'B'
+. encoding => 'q'|'Q'|'b'|'B'
 
 =over 4
 
@@ -578,7 +578,7 @@ encoding will be used.  With C<b > or C<B >, base64 encoding will be taken.
 
 =back
 
-. force BOOLEAN
+. force => BOOLEAN
 
 =over 4
 
@@ -588,7 +588,7 @@ header fields.
 
 =back
 
-. language STRING
+. language => STRING
 
 =over 4
 
@@ -867,12 +867,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

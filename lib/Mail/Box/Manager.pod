@@ -58,7 +58,7 @@ Mail::Box::Manager-E<gt>B<new>(ARGS)
  log                  Mail::Reporter   'WARNINGS'
  trace                Mail::Reporter   'WARNINGS'
 
-. autodetect TYPE|ARRAY-OF-TYPES
+. autodetect => TYPE|ARRAY-OF-TYPES
 
 =over 4
 
@@ -70,7 +70,7 @@ and therefore may respond faster.
 
 =back
 
-. default_folder_type NAME|CLASS
+. default_folder_type => NAME|CLASS
 
 =over 4
 
@@ -80,7 +80,7 @@ L<registerType()|Mail::Box::Manager/"Attributes"> and the L<new(folder_types)|Ma
 
 =back
 
-. folder_types NEW-TYPE | ARRAY-OF-NEW-TYPES
+. folder_types => NEW-TYPE | ARRAY-OF-NEW-TYPES
 
 =over 4
 
@@ -95,7 +95,7 @@ the manager.
 
 =back
 
-. folderdir DIRECTORY
+. folderdir => DIRECTORY
 
 =over 4
 
@@ -107,11 +107,11 @@ a loss of information depending on the folder types.
 
 =back
 
-. folderdirs [DIRECTORIES]
+. folderdirs => [DIRECTORIES]
 
-. log LEVEL
+. log => LEVEL
 
-. trace LEVEL
+. trace => LEVEL
 
 =back
 
@@ -182,7 +182,7 @@ about this event and take appropriate actions.
  Option       --Default
  close_by_self  <false>
 
-. close_by_self BOOLEAN
+. close_by_self => BOOLEAN
 
 =over 4
 
@@ -241,7 +241,7 @@ L<Mail::Box::new()|Mail::Box/"Constructors"> for each type of mail box.
  folderdir     '.'
  type          <first, usually C<mbox>>
 
-. authenticate TYPE|ARRAY-OF-TYPES|'AUTO'
+. authenticate => TYPE|ARRAY-OF-TYPES|'AUTO'
 
 =over 4
 
@@ -252,7 +252,7 @@ folder types, especially by POP and IMAP.
 
 =back
 
-. create BOOLEAN
+. create => BOOLEAN
 
 =over 4
 
@@ -261,7 +261,7 @@ The C<type> option specifies which type of folder is created.
 
 =back
 
-. folder NAME|URL
+. folder => NAME|URL
 
 =over 4
 
@@ -281,7 +281,7 @@ passed directly to the C<new> method of the folder which is opened.
 
 =back
 
-. folderdir DIRECTORY
+. folderdir => DIRECTORY
 
 =over 4
 
@@ -289,7 +289,7 @@ The directory where the folders are usually stored.
 
 =back
 
-. type FOLDERTYPENAME|FOLDERTYPE
+. type => FOLDERTYPENAME|FOLDERTYPE
 
 =over 4
 
@@ -345,7 +345,7 @@ be fast.
  Option   --Default
  recursive  <folder's default>
 
-. recursive BOOLEAN
+. recursive => BOOLEAN
 
 =over 4
 
@@ -408,7 +408,7 @@ which can be specified when opening a folder.
  Option--Default
  share   <false>
 
-. share BOOLEAN
+. share => BOOLEAN
 
 =over 4
 
@@ -452,7 +452,7 @@ is equivalent to
  Option--Default
  share   <true>
 
-. share BOOLEAN
+. share => BOOLEAN
 
 =back
 
@@ -768,12 +768,12 @@ only useful for folders which have write or append access modes
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

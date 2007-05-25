@@ -56,9 +56,9 @@ you use.
  topfolder_name                        '='
  trace                Mail::Reporter   'WARNINGS'
 
-. autodetect TYPE|ARRAY-OF-TYPES
+. autodetect => TYPE|ARRAY-OF-TYPES
 
-. collection_type CLASS
+. collection_type => CLASS
 
 =over 4
 
@@ -66,9 +66,9 @@ Subfolders grouped together.
 
 =back
 
-. default_folder_type NAME|CLASS
+. default_folder_type => NAME|CLASS
 
-. delimiter STRING
+. delimiter => STRING
 
 =over 4
 
@@ -77,15 +77,15 @@ same as your directory system is using.
 
 =back
 
-. folder_id_type CLASS|OBJECT
+. folder_id_type => CLASS|OBJECT
 
-. folder_types NEW-TYPE | ARRAY-OF-NEW-TYPES
+. folder_types => NEW-TYPE | ARRAY-OF-NEW-TYPES
 
-. folderdir DIRECTORY
+. folderdir => DIRECTORY
 
-. folderdirs [DIRECTORIES]
+. folderdirs => [DIRECTORIES]
 
-. identity OBJECT
+. identity => OBJECT
 
 =over 4
 
@@ -98,7 +98,7 @@ C<< my $id = User::Identity->new('myname') >>
 
 =back
 
-. inbox NAME
+. inbox => NAME
 
 =over 4
 
@@ -106,11 +106,11 @@ The name of the user's inbox.
 
 =back
 
-. log LEVEL
+. log => LEVEL
 
-. topfolder_name STRING
+. topfolder_name => STRING
 
-. trace LEVEL
+. trace => LEVEL
 
 =back
 
@@ -230,7 +230,7 @@ type, except for the options intended for this method itself.
  deleted        <false>
  id_options     []
 
-. create_real BOOLEAN
+. create_real => BOOLEAN
 
 =over 4
 
@@ -239,7 +239,7 @@ only the administration is updated.
 
 =back
 
-. create_supers BOOLEAN
+. create_supers => BOOLEAN
 
 =over 4
 
@@ -248,7 +248,7 @@ will be created as well.
 
 =back
 
-. deleted BOOLEAN
+. deleted => BOOLEAN
 
 =over 4
 
@@ -256,7 +256,7 @@ The folder starts as deleted.
 
 =back
 
-. id_options ARRAY
+. id_options => ARRAY
 
 =over 4
 
@@ -283,7 +283,7 @@ required details.
  Option   --Defined in        --Default
  recursive  Mail::Box::Manager  <folder's default>
 
-. recursive BOOLEAN
+. recursive => BOOLEAN
 
 I<Example:> how to delete a folder
 
@@ -318,7 +318,7 @@ pathnames.
  Option       --Default
  create_supers  <false>
 
-. create_supers BOOLEAN
+. create_supers => BOOLEAN
 
 =over 4
 
@@ -612,12 +612,12 @@ only useful for folders which have write or append access modes
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

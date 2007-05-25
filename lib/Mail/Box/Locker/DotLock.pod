@@ -34,9 +34,9 @@ Mail::Box::Locker::DotLock-E<gt>B<new>(OPTIONS)
  timeout  Mail::Box::Locker  10 seconds
  trace    Mail::Reporter   'WARNINGS'
 
-. expires SECONDS
+. expires => SECONDS
 
-. file FILENAME
+. file => FILENAME
 
 =over 4
 
@@ -45,15 +45,15 @@ C<.lock>.
 
 =back
 
-. folder FOLDER
+. folder => FOLDER
 
-. log LEVEL
+. log => LEVEL
 
-. method STRING|CLASS|ARRAY
+. method => STRING|CLASS|ARRAY
 
-. timeout SECONDS|'NOTIMEOUT'
+. timeout => SECONDS|'NOTIMEOUT'
 
-. trace LEVEL
+. trace => LEVEL
 
 =back
 
@@ -255,12 +255,12 @@ I<Warning:> Removed expired lockfile $lockfile
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

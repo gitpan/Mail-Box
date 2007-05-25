@@ -81,7 +81,7 @@ The field objects must aways lead the OPTIONS.
  type                       undef
  version                    undef
 
-. head HEAD
+. head => HEAD
 
 =over 4
 
@@ -92,9 +92,9 @@ the L<from()|Mail::Message::Head::FieldGroup/"Constructors"> method.
 
 =back
 
-. log LEVEL
+. log => LEVEL
 
-. software STRING
+. software => STRING
 
 =over 4
 
@@ -102,9 +102,9 @@ Name of the software which produced the fields.
 
 =back
 
-. trace LEVEL
+. trace => LEVEL
 
-. type STRING
+. type => STRING
 
 =over 4
 
@@ -113,7 +113,7 @@ to the same STRING, as the C<software> option contains.
 
 =back
 
-. version STRING
+. version => STRING
 
 =over 4
 
@@ -424,12 +424,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

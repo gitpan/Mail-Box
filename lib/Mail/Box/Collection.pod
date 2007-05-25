@@ -57,15 +57,15 @@ Mail::Box::Collection-E<gt>B<new>([NAME], OPTIONS)
  roles        User::Identity::Collection  undef
  trace        Mail::Reporter   'WARNINGS'
 
-. description STRING
+. description => STRING
 
-. folder_type CLASS
+. folder_type => CLASS
 
-. item_type CLASS
+. item_type => CLASS
 
-. log LEVEL
+. log => LEVEL
 
-. manager OBJECT
+. manager => OBJECT
 
 =over 4
 
@@ -73,13 +73,13 @@ An L<Mail::Box::Manager|Mail::Box::Manager> OBJECT (could be a L<Mail::Box::Mana
 
 =back
 
-. name STRING
+. name => STRING
 
-. parent OBJECT
+. parent => OBJECT
 
-. roles ROLE|ARRAY
+. roles => ROLE|ARRAY
 
-. trace LEVEL
+. trace => LEVEL
 
 =back
 
@@ -414,12 +414,12 @@ cannot add objects of a different $type.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

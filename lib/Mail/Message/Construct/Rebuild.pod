@@ -43,7 +43,7 @@ handing these messages for you.
  keep_message_id  <false>
  rules            <see text>
 
-. extra_rules ARRAY
+. extra_rules => ARRAY
 
 =over 4
 
@@ -59,7 +59,7 @@ means that it cancels the effect of the default rule C<replaceDeletedParts>.
 
 =back
 
-. keep_message_id BOOLEAN
+. keep_message_id => BOOLEAN
 
 =over 4
 
@@ -71,7 +71,7 @@ both messages with the same id.
 
 =back
 
-. rules ARRAY
+. rules => ARRAY
 
 =over 4
 
@@ -111,7 +111,7 @@ $obj-E<gt>B<recursiveRebuildPart>(PART, OPTIONS)
  Option--Default
  rules   <required>
 
-. rules ARRAY-OF-RULES
+. rules => ARRAY-OF-RULES
 
 =over 4
 
@@ -274,12 +274,12 @@ I<Error:> No rebuild rule $name defined.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

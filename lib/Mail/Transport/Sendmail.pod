@@ -47,23 +47,23 @@ Mail::Transport::Sendmail-E<gt>B<new>(OPTIONS)
  username          Mail::Transport  undef
  via               Mail::Transport  'sendmail'
 
-. executable FILENAME
+. executable => FILENAME
 
-. hostname HOSTNAME|ARRAY-OF-HOSTNAMES
+. hostname => HOSTNAME|ARRAY-OF-HOSTNAMES
 
-. interval SECONDS
+. interval => SECONDS
 
-. log LEVEL
+. log => LEVEL
 
-. password STRING
+. password => STRING
 
-. port INTEGER
+. port => INTEGER
 
-. proxy PATH
+. proxy => PATH
 
-. retry NUMBER|undef
+. retry => NUMBER|undef
 
-. sendmail_options ARRAY
+. sendmail_options => ARRAY
 
 =over 4
 
@@ -73,13 +73,13 @@ because the latter will be taken by sendmail as one word only.
 
 =back
 
-. timeout SECONDS
+. timeout => SECONDS
 
-. trace LEVEL
+. trace => LEVEL
 
-. username STRING
+. username => STRING
 
-. via CLASS|NAME
+. via => CLASS|NAME
 
 =back
 
@@ -116,7 +116,7 @@ $obj-E<gt>B<trySend>(MESSAGE, OPTIONS)
  Option          --Default
  sendmail_options  undef
 
-. sendmail_options ARRAY
+. sendmail_options => ARRAY
 
 =back
 
@@ -305,12 +305,12 @@ found in the message itself about the destination.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

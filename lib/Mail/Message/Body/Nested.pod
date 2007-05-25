@@ -96,31 +96,31 @@ Mail::Message::Body::Nested-E<gt>B<new>(OPTIONS)
  trace              Mail::Reporter   'WARNINGS'
  transfer_encoding  Mail::Message::Body  'none'
 
-. based_on BODY
+. based_on => BODY
 
-. charset STRING
+. charset => STRING
 
-. checked BOOLEAN
+. checked => BOOLEAN
 
-. data ARRAY-OF-LINES | STRING
+. data => ARRAY-OF-LINES | STRING
 
-. description STRING|FIELD
+. description => STRING|FIELD
 
-. disposition STRING|FIELD
+. disposition => STRING|FIELD
 
-. eol 'CR'|'LF'|'CRLF'|'NATIVE'
+. eol => 'CR'|'LF'|'CRLF'|'NATIVE'
 
-. file FILENAME|FILEHANDLE|IOHANDLE
+. file => FILENAME|FILEHANDLE|IOHANDLE
 
-. log LEVEL
+. log => LEVEL
 
-. message MESSAGE
+. message => MESSAGE
 
-. mime_type STRING|FIELD|MIME
+. mime_type => STRING|FIELD|MIME
 
-. modified BOOLEAN
+. modified => BOOLEAN
 
-. nested MESSAGE
+. nested => MESSAGE
 
 =over 4
 
@@ -128,9 +128,9 @@ The message which is encapsulated within this body.
 
 =back
 
-. trace LEVEL
+. trace => LEVEL
 
-. transfer_encoding STRING|FIELD
+. transfer_encoding => STRING|FIELD
 
 I<Example:> 
 
@@ -679,12 +679,12 @@ clearly not acceptible.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

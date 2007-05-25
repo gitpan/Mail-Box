@@ -94,9 +94,9 @@ for user, password, pop-server and server-port.
  trusted            Mail::Box        <false>
  username           Mail::Box::Net   undef
 
-. access MODE
+. access => MODE
 
-. authenticate 'LOGIN'|'APOP'|'AUTO'
+. authenticate => 'LOGIN'|'APOP'|'AUTO'
 
 =over 4
 
@@ -108,51 +108,51 @@ if that fails LOGIN.
 
 =back
 
-. body_delayed_type CLASS
+. body_delayed_type => CLASS
 
-. body_type CLASS|CODE
+. body_type => CLASS|CODE
 
-. coerce_options ARRAY
+. coerce_options => ARRAY
 
-. create BOOLEAN
+. create => BOOLEAN
 
-. extract INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
+. extract => INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
 
-. field_type CLASS
+. field_type => CLASS
 
-. fix_headers BOOLEAN
+. fix_headers => BOOLEAN
 
-. folder FOLDERNAME
+. folder => FOLDERNAME
 
-. folderdir DIRECTORY
+. folderdir => DIRECTORY
 
-. head_delayed_type CLASS
+. head_delayed_type => CLASS
 
-. head_type CLASS
+. head_type => CLASS
 
-. keep_dups BOOLEAN
+. keep_dups => BOOLEAN
 
-. lock_file FILENAME
+. lock_file => FILENAME
 
-. lock_timeout SECONDS
+. lock_timeout => SECONDS
 
-. lock_type CLASS|STRING|ARRAY
+. lock_type => CLASS|STRING|ARRAY
 
-. lock_wait SECONDS
+. lock_wait => SECONDS
 
-. locker OBJECT
+. locker => OBJECT
 
-. log LEVEL
+. log => LEVEL
 
-. manager MANAGER
+. manager => MANAGER
 
-. message_type CLASS
+. message_type => CLASS
 
-. multipart_type CLASS
+. multipart_type => CLASS
 
-. password STRING
+. password => STRING
 
-. pop_client OBJECT
+. pop_client => OBJECT
 
 =over 4
 
@@ -161,19 +161,19 @@ which is passed must extend L<Mail::Transport::POP3|Mail::Transport::POP3>.
 
 =back
 
-. remove_when_empty BOOLEAN
+. remove_when_empty => BOOLEAN
 
-. save_on_exit BOOLEAN
+. save_on_exit => BOOLEAN
 
-. server_name HOSTNAME
+. server_name => HOSTNAME
 
-. server_port INTEGER
+. server_port => INTEGER
 
-. trace LEVEL
+. trace => LEVEL
 
-. trusted BOOLEAN
+. trusted => BOOLEAN
 
-. username STRING
+. username => STRING
 
 I<Example:> 
 
@@ -202,7 +202,7 @@ given when the MESSAGE is C<undef> itself.
  Option--Defined in--Default
  share   Mail::Box   <not used>
 
-. share BOOLEAN
+. share => BOOLEAN
 
 =back
 
@@ -250,7 +250,7 @@ A notice is logged about this.
  Option   --Defined in--Default
  recursive  Mail::Box   <not used>
 
-. recursive BOOLEAN
+. recursive => BOOLEAN
 
 =back
 
@@ -435,13 +435,13 @@ empty list will be returned in any case.
  folderdir   Mail::Box        <from folder>
  skip_empty  Mail::Box        <false>
 
-. check BOOLEAN
+. check => BOOLEAN
 
-. folder FOLDERNAME
+. folder => FOLDERNAME
 
-. folderdir DIRECTORY
+. folderdir => DIRECTORY
 
-. skip_empty BOOL
+. skip_empty => BOOL
 
 =back
 
@@ -505,7 +505,7 @@ will always return C<false>.
  Option   --Defined in--Default
  folderdir  Mail::Box   <not used>
 
-. folderdir DIRECTORY
+. folderdir => DIRECTORY
 
 =back
 
@@ -628,7 +628,7 @@ $obj-E<gt>B<writeMessages>(OPTIONS)
  Option  --Defined in--Default
  messages  Mail::Box   <required>
 
-. messages ARRAY
+. messages => ARRAY
 
 =back
 
@@ -894,12 +894,12 @@ implementation with writing.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

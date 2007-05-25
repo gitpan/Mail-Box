@@ -48,7 +48,7 @@ matter, as long as it is present.  See C<Mail::Message::Body::Multipart>.
  preamble    constructed from prelude and postlude
  signature   undef
 
-. Bcc ADDRESSES
+. Bcc => ADDRESSES
 
 =over 4
 
@@ -57,7 +57,7 @@ other message receivers.
 
 =back
 
-. Cc ADDRESSES
+. Cc => ADDRESSES
 
 =over 4
 
@@ -65,7 +65,7 @@ The carbon-copy receivers, by default none.
 
 =back
 
-. Date DATE
+. Date => DATE
 
 =over 4
 
@@ -73,7 +73,7 @@ The date to be used in the message sent.
 
 =back
 
-. From ADDRESSES
+. From => ADDRESSES
 
 =over 4
 
@@ -82,7 +82,7 @@ source message.
 
 =back
 
-. Message-ID STRING
+. Message-ID => STRING
 
 =over 4
 
@@ -92,7 +92,7 @@ your id, they will be added.
 
 =back
 
-. Subject STRING|CODE
+. Subject => STRING|CODE
 
 =over 4
 
@@ -103,7 +103,7 @@ the L<forwardSubject()|Mail::Message::Construct::Forward/"Constructing a message
 
 =back
 
-. To ADDRESSES
+. To => ADDRESSES
 
 =over 4
 
@@ -113,7 +113,7 @@ Mail::Address objects.
 
 =back
 
-. body OBJECT
+. body => OBJECT
 
 =over 4
 
@@ -122,7 +122,7 @@ message contents.  In this case, only the headers are constructed for you.
 
 =back
 
-. include 'NO'|'INLINE'|'ATTACH'|'ENCAPSULATE'
+. include => 'NO'|'INLINE'|'ATTACH'|'ENCAPSULATE'
 
 =over 4
 
@@ -140,7 +140,7 @@ Read the details in section L</Creating a forward>..
 
 =back
 
-. preamble STRING|BODY
+. preamble => STRING|BODY
 
 =over 4
 
@@ -151,7 +151,7 @@ of L<forwardPrelude()|Mail::Message::Construct::Forward/"Constructing a message"
 
 =back
 
-. signature BODY|MESSAGE
+. signature => BODY|MESSAGE
 
 =over 4
 
@@ -176,7 +176,7 @@ is ignored.
  Option  --Default
  preamble  <required>
 
-. preamble BODY|PART
+. preamble => BODY|PART
 
 =back
 
@@ -195,7 +195,7 @@ is ignored.  Signatures are not stripped.  Signatures are not stripped.
  Option  --Default
  preamble  <required>
 
-. preamble BODY|PART
+. preamble => BODY|PART
 
 =back
 
@@ -216,7 +216,7 @@ C<include> and C<body>.
  quote            undef
  strip_signature  qr/^--\s/
 
-. is_attached STRING
+. is_attached => STRING
 
 =over 4
 
@@ -229,7 +229,7 @@ the postlude.
 
 =back
 
-. max_signature INTEGER
+. max_signature => INTEGER
 
 =over 4
 
@@ -238,7 +238,7 @@ effective for single-part messages.
 
 =back
 
-. postlude BODY
+. postlude => BODY
 
 =over 4
 
@@ -249,7 +249,7 @@ forwarded message is C<INLINE>d.
 
 =back
 
-. prelude BODY
+. prelude => BODY
 
 =over 4
 
@@ -259,7 +259,7 @@ is used.  When C<undef> is specified, no prelude will be added.
 
 =back
 
-. quote CODE|STRING
+. quote => CODE|STRING
 
 =over 4
 
@@ -272,7 +272,7 @@ after the body has been decoded.
 
 =back
 
-. strip_signature REGEXP|STRING|CODE
+. strip_signature => REGEXP|STRING|CODE
 
 =over 4
 
@@ -299,7 +299,7 @@ required.  Some other options, like C<preamble>, are ignored.
  Option--Default
  body    <required>
 
-. body BODY
+. body => BODY
 
 =back
 
@@ -468,12 +468,12 @@ If a forward message is created, a destination address must be specified.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

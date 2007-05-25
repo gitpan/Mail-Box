@@ -1,13 +1,13 @@
 # Copyrights 2001-2007 by Mark Overmeer.
-# For other contributors see ChangeLog.
+#  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 0.99.
+# Pod stripped from pm file by OODoc 1.00.
 use strict;
 use warnings;
 
 package Mail::Message::Head;
 use vars '$VERSION';
-$VERSION = '2.070';
+$VERSION = '2.071';
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Complete;

@@ -126,21 +126,21 @@ Mail::Message::Field::Addresses-E<gt>B<new>
  log         Mail::Reporter   'WARNINGS'
  trace       Mail::Reporter   'WARNINGS'
 
-. attributes ATTRS
+. attributes => ATTRS
 
-. charset STRING
+. charset => STRING
 
-. datum STRING
+. datum => STRING
 
-. encoding 'q'|'Q'|'b'|'B'
+. encoding => 'q'|'Q'|'b'|'B'
 
-. force BOOLEAN
+. force => BOOLEAN
 
-. language STRING
+. language => STRING
 
-. log LEVEL
+. log => LEVEL
 
-. trace LEVEL
+. trace => LEVEL
 
 =back
 
@@ -297,7 +297,7 @@ L<Mail::Message::Field::Address::new()|Mail::Identity/"METHODS">.
  Option--Default
  group   ''
 
-. group STRING
+. group => STRING
 
 =back
 
@@ -320,7 +320,7 @@ using the OPTIONS.  The group is returned.
  Option--Default
  name    ''
 
-. name STRING
+. name => STRING
 
 =back
 
@@ -768,12 +768,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

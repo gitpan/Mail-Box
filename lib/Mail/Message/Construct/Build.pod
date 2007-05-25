@@ -51,7 +51,7 @@ been constructed.  Together, they produce your message.
  files   [ ]
  head    undef
 
-. attach BODY|PART|MESSAGE|ARRAY
+. attach => BODY|PART|MESSAGE|ARRAY
 
 =over 4
 
@@ -66,7 +66,7 @@ You can specify many items (may be of different types) at once.
 
 =back
 
-. data STRING|ARRAY-OF-LINES
+. data => STRING|ARRAY-OF-LINES
 
 =over 4
 
@@ -83,7 +83,7 @@ construct one.
 
 =back
 
-. file FILENAME|FILEHANDLE|IOHANDLE
+. file => FILENAME|FILEHANDLE|IOHANDLE
 
 =over 4
 
@@ -101,7 +101,7 @@ to create a L<Mail::Message::Body|Mail::Message::Body>.
 
 =back
 
-. files ARRAY-OF-FILE
+. files => ARRAY-OF-FILE
 
 =over 4
 
@@ -109,7 +109,7 @@ See option file, but then an array reference collection more of them.
 
 =back
 
-. head HEAD
+. head => HEAD
 
 =over 4
 
@@ -314,12 +314,12 @@ into the right message type, adding storage information and the like.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

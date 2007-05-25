@@ -82,9 +82,9 @@ conversions.
  result_type        <same as source>
  transfer_encoding  undef
 
-. charset STRING
+. charset => STRING
 
-. mime_type STRING|FIELD
+. mime_type => STRING|FIELD
 
 =over 4
 
@@ -94,7 +94,7 @@ converted in such object before use.
 
 =back
 
-. result_type CLASS
+. result_type => CLASS
 
 =over 4
 
@@ -104,7 +104,7 @@ needed) will use this type. CLASS must extend L<Mail::Message::Body|Mail::Messag
 
 =back
 
-. transfer_encoding STRING|FIELD
+. transfer_encoding => STRING|FIELD
 
 =back
 
@@ -216,12 +216,12 @@ unknown.  The decoded data is returned.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.070,
-built on March 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.071,
+built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer.For other contributors see ChangeLog.
+Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
