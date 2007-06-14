@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Message::Head::Delayed;
 use vars '$VERSION';
-$VERSION = '2.071';
+$VERSION = '2.072';
 use base 'Mail::Message::Head';
 
 use Object::Realize::Later

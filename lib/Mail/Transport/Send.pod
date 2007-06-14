@@ -167,7 +167,7 @@ $obj-E<gt>B<send>(MESSAGE, OPTIONS)
 =over 4
 
 Transmit the MESSAGE, which may be anything what can be coerced into a
-L<Mail::Message|Mail::Message>, so including Mail::Internet and MIME::Entity
+L<Mail::Message|Mail::Message>, so including L<Mail::Internet|Mail::Internet> and MIME::Entity
 messages.  It returns true when the transmission was successfully completed.
 
  Option  --Default
@@ -385,8 +385,8 @@ but only receive message.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.071,
-built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.072,
+built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

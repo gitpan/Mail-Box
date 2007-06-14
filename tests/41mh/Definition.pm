@@ -5,7 +5,7 @@
 
 package MailBox::Test::41mh::Definition;
 use vars '$VERSION';
-$VERSION = '2.071';
+$VERSION = '2.072';
 
 sub name     {"Mail::Box::MH; mh folders"}
 sub critical {0}

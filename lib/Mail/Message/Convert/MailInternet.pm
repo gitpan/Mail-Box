@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Message::Convert::MailInternet;
 use vars '$VERSION';
-$VERSION = '2.071';
+$VERSION = '2.072';
 use base 'Mail::Message::Convert';
 
 use Mail::Internet;

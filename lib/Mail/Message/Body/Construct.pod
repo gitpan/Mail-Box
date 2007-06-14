@@ -24,7 +24,7 @@ need more control, create the multi-part body yourself.  At least
 take a look at L<Mail::Message::Body::Multipart|Mail::Message::Body::Multipart>.
 
 The message-parts will be coerced into a L<Mail::Message::Part|Mail::Message::Part>, so you
-may attach Mail::Internet or MIME::Entity objects if you want --see
+may attach L<Mail::Internet|Mail::Internet> or MIME::Entity objects if you want --see
 L<Mail::Message::coerce()|Mail::Message/"Internals">.  A new body with attached messages is
 returned.
 
@@ -161,8 +161,8 @@ I<Example:>
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.071,
-built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.072,
+built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -150,7 +150,7 @@ Specifies an initial list of parts in this body.  These may be full
 MESSAGES, or BODIES which transformed into messages before use.  Each
 message is coerced into a L<Mail::Message::Part|Mail::Message::Part> object.
 
-MIME::Entity and Mail::Internet objects are acceptable in the
+MIME::Entity and L<Mail::Internet|Mail::Internet> objects are acceptable in the
 list, because they are coercible into L<Mail::Message::Part|Mail::Message::Part>'s.  Values
 of C<undef> will be skipped silently.
 
@@ -195,7 +195,7 @@ $obj-E<gt>B<attach>(MESSAGES|BODIES)
 
 Attach a list of MESSAGES to this multipart.  A new body is returned.
 When you specify BODIES, they will first be translated into
-real messages.  MIME::Entity and Mail::Internet objects may be
+real messages.  MIME::Entity and L<Mail::Internet|Mail::Internet> objects may be
 specified too.  In any case, the parts will be coerced into
 L<Mail::Message::Part|Mail::Message::Part>'s.
 
@@ -824,8 +824,8 @@ clearly not acceptible.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.071,
-built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.072,
+built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

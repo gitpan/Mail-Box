@@ -26,7 +26,7 @@ Mail::Message::Convert::MimeEntity - translate Mail::Message to MIME::Entity vv
 
 =head1 DESCRIPTION
 
-The MIME::Entity extends Mail::Internet message with multiparts
+The MIME::Entity extends L<Mail::Internet|Mail::Internet> message with multiparts
 and more methods.  The L<Mail::Message|Mail::Message> objects are more flexible
 in how the message parts are stored, and uses separate header and body
 objects.
@@ -229,8 +229,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.071,
-built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.072,
+built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

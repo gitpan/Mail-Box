@@ -347,7 +347,7 @@ $obj-E<gt>B<addresses>
 
 =over 4
 
-Returns a list of Mail::Address objects, which represent the
+Returns a list of L<Mail::Address|Mail::Address> objects, which represent the
 e-mail addresses found in this header line.
 
 I<Example:> 
@@ -780,7 +780,7 @@ which solution suites your needs best.
 
 The C<get()> interface is copied from other Perl modules which can
 handle e-mail messages.  Many applications which simply replace
-Mail::Internet objects by L<Mail::Message|Mail::Message> objects will work
+L<Mail::Internet|Mail::Internet> objects by L<Mail::Message|Mail::Message> objects will work
 without modification.
 
 There is more than one get method.  The exact results depend on which
@@ -936,7 +936,7 @@ The string must be following the (complicated) rules of the rfc2822, and
 is made field content as specified.  When the string is not terminated
 by a new-line (C<"\n">) it will be folded according to the standard rules.
 
-=item * a Mail::Address object
+=item * a L<Mail::Address|Mail::Address> object
 
 The most used Perl object to parse and produce address lines.  This object
 does not understand character set encodings in phrases.
@@ -1067,8 +1067,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.071,
-built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.072,
+built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

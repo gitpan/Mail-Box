@@ -6,11 +6,11 @@
 use strict;
 package Tools;
 use vars '$VERSION';
-$VERSION = '2.071';
+$VERSION = '2.072';
 
-use lib qw(. ./lib ../lib ../../lib tests);
-use lib qw(/home/markov/shared/perl/UserIdentity/lib);
-use lib qw(/home/markov/shared/perl/MimeTypes/lib);
+#use lib qw(. ./lib ../lib ../../lib tests);
+#use lib qw(/home/markov/shared/perl/UserIdentity/lib);
+#use lib qw(/home/markov/shared/perl/MimeTypes/lib);
 
 use base 'Exporter';
 use File::Copy 'copy';

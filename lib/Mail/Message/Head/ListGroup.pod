@@ -98,7 +98,7 @@ Construct an object which maintains one set of mailing list headers
 =over 4
 
 Address of the mailing list, which may be specified as STRING
-or e-mail containing object (a Mail::Address or L<Mail::Identity|Mail::Identity>.
+or e-mail containing object (a L<Mail::Address|Mail::Address> or L<Mail::Identity|Mail::Identity>.
 In any case, the data is converted into a L<Mail::Identity|Mail::Identity>.
 
 =back
@@ -496,8 +496,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.071,
-built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.072,
+built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

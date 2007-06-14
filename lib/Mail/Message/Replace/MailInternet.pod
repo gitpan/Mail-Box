@@ -1063,7 +1063,7 @@ Mail::Message::Replace::MailInternet-E<gt>B<coerce>(MESSAGE)
 =over 4
 
 Coerce (adapt type) of the specified MESSAGE (anything
-L<Mail::Message::coerce()|Mail::Message/"Internals"> accepts) into an Mail::Internet simulating
+L<Mail::Message::coerce()|Mail::Message/"Internals"> accepts) into an L<Mail::Internet|Mail::Internet> simulating
 object.
 
 =back
@@ -1322,8 +1322,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.071,
-built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.072,
+built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

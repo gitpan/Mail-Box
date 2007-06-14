@@ -2,6 +2,7 @@ ChangeLog
 INSTALL
 LICENSE
 MANIFEST
+META.yml
 Makefile.PL
 README
 README.FAQ
@@ -262,6 +263,8 @@ scripts/takemail
 test.pl
 tests/01platform/10crlf.t
 tests/01platform/Definition.pm
+tests/02dist/10pod.t
+tests/02dist/Definition.pm
 tests/10reporter/10errors.t
 tests/10reporter/20reports.t
 tests/10reporter/30callback.t
@@ -390,4 +393,4 @@ tests/81bodyconv/Definition.pm
 tests/Tools.pm
 tests/folders/mbox.cpy
 tests/folders/mbox.src
-META.yml                                 Module meta-data (added by MakeMaker)
+tests/pod.t

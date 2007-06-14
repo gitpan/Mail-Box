@@ -154,7 +154,7 @@ Header fields are added in order, and before the header lines as
 defined by the body are taken.  They may be supplied as key-value
 pairs or L<Mail::Message::Field|Mail::Message::Field> objects.  In case of a key-value
 pair, the field's name is to be used as key and the value is a
-string, address (Mail::Address object), or array of addresses.
+string, address (L<Mail::Address|Mail::Address> object), or array of addresses.
 
 A C<Date>, C<Message-Id>, and C<MIME-Version> field are added unless
 supplied.
@@ -314,8 +314,8 @@ into the right message type, adding storage information and the like.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.071,
-built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.072,
+built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

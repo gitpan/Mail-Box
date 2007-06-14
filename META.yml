@@ -1,10 +1,11 @@
-# http://module-build.sourceforge.net/META-spec.html
-#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
-name:         Mail-Box
-version:      2.071
-version_from: 
-installdirs:  site
-requires:
+--- #YAML:1.0
+name:                Mail-Box
+version:             2.072
+abstract:            E-mail handling
+license:             ~
+generated_by:        ExtUtils::MakeMaker version 6.32
+distribution_type:   module
+requires:     
     Date::Parse:                   0
     Digest::HMAC_MD5:              0
     Errno:                         0
@@ -19,9 +20,12 @@ requires:
     Sys::Hostname:                 0
     Test::Harness:                 2.62
     Test::More:                    0.47
+    Test::Pod:                     1
     Time::Zone:                    0
     URI:                           1.23
     User::Identity:                0.9
-
-distribution_type: module
-generated_by: ExtUtils::MakeMaker version 6.17
+meta-spec:
+    url:     http://module-build.sourceforge.net/META-spec-v1.2.html
+    version: 1.2
+author:
+    - Mark Overmeer

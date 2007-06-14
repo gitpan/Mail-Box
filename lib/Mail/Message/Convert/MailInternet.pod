@@ -26,7 +26,7 @@ Mail::Message::Convert::MailInternet - translate Mail::Message to Mail::Internet
 
 =head1 DESCRIPTION
 
-The Mail::Internet class of message is very popular for all
+The L<Mail::Internet|Mail::Internet> class of message is very popular for all
 kinds of message applications written in Perl.  However, the
 format was developed when e-mail messages where still small and
 attachments where rare; Mail::Message is much more flexible in
@@ -219,8 +219,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.071,
-built on May 25, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.072,
+built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

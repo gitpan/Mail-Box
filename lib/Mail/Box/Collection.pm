@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Box::Collection;
 use vars '$VERSION';
-$VERSION = '2.071';
+$VERSION = '2.072';
 use base qw/User::Identity::Collection Mail::Reporter/;
 
 use Mail::Box::Identity;
