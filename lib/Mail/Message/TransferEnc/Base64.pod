@@ -219,22 +219,36 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Warning:> Base64 line length not padded on 4.
+Warning: Base64 line length not padded on 4.
+
+=over 4
 
 While decoding base64 the data in a message body, a string was found which
 was not padded into a multiple of four bytes.  This is illegal, and therefore
 this data is ignored.
 
-I<Error:> Decoder for transfer encoding $type does not work: $@
+=back
+
+Error: Decoder for transfer encoding $type does not work: $@
+
+=over 4
 
 Compiling the required transfer encoding resulted in errors, which means
 that the decoder can not be used.
 
-I<Warning:> No decoder for transfer encoding $type.
+=back
+
+Warning: No decoder for transfer encoding $type.
+
+=over 4
 
 A decoder for the specified type of transfer encoding is not implemented.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -242,10 +256,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

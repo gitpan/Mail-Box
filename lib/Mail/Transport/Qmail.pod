@@ -249,17 +249,27 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Errors when closing Qmail mailer $program: $!
+Error: Errors when closing Qmail mailer $program: $!
+
+=over 4
 
 The Qmail mail transfer agent did start, but was not able to handle the
 message for some specific reason.
 
-I<Warning:> Message has no destination
+=back
+
+Warning: Message has no destination
+
+=over 4
 
 It was not possible to figure-out where the message is intended to go
 to.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -267,7 +277,11 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Warning:> Resent group does not specify a destination
+=back
+
+Warning: Resent group does not specify a destination
+
+=over 4
 
 The message which is sent is the result of a bounce (for instance
 created with L<Mail::Message::bounce()|Mail::Message::Construct::Bounce/"Constructing a message">), and therefore starts with a
@@ -282,10 +296,12 @@ As alternative, you may also specify the C<to> option to some of the senders
 (for instance L<Mail::Transport::SMTP::send(to)|Mail::Transport::Send/"Sending mail"> to overrule any information
 found in the message itself about the destination.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

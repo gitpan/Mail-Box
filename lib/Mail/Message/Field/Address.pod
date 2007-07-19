@@ -264,7 +264,7 @@ Returns an RFC compliant e-mail address, which will have character
 set encoding if needed.  The objects are also overloaded to call
 this method in string context.
 
-I<Example:> 
+example: 
 
  print $address->string;
  print $address;          # via overloading
@@ -273,44 +273,68 @@ I<Example:>
 
 =head1 DIAGNOSTICS
 
-I<Error:> $object is not a collection.
+Error: $object is not a collection.
+
+=over 4
 
 The first argument is an object, but not of a class which extends
 L<User::Identity::Collection|User::Identity::Collection>.
 
-I<Error:> Cannot coerce a $type into a Mail::Message::Field::Address
+=back
+
+Error: Cannot coerce a $type into a Mail::Message::Field::Address
+
+=over 4
 
 When addresses are specified to be included in header fields, they may
 be coerced into L<Mail::Message::Field::Address|Mail::Message::Field::Address> objects first.  What
 you specify is not accepted as address specification.  This may be an
 internal error.
 
-I<Error:> Cannot load collection module for $type ($class).
+=back
+
+Error: Cannot load collection module for $type ($class).
+
+=over 4
 
 Either the specified $type does not exist, or that module named $class returns
 compilation errors.  If the type as specified in the warning is not
 the name of a package, you specified a nickname which was not defined.
 Maybe you forgot the 'require' the package which defines the nickname.
 
-I<Error:> Creation of a collection via $class failed.
+=back
+
+Error: Creation of a collection via $class failed.
+
+=over 4
 
 The $class did compile, but it was not possible to create an object
 of that class using the options you specified.
 
-I<Error:> Don't know what type of collection you want to add.
+=back
+
+Error: Don't know what type of collection you want to add.
+
+=over 4
 
 If you add a collection, it must either by a collection object or a
 list of options which can be used to create a collection object.  In
 the latter case, the type of collection must be specified.
 
-I<Warning:> No collection $name
+=back
+
+Warning: No collection $name
+
+=over 4
 
 The collection with $name does not exist and can not be created.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

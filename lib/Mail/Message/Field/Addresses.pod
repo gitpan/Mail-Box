@@ -332,7 +332,7 @@ Returns a list with all addresses defined in any group of addresses:
 all addresses which are specified on the line.  The addresses are
 L<Mail::Message::Field::Address|Mail::Message::Field::Address> objects.
 
-I<Example:> 
+example: 
 
  my @addr = $field->addresses;
 
@@ -724,41 +724,67 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Warning:> Field content is not numerical: $content
+Warning: Field content is not numerical: $content
+
+=over 4
 
 The numeric value of a field is requested (for instance the C<Lines> or
 C<Content-Length> fields should be numerical), however the data contains
 weird characters.
 
-I<Warning:> Illegal character in charset '$charset'
+=back
+
+Warning: Illegal character in charset '$charset'
+
+=over 4
 
 The field is created with an utf8 string which only contains data from the
 specified character set.  However, that character set can never be a valid
 name because it contains characters which are not permitted.
 
-I<Warning:> Illegal character in field name $name
+=back
+
+Warning: Illegal character in field name $name
+
+=over 4
 
 A new field is being created which does contain characters not permitted
 by the RFCs.  Using this field in messages may break other e-mail clients
 or transfer agents, and therefore mutulate or extinguish your message.
 
-I<Warning:> Illegal character in language '$lang'
+=back
+
+Warning: Illegal character in language '$lang'
+
+=over 4
 
 The field is created with data which is specified to be in a certain language,
 however, the name of the language cannot be valid: it contains characters
 which are not permitted by the RFCs.
 
-I<Warning:> Illegal encoding '$encoding', used 'q'
+=back
+
+Warning: Illegal encoding '$encoding', used 'q'
+
+=over 4
 
 The RFCs only permit base64 (C<b > or C<B >) or quoted-printable
 (C<q> or C<Q>) encoding.  Other than these four options are illegal.
 
-I<Error:> No attributes for address fields.
+=back
+
+Error: No attributes for address fields.
+
+=over 4
 
 Is is not possible to add attributes to address fields: it is not permitted
 by the RFCs.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -766,10 +792,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

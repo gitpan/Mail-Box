@@ -169,7 +169,7 @@ with the specified ID.  C<undef> is returned if something has gone wrong.
 The optional integer BODYLINES specifies the number of lines from the body
 which should be added, by default none.
 
-I<Example:> 
+example: 
 
  my $ref_lines = $pop3->header($uidl);
  print @$ref_lines;
@@ -204,7 +204,7 @@ Returns a reference to an array which contains the lines of the
 message with the specified ID.  Returns C<undef> if something has gone
 wrong.
 
-I<Example:> 
+example: 
 
  my $ref_lines = $pop3->message($uidl);
  print @$ref_lines;
@@ -448,54 +448,92 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Cannot connect to $host:$port for POP3: $!
+Error: Cannot connect to $host:$port for POP3: $!
+
+=over 4
 
 Unsuccesful in connecting to the remote POP3 server.
 
-I<Error:> Cannot get the messages of pop3 via messages()
+=back
+
+Error: Cannot get the messages of pop3 via messages()
+
+=over 4
 
 It is not possible to retreive all messages on a remote POP3 folder
 at once: each shall be taken separately.  The POP3 folder will hide this
 for you.
 
-I<Error:> Cannot re-connect reliably to server which doesn't support UIDL.
+=back
+
+Error: Cannot re-connect reliably to server which doesn't support UIDL.
+
+=over 4
 
 The connection to the remote POP3 was lost, and cannot be re-established
 because the server's protocol implementation lacks the necessary information.
 
-I<Error:> Cannot read POP3 from socket: $!
+=back
+
+Error: Cannot read POP3 from socket: $!
+
+=over 4
 
 It is not possible to read the success status of the previously given POP3
 command.  Connection lost?
 
-I<Error:> Cannot write POP3 to socket: $@
+=back
+
+Error: Cannot write POP3 to socket: $@
+
+=over 4
 
 It is not possible to send a protocol command to the POP3 server.  Connection
 lost?
 
-I<Error:> Could not authenticate using '$some' method.
+=back
+
+Error: Could not authenticate using '$some' method.
+
+=over 4
 
 The authenication method to get access to the POP3 server did not result in
 a connection.  Maybe you need a different authentication protocol, or your
 username with password are invalid.
 
-I<Error:> Could not authenticate using any login method.
+=back
+
+Error: Could not authenticate using any login method.
+
+=over 4
 
 No authentication method was explicitly prescribed, so both AUTH and APOP were
 tried.  However, both failed.  There are other authentication methods, which
 are not defined by the main POP3 RFC rfc1939.  These protocols are not
 implemented yet.  Please contribute your implementation.
 
-I<Error:> POP3 Could not do a STAT
+=back
+
+Error: POP3 Could not do a STAT
+
+=over 4
 
 For some weird reason, the server does not respond to the STAT call.
 
-I<Error:> POP3 requires a username and password.
+=back
+
+Error: POP3 requires a username and password.
+
+=over 4
 
 No username and/or no password specified for this POP3 folder, although
 these are obligatory parts in the protocol.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -503,16 +541,22 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Error:> Server at $host:$port does not seem to be talking POP3.
+=back
+
+Error: Server at $host:$port does not seem to be talking POP3.
+
+=over 4
 
 The remote server did not respond to an initial exchange of messages as is
 expected by the POP3 protocol.  The server has probably a different
 service on the specified port.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

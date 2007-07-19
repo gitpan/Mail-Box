@@ -76,7 +76,7 @@ overload: B<"">
 The folder objects stringify to their name.  This simplifies especially
 print statements and sorting a lot.
 
-I<Example:> use overloaded folder as string
+example: use overloaded folder as string
 
  # Three lines with overloading: resp. cmp, @{}, and ""
  foreach my $folder (sort @folders)
@@ -93,7 +93,7 @@ overload: B<@{}>
 When the folder is used as if it is a reference to an array, it will
 show the messages, like L<messages()|Mail::Box/"The messages"> and L<message()|Mail::Box/"The messages"> would do.
 
-I<Example:> use overloaded folder as array
+example: use overloaded folder as array
 
  my $msg = $folder->[3];
  my $msg = $folder->message(3);          # same
@@ -544,7 +544,7 @@ of the folders.... but maybe not, depending on the folder types involved.
 
 =back
 
-I<Example:> 
+example: 
 
  $folder->addMessage($msg);
  $folder->addMessages($msg1, $msg2, ...);
@@ -558,7 +558,7 @@ $obj-E<gt>B<addMessages>(MESSAGE [, MESSAGE, ...])
 Adds a set of MESSAGE objects to the open folder at once.  For some folder
 types this may be faster than adding them one at a time.
 
-I<Example:> 
+example: 
 
  $folder->addMessages($msg1, $msg2, ...);
 
@@ -614,7 +614,7 @@ limited number of folder types, otherwise no-op.
 
 =back
 
-I<Example:> 
+example: 
 
  my $message = Mail::Message->new(...);
  Mail::Box::Mbox->appendMessages
@@ -680,7 +680,7 @@ folder if there are any changes.
 
 =back
 
-I<Example:> 
+example: 
 
  my $f = $mgr->open('spam', access => 'rw')
      or die "Cannot open spam: $!\n";
@@ -747,7 +747,7 @@ of true will select the default.
 
 =back
 
-I<Example:> 
+example: 
 
  my $mgr  = Mail::Box::Manager->new;
  my $imap = $mgr->open(type => 'imap', host => ...);
@@ -776,13 +776,13 @@ data if the system crashes or if there are software problems.
 
 . recursive => BOOLEAN
 
-I<Example:> removing an open folder
+example: removing an open folder
 
  my $folder = Mail::Box::Mbox->new(folder => 'InBox', access => 'rw');
  ... some other code ...
  $folder->delete;
 
-I<Example:> removing an closed folder
+example: removing an closed folder
 
  my $folder = Mail::Box::Mbox->new(folder => 'INBOX', access => 'd');
  $folder->delete;
@@ -795,7 +795,7 @@ $obj-E<gt>B<folderdir>([DIRECTORY])
 
 Get or set the DIRECTORY which is used to store mail-folders by default.
 
-I<Example:> 
+example: 
 
  print $folder->folderdir;
  $folder->folderdir("$ENV{HOME}/nsmail");
@@ -809,7 +809,7 @@ $obj-E<gt>B<name>
 Returns the name of the folder.  What the name represents depends on
 the actual type of mailbox used.
 
-I<Example:> 
+example: 
 
  print $folder->name;
  print "$folder";       # overloaded stringification
@@ -867,7 +867,7 @@ $obj-E<gt>B<url>
 Represent the folder as a URL (Universal Resource Locator) string.  You may
 pass such a URL as folder name to L<Mail::Box::Manager::open()|Mail::Box::Manager/"Manage open folders">.
 
-I<Example:> 
+example: 
 
  print $folder->url;
  # may result in
@@ -913,7 +913,7 @@ $obj-E<gt>B<writable>
 
 Checks whether the current folder is writable.
 
-I<Example:> 
+example: 
 
  $folder->addMessage($msg) if $folder->writable;
 
@@ -931,7 +931,7 @@ You may specify a NUMBER, to specify that that message number is to be
 selected as current, or a MESSAGE/MESSAGE-ID (as long as you are sure
 that the header is already loaded, otherwise they are not recognized).
 
-I<Example:> 
+example: 
 
  $folder->current(0);
  $folder->current($message);
@@ -958,7 +958,7 @@ BOOLEAN indicates whether any true value or any false value is to
 be found.  By default, a true value is searched for.  When a message
 does not have the requested label, it is taken as false.
 
-I<Example:> looking for a labeled message
+example: looking for a labeled message
 
  my $current = $folder->findFirstLabeled('current');
 
@@ -976,7 +976,7 @@ $obj-E<gt>B<message>(INDEX [,MESSAGE])
 Get or set a message with on a certain index.  Messages which are flagged
 for deletion are counted.  Negative indexes start at the end of the folder.
 
-I<Example:> 
+example: 
 
  my $msg = $folder->message(3);
  $folder->message(3)->delete;   # status changes to `deleted'
@@ -1005,7 +1005,7 @@ The MESSAGE-ID may still be in angles, which will be stripped.  In that
 case blanks (which origin from header line folding) are removed too.  Other
 info around the angles will be removed too.
 
-I<Example:> 
+example: 
 
  my $msg = $folder->messageId('<complex-message.id>');
  $folder->messageId("<complex-message\n.id>", $msg);
@@ -1024,7 +1024,7 @@ those of messages which are to be deleted.
 For some folder-types (like MH), this method may cause all message-files
 to be read.  See their respective manual pages.
 
-I<Example:> 
+example: 
 
  foreach my $id ($folder->messageIds) {
     $folder->messageId($id)->print;
@@ -1055,7 +1055,7 @@ with an exclamation mark (!), the search result is reversed.
 For more complex searches, you can specify a FILTER, which is
 simply a code reference.  The message is passed as only argument.
 
-I<Example:> 
+example: 
 
  foreach my $message ($folder->messages) {...}
  foreach my $message (@$folder) {...}
@@ -1130,7 +1130,7 @@ Returned are the message-ids which were not found during the scan.
 Be warned that a message-id could already be known and therefore not
 found: check that first.
 
-I<Example:> scanning through a folder for a message
+example: scanning through a folder for a message
 
  my $refs   = $msg->get('References') or return;
  my @msgids = $ref =~ m/\<([^>]+\>/g;
@@ -1188,7 +1188,7 @@ to save to.
 
 =back
 
-I<Example:> 
+example: 
 
  my $folder = $mgr->open('=in/new');
  my @subs = $folder->listSubFolders;
@@ -1208,7 +1208,7 @@ Returns the constructed name of the folder with NAME, which is a
 sub-folder of this current one.  You have either to call this method
 as instance method, or specify a PARENTNAME.
 
-I<Example:> how to get the name of a subfolder
+example: how to get the name of a subfolder
 
  my $sub = Mail::Box::Mbox->nameOfSubfolder('xyz', 'abc');
  print $sub;                        # abc/xyz
@@ -1239,7 +1239,7 @@ $obj-E<gt>B<openSubFolder>(SUBNAME, OPTIONS)
 Open (or create, if it does not exist yet) a new subfolder in an
 existing folder.
 
-I<Example:> 
+example: 
 
  my $folder = Mail::Box::Mbox->new(folder => '=Inbox');
  my $sub    = $folder->openSubFolder('read');
@@ -1331,7 +1331,7 @@ to be found in this default DIRECTORY.
 
 =back
 
-I<Example:> 
+example: 
 
  Mail::Box::Mbox->foundIn('=markov',
      folderdir => "$ENV{HOME}/Mail");
@@ -1377,7 +1377,7 @@ object directly.
 NOTE: if you are copying messages from one folder to another, use
 L<addMessages()|Mail::Box/"The folder"> instead of C<read()>.
 
-I<Example:> 
+example: 
 
  my $mgr = Mail::Box::Manager->new;
  my $folder = $mgr->open('InBox');             # implies read
@@ -1799,61 +1799,99 @@ them, like sub-folder support for MBOX.
 
 =head1 DIAGNOSTICS
 
-I<Warning:> Changes not written to read-only folder $self.
+Warning: Changes not written to read-only folder $self.
+
+=over 4
 
 You have opened the folder read-only --which is the default set
 by L<new(access)|Mail::Box/"Constructors">--, made modifications, and now want to close it.
 Set L<close(force)|Mail::Box/"The folder"> if you want to overrule the access mode, or close
 the folder with L<close(write)|Mail::Box/"The folder"> set to C<NEVER>.
 
-I<Error:> Copying failed for one message.
+=back
+
+Error: Copying failed for one message.
+
+=over 4
 
 For some reason, for instance disc full, removed by external process, or
 read-protection, it is impossible to copy one of the messages.  Copying will
 proceed for the other messages.
 
-I<Error:> Destination folder $name is not writable.
+=back
+
+Error: Destination folder $name is not writable.
+
+=over 4
 
 The folder where the messages are copied to is not opened with write
 access (see L<new(access)|Mail::Box/"Constructors">).  This has no relation with write permission
 to the folder which is controled by your operating system.
 
-I<Warning:> Different messages with id $msgid
+=back
+
+Warning: Different messages with id $msgid
+
+=over 4
 
 The message id is discovered more than once within the same folder, but the
 content of the message seems to be different.  This should not be possible:
 each message must be unique.
 
-I<Error:> Folder $name is opened read-only
+=back
+
+Error: Folder $name is opened read-only
+
+=over 4
 
 You can not write to this folder unless you have opened the folder to
 write or append with L<new(access)|Mail::Box/"Constructors">, or the C<force> option is set true.
 
-I<Error:> Folder $name not deleted: not writable.
+=back
+
+Error: Folder $name not deleted: not writable.
+
+=over 4
 
 The folder must be opened with write access via L<new(access)|Mail::Box/"Constructors">, otherwise
 removing it will be refused.  So, you may have write-access according to
 the operating system, but that will not automatically mean that this
 C<delete> method permits you to.  The reverse remark is valid as well.
 
-I<Error:> Invalid timespan '$timespan' specified.
+=back
+
+Error: Invalid timespan '$timespan' specified.
+
+=over 4
 
 The string does not follow the strict rules of the time span syntax which
 is permitted as parameter.
 
-I<Warning:> Message-id '$msgid' does not contain a domain.
+=back
+
+Warning: Message-id '$msgid' does not contain a domain.
+
+=over 4
 
 According to the RFCs, message-ids need to contain a unique random part,
 then an C<@>, and then a domain name.  This is made to avoid the creation
 of two messages with the same id.  The warning emerges when the C<@> is
 missing from the string.
 
-I<Error:> No folder name specified.
+=back
+
+Error: No folder name specified.
+
+=over 4
 
 You did not specify the name of a folder to be opened.  Use the
 L<new(folder)|Mail::Box/"Constructors"> option or set the C<MAIL> environment variable.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -1861,21 +1899,31 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Error:> Unable to create subfolder $name of $folder.
+=back
+
+Error: Unable to create subfolder $name of $folder.
+
+=over 4
 
 The copy includes the subfolders, but for some reason it was not possible
 to copy one of these.  Copying will proceed for all other sub-folders.
 
-I<Error:> Writing folder $name failed
+=back
+
+Error: Writing folder $name failed
+
+=over 4
 
 For some reason (you probably got more error messages about this problem)
 it is impossible to write the folder, although you should because there
 were changes made.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

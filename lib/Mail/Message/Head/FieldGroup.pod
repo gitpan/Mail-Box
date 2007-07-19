@@ -134,14 +134,14 @@ is already attached to a real message header, it will appear in that
 one as well as being registed in this set.  If no header is defined,
 the field only appears internally.
 
-I<Example:> adding a field to a detached list group
+example: adding a field to a detached list group
 
  my $this = Mail::Message::Head::ListGroup->new(...);
  $this->add('List-Id' => 'mailbox');
  $msg->addListGroup($this);
  $msg->send;
 
-I<Example:> adding a field to an attached list group
+example: adding a field to an attached list group
 
  my $lg = Mail::Message::Head::ListGroup->from($msg);
  $lg->add('List-Id' => 'mailbox');
@@ -163,7 +163,7 @@ $obj-E<gt>B<attach>(HEAD)
 Add a group of fields to a message HEAD.  The fields will be cloned(!)
 into the header, so that the field group object can be used again.
 
-I<Example:> attaching a list group to a message
+example: attaching a list group to a message
 
  my $lg = Mail::Message::Head::ListGroup->new(...);
  $lg->attach($msg->head);
@@ -414,7 +414,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Package $package does not implement $method.
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -422,10 +424,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

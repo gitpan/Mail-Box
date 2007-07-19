@@ -28,7 +28,7 @@ may attach L<Mail::Internet|Mail::Internet> or MIME::Entity objects if you want 
 L<Mail::Message::coerce()|Mail::Message/"Internals">.  A new body with attached messages is
 returned.
 
-I<Example:> 
+example: 
 
  my $pgpkey = Mail::Message::Body::File->new(file => 'a.pgp');
  my $msg    = Mail::Message->buildFromBody(
@@ -58,7 +58,7 @@ C<undef> (which will be skipped),
 a scalar (which is split into lines), or
 an array of scalars (each providing one line).
 
-I<Example:> 
+example: 
 
  # all arguments are Mail::Message::Body's.
  my $sum = $body->concatenate($preamble, $body, $epilogue, "-- \n" , $sig);
@@ -78,7 +78,7 @@ body's original line.  DO NOT CHANGE C<$_>!!!  The result of the routine
 is taken as new line.  When the routine returns C<undef>, the line will be
 skipped.
 
-I<Example:> 
+example: 
 
  my $content  = $msg->decoded;
  my $reply    = $content->foreachLine( sub { '> '.$_ } );
@@ -147,7 +147,7 @@ contain the stripped signature)
 
 =back
 
-I<Example:> 
+example: 
 
  my $start = $message->decoded;
  my $start = $body->decoded;
@@ -161,8 +161,8 @@ I<Example:>
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

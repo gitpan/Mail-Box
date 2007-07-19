@@ -17,19 +17,23 @@ Mail::Transport::IMAP4 - proxy to Mail::IMAPClient
 
 =head1 DESCRIPTION
 
-****** UNDER DEVELOPMENT *****, please help testing
-
 The IMAP4 protocol is quite complicated: it is feature rich and allows
 verious asynchronous actions.  The main document describing IMAP is
 rfc3501 (which obsoleted the original specification of protocol 4r1
 in rfc2060 in March 2003).
 
 This package, as part of MailBox, does not implement the actual
-protocol itself but uses Mail::IMAPClient to do the work.  The task
+protocol itself but uses Mail::IMAPClient to do the work. The task
 for this package is to hide as many differences between that module's
-interface and the common L<Mail::Box|Mail::Box> folder types.  Multiple
+interface and the common MailBox folder types.  Multiple
 L<Mail::Box::IMAP4|Mail::Box::IMAP4> folders can share one L<Mail::Transport::IMAP4|Mail::Transport::IMAP4>
 connection.
+
+The Mail::IMAPClient module is the best IMAP4 implementation for
+Perl5, but is not maintained.  There are many known problems with the
+module, and solving those is outside the scope of MailBox.  See
+F<http://rt.cpan.org/Public/Dist/Display.html?Name=Mail-IMAPClient>
+for all the reported bugs.
 
 =head1 METHODS
 
@@ -193,7 +197,7 @@ An ARRAY as TYPE can be used to specify both mechanism as callback.  When
 no array is used, callback of the pair is set to C<undef>.  See
 L<Mail::IMAPClient/authenticate> for the gory details.
 
-I<Example:> 
+example: 
 
  $transporter->authentication('CRAM-MD5', [MY_AUTH => \&c], 'PLAIN');
 
@@ -308,7 +312,7 @@ their value may either by set or cleared.  See L<getFlags()|Mail::Transport::IMA
 Unknown flags in LIST are stripped from their backslash and lower-cased.
 For instance, '\SomeWeirdFlag' will become `someweirdflag => 1'.
 
-I<Example:> translating IMAP4 flags into MailBox flags
+example: translating IMAP4 flags into MailBox flags
 
  my @flags  = ('\Seen', '\Flagged');
  my $labels = Mail::Transport::IMAP4->flags2labels(SET => @flags);
@@ -541,17 +545,39 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Cannot connect to $host:$port for IMAP4: $!
+Error: Cannot connect to $host:$port for IMAP4: $!
 
-I<Error:> IMAP cannot connect to $host: $@
+=over 4
 
-I<Notice:> IMAP4 authenication $mechanism to $host:$port successful
+=back
 
-I<Error:> IMAP4 requires a username and password
+Error: IMAP cannot connect to $host: $@
 
-I<Error:> IMAP4 username $username requires a password
+=over 4
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Notice: IMAP4 authenication $mechanism to $host:$port successful
+
+=over 4
+
+=back
+
+Error: IMAP4 requires a username and password
+
+=over 4
+
+=back
+
+Error: IMAP4 username $username requires a password
+
+=over 4
+
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -559,10 +585,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

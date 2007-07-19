@@ -622,7 +622,7 @@ Mail::Box::Message::Destructed-E<gt>B<coerce>(MESSAGE)
 
 Coerce a L<Mail::Box::Message|Mail::Box::Message> into destruction.
 
-I<Example:> of coercion to death
+example: of coercion to death
 
  Mail::Box::Message::Destructed->coerce($folder->message(1));
  $folder->message(1)->destruct;  # same
@@ -849,31 +849,53 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Cannot coerce a (class) into destruction
+Error: Cannot coerce a (class) into destruction
+
+=over 4
 
 Only real L<Mail::Box::Message|Mail::Box::Message> objects can get destructed into
 L<Mail::Box::Message::Destructed|Mail::Box::Message::Destructed> objects.  L<Mail::Message|Mail::Message> free
 their memory immediately when the last reference is lost.
 
-I<Error:> Cannot include forward source as $include.
+=back
+
+Error: Cannot include forward source as $include.
+
+=over 4
 
 Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
 C<NO>, C<INLINE>, C<ATTACH>, and C<ENCAPSULATE>.
 
-I<Error:> Cannot include reply source as $include.
+=back
+
+Error: Cannot include reply source as $include.
+
+=over 4
 
 Unknown alternative for the C<include> option of L<reply()|Mail::Message::Construct::Reply/"Constructing a message">.  Valid
 choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
-I<Error:> Destructed message has no labels except 'deleted'
+=back
 
-I<Error:> Destructed messages can not be undeleted
+Error: Destructed message has no labels except 'deleted'
+
+=over 4
+
+=back
+
+Error: Destructed messages can not be undeleted
+
+=over 4
 
 Once a message is destructed, it can not be revived.  Destruction is an
 optimization in memory usage: if you need an undelete functionality, then
 you can not use L<Mail::Box::Message::destruct()|Mail::Box::Message/"Cleanup">.
 
-I<Error:> Method bounce requires To, Cc, or Bcc
+=back
+
+Error: Method bounce requires To, Cc, or Bcc
+
+=over 4
 
 The message L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> method forwards a received message off to someone
 else without modification; you must specified it's new destination.
@@ -881,23 +903,47 @@ If you have the urge not to specify any destination, you probably
 are looking for L<reply()|Mail::Message::Construct::Reply/"Constructing a message">. When you wish to modify the content, use
 L<forward()|Mail::Message::Construct::Forward/"Constructing a message">.
 
-I<Error:> Method forwardAttach requires a preamble
+=back
 
-I<Error:> Method forwardEncapsulate requires a preamble
+Error: Method forwardAttach requires a preamble
 
-I<Error:> No address to create forwarded to.
+=over 4
+
+=back
+
+Error: Method forwardEncapsulate requires a preamble
+
+=over 4
+
+=back
+
+Error: No address to create forwarded to.
+
+=over 4
 
 If a forward message is created, a destination address must be specified.
 
-I<Error:> No default mailer found to send message.
+=back
+
+Error: No default mailer found to send message.
+
+=over 4
 
 The message L<send()|Mail::Message/"The message"> mechanism had not enough information to automatically
 find a mail transfer agent to sent this message.  Specify a mailer
 explicitly using the C<via> options.
 
-I<Error:> No rebuild rule $name defined.
+=back
 
-I<Error:> Only build() Mail::Message's; they are not in a folder yet
+Error: No rebuild rule $name defined.
+
+=over 4
+
+=back
+
+Error: Only build() Mail::Message's; they are not in a folder yet
+
+=over 4
 
 You may wish to construct a message to be stored in a some kind
 of folder, but you need to do that in two steps.  First, create a
@@ -905,7 +951,11 @@ normal L<Mail::Message|Mail::Message>, and then add it to the folder.  During th
 L<Mail::Box::addMessage()|Mail::Box/"The folder"> process, the message will get L<coerce()|Mail::Box::Message::Destructed/"METHODS">-d
 into the right message type, adding storage information and the like.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -913,23 +963,33 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Error:> You cannot instantiate a destructed message
+=back
+
+Error: You cannot instantiate a destructed message
+
+=over 4
 
 You cannot instantiate a destructed message object directly.  Destruction
 is done by calling L<Mail::Box::Message::destruct()|Mail::Box::Message/"Cleanup"> on any existing
 folder message.
 
-I<Error:> You cannot take the head/body of a destructed message
+=back
+
+Error: You cannot take the head/body of a destructed message
+
+=over 4
 
 The message originated from a folder, but its memory has been freed-up
 forcefully by means of L<Mail::Box::Message::destruct()|Mail::Box::Message/"Cleanup">.  Apparently,
 your program still tries to get to the header or body data after this
 destruction, which is not possible.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -65,7 +65,7 @@ Make a copy of the header, optionally limited only to the header lines
 specified by NAMES.  See L<grepNames()|Mail::Message::Head::Complete/"Access to the header"> on the way these fields can be
 used.
 
-I<Example:> 
+example: 
 
  my $newhead = $head->clone('Subject', 'Received');
 
@@ -164,7 +164,7 @@ $obj-E<gt>B<wrap>(INTEGER)
 Re-fold all fields from the header to contain at most INTEGER number of
 characters per line.
 
-I<Example:> re-folding a header
+example: re-folding a header
 
  $msg->head->wrap(78);
 
@@ -192,7 +192,7 @@ adviced to let MailBox do the folding for you.
 The return value of this method is the L<Mail::Message::Field|Mail::Message::Field> object
 which is created (or was specified).
 
-I<Example:> 
+example: 
 
  my $head  = Mail::Message::Head->new;
  $head->add('Subject: hi!');
@@ -216,7 +216,7 @@ When you have a list group prepared, you can add it later using this
 method.  You will get your private copy of the list group data in
 return, because the same group can be used for multiple messages.
 
-I<Example:> of adding a list group to a header
+example: of adding a list group to a header
 
  my $lg = Mail::Message::Head::ListGroup->new(...);
  my $own_lg = $msg->head->addListGroup($lg);
@@ -236,7 +236,7 @@ These header lines have nothing to do with the user's sense
 of C<reply> or C<forward> actions: these lines trace the e-mail
 transport mechanism.
 
-I<Example:> 
+example: 
 
  my $rg = Mail::Message::Head::ResentGroup->new(head => $head, ...);
  $head->addResentGroup($rg);
@@ -257,7 +257,7 @@ When you have a spam group prepared, you can add it later using this
 method.  You will get your private copy of the spam group data in
 return, because the same group can be used for multiple messages.
 
-I<Example:> of adding a spam group to a header
+example: of adding a spam group to a header
 
  my $sg = Mail::Message::Head::SpamGroup->new(...);
  my $own_sg = $msg->head->addSpamGroup($sg);
@@ -305,7 +305,7 @@ The NAMES are considered regular expressions, and will all be matched
 case insensitive and attached to the front of the string only.  You may
 also specify one or more prepared regexes.
 
-I<Example:> 
+example: 
 
  my @f  = $head->grepNames();       # same as $head->orderedFields
  my @f  = $head->grepNames('X-', 'Subject', ');
@@ -321,7 +321,7 @@ Returns a I<list group> description: the set of headers which form
 the information about mailing list software used to transport the
 message.  See also L<addListGroup()|Mail::Message::Head::Complete/"Access to the header"> and L<removeListGroup()|Mail::Message::Head::Complete/"Access to the header">.
 
-I<Example:> use of listGroup()
+example: use of listGroup()
 
  if(my $lg = $msg->head->listGroup)
  {  $lg->print(\*STDERR);
@@ -350,7 +350,7 @@ Print all headers to the specified FILEHANDLE, by default the selected
 filehandle.  See L<printUndisclosed()|Mail::Message::Head::Complete/"Access to the header"> to limit the headers to include
 only the public headers.
 
-I<Example:> 
+example: 
 
  $head->print(\*OUT);
  $head->print;
@@ -369,7 +369,7 @@ FILEHANDLE.  In this case, however, only the fields with names as specified by
 STRING (case insensative) or REGEXP are printed.  They will stay the in-order
 of the source header.
 
-I<Example:> printing only a subset of the fields
+example: printing only a subset of the fields
 
  $head->printSelected(STDOUT, qw/Subject From To/, qr/^x\-(spam|xyz)\-/i)
 
@@ -528,7 +528,7 @@ be removed. The location of removed fields in the header order will be
 remembered. Fields with the same name which are added later will appear at
 the remembered position.  This is equivalent to the L<delete()|Mail::Message::Head::Complete/"Access to the header"> method.
 
-I<Example:> 
+example: 
 
  # reduce number of 'Keywords' lines to last 5)
  my @keywords = $head->get('Keywords');
@@ -559,7 +559,7 @@ Returns whether one of the spam groups defines a report about spam.  If there
 are not header fields in the message which relate to spam-detection
 software, C<undef> is returned.  The spamgroups which report spam are returned.
 
-I<Example:> 
+example: 
 
  $message->delete if $message->spamDetected;
 
@@ -581,7 +581,7 @@ In scalar context, with exactly one NAME specified, that group will be
 returned.  With more NAMES or without NAMES, a list will be returned
 (which defaults to the length of the list in scalar context).
 
-I<Example:> use of listGroup()
+example: use of listGroup()
 
  my @sg = $msg->head->spamGroups;
  $sg[0]->print(\*STDERR);
@@ -656,13 +656,13 @@ headers, if they are present, and C<undef> otherwise.
 The timestamp is encoded as C<time> is on your system (see perldoc -f
 time), and as such usable for the C<gmtime> and C<localtime> methods.
 
-I<Example:> of time-sorting folders with received messages
+example: of time-sorting folders with received messages
 
  my $folder = $mgr->open('InBox');
  my @messages = sort {$a->recvstamp <=> $b->recvstamp}
                    $folder->messages;
 
-I<Example:> of time-sorting messages of mixed origin
+example: of time-sorting messages of mixed origin
 
  my $folder = $mgr->open('MyFolder');
 
@@ -771,7 +771,7 @@ In any case, a subroutine will be created to be used.  A reference
 to that will be returned.  When the method is called without arguments,
 but no subroutine is defined yet, one will be created.
 
-I<Example:> setting a message prefix
+example: setting a message prefix
 
   $head->messageIdPrefix('prefix');
   Mail::Message::Head::Complete->messageIdPrefix('prefix');
@@ -937,15 +937,25 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Warning:> Cannot remove field $name from header: not found.
+Warning: Cannot remove field $name from header: not found.
+
+=over 4
 
 You ask to remove a field which is not known in the header.  Using
 L<delete()|Mail::Message::Head::Complete/"Access to the header">, L<reset()|Mail::Message::Head::Complete/"Access to the header">, or L<set()|Mail::Message::Head::Complete/"Access to the header"> to do the job will not result
 in warnings: those methods check the existence of the field first.
 
-I<Warning:> Field objects have an implied name ($name)
+=back
 
-I<Error:> Package $package does not implement $method.
+Warning: Field objects have an implied name ($name)
+
+=over 4
+
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -953,10 +963,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

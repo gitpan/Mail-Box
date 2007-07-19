@@ -24,6 +24,10 @@ The package contains various translators which handle HTML or XHTML
 without the help of external modules.  There are more HTML related modules,
 which do require extra packages to be installed.
 
+=head2 Converters between message objects
+
+=head2 Other converters
+
 =head1 METHODS
 
 =head2 Constructors
@@ -105,7 +109,7 @@ the whole text is returned as one.
 If you need to add lines to the head (for instance, http-equiv lines), then
 splice them before the last element in the returned list.
 
-I<Example:> 
+example: 
 
  my @head = $html->headToHtmlHead
      ( $head
@@ -126,7 +130,7 @@ table shape.  The optional TABLE-PARAMS are added as parameters to the
 produced TABLE tag.  In list context, the separate lines are returned.
 In scalar context, everything is returned as one.
 
-I<Example:> 
+example: 
 
  print $html->headToHtmlTable($head, 'width="50%"');
 
@@ -275,7 +279,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Package $package does not implement $method.
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -283,10 +289,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

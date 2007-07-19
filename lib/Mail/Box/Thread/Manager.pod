@@ -138,7 +138,7 @@ is reached.  Gives the best quality results, but may perform bad.
 
 =back
 
-I<Example:> 
+example: 
 
  use Mail::Box::Manager;
  my $mgr     = new Mail::Box::Manager;
@@ -176,7 +176,7 @@ From the folders, the messages which have their header lines parsed
 Messages of which the header is known only later will have to report this
 (see L<toBeThreaded()|Mail::Box::Thread::Manager/"Internals">).
 
-I<Example:> 
+example: 
 
  $threads->includeFolder($inbox, $draft);
 
@@ -189,7 +189,7 @@ $obj-E<gt>B<removeFolder>(FOLDERS)
 Remove one or more folders from the list of folders whose messages are
 organized in the threads maintained by this object.
 
-I<Example:> 
+example: 
 
  $threads->removeFolder($draft);
 
@@ -257,7 +257,7 @@ Usually, all messages which are in reply of this message are dated later
 than the specified one.  All headers of messages later than this one are
 getting parsed first, for each folder in this threads-object.
 
-I<Example:> 
+example: 
 
  my $threads = $mgr->threads(folder => $inbox);
  my $thread  = $threads->thread($inbox->message(3));
@@ -534,7 +534,9 @@ automatically included.
 
 =head1 DIAGNOSTICS
 
-I<Error:> Package $package does not implement $method.
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -542,10 +544,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

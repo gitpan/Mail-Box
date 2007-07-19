@@ -181,7 +181,7 @@ $obj-E<gt>B<filename>([FILENAME])
 Returns the filename which is used to lock the folder, optionally after
 setting it to the specified FILENAME.
 
-I<Example:> 
+example: 
 
  print $locker->filename;
 
@@ -203,7 +203,7 @@ Returns the method used to lock the folder. See the L<new(method)|Mail::Box::Loc
 details on how to specify the lock method.  The name of the method is
 returned in upper-case.
 
-I<Example:> 
+example: 
 
  if($locker->name eq 'FLOCK') ...
 
@@ -217,7 +217,7 @@ $obj-E<gt>B<hasLock>
 
 Check whether the folder has the lock.
 
-I<Example:> 
+example: 
 
  if($locker->hasLock) {...}
  if($folder->locker->hasLock) {...}
@@ -230,7 +230,7 @@ $obj-E<gt>B<isLocked>
 
 Test if the folder is locked by this or a different application.
 
-I<Example:> 
+example: 
 
  if($locker->isLocked) {...}
  if($folder->locker->isLocked) {...}
@@ -243,7 +243,7 @@ $obj-E<gt>B<lock>(FOLDER)
 
 Get a lock on a folder.  This will return false if the lock fails.
 
-I<Example:> 
+example: 
 
  die unless $locker->lock;
  if($folder->locker->lock) {...}
@@ -256,7 +256,7 @@ $obj-E<gt>B<unlock>
 
 Undo the lock on a folder.
 
-I<Example:> 
+example: 
 
  $locker->unlock;
  $folder->locker->unlock;
@@ -388,7 +388,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Package $package does not implement $method.
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -396,10 +398,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -113,7 +113,7 @@ context they deliver a value (the internally used value), and in string
 context the string name.  Be warned that the string is always in singular
 form!
 
-I<Example:> setting loglevels
+example: setting loglevels
 
  my ($loglevel, $tracelevel) = Mail::Reporter->defaultTrace;
  Mail::Reporter->defaultTrace('NOTICES');
@@ -128,7 +128,7 @@ I<Example:> setting loglevels
  $folder->defaultTrace('DEBUG');   # Still set as global default!
  $folder->trace('DEBUG');          # local default
 
-I<Example:> installing a callback
+example: installing a callback
 
  Mail::Reporter->defaultTrace
 
@@ -168,7 +168,7 @@ Each log-entry has a LEVEL and a text string which will
 be constructed by joining the STRINGS.  If there is no newline, it will
 be added.
 
-I<Example:> 
+example: 
 
  print $message->log;      # may print "NOTICE"
  print $message->log +0;   # may print "3"
@@ -197,7 +197,7 @@ back, which contains the number and the singular form.
 The higher the number, the more important the message.
 Only messages about C<INTERNAL> problems are more important than C<NONE>.
 
-I<Example:> 
+example: 
 
  my $r = Mail::Reporter->logPriority('WARNINGS');
  my $r = Mail::Reporter->logPriority('WARNING');    # same
@@ -215,7 +215,7 @@ $obj-E<gt>B<logSettings>
 Returns a list of C<(key => value)> pairs which can be used to initiate
 a new object with the same log-settings as this one.
 
-I<Example:> 
+example: 
 
  $head->new($folder->logSettings);
 
@@ -240,7 +240,7 @@ for that level is returned.
 In case no LEVEL is specified, you get all messages each as reference
 to a tuple with level and message.
 
-I<Example:> 
+example: 
 
  my @warns = $message->report('WARNINGS');
    # previous indirectly callable with
@@ -267,7 +267,7 @@ which are maintained by this object.  This will return a list of triplets,
 each containing a reference to the object which caught the report, the
 level of the report, and the message.
 
-I<Example:> 
+example: 
 
  my $folder = Mail::Box::Manager->new->open(folder => 'inbox');
  my @reports = $folder->reportAll;
@@ -325,7 +325,9 @@ where during global destructions references cannot be used.
 
 =head1 DIAGNOSTICS
 
-I<Error:> Package $package does not implement $method.
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -333,10 +335,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

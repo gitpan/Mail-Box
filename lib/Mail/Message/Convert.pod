@@ -8,6 +8,7 @@ Mail::Message::Convert - conversions between message types
    is a Mail::Reporter
 
  Mail::Message::Convert is extended by
+   Mail::Message::Convert::EmailSimple
    Mail::Message::Convert::Html
    Mail::Message::Convert::HtmlFormatPS
    Mail::Message::Convert::HtmlFormatText
@@ -22,16 +23,32 @@ Available methods are very converter-specific.
 =head1 DESCRIPTION
 
 This class is the base for various message (and message parts) converters.
-When the conversion does not change the contents of the body, most of
-the converters will return the source object.  In any case, an
-L<Mail::Message::Body|Mail::Message::Body> is returned with the conversion applied but as
-much of the other meta data stored in the source body unchanged.
 
-In most cases, converters are created by Mail::Message when they are
-needed; have a look at the C<encode> and C<decoded> methods on message
+=head2 Converters between message objects
+
+Internally, the L<Mail::Message::coerce()|Mail::Message/"Internals"> is called when foreign objects
+are used where message objects are expected.  That method will automatically
+create the converting objects, and re-use them.
+
+=over 4
+
+=item * L<Mail::Message::Convert::MailInternet|Mail::Message::Convert::MailInternet>
+
+Converts the simple L<Mail::Internet|Mail::Internet> messages into L<Mail::Message|Mail::Message>
 objects.
 
-The following converters are currently available:
+=item * L<Mail::Message::Convert::MimeEntity|Mail::Message::Convert::MimeEntity>
+
+Converts the more complicated MIME::Entity messages into
+L<Mail::Message|Mail::Message> objects.
+
+=item * L<Mail::Message::Convert::EmailSimple|Mail::Message::Convert::EmailSimple>
+
+Converts Email::Simple messages into L<Mail::Message|Mail::Message> objects.
+
+=back
+
+=head2 Other converters
 
 =over 4
 
@@ -48,16 +65,6 @@ HTML::FormatText module.
 
 Converts HTML body objects to Postscript objects using the
 HTML::FormatPS module.
-
-=item * L<Mail::Message::Convert::MailInternet|Mail::Message::Convert::MailInternet>
-
-Converts the simple L<Mail::Internet|Mail::Internet> messages into L<Mail::Message|Mail::Message>
-objects.
-
-=item * L<Mail::Message::Convert::MimeEntity|Mail::Message::Convert::MimeEntity>
-
-Converts the more complicated MIME::Entity messages into
-L<Mail::Message|Mail::Message> objects.
 
 =item * L<Mail::Message::Convert::TextAutoformat|Mail::Message::Convert::TextAutoformat>
 
@@ -234,7 +241,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Package $package does not implement $method.
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -242,10 +251,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

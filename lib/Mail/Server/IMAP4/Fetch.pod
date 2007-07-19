@@ -93,7 +93,7 @@ The partnummer is a list of dot-separated positive integers, numbering
 (nested) parts in multi-part message bodies.  By default, the info of
 the main message is returned.
 
-I<Example:> 
+example: 
 
  my $partinfo = $msg->info->part('1.2.1');
  print $msg->info->part('3.3')->fetchBody;
@@ -109,7 +109,7 @@ selected filehandle.  When explicitly C<undef> is specified as handle,
 then the output will be returned as string.  
 Only a limited set of the information is displayed.
 
-I<Example:> 
+example: 
 
  my $imap = ...;
  $imap->printStructure(\*OUTPUT);
@@ -134,8 +134,8 @@ See
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -799,57 +799,95 @@ that the second situation is reached.
 
 =head1 DIAGNOSTICS
 
-I<Error:> Cannot append messages to folder file $filename: $!
+Error: Cannot append messages to folder file $filename: $!
+
+=over 4
 
 Appending messages to a not-opened file-organized folder may fail when the
 operating system does not allow write access to the file at hand.
 
-I<Error:> Cannot move away sub-folder $dir
+=back
 
-I<Warning:> Cannot remove folder $name file $filename: $!
+Error: Cannot move away sub-folder $dir
+
+=over 4
+
+=back
+
+Warning: Cannot remove folder $name file $filename: $!
+
+=over 4
 
 Writing an empty folder will usually cause that folder to be removed,
 which fails for the indicated reason.  L<new(remove_when_empty)|Mail::Box/"Constructors">
 
-I<Warning:> Cannot remove folder $name file $filename: $!
+=back
+
+Warning: Cannot remove folder $name file $filename: $!
+
+=over 4
 
 Writing an empty folder will usually cause that folder to be removed,
 which fails for the indicated reason.  L<new(remove_when_empty)|Mail::Box/"Constructors">
 controls whether the empty folder will removed; setting it to false
 (C<0>) may be needed to avoid this message.
 
-I<Error:> Cannot replace $filename by $tempname, to update folder $name: $!
+=back
+
+Error: Cannot replace $filename by $tempname, to update folder $name: $!
+
+=over 4
 
 The replace policy wrote a new folder file to update the existing, but
 was unable to give the final touch: replacing the old version of the
 folder file for the indicated reason.
 
-I<Warning:> Changes not written to read-only folder $self.
+=back
+
+Warning: Changes not written to read-only folder $self.
+
+=over 4
 
 You have opened the folder read-only --which is the default set
 by L<new(access)|Mail::Box/"Constructors">--, made modifications, and now want to close it.
 Set L<close(force)|Mail::Box/"The folder"> if you want to overrule the access mode, or close
 the folder with L<close(write)|Mail::Box/"The folder"> set to C<NEVER>.
 
-I<Error:> Copying failed for one message.
+=back
+
+Error: Copying failed for one message.
+
+=over 4
 
 For some reason, for instance disc full, removed by external process, or
 read-protection, it is impossible to copy one of the messages.  Copying will
 proceed for the other messages.
 
-I<Error:> Destination folder $name is not writable.
+=back
+
+Error: Destination folder $name is not writable.
+
+=over 4
 
 The folder where the messages are copied to is not opened with write
 access (see L<new(access)|Mail::Box/"Constructors">).  This has no relation with write permission
 to the folder which is controled by your operating system.
 
-I<Warning:> Different messages with id $msgid
+=back
+
+Warning: Different messages with id $msgid
+
+=over 4
 
 The message id is discovered more than once within the same folder, but the
 content of the message seems to be different.  This should not be possible:
 each message must be unique.
 
-I<Error:> File too short to get write message $nr ($size, $need)
+=back
+
+Error: File too short to get write message $nr ($size, $need)
+
+=over 4
 
 Mail::Box is lazy: it tries to leave messages in the folders until they
 are used, which saves time and memory usage.  When this message appears,
@@ -862,26 +900,42 @@ This message does appear regularly on Windows systems when using the
 to do with Windows incorrectly handling multiple filehandles open in the
 same file.
 
-I<Error:> Folder $name not deleted: not writable.
+=back
+
+Error: Folder $name not deleted: not writable.
+
+=over 4
 
 The folder must be opened with write access via L<new(access)|Mail::Box/"Constructors">, otherwise
 removing it will be refused.  So, you may have write-access according to
 the operating system, but that will not automatically mean that this
 C<delete> method permits you to.  The reverse remark is valid as well.
 
-I<Error:> Invalid timespan '$timespan' specified.
+=back
+
+Error: Invalid timespan '$timespan' specified.
+
+=over 4
 
 The string does not follow the strict rules of the time span syntax which
 is permitted as parameter.
 
-I<Warning:> Message-id '$msgid' does not contain a domain.
+=back
+
+Warning: Message-id '$msgid' does not contain a domain.
+
+=over 4
 
 According to the RFCs, message-ids need to contain a unique random part,
 then an C<@>, and then a domain name.  This is made to avoid the creation
 of two messages with the same id.  The warning emerges when the C<@> is
 missing from the string.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -889,21 +943,31 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Error:> Unable to create subfolder $name of $folder.
+=back
+
+Error: Unable to create subfolder $name of $folder.
+
+=over 4
 
 The copy includes the subfolders, but for some reason it was not possible
 to copy one of these.  Copying will proceed for all other sub-folders.
 
-I<Error:> Unable to update folder $self.
+=back
+
+Error: Unable to update folder $self.
+
+=over 4
 
 When a folder is to be written, both replace and inplace write policies are
 tried,  If both fail, the whole update fails.  You may see other, related,
 error messages to indicate the real problem.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

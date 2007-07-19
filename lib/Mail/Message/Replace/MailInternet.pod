@@ -152,7 +152,7 @@ Passed to L<Mail::Message::Replace::MailHeader::new(Modify)|Mail::Message::Repla
 
 . trusted => BOOLEAN
 
-I<Example:> replace traditional Mail::Internet by this wrapper
+example: replace traditional Mail::Internet by this wrapper
 
   # was
   use Mail::Internet;
@@ -1276,17 +1276,27 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Cannot include forward source as $include.
+Error: Cannot include forward source as $include.
+
+=over 4
 
 Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
 C<NO>, C<INLINE>, C<ATTACH>, and C<ENCAPSULATE>.
 
-I<Error:> Mail::Internet does not support this kind of data
+=back
+
+Error: Mail::Internet does not support this kind of data
+
+=over 4
 
 The ARGS data can only be a file handle or an ARRAY.  Other data types
 are not supported (see L<read()|Mail::Message::Replace::MailInternet/"Constructing a message"> if you want to have more).
 
-I<Error:> Method bounce requires To, Cc, or Bcc
+=back
+
+Error: Method bounce requires To, Cc, or Bcc
+
+=over 4
 
 The message L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> method forwards a received message off to someone
 else without modification; you must specified it's new destination.
@@ -1294,17 +1304,37 @@ If you have the urge not to specify any destination, you probably
 are looking for L<reply()|Mail::Message::Replace::MailInternet/"Constructing a message">. When you wish to modify the content, use
 L<forward()|Mail::Message::Construct::Forward/"Constructing a message">.
 
-I<Error:> Method forwardAttach requires a preamble
+=back
 
-I<Error:> Method forwardEncapsulate requires a preamble
+Error: Method forwardAttach requires a preamble
 
-I<Error:> No address to create forwarded to.
+=over 4
+
+=back
+
+Error: Method forwardEncapsulate requires a preamble
+
+=over 4
+
+=back
+
+Error: No address to create forwarded to.
+
+=over 4
 
 If a forward message is created, a destination address must be specified.
 
-I<Error:> No rebuild rule $name defined.
+=back
 
-I<Error:> Only build() Mail::Message's; they are not in a folder yet
+Error: No rebuild rule $name defined.
+
+=over 4
+
+=back
+
+Error: Only build() Mail::Message's; they are not in a folder yet
+
+=over 4
 
 You may wish to construct a message to be stored in a some kind
 of folder, but you need to do that in two steps.  First, create a
@@ -1312,7 +1342,11 @@ normal L<Mail::Message|Mail::Message>, and then add it to the folder.  During th
 L<Mail::Box::addMessage()|Mail::Box/"The folder"> process, the message will get L<coerce()|Mail::Message::Replace::MailInternet/"Internals">-d
 into the right message type, adding storage information and the like.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -1320,10 +1354,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -80,7 +80,7 @@ the spamgroup object (under construction) and the header which is inspected.
 
 =back
 
-I<Example:> adding your own spam-fighter definitions
+example: adding your own spam-fighter definitions
 
  Mail::Message::Head::SpamGroup->fighter( 'MY-OWN',
     fields => qw/^x-MY-SPAM-DETECTOR-/,
@@ -120,7 +120,7 @@ Returns a true value if the MESSAGE or HEAD contains C<Habeas-SWE> fields
 which are correct.  Without argument, this is used as instance method on
 an existing Spam-Group.
 
-I<Example:> checking Habeas-SWE fields
+example: checking Habeas-SWE fields
 
  if(Mail::Message::Head::SpamGroup->habeasSweFieldsCorrect($message))
  {   $message->label(spam => 0);
@@ -202,7 +202,7 @@ $obj-E<gt>B<spamDetected>([BOOLEAN])
 Returns (after setting) whether this group of spam headers thinks that
 this is spam.  See L<Mail::Message::Head::Complete::spamDetected()|Mail::Message::Head::Complete/"Access to the header">.
 
-I<Example:> 
+example: 
 
   die if $head->spamDetected;
 
@@ -491,7 +491,9 @@ is provided via L<http://www.mailscanner.biz>.
 
 =head1 DIAGNOSTICS
 
-I<Error:> Package $package does not implement $method.
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -499,10 +501,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -309,7 +309,7 @@ $obj-E<gt>B<forwardPostlude>
 
 Added after the forwarded message.
 
-I<Example:> 
+example: 
 
  ---- END forwarded message
 
@@ -322,7 +322,7 @@ $obj-E<gt>B<forwardPrelude>
 Create a few lines to be included before the forwarded message
 content.  The return is an array of lines.
 
-I<Example:> 
+example: 
 
  ---- BEGIN forwarded message
  From: him@somewhere.else.nl (Original Sender)
@@ -341,7 +341,7 @@ Create a subject for a message which is a forward from this one.  This routine
 tries to count the level of reply in subject field, and transform it into
 a standard form.  Please contribute improvements.
 
-I<Example:> 
+example: 
 
  subject                 --> Forw: subject
  Re: subject             --> Forw: Re: subject
@@ -453,23 +453,39 @@ an original message as attachment.
 
 =head1 DIAGNOSTICS
 
-I<Error:> Cannot include forward source as $include.
+Error: Cannot include forward source as $include.
+
+=over 4
 
 Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
 C<NO>, C<INLINE>, C<ATTACH>, and C<ENCAPSULATE>.
 
-I<Error:> Method forwardAttach requires a preamble
+=back
 
-I<Error:> Method forwardEncapsulate requires a preamble
+Error: Method forwardAttach requires a preamble
 
-I<Error:> No address to create forwarded to.
+=over 4
+
+=back
+
+Error: Method forwardEncapsulate requires a preamble
+
+=over 4
+
+=back
+
+Error: No address to create forwarded to.
+
+=over 4
 
 If a forward message is created, a destination address must be specified.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

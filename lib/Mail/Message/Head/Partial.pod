@@ -312,7 +312,7 @@ See also L<removeField()|Mail::Message::Head::Complete/"Access to the header"> w
 the header.  The reverse specification can be made with
 C<removeFieldsExcept()>.
 
-I<Example:> 
+example: 
 
  $head->removeFields('bcc', 'received');
  $head->removeFields( qr/^content-/i );
@@ -331,7 +331,7 @@ REGEXP, because fields are case insensitive.
 See also L<removeField()|Mail::Message::Head::Complete/"Access to the header"> which is used to remove one field object from
 the header.  The reverse specification can be made with C<removeFields()>.
 
-I<Example:> 
+example: 
 
  $head->removeFieldsExcept('subject', qr/^content-/i ); 
  $head->removeFieldsExcept( qw/subject to from sender cc/ );
@@ -696,7 +696,7 @@ useful.
 When you are archiving a mailinglist, it is hardly ever useful to
 store a the list administration lines for each message as well.
 
-I<Example:> see examples/reduce.pl in distribution
+example: see examples/reduce.pl in distribution
 
  foreach my $msg ($folder->messages)
  {  $msg->head->removeResentGroups;
@@ -705,15 +705,25 @@ I<Example:> see examples/reduce.pl in distribution
 
 =head1 DIAGNOSTICS
 
-I<Warning:> Cannot remove field $name from header: not found.
+Warning: Cannot remove field $name from header: not found.
+
+=over 4
 
 You ask to remove a field which is not known in the header.  Using
 L<delete()|Mail::Message::Head::Complete/"Access to the header">, L<reset()|Mail::Message::Head::Complete/"Access to the header">, or L<set()|Mail::Message::Head::Complete/"Access to the header"> to do the job will not result
 in warnings: those methods check the existence of the field first.
 
-I<Warning:> Field objects have an implied name ($name)
+=back
 
-I<Error:> Package $package does not implement $method.
+Warning: Field objects have an implied name ($name)
+
+=over 4
+
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -721,10 +731,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -26,11 +26,15 @@ Mail::Message::Convert::MailInternet - translate Mail::Message to Mail::Internet
 
 =head1 DESCRIPTION
 
-The L<Mail::Internet|Mail::Internet> class of message is very popular for all
+The L<Mail::Internet|Mail::Internet> class of messages is very popular for all
 kinds of message applications written in Perl.  However, the
 format was developed when e-mail messages where still small and
 attachments where rare; Mail::Message is much more flexible in
 this respect.
+
+=head2 Converters between message objects
+
+=head2 Other converters
 
 =head1 METHODS
 
@@ -54,7 +58,7 @@ Returns a new message object based on the information from
 a L<Mail::Message|Mail::Message> object.  The MESSAGE specified is an
 instance of a Mail::Message.
 
-I<Example:> 
+example: 
 
  my $convert = Mail::Message::Convert::MailInternet->new;
  my Mail::Message  $msg   = Mail::Message->new;
@@ -66,10 +70,10 @@ $obj-E<gt>B<from>(OBJECT, OPTIONS)
 
 =over 4
 
-Returns a new Mail::Message object based on the information from
-an message-type which is foreign to the Mail::Box set of modules.
+Returns a new L<Mail::Message|Mail::Message> object based on the information
+from a L<Mail::Internet|Mail::Internet> object. 
 
-I<Example:> 
+example: 
 
  my $convert = Mail::Message::Convert::MailInternet->new;
  my Mail::Internet $msg  = Mail::Internet->new;
@@ -209,7 +213,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Package $package does not implement $method.
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -217,10 +223,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

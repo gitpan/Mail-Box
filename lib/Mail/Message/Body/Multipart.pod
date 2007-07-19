@@ -174,7 +174,7 @@ into a text/plain body.
 
 . transfer_encoding => STRING|FIELD
 
-I<Example:> 
+example: 
 
  my $intro = Mail::Message::Body->new(data => ['part one']);
  my $pgp   = Mail::Message::Body->new(data => ['part three']);
@@ -263,7 +263,7 @@ the body which was passed, then a new multi-part body will be returned.
 Reference to the not-changed bodies and the changed bodies will be
 included in that new multi-part.
 
-I<Example:> 
+example: 
 
  my $checked = $multi->foreachComponent(sub {$_[1]->check});
 
@@ -497,7 +497,7 @@ Returns only the part with the specified INDEX.  You may use a negative
 value here, which counts from the back in the list.  Parts which are
 flagged to be deleted are included in the count.
 
-I<Example:> 
+example: 
 
  $message->body->part(2)->print;
  $body->part(1)->delete;
@@ -516,7 +516,7 @@ You may also specify a code reference which is called for each nested
 part.  The first argument will be the message part.  When the code
 returns true, the part is incorporated in the return list.
 
-I<Example:> 
+example: 
 
  print "Number of attachments: ",
      scalar $message->body->parts('ACTIVE');
@@ -788,22 +788,36 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Data not convertible to a message (type is $type)
+Error: Data not convertible to a message (type is $type)
+
+=over 4
 
 An object which is not coercable into a L<Mail::Message::Part|Mail::Message::Part> object was
 passed to the initiation.  The data is ignored.
 
-I<Warning:> No decoder defined for transfer encoding $name.
+=back
+
+Warning: No decoder defined for transfer encoding $name.
+
+=over 4
 
 The data (message body) is encoded in a way which is not currently understood,
 therefore no decoding (or recoding) can take place.
 
-I<Warning:> No encoder defined for transfer encoding $name.
+=back
+
+Warning: No encoder defined for transfer encoding $name.
+
+=over 4
 
 The data (message body) has been decoded, but the required encoding is
 unknown.  The decoded data is returned.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -811,21 +825,31 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Error:> Unknown criterium $what to select parts.
+=back
+
+Error: Unknown criterium $what to select parts.
+
+=over 4
 
 Valid choices fdr part selections are C<ALL>, C<ACTIVE>, C<DELETED>,
 C<RECURSE> or a code reference.  However, some other argument was passed.
 
-I<Error:> You cannot use foreachLine on a multipart
+=back
+
+Error: You cannot use foreachLine on a multipart
+
+=over 4
 
 L<foreachLine()|Mail::Message::Body::Multipart/"METHODS"> should be used on decoded message bodies only, because
 it would attempt to modify part-headers and separators as well, which is
 clearly not acceptible.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

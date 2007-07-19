@@ -59,7 +59,7 @@ overload: B<"">
 completion-- unless called to produce a string for C<Carp>.  The latter
 to avoid deep recursions.
 
-I<Example:> stringification of body
+example: stringification of body
 
  print $msg->body;   # implicit by print
 
@@ -76,7 +76,7 @@ overload: B<'==' and '!='>
 same message.  This only produces correct results is both arguments
 are message references B<within the same folder>.
 
-I<Example:> use of numeric comparison on a body
+example: use of numeric comparison on a body
 
  my $skip = $folder->message(3);
  foreach my $msg (@$folder)
@@ -93,7 +93,7 @@ overload: B<@{}>
 When a body object is used as being an array reference, the lines of
 the body are returned.  This is the same as using L<lines()|Mail::Message::Body/"Access to the payload">.
 
-I<Example:> using a body as array
+example: using a body as array
 
  print $body->lines->[1];  # second line
  print $body->[1];         # same
@@ -300,7 +300,7 @@ to the C<Content-Transfer-Encoding> field in the header.
 
 =back
 
-I<Example:> 
+example: 
 
  my $body = Mail::Message::Body::String->new(file => \*IN,
     mime_type => 'text/html; charset="ISO-8859-1"');
@@ -539,7 +539,7 @@ $obj-E<gt>B<mimeType>
 Returns a L<MIME::Type|MIME::Type> object which is related to this body's type.  This
 differs from the C<type> method, which results in a L<Mail::Message::Field|Mail::Message::Field>.
 
-I<Example:> 
+example: 
 
  if($body->mimeType eq 'text/html') {...}
  print $body->mimeType->simplified;
@@ -578,7 +578,7 @@ When no encoding is present, the field contains the text C<none>.
 The optional STRING or FIELD enforces a new encoding to be set, without the
 actual required translations.
 
-I<Example:> 
+example: 
 
  my $transfer = $msg->decoded->transferEncoding;
  $transfer->print;   # --> Content-Encoding: base64
@@ -600,7 +600,7 @@ then you will get a default field containing C<text/plain>.
 You usually can better use L<mimeType()|Mail::Message::Body/"About the payload">, because that will return a
 clever object with type information.
 
-I<Example:> 
+example: 
 
  my $msg     = $folder->message(6);
  $msg->get('Content-Type')->print;
@@ -663,7 +663,7 @@ original data. You must not change the referenced data! If you do, some of
 the essential internal variables of the L<Mail::Message::Body|Mail::Message::Body> may not be
 updated.
 
-I<Example:> 
+example: 
 
  my @lines    = $body->lines;     # copies lines
  my $line3    = ($body->lines)[3] # only one copy
@@ -704,7 +704,7 @@ $obj-E<gt>B<string>
 Return the content of the body as a scalar (a single string).  This is
 a copy of the internally kept information.
 
-I<Example:> 
+example: 
 
  my $text = $body->string;
  print "Body: $body\n";     # by overloading
@@ -732,14 +732,14 @@ decode the body before writing it!
 
 . filename => FILENAME
 
-I<Example:> write the data to a file
+example: write the data to a file
 
  use File::Temp;
  my $fn = tempfile;
  $message->decoded->write(filename => $fn)
     or die "Couldn't write to $fn: $!\n";
 
-I<Example:> using the content-disposition information to write
+example: using the content-disposition information to write
 
  use File::Temp;
  my $dir = tempdir; mkdir $dir or die;
@@ -996,7 +996,7 @@ body can be encoded and decoded, returning a new body object.  However,
 bodies which are part of a message will always be in a shape that they can
 be written to a file or send to somewhere: they will be encoded if needed.
 
-I<Example:> 
+example: 
 
  my $body    = Mail::Message::Body::String->new(mime_type => 'image/gif');
  $body->print(\*OUT);    # this is binary image data...
@@ -1080,17 +1080,27 @@ the body.  For most code, they simply behave like multiparts.
 
 =head1 DIAGNOSTICS
 
-I<Warning:> No decoder defined for transfer encoding $name.
+Warning: No decoder defined for transfer encoding $name.
+
+=over 4
 
 The data (message body) is encoded in a way which is not currently understood,
 therefore no decoding (or recoding) can take place.
 
-I<Warning:> No encoder defined for transfer encoding $name.
+=back
+
+Warning: No encoder defined for transfer encoding $name.
+
+=over 4
 
 The data (message body) has been decoded, but the required encoding is
 unknown.  The decoded data is returned.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -1098,10 +1108,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

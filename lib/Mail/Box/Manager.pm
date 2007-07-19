@@ -1,13 +1,13 @@
 # Copyrights 2001-2007 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.00.
+# Pod stripped from pm file by OODoc 1.02.
 use strict;
 use warnings;
 
 package Mail::Box::Manager;
 use vars '$VERSION';
-$VERSION = '2.072';
+$VERSION = '2.073';
 use base 'Mail::Reporter';
 
 use Mail::Box;
@@ -18,8 +18,6 @@ use Scalar::Util 'weaken';
 # failed compilation will not complain a second time
 # so we need to keep track.
 my %require_failed;
-
-#-------------------------------------------
 
 
 my @basic_folder_types =
@@ -154,11 +152,18 @@ sub open(@)
     }
 
     my $type = $args{type};
-    if(defined $type && $type eq 'pop3')
+    if(!defined $type) { ; }
+    elsif($type eq 'pop3')
     {   my $un   = $args{username}    ||= $ENV{USER} || $ENV{LOGIN};
         my $srv  = $args{server_name} ||= 'localhost';
         my $port = $args{server_port} ||= 110;
         $args{folder} = $name = "pop3://$un\@$srv:$port";
+    }
+    elsif($type eq 'imap4')
+    {   my $un   = $args{username}    ||= $ENV{USER} || $ENV{LOGIN};
+        my $srv  = $args{server_name} ||= 'localhost';
+        my $port = $args{server_port} ||= 143;
+        $args{folder} = $name = "imap4://$un\@$srv:$port";
     }
 
     unless(defined $name && length $name)

@@ -2,7 +2,6 @@ ChangeLog
 INSTALL
 LICENSE
 MANIFEST
-META.yml
 Makefile.PL
 README
 README.FAQ
@@ -151,6 +150,8 @@ lib/Mail/Message/Construct/Text.pm
 lib/Mail/Message/Construct/Text.pod
 lib/Mail/Message/Convert.pm
 lib/Mail/Message/Convert.pod
+lib/Mail/Message/Convert/EmailSimple.pm
+lib/Mail/Message/Convert/EmailSimple.pod
 lib/Mail/Message/Convert/Html.pm
 lib/Mail/Message/Convert/Html.pod
 lib/Mail/Message/Convert/HtmlFormatPS.pm
@@ -384,6 +385,8 @@ tests/60imap/20list.t
 tests/60imap/Definition.pm
 tests/80msgconv/10mailint.t
 tests/80msgconv/20mimeent.t
+tests/80msgconv/30emsimp.t
+tests/80msgconv/40emabs.t
 tests/80msgconv/Definition.pm
 tests/81bodyconv/10textaf.t
 tests/81bodyconv/20html.t
@@ -393,4 +396,4 @@ tests/81bodyconv/Definition.pm
 tests/Tools.pm
 tests/folders/mbox.cpy
 tests/folders/mbox.src
-tests/pod.t
+META.yml                                 Module meta-data (added by MakeMaker)

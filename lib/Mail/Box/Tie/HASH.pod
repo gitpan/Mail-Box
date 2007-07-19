@@ -35,7 +35,7 @@ B<TIEHASH>('Mail::Box::Tie::HASH', FOLDER)
 
 Connects the FOLDER object to a HASH.
 
-I<Example:> 
+example: 
 
  my $mgr    = Mail::Box::Manager->new;
  my $folder = $mgr->open(access => 'rw');
@@ -52,7 +52,7 @@ $obj-E<gt>B<CLEAR>
 Remove the contents of the hash.  This is not really possible, but all
 the messages will be flagged for deletion.
 
-I<Example:> 
+example: 
 
  %inbox = ();
  %inbox = ($msg->messageId, $msg); #before adding msg
@@ -65,7 +65,7 @@ $obj-E<gt>B<DELETE>(MESSAGE-ID)
 
 Remove the message with the specified MESSAGE-ID.
 
-I<Example:> 
+example: 
 
  delete $inbox{$msgid};
 
@@ -77,7 +77,7 @@ $obj-E<gt>B<EXISTS>(MESSAGE-ID)
 
 Check whether a message with a certain MESSAGE-ID exists.
 
-I<Example:> 
+example: 
 
  if(exists $inbox{$msgid}) ...
 
@@ -91,7 +91,7 @@ Get the message with the specified id.  The returned message may be
 a dummy if message thread detection is used.  Returns C<undef> when
 there is no message with the specified id.
 
-I<Example:> 
+example: 
 
  my $msg = $inbox{$msgid};
  if($inbox{$msgid}->isDummy)  ...
@@ -118,7 +118,7 @@ Messages flagged for deletion will B<not> be returned. See the
 L<Mail::Box::messages()|Mail::Box/"The messages"> method of the folder type for more information
 about the folder message order.
 
-I<Example:> 
+example: 
 
  foreach my $msgid (keys %inbox) ...
  foreach my $msg (values %inbox) ...
@@ -141,7 +141,7 @@ C<undef>, therefore the string C<"undef"> is accepted as well.
 The message may be converted into something which can be stored in the
 folder type which is at stake.  The added instance is returned.
 
-I<Example:> 
+example: 
 
  $inbox{ (undef) } = $msg;
  $inbox{undef} = $msg;
@@ -150,8 +150,8 @@ I<Example:>
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

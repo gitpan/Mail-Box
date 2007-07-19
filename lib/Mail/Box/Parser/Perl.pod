@@ -92,7 +92,7 @@ If set to C<true>, parsing of a header will not stop on an error, but
 attempt to add the erroneous this line to previous field.  Without BOOLEAN,
 the current setting is returned.
 
-I<Example:> 
+example: 
 
  $folder->parser->fixHeaderErrors(1);
  my $folder = $mgr->open('folder', fix_header_errors => 1);
@@ -363,7 +363,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Warning:> File $filename changed during access.
+Warning: File $filename changed during access.
+
+=over 4
 
 When a message parser starts working, it takes size and modification time
 of the file at hand.  If the folder is written, it checks wether there
@@ -375,7 +377,11 @@ locking: some external program (for instance the mail transfer agent,
 like sendmail) uses a different locking mechanism as you do and therefore
 violates your rights.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -383,7 +389,11 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Warning:> Unexpected end of header in $source: $line
+=back
+
+Warning: Unexpected end of header in $source: $line
+
+=over 4
 
 While parsing a message from the specified source (usually a file name),
 the parser found a syntax error.  According to the MIME specification in the
@@ -396,10 +406,12 @@ lines after the erroneous line, they will be added to the body of the message.
 In case of new(fix_headers) set, the parsing of the header will be continued.
 The erroneous line will be added to the preceding field.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

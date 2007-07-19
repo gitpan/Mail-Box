@@ -56,7 +56,7 @@ overload: B<"">
 be what you expect.  This is what makes what the field object seems
 to be a simple string. The string is produced by L<unfoldedBody()|Mail::Message::Field/"Access to the body">.
 
-I<Example:> 
+example: 
 
  print $msg->get('subject');  # via overloading
  print $msg->get('subject')->unfoldedBody; # same
@@ -83,7 +83,7 @@ overload: B<<=>>
 (numeric comparison) Compare the integer field contents with something
 else.
 
-I<Example:> 
+example: 
 
  if($msg->get('Content-Length') > 10000) ...
  if($msg->size > 10000) ... ; # same, but better
@@ -151,7 +151,7 @@ well described syntax.  These fields have common ideas about comments
 and the like, what they do not share with unstructured fields, like
 the C<Subject> field.
 
-I<Example:> 
+example: 
 
  my $field = Mail::Message::Field->new(From => 'me');
  if($field->isStructured)
@@ -244,7 +244,7 @@ $obj-E<gt>B<wellformedName>([STRING])
 As instance method, the current field's name is correctly formatted
 and returned.  When a STRING is used, that one is formatted.
 
-I<Example:> 
+example: 
 
  print Mail::Message::Field->Name('content-type')
    # -->  Content-Type
@@ -285,7 +285,7 @@ the field's name.
 In scalar context, the lines are delived into one string, which is
 a little faster because that's the way they are stored internally...
 
-I<Example:> 
+example: 
 
  my @lines = $field->folded;
  print $field->folded;
@@ -334,7 +334,7 @@ The optional BODY argument changes the field's body.  The right folding is
 performed before assignment.  The WRAP may be specified to enforce a
 folding size.
 
-I<Example:> 
+example: 
 
  my $body = $field->unfoldedBody;
  print "$field";   # via overloading
@@ -350,7 +350,7 @@ $obj-E<gt>B<addresses>
 Returns a list of L<Mail::Address|Mail::Address> objects, which represent the
 e-mail addresses found in this header line.
 
-I<Example:> 
+example: 
 
  my @addr = $message->head->get('to')->addresses;
  my @addr = $message->to;
@@ -366,7 +366,7 @@ Attributes are part of some header lines, and hide themselves in the
 comment field.  If the attribute does not exist, then C<undef> is
 returned.  The attribute is still encoded.
 
-I<Example:> 
+example: 
 
  my $field = Mail::Message::Field->new(
   'Content-Type: text/plain; charset="us-ascii"');
@@ -391,7 +391,7 @@ $obj-E<gt>B<attributes>
 
 Returns a list of key-value pairs, where the values are not yet decoded.
 
-I<Example:> 
+example: 
 
  my %attributes = $head->get('Content-Disposition')->attributes;
 
@@ -420,7 +420,7 @@ understanding of the content of the fields.  L<Mail::Message::Field::Fast|Mail::
 and L<Mail::Message::Field::Fast|Mail::Message::Field::Fast> objects will be transformed into any
 L<Mail::Message::Field::Full|Mail::Message::Field::Full> object.
 
-I<Example:> 
+example: 
 
  my $subject = $msg->head->get('subject')->study;
  my $subject = $msg->head->study('subject');  # same
@@ -443,7 +443,7 @@ be specified as one numeric (like the result of C<time()>) and as list
 Be sure to have your timezone set right, especially when this script
 runs automatically.
 
-I<Example:> 
+example: 
 
  my $now = time;
  Mail::Message::Field->toDate($now);
@@ -529,7 +529,7 @@ Force the wrapping of this field to the specified LENGTH characters. The
 wrapping is performed with L<fold()|Mail::Message::Field/"Internals"> and the results stored within
 the field object.
 
-I<Example:> refolding the field
+example: refolding the field
 
  $field->setWrapLength(99);
 
@@ -690,7 +690,7 @@ blanks, but followed by one blank).  Each attribute is preceeded by
 a separate semi-colon ("C<;>").  Names of fields are case-insensitive and
 cannot contain blanks.
 
-I<Example:> of fields
+example: of fields
 
 Correct fields:
 
@@ -723,7 +723,7 @@ which are as long as possible but max 78.
 BE WARNED that all fields can be subjected to folding, and that you usually
 want the unfolded value.
 
-I<Example:> of field folding
+example: of field folding
 
  Subject: this is a short line, and not folded
 
@@ -750,7 +750,7 @@ parenthesis.  These comments can be placed close to anywhere in the line
 and must be ignored be the application.  Not all applications are capable
 of handling comments correctly in all circumstances.
 
-I<Example:> of field comments
+example: of field comments
 
  To: mailbox (Mail::Box mailinglist) <mailbox@overmeer.net>
  Date: Thu, 13 Sep 2001 09:40:48 +0200 (CEST)
@@ -801,7 +801,7 @@ official rfc.  For instance, C<To> fields can appear more than once.
 If your program calls C<get('to')> in scalar context, some information
 is lost.
 
-I<Example:> of using get()
+example: of using get()
 
  print $msg->get('subject') || 'no subject';
  print $msg->head->get('subject') || 'no subject';
@@ -820,7 +820,7 @@ with that name as object.  L<Mail::Message::Head::study()|Mail::Message::Head/"A
 L<Mail::Message::Field::study()|Mail::Message::Field/"Access to the content"> return all fields when used in list
 context.
 
-I<Example:> of using study()
+example: of using study()
 
  print $msg->study('subject') || 'no subject';
  my @rec  = $msg->head->study('Received');
@@ -841,7 +841,7 @@ The C<Mail::Message::Head::ResentGroup> object simplifies the access to
 these related fields.  These resent groups can be deleted as a whole,
 or correctly constructed.
 
-I<Example:> of using resent groups
+example: of using resent groups
 
  my $rgs = $msg->head->resentGroups;
  $rgs[0]->delete if @rgs;
@@ -899,7 +899,7 @@ Some fields are accessed that often that there are support methods to
 provide simplified access.  All these methods are called upon a message
 directly.
 
-I<Example:> of simplified field access
+example: of simplified field access
 
  print $message->subject;
  print $message->get('subject') || '';  # same
@@ -973,12 +973,12 @@ comma's inbetween, you will have to process the array yourself.
 
 =back
 
-I<Example:> specifying simple field data
+example: specifying simple field data
 
  my $f = Mail::Message::Field->new(Subject => 'hi!');
  my $b = Mail::Message->build(Subject => 'monkey');
 
-I<Example:> s specifying e-mail addresses for a field
+example: s specifying e-mail addresses for a field
 
  use Mail::Address;
  my $fish = Mail::Address->new('Mail::Box', 'fish@tux.aq');
@@ -994,7 +994,7 @@ I<Example:> s specifying e-mail addresses for a field
  my $b = $msg->build(To => \@all);
  my $b = $msg->build(To => [ "xyz", @all ]);
 
-I<Example:> specifying identities for a field
+example: specifying identities for a field
 
  use User::Identity;
  my $patrik = User::Identity->new
@@ -1045,19 +1045,29 @@ from fast or flex header fields when L<study()|Mail::Message::Field/"Access to t
 
 =head1 DIAGNOSTICS
 
-I<Warning:> Field content is not numerical: $content
+Warning: Field content is not numerical: $content
+
+=over 4
 
 The numeric value of a field is requested (for instance the C<Lines> or
 C<Content-Length> fields should be numerical), however the data contains
 weird characters.
 
-I<Warning:> Illegal character in field name $name
+=back
+
+Warning: Illegal character in field name $name
+
+=over 4
 
 A new field is being created which does contain characters not permitted
 by the RFCs.  Using this field in messages may break other e-mail clients
 or transfer agents, and therefore mutulate or extinguish your message.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -1065,10 +1075,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

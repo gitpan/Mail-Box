@@ -95,7 +95,7 @@ but not supported by some Mail User Agents.
 
 =back
 
-I<Example:> 
+example: 
 
  my $fn    = Mail::Message::Field::Attribute
                 ->new(filename => 'xyz');
@@ -123,7 +123,7 @@ attribute are found when a field is being parsed.  The RFCs are
 very strict on valid characters, but we cannot be: you have to accept
 what is coming in if you can.
 
-I<Example:> 
+example: 
 
  my $param = Mail::Message::Field::Attribute->new;
  $param->addComponent("filename*=iso10646'nl-BE'%Re\47u");
@@ -331,13 +331,19 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Warning:> Illegal character in parameter name '$name'
+Warning: Illegal character in parameter name '$name'
+
+=over 4
 
 The specified parameter name contains characters which are not permitted by
 the RFCs.  You can better change the name into something which is accepted,
 or risk applications to corrupt or ignore the message.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -345,12 +351,18 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Error:> Too late to merge: value already changed.
+=back
+
+Error: Too late to merge: value already changed.
+
+=over 4
+
+=back
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

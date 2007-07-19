@@ -1,13 +1,13 @@
 # Copyrights 2001-2007 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.00.
+# Pod stripped from pm file by OODoc 1.02.
 use strict;
 use warnings;
 
 package Mail::Message::Field;
 use vars '$VERSION';
-$VERSION = '2.072';
+$VERSION = '2.073';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -231,10 +231,10 @@ sub attribute($;$)
 
     unless(@_)
     {   if($body =~ m/\b$attr\s*\=\s*
-                      ( "( (?> [^\\"]*|\\. )* )"
+                      ( "( (?> [^\\"]+|\\. )* )"
                       | ([^";\s]*)
                       )/xi)
-        {   (my $val = $+) =~ s/(["\\])/\\$1/g;
+        {   (my $val = $+) =~ s/\\(.)/$1/g;
             return $val;
         }
         return undef;

@@ -125,7 +125,7 @@ message (see L<Mail::Message::Dummy|Mail::Message::Dummy>).
 In list context, all instances of the message which have been found are
 returned.
 
-I<Example:> 
+example: 
 
  my $threads = $mgr->threads(folders => [$draft, $sent]);
  my $node    = $draft->message(1)->thread;
@@ -231,7 +231,7 @@ body.
 
 More constants may be added later.
 
-I<Example:> 
+example: 
 
  my $question = $answer->repliedTo;
  my ($question, $quality) = $answer->repliedTo;
@@ -269,7 +269,7 @@ $obj-E<gt>B<ids>
 
 Returns all the ids in the thread starting at the current thread node.
 
-I<Example:> 
+example: 
 
  $newfolder->addMessages($folder->ids($thread->ids));
  $folder->delete($thread->ids);
@@ -316,7 +316,7 @@ $obj-E<gt>B<threadMessages>
 Returns all the messages in the thread starting at the current thread
 node.  This list will not include dummies.
 
-I<Example:> 
+example: 
 
  my @t = $folder->message(3)
                 ->threadStart
@@ -338,7 +338,7 @@ for each message in the thread.  The routine will be called with the
 message as the first argument.  The default shows the subject of the message.
 In the first example below, this routine is called seven times.
 
-I<Example:> 
+example: 
 
  print $node->threadToString;
 
@@ -497,7 +497,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Package $package does not implement $method.
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -505,10 +507,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

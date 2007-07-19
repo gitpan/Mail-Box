@@ -66,7 +66,7 @@ not be excluded from the default list (NFS POSIX Flock).
 
 =back
 
-I<Example:> using a subset of multi-lockers
+example: using a subset of multi-lockers
 
  my $locker = Mail::Box::Locker::Multy->new(use => ['DOTLOCK','FLOCK']);
 
@@ -264,7 +264,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Package $package does not implement $method.
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -272,10 +274,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -118,7 +118,7 @@ because the header fields can be updated, for instance when labels change.
 
 =back
 
-I<Example:> 
+example: 
 
  $copy = $msg->clone;
 
@@ -376,7 +376,7 @@ $obj-E<gt>B<container>
 If the message is a part of another message, C<container> returns the
 reference to the containing body.
 
-I<Example:> 
+example: 
 
  my Mail::Message $msg = ...
  return unless $msg->body->isMultipart;
@@ -433,7 +433,7 @@ Print the message to the FILE-HANDLE, which defaults to the selected
 filehandle, without the encapsulation sometimes required by a folder
 type, like L<write()|Mail::Message/"The message"> does.
 
-I<Example:> 
+example: 
 
  $message->print(\*STDERR);  # to the error output
  $message->print;            # to the selected file
@@ -457,7 +457,7 @@ the creation of the mailer object and the sending itself.  Therefore, see
 for possible options L<Mail::Transport::Send::new()|Mail::Transport::Send/"METHODS"> and
 L<Mail::Transport::Send::send()|Mail::Transport::Send/"Sending mail">.
 
-I<Example:> 
+example: 
 
  $message->send;
 
@@ -468,7 +468,7 @@ is short (but little less flexibile) for
 
 See examples/send.pl in the distribution of L<Mail::Box|Mail::Box>.
 
-I<Example:> 
+example: 
 
  $message->send(via => 'sendmail')
 
@@ -574,7 +574,7 @@ If you need only one address from a sender, for instance to create a
 "original message by" line in constructed forwarded message body, then use
 L<sender()|Mail::Message/"The header">.
 
-I<Example:> using from() to get all sender addresses
+example: using from() to get all sender addresses
 
  my @from = $message->from;
 
@@ -594,7 +594,7 @@ instance is returned.  If you need more complex handing of fields, then
 call L<Mail::Message::Head::get()|Mail::Message::Head/"Access to the header"> yourself.  See L<study()|Mail::Message/"The header"> when you
 want to be smart, doing the better (but slower) job.
 
-I<Example:> the get() short-cut for header fields
+example: the get() short-cut for header fields
 
  print $msg->get('Content-Type'), "\n";
 
@@ -617,7 +617,7 @@ This method may return C<undef> if the header is not parsed or only
 partially known.  If you require a time, then use the L<timestamp()|Mail::Message/"The header">
 method, described below.
 
-I<Example:> using guessTimestamp() to get a transmission date
+example: using guessTimestamp() to get a transmission date
 
  print "Receipt ", ($message->timestamp || 'unknown'), "\n";
 
@@ -633,7 +633,7 @@ When the head is added, status information is taken from it
 and transformed into labels.  More labels can be added by the
 LABELS hash.  They are added later.
 
-I<Example:> 
+example: 
 
  $msg->head(Mail::Message::Head->new);  # set
  my $head = $msg->head;                 # get
@@ -658,7 +658,7 @@ field, unless that field does not exists, in which case the first
 address from the C<From> field is taken.  If none of both provide
 an address, C<undef> is returned.
 
-I<Example:> using sender() to get exactly one sender address
+example: using sender() to get exactly one sender address
 
  my $sender = $message->sender;
  print "Reply to: ", $sender->format, "\n" if defined $sender;
@@ -675,7 +675,7 @@ stringify to an utf8 decoded representation of the data contained in
 the field, where L<get()|Mail::Message/"The header"> does not decode.
 See L<Mail::Message::Field::study()|Mail::Message::Field/"Access to the content">.
 
-I<Example:> the study() short-cut for header fields
+example: the study() short-cut for header fields
 
  print $msg->study('to'), "\n";
 
@@ -692,7 +692,7 @@ $obj-E<gt>B<subject>
 
 Returns the message's subject, or the empty string.
 
-I<Example:> using subject() to get the message's subject
+example: using subject() to get the message's subject
 
  print $msg->subject;
 
@@ -726,7 +726,7 @@ A list of L<Mail::Address|Mail::Address> objects is returned.  The people addres
 here are the targets of the content, and should read it contents
 carefully.
 
-I<Example:> using to() to get all primar destination addresses
+example: using to() to get all primar destination addresses
 
  my @to = $message->to;
 
@@ -761,7 +761,7 @@ When BODY is C<undef>, the current message body will be dissected from
 the message.  All relation will be cut.  The body is returned, and
 can be connected to a different message.
 
-I<Example:> 
+example: 
 
  my $body      = $msg->body;
  my @encoded   = $msg->body->lines;
@@ -805,7 +805,7 @@ L<Mail::Message::Body|Mail::Message::Body>.
 
 =back
 
-I<Example:> 
+example: 
 
  $message->decoded->print(\*OUT);
  $message->decoded->print;
@@ -866,7 +866,7 @@ you have to test yourself.
 message parts.  The FILTER is a code reference, which is called for
 each part of the messagei; each part as C<RECURSE> would return.
 
-I<Example:> 
+example: 
 
  my @parts = $msg->parts;           # $msg not multipart: returns ($msg)
  my $parts = $msg->parts('ACTIVE'); # returns ($msg)
@@ -893,7 +893,7 @@ is not always preserved in the folder (depends on the implementation).
 When the same message is deleted more than once, the first time stamp
 will stay.
 
-I<Example:> 
+example: 
 
  $message->delete;
  $message->deleted(1);  # exactly the same
@@ -910,7 +910,7 @@ Set the delete flag for this message.  Without argument, the method
 returns the same as L<isDeleted()|Mail::Message/"Flags">, which is prefered.  When a true
 value is given, L<delete()|Mail::Message/"Flags"> is called.
 
-I<Example:> 
+example: 
 
  $message->deleted(1);          # delete
  $message->delete;              # delete (prefered)
@@ -932,7 +932,7 @@ Short-cut for
 For some folder types, you will get the time of deletion in return.  This
 depends on the implementation.
 
-I<Example:> 
+example: 
 
  next if $message->isDeleted;
 
@@ -966,7 +966,7 @@ scheduled for deletion.
 Some labels are taken from the header's C<Status> and C<X-Status> lines,
 however folder types like MH define a separate label file.
 
-I<Example:> 
+example: 
 
  print $message->label('seen');
  if($message->label('seen')) {...};
@@ -1070,16 +1070,15 @@ Mail::Message-E<gt>B<coerce>(MESSAGE, OPTIONS)
 
 =over 4
 
-Coerce a MESSAGE into a Mail::Message.  In some
-occasions, for instance where you add a message to a folder, this
-coercion is automatically called to ensure that the correct message
-type is stored.
+Coerce a MESSAGE into a Mail::Message.  In some occasions, for instance
+where you add a message to a folder, this coercion is automatically
+called to ensure that the correct message type is stored.
 
 The coerced message is returned on success, otherwise C<undef>.  The
 coerced message may be a reblessed version of the original message
 or a new object.  In case the message has to be specialized, for
-instance from a general Mail::Message into a Mail::Box::Mbox::Message,
-no copy is needed.  However, to coerce a Mail::Internet object into
+instance from a general Mail::Message into a L<Mail::Box::Mbox::Message|Mail::Box::Mbox::Message>,
+no copy is needed.  However, to coerce a L<Mail::Internet|Mail::Internet> object into
 a Mail::Message, a lot of copying and converting will take place.
 
 Valid MESSAGEs which can be coerced into Mail::Message objects
@@ -1089,16 +1088,20 @@ are of type
 
 =item * Any type of L<Mail::Box::Message|Mail::Box::Message>
 
-=item * MIME::Entity's, using L<Mail::Message::Convert::MimeEntity|Mail::Message::Convert::MimeEntity>
+=item * MIME::Entity objects, using L<Mail::Message::Convert::MimeEntity|Mail::Message::Convert::MimeEntity>
 
-=item * L<Mail::Internet|Mail::Internet>'s, using L<Mail::Message::Convert::MailInternet|Mail::Message::Convert::MailInternet>
+=item * L<Mail::Internet|Mail::Internet> objects, using L<Mail::Message::Convert::MailInternet|Mail::Message::Convert::MailInternet>
+
+=item * Email::Simple objects, using L<Mail::Message::Convert::EmailSimple|Mail::Message::Convert::EmailSimple>
+
+=item * Email::Abstract objects
 
 =back
 
 L<Mail::Message::Part|Mail::Message::Part>'s, which are extensions of C<Mail::Message>'s,
 can also be coerced directly from a L<Mail::Message::Body|Mail::Message::Body>.
 
-I<Example:> 
+example: 
 
  my $folder  = Mail::Box::Mbox->new;
  my $message = Mail::Message->build(...);
@@ -1344,7 +1347,7 @@ This method is only provided to hide differences with messages which are
 located in folders: their L<Mail::Box::Message::destruct()|Mail::Box::Message/"Cleanup"> works quite
 differently.
 
-I<Example:> of Mail::Message destruct
+example: of Mail::Message destruct
 
  my $msg = Mail::Message->read;
  $msg->destruct;
@@ -1568,17 +1571,33 @@ it is closed.
 
 =head1 DIAGNOSTICS
 
-I<Error:> Cannot include forward source as $include.
+Error: Cannot coerce a $class object into a $class object
+
+=over 4
+
+=back
+
+Error: Cannot include forward source as $include.
+
+=over 4
 
 Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
 C<NO>, C<INLINE>, C<ATTACH>, and C<ENCAPSULATE>.
 
-I<Error:> Cannot include reply source as $include.
+=back
+
+Error: Cannot include reply source as $include.
+
+=over 4
 
 Unknown alternative for the C<include> option of L<reply()|Mail::Message::Construct::Reply/"Constructing a message">.  Valid
 choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
-I<Error:> Method bounce requires To, Cc, or Bcc
+=back
+
+Error: Method bounce requires To, Cc, or Bcc
+
+=over 4
 
 The message L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> method forwards a received message off to someone
 else without modification; you must specified it's new destination.
@@ -1586,23 +1605,47 @@ If you have the urge not to specify any destination, you probably
 are looking for L<reply()|Mail::Message::Construct::Reply/"Constructing a message">. When you wish to modify the content, use
 L<forward()|Mail::Message::Construct::Forward/"Constructing a message">.
 
-I<Error:> Method forwardAttach requires a preamble
+=back
 
-I<Error:> Method forwardEncapsulate requires a preamble
+Error: Method forwardAttach requires a preamble
 
-I<Error:> No address to create forwarded to.
+=over 4
+
+=back
+
+Error: Method forwardEncapsulate requires a preamble
+
+=over 4
+
+=back
+
+Error: No address to create forwarded to.
+
+=over 4
 
 If a forward message is created, a destination address must be specified.
 
-I<Error:> No default mailer found to send message.
+=back
+
+Error: No default mailer found to send message.
+
+=over 4
 
 The message L<send()|Mail::Message/"The message"> mechanism had not enough information to automatically
 find a mail transfer agent to sent this message.  Specify a mailer
 explicitly using the C<via> options.
 
-I<Error:> No rebuild rule $name defined.
+=back
 
-I<Error:> Only build() Mail::Message's; they are not in a folder yet
+Error: No rebuild rule $name defined.
+
+=over 4
+
+=back
+
+Error: Only build() Mail::Message's; they are not in a folder yet
+
+=over 4
 
 You may wish to construct a message to be stored in a some kind
 of folder, but you need to do that in two steps.  First, create a
@@ -1610,7 +1653,11 @@ normal L<Mail::Message|Mail::Message>, and then add it to the folder.  During th
 L<Mail::Box::addMessage()|Mail::Box/"The folder"> process, the message will get L<coerce()|Mail::Message/"Internals">-d
 into the right message type, adding storage information and the like.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -1618,10 +1665,18 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
+Error: coercion starts with some object
+
+=over 4
+
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

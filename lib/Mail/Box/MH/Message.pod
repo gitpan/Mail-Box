@@ -866,34 +866,62 @@ So: label C<unseen> is translated into C<seen> for internal use.
 
 =head1 DIAGNOSTICS
 
-I<Error:> Cannot create parser for $filename.
+Error: Cannot coerce a $class object into a $class object
+
+=over 4
+
+=back
+
+Error: Cannot create parser for $filename.
+
+=over 4
 
 For some reason (the previous message have told you already) it was not possible
 to create a message parser for the specified filename.
 
-I<Error:> Cannot include forward source as $include.
+=back
+
+Error: Cannot include forward source as $include.
+
+=over 4
 
 Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
 C<NO>, C<INLINE>, C<ATTACH>, and C<ENCAPSULATE>.
 
-I<Error:> Cannot include reply source as $include.
+=back
+
+Error: Cannot include reply source as $include.
+
+=over 4
 
 Unknown alternative for the C<include> option of L<reply()|Mail::Message::Construct::Reply/"Constructing a message">.  Valid
 choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
-I<Error:> Cannot write message to $filename: $!
+=back
+
+Error: Cannot write message to $filename: $!
+
+=over 4
 
 When a modified or new message is written to disk, it is first written
 to a temporary file in the folder directory.  For some reason, it is
 impossible to create this file.
 
-I<Error:> Failed to move $new to $filename: $!
+=back
+
+Error: Failed to move $new to $filename: $!
+
+=over 4
 
 When a modified or new message is written to disk, it is first written
 to a temporary file in the folder directory.  Then, the new file is
 moved to replace the existing file.  Apparently, the latter fails.
 
-I<Error:> Method bounce requires To, Cc, or Bcc
+=back
+
+Error: Method bounce requires To, Cc, or Bcc
+
+=over 4
 
 The message L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> method forwards a received message off to someone
 else without modification; you must specified it's new destination.
@@ -901,23 +929,47 @@ If you have the urge not to specify any destination, you probably
 are looking for L<reply()|Mail::Message::Construct::Reply/"Constructing a message">. When you wish to modify the content, use
 L<forward()|Mail::Message::Construct::Forward/"Constructing a message">.
 
-I<Error:> Method forwardAttach requires a preamble
+=back
 
-I<Error:> Method forwardEncapsulate requires a preamble
+Error: Method forwardAttach requires a preamble
 
-I<Error:> No address to create forwarded to.
+=over 4
+
+=back
+
+Error: Method forwardEncapsulate requires a preamble
+
+=over 4
+
+=back
+
+Error: No address to create forwarded to.
+
+=over 4
 
 If a forward message is created, a destination address must be specified.
 
-I<Error:> No default mailer found to send message.
+=back
+
+Error: No default mailer found to send message.
+
+=over 4
 
 The message L<send()|Mail::Message/"The message"> mechanism had not enough information to automatically
 find a mail transfer agent to sent this message.  Specify a mailer
 explicitly using the C<via> options.
 
-I<Error:> No rebuild rule $name defined.
+=back
 
-I<Error:> Only build() Mail::Message's; they are not in a folder yet
+Error: No rebuild rule $name defined.
+
+=over 4
+
+=back
+
+Error: Only build() Mail::Message's; they are not in a folder yet
+
+=over 4
 
 You may wish to construct a message to be stored in a some kind
 of folder, but you need to do that in two steps.  First, create a
@@ -925,7 +977,11 @@ normal L<Mail::Message|Mail::Message>, and then add it to the folder.  During th
 L<Mail::Box::addMessage()|Mail::Box/"The folder"> process, the message will get L<coerce()|Mail::Message/"Internals">-d
 into the right message type, adding storage information and the like.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -933,13 +989,21 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Error:> Unable to read delayed body.
+=back
+
+Error: Unable to read delayed body.
+
+=over 4
 
 For some reason, the header of the message could be read, but the body
 cannot.  Probably the file has disappeared or the permissions were
 changed during the progress of the program.
 
-I<Error:> Unable to read delayed head.
+=back
+
+Error: Unable to read delayed head.
+
+=over 4
 
 Mail::Box tries to be I<lazy> with respect to parsing messages.  When a
 directory organized folder is opened, only the filenames of messages are
@@ -947,10 +1011,18 @@ collected.  At first use, the messages are read from their file.  Apperently,
 a message is used for the first time here, but has disappeared or is
 unreadible for some other reason.
 
+=back
+
+Error: coercion starts with some object
+
+=over 4
+
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

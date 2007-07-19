@@ -758,83 +758,137 @@ bit faster than MH.
 
 =head1 DIAGNOSTICS
 
-I<Error:> Cannot append Maildir message in $new to folder $self.
+Error: Cannot append Maildir message in $new to folder $self.
+
+=over 4
 
 The message (or messages) could not be stored in the right directories
 for the Maildir folder.
 
-I<Error:> Cannot create Maildir directory $dir: $!
+=back
+
+Error: Cannot create Maildir directory $dir: $!
+
+=over 4
 
 A Maildir folder is represented by a directory, with some sub-directories.  The
 top folder directory could not be created for the reason indicated.
 
-I<Error:> Cannot create Maildir folder $name.
+=back
+
+Error: Cannot create Maildir folder $name.
+
+=over 4
 
 One or more of the directories required to administer a Maildir folder
 could not be created.
 
-I<Error:> Cannot create Maildir message file $new.
+=back
+
+Error: Cannot create Maildir message file $new.
+
+=over 4
 
 A message is converted from some other message format into a Maildir format
 by writing it to a file with a name which contains the status flags of the
 message.  Apparently, creating this file failed.
 
-I<Error:> Cannot create Maildir subdir $dir: $!
+=back
+
+Error: Cannot create Maildir subdir $dir: $!
+
+=over 4
 
 Each Maildir folder has three sub-directories for administration: C<new>,
 C<tmp>, and C<cur>.  The mentioned directory could not be created for
 the indicated reason.
 
-I<Warning:> Changes not written to read-only folder $self.
+=back
+
+Warning: Changes not written to read-only folder $self.
+
+=over 4
 
 You have opened the folder read-only --which is the default set
 by L<new(access)|Mail::Box/"Constructors">--, made modifications, and now want to close it.
 Set L<close(force)|Mail::Box/"The folder"> if you want to overrule the access mode, or close
 the folder with L<close(write)|Mail::Box/"The folder"> set to C<NEVER>.
 
-I<Error:> Copying failed for one message.
+=back
+
+Error: Copying failed for one message.
+
+=over 4
 
 For some reason, for instance disc full, removed by external process, or
 read-protection, it is impossible to copy one of the messages.  Copying will
 proceed for the other messages.
 
-I<Error:> Destination folder $name is not writable.
+=back
+
+Error: Destination folder $name is not writable.
+
+=over 4
 
 The folder where the messages are copied to is not opened with write
 access (see L<new(access)|Mail::Box/"Constructors">).  This has no relation with write permission
 to the folder which is controled by your operating system.
 
-I<Warning:> Different messages with id $msgid
+=back
+
+Warning: Different messages with id $msgid
+
+=over 4
 
 The message id is discovered more than once within the same folder, but the
 content of the message seems to be different.  This should not be possible:
 each message must be unique.
 
-I<Error:> Folder $name is opened read-only
+=back
+
+Error: Folder $name is opened read-only
+
+=over 4
 
 You can not write to this folder unless you have opened the folder to
 write or append with L<new(access)|Mail::Box/"Constructors">, or the C<force> option is set true.
 
-I<Error:> Folder $name not deleted: not writable.
+=back
+
+Error: Folder $name not deleted: not writable.
+
+=over 4
 
 The folder must be opened with write access via L<new(access)|Mail::Box/"Constructors">, otherwise
 removing it will be refused.  So, you may have write-access according to
 the operating system, but that will not automatically mean that this
 C<delete> method permits you to.  The reverse remark is valid as well.
 
-I<Error:> Invalid timespan '$timespan' specified.
+=back
+
+Error: Invalid timespan '$timespan' specified.
+
+=over 4
 
 The string does not follow the strict rules of the time span syntax which
 is permitted as parameter.
 
-I<Warning:> Message-id '$msgid' does not contain a domain.
+=back
+
+Warning: Message-id '$msgid' does not contain a domain.
+
+=over 4
 
 According to the RFCs, message-ids need to contain a unique random part,
 then an C<@>, and then a domain name.  This is made to avoid the creation
 of two messages with the same id.  The warning emerges when the C<@> is
 missing from the string.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -842,21 +896,31 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Error:> Unable to create subfolder $name of $folder.
+=back
+
+Error: Unable to create subfolder $name of $folder.
+
+=over 4
 
 The copy includes the subfolders, but for some reason it was not possible
 to copy one of these.  Copying will proceed for all other sub-folders.
 
-I<Error:> Writing folder $name failed
+=back
+
+Error: Writing folder $name failed
+
+=over 4
 
 For some reason (you probably got more error messages about this problem)
 it is impossible to write the folder, although you should because there
 were changes made.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

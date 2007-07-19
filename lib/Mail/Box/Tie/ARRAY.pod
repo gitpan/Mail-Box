@@ -51,7 +51,7 @@ B<TIEARRAY>('Mail::Box::Tie::ARRAY', FOLDER)
 
 Create the tie on an existing folder.
 
-I<Example:> tie an array to a folder
+example: tie an array to a folder
 
  my $mgr   = Mail::Box::Manager->new;
  my $inbox = $mgr->new(folder => $ENV{MAIL});
@@ -68,7 +68,7 @@ $obj-E<gt>B<DELETE>
 Flag a message to be removed.  Be warned that the message stays in
 the folder, and is not removed before the folder is written.
 
-I<Example:> 
+example: 
 
  delete $inbox[5];
  $inbox[5]->delete;   #same
@@ -83,7 +83,7 @@ Get the message which is at the indicated location in the list of
 messages contained in this folder.  Deleted messages will be returned
 as C<undef>.
 
-I<Example:> 
+example: 
 
  print $inbox[3];     # 4th message in the folder
  print @inbox[3,0];   # 4th and first of the folder
@@ -98,7 +98,7 @@ $obj-E<gt>B<FETCHSIZE>
 Return the total number of messages in a folder.  This is called when
 the folder-array is used in scalar context, for instance.
 
-I<Example:> 
+example: 
 
  if(@inbox > 10)    # contains more than 10 messages?
  my $nrmsgs = @inbox;
@@ -111,7 +111,7 @@ $obj-E<gt>B<PUSH>(MESSAGES)
 
 Add MESSAGES to the end of the folder.
 
-I<Example:> 
+example: 
 
     push @inbox, $newmsg;
 
@@ -126,7 +126,7 @@ etc.  An error occurs if you try to do this. The only thing which is allowed
 is to store a message at the first free index at the end of the folder (which
 is also achievable with L<PUSH()|Mail::Box::Tie::ARRAY/"Tied Interface">).
 
-I<Example:> 
+example: 
 
  $inbox[8] = $add;
  $inbox[-1] = $add;
@@ -157,8 +157,8 @@ is not permitted to shrink or be mutilated.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

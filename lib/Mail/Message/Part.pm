@@ -1,13 +1,13 @@
 # Copyrights 2001-2007 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.00.
+# Pod stripped from pm file by OODoc 1.02.
 use strict;
 use warnings;
 
 package Mail::Message::Part;
 use vars '$VERSION';
-$VERSION = '2.072';
+$VERSION = '2.073';
 use base 'Mail::Message';
 
 use Scalar::Util    'weaken';
@@ -30,8 +30,6 @@ sub init($)
     $self;
 }
 
-#------------------------------------------
-
 
 sub coerce($@)
 {   my ($class, $thing, $container) = (shift, shift, shift);
@@ -47,8 +45,6 @@ sub coerce($@)
     $part->container($container);
     $part;
 }
-
-#------------------------------------------
 
 
 sub buildFromBody($$;@)
@@ -71,8 +67,6 @@ sub buildFromBody($$;@)
     $part;
 }
 
-#------------------------------------------
-
 sub container(;$)
 {   my $self = shift;
     return $self->{MMP_container} unless @_;
@@ -81,19 +75,13 @@ sub container(;$)
     weaken($self->{MMP_container});
 }
 
-#------------------------------------------
-
 sub toplevel()
 {   my $body = shift->container or return;
     my $msg  = $body->message   or return;
     $msg->toplevel;
 }
 
-#------------------------------------------
-
 sub isPart() { 1 }
-
-#------------------------------------------
 
 
 sub printEscapedFrom($)
@@ -101,8 +89,6 @@ sub printEscapedFrom($)
     $self->head->print($out);
     $self->body->printEscapedFrom($out);
 }
-
-#------------------------------------------
 
 sub readFromParser($;$)
 {   my ($self, $parser, $bodytype) = @_;
@@ -121,8 +107,6 @@ sub readFromParser($;$)
     $self->storeBody($body->contentInfoFrom($head));
     $self;
 }
-
-#------------------------------------------
 
 
 sub destruct()

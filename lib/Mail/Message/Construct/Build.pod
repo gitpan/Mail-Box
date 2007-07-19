@@ -117,7 +117,7 @@ Start with a prepared header, otherwise one is created.
 
 =back
 
-I<Example:> 
+example: 
 
  my $msg = Mail::Message->build
   ( From   => 'me@home.nl'
@@ -159,7 +159,7 @@ string, address (L<Mail::Address|Mail::Address> object), or array of addresses.
 A C<Date>, C<Message-Id>, and C<MIME-Version> field are added unless
 supplied.
 
-I<Example:> 
+example: 
 
  my $type = Mail::Message::Field->new('Content-Type', 'text/html'
    , 'charset="us-ascii"');
@@ -304,7 +304,9 @@ the right type.
 
 =head1 DIAGNOSTICS
 
-I<Error:> Only build() Mail::Message's; they are not in a folder yet
+Error: Only build() Mail::Message's; they are not in a folder yet
+
+=over 4
 
 You may wish to construct a message to be stored in a some kind
 of folder, but you need to do that in two steps.  First, create a
@@ -312,10 +314,12 @@ normal L<Mail::Message|Mail::Message>, and then add it to the folder.  During th
 L<Mail::Box::addMessage()|Mail::Box/"The folder"> process, the message will get L<coerce()|Mail::Message/"Internals">-d
 into the right message type, adding storage information and the like.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

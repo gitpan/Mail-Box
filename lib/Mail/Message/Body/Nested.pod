@@ -132,7 +132,7 @@ The message which is encapsulated within this body.
 
 . transfer_encoding => STRING|FIELD
 
-I<Example:> 
+example: 
 
  my $msg   = $folder->message(3);
  my $encaps= Mail::Message::Body::Nested->new(nested => $msg);
@@ -653,17 +653,27 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Warning:> No decoder defined for transfer encoding $name.
+Warning: No decoder defined for transfer encoding $name.
+
+=over 4
 
 The data (message body) is encoded in a way which is not currently understood,
 therefore no decoding (or recoding) can take place.
 
-I<Warning:> No encoder defined for transfer encoding $name.
+=back
+
+Warning: No encoder defined for transfer encoding $name.
+
+=over 4
 
 The data (message body) has been decoded, but the required encoding is
 unknown.  The decoded data is returned.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -671,16 +681,22 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Error:> You cannot use foreachLine on a nested
+=back
+
+Error: You cannot use foreachLine on a nested
+
+=over 4
 
 L<foreachLine()|Mail::Message::Body::Nested/"METHODS"> should be used on decoded message bodies only, because
 it would modify the header of the encapsulated message. which is
 clearly not acceptible.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

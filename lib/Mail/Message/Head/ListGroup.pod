@@ -480,13 +480,19 @@ L<http://www.lsoft.com/>.
 
 =head1 DIAGNOSTICS
 
-I<Error:> Cannot convert "$string" into an address object
+Error: Cannot convert "$string" into an address object
+
+=over 4
 
 The L<new(address)|Mail::Message::Head::ListGroup/"Constructors"> is coerced into a L<Mail::Message::Field::Address|Mail::Message::Field::Address>,
 which fails.  Have a look at L<Mail::Message::Field::Address::coerce()|Mail::Message::Field::Address/"Constructors">
 to see what valid arguments are.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -494,10 +500,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -321,7 +321,7 @@ Returns the subfolder's object with NAME or C<undef> if it does not
 exist.  When multiple NAMEs are added, those super folders are traverst
 first.  Without any NAME, the current object is returned
 
-I<Example:> get some folder
+example: get some folder
 
  my $a = $user->folders->folder('b', 'a');
 
@@ -369,7 +369,7 @@ $obj-E<gt>B<rename>(FOLDER, [NEWSUBNAME])
 
 Move the folder to a different super-FOLDER, under a NEW SUBfolder NAME.
 
-I<Example:> renaming a folder
+example: renaming a folder
 
  my $top = $user->topfolder;
  my $new = $top->folder('xyz') or die;
@@ -523,39 +523,65 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> $object is not a collection.
+Error: $object is not a collection.
+
+=over 4
 
 The first argument is an object, but not of a class which extends
 L<User::Identity::Collection|User::Identity::Collection>.
 
-I<Error:> Cannot load collection module for $type ($class).
+=back
+
+Error: Cannot load collection module for $type ($class).
+
+=over 4
 
 Either the specified $type does not exist, or that module named $class returns
 compilation errors.  If the type as specified in the warning is not
 the name of a package, you specified a nickname which was not defined.
 Maybe you forgot the 'require' the package which defines the nickname.
 
-I<Error:> Creation of a collection via $class failed.
+=back
+
+Error: Creation of a collection via $class failed.
+
+=over 4
 
 The $class did compile, but it was not possible to create an object
 of that class using the options you specified.
 
-I<Error:> Don't know what type of collection you want to add.
+=back
+
+Error: Don't know what type of collection you want to add.
+
+=over 4
 
 If you add a collection, it must either by a collection object or a
 list of options which can be used to create a collection object.  In
 the latter case, the type of collection must be specified.
 
-I<Error:> It is not permitted to add subfolders to $name
+=back
+
+Error: It is not permitted to add subfolders to $name
+
+=over 4
 
 The L<inferiors()|Mail::Box::Identity/"Attributes"> flag prohibits the creation of subfolders to this
 folder.
 
-I<Warning:> No collection $name
+=back
+
+Warning: No collection $name
+
+=over 4
 
 The collection with $name does not exist and can not be created.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -563,21 +589,35 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Error:> The toplevel folder cannot be removed this way
+=back
+
+Error: The toplevel folder cannot be removed this way
+
+=over 4
 
 The L<Mail::Box::Identity|Mail::Box::Identity> folder administration structure requires
 a top directory.  That top is registered somewhere (for instance
 by a L<Mail::Box::Manage::User|Mail::Box::Manage::User>).  If you need to remove the top,
 you have to look for a method of that object.
 
-I<Error:> Toplevel directory requires explicit folder type
+=back
 
-I<Error:> Toplevel directory requires explicit location
+Error: Toplevel directory requires explicit folder type
+
+=over 4
+
+=back
+
+Error: Toplevel directory requires explicit location
+
+=over 4
+
+=back
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

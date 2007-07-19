@@ -31,6 +31,10 @@ and more methods.  The L<Mail::Message|Mail::Message> objects are more flexible
 in how the message parts are stored, and uses separate header and body
 objects.
 
+=head2 Converters between message objects
+
+=head2 Other converters
+
 =head1 METHODS
 
 =head2 Constructors
@@ -60,7 +64,7 @@ If C<undef> is passed, in place of a MESSAGE, then an empty list is
 returned.  When the parsing failes, then L<MIME::Parser> throws an
 exception.
 
-I<Example:> 
+example: 
 
  my $convert = Mail::Message::Convert::MimeEntity->new;
  my Mail::Message $msg  = Mail::Message->new;
@@ -77,7 +81,7 @@ the specified L<MIME::Entity>.  If the conversion fails, the C<undef>
 is returned.  If C<undef> is passed in place of an OBJECT, then an
 empty list is returned.
 
-I<Example:> 
+example: 
 
  my $convert = Mail::Message::Convert::MimeEntity->new;
  my MIME::Entity  $msg  = MIME::Entity->new;
@@ -217,9 +221,15 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Converting from MIME::Entity but got a $type, return
+Error: Converting from MIME::Entity but got a $type, return
 
-I<Error:> Package $package does not implement $method.
+=over 4
+
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -227,10 +237,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -261,7 +261,7 @@ Set a FIELD to a (new) VALUE.  The FIELD names which do not start with
 specify a fully prepared message field OBJECT.  In any case, a field
 OBJECT is returned.
 
-I<Example:> 
+example: 
 
  my $this = Mail::Message::Head::ResentGroup->new;
  $this->set(To => 'fish@tux.aq');
@@ -600,14 +600,20 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Message header required for creation of ResentGroup.
+Error: Message header required for creation of ResentGroup.
+
+=over 4
 
 It is required to know to which header the resent-group
 is created.  Use the C<head> option.  Maybe you should use
 L<Mail::Message::Head::Complete::addResentGroup()|Mail::Message::Head::Complete/"Access to the header"> with DATA, which will
 organize the correct initiations for you.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -615,10 +621,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

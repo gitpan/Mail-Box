@@ -236,12 +236,18 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Warning:> Folder $folder already locked over nfs
+Warning: Folder $folder already locked over nfs
+
+=over 4
 
 Do not try to lock the folder when the application already has the
 lock: it will give you dead-locks.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -249,22 +255,32 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Warning:> Removed expired lockfile $filename.
+=back
+
+Warning: Removed expired lockfile $filename.
+
+=over 4
 
 A lock file was found which was older than the expiration period as
 specified with L<new(timeout)|Mail::Box::Locker/"METHODS">.  The lock file was succesfully
 removed.
 
-I<Error:> Unable to remove expired lockfile $lockfile: $!
+=back
+
+Error: Unable to remove expired lockfile $lockfile: $!
+
+=over 4
 
 A lock file was found which was older than the expiration period as
 specified with the L<new(timeout)|Mail::Box::Locker/"METHODS"> option.  It is impossible to remove that
 lock file, so we need to wait until it vanishes by some external cause.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

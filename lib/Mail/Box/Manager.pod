@@ -131,7 +131,7 @@ $obj-E<gt>B<folderTypes>
 
 Returns the list of currently defined folder types.
 
-I<Example:> 
+example: 
 
  print join("\n", $manager->folderTypes), "\n";
 
@@ -157,7 +157,7 @@ modules.  The TYPE is just an arbitrary name.
 The added types are prepended to the list of known types, so they are
 checked first when a folder is opened in autodetect mode.
 
-I<Example:> 
+example: 
 
  $manager->registerType(mbox => 'Mail::Box::Mbox',
      save_on_exit => 0, folderdir => '/tmp');
@@ -191,7 +191,7 @@ not change this.
 
 =back
 
-I<Example:> 
+example: 
 
  my $inbox = $mgr->open('inbox');
  $mgr->close($inbox);
@@ -215,7 +215,7 @@ $obj-E<gt>B<isOpenFolder>(FOLDER)
 
 Returns true if the FOLDER is currently open.
 
-I<Example:> 
+example: 
 
  print "Yes\n" if $mgr->isOpenFolder('Inbox');
 
@@ -302,7 +302,7 @@ used.)
 
 =back
 
-I<Example:> opening folders via the manager
+example: opening folders via the manager
 
  my $jack  = $manager->open(folder => '=jack',
     type => 'mbox');
@@ -382,7 +382,7 @@ messages (how the were actually written) are returned as list.
 The OPTIONS is a list of key/values, which are added to (overriding)
 the default options for the detected folder type.
 
-I<Example:> 
+example: 
 
  $mgr->appendMessage('=send', $message, folderdir => '/');
  $mgr->appendMessage($received, $inbox->messages);
@@ -418,7 +418,7 @@ message is copied to.  Silently ignored when not possible to share.
 
 =back
 
-I<Example:> 
+example: 
 
  my $drafts = $mgr->open(folder => 'Drafts');
  my $outbox = $mgr->open(folder => 'Outbox');
@@ -467,7 +467,7 @@ read about the possible options in L<Mail::Box::Thread::Manager|Mail::Box::Threa
 As OPTIONS specify one folder or an array of FOLDERS.
 It is also permitted to specify folders before the options.
 
-I<Example:> 
+example: 
 
  my $t1 = $mgr->threads(folders => [ $inbox, $send ]);
  my $t2 = $mgr->threads($inbox);
@@ -693,7 +693,9 @@ and other user-centric applications by setting smart defaults.
 
 =head1 DIAGNOSTICS
 
-I<Error:> Folder $name is already open.
+Error: Folder $name is already open.
+
+=over 4
 
 You cannot ask the manager for a folder which is already open. In some
 older releases (before MailBox 2.049), this was permitted, but then
@@ -701,13 +703,21 @@ behaviour changed, because many nasty side-effects are to be expected.
 For instance, an L<Mail::Box::update()|Mail::Box/"The folder"> on one folder handle would
 influence the second, probably unexpectedly.
 
-I<Error:> Folder $name is not a Mail::Box; cannot add a message.
+=back
+
+Error: Folder $name is not a Mail::Box; cannot add a message.
+
+=over 4
 
 The folder where the message should be appended to is an object which is
 not a folder type which extends L<Mail::Box|Mail::Box>.  Probably, it is not a folder
 at all.
 
-I<Warning:> Folder does not exist, failed opening $type folder $name.
+=back
+
+Warning: Folder does not exist, failed opening $type folder $name.
+
+=over 4
 
 The folder does not exist and creating is not permitted (see
 L<open(create)|Mail::Box::Manager/"Manage open folders">) or did not succeed.  When you do not have sufficient
@@ -720,7 +730,11 @@ There will probably be another warning or error message which is related
 to this report and provides more details about its cause.  You may also
 have a look at L<new(autodetect)|Mail::Box::Manager/"METHODS"> and L<new(folder_types)|Mail::Box::Manager/"METHODS">.
 
-I<Warning:> Folder type $type is unknown, using autodetect.
+=back
+
+Warning: Folder type $type is unknown, using autodetect.
+
+=over 4
 
 The specified folder type (see L<open(type)|Mail::Box::Manager/"Manage open folders">, possibly derived from
 the folder name when specified as url) is not known to the manager.
@@ -728,12 +742,20 @@ This may mean that you forgot to require the L<Mail::Box|Mail::Box> extension
 which implements this folder type, but probably it is a typo.  Usually,
 the manager is able to figure-out which type to use by itself.
 
-I<Error:> Illegal folder URL '$url'.
+=back
+
+Error: Illegal folder URL '$url'.
+
+=over 4
 
 The folder name was specified as URL, but not according to the syntax.
 See L<decodeFolderURL()|Mail::Box::Manager/"Internals"> for an description of the syntax.
 
-I<Error:> No foldername specified to open.
+=back
+
+Error: No foldername specified to open.
+
+=over 4
 
 C<open()> needs a folder name as first argument (before the list of options),
 or with the C<folder> option within the list.  If no name was found, the
@@ -741,7 +763,11 @@ MAIL environment variable is checked.  When even that does not result in
 a usable folder, then this error is produced.  The error may be caused by
 an accidental odd-length option list.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -749,27 +775,41 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Error:> Use appendMessage() to add messages which are not in a folder.
+=back
+
+Error: Use appendMessage() to add messages which are not in a folder.
+
+=over 4
 
 You do not need to copy this message into the folder, because you do
 not share the message between folders.
 
-I<Warning:> Use moveMessage() or copyMessage() to move between open folders.
+=back
+
+Warning: Use moveMessage() or copyMessage() to move between open folders.
+
+=over 4
 
 The message is already part of a folder, and now it should be appended
 to a different folder.  You need to decide between copy or move, which
 both will clone the message (not the body, because they are immutable).
 
-I<Warning:> Will never create a folder $name without having write access.
+=back
+
+Warning: Will never create a folder $name without having write access.
+
+=over 4
 
 You have set L<open(create)|Mail::Box::Manager/"Manage open folders">, but only want to read the folder.  Create is
 only useful for folders which have write or append access modes
 (see L<Mail::Box::new(access)|Mail::Box/"Constructors">).
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

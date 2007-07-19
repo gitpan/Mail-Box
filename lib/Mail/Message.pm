@@ -1,13 +1,13 @@
 # Copyrights 2001-2007 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.00.
+# Pod stripped from pm file by OODoc 1.02.
 use strict;
 use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.072';
+$VERSION = '2.073';
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -547,9 +547,13 @@ sub statusToLabels()
 
 my $mail_internet_converter;
 my $mime_entity_converter;
+my $email_simple_converter;
 
 sub coerce($@)
 {   my ($class, $message) = @_;
+
+    ref $message
+        or $class->log(INTERNAL => "coercion starts with some object");
 
     return bless $message, $class
         if $message->isa(__PACKAGE__);
@@ -558,7 +562,6 @@ sub coerce($@)
     {   unless($mime_entity_converter)
         {   eval {require Mail::Message::Convert::MimeEntity};
                 confess "Install MIME::Entity" if $@;
-
             $mime_entity_converter = Mail::Message::Convert::MimeEntity->new;
         }
 
@@ -570,17 +573,30 @@ sub coerce($@)
     {   unless($mail_internet_converter)
         {   eval {require Mail::Message::Convert::MailInternet};
             confess "Install Mail::Internet" if $@;
-
-           $mail_internet_converter = Mail::Message::Convert::MailInternet->new;
+            $mail_internet_converter = Mail::Message::Convert::MailInternet->new;
         }
 
         $message = $mail_internet_converter->from($message)
             or return;
     }
+    elsif($message->isa('Email::Simple'))
+    {   unless($email_simple_converter)
+        {   eval {require Mail::Message::Convert::EmailSimple};
+            confess "Install Email::Simple" if $@;
+            $email_simple_converter = Mail::Message::Convert::EmailSimple->new;
+        }
+
+        $message = $email_simple_converter->from($message)
+            or return;
+    }
+
+    elsif($message->isa('Email::Abstract'))
+    {   return $class->coerce($message->object);
+    }
 
     else
-    {   my $what = ref $message ? 'a'.ref($message).' object' : 'text';
-        confess "Cannot coerce $what into a ". __PACKAGE__." object.\n";
+    {   $class->log(INTERNAL =>  "Cannot coerce a ".ref($message)
+              . " object into a ". __PACKAGE__." object");
     }
 
     $message->{MM_modified}  ||= 0;

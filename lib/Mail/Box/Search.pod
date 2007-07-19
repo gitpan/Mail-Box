@@ -222,7 +222,7 @@ Sometimes we know how only one match is needed.  In this case, this
 searching will stop at the first match.  For instance, when C<limit> is C<-1>
 or C<1>, or when the search in done in scalar context.
 
-I<Example:> 
+example: 
 
  my $grep = Mail::Box::Search::Grep->new
   ( match   => 'My Name Is Nobody'
@@ -384,22 +384,36 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-I<Error:> Cannot search in body.
+Error: Cannot search in body.
+
+=over 4
 
 Th search object does not implement L<inBody()|Mail::Box::Search/"Searching">, and can therefore
 not search a message body.
 
-I<Error:> Cannot search in header.
+=back
+
+Error: Cannot search in header.
+
+=over 4
 
 Th search object does not implement L<inHead()|Mail::Box::Search/"Searching">, and can therefore
 not search a message header.
 
-I<Error:> Don't know how to deliver via results in $way.
+=back
+
+Error: Don't know how to deliver via results in $way.
+
+=over 4
 
 The search results cannot be delivered in the specific way, because that is
 not a defined alternative.
 
-I<Error:> Package $package does not implement $method.
+=back
+
+Error: Package $package does not implement $method.
+
+=over 4
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -407,14 +421,20 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-I<Error:> Search in BODY, HEAD or MESSAGE not $in.
+=back
+
+Error: Search in BODY, HEAD or MESSAGE not $in.
+
+=over 4
 
 The C<in> option defines only three names.
 
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.072,
-built on June 14, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.073,
+built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
