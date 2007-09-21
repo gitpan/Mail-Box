@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::Locker::Multi;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 use base 'Mail::Box::Locker';
 
 use Carp;

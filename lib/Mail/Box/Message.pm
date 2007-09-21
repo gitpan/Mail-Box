@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box::Message;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 use base 'Mail::Message';
 
 use Date::Parse;
@@ -67,15 +67,11 @@ sub folder(;$)
     $self->{MBM_folder};
 }
 
-#-------------------------------------------
-
 
 sub seqnr(;$)
 {   my $self = shift;
     @_ ? $self->{MBM_seqnr} = shift : $self->{MBM_seqnr};
 }
-
-#-------------------------------------------
 
 
 sub copyTo($@)
@@ -84,8 +80,6 @@ sub copyTo($@)
 
     $folder->addMessage($clone);
 }
-
-#-------------------------------------------
 
 
 sub moveTo($@)
@@ -113,12 +107,8 @@ sub readBody($$;$)
     $self->SUPER::readBody($parser, $head, $getbodytype);
 }
 
-#-------------------------------------------
-
 
 sub diskDelete() { shift }
-
-#-------------------------------------------
 
 sub forceLoad() {   # compatibility
    my $self = shift;

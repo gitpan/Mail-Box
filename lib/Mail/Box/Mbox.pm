@@ -5,7 +5,7 @@
 
 package Mail::Box::Mbox;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 use base 'Mail::Box::File';
 
 use strict;
@@ -26,8 +26,6 @@ sub init($)
     $self->SUPER::init($args);
 }
 
-#-------------------------------------------
-
 
 sub create($@)
 {   my ($thingy, $name, %args) = @_;
@@ -37,8 +35,6 @@ sub create($@)
 
     $class->SUPER::create($name, %args);
 }
-
-#-------------------------------------------
 
 
 sub foundIn($@)
@@ -70,8 +66,6 @@ sub foundIn($@)
     return 1;
 }
 
-#-------------------------------------------
-
 sub delete(@)
 {   my $self = shift;
     $self->SUPER::delete(@_);
@@ -79,8 +73,6 @@ sub delete(@)
     my $subfdir = $self->filename . $default_sub_extension;
     rmdir $subfdir;   # may fail, when there are still subfolders (no recurse)
 }
-
-#-------------------------------------------
 
 sub writeMessages($)
 {   my ($self, $args) = @_;
@@ -97,11 +89,7 @@ sub writeMessages($)
     $self;
 }
 
-#-------------------------------------------
-
 sub type() {'mbox'}
-
-#-------------------------------------------
 
 
 sub listSubFolders(@)

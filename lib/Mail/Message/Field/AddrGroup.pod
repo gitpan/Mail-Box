@@ -5,9 +5,9 @@ Mail::Message::Field::AddrGroup - A group of Mail::Message::Field::Address objec
 =head1 INHERITANCE
 
  Mail::Message::Field::AddrGroup
-   is an User::Identity::Collection::Emails
-   is an User::Identity::Collection
-   is an User::Identity::Item
+   is a User::Identity::Collection::Emails
+   is a User::Identity::Collection
+   is a User::Identity::Item
 
 =head1 SYNOPSIS
 
@@ -342,8 +342,8 @@ cannot add objects of a different $type.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.073,
-built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.074,
+built on September 21, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

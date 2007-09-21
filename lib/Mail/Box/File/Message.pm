@@ -6,7 +6,7 @@
 use strict;
 package Mail::Box::File::Message;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 use base 'Mail::Box::Message';
 
 use List::Util   qw/sum/;
@@ -22,15 +22,11 @@ sub init($)
     $self;
 }
 
-#------------------------------------------
-
 sub coerce($)
 {   my ($self, $message) = @_;
     return $message if $message->isa(__PACKAGE__);
     $self->SUPER::coerce($message)->labelsToStatus;
 }
-
-#-------------------------------------------
 
 
 sub write(;$)
@@ -52,8 +48,6 @@ sub write(;$)
     $self;
 }
 
-#-------------------------------------------
-
 sub clone()
 {   my $self  = shift;
     my $clone = $self->SUPER::clone;
@@ -70,8 +64,6 @@ sub fromLine(;$)
     $self->{MBMM_from_line} = shift if @_;
     $self->{MBMM_from_line} ||= $self->head->createFromLine;
 }
-
-#------------------------------------------
 
 
 sub escapedBody()
@@ -95,11 +87,7 @@ sub readFromParser($)
     $self;
 }
 
-#-------------------------------------------
-
 sub loadHead() { shift->head }
-
-#-------------------------------------------
 
 
 sub loadBody()
@@ -125,8 +113,6 @@ sub loadBody()
     $newbody;
 }
 
-#-------------------------------------------
-
 
 sub fileLocation()
 {   my $self = shift;
@@ -135,8 +121,6 @@ sub fileLocation()
      ? ($self->{MBMM_begin}, ($self->body->fileLocation)[1])
      : $self->{MBMM_begin};
 }
-
-#------------------------------------------
 
 
 sub moveLocation($)

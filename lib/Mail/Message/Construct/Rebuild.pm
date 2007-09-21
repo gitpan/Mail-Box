@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 
 use Mail::Message::Head::Complete;
 use Mail::Message::Body::Lines;
@@ -88,7 +88,7 @@ sub flattenEmptyMultiparts($@)
                  || Mail::Message::Body::Lines->new(data => '');
     my $epilogue = $body->epilogue;
     my $newbody  = $preamble->concatenate($preamble, <<NO_PARTS, $epilogue);
-
+  * PLEASE NOTE:
   * This multipart did not contain any parts (anymore)
   * and was therefore flattened.
 
@@ -117,13 +117,13 @@ sub descendMultiparts($@)
 
     foreach my $part ($body->parts)
     {   my $new = $self->recursiveRebuildPart($part, %args);
-
         if(!defined $new)  { $changed++ }
 	elsif($new==$part) { push @newparts, $part }
 	else               { push @newparts, $new; $changed++ }
     }
 
-    return $part unless $changed;
+    $changed
+       or return $part;
 
     my $newbody = ref($body)->new
      ( based_on  => $body
@@ -268,24 +268,21 @@ sub recursiveRebuildPart($@)
 {   my ($self, $part, %args) = @_;
 
   RULES:
-    for(1)
-    {
-        foreach my $rule ( @{$args{rules}} )
-        {
-            my $rebuild
-               = ref $rule ? $rule->($self, $part, %args)
-               :             $self->$rule($part, %args);
+    foreach my $rule ( @{$args{rules}} )
+    {   my $rebuild
+           = ref $rule ? $rule->($self, $part, %args)
+           :             $self->$rule($part, %args);
 
-            return undef unless defined $rebuild;
+        defined $rebuild
+            or return undef;
 
-            if($part != $rebuild)
-            {   $part = $rebuild;
-                redo RULES;
-            }
-	}
+        if($part != $rebuild)
+        {   $part = $rebuild;
+            redo RULES;
+        }
     }
 
-   $part;
+    $part;
 }
 
 #------------------------------------------

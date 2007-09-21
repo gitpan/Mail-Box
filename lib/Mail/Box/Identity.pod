@@ -5,7 +5,7 @@ Mail::Box::Identity - represents an unopened folder
 =head1 INHERITANCE
 
  Mail::Box::Identity
-   is an User::Identity::Item
+   is a User::Identity::Item
 
  Mail::Box::Identity
    is a Mail::Reporter
@@ -616,8 +616,8 @@ Error: Toplevel directory requires explicit location
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.073,
-built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.074,
+built on September 21, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

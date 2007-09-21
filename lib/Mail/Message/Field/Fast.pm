@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Fast;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 use base 'Mail::Message::Field';
 
 

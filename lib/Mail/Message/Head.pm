@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Head;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Complete;

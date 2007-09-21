@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Transport::Sendmail;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 use base 'Mail::Transport::Send';
 
 use Carp;

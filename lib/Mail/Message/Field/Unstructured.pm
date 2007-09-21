@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Unstructured;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 use base 'Mail::Message::Field::Full';
 
 
@@ -28,10 +28,6 @@ sub init($)
 
     $self;
 }
-
-#------------------------------------------
-
-
 
 
 1;

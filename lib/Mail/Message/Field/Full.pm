@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Full;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 use base 'Mail::Message::Field';
 
 use utf8;
@@ -63,7 +63,7 @@ sub new($;$$@)
 
     # Look for best class to suit this field
     my $myclass = 'Mail::Message::Field::'
-                . ($implementation{lc $name} || 'Unstructured');
+      . ($implementation{lc $name} || 'Unstructured');
 
     $myclass->SUPER::new(%args, name => $name, body => $body);
 }
@@ -84,19 +84,9 @@ sub init($)
     $self;
 }
 
-#------------------------------------------
-
 sub clone() { dclone(shift) }
-
-#------------------------------------------
-
-sub name() { lc shift->{MMFF_name}}
-
-#------------------------------------------
-
-sub Name() { shift->{MMFF_name}}
-
-#------------------------------------------
+sub name()  { lc shift->{MMFF_name}}
+sub Name()  { shift->{MMFF_name}}
 
 sub folded()
 {   my $self = shift;
@@ -107,8 +97,6 @@ sub folded()
     my $first = $self->{MMFF_name}. ':'. shift @lines;
     ($first, @lines);
 }
-
-#------------------------------------------
 
 sub unfoldedBody($;$)
 {   my ($self, $body) = (shift, shift);
@@ -123,8 +111,6 @@ sub unfoldedBody($;$)
     $body =~ s/\n//g;
     $body;
 }
-
-#------------------------------------------
 
 sub foldedBody($)
 {   my ($self, $body) = @_;
@@ -182,8 +168,6 @@ sub createComment($@)
     "($comment)";
 }
 
-#------------------------------------------
-
 
 sub createPhrase($)
 {   my $self = shift;
@@ -199,8 +183,6 @@ sub createPhrase($)
 
     $_;
 }
-
-#------------------------------------------
 
 
 sub beautify() { shift }
@@ -273,8 +255,6 @@ sub encode($@)
     $ready;
 }
 
-#------------------------------------------
-
 
 sub _decoder($$$)
 {   my ($charset, $encoding, $encoded) = @_;
@@ -317,8 +297,6 @@ sub decode($@)
 
 sub parse($) { shift }
 
-#------------------------------------------
-
 
 sub consumePhrase($)
 {   my ($thing, $string) = @_;
@@ -335,8 +313,6 @@ sub consumePhrase($)
 
     (undef, $string);
 }
-
-#------------------------------------------
 
 
 sub consumeComment($)
@@ -361,8 +337,6 @@ sub consumeComment($)
     ($comment, $string);
 }
 
-#------------------------------------------
-
 
 sub consumeDotAtom($)
 {   my ($self, $string) = @_;
@@ -380,10 +354,8 @@ sub consumeDotAtom($)
     ($atom, $string, $comment);
 }
 
-#------------------------------------------
 
-                                                                                
-sub produceBody() { die }
+sub produceBody() { $_[0]->{MMFF_body} }
 
 #------------------------------------------
 

@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 
 use IO::Lines;
 
@@ -40,8 +40,6 @@ sub file()
     $file;
 }
 
-#------------------------------------------
-
 
 sub printStructure(;$$)
 {   my $self    = shift;
@@ -68,8 +66,8 @@ sub printStructure(;$$)
 
     my $body    = $self->body;
     my @parts
-      = $body->isMultipart ? $body->parts
-      : $body->isNested    ? ($body->nested)
+      = $body->isNested    ? ($body->nested)
+      : $body->isMultipart ? $body->parts
       :                      ();
 
     $_->printStructure($fh, $indent.'   ') foreach @parts;

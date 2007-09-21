@@ -9,7 +9,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 
 use Carp;
 use Mail::Message::Body::String;
@@ -30,7 +30,8 @@ sub foreachLine($)
         else {$changes++}
      }
       
-     return $self unless $changes;
+     $changes
+        or return $self;
 
      ref($self)->new
       ( based_on => $self

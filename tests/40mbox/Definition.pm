@@ -5,7 +5,7 @@
 
 package MailBox::Test::40mbox::Definition;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 
 sub name     {"Mail::Box::Mbox; mbox folders"}
 sub critical {1}

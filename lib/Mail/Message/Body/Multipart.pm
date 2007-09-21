@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Body::Multipart;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -225,28 +225,20 @@ sub foreachLine($)
     confess;
 }
 
-#------------------------------------------
-
 sub check()
 {   my $self = shift;
     $self->foreachComponent( sub {$_[1]->check} );
 }
-
-#------------------------------------------
 
 sub encode(@)
 {   my ($self, %args) = @_;
     $self->foreachComponent( sub {$_[1]->encode(%args)} );
 }
 
-#------------------------------------------
-
 sub encoded()
 {   my $self = shift;
     $self->foreachComponent( sub {$_[1]->encoded} );
 }
-
-#------------------------------------------
 
 sub read($$$$)
 {   my ($self, $parser, $head, $bodytype) = @_;
@@ -359,8 +351,6 @@ sub foreachComponent($)
     $constructed;
 }
 
-#------------------------------------------
-
 
 sub attach(@)
 {   my $self  = shift;
@@ -369,8 +359,6 @@ sub attach(@)
       , parts    => [$self->parts, @_]
       );
 }
-
-#-------------------------------------------
 
 
 sub stripSignature(@)
@@ -388,12 +376,8 @@ sub stripSignature(@)
 
 sub preamble() {shift->{MMBM_preamble}}
 
-#------------------------------------------
-
 
 sub epilogue() {shift->{MMBM_epilogue}}
-
-#------------------------------------------
 
 
 sub parts(;$)
@@ -411,12 +395,8 @@ sub parts(;$)
     : ($self->log(ERROR => "Unknown criterium $what to select parts."), return ());
 }
 
-#-------------------------------------------
-
 
 sub part($) { shift->{MMBM_parts}[shift] }
-
-#-------------------------------------------
 
 
 my $unique_boundary = time;
@@ -433,8 +413,6 @@ sub boundary(;$)
     my $boundary = @_ && defined $_[0] ? (shift) : "boundary-".$unique_boundary++;
     $self->type->attribute(boundary => $boundary);
 }
-
-#-------------------------------------------
 
 sub endsOnNewline() { 1 }
 

@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Box::Parser;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 use base 'Mail::Reporter';
 use Carp;
 
@@ -23,6 +23,7 @@ sub new(@)
 sub init(@)
 {   my ($self, $args) = @_;
 
+#warn "PARSER type=".ref $self,$self->VERSION;
     $self->SUPER::init($args);
 
     $self->{MBP_mode} = $args->{mode} || 'r';
@@ -66,8 +67,6 @@ sub stop()
     $self->closeFile;
 }
 
-#------------------------------------------
-
 
 sub restart()
 {   my $self     = shift;
@@ -83,8 +82,6 @@ sub restart()
     $self;
 }
 
-#------------------------------------------
-
 
 sub fileChanged()
 {   my $self = shift;
@@ -93,8 +90,6 @@ sub fileChanged()
     $size != $self->{MBP_size} || $mtime != $self->{MBP_mtime};
 }
     
-#------------------------------------------
-
 
 sub filename() {shift->{MBP_filename}}
 
@@ -103,47 +98,29 @@ sub filename() {shift->{MBP_filename}}
 
 sub filePosition(;$) {shift->NotImplemented}
 
-#------------------------------------------
-
 
 sub pushSeparator($) {shift->notImplemented}
-
-#------------------------------------------
 
 
 sub popSeparator($) {shift->notImplemented}
 
-#------------------------------------------
-
 
 sub readSeparator($) {shift->notImplemented}
-
-#------------------------------------------
 
 
 sub readHeader()    {shift->notImplemented}
 
-#------------------------------------------
-
 
 sub bodyAsString() {shift->notImplemented}
-
-#------------------------------------------
 
 
 sub bodyAsList() {shift->notImplemented}
 
-#------------------------------------------
-
 
 sub bodyAsFile() {shift->notImplemented}
 
-#------------------------------------------
-
 
 sub bodyDelayed() {shift->notImplemented}
-
-#------------------------------------------
 
 
 sub lineSeparator() {shift->{MBP_linesep}}
@@ -153,20 +130,14 @@ sub lineSeparator() {shift->{MBP_linesep}}
 
 sub openFile(@) {shift->notImplemented}
 
-#------------------------------------------
-
 
 sub closeFile(@) {shift->notImplemented}
-
-#------------------------------------------
 
 
 sub takeFileInfo()
 {   my $self     = shift;
     @$self{ qw/MBP_size MBP_mtime/ } = (stat $self->filename)[7,9];
 }
-
-#------------------------------------------
 
 
 my $parser_type;
@@ -188,7 +159,7 @@ sub defaultParserType(;$)
 
     # Try to use C-based parser.
     eval 'require Mail::Box::Parser::C';
-#   warn "C-PARSER errors $@\n" if $@;
+#warn "C-PARSER errors $@\n" if $@;
 
     return $parser_type = 'Mail::Box::Parser::C'
         unless $@;
@@ -206,7 +177,5 @@ sub DESTROY
     $self->stop;
     $self->SUPER::DESTROY;
 }
-
-#------------------------------------------
 
 1;

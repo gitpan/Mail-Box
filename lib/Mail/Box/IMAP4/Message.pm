@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box::IMAP4::Message;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 use base 'Mail::Box::Net::Message';
 
 use Date::Parse 'str2time';

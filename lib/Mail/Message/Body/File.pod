@@ -667,8 +667,8 @@ no copy to a temporary file can be made.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.073,
-built on July 19, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.074,
+built on September 21, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

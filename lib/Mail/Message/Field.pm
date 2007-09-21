@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 use base 'Mail::Reporter';
 
 use Carp;
@@ -449,6 +449,7 @@ sub fold($$;$)
     my $name  = shift;
     my $line  = shift;
     my $wrap  = shift || $default_wrap_length;
+    defined $line or $line = '';
 
     $line    =~ s/\n\s/ /gms;            # Remove accidental folding
     return " \n" unless CORE::length($line);  # empty field

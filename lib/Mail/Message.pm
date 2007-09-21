@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.073';
+$VERSION = '2.074';
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -67,8 +67,6 @@ sub init($)
     $self;
 }
 
-#------------------------------------------
-
 
 sub clone(@)
 {   my ($self, %args) = @_;
@@ -108,27 +106,17 @@ sub clone(@)
 sub messageId() { $_[0]->{MM_message_id} || $_[0]->takeMessageId}
 sub messageID() {shift->messageId}   # compatibility
 
-#------------------------------------------
-
 
 sub container() { undef } # overridden by Mail::Message::Part
-
-#------------------------------------------
 
 
 sub isPart() { 0 } # overridden by Mail::Message::Part
 
-#------------------------------------------
-
 
 sub toplevel() { shift } # overridden by Mail::Message::Part
 
-#------------------------------------------
-
 
 sub isDummy() { 0 }
-
-#------------------------------------------
 
 
 sub print(;$)
@@ -140,8 +128,6 @@ sub print(;$)
     $self;
 }
 
-#------------------------------------------
-
 
 sub write(;$)
 {   my $self = shift;
@@ -151,8 +137,6 @@ sub write(;$)
     $self->body->print($out);
     $self;
 }
-
-#------------------------------------------
 
 
 my $default_mailer;
@@ -177,8 +161,6 @@ sub send(@)
 
     $mailer->send($self, %args);
 }
-
-#------------------------------------------
 
 
 sub size()
@@ -215,8 +197,6 @@ sub head(;$)
     $head;
 }
 
-#------------------------------------------
-
 
 sub get($)
 {   my $self  = shift;
@@ -224,23 +204,17 @@ sub get($)
     $field->body;
 }
 
-#------------------------------------------
-
 
 sub study($)
 {  my $head = shift->head or return;
    scalar $head->study(@_);    # return only last
 }
 
-#-------------------------------------------
-
 
 sub from()
 {  my $from = shift->head->get('From') or return ();
    map {$_->addresses} $from;
 }
-
-#-------------------------------------------
 
 
 sub sender()
@@ -251,25 +225,15 @@ sub sender()
     ($sender->addresses)[0];                 # first specified address
 }
 
-#-------------------------------------------
-
 
 sub to() { map {$_->addresses} shift->head->get('To') }
-
-#-------------------------------------------
 
 
 sub cc() { map {$_->addresses} shift->head->get('Cc') }
 
-#-------------------------------------------
-
 
 sub bcc() { map {$_->addresses} shift->head->get('Bcc') }
 
-#-------------------------------------------
-
-
-#-------------------------------------------
 
 
 sub destinations()
@@ -279,28 +243,20 @@ sub destinations()
     values %to;
 }
 
-#-------------------------------------------
-
 
 sub subject()
 {   my $subject = shift->get('subject');
     defined $subject ? $subject : '';
 }
 
-#-------------------------------------------
-
 
 sub guessTimestamp() {shift->head->guessTimestamp}
-
-#-------------------------------------------
 
 
 sub timestamp()
 {   my $head = shift->head;
     $head->recvstamp || $head->timestamp;
 }
-
-#------------------------------------------
 
 
 sub nrLines()
@@ -344,8 +300,6 @@ sub body(;$@)
     $self->{MM_body} = $body;
 }
 
-#------------------------------------------
-
 
 sub decoded(@)
 {   my ($self, %args) = @_;
@@ -359,25 +313,17 @@ sub decoded(@)
     $decoded;
 }
 
-#------------------------------------------
-
 
 sub encode(@)
 {   my $body = shift->body->load;
     $body ? $body->encode(@_) : undef;
 }
 
-#-------------------------------------------
-
 
 sub isMultipart() {shift->head->isMultipart}
 
-#-------------------------------------------
-
 
 sub isNested() {shift->body->isNested}
-
-#-------------------------------------------
 
 
 sub parts(;$)
@@ -418,8 +364,6 @@ sub modified(;$)
     $flag;
 }
 
-#------------------------------------------
-
 
 sub isModified()
 {   my $self = shift;
@@ -440,8 +384,6 @@ sub isModified()
     0;
 }
 
-#------------------------------------------
-
 
 sub label($;$@)
 {   my $self   = shift;
@@ -453,20 +395,14 @@ sub label($;$@)
     $return;
 }
 
-#------------------------------------------
-
 
 sub labels()
 {   my $self = shift;
     wantarray ? keys %{$self->{MM_labels}} : $self->{MM_labels};
 }
 
-#------------------------------------------
-
 
 sub isDeleted() { shift->label('deleted') }
-
-#-------------------------------------------
 
 
 sub delete()
@@ -475,8 +411,6 @@ sub delete()
    $old || $self->label(deleted => time);
 }
 
-#-------------------------------------------
-
 
 sub deleted(;$)
 {   my $self = shift;
@@ -484,8 +418,6 @@ sub deleted(;$)
     @_ ? $self->label(deleted => shift)
        : $self->label('deleted')   # compat 2.036
 }
-
-#-------------------------------------------
 
 
 sub labelsToStatus()
@@ -513,8 +445,6 @@ sub labelsToStatus()
     $self;
 }
 
-#-------------------------------------------
-
 
 sub statusToLabels()
 {   my $self    = shift;
@@ -538,9 +468,6 @@ sub statusToLabels()
 
     $self;
 }
-
-#------------------------------------------
-
 
 #------------------------------------------
 
@@ -579,6 +506,7 @@ sub coerce($@)
         $message = $mail_internet_converter->from($message)
             or return;
     }
+
     elsif($message->isa('Email::Simple'))
     {   unless($email_simple_converter)
         {   eval {require Mail::Message::Convert::EmailSimple};
@@ -603,8 +531,6 @@ sub coerce($@)
     bless $message, $class;
 }
 
-#------------------------------------------
-
 
 sub clonedFrom() { shift->{MM_cloned} }
 
@@ -612,8 +538,6 @@ sub clonedFrom() { shift->{MM_cloned} }
 # All next routines try to create compatibility with release < 2.0
 sub isParsed()   { not shift->isDelayed }
 sub headIsRead() { not shift->head->isa('Mail::Message::Delayed') }
-
-#------------------------------------------
 
 
 sub readFromParser($;$)
@@ -634,8 +558,6 @@ sub readFromParser($;$)
     $self;
 }
 
-#------------------------------------------
-
 
 sub readHead($;$)
 {   my ($self, $parser) = (shift, shift);
@@ -649,8 +571,6 @@ sub readHead($;$)
       , $self->logSettings
       )->read($parser);
 }
-
-#------------------------------------------
 
 
 my $mpbody = 'Mail::Message::Body::Multipart';
@@ -673,7 +593,7 @@ sub readBody($$;$$)
           );
     }
     else
-    {   my $ct   = $head->get('Content-Type');
+    {   my $ct   = $head->get('Content-Type', 0);
         my $type = defined $ct ? lc($ct->body) : 'text/plain';
 
         # Be sure you have acceptable bodies for multiparts and nested.
@@ -700,8 +620,6 @@ sub readBody($$;$$)
       );
 }
 
-#------------------------------------------
-
 
 sub storeBody($)
 {   my ($self, $body) = @_;
@@ -710,15 +628,11 @@ sub storeBody($)
     $body;
 }
 
-#-------------------------------------------
-
 
 sub isDelayed()
 {    my $body = shift->body;
      !$body || $body->isDelayed;
 }
-
-#------------------------------------------
 
 
 sub takeMessageId(;$)
@@ -752,8 +666,6 @@ sub shortSize(;$)
     :                      sprintf "%3.0fM", $size/(1024*1024);
 }
 
-#------------------------------------------
-
 
 sub shortString()
 {   my $self    = shift;
@@ -771,8 +683,6 @@ sub DESTROY()
     $self->head(undef);
     $self->body(undef);
 }
-
-#------------------------------------------
 
 
 sub destruct() { $_[0] = undef }
