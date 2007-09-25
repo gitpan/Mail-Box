@@ -5,7 +5,7 @@
 
 package MailBox::Test::10reporter::Definition;
 use vars '$VERSION';
-$VERSION = '2.074';
+$VERSION = '2.075';
 
 sub name     {"Mail::Report; general base class"}
 sub critical {1}

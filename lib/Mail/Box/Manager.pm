@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Box::Manager;
 use vars '$VERSION';
-$VERSION = '2.074';
+$VERSION = '2.075';
 use base 'Mail::Reporter';
 
 use Mail::Box;
@@ -272,12 +272,8 @@ sub open(@)
     $folder;
 }
 
-#-------------------------------------------
-
 
 sub openFolders() { @{shift->{MBM_folders}} }
-
-#-------------------------------------------
 
 
 sub isOpenFolder($)

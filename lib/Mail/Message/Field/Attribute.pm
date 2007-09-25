@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Attribute;
 use vars '$VERSION';
-$VERSION = '2.074';
+$VERSION = '2.075';
 use base 'Mail::Reporter';
 use 5.007003;
 use Encode ();

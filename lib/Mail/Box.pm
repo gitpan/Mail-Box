@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.074';
+$VERSION = '2.075';
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -20,11 +20,9 @@ use Scalar::Util 'weaken';
 use List::Util   qw/sum first/;
 
 #-------------------------------------------
-# Clean exist required to remove lockfiles and to save changes.
+# Clean exits required to remove lockfiles and to save changes.
 
 $SIG{INT} = $SIG{QUIT} = $SIG{PIPE} = $SIG{TERM} = sub {exit 0};
-
-#-------------------------------------------
 
 
 #-------------------------------------------
@@ -672,28 +670,22 @@ sub findFirstLabeled($;$$)
 
 sub listSubFolders(@) { () }   # by default no sub-folders
 
-#-------------------------------------------
-
 
 sub openRelatedFolder(@)
 {   my $self    = shift;
     my @options = (%{$self->{MB_init_options}}, @_);
 
     $self->{MB_manager}
-    ? $self->{MB_manager}->open(@options)
+    ? $self->{MB_manager}->open(type => ref($self), @options)
     : (ref $self)->new(@options);
 }
 
-#-------------------------------------------
-
 
 sub openSubFolder($@)
-{   my $self    = shift;
-    my $name    = $self->nameOfSubFolder(shift);
+{   my $self = shift;
+    my $name = $self->nameOfSubFolder(shift);
     $self->openRelatedFolder(@_, folder => $name);
 }
-
-#-------------------------------------------
 
 
 sub nameOfSubFolder($;$)
@@ -701,8 +693,6 @@ sub nameOfSubFolder($;$)
     my $parent = @_ ? shift : ref $thing ? $thing->name : undef;
     defined $parent ? "$parent/$name" : $name;
 }
-
-#-------------------------------------------
 
 
 sub topFolderWithMessages() { 1 }
@@ -775,8 +765,6 @@ sub write(@)
     $self;
 }
 
-#-------------------------------------------
-
 
 sub determineBodyType($$)
 {   my ($self, $message, $head) = @_;
@@ -801,8 +789,6 @@ sub lazyPermitted($)
     $self->{MB_lazy_permitted} = shift;
 }
 
-#-------------------------------------------
-
 
 sub storeMessage($)
 {   my ($self, $message) = @_;
@@ -811,8 +797,6 @@ sub storeMessage($)
     $message->seqnr( @{$self->{MB_messages}} -1);
     $message;
 }
-
-#-------------------------------------------
 
 
 my %seps = (CR => "\015", LF => "\012", CRLF => "\015\012");
@@ -829,15 +813,9 @@ sub lineSeparator(;$)
    $sep;
 }
 
-#-------------------------------------------
-
 
 sub create($@) {shift->notImplemented}
 
-#-------------------------------------------
-
-
-#-------------------------------------------
 
 
 sub coerce($@)
@@ -846,27 +824,17 @@ sub coerce($@)
     $message->isa($mmtype) ? $message : $mmtype->coerce($message, @_);
 }
 
-#-------------------------------------------
-
 
 sub readMessages(@) {shift->notImplemented}
-
-#-------------------------------------------
 
 
 sub updateMessages(@) { shift }
 
-#-------------------------------------------
-
 
 sub writeMessages(@) {shift->notImplemented}
 
-#-------------------------------------------
-
 
 sub locker() { shift->{MB_locker} }
-
-#-------------------------------------------
 
 
 sub toBeThreaded(@)
@@ -878,8 +846,6 @@ sub toBeThreaded(@)
     $manager->toBeThreaded($self, @_);
     $self;
 }
-
-#-------------------------------------------
 
 
 sub toBeUnthreaded(@)

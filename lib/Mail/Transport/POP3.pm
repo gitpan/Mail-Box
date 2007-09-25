@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Transport::POP3;
 use vars '$VERSION';
-$VERSION = '2.074';
+$VERSION = '2.075';
 use base 'Mail::Transport::Receive';
 
 use IO::Socket  ();

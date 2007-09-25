@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Addresses;
 use vars '$VERSION';
-$VERSION = '2.074';
+$VERSION = '2.075';
 use base 'Mail::Message::Field::Structured';
 
 use Mail::Message::Field::AddrGroup;
