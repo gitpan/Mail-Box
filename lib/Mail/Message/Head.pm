@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Head;
 use vars '$VERSION';
-$VERSION = '2.075';
+$VERSION = '2.076';
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Complete;
@@ -61,8 +61,6 @@ sub init($)
     $self;
 }
 
-#------------------------------------------
-
 
 sub build(@)
 {   shift;
@@ -74,8 +72,6 @@ sub build(@)
 
 sub isDelayed { 1 }
 
-#------------------------------------------
-
 
 sub modified(;$)
 {   my $self = shift;
@@ -83,17 +79,11 @@ sub modified(;$)
     $self->{MMH_modified} = shift;
 }
 
-#------------------------------------------
-
 
 sub isModified() { shift->{MMH_modified} }
 
-#------------------------------------------
-
 
 sub isEmpty { scalar keys %{shift->{MMH_fields}} }
-
-#------------------------------------------
 
 
 sub message(;$)
@@ -106,12 +96,8 @@ sub message(;$)
     $self->{MMH_message};
 }
 
-#------------------------------------------
-
 
 sub orderedFields() { grep {defined $_} @{shift->{MMH_order}} }
-
-#------------------------------------------
 
 
 sub knownNames() { keys %{shift->{MMH_fields}} }
@@ -145,8 +131,6 @@ sub get($;$)
 sub get_all(@) { my @all = shift->get(@_) }   # compatibility, force list
 sub setField($$) {shift->add(@_)} # compatibility
 
-#------------------------------------------
-
 
 sub study($;$)
 {   my $self = shift;
@@ -160,15 +144,11 @@ sub study($;$)
 #------------------------------------------
 
 
-#------------------------------------------
-
 
 sub isMultipart()
 {   my $type = shift->get('Content-Type');
     $type && scalar $type->body =~ m[^multipart/]i;
 }
-
-#------------------------------------------
 
 
 sub read($)
@@ -185,8 +165,6 @@ sub read($)
     $self;
 }
 
-#------------------------------------------
-
 
 #  Warning: fields are added in addResentGroup() as well!
 sub addOrderedFields(@)
@@ -198,20 +176,14 @@ sub addOrderedFields(@)
     @_;
 }
 
-#------------------------------------------
-
 
 sub load($) {shift}
-
-#------------------------------------------
 
 
 sub fileLocation()
 {   my $self = shift;
     @$self{ qw/MMH_begin MMH_end/ };
 }
-
-#------------------------------------------
 
 
 sub moveLocation($)
@@ -220,8 +192,6 @@ sub moveLocation($)
     $self->{MMH_end}   -= $dist;
     $self;
 }
-
-#------------------------------------------
 
 
 sub setNoRealize($)
@@ -234,8 +204,6 @@ sub setNoRealize($)
     $known->{$name} = $field;
     $field;
 }
-
-#------------------------------------------
 
 
 sub addNoRealize($)

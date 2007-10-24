@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.075';
+$VERSION = '2.076';
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -326,6 +326,14 @@ sub isMultipart() {shift->head->isMultipart}
 sub isNested() {shift->body->isNested}
 
 
+sub contentType()
+{   my $head = shift->head;
+    my $ct   = defined $head ? $head->get('Content-Type') : '';
+    $ct      =~ s/\s*\;.*//;
+    $ct || 'text/plain';
+}
+
+
 sub parts(;$)
 {   my $self    = shift;
     my $what    = shift || 'ACTIVE';
@@ -480,7 +488,7 @@ sub coerce($@)
 {   my ($class, $message) = @_;
 
     ref $message
-        or $class->log(INTERNAL => "coercion starts with some object");
+        or die "coercion starts with some object";
 
     return bless $message, $class
         if $message->isa(__PACKAGE__);
@@ -523,7 +531,7 @@ sub coerce($@)
     }
 
     else
-    {   $class->log(INTERNAL =>  "Cannot coerce a ".ref($message)
+    {   $class->log(INTERNAL =>  "Cannot coerce a ". ref($message)
               . " object into a ". __PACKAGE__." object");
     }
 

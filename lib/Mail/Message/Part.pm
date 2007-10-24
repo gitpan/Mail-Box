@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Part;
 use vars '$VERSION';
-$VERSION = '2.075';
+$VERSION = '2.076';
 use base 'Mail::Message';
 
 use Scalar::Util    'weaken';

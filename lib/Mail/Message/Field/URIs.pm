@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Message::Field::URIs;
 use vars '$VERSION';
-$VERSION = '2.075';
+$VERSION = '2.076';
 use base 'Mail::Message::Field::Structured';
 use Carp 'confess';
 

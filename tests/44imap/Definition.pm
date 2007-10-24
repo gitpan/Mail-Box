@@ -5,7 +5,7 @@
 
 package MailBox::Test::44imap::Definition;
 use vars '$VERSION';
-$VERSION = '2.075';
+$VERSION = '2.076';
 
 sub name     {"Mail::Box::IMAP; imap folders"}
 sub critical {0}

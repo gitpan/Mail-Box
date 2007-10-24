@@ -8,11 +8,8 @@ use warnings;
 
 package Mail::Box::POP3::Message;
 use vars '$VERSION';
-$VERSION = '2.075';
+$VERSION = '2.076';
 use base 'Mail::Box::Net::Message';
-
-use File::Copy;
-use Carp;
 
 
 sub init($)
@@ -24,8 +21,6 @@ sub init($)
     $self;
 }
 
-#-------------------------------------------
-
 
 sub size($)
 {   my $self = shift;
@@ -35,8 +30,6 @@ sub size($)
 
     $self->folder->popClient->messageSize($self->unique);
 }
-
-#-------------------------------------------
 
 sub label(@)
 {   my $self = shift;
@@ -53,8 +46,6 @@ sub label(@)
 
     $ret;
 }
-
-#-------------------------------------------
 
 sub labels(@)
 {   my $self = shift;
@@ -77,8 +68,6 @@ sub loadHead()
     $head;
 }
 
-#-------------------------------------------
-
 sub loadBody()
 {   my $self     = shift;
 
@@ -89,7 +78,5 @@ sub loadBody()
     $self->head($head) if $head->isDelayed;
     $self->storeBody($body);
 }
-
-#-------------------------------------------
 
 1;

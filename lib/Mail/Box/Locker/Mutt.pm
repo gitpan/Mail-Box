@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::Locker::Mutt;
 use vars '$VERSION';
-$VERSION = '2.075';
+$VERSION = '2.076';
 use base 'Mail::Box::Locker';
 
 use POSIX      qw/sys_wait_h/;

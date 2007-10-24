@@ -5,7 +5,7 @@
 
 package MailBox::Test::30encode::Definition;
 use vars '$VERSION';
-$VERSION = '2.075';
+$VERSION = '2.076';
 
 sub name     {"Mail::Message::TransferEnc; transfer encodings"}
 sub critical {0}

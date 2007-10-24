@@ -2,18 +2,16 @@
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 1.02.
-
 use strict;
 package Tools;
 use vars '$VERSION';
-$VERSION = '2.075';
+$VERSION = '2.076';
 
 use lib qw(lib ../lib);
 use base 'Exporter';
 use File::Copy 'copy';
 use List::Util 'first';
 use IO::File;            # to overrule open()
-use FileHandle;          # used in MIME::Body for mime-entity support
 
 our @EXPORT =
   qw/clean_dir copy_dir
@@ -71,10 +69,13 @@ BEGIN {
    my $old_open = \&IO::File::open;
    no warnings 'redefine';
    *IO::File::open = sub {
-      my $self = shift;
+      my $fh = shift;
+      if(ref $_[0] eq 'SCALAR') { print ${$_[0]} }
+      return $old_open->($fh, @_) if ref $_[0];
+
       my $file = File::Spec->rel2abs(shift);
       $file =~ /^(.*)$/;   # untaint
-      $old_open->($self, $1, @_);
+      $old_open->($fh, $1, @_);
    }
 }
 

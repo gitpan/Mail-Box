@@ -5,7 +5,7 @@
 
 package MailBox::Test::14fieldu::Definition;
 use vars '$VERSION';
-$VERSION = '2.075';
+$VERSION = '2.076';
 
 sub name     {"Mail::Message::Field::Full; unicode fields"}
 sub critical {0}

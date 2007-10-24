@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box::Dir::Message;
 use vars '$VERSION';
-$VERSION = '2.075';
+$VERSION = '2.076';
 use base 'Mail::Box::Message';
 
 use File::Copy qw/move/;

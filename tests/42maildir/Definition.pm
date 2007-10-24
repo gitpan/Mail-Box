@@ -5,7 +5,7 @@
 
 package MailBox::Test::42maildir::Definition;
 use vars '$VERSION';
-$VERSION = '2.075';
+$VERSION = '2.076';
 
 use Tools    qw/$windows/;
 

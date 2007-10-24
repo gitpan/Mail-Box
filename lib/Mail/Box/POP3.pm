@@ -5,7 +5,7 @@
 
 package Mail::Box::POP3;
 use vars '$VERSION';
-$VERSION = '2.075';
+$VERSION = '2.076';
 use base 'Mail::Box::Net';
 
 use strict;
@@ -34,12 +34,8 @@ sub init($)
     $self;
 }
 
-#-------------------------------------------
-
 
 sub create($@) { undef }         # fails
-
-#-------------------------------------------
 
 sub foundIn(@)
 {   my $self = shift;
@@ -50,8 +46,6 @@ sub foundIn(@)
     || (exists $options{folder} && $options{folder} =~ m/^pop/);
 }
 
-#-------------------------------------------
-
 
 sub addMessage($)
 {   my ($self, $message) = @_;
@@ -61,8 +55,6 @@ sub addMessage($)
 
     undef;
 }
-
-#-------------------------------------------
 
 
 sub addMessages(@)
@@ -75,11 +67,7 @@ sub addMessages(@)
     ();
 }
 
-#-------------------------------------------
-
 sub type() {'pop3'}
-
-#-------------------------------------------
 
 sub close(@)
 {   my $self = shift;
@@ -92,8 +80,6 @@ sub close(@)
     $self;
 }
 
-#-------------------------------------------
-
 
 sub delete(@)
 {   my $self = shift;
@@ -101,21 +87,13 @@ sub delete(@)
     undef;
 }
 
-#-------------------------------------------
-
 
 sub listSubFolders(@) { () }     # no
-
-#-------------------------------------------
 
 
 sub openSubFolder($@) { undef }  # fails
 
-#-------------------------------------------
-
 sub topFolderWithMessages() { 1 }  # Yes: only top folder
-
-#-------------------------------------------
 
 
 sub update() {shift->notImplemented}
@@ -146,8 +124,6 @@ sub popClient()
     $self->{MBP_client} = $client;
 }
 
-#-------------------------------------------
-
 sub readMessages(@)
 {   my ($self, %args) = @_;
 
@@ -172,8 +148,6 @@ sub readMessages(@)
     $self;
 }
  
-#-------------------------------------------
-
 
 sub getHead($)
 {   my ($self, $message) = @_;
@@ -204,8 +178,6 @@ sub getHead($)
     $self->log(PROGRESS => "Loaded head of $uidl.");
     $head;
 }
-
-#-------------------------------------------
 
 
 sub getHeadAndBody($)
@@ -244,8 +216,6 @@ sub getHeadAndBody($)
     $self->log(PROGRESS => "Loaded message $uidl.");
     ($head, $body);
 }
-
-#-------------------------------------------
 
 
 sub writeMessages($@)
