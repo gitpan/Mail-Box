@@ -1,14 +1,14 @@
 # Copyrights 2001-2007 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.02.
+# Pod stripped from pm file by OODoc 1.03.
 
 use strict;
 use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.076';
+$VERSION = '2.078';
 use base 'Mail::Transport::Receive';
 
 use Digest::HMAC_MD5;   # only availability check for CRAM_MD5
@@ -58,15 +58,15 @@ sub url()
 #------------------------------------------
 
 
-our $ntml_installed;
+our $ntlm_installed;
 
 sub authentication(@)
 {   my ($self, @types) = @_;
 
-    unless(defined $ntml_installed)
-    {   eval "require Authen::NTML";
-        die "NTML errors:\n$@" if $@ && $@ !~ /Can't locate/;
-        $ntml_installed = ! $@;
+    unless(defined $ntlm_installed)
+    {   eval "require Authen::NTLM";
+        die "NTLM errors:\n$@" if $@ && $@ !~ /Can't locate/;
+        $ntlm_installed = ! $@;
     }
 
     # What the client wants to use to login
@@ -76,7 +76,7 @@ sub authentication(@)
     }
 
     if(@types == 1 && $types[0] eq 'AUTO')
-    {   @types = ('CRAM-MD5', ($ntml_installed ? 'NTLM' : ()), 'PLAIN');
+    {   @types = ('CRAM-MD5', ($ntlm_installed ? 'NTLM' : ()), 'PLAIN');
     }
 
     $self->{MTI_auth} = \@types;
