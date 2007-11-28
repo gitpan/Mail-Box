@@ -1,9 +1,9 @@
 --- #YAML:1.0
 name:                Mail-Box
-version:             2.078
+version:             2.079
 abstract:            E-mail handling
 license:             perl
-generated_by:        ExtUtils::MakeMaker version 6.32
+generated_by:        ExtUtils::MakeMaker version 6.36_01
 distribution_type:   module
 requires:     
     Date::Parse:                   0

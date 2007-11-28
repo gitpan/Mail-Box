@@ -6,7 +6,7 @@
 use strict;
 package Mail::Box::Dbx;
 use vars '$VERSION';
-$VERSION = '2.078';
+$VERSION = '2.079';
 use base 'Mail::Box::File';
 
 use Mail::Box::Dbx::Message;

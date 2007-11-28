@@ -5,7 +5,7 @@
 use strict;
 package Tools;
 use vars '$VERSION';
-$VERSION = '2.078';
+$VERSION = '2.079';
 
 use lib qw(lib ../lib);
 use base 'Exporter';

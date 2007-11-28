@@ -168,8 +168,8 @@ sections 6.3.8 (LIST question) and 7.2.2 (LIST answer)
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.078,
-built on November 09, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.079,
+built on November 28, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

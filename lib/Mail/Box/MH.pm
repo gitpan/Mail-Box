@@ -5,7 +5,7 @@
 
 package Mail::Box::MH;
 use vars '$VERSION';
-$VERSION = '2.078';
+$VERSION = '2.079';
 use base 'Mail::Box::Dir';
 
 use strict;
@@ -65,8 +65,6 @@ sub init($)
     $self;
 }
 
-#-------------------------------------------
-
 
 sub create($@)
 {   my ($thingy, $name, %args) = @_;
@@ -85,8 +83,6 @@ sub create($@)
         return;
     }
 }
-
-#-------------------------------------------
 
 sub foundIn($@)
 {   my $class = shift;

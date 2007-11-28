@@ -5,7 +5,7 @@
 
 package MailBox::Test::43pop3::Definition;
 use vars '$VERSION';
-$VERSION = '2.078';
+$VERSION = '2.079';
 
 sub name     {"Mail::Box::POP3; pop3 folders"}
 sub critical {0}

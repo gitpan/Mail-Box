@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Full;
 use vars '$VERSION';
-$VERSION = '2.078';
+$VERSION = '2.079';
 use base 'Mail::Message::Field';
 
 use utf8;
@@ -301,7 +301,7 @@ sub parse($) { shift }
 sub consumePhrase($)
 {   my ($thing, $string) = @_;
 
-    if($string =~ s/^\s*\"((?:[^"\\]*|\\.)*)\"// )
+    if($string =~ s/^\s*\" ((?:[^"\r\n\\]*|\\.)*) (?:\"|\s*$)//x )
     {   (my $phrase = $1) =~ s/\\\"/"/g;
         return ($phrase, $string);
     }

@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Attribute;
 use vars '$VERSION';
-$VERSION = '2.078';
+$VERSION = '2.079';
 use base 'Mail::Reporter';
 use 5.007003;
 use Encode ();
@@ -47,8 +47,6 @@ sub init($$)
 
 sub name() { shift->{MMFF_name} }
 
-#------------------------------------------
-
 
 sub value(;$)
 {   my $self = shift;
@@ -59,8 +57,6 @@ sub value(;$)
       
     exists $self->{MMFF_value} ? $self->{MMFF_value} : $self->decode;
 }
-
-#------------------------------------------
 
 
 sub addComponent($)
@@ -80,17 +76,11 @@ sub addComponent($)
     $component;
 }
 
-#------------------------------------------
-
 
 sub charset() { shift->{MMFF_charset} }
 
-#------------------------------------------
-
 
 sub language() { shift->{MMFF_language} }
-
-#------------------------------------------
 
 
 sub string()
@@ -152,7 +142,7 @@ sub encode()
     elsif($cont)
     {   # Simple string, but with continuations
         while(1)
-        {   push @lines, $pre . '"' . substr($value, 0, 75-length($pre), '') . '"';
+        {   push @lines, $pre.'"'. substr($value, 0, 75-length($pre), '') .'"';
             last unless length $value;
             $pre = $name . '*' . @lines . '=';
         }
@@ -166,8 +156,6 @@ sub encode()
     $lines[0] =~ s/\*0// if @lines==1;
     $self->{MMFF_cont} = \@lines;
 }
-
-#------------------------------------------
 
 
 sub decode()
@@ -211,8 +199,5 @@ sub mergeComponent($)
 
     $self;
 }
-
-#------------------------------------------
-
 
 1;

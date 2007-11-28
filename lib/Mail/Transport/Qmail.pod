@@ -300,8 +300,8 @@ found in the message itself about the destination.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.078,
-built on November 09, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.079,
+built on November 28, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

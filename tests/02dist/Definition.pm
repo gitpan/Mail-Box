@@ -5,7 +5,7 @@
 
 package MailBox::Test::02dist::Definition;
 use vars '$VERSION';
-$VERSION = '2.078';
+$VERSION = '2.079';
 
 sub name     {"check distribution"}
 sub critical {0}   # currently only man-pages

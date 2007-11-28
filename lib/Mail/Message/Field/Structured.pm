@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Structured;
 use vars '$VERSION';
-$VERSION = '2.078';
+$VERSION = '2.079';
 use base 'Mail::Message::Field::Full';
 
 use Mail::Message::Field::Attribute;
@@ -33,8 +33,6 @@ sub init($)
 
     $self;
 }
-
-#------------------------------------------
 
 sub clone() { dclone(shift) }
 
@@ -62,16 +60,10 @@ sub attribute($;$)
     }
 }
 
-#------------------------------------------
-
 
 sub attributes() { values %{shift->{MMFS_attrs}} }
 
-#------------------------------------------
-
 sub beautify() { delete shift->{MMFF_body} }
-
-#------------------------------------------
 
 
 sub parse($)
@@ -105,8 +97,6 @@ sub parse($)
     1;
 }
 
-#------------------------------------------
-
 sub produceBody()
 {   my $self  = shift;
     my $attrs = $self->{MMFS_attrs};
@@ -116,8 +106,6 @@ sub produceBody()
        , (defined $datum ? $datum : '')
        , map {$_->string} @{$attrs}{sort keys %$attrs};
 }
-
-#------------------------------------------
 
 
 sub datum(;$)

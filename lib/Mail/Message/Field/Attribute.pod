@@ -111,103 +111,7 @@ example:
 
 =back
 
-=head2 The attribute
-
-$obj-E<gt>B<addComponent>(STRING)
-
-=over 4
-
-A component is a parameter as defined by RFC2045, optionally using
-encoding or continuations as defined by RFC2231.  Components of an
-attribute are found when a field is being parsed.  The RFCs are
-very strict on valid characters, but we cannot be: you have to accept
-what is coming in if you can.
-
-example: 
-
- my $param = Mail::Message::Field::Attribute->new;
- $param->addComponent("filename*=iso10646'nl-BE'%Re\47u");
-
-=back
-
-$obj-E<gt>B<charset>
-
-=over 4
-
-Returns the character set which is used for this parameter.  If any component
-is added which contains character set information, this is directly
-available.  Be warned that a character-set is case insensitive.
-
-=back
-
-$obj-E<gt>B<language>
-
-=over 4
-
-Returns the language which is defined in the argument.  If no language is
-defined C<undef> is returned, which should be interpreted as "ANY"
-
-=back
-
-$obj-E<gt>B<name>
-
-=over 4
-
-Returns the name of this attribute.
-
-=back
-
-$obj-E<gt>B<string>
-
-=over 4
-
-Returns the parameter as reference to an array of lines.  When only one line
-is returned, it may be short enough to fit on the same line with other components
-of the header field.
-
-=back
-
-$obj-E<gt>B<value>([STRING])
-
-=over 4
-
-Returns the value of this parameter, optionally after setting it first.
-
-=back
-
-=head2 Attribute encoding
-
-$obj-E<gt>B<decode>
-
-=over 4
-
-Translate all known continuations into a value.  The produced value is
-returned and may be utf-8 encoded or a plain string.
-
-=back
-
-$obj-E<gt>B<encode>
-
-=over 4
-
-=back
-
-=head2 Internals
-
-$obj-E<gt>B<mergeComponent>(ATTRIBUTE)
-
-=over 4
-
-Merge the components from the specified attribute in this attribute.  This is
-needed when components of the same attribute are created separately.  Merging
-is required by the field parsing.
-
-=back
-
 =head2 Error handling
-
-This class does not extend L<Mail::Reporter|Mail::Reporter> for obvious performance
-reasons: there is no logging or tracing available.
 
 $obj-E<gt>B<AUTOLOAD>
 
@@ -329,6 +233,99 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
+=head2 The attribute
+
+$obj-E<gt>B<addComponent>(STRING)
+
+=over 4
+
+A component is a parameter as defined by RFC2045, optionally using
+encoding or continuations as defined by RFC2231.  Components of an
+attribute are found when a field is being parsed.  The RFCs are
+very strict on valid characters, but we cannot be: you have to accept
+what is coming in if you can.
+
+example: 
+
+ my $param = Mail::Message::Field::Attribute->new;
+ $param->addComponent("filename*=iso10646'nl-BE'%Re\47u");
+
+=back
+
+$obj-E<gt>B<charset>
+
+=over 4
+
+Returns the character set which is used for this parameter.  If any component
+is added which contains character set information, this is directly
+available.  Be warned that a character-set is case insensitive.
+
+=back
+
+$obj-E<gt>B<language>
+
+=over 4
+
+Returns the language which is defined in the argument.  If no language is
+defined C<undef> is returned, which should be interpreted as "ANY"
+
+=back
+
+$obj-E<gt>B<name>
+
+=over 4
+
+Returns the name of this attribute.
+
+=back
+
+$obj-E<gt>B<string>
+
+=over 4
+
+Returns the parameter as reference to an array of lines.  When only one line
+is returned, it may be short enough to fit on the same line with other
+components of the header field.
+
+=back
+
+$obj-E<gt>B<value>([STRING])
+
+=over 4
+
+Returns the value of this parameter, optionally after setting it first.
+
+=back
+
+=head2 Attribute encoding
+
+$obj-E<gt>B<decode>
+
+=over 4
+
+Translate all known continuations into a value.  The produced value is
+returned and may be utf-8 encoded or a plain string.
+
+=back
+
+$obj-E<gt>B<encode>
+
+=over 4
+
+=back
+
+=head2 Internals
+
+$obj-E<gt>B<mergeComponent>(ATTRIBUTE)
+
+=over 4
+
+Merge the components from the specified attribute in this attribute.  This is
+needed when components of the same attribute are created separately.  Merging
+is required by the field parsing.
+
+=back
+
 =head1 DIAGNOSTICS
 
 Warning: Illegal character in parameter name '$name'
@@ -361,8 +358,8 @@ Error: Too late to merge: value already changed.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.078,
-built on November 09, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.079,
+built on November 28, 2007. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -5,7 +5,7 @@
 
 package MailBox::Test::80msgconv::Definition;
 use vars '$VERSION';
-$VERSION = '2.078';
+$VERSION = '2.079';
 
 sub name     {"Mail::Message::Convert; message conversions"}
 sub critical {0}

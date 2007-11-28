@@ -5,7 +5,7 @@
 
 package MailBox::Test::12head::Definition;
 use vars '$VERSION';
-$VERSION = '2.078';
+$VERSION = '2.079';
 
 sub name     {"Mail::Message::Head; message headers"}
 sub critical {1}
