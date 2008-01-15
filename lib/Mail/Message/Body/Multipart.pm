@@ -1,4 +1,4 @@
-# Copyrights 2001-2007 by Mark Overmeer.
+# Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 1.03.
@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Body::Multipart;
 use vars '$VERSION';
-$VERSION = '2.079';
+$VERSION = '2.080';
 use base 'Mail::Message::Body';
 
 use Mail::Message::Body::Lines;
@@ -16,8 +16,6 @@ use Mail::Message::Part;
 use Mail::Box::FastScalar;
 use Carp;
 
-
-#------------------------------------------
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -71,16 +69,10 @@ sub init($)
     $self;
 }
 
-#------------------------------------------
-
 sub isMultipart() {1}
-
-#------------------------------------------
 
 # A multipart body is never binary itself.  The parts may be.
 sub isBinary() {0}
-
-#------------------------------------------
 
 sub clone()
 {   my $self     = shift;
@@ -96,8 +88,6 @@ sub clone()
      );
 
 }
-
-#------------------------------------------
 
 sub nrLines()
 {   my $self = shift;
@@ -117,8 +107,6 @@ sub nrLines()
     $nr;
 }
 
-#------------------------------------------
-
 sub size()
 {   my $self   = shift;
     my $bbytes = length($self->boundary) +4;  # \n--$b\n
@@ -134,11 +122,7 @@ sub size()
     $bytes;
 }
 
-#------------------------------------------
-
 sub string() { join '', shift->lines }
-
-#------------------------------------------
 
 sub lines()
 {   my $self     = shift;
@@ -168,8 +152,6 @@ sub lines()
     wantarray ? @lines : \@lines;
 }
 
-#------------------------------------------
-
 sub file()                    # It may be possible to speed-improve the next
 {   my $self   = shift;       # code, which first produces a full print of
     my $text;                 # the message in memory...
@@ -178,8 +160,6 @@ sub file()                    # It may be possible to speed-improve the next
     $dump->seek(0,0);
     $dump;
 }
-
-#------------------------------------------
 
 sub print(;$)
 {   my $self = shift;
@@ -215,8 +195,6 @@ sub print(;$)
 
     $self;
 }
-
-#------------------------------------------
 
 
 sub foreachLine($)

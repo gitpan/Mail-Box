@@ -1,9 +1,11 @@
 --- #YAML:1.0
 name:                Mail-Box
-version:             2.079
+version:             2.080
 abstract:            E-mail handling
 license:             perl
-generated_by:        ExtUtils::MakeMaker version 6.36_01
+author:              
+    - Mark Overmeer
+generated_by:        ExtUtils::MakeMaker version 6.42
 distribution_type:   module
 requires:     
     Date::Parse:                   0
@@ -25,7 +27,5 @@ requires:
     URI:                           1.23
     User::Identity:                0.90
 meta-spec:
-    url:     http://module-build.sourceforge.net/META-spec-v1.2.html
-    version: 1.2
-author:
-    - Mark Overmeer
+    url:     http://module-build.sourceforge.net/META-spec-v1.3.html
+    version: 1.3

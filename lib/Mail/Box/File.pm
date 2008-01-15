@@ -1,11 +1,11 @@
-# Copyrights 2001-2007 by Mark Overmeer.
+# Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 1.03.
 
 package Mail::Box::File;
 use vars '$VERSION';
-$VERSION = '2.079';
+$VERSION = '2.080';
 use base 'Mail::Box';
 
 use strict;
@@ -100,8 +100,6 @@ sub init($)
     :                              undef;
 }
 
-#-------------------------------------------
-
 
 sub create($@)
 {   my ($thingy, $name, %args) = @_;
@@ -136,8 +134,6 @@ sub create($@)
     $class;
 }
 
-#-------------------------------------------
-
 sub foundIn($@)
 {   my $class = shift;
     my $name  = @_ % 2 ? shift : undef;
@@ -150,18 +146,12 @@ sub foundIn($@)
     -f $filename;
 }
 
-#-------------------------------------------
-
 sub organization() { 'FILE' }
-
-#-------------------------------------------
 
 sub size()
 {   my $self = shift;
     $self->isModified ? $self->SUPER::size : -s $self->filename;
 }
-
-#-------------------------------------------
 
 sub close(@)
 {   my $self = $_[0];            # be careful, we want to set the calling
@@ -174,8 +164,6 @@ sub close(@)
 
     $rc;
 }
-
-#-------------------------------------------
 
 
 sub appendMessages(@)
@@ -250,8 +238,6 @@ sub parser()
     $parser;
 }
 
-#-------------------------------------------
-
 sub readMessages(@)
 {   my ($self, %args) = @_;
 
@@ -267,8 +253,6 @@ sub readMessages(@)
     $self->updateMessages;
 }
  
-#-------------------------------------------
-
 
 sub updateMessages(@)
 {   my ($self, %args) = @_;
@@ -299,8 +283,6 @@ sub updateMessages(@)
     $self;
 }
 
-#-------------------------------------------
-
 
 sub messageCreateOptions(@)
 {   my ($self, @options) = @_;
@@ -312,8 +294,6 @@ sub messageCreateOptions(@)
     @{$self->{MBF_create_options}};
 }
 
-#-------------------------------------------
-
 
 sub moveAwaySubFolder($$)
 {   my ($self, $dir, $extension) = @_;
@@ -322,15 +302,11 @@ sub moveAwaySubFolder($$)
     $self;
 }
 
-#-------------------------------------------
-
 sub delete(@)
 {   my $self = shift;
     $self->SUPER::delete(@_);
     unlink $self->filename;
 }
-
-#-------------------------------------------
 
 
 sub writeMessages($)
@@ -429,7 +405,14 @@ sub _write_replace($)
     $old->close && $ok
         or return 0;
 
-    unlink $filename if $windows;
+    if($windows)
+    {   # Windows does not like to move to existing filenames
+        unlink $filename;
+
+        # Windows cannot move to files which are opened.
+        $self->parser->closeFile;
+    }
+
     unless(move $tmpnew, $filename)
     {   $self->log(WARNING =>
             "Cannot replace $filename by $tmpnew, to update folder $self: $!");

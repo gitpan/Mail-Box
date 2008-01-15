@@ -1,4 +1,4 @@
-# Copyrights 2001-2007 by Mark Overmeer.
+# Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 1.03.
@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.079';
+$VERSION = '2.080';
 use base 'Mail::Transport::Receive';
 
 use Digest::HMAC_MD5;   # only availability check for CRAM_MD5
@@ -44,8 +44,6 @@ sub init($)
     $self->imapClient($imap) or return undef;
     $self->login             or return undef;
 }
-
-#------------------------------------------
 
 
 sub url()
@@ -107,8 +105,6 @@ sub authentication(@)
     @auth;
 }
 
-#------------------------------------------
-
 
 sub domain(;$)
 {   my $self = shift;
@@ -119,15 +115,10 @@ sub domain(;$)
 #------------------------------------------
 
 
-#------------------------------------------
-
-
 sub imapClient(;$)
 {   my $self = shift;
     @_ ? ($self->{MTI_client} = shift) : $self->{MTI_client};
 }
-
-#------------------------------------------
 
 
 sub createImapClient($)
@@ -153,8 +144,6 @@ sub createImapClient($)
     $self->log(ERROR => $@), return undef if $@;
     $client;
 }
-
-#------------------------------------------
 
 
 sub login(;$)
@@ -220,8 +209,6 @@ sub login(;$)
     undef;
 }
 
-#------------------------------------------
-
 
 sub currentFolder(;$)
 {   my $self = shift;
@@ -264,8 +251,6 @@ sub currentFolder(;$)
     undef;
 }
 
-#------------------------------------------
-
 
 sub folders(;$)
 {   my $self = shift;
@@ -295,16 +280,12 @@ sub folders(;$)
     keys %uniq;
 }
 
-#------------------------------------------
-
 
 sub ids($)
 {   my $self = shift;
     my $imap = $self->imapClient or return ();
     $imap->messages;
 }
-
-#------------------------------------------
 
 
 # Explanation in Mail::Box::IMAP4::Message chapter DETAILS
@@ -345,12 +326,8 @@ sub getFlags($$)
     $labels;
 }
 
-#------------------------------------------
-
 
 sub listFlags() { keys %flags2labels }
-
-#------------------------------------------
 
 
 # Mail::IMAPClient can only set one value a time, however we do more...
@@ -379,8 +356,6 @@ sub setFlags($@)
     @nonstandard;
 }
 
-#------------------------------------------
-
 
 sub labelsToFlags(@)
 {   my $thing = shift;
@@ -404,8 +379,6 @@ sub labelsToFlags(@)
 
     join " ", sort @set;
 }
-
-#------------------------------------------
 
 
 sub flagsToLabels($@)
@@ -436,8 +409,6 @@ sub flagsToLabels($@)
     wantarray ? %labels : \%labels;
 }
 
-#------------------------------------------
-
 
 sub getFields($@)
 {   my ($self, $id) = (shift, shift);
@@ -452,16 +423,12 @@ sub getFields($@)
     @fields;
 }
 
-#------------------------------------------
-
 
 sub getMessageAsString($)
 {   my $imap = shift->imapClient or return;
     my $uid = ref $_[0] ? shift->unique : shift;
     $imap->message_string($uid);
 }
-
-#------------------------------------------
 
 
 sub fetch($@)
@@ -509,8 +476,6 @@ sub fetch($@)
     values %msgs;
 }
 
-#------------------------------------------
-
 
 sub appendMessage($$)
 {   my ($self, $message, $foldername) = @_;
@@ -522,15 +487,14 @@ sub appendMessage($$)
      );
 }
 
-#------------------------------------------
 
+sub destroyDeleted($)
+{   my ($self, $folder) = @_;
+    defined $folder or return;
 
-sub destroyDeleted()
-{   my $imap = shift->imapClient or return ();
-    $imap->expunge;
+    my $imap = shift->imapClient or return;
+    $imap->expunge($folder);
 }
-
-#------------------------------------------
 
 
 sub createFolder($)
@@ -538,15 +502,11 @@ sub createFolder($)
     $imap->create(shift);
 }
 
-#------------------------------------------
-
 
 sub deleteFolder($)
 {   my $imap = shift->imapClient or return ();
     $imap->delete(shift);
 }
-
-#------------------------------------------
 
 
 sub DESTROY()

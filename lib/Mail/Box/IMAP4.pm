@@ -1,4 +1,4 @@
-# Copyrights 2001-2007 by Mark Overmeer.
+# Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 1.03.
@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.079';
+$VERSION = '2.080';
 use base 'Mail::Box::Net';
 
 use Mail::Box::IMAP4::Message;
@@ -29,7 +29,7 @@ sub init($)
 
     # MailBox names top folder directory '=', but IMAP needs '/'
     $folder = '/'
-       if $folder eq '=';
+        if $folder eq '=';
 
     # There's a disconnect between the URL parser and this code.
     # The URL parser always produces a full path (beginning with /)
@@ -47,37 +47,35 @@ sub init($)
     my $access    = $args->{access} ||= 'r';
     my $writeable = $access =~ m/w|a/;
     my $ch        = $self->{MBI_c_head}
-       = $args->{cache_head} || ($writeable ? 'NO' : 'DELAY');
+      = $args->{cache_head} || ($writeable ? 'NO' : 'DELAY');
 
     $args->{head_type} ||= 'Mail::Box::IMAP4::Head'
-       if $ch eq 'NO' || $ch eq 'PARTIAL';
+        if $ch eq 'NO' || $ch eq 'PARTIAL';
 
     $args->{body_type}  ||= 'Mail::Message::Body::Lines';
 
     $self->SUPER::init($args);
 
     $self->{MBI_domain}   = $args->{domain};
-    $self->{MBI_c_labels} = $args->{cache_labels}
-                         || ($writeable  ? 'NO' : 'DELAY');
-    $self->{MBI_c_body}   = $args->{cache_body}
-                         || ($writeable ? 'NO' : 'DELAY');
+    $self->{MBI_c_labels}
+      = $args->{cache_labels} || ($writeable ? 'NO' : 'DELAY');
+    $self->{MBI_c_body}
+      = $args->{cache_body}   || ($writeable ? 'NO' : 'DELAY');
 
 
     my $transport = $args->{transporter} || 'Mail::Transport::IMAP4';
     $transport = $self->createTransporter($transport, %$args)
-       unless ref $transport;
+        unless ref $transport;
 
     $self->transporter($transport);
 
     defined $transport
-       or return;
+        or return;
 
       $args->{create}
     ? $self->create($transport, $args)
     : $self;
 }
-
-#-------------------------------------------
 
 sub create($@)
 {   my($self, $name, $args) =  @_;
@@ -91,8 +89,6 @@ sub create($@)
     $self->transporter->createFolder($name);
 }
 
-#-------------------------------------------
-
 sub foundIn(@)
 {   my $self = shift;
     unshift @_, 'folder' if @_ % 2;
@@ -102,11 +98,7 @@ sub foundIn(@)
     || (exists $options{folder} && $options{folder} =~ m/^imap/);
 }
 
-#-------------------------------------------
-
 sub type() {'imap4'}
-
-#-------------------------------------------
 
 
 sub close(@)
@@ -115,8 +107,6 @@ sub close(@)
     $self->transporter(undef);
     $self;
 }
-
-#-------------------------------------------
 
 sub listSubFolders(@)
 {   my ($thing, %args) = @_;
@@ -128,8 +118,6 @@ sub listSubFolders(@)
     my $imap = $self->transporter;
     defined $imap ? $imap->folders($self) : ();
 }
-
-#-------------------------------------------
 
 sub nameOfSubfolder($;$) { $_[1] }
 
@@ -183,8 +171,6 @@ sub readMessages(@)
     $self;
 }
  
-#-------------------------------------------
-
 
 sub getHead($)
 {   my ($self, $message) = @_;
@@ -204,8 +190,6 @@ sub getHead($)
     $self->log(PROGRESS => "Loaded head of $uidl.");
     $head;
 }
-
-#-------------------------------------------
 
 
 sub getHeadAndBody($)
@@ -244,8 +228,6 @@ sub getHeadAndBody($)
     ($head, $body->contentInfoFrom($head));
 }
 
-#-------------------------------------------
-
 
 sub body(;$)
 {   my $self = shift;
@@ -257,9 +239,6 @@ sub body(;$)
     $self->SUPER::body(@_);
 }
 
-#-------------------------------------------
-
-
 
 sub write(@)
 {   my ($self, %args) = @_;
@@ -268,14 +247,12 @@ sub write(@)
     $self->SUPER::write(%args, transporter => $imap) or return;
 
     if($args{save_deleted})
-    {   $self->log(NOTICE => "Impossible to keep deleted messages in IMAP")
+    {   $self->log(NOTICE => "Impossible to keep deleted messages in IMAP");
     }
-    else { $imap->destroyDeleted }
+    else { $imap->destroyDeleted($self->name) }
 
     $self;
 }
-
-#-------------------------------------------
 
 sub delete(@)
 {   my $self   = shift;
@@ -283,8 +260,6 @@ sub delete(@)
     $self->SUPER::delete(@_);   # subfolders
     $transp->deleteFolder($self->name);
 }
-
-#-------------------------------------------
 
 
 sub writeMessages($@)
@@ -297,8 +272,6 @@ sub writeMessages($@)
 
     $self;
 }
-
-#-------------------------------------------
 
 
 my %transporters;
@@ -332,8 +305,6 @@ sub createTransporter($@)
     $transporter;
 }
 
-#-------------------------------------------
-
 
 sub transporter(;$)
 {   my $self = shift;
@@ -361,8 +332,6 @@ sub transporter(;$)
     $self->log(ERROR => "Couldn't select IMAP4 folder $name");
     undef;
 }
-
-#-------------------------------------------
 
 
 sub fetch($@)

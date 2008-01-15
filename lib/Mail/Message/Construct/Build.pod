@@ -318,12 +318,12 @@ into the right message type, adding storage information and the like.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.079,
-built on November 28, 2007. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.080,
+built on January 15, 2008. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2007 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2008 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

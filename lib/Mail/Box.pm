@@ -1,4 +1,4 @@
-# Copyrights 2001-2007 by Mark Overmeer.
+# Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 1.03.
@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.079';
+$VERSION = '2.080';
 use base 'Mail::Reporter';
 
 use Mail::Box::Message;
@@ -409,12 +409,8 @@ sub writable()  {shift->{MB_access} =~ /w|a|d/ }
 sub writeable() {shift->writable}  # compatibility [typo]
 sub readable()  {1}  # compatibility
 
-#-------------------------------------------
-
 
 sub access()    {shift->{MB_access}}
-
-#-------------------------------------------
 
 
 sub modified(;$)
@@ -428,8 +424,6 @@ sub modified(;$)
     $_->modified(0) foreach $self->messages;
     0;
 }
-
-#-------------------------------------------
 
 
 sub isModified()
@@ -451,8 +445,6 @@ sub message(;$$)
 {   my ($self, $index) = (shift, shift);
     @_ ?  $self->{MB_messages}[$index] = shift : $self->{MB_messages}[$index];
 }
-
-#-------------------------------------------
 
 
 sub messageId($;$)
@@ -502,8 +494,6 @@ sub messageId($;$)
 
 sub messageID(@) {shift->messageId(@_)} # compatibility
 
-#-------------------------------------------
-
 
 sub find($)
 {   my ($self, $msgid) = (shift, shift);
@@ -523,8 +513,6 @@ sub find($)
 
     $msgids->{$msgid};
 }
-
-#-------------------------------------------
 
 
 sub messages($;$)
@@ -558,19 +546,13 @@ sub messages($;$)
     grep {$action->($_)} @{$self->{MB_messages}};
 }
 
-#-------------------------------------------
-
 
 sub nrMessages(@) { scalar shift->messages(@_) }
-
-#-------------------------------------------
 
 
 sub messageIds()    { map {$_->messageId} shift->messages }
 sub allMessageIds() {shift->messageIds}  # compatibility
 sub allMessageIDs() {shift->messageIds}  # compatibility
-
-#-------------------------------------------
 
 
 sub current(;$)
@@ -601,8 +583,6 @@ sub current(;$)
     $next;
 }
 
-#-------------------------------------------
-
 
 sub scanForMessages($$$$)
 {   my ($self, $startid, $msgids, $moment, $window) = @_;
@@ -615,8 +595,7 @@ sub scanForMessages($$$$)
     my $nr_messages = $self->messages
         or return keys %search; 
 
-    my $startmsg = $self->messageId($startid)
-        if defined $startid;
+    my $startmsg = defined $startid ? $self->messageId($startid) : undef;
 
     # Set-up window-bound.
     my $bound = 0;
@@ -648,8 +627,6 @@ sub scanForMessages($$$$)
     $self->{MBM_last} = $last;
     keys %search;
 }
-
-#-------------------------------------------
 
 
 sub findFirstLabeled($;$$)

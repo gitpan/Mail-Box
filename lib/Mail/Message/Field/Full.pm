@@ -1,4 +1,4 @@
-# Copyrights 2001-2007 by Mark Overmeer.
+# Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 1.03.
@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Full;
 use vars '$VERSION';
-$VERSION = '2.079';
+$VERSION = '2.080';
 use base 'Mail::Message::Field';
 
 use utf8;
@@ -21,6 +21,7 @@ use Mail::Message::Field::Addresses;
 use Mail::Message::Field::URIs;
 
 my $atext = q[a-zA-Z0-9!#\$%&'*+\-\/=?^_`{|}~];  # from RFC
+my $atext_ill = q/\[\]/;     # illegal, but still used (esp spam)
 
 
 use overload '""' => sub { shift->decodedBody };
@@ -306,7 +307,7 @@ sub consumePhrase($)
         return ($phrase, $string);
     }
 
-    if($string =~ s/^\s*([$atext\ \t.]+)//o )
+    if($string =~ s/^\s*([${atext}${atext_ill}\ \t.]+)//o )
     {   (my $phrase = $1) =~ s/\s+$//;
         return CORE::length($phrase) ? ($phrase, $string) : (undef, $_[1]);
     }

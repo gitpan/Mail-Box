@@ -1,4 +1,4 @@
-# Copyrights 2001-2007 by Mark Overmeer.
+# Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 1.03.
@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.079';
+$VERSION = '2.080';
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -328,7 +328,7 @@ sub isNested() {shift->body->isNested}
 
 sub contentType()
 {   my $head = shift->head;
-    my $ct   = defined $head ? $head->get('Content-Type') : '';
+    my $ct   = defined $head ? ($head->get('Content-Type'))[-1] : '';
     $ct      =~ s/\s*\;.*//;
     $ct || 'text/plain';
 }

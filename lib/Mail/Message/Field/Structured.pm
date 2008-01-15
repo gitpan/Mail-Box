@@ -1,4 +1,4 @@
-# Copyrights 2001-2007 by Mark Overmeer.
+# Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 1.03.
@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Structured;
 use vars '$VERSION';
-$VERSION = '2.079';
+$VERSION = '2.080';
 use base 'Mail::Message::Field::Full';
 
 use Mail::Message::Field::Attribute;
@@ -77,7 +77,9 @@ sub parse($)
 
     my $found = '';
     while($string =~ m/\S/)
-    {   if($string =~ s/^\s*\;\s*// && length $found)
+    {   my $len = length $string;
+
+        if($string =~ s/^\s*\;\s*// && length $found)
         {   my $attr = Mail::Message::Field::Attribute->new($found);
             $self->attribute($attr);
             $found = '';
@@ -87,6 +89,11 @@ sub parse($)
         $string =~ s/^\n//;
         (my $text, $string) = $self->consumePhrase($string);
         $found .= $text if defined $text;
+
+        if(length($string) == $len)
+        {   # nothing consumed, remove character to avoid endless loop
+            $string =~ s/^\s*\S//;
+        }
     }
 
     if(length $found)

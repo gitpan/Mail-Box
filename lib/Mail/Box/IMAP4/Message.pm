@@ -1,4 +1,4 @@
-# Copyrights 2001-2007 by Mark Overmeer.
+# Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 1.03.
@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box::IMAP4::Message;
 use vars '$VERSION';
-$VERSION = '2.079';
+$VERSION = '2.080';
 use base 'Mail::Box::Net::Message';
 
 use Date::Parse 'str2time';
@@ -29,8 +29,6 @@ sub init($)
     $self;
 }
 
-#-------------------------------------------
-
 
 sub size($)
 {   my $self = shift;
@@ -41,27 +39,23 @@ sub size($)
     $self->fetch('RFC822.SIZE');
 }
 
-#------------------------------------------
-
 sub recvstamp()
 {   my $date = shift->fetch('INTERNALDATE');
     defined $date ? str2time($date) : undef;
 }
 
-#-------------------------------------------
-
 
 sub label(@)
 {   my $self = shift;
     my $imap = $self->folder->transporter or return;
-    my $id   = $self->unique;
+    my $id   = $self->unique or return;
 
     if(@_ == 1)
     {   # get one value only
         my $label  = shift;
         my $labels = $self->{MM_labels};
 	return $labels->{$label}
-	   if exists $labels->{$label} || exists $labels->{seen};
+	    if exists $labels->{$label} || exists $labels->{seen};
 
 	my $flags = $imap->getFlags($id);
         if($self->{MBIM_cache_labels})
@@ -96,17 +90,16 @@ sub label(@)
     $self;
 }
 
-#-------------------------------------------
-
 
 sub labels()
 {   my $self   = shift;
+    my $id     = $self->unique;
     my $labels = $self->SUPER::labels;
     $labels    = { %$labels } unless $self->{MBIM_cache_labels};
 
-    unless(exists $labels->{seen})
+    if($id && !exists $labels->{seen})
     {   my $imap = $self->folder->transporter or return;
-        my $flags = $imap->getFlags($self->unique);
+        my $flags = $imap->getFlags($id);
         @{$labels}{keys %$flags} = values %$flags;
     }
 
@@ -126,8 +119,6 @@ sub loadHead()
     $head;
 }
 
-#-------------------------------------------
-
 sub loadBody()
 {   my $self     = shift;
 
@@ -142,8 +133,6 @@ sub loadBody()
     $body;
 }
 
-#-------------------------------------------
-
 
 sub fetch(@)
 {   my ($self, @info) = @_;
@@ -152,8 +141,6 @@ sub fetch(@)
 
     @info==1 ? $answer->{$info[0]} : @{$answer}{@info};
 }
-
-#-------------------------------------------
 
 
 sub writeDelayed($$)
