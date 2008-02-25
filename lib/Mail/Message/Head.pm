@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Head;
 use vars '$VERSION';
-$VERSION = '2.080';
+$VERSION = '2.081';
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Complete;
@@ -146,7 +146,7 @@ sub study($;$)
 
 
 sub isMultipart()
-{   my $type = shift->get('Content-Type');
+{   my $type = shift->get('Content-Type', 0);
     $type && scalar $type->body =~ m[^multipart/]i;
 }
 

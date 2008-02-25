@@ -5,7 +5,7 @@
 
 package MailBox::Test::31fgroups::Definition;
 use vars '$VERSION';
-$VERSION = '2.080';
+$VERSION = '2.081';
 
 sub name     {"Mail::Message::Head::FieldGroup; grouping fields"}
 sub critical {0}

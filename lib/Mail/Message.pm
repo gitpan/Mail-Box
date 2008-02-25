@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.080';
+$VERSION = '2.081';
 use base 'Mail::Reporter';
 
 use Mail::Message::Part;
@@ -328,7 +328,7 @@ sub isNested() {shift->body->isNested}
 
 sub contentType()
 {   my $head = shift->head;
-    my $ct   = defined $head ? ($head->get('Content-Type'))[-1] : '';
+    my $ct   = defined $head ? $head->get('Content-Type', 0) : '';
     $ct      =~ s/\s*\;.*//;
     $ct || 'text/plain';
 }

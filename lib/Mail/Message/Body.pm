@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.080';
+$VERSION = '2.081';
 use base 'Mail::Reporter';
 
 use Mail::Message::Field;
@@ -406,7 +406,7 @@ sub contentInfoTo($)
 sub contentInfoFrom($)
 {   my ($self, $head) = @_;
 
-    $self->type($head->get('Content-Type'));
+    $self->type($head->get('Content-Type', 0));
     $self->transferEncoding($head->get('Content-Transfer-Encoding'));
     $self->disposition($head->get('Content-Disposition'));
     $self->description($head->get('Content-Description'));

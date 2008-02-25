@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::MH::Labels;
 use vars '$VERSION';
-$VERSION = '2.080';
+$VERSION = '2.081';
 use base 'Mail::Reporter';
 
 use Mail::Message::Head::Subset;

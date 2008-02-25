@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Reporter;
 use vars '$VERSION';
-$VERSION = '2.080';
+$VERSION = '2.081';
 
 use Carp;
 use Scalar::Util 'dualvar';

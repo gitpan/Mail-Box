@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.080';
+$VERSION = '2.081';
 
 use IO::Lines;
 
@@ -57,7 +57,7 @@ sub printStructure(;$$)
     my $subject = $self->get('Subject') || '';
     $subject    = ": $subject" if length $subject;
 
-    my $type    = $self->get('Content-Type') || '';
+    my $type    = $self->get('Content-Type', 0) || '';
     my $size    = $self->size;
     my $deleted = $self->label('deleted') ? ', deleted' : '';
 

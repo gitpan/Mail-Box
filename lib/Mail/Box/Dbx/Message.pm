@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box::Dbx::Message;
 use vars '$VERSION';
-$VERSION = '2.080';
+$VERSION = '2.081';
 use base 'Mail::Box::File::Message';
 
 use Carp;
