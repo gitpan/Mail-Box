@@ -1,12 +1,13 @@
 # Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.03.
+# Pod stripped from pm file by OODoc 1.04.
 
 use strict;
 package Mail::Box::Mbox::Message;
 use vars '$VERSION';
-$VERSION = '2.081';
+$VERSION = '2.082';
+
 use base 'Mail::Box::File::Message';
 
 

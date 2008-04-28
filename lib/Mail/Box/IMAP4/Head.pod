@@ -12,7 +12,7 @@ Mail::Box::IMAP4::Head - header fields related IMAP interface
 
 =head1 DESCRIPTION
 
-This class implements a pure IMAP4 protocol interface, where as few
+This class implements a pure IMAP4 protocol interface, where as little
 data is retreived from the header as possible.  This may look nice
 to you, but is not sufficient for many tasks.  For instance, you cannot
 removed or modify fields this way.
@@ -379,8 +379,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.081,
-built on February 25, 2008. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.082,
+built on April 28, 2008. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

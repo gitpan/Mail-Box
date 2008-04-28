@@ -1,13 +1,14 @@
 # Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.03.
+# Pod stripped from pm file by OODoc 1.04.
 
 use strict;
 
 package Mail::Box::IMAP4::Head;
 use vars '$VERSION';
-$VERSION = '2.081';
+$VERSION = '2.082';
+
 use base 'Mail::Message::Head';
 
 use Date::Parse;
@@ -20,8 +21,6 @@ sub init($$)
     $self->{MBIH_c_fields} = $args->{cache_fields};
     $self;
 }
-
-#------------------------------------------
 
 
 sub get($;$)
@@ -52,11 +51,7 @@ sub get($;$)
     :                  $fields[0];
 }
 
-#------------------------------------------
-
 sub guessBodySize() {undef}
-
-#-------------------------------------------
 
 sub guessTimestamp() {undef}
 
