@@ -27,14 +27,14 @@ Mail::Message::Body - the data of a body in a message
  my $body  = $msg->body;
  my @text  = $body->lines;
  my $text  = $body->string;
- my IO::Handle $file = $body->file;
+ my $file  = $body->file;  # IO::File
  $body->print(\*FILE);
 
  my $content_type = $body->type;
  my $transfer_encoding = $body->transferEncoding;
- my $encoded  = $body->encode(mime_type => 'text/html',
+ my $encoded = $body->encode(mime_type => 'text/html',
     charset => 'us-ascii', transfer_encoding => 'none');\n";
- my $decoded  = $body->decoded;
+ my $decoded = $body->decoded;
 
 =head1 DESCRIPTION
 
@@ -137,7 +137,7 @@ got, and then call L<encode()|Mail::Message::Body::Encode/"Constructing a body">
 
  Option           --Defined in     --Default
  based_on                            undef
- charset                             'us-ascii'
+ charset                             'PERL' or <undef>
  checked                             <false>
  data                                undef
  description                         undef
@@ -160,13 +160,19 @@ unless specified differently.
 
 =back
 
-. charset => STRING
+. charset => CHARSET|'PERL'
 
 =over 4
 
 Defines the character-set which is used in the data.  Only useful in
-combination with a C<mime_type> which refers to C<text> in any shape.
-This field is case-insensitive.
+combination with a C<mime_type> which refers to C<text> in any shape,
+which does not contain an explicit charset already.  This field is
+case-insensitive.
+
+When a known CHARSET is provided and the mime type says text, then the
+data is expected to be bytes in that particular encoding (see Encode).
+When 'PERL' is given, then then the data is in Perl's internal encoding
+(either latin1 or utf8, you shouldn't know!)
 
 =back
 
@@ -355,8 +361,11 @@ body of any type.
  
 is equivalent with
 
- my $dec = $body->encode(mime_type => 'text/plain', charset => 'us-ascii',
-    transfer_encoding => 'none');
+ my $dec = $body->encode
+   ( mime_type         => 'text/plain'
+   , transfer_encoding => 'none'
+   , charset           => 'PERL'
+   );
 
 The C<$dec> which is returned is a body.  Ask with the L<mimeType()|Mail::Message::Body/"About the payload"> method
 what is produced.  This C<$dec> body is B<not related to a header>.
@@ -1080,6 +1089,15 @@ the body.  For most code, they simply behave like multiparts.
 
 =head1 DIAGNOSTICS
 
+Warning: Charset $name is not known
+
+=over 4
+
+The encoding or decoding of a message body encounters a character set which
+is not understood by Perl's Encode module.
+
+=back
+
 Warning: No decoder defined for transfer encoding $name.
 
 =over 4
@@ -1112,8 +1130,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.082,
-built on April 28, 2008. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.083,
+built on September 02, 2008. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

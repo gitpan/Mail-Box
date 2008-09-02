@@ -1,14 +1,14 @@
 # Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.04.
+# Pod stripped from pm file by OODoc 1.05.
 
 use strict;
 use warnings;
 
 package Mail::Box::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.082';
+$VERSION = '2.083';
 
 use base 'Mail::Box::Net';
 
@@ -30,7 +30,7 @@ sub init($)
 
     # MailBox names top folder directory '=', but IMAP needs '/'
     $folder = '/'
-        if $folder eq '=';
+        if ! defined $folder || $folder eq '=';
 
     # There's a disconnect between the URL parser and this code.
     # The URL parser always produces a full path (beginning with /)

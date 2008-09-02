@@ -1,13 +1,13 @@
 # Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.04.
+# Pod stripped from pm file by OODoc 1.05.
 use strict;
 use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.082';
+$VERSION = '2.083';
 
 use base 'Mail::Reporter';
 
@@ -24,11 +24,12 @@ my $mime_types = MIME::Types->new;
 my $mime_plain = $mime_types->type('text/plain');
 
 
-use overload bool  => sub {1}   # $body->print if $body
-           , '""'  => 'string_unless_carp'
-           , '@{}' => 'lines'
-           , '=='  => sub {ref $_[1] && refaddr $_[0] == refaddr $_[1]}
-           , '!='  => sub {ref $_[1] && refaddr $_[0] != refaddr $_[1]};
+use overload
+    bool  => sub {1}   # $body->print if $body
+  , '""'  => 'string_unless_carp'
+  , '@{}' => 'lines'
+  , '=='  => sub {ref $_[1] && refaddr $_[0] == refaddr $_[1]}
+  , '!='  => sub {ref $_[1] && refaddr $_[0] != refaddr $_[1]};
 
 #------------------------------------------
 
@@ -74,7 +75,7 @@ sub init($)
         elsif($file->isa('IO::Handle'))
         {    $self->_data_from_filehandle($file) or return }
         else
-        {    croak "message body: illegal datatype for file option" }
+        {    croak "message body: illegal datatype `".ref($file)."' for file option" }
     }
     elsif(defined(my $data = $args->{data}))
     {
@@ -86,7 +87,7 @@ sub init($)
         {   $self->_data_from_lines($data) or return;
         }
         else
-        {   croak "message body: illegal datatype for data option" }
+        {   croak "message body: illegal datatype `".ref($data)."' for data option" }
     }
     elsif(! $self->isMultipart && ! $self->isNested)
     {   # Neither 'file' nor 'data', so empty body.
@@ -112,14 +113,13 @@ sub init($)
     }
 
     if(ref $mime && $mime->isa('MIME::Type'))
-    {   $mime    = $mime->type;
+    {   $mime     = $mime->type;
     }
 
     if(defined(my $based = $args->{based_on}))
     {   $mime     = $based->type             unless defined $mime;
         $transfer = $based->transferEncoding unless defined $transfer;
         $disp     = $based->disposition      unless defined $disp;
-        $charset  = $based->charset          unless defined $charset;
         $descr    = $based->description      unless defined $descr;
 
         $self->{MMB_checked}
@@ -127,18 +127,19 @@ sub init($)
     }
     else
     {   $transfer = $args->{transfer_encoding};
-        $self->{MMB_checked} = $args->{checked}|| 0;
+        $self->{MMB_checked} = $args->{checked} || 0;
     }
 
     if(defined $mime)
-    {   #$charset ||= 'us-ascii' if $mime =~ m!^text/!i;
-        $mime = $self->type($mime);
-        $mime->attribute(charset => $charset) if defined $charset;
+    {   $mime = $self->type($mime);
+        $mime->attribute(charset => ($charset || 'PERL'))
+            if $mime =~ m!^text/!i && !$mime->attribute('charset');
     }
 
     $self->transferEncoding($transfer) if defined $transfer;
     $self->disposition($disp)          if defined $disp;
     $self->description($descr)         if defined $descr;
+    $self->type($mime) if defined $mime;
 
     $self->{MMB_eol}   = $args->{eol} || 'NATIVE';
 
@@ -163,7 +164,7 @@ sub decoded(@)
 {   my $self = shift;
     $self->encode
      ( mime_type         => 'text/plain'
-     , charset           => 'us-ascii'
+     , charset           => 'PERL'
      , transfer_encoding => 'none'
      , @_
      );

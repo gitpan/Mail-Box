@@ -79,7 +79,7 @@ Mail::Message::Body::Multipart-E<gt>B<new>(OPTIONS)
  Option           --Defined in     --Default
  based_on           Mail::Message::Body  undef
  boundary                            undef
- charset            Mail::Message::Body  'us-ascii'
+ charset            Mail::Message::Body  'PERL' or <undef>
  checked            Mail::Message::Body  <false>
  data               Mail::Message::Body  undef
  description        Mail::Message::Body  undef
@@ -108,7 +108,7 @@ unusual).  If C<undef>, a nice unique boundary will be generated.
 
 =back
 
-. charset => STRING
+. charset => CHARSET|'PERL'
 
 . checked => BOOLEAN
 
@@ -788,6 +788,15 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
+Warning: Charset $name is not known
+
+=over 4
+
+The encoding or decoding of a message body encounters a character set which
+is not understood by Perl's Encode module.
+
+=back
+
 Error: Data not convertible to a message (type is $type)
 
 =over 4
@@ -848,8 +857,8 @@ clearly not acceptible.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.082,
-built on April 28, 2008. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.083,
+built on September 02, 2008. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

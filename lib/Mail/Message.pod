@@ -635,8 +635,9 @@ LABELS hash.  They are added later.
 
 example: 
 
- $msg->head(Mail::Message::Head->new);  # set
- my $head = $msg->head;                 # get
+ my $header = Mail::Message::Head->new;
+ $msg->head($header);    # set
+ my $head = $msg->head;  # get
 
 =back
 
@@ -784,22 +785,21 @@ $obj-E<gt>B<decoded>(OPTIONS)
 
 =over 4
 
-Decodes the body of this message, and returns it as a body object.  If there
-was no encoding, the body object as read from file is passed on, however,
-some more work will be needed when a serious encoding is encountered.
-The OPTIONS control how the conversion takes place.
+Decodes the body of this message, and returns it as a body object.
+If there was no encoding, the body object as read from file is passed
+on, however, some more work will be needed when a serious encoding
+is encountered.  The OPTIONS control how the conversion takes place.
 
  Option     --Default
- keep         <false>
+ charset      PERL
  result_type  <type of body>
 
-. keep => BOOLEAN
+. charset => CODESET|'PERL'
 
 =over 4
 
-Controls whether the decoded result will be kept.  If not, the decoding
-may be performed more than once.  However, it will consume extra
-resources...
+Translate the bytes of the message into the CODESET.  When C<PERL> is
+given, the content will be translated into Perl strings.
 
 =back
 
@@ -818,9 +818,6 @@ example:
 
  $message->decoded->print(\*OUT);
  $message->decoded->print;
-
- my $dec = $message->body($message->decoded);
- my $dec = $message->decoded(keep => 1);   # same
 
 =back
 
@@ -873,7 +870,7 @@ you have to test yourself.
 
 'ACTIVE' and 'DELETED' check for the deleted flag on messages and
 message parts.  The FILTER is a code reference, which is called for
-each part of the messagei; each part as C<RECURSE> would return.
+each part of the message; each part as C<RECURSE> would return.
 
 example: 
 
@@ -1684,8 +1681,8 @@ Error: coercion starts with some object
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.082,
-built on April 28, 2008. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.083,
+built on September 02, 2008. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

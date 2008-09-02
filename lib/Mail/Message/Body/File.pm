@@ -1,13 +1,13 @@
 # Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.04.
+# Pod stripped from pm file by OODoc 1.05.
 use strict;
 use warnings;
 
 package Mail::Message::Body::File;
 use vars '$VERSION';
-$VERSION = '2.082';
+$VERSION = '2.083';
 
 use base 'Mail::Message::Body';
 
@@ -15,8 +15,8 @@ use Mail::Box::Parser;
 use Mail::Message;
 
 use Carp;
-use POSIX 'tmpnam';
-use File::Copy;
+use File::Temp qw/tempfile/;
+use File::Copy qw/copy/;
 
 
 sub _data_from_filename(@)
@@ -110,8 +110,6 @@ sub _data_from_lines(@)
     $self;
 }
 
-#------------------------------------------
-
 sub clone()
 {   my $self  = shift;
     my $clone = ref($self)->new(based_on => $self);
@@ -123,8 +121,6 @@ sub clone()
     $clone->{MMBF_size}    = $self->{MMBF_size};
     $self;
 }
-
-#------------------------------------------
 
 sub nrLines()
 {   my $self    = shift;
@@ -155,16 +151,13 @@ sub size()
     return $self->{MMBF_size}
        if exists $self->{MMBF_size};
 
-    my $size = -s $self->tempFilename;
+    my $size = eval { -s $self->tempFilename };
 
     $size   -= $self->nrLines
         if $Mail::Message::crlf_platform;   # remove count for extra CR's
 
     $self->{MMBF_size} = $size;
 }
-
-
-#------------------------------------------
 
 sub string()
 {   my $self = shift;
@@ -182,8 +175,6 @@ sub string()
     $return;
 }
 
-#------------------------------------------
-
 sub lines()
 {   my $self = shift;
 
@@ -200,14 +191,10 @@ sub lines()
     wantarray ? @r: \@r;
 }
 
-#------------------------------------------
-
 sub file()
 {   open my $tmp, '<', shift->tempFilename;
     $tmp;
 }
-
-#------------------------------------------
 
 sub print(;$)
 {   my $self = shift;
@@ -227,8 +214,6 @@ sub print(;$)
     $self;
 }
 
-#------------------------------------------
-
 sub read($$;$@)
 {   my ($self, $parser, $head, $bodytype) = splice @_, 0, 4;
     my $file = $self->tempFilename;
@@ -245,8 +230,6 @@ sub read($$;$@)
     $self;
 }
 
-#------------------------------------------
-
 # on UNIX always true.  Expensive to calculate on Windows: message size
 # may be off-by-one in rare cases.
 sub endsOnNewline() { shift->size==0 }
@@ -259,7 +242,7 @@ sub tempFilename(;$)
 
       @_                     ? ($self->{MMBF_filename} = shift)
     : $self->{MMBF_filename} ? $self->{MMBF_filename}
-    :                          ($self->{MMBF_filename} = tmpnam);
+    :                          ($self->{MMBF_filename} = (tempfile)[1]);
 }
 
 #------------------------------------------

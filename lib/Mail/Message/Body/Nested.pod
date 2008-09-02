@@ -81,7 +81,7 @@ Mail::Message::Body::Nested-E<gt>B<new>(OPTIONS)
 
  Option           --Defined in     --Default
  based_on           Mail::Message::Body  undef
- charset            Mail::Message::Body  'us-ascii'
+ charset            Mail::Message::Body  'PERL' or <undef>
  checked            Mail::Message::Body  <false>
  data               Mail::Message::Body  undef
  description        Mail::Message::Body  undef
@@ -98,7 +98,7 @@ Mail::Message::Body::Nested-E<gt>B<new>(OPTIONS)
 
 . based_on => BODY
 
-. charset => STRING
+. charset => CHARSET|'PERL'
 
 . checked => BOOLEAN
 
@@ -653,6 +653,15 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
+Warning: Charset $name is not known
+
+=over 4
+
+The encoding or decoding of a message body encounters a character set which
+is not understood by Perl's Encode module.
+
+=back
+
 Warning: No decoder defined for transfer encoding $name.
 
 =over 4
@@ -695,8 +704,8 @@ clearly not acceptible.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.082,
-built on April 28, 2008. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.083,
+built on September 02, 2008. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

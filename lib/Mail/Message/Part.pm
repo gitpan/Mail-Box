@@ -1,13 +1,13 @@
 # Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.04.
+# Pod stripped from pm file by OODoc 1.05.
 use strict;
 use warnings;
 
 package Mail::Message::Part;
 use vars '$VERSION';
-$VERSION = '2.082';
+$VERSION = '2.083';
 
 use base 'Mail::Message';
 
@@ -34,6 +34,10 @@ sub init($)
 
 sub coerce($@)
 {   my ($class, $thing, $container) = (shift, shift, shift);
+    if($thing->isa($class))
+    {   $thing->container($container);
+        return $thing;
+    }
 
     return $class->buildFromBody($thing, $container, @_)
         if $thing->isa('Mail::Message::Body');

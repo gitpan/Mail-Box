@@ -1,13 +1,13 @@
 # Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.04.
+# Pod stripped from pm file by OODoc 1.05.
 
 use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.082';
+$VERSION = '2.083';
 
 
 use Mail::Message::Head::Complete;
@@ -124,17 +124,17 @@ sub descendMultiparts($@)
     }
 
     $changed
-       or return $part;
+        or return $part;
 
     my $newbody = ref($body)->new
-     ( based_on  => $body
-     , parts     => \@newparts
-     );
+      ( based_on  => $body
+      , parts     => \@newparts
+      );
 
     my $rebuild = ref($part)->new
-     ( head      => $part->head->clone
-     , container => undef
-     );
+      ( head      => $part->head->clone
+      , container => undef
+      );
 
     $rebuild->body($newbody);   # update Content-* lines
     $rebuild;
@@ -269,7 +269,7 @@ sub recursiveRebuildPart($@)
 {   my ($self, $part, %args) = @_;
 
   RULES:
-    foreach my $rule ( @{$args{rules}} )
+    foreach my $rule (@{$args{rules}})
     {   my $rebuild
            = ref $rule ? $rule->($self, $part, %args)
            :             $self->$rule($part, %args);

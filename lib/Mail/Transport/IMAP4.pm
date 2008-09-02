@@ -1,14 +1,14 @@
 # Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.04.
+# Pod stripped from pm file by OODoc 1.05.
 
 use strict;
 use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.082';
+$VERSION = '2.083';
 
 use base 'Mail::Transport::Receive';
 
@@ -265,7 +265,7 @@ sub folders(;$)
     # all folders.
     # Alas IMAPClient always appends the separator so, despite what it says
     # in its own docs, there's purpose to doing this.  We just need
-    # to get whatever we get and postprocess it.
+    # to get whatever we get and postprocess it.  ???Still true???
     my @folders = $imap->folders($top);
 
     # We need to post-process the list returned by IMAPClient.
@@ -273,9 +273,9 @@ sub folders(;$)
     my $sep   = $imap->separator;
     my $level = 1 + (defined $top ? () = $top =~ m/\Q$sep\E/g : -1);
 
-    # There may be multiples thanks to subdirs so we uniq it
+    # There may be dupplications, thanks to subdirs so we uniq it
     my %uniq;
-    $uniq{(split($sep, $_))[$level]||''}++ foreach @folders;
+    $uniq{(split /\Q$sep\E/, $_)[$level] || ''}++ for @folders;
     delete $uniq{''};
 
     keys %uniq;

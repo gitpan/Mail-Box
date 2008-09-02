@@ -1,7 +1,7 @@
 # Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.04.
+# Pod stripped from pm file by OODoc 1.05.
 use strict;
 use warnings;
 
@@ -9,7 +9,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.082';
+$VERSION = '2.083';
 
 
 use Carp;
@@ -46,39 +46,24 @@ sub foreachLine($)
 sub concatenate(@)
 {   my $self = shift;
 
-    my @bodies;
-    foreach (@_)
-    {   next unless defined $_;
-        push @bodies
-         , !ref $_           ? Mail::Message::Body::String->new(data => $_)
-         : ref $_ eq 'ARRAY' ? Mail::Message::Body::Lines->new(data => $_)
-         : $_->isa('Mail::Message')       ? $_->body
-         : $_->isa('Mail::Message::Body') ? $_
-         : carp "Cannot concatenate element ".@bodies;
-    }
+    return $self
+        if @_==1;
 
     my @unified;
-
-    my $changes  = 0;
-    foreach my $body (@bodies)
-    {   my $unified = $self->unify($body);
-        if(defined $unified)
-        {   $changes++ unless $unified==$body;
-            push @unified, $unified;
-        }
-        elsif($body->mimeType->mediaType eq 'text')
-        {   # Text stuff can be unified anyhow, although we do not want to
-            # include postscript or such.
-            push @unified, $body;
-        }
-        else { $changes++ }
+    foreach (@_)
+    {   next unless defined $_;
+        push @unified
+         , !ref $_           ? $_
+         : ref $_ eq 'ARRAY' ? @$_
+         : $_->isa('Mail::Message')       ? $_->body->decoded
+         : $_->isa('Mail::Message::Body') ? $_->decoded
+         : carp "Cannot concatenate element ".$_;
     }
 
-    return $self if @bodies==1 && $bodies[0]==$self;  # unmodified, and single
-
     ref($self)->new
-      ( based_on => $self
-      , data     => [ map {$_->lines} @unified ]
+      ( based_on  => $self
+      , mime_type => 'text/plain'
+      , data      => join('', @unified)
       );
 }
 

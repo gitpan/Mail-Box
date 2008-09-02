@@ -1,13 +1,13 @@
 # Copyrights 2001-2008 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.04.
+# Pod stripped from pm file by OODoc 1.05.
 use strict;
 use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.082';
+$VERSION = '2.083';
 
 use base 'Mail::Reporter';
 
@@ -125,7 +125,8 @@ sub print(;$)
     my $out  = shift || select;
 
     $self->head->print($out);
-    $self->body->print($out);
+    my $body = $self->body;
+    $body->print($out) if $body;
     $self;
 }
 
@@ -289,6 +290,7 @@ sub body(;$@)
     # Bodies of real messages must be encoded for safe transmission.
     # Message parts will get encoded on the moment the whole multipart
     # is transformed into a real message.
+
     my $body = $self->isPart ? $rawbody : $rawbody->encoded;
     $body->contentInfoTo($self->head);
 
@@ -305,12 +307,12 @@ sub body(;$@)
 sub decoded(@)
 {   my ($self, %args) = @_;
 
-    return $self->{MB_decoded} if $self->{MB_decoded};
-
     my $body    = $self->body->load or return;
-    my $decoded = $body->decoded(result_type => $args{result_type});
+    my $decoded = $body->decoded
+      ( result_type => $args{result_type}
+      , charset     => $args{charset}
+      );
 
-    $self->{MB_decoded} = $decoded if $args{keep};
     $decoded;
 }
 
@@ -329,9 +331,9 @@ sub isNested() {shift->body->isNested}
 
 sub contentType()
 {   my $head = shift->head;
-    my $ct   = defined $head ? $head->get('Content-Type', 0) : '';
+    my $ct   = (defined $head ? $head->get('Content-Type', 0) : undef) || '';
     $ct      =~ s/\s*\;.*//;
-    $ct || 'text/plain';
+    length $ct ? $ct : 'text/plain';
 }
 
 
@@ -597,7 +599,8 @@ sub readBody($$;$$)
     my $body;
     if($bodytype->isDelayed)
     {   $body = $bodytype->new
-          ( message           => $self
+          ( message => $self
+          , charset => 'us-ascii'
           , $self->logSettings
           );
     }
@@ -612,8 +615,9 @@ sub readBody($$;$$)
         {   $bodytype = $nbody  }
 
         $body = $bodytype->new
-        ( message           => $self
-        , checked           => $self->{MM_trusted}
+        ( message => $self
+        , checked => $self->{MM_trusted}
+        , charset => 'us-ascii'
         , $self->logSettings
         );
 

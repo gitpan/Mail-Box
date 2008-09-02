@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                Mail-Box
-version:             2.082
+version:             2.083
 abstract:            E-mail handling
 license:             perl
 author:              
@@ -15,7 +15,6 @@ requires:
     File::Spec:                    0.7
     IO::Scalar:                    0
     Mail::Address:                 0
-    Mail::Box::Parser::C:          3.006
     MIME::Base64:                  0
     MIME::Types:                   1.004
     Object::Realize::Later:        0.14
