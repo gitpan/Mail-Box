@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::IMAP4::Head;
 use vars '$VERSION';
-$VERSION = '2.083';
+$VERSION = '2.084';
 
 use base 'Mail::Message::Head';
 

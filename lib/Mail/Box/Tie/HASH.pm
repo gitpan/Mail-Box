@@ -6,7 +6,7 @@
 use strict;
 package Mail::Box::Tie::HASH;
 use vars '$VERSION';
-$VERSION = '2.083';
+$VERSION = '2.084';
 
 
 use Carp;

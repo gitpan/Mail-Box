@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Message::Convert::MimeEntity;
 use vars '$VERSION';
-$VERSION = '2.083';
+$VERSION = '2.084';
 
 use base 'Mail::Message::Convert';
 

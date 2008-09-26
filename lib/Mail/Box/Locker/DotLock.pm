@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::Locker::DotLock;
 use vars '$VERSION';
-$VERSION = '2.083';
+$VERSION = '2.084';
 
 use base 'Mail::Box::Locker';
 

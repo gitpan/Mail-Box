@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.083';
+$VERSION = '2.084';
 
 use base 'Mail::Reporter';
 
@@ -235,7 +235,6 @@ sub cc() { map {$_->addresses} shift->head->get('Cc') }
 
 
 sub bcc() { map {$_->addresses} shift->head->get('Bcc') }
-
 
 
 sub destinations()

@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Message::Replace::MailInternet;
 use vars '$VERSION';
-$VERSION = '2.083';
+$VERSION = '2.084';
 
 use base 'Mail::Message';
 
@@ -346,7 +346,7 @@ sub as_mbox_string()
 BEGIN {
  no warnings;
  *Mail::Internet::new =
-    sub (@) { my $class = shift;
+    sub { my $class = shift;
           Mail::Message::Replace::MailInternet->new(@_);
         }
 }
