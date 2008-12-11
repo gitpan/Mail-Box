@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.085';
+$VERSION = '2.086';
 
 use base 'Mail::Transport::Receive';
 

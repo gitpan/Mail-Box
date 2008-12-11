@@ -5,7 +5,7 @@
 
 package MailBox::Test::53threads::Definition;
 use vars '$VERSION';
-$VERSION = '2.085';
+$VERSION = '2.086';
 
 
 sub name     {"Mail::Box::Threads; message threads"}

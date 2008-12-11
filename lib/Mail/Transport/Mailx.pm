@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Transport::Mailx;
 use vars '$VERSION';
-$VERSION = '2.085';
+$VERSION = '2.086';
 
 use base 'Mail::Transport::Send';
 
