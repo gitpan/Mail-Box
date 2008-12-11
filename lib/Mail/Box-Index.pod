@@ -153,6 +153,7 @@ Only the HTML version of this manual page will list the sections.
       <li>scan header and body (Mail::Box::Search::Grep)
       <li>check for spam (Mail::Box::Search::SpamAssassin) 
       </ul>
+  <li>Managing messages located in folders (Mail::Box::Message)
   </ul>
 
 <li><strong><a name="ftypes">Folder types</a></strong>
@@ -254,8 +255,8 @@ Only the HTML version of this manual page will list the sections.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.084,
-built on September 26, 2008. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.085,
+built on December 11, 2008. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

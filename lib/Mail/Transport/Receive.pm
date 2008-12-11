@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Transport::Receive;
 use vars '$VERSION';
-$VERSION = '2.084';
+$VERSION = '2.085';
 
 use base 'Mail::Transport';
 

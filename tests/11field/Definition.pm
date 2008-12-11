@@ -5,7 +5,7 @@
 
 package MailBox::Test::11field::Definition;
 use vars '$VERSION';
-$VERSION = '2.084';
+$VERSION = '2.085';
 
 
 sub name     {"Mail::Message::Field; fields in headers"}

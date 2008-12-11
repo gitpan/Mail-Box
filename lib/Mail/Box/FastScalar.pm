@@ -4,7 +4,7 @@
 # Pod stripped from pm file by OODoc 1.05.
 package Mail::Box::FastScalar;
 use vars '$VERSION';
-$VERSION = '2.084';
+$VERSION = '2.085';
 
 
 

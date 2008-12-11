@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Message::TransferEnc::Binary;
 use vars '$VERSION';
-$VERSION = '2.084';
+$VERSION = '2.085';
 
 use base 'Mail::Message::TransferEnc';
 
@@ -38,7 +38,7 @@ sub encode($@)
     my @lines;
 
     my $changes = 0;
-    foreach ($self->lines)
+    foreach ($body->lines)
     {   $changes++ if s/[\000\013]//g;
         push @lines, $_;
     }
