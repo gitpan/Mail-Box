@@ -1,13 +1,13 @@
-# Copyrights 2001-2008 by Mark Overmeer.
+# Copyrights 2001-2009 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.05.
+# Pod stripped from pm file by OODoc 1.06.
 use strict;
 use warnings;
 
 package Mail::Box::Manager;
 use vars '$VERSION';
-$VERSION = '2.086';
+$VERSION = '2.087';
 
 use base 'Mail::Reporter';
 
@@ -470,9 +470,6 @@ sub moveMessage(@)
 #-------------------------------------------
 
 
-#-------------------------------------------
-
-
 sub threads(@)
 {   my $self    = shift;
     my @folders;
@@ -525,15 +522,11 @@ sub toBeThreaded($@)
     $_->toBeThreaded(@_) foreach @{$self->{MBM_threads}};
 }
 
-#-------------------------------------------
-
 
 sub toBeUnthreaded($@)
 {   my $self = shift;
     $_->toBeUnthreaded(@_) foreach @{$self->{MBM_threads}};
 }
-
-#-------------------------------------------
 
 
 sub decodeFolderURL($)
@@ -553,10 +546,12 @@ sub decodeFolderURL($)
                       !x;
 
     $username ||= $ENV{USER} || $ENV{LOGNAME};
+    $password ||= '';
 
-    $password ||= '';        # decode password from url
-    $password   =~ s/\+/ /g;
-    $password   =~ s/\%([A-Fa-f0-9]{2})/chr hex $1/ge;
+    for($username, $password)
+    {   s/\+/ /g;
+        s/\%([A-Fa-f0-9]{2})/chr hex $1/ge;
+    }
 
     $hostname ||= 'localhost';
 
@@ -569,7 +564,6 @@ sub decodeFolderURL($)
 }
 
 #-------------------------------------------
-
 
 
 1;

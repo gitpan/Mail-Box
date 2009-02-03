@@ -1,14 +1,14 @@
-# Copyrights 2001-2008 by Mark Overmeer.
+# Copyrights 2001-2009 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.05.
+# Pod stripped from pm file by OODoc 1.06.
 
 use strict;
 use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.086';
+$VERSION = '2.087';
 
 use base 'Mail::Transport::Receive';
 
@@ -57,16 +57,8 @@ sub url()
 #------------------------------------------
 
 
-our $ntlm_installed;
-
 sub authentication(@)
 {   my ($self, @types) = @_;
-
-    unless(defined $ntlm_installed)
-    {   eval "require Authen::NTLM";
-        die "NTLM errors:\n$@" if $@ && $@ !~ /Can't locate/;
-        $ntlm_installed = ! $@;
-    }
 
     # What the client wants to use to login
 
@@ -75,7 +67,7 @@ sub authentication(@)
     }
 
     if(@types == 1 && $types[0] eq 'AUTO')
-    {   @types = ('CRAM-MD5', ($ntlm_installed ? 'NTLM' : ()), 'PLAIN');
+    {   @types = qw/CRAM-MD5 DIGEST-MD5 PLAIN NTLM LOGIN/;
     }
 
     $self->{MTI_auth} = \@types;
@@ -181,16 +173,9 @@ sub login(;$)
 		return undef;
 	    }
 
-            if($mechanism eq 'NTLM')
-            {   Authen::NTLM::ntlm_reset();
-                Authen::NTLM::ntlm_user($username);
-                Authen::NTLM::ntlm_domain($self->domain);
-                Authen::NTLM::ntlm_password($password);
-            }
-
             $imap->User($username);
             $imap->Password($password);
-            $imap->Authmechanism($mechanism) unless $mechanism eq 'PLAIN';
+            $imap->Authmechanism($mechanism);
             $imap->Authcallback($challange) if defined $challange;
 
             if($imap->login)

@@ -1,12 +1,12 @@
-# Copyrights 2001-2008 by Mark Overmeer.
+# Copyrights 2001-2009 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.05.
+# Pod stripped from pm file by OODoc 1.06.
 
 use strict;
 package Mail::Box::Tie::ARRAY;
 use vars '$VERSION';
-$VERSION = '2.086';
+$VERSION = '2.087';
 
 
 use Carp;

@@ -1,11 +1,11 @@
-# Copyrights 2001-2008 by Mark Overmeer.
+# Copyrights 2001-2009 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.05.
+# Pod stripped from pm file by OODoc 1.06.
 
 package Mail::Box::File;
 use vars '$VERSION';
-$VERSION = '2.086';
+$VERSION = '2.087';
 
 use base 'Mail::Box';
 
@@ -36,7 +36,7 @@ my $default_folder_dir = exists $ENV{HOME} ? $ENV{HOME} . '/Mail' : '.';
 
 sub _default_body_type($$)
 {   my $size = shift->guessBodySize || 0;
-    'Mail::Message::Body::'.($size > 10000 ? 'File' : 'Lines');
+    'Mail::Message::Body::'.($size > 100000 ? 'File' : 'Lines');
 }
 
 sub init($)
@@ -47,9 +47,9 @@ sub init($)
 
     return unless defined $self->SUPER::init($args);
 
-    my $class = ref $self;
+    my $class    = ref $self;
 
-    my $filename         = $self->{MBF_filename}
+    my $filename = $self->{MBF_filename}
        = $class->folderToFilename
            ( $self->name
            , $self->folderdir

@@ -438,9 +438,15 @@ $obj-E<gt>B<moveMessage>([FOLDER|FOLDERNAME,] MESSAGES, OPTIONS)
 
 =over 4
 
-Move a message from one folder to another.  Be warned that removals from
-a folder only take place when the folder is closed, so the message is only
-flagged to be deleted in the opened source folder.
+Move a message from one folder to another.
+
+BE WARNED that removals from a folder only take place when the folder
+is closed, so the message is only flagged to be deleted in the opened
+source folder.
+
+BE WARNED that message labels may get lost when a message is moved from
+one folder type to an other.  An attempt is made to translate labels,
+but there are many differences in interpretation by applications.
 
  $mgr->moveMessage($received, $inbox->message(1))
 
@@ -482,7 +488,8 @@ $obj-E<gt>B<decodeFolderURL>(URL)
 =over 4
 
 Try to decompose a folder name which is specified as URL (see open())
-into separate options.
+into separate options.  Special characters like @-sign, colon, and slash
+used in the user or password parts must be passed URL-encoded.
 
 =back
 
@@ -808,12 +815,12 @@ only useful for folders which have write or append access modes
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.086,
-built on December 11, 2008. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.087,
+built on February 03, 2009. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2008 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2009 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -1,13 +1,13 @@
-# Copyrights 2001-2008 by Mark Overmeer.
+# Copyrights 2001-2009 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.05.
+# Pod stripped from pm file by OODoc 1.06.
 use strict;
 use warnings;
 
 package Mail::Message::Field::Full;
 use vars '$VERSION';
-$VERSION = '2.086';
+$VERSION = '2.087';
 
 use base 'Mail::Message::Field';
 
@@ -258,11 +258,11 @@ sub encode($@)
 }
 
 
-sub _decoder($$$$)
-{   my ($charset, $encoding, $encoded, $whole) = @_;
-    $charset   =~ s/\*[^*]+$//;   # string language, not used
+sub _decoder($$$)
+{   my ($charset, $encoding, $encoded) = @_;
+    $charset   =~ s/\*[^*]+$//;   # language component not used
     my $to_utf8 = Encode::find_encoding($charset || 'us-ascii')
-        or return $whole;
+        or return $encoded;
 
     my $decoded;
     if($encoding !~ /\S/)
@@ -270,7 +270,7 @@ sub _decoder($$$$)
     }
     elsif(lc($encoding) eq 'q')
     {   # Quoted-printable encoded
-        $encoded =~ s/_/ /g;
+        $encoded =~ s/_/ /g;   # specific to mime-fields
         $decoded = MIME::QuotedPrint::decode_qp($encoded);
     }
     elsif(lc($encoding) eq 'b')
@@ -280,7 +280,7 @@ sub _decoder($$$$)
     }
     else
     {   # unknown encodings ignored
-        return $whole;
+        return $encoded;
     }
 
     $to_utf8->decode($decoded, Encode::FB_DEFAULT);  # error-chars -> '?'
@@ -288,13 +288,14 @@ sub _decoder($$$$)
 
 sub decode($@)
 {   my ($self, $encoded, %args) = @_;
+    my $is_text = defined $args{is_text} ? $args{is_text} : 1;
     if(defined $args{is_text} ? $args{is_text} : 1)
     {  # in text, blanks between encoding must be removed, but otherwise kept :(
-       # dirty trick to get this done: add an explicit blank.
+       # little trick to get this done: add an explicit blank.
        $encoded =~ s/\?\=\s(?!\s*\=\?|$)/_?= /gs;
     }
     $encoded =~ s/\=\?([^?\s]*)\?([^?\s]*)\?([^?\s]*)\?\=\s*/
-                  _decoder($1,$2,$3,$encoded)/gse;
+                  _decoder($1,$2,$3)/gse;
 
     $encoded;
 }
