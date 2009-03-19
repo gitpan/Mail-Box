@@ -401,8 +401,8 @@ but only receive message.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.087,
-built on February 03, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.088,
+built on March 19, 2009. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

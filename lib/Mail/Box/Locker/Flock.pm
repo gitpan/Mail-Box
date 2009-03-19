@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::Locker::Flock;
 use vars '$VERSION';
-$VERSION = '2.087';
+$VERSION = '2.088';
 
 use base 'Mail::Box::Locker';
 
@@ -16,11 +16,7 @@ use Fcntl         qw/:DEFAULT :flock/;
 use Errno         qw/EAGAIN/;
 
 
-#-------------------------------------------
-
 sub name() {'FLOCK'}
-
-#-------------------------------------------
 
 sub _try_lock($)
 {   my ($self, $file) = @_;
@@ -34,7 +30,6 @@ sub _unlock($)
     $self;
 }
 
-#-------------------------------------------
 
 
 # 'r+' is require under Solaris and AIX, other OSes are satisfied with 'r'.
@@ -80,8 +75,6 @@ sub lock()
     return 0;
 }
 
-#-------------------------------------------
-
 
 sub isLocked()
 {   my $self     = shift;
@@ -101,8 +94,6 @@ sub isLocked()
     1;
 }
 
-#-------------------------------------------
-
 sub unlock()
 {   my $self = shift;
 
@@ -111,7 +102,5 @@ sub unlock()
 
     $self;
 }
-
-#-------------------------------------------
 
 1;

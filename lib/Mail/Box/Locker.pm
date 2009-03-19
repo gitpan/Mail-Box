@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::Locker;
 use vars '$VERSION';
-$VERSION = '2.087';
+$VERSION = '2.088';
 
 use base 'Mail::Reporter';
 
@@ -60,16 +60,12 @@ sub init($)
 
     $self->SUPER::init($args);
 
-    $self->{MBL_folder}   = $args->{folder}
-        or croak "No folder specified to be locked.\n";
-
-    weaken($self->{MBL_folder});
-
     $self->{MBL_expires}  = $args->{expires}   || 3600;  # one hour
     $self->{MBL_timeout}  = $args->{timeout}   || 10;    # ten secs
     $self->{MBL_filename} = $args->{file}      || $args->{folder}->name;
     $self->{MBL_has_lock} = 0;
 
+    $self->folder($args->{folder});
     $self;
 }
 
@@ -78,18 +74,18 @@ sub init($)
 
 sub name {shift->notImplemented}
 
-#-------------------------------------------
-
 sub lockMethod($$$$)
 {   confess "Method removed: use inheritance to implement own method."
 }
 
-#-------------------------------------------
 
+sub folder(;$)
+{   my $self = shift;
+    @_ && $_[0] or return $self->{MBL_folder};
 
-sub folder() {shift->{MBL_folder}}
-
-#-------------------------------------------
+    $self->{MBL_folder} = shift;
+    weaken $self->{MBL_folder};
+}
 
 
 sub filename(;$)
@@ -103,17 +99,11 @@ sub filename(;$)
 
 sub lock($) { shift->{MBL_has_lock} = 1 }
 
-#-------------------------------------------
-
 
 sub isLocked($) {0}
 
-#-------------------------------------------
-
 
 sub hasLock() {shift->{MBL_has_lock}}
-
-#-------------------------------------------
 
 
 # implementation hazard: the unlock must be self-reliant, without

@@ -81,7 +81,7 @@ Mail::Message::Field::Address-E<gt>B<new>([NAME], OPTIONS)
 
 =over 4
 
-See L<Mail::Identity/"METHODS">
+See L<Mail::Identity/"Constructors">
 
 =back
 
@@ -95,6 +95,8 @@ the STRING is first parsed for as many addresses as possible and then the
 one is taken at random.
 
 =back
+
+=head2 Constructors
 
 =head2 Attributes
 
@@ -254,6 +256,17 @@ See L<User::Identity::Item/"Collections">
 
 =back
 
+=head2 Accessors
+
+$obj-E<gt>B<encoding>
+
+=over 4
+
+Character-set encoding, like 'q' and 'b', to be used when non-ascii
+characters are to be transmitted.
+
+=back
+
 =head2 Access to the content
 
 $obj-E<gt>B<string>
@@ -333,8 +346,8 @@ The collection with $name does not exist and can not be created.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.087,
-built on February 03, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.088,
+built on March 19, 2009. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

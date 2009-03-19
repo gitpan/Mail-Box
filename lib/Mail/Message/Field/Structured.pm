@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Structured;
 use vars '$VERSION';
-$VERSION = '2.087';
+$VERSION = '2.088';
 
 use base 'Mail::Message::Field::Full';
 

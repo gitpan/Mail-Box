@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Box::Parser::Perl;
 use vars '$VERSION';
-$VERSION = '2.087';
+$VERSION = '2.088';
 
 use base 'Mail::Box::Parser';
 
@@ -52,8 +52,7 @@ sub readHeader()
 {   my $self  = shift;
     my $file  = $self->{MBPP_file};
 
-    my $start = $file->tell;
-    my @ret   = ($start, undef);
+    my @ret   = ($file->tell, undef);
     my $line  = $file->getline;
 
   LINE:
@@ -269,7 +268,7 @@ sub openFile($)
     return unless $fh;
     $self->{MBPP_file}       = $fh;
 
-    binmode $fh, ':raw'
+    $fh->binmode(':raw')
        if ref($fh) eq 'GLOB' || $fh->can('BINMODE');
 
     $self->{MBPP_separators} = [];

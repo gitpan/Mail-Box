@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::Locker::DotLock;
 use vars '$VERSION';
-$VERSION = '2.087';
+$VERSION = '2.088';
 
 use base 'Mail::Box::Locker';
 
@@ -17,29 +17,26 @@ use Errno      qw/EEXIST/;
 use Carp;
 
 
-sub init($)
-{   my ($self, $args) = @_;
-
-    unless($args->{file})
-    {   my $folder = $args->{folder}
-           or confess;
-
-        my $org    = $folder->organization;
-
-        $args->{file}
-         = $org eq 'FILE'      ? $folder->filename . '.lock'
-         : $org eq 'DIRECTORY' ? File::Spec->catfile($folder->directory,'.lock')
-         : croak "Need lock file name for DotLock.";
-    }
-
-    $self->SUPER::init($args);
-}
-
-#-------------------------------------------
-
 sub name() {'DOTLOCK'}
 
-#-------------------------------------------
+sub folder(;$)
+{   my $self = shift;
+    @_ && $_[0] or return $self->SUPER::folder;
+
+    my $folder = shift;
+    unless(defined $self->filename)
+    {   my $org = $folder->organization;
+
+        my $filename
+          = $org eq 'FILE'     ? $folder->filename . '.lock'
+          : $org eq 'DIRECTORY'? File::Spec->catfile($folder->directory,'.lock')
+          : croak "Need lock file name for DotLock.";
+
+        $self->filename($filename);
+    }
+
+    $self->SUPER::folder($folder);
+}
 
 sub _try_lock($)
 {   my ($self, $lockfile) = @_;
@@ -61,8 +58,6 @@ sub _try_lock($)
     }
 }
 
-#-------------------------------------------
-
 
 sub unlock()
 {   my $self = shift;
@@ -77,8 +72,6 @@ sub unlock()
     delete $self->{MBL_has_lock};
     $self;
 }
-
-#-------------------------------------------
 
 
 sub lock()
@@ -119,11 +112,7 @@ sub lock()
     return 0;
 }
 
-#-------------------------------------------
-
 sub isLocked() { -e shift->filename }
-
-#-------------------------------------------
 
 1;
 

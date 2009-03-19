@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.087';
+$VERSION = '2.088';
 
 use base 'Mail::Reporter';
 
@@ -141,6 +141,7 @@ sub init($)
           , timeout  => $args->{lock_timeout}
           , expires  => $args->{lock_wait}
           , file     => ($args->{lockfile} || $args->{lock_file})
+          , $self->logSettings
           );
 
     $self;
@@ -157,17 +158,11 @@ sub folderdir(;$)
 
 sub foundIn($@) { shift->notImplemented }
 
-#-------------------------------------------
-
 
 sub name() {shift->{MB_foldername}}
 
-#-------------------------------------------
-
 
 sub type() {shift->notImplemented}
-
-#-------------------------------------------
 
 
 sub url()
@@ -175,12 +170,8 @@ sub url()
     $self->type . ':' . $self->name;
 }
 
-#-------------------------------------------
-
 
 sub size() { sum map { $_->size } shift->messages('ACTIVE') }
-
-#-------------------------------------------
 
 
 sub update(@)
@@ -199,12 +190,8 @@ sub update(@)
     $self;
 }
 
-#-------------------------------------------
-
 
 sub organization() { shift->notImplemented }
-
-#-------------------------------------------
 
 
 sub addMessage($@)
@@ -240,16 +227,11 @@ ERROR
     $coerced;
 }
 
-#-------------------------------------------
-
-
 
 sub addMessages(@)
 {   my $self = shift;
     map {$self->addMessage($_)} @_;
 }
-
-#-------------------------------------------
 
 
 sub copyTo($@)
@@ -329,8 +311,6 @@ sub _copy_to($@)
     $self;
 }
 
-#-------------------------------------------
-
 
 sub close(@)
 {   my ($self, %args) = @_;
@@ -370,8 +350,6 @@ Suggestion: \$folder->close(write => 'NEVER')");
     $self->{MB_messages} = [];                  # Boom!
     $rc;
 }
-
-#-------------------------------------------
 
 
 sub delete(@)

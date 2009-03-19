@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field;
 use vars '$VERSION';
-$VERSION = '2.087';
+$VERSION = '2.088';
 
 use base 'Mail::Reporter';
 
@@ -305,7 +305,7 @@ sub toDate(@)
 {   my $class  = shift;
     my @time   = @_== 0 ? localtime() : @_==1 ? localtime(shift) : @_;
     my $format = "$weekday[$time[6]], %d $month[$time[4]] %Y %H:%M:%S %z";
-    my $time   = strftime($format, @time);
+    my $time   = strftime $format, @time;
 
     # for C libs which do not (GNU compliantly) support %z
     $time =~ s/ (\%z|[A-Za-z ]+)$/_tz_offset($1)/e;

@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::Locker::Multi;
 use vars '$VERSION';
-$VERSION = '2.087';
+$VERSION = '2.088';
 
 use base 'Mail::Box::Locker';
 
@@ -19,14 +19,21 @@ sub init($)
     $self->SUPER::init($args);
 
     my @use
-     = exists $args->{use} ? @{$args->{use}}
+     = exists $args->{use} ? @{delete $args->{use}}
      : $^O =~ m/mswin/i    ? qw/    POSIX Flock/
      :                       qw/NFS POSIX Flock/;
 
     my (@lockers, @used);
 
     foreach my $method (@use)
-    {   my $locker = eval
+    {   if(UNIVERSAL::isa($method, 'Mail::Box::Locker'))
+        {   push @lockers, $method;
+            (my $used = ref $method) =~ s/.*\:\://;
+            push @used, $used;
+            next;
+        }
+
+        my $locker = eval
         {   Mail::Box::Locker->new
               ( %$args
               , method  => $method
@@ -48,8 +55,6 @@ sub init($)
 
 sub name() {'MULTI'}
 
-#-------------------------------------------
-
 sub _try_lock($)
 {   my $self     = shift;
     my @successes;
@@ -66,8 +71,6 @@ sub _try_lock($)
     1;
 }
 
-#-------------------------------------------
-
 sub unlock()
 {   my $self = shift;
     return $self unless $self->{MBL_has_lock};
@@ -77,8 +80,6 @@ sub unlock()
 
     $self;
 }
-
-#-------------------------------------------
 
 sub lock()
 {   my $self  = shift;
@@ -97,8 +98,6 @@ sub lock()
     return 0;
 }
 
-#-------------------------------------------
-
 sub isLocked()
 {   my $self     = shift;
     $self->_try_lock($self->filename) or return 0;
@@ -110,7 +109,5 @@ sub isLocked()
 
 
 sub lockers() { @{shift->{MBLM_lockers}} }
-
-#-------------------------------------------
 
 1;

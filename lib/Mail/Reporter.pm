@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Reporter;
 use vars '$VERSION';
-$VERSION = '2.087';
+$VERSION = '2.088';
 
 
 use Carp;

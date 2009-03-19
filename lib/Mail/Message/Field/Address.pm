@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Address;
 use vars '$VERSION';
-$VERSION = '2.087';
+$VERSION = '2.088';
 
 use base 'Mail::Identity';
 
@@ -16,9 +16,10 @@ use Mail::Message::Field::Full;
 my $format = 'Mail::Message::Field::Full';
 
 
-use overload '""' => 'string'
-           , bool => sub {1}
-           ;
+use overload
+    '""' => 'string'
+    , bool => sub {1}
+    ;
 
 #------------------------------------------
 
@@ -39,7 +40,12 @@ sub coerce($@)
    bless $from, $class;
 }
 
-#------------------------------------------
+sub init($)
+{   my ($self, $args) = @_;
+    $self->SUPER::init($args);
+    $self->{MMFA_encoding} = delete $args->{encoding};
+    $self;
+}
 
 
 sub parse($)
@@ -51,9 +57,15 @@ sub parse($)
 #------------------------------------------
 
 
+sub encoding() {shift->{MMFA_encoding}}
+
+#------------------------------------------
+
+
 sub string()
 {   my $self  = shift;
-    my @opts  = (charset => $self->charset); # language => $self->language
+    my @opts  = (charset => $self->charset, encoding => $self->encoding);
+       # language => $self->language
 
     my @parts;
     my $name    = $self->phrase;

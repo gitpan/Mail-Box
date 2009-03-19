@@ -111,7 +111,6 @@ lib/Mail/Box/Tie/ARRAY.pm
 lib/Mail/Box/Tie/ARRAY.pod
 lib/Mail/Box/Tie/HASH.pm
 lib/Mail/Box/Tie/HASH.pod
-lib/Mail/Makefile.PL
 lib/Mail/Message.pm
 lib/Mail/Message.pod
 lib/Mail/Message/Body.pm

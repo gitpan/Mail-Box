@@ -28,7 +28,7 @@ Mail::Box::Locker::DotLock-E<gt>B<new>(OPTIONS)
  Option --Defined in     --Default
  expires  Mail::Box::Locker  1 hour
  file                      <folderfile>.lock
- folder   Mail::Box::Locker  <required>
+ folder   Mail::Box::Locker  <undef>
  log      Mail::Reporter   'WARNINGS'
  method   Mail::Box::Locker  'DOTLOCK'
  timeout  Mail::Box::Locker  10 seconds
@@ -67,7 +67,7 @@ See L<Mail::Box::Locker/"The Locker">
 
 =back
 
-$obj-E<gt>B<folder>
+$obj-E<gt>B<folder>([FOLDER])
 
 =over 4
 
@@ -275,8 +275,8 @@ Warning: Removed expired lockfile $lockfile
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.087,
-built on February 03, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.088,
+built on March 19, 2009. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

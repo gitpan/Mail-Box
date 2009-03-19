@@ -5,7 +5,7 @@
 
 package MailBox::Test::50message::Definition;
 use vars '$VERSION';
-$VERSION = '2.087';
+$VERSION = '2.088';
 
 
 sub name     {"Mail::Message::Construct; message construction"}

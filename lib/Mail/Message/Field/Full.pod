@@ -448,7 +448,7 @@ difference with comments, which have do specified meaning.  Some special
 characters in the phrase will cause it to be surrounded with double
 quotes: do not specify them yourself.
 
-The OPTIONS are C<charset>, C<language>, and C<encoding> as always.
+The OPTIONS are C<charset>, C<language>, and C<encoding>, as always.
 
 =back
 
@@ -895,8 +895,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.087,
-built on February 03, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.088,
+built on March 19, 2009. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

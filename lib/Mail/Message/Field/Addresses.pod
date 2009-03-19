@@ -292,7 +292,7 @@ Add an ADDRESS to the field.  The addresses are organized in groups.  If no
 group is specified, the default group is taken to store the address in.  If
 no ADDRESS is specified, the option must be sufficient to create a
 L<Mail::Message::Field::Address|Mail::Message::Field::Address> from.  See the OPTIONS of
-L<Mail::Message::Field::Address::new()|Mail::Identity/"METHODS">.
+L<Mail::Message::Field::Address::new()|Mail::Identity/"Constructors">.
 
  Option--Default
  group   ''
@@ -796,8 +796,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.087,
-built on February 03, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.088,
+built on March 19, 2009. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
