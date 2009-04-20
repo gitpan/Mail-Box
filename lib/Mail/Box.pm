@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.088';
+$VERSION = '2.089';
 
 use base 'Mail::Reporter';
 
@@ -693,7 +693,9 @@ sub write(@)
     }
 
     my (@keep, @destroy);
-    if($args{save_deleted}) {@keep = $self->messages }
+    if($args{save_deleted})
+    {   @keep = $self->messages;
+    }
     else
     {   foreach ($self->messages)
         {   if($_->isDeleted)

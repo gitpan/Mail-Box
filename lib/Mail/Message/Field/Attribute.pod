@@ -358,8 +358,8 @@ Error: Too late to merge: value already changed.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.088,
-built on March 19, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.089,
+built on April 20, 2009. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

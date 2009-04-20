@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::Locker::DotLock;
 use vars '$VERSION';
-$VERSION = '2.088';
+$VERSION = '2.089';
 
 use base 'Mail::Box::Locker';
 
@@ -16,6 +16,12 @@ use File::Spec;
 use Errno      qw/EEXIST/;
 use Carp;
 
+
+sub init($)
+{   my ($self, $args) = @_;
+    $args->{file} = $args->{dotlock_file} if $args->{dotlock_file};
+    $self->SUPER::init($args);
+}
 
 sub name() {'DOTLOCK'}
 

@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::Locker::POSIX;
 use vars '$VERSION';
-$VERSION = '2.088';
+$VERSION = '2.089';
 
 use base 'Mail::Box::Locker';
 
@@ -15,6 +15,12 @@ use Fcntl;
 use IO::File;
 use Errno   qw/EAGAIN/;
 
+
+sub init($)
+{   my ($self, $args) = @_;
+    $args->{file} = $args->{posix_file} if $args->{posix_file};
+    $self->SUPER::init($args);
+}
 
 sub name() {'POSIX'}
 

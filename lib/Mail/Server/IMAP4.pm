@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Server::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.088';
+$VERSION = '2.089';
 
 use base 'Mail::Server';
 

@@ -5,7 +5,7 @@
 
 package MailBox::Test::60imap::Definition;
 use vars '$VERSION';
-$VERSION = '2.088';
+$VERSION = '2.089';
 
 
 sub name     {"Mail::Server::IMAP; imap server"}
