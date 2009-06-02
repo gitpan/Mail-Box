@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Box::Parser::Perl;
 use vars '$VERSION';
-$VERSION = '2.089';
+$VERSION = '2.090';
 
 use base 'Mail::Box::Parser';
 
@@ -263,7 +263,8 @@ sub bodyDelayed(;$$)
 
 sub openFile($)
 {   my ($self, $args) = @_;
-    my $fh = $args->{file} || IO::File->new($args->{filename}, $args->{mode});
+    my $mode = $args->{mode} or die "mode required";
+    my $fh = $args->{file} || IO::File->new($args->{filename}, $mode);
 
     return unless $fh;
     $self->{MBPP_file}       = $fh;
@@ -272,15 +273,6 @@ sub openFile($)
        if ref($fh) eq 'GLOB' || $fh->can('BINMODE');
 
     $self->{MBPP_separators} = [];
-
-    # Prepare the first line.
-    $self->{MBPP_start_line} = 0;
-
-    my $line  = $fh->getline || return $self;
-
-    $line     =~ s/[\012\015]+$/\n/;
-    $self->{MBP_linesep}     = $1;
-    $fh->seek(0, 0);
 
 #   binmode $fh, ':crlf' if $] < 5.007;  # problem with perlIO
     $self;

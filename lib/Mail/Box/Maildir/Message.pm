@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box::Maildir::Message;
 use vars '$VERSION';
-$VERSION = '2.089';
+$VERSION = '2.090';
 
 use base 'Mail::Box::Dir::Message';
 
@@ -24,7 +24,7 @@ sub filename(;$)
     return $newname if defined $oldname && $oldname eq $newname;
 
     my ($id, $semantics, $flags)
-     = $newname =~ m!(.*?)(?:\:([12])\,([A-Z]*))!
+     = $newname =~ m!(.*?)(?:\:([12])\,([A-Za-z]*))!
      ? ($1, $2, $3)
      : ($newname, '','');
 

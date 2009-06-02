@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Transport::SMTP;
 use vars '$VERSION';
-$VERSION = '2.089';
+$VERSION = '2.090';
 
 use base 'Mail::Transport::Send';
 

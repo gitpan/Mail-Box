@@ -283,6 +283,7 @@ tests/13body/30file.t
 tests/13body/40multip.t
 tests/13body/Definition.pm
 tests/14fieldu/10full.t
+tests/14fieldu/12full_ru.t
 tests/14fieldu/20attr.t
 tests/14fieldu/30unstr.t
 tests/14fieldu/31struct.t

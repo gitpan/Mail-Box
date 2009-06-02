@@ -5,7 +5,7 @@
 
 package Mail::Box::File;
 use vars '$VERSION';
-$VERSION = '2.089';
+$VERSION = '2.090';
 
 use base 'Mail::Box';
 
@@ -351,7 +351,7 @@ sub _write_new($)
     $new->close or return 0;
 
     $self->log(PROGRESS =>
-                  "Wrote new folder $self with ".@{$args->{messages}}."msgs.");
+        "Wrote new folder $self with ".@{$args->{messages}}."msgs.");
     1;
 }
 

@@ -6,7 +6,7 @@
 use strict;
 package Mail::Box::Dbx;
 use vars '$VERSION';
-$VERSION = '2.089';
+$VERSION = '2.090';
 
 use base 'Mail::Box::File';
 
@@ -34,12 +34,8 @@ sub init($)
     $self;
 }
 
-#-------------------------------------------
-
 
 sub create($@) {  shift->notImplemented }
-
-#-------------------------------------------
 
 
 sub foundIn($@)
@@ -51,13 +47,9 @@ sub foundIn($@)
     $name =~ m/\.dbx$/i;
 }
 
-#-------------------------------------------
-
 sub writeMessages($) { shift->notImplemented }
 sub appendMessages($) { shift->notImplemented }
 sub type() { 'dbx' }
-
-#-------------------------------------------
 
 sub readMessages()
 {   my ($self, %args) = @_;
@@ -93,11 +85,7 @@ sub readMessages()
     $self;
 }
 
-#-------------------------------------------
-
 sub updateMessages() { shift }
-
-#-------------------------------------------
 
 sub nameOfSubFolder($;$)
 {   my $thing  = shift;
@@ -105,8 +93,6 @@ sub nameOfSubFolder($;$)
     my $parent = @_ ? shift : ref $thing ? $thing->filename : undef;
     defined $parent ?  File::Spec->catfile(dirname($parent), $name) : $name;
 }
-
-#-------------------------------------------
 
 
 sub listSubFolders(@)
@@ -144,8 +130,6 @@ sub folderToFilename($$)
     $name     =~ s#^=#$folderdir/#;
     $name;
 }
-
-#-------------------------------------------
 
 
 sub parser()
