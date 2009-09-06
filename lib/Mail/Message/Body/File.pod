@@ -674,10 +674,16 @@ no copy to a temporary file can be made.
 
 =back
 
+Warning: Unknown line terminator $eol ignored
+
+=over 4
+
+=back
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.090,
-built on June 02, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.091,
+built on September 06, 2009. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

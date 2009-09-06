@@ -5,7 +5,7 @@
 
 package MailBox::Test::01platform::Definition;
 use vars '$VERSION';
-$VERSION = '2.090';
+$VERSION = '2.091';
 
 
 sub name     {"platform specific preparations"}

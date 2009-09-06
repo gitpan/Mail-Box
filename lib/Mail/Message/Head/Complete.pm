@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Head::Complete;
 use vars '$VERSION';
-$VERSION = '2.090';
+$VERSION = '2.091';
 
 use base 'Mail::Message::Head';
 
@@ -520,11 +520,10 @@ sub guessBodySize()
 
 sub createFromLine()
 {   my $self   = shift;
-
-    my $from   = $self->get('from') || '';
-    my $stamp  = $self->timestamp;
-    my $sender = $from =~ m/(\<.*?\>)/ ? $1 : 'unknown';
-    "From $sender ".(gmtime $stamp)."\n";
+    my $sender = $self->message->sender;
+    my $stamp  = $self->recvstamp || $self->timestamp || time;
+    my $addr   = defined $sender ? $sender->address : 'unknown';
+    "From $addr ".(gmtime $stamp)."\n"
 }
 
 #------------------------------------------

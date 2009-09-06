@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.090';
+$VERSION = '2.091';
 
 use base 'Mail::Reporter';
 
@@ -152,8 +152,6 @@ sub init($)
     $self;
 }
 
-#------------------------------------------
-
 
 sub clone() {shift->notImplemented}
 
@@ -170,8 +168,6 @@ sub decoded(@)
      );
 }
 
-#------------------------------------------
-
 
 sub eol(;$)
 {   my $self = shift;
@@ -184,15 +180,20 @@ sub eol(;$)
              :                   'LF';
     }
 
-    return $eol if $eol eq $self->{MMB_eol} && $self->checked;
+    return $self if $eol eq $self->{MMB_eol} && $self->checked;
     my $lines = $self->lines;
+    if(@$lines)
+    {   # sometimes texts lack \n on last line
+        $lines->[-1] .= "\n";
+       
 
-       if($eol eq 'CR')    {s/[\015\012]+$/\015/     foreach @$lines}
-    elsif($eol eq 'LF')    {s/[\015\012]+$/\012/     foreach @$lines}
-    elsif($eol eq 'CRLF')  {s/[\015\012]+$/\015\012/ foreach @$lines}
-    else
-    {   $self->log(WARNING => "Unknown line terminator $eol ignored.");
-        return $self->eol('NATIVE');
+           if($eol eq 'CR')   {s/[\015\012]+$/\015/     for @$lines}
+        elsif($eol eq 'LF')   {s/[\015\012]+$/\012/     for @$lines}
+        elsif($eol eq 'CRLF') {s/[\015\012]+$/\015\012/ for @$lines}
+        else
+        {   $self->log(WARNING => "Unknown line terminator $eol ignored");
+            return $self->eol('NATIVE');
+        }
     }
 
     (ref $self)->new
@@ -214,17 +215,11 @@ sub message(;$)
     $self->{MMB_message};
 }
 
-#------------------------------------------
-
 
 sub isDelayed() {0}
 
-#------------------------------------------
-
 
 sub isMultipart() {0}
-
-#------------------------------------------
 
 
 sub isNested() {0}
@@ -261,12 +256,8 @@ sub mimeType()
        = $mime_types->type($body) || MIME::Type->new(type => $body);
 }
 
-#------------------------------------------
-
 
 sub charset() { shift->type->attribute('charset') }
-
-#------------------------------------------
 
 
 sub transferEncoding(;$)
@@ -279,9 +270,6 @@ sub transferEncoding(;$)
 }
 
 
-#------------------------------------------
-
-
 sub description(;$)
 {   my $self = shift;
     return $self->{MMB_description} if !@_ && $self->{MMB_description};
@@ -290,8 +278,6 @@ sub description(;$)
     $self->{MMB_description} = ref $disp ? $disp->clone
        : Mail::Message::Field->new('Content-Description' => $disp);
 }
-
-#------------------------------------------
 
 
 sub disposition(;$)
@@ -304,20 +290,14 @@ sub disposition(;$)
        : Mail::Message::Field->new('Content-Disposition' => $disp);
 }
 
-#------------------------------------------
-
 
 sub checked(;$)
 {   my $self = shift;
     @_ ? ($self->{MMB_checked} = shift) : $self->{MMB_checked};
 }
 
-#------------------------------------------
-
 
 sub nrLines(@)  {shift->notImplemented}
-
-#------------------------------------------
 
 
 sub size(@)  {shift->notImplemented}
@@ -335,27 +315,17 @@ sub string_unless_carp()
     "$class object";
 }
 
-#------------------------------------------
-
 
 sub lines() {shift->notImplemented}
-
-#------------------------------------------
 
 
 sub file(;$) {shift->notImplemented}
 
-#------------------------------------------
-
 
 sub print(;$) {shift->notImplemented}
 
-#------------------------------------------
-
 
 sub printEscapedFrom($) {shift->notImplemented}
-
-#------------------------------------------
 
 
 sub write(@)
@@ -369,12 +339,8 @@ sub write(@)
     $self;
 }
 
-#------------------------------------------
-
 
 sub endsOnNewline() {shift->notImplemented}
-
-#------------------------------------------
 
 
 sub stripTrailingNewline() {shift->notImplemented}
@@ -383,8 +349,6 @@ sub stripTrailingNewline() {shift->notImplemented}
 
 
 sub read(@) {shift->notImplemented}
-
-#------------------------------------------
 
 
 sub contentInfoTo($)
@@ -402,8 +366,6 @@ sub contentInfoTo($)
     $self;
 }
 
-#------------------------------------------
-
 
 sub contentInfoFrom($)
 {   my ($self, $head) = @_;
@@ -417,7 +379,6 @@ sub contentInfoFrom($)
     $self;
 
 }
-#------------------------------------------
 
 
 sub modified(;$)
@@ -426,21 +387,15 @@ sub modified(;$)
    $self->{MMB_modified} = shift;
 }
 
-#------------------------------------------
+
+sub isModified() { shift->{MMB_modified} }
 
 
-sub isModified() {  shift->{MMB_modified} }
-
-#------------------------------------------
-
-
-sub fileLocation(;@) {
-    my $self = shift;
+sub fileLocation(;@)
+{   my $self = shift;
     return @$self{ qw/MMB_begin MMB_end/ } unless @_;
     @$self{ qw/MMB_begin MMB_end/ } = @_;
 }
-
-#------------------------------------------
 
 
 sub moveLocation($)
@@ -449,8 +404,6 @@ sub moveLocation($)
     $self->{MMB_end}   -= $dist;
     $self;
 }
-
-#------------------------------------------
 
 
 sub load() {shift}

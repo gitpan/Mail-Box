@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Message::TransferEnc::SevenBit;
 use vars '$VERSION';
-$VERSION = '2.090';
+$VERSION = '2.091';
 
 use base 'Mail::Message::TransferEnc';
 

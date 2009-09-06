@@ -2,8 +2,6 @@
 
 Mail::Box-Overview - objects used by Mail::Box
 
-=head1 INHERITANCE
-
 =head1 DESCRIPTION
 
 =head2 Introduction
@@ -300,8 +298,8 @@ All classes are written to be extensible.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.090,
-built on June 02, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.091,
+built on September 06, 2009. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

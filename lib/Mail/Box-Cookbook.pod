@@ -2,8 +2,6 @@
 
 Mail::Box-Cookbook - Examples how to use Mail::Box
 
-=head1 INHERITANCE
-
 =head1 DESCRIPTION
 
 The Mail::Box package is a suite of classes for accessing and managing
@@ -256,8 +254,8 @@ multi-part message is produced.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.090,
-built on June 02, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.091,
+built on September 06, 2009. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Message::TransferEnc::EightBit;
 use vars '$VERSION';
-$VERSION = '2.090';
+$VERSION = '2.091';
 
 use base 'Mail::Message::TransferEnc';
 
@@ -41,6 +41,7 @@ sub encode($@)
     foreach ($body->lines)
     {   $changes++ if s/[\000\013]//g;
 
+        # there shouldn't be any NL inside a line.
         $changes++ if length > 997;
         push @lines, substr($_, 0, 996, '')."\n"
             while length > 997;

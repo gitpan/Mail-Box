@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.090';
+$VERSION = '2.091';
 
 use base 'Mail::Reporter';
 
@@ -589,6 +589,7 @@ sub scanForMessages($$$$)
     # Set-up time-bound
     my $after = $moment eq 'EVER'   ? 0
               : $moment =~ m/^\d+$/ ? $moment
+              : !$startmsg          ? 0
               : $startmsg->timestamp - $self->timespan2seconds($moment);
 
     while($last >= $bound)

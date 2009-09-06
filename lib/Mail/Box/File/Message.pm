@@ -6,7 +6,7 @@
 use strict;
 package Mail::Box::File::Message;
 use vars '$VERSION';
-$VERSION = '2.090';
+$VERSION = '2.091';
 
 use base 'Mail::Box::Message';
 
@@ -37,7 +37,7 @@ sub write(;$)
     my $escaped = $self->escapedBody;
     $out->print($self->fromLine);
 
-    my $size  = sum map {length($_)} @$escaped;
+    my $size  = sum 0, map {length($_)} @$escaped;
 
     my $head  = $self->head;
     $head->set('Content-Length' => $size); 

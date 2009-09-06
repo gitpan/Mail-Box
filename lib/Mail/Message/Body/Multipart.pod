@@ -845,6 +845,12 @@ C<RECURSE> or a code reference.  However, some other argument was passed.
 
 =back
 
+Warning: Unknown line terminator $eol ignored
+
+=over 4
+
+=back
+
 Error: You cannot use foreachLine on a multipart
 
 =over 4
@@ -857,8 +863,8 @@ clearly not acceptible.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.090,
-built on June 02, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.091,
+built on September 06, 2009. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
