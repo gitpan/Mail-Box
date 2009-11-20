@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                Mail-Box
-version:             2.091
+version:             2.092
 abstract:            E-mail handling
 license:             perl
 author:              

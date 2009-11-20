@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Box::Manager;
 use vars '$VERSION';
-$VERSION = '2.091';
+$VERSION = '2.092';
 
 use base 'Mail::Reporter';
 

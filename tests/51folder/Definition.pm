@@ -5,7 +5,7 @@
 
 package MailBox::Test::51folder::Definition;
 use vars '$VERSION';
-$VERSION = '2.091';
+$VERSION = '2.092';
 
 
 sub name     {"Mail::Box; general folder handling"}

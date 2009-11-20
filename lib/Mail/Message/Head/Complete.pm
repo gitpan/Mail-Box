@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Head::Complete;
 use vars '$VERSION';
-$VERSION = '2.091';
+$VERSION = '2.092';
 
 use base 'Mail::Message::Head';
 
@@ -131,7 +131,7 @@ sub count($)
 
 
 sub names() {shift->knownNames}
- 
+
 #------------------------------------------
 
 
@@ -215,7 +215,7 @@ sub reset($@)
     $self->addOrderedFields(@fields);
     $self;
 }
- 
+
 #------------------------------------------
 
 
@@ -254,7 +254,7 @@ sub removeFields(@)
 {   my $self = shift;
     (bless $self, 'Mail::Message::Head::Partial')->removeFields(@_);
 }
-   
+
 #------------------------------------------
 
 
@@ -334,7 +334,7 @@ sub printUndisclosed($)
 
 #------------------------------------------
 
-                                                                                
+
 sub printSelected($@)
 {   my ($self, $fh) = (shift, shift);
 
@@ -352,7 +352,7 @@ sub printSelected($@)
         elsif(ref $fh eq 'GLOB') { print $fh "\n" }
         else                     { $fh->print("\n") }
     }
-                                                                                
+
     $self;
 }
 

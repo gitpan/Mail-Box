@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.091';
+$VERSION = '2.092';
 
 use base 'Mail::Reporter';
 
@@ -19,11 +19,6 @@ use File::Spec;
 use Carp;
 use Scalar::Util 'weaken';
 use List::Util   qw/sum first/;
-
-#-------------------------------------------
-# Clean exits required to remove lockfiles and to save changes.
-
-$SIG{INT} = $SIG{QUIT} = $SIG{PIPE} = $SIG{TERM} = sub {exit 0};
 
 
 #-------------------------------------------
