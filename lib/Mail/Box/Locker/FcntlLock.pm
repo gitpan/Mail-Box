@@ -5,7 +5,7 @@
 
 use strict;
 
-package Mail::Box::Locker::POSIX;
+package Mail::Box::Locker::FcntlLock;
 use vars '$VERSION';
 $VERSION = '2.093';
 
@@ -14,6 +14,8 @@ use base 'Mail::Box::Locker';
 use Fcntl;
 use IO::File;
 use Errno   qw/EAGAIN/;
+use File::FcntlLock;
+
 
 
 sub init($)
@@ -22,17 +24,22 @@ sub init($)
     $self->SUPER::init($args);
 }
 
-sub name() {'POSIX'}
+sub name() {'FcntlLock'}
 
 sub _try_lock($)
 {   my ($self, $file) = @_;
-    $? = fcntl($file, F_SETLK, pack('s @256', F_WRLCK)) || ($!+0);
+    my $fl = File::FcntlLock->new;
+    $fl->l_pid($!+0);
+    $fl->l_type(F_WRLCK);
+    $? = $fl->lock($file, F_SETLK);
     $?==0;
 }
 
 sub _unlock($)
 {   my ($self, $file) = @_;
-    fcntl($file, F_SETLK, pack('s @256', F_UNLCK));
+    my $fl = File::FcntlLock->new;
+    $fl->l_type(F_UNLCK);
+    $fl->lock($file, F_SETLK);
     delete $self->{MBL_has_lock};
     $self;
 }
@@ -53,7 +60,7 @@ sub lock()
     unless(defined $file)
     {   my $folder = $self->folder;
         $self->log(ERROR =>
-           "Unable to open POSIX lock file $filename for $folder: $!");
+           "Unable to open FcntlLock lock file $filename for $folder: $!");
         return 0;
     }
 
@@ -68,7 +75,7 @@ sub lock()
 
         unless($!==EAGAIN)
         {   $self->log(ERROR =>
-            "Will never get a POSIX lock on $filename for $self->{MBL_folder}: $!");
+            "Will never get a FcntlLock lock on $filename for $self->{MBL_folder}: $!");
             last;
         }
 

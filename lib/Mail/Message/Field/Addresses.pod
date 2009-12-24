@@ -12,25 +12,28 @@ Mail::Message::Field::Addresses - Fields with e-mail addresses
 
 =head1 SYNOPSIS
 
- my $f = Mail::Message::Field->new(Cc =>
-                'Mail::Box <mailbox@overmeer.net>');
+  my $cc = Mail::Message::Field::Full->new('Cc');
+  my $me = Mail::Message::Field::Address->parse('"Test" <test@mail.box>')
+     or die;
 
- my $cc = Mail::Message::Field->new('Cc');
- $cc->addAddress('Mail::Box <mailbox@overmeer.net>');
- $cc->addAddress
-   ( phrase  => 'Mail::Box'
-   , email   => 'mailbox@overmeer.net'
-   , comment => 'Our mailing list'     # deprecated by RFC
-   );
+  my $other = Mail::Message::Field::Address->new(phrase => 'Other'
+     , address => 'other@example.com')
+     or die;
 
- mu $ma = Mail::Message::Field::Address->new(...);
- $cc->addAddress($ma);
+  $cc->addAddress($me);
+  $cc->addAddress($other, group => 'them');
+  $cc->addAddress(phrase => 'third', address => 'more@any.museum'
+    , group => 'them');
 
- my $mi = Mail::Identity->new(...);
- $cc->addAddress($mi);
+  my $group = $cc->addGroup(name => 'collegues');
+  $group->addAddress($me);
+  $group->addAddress(phrase => "You", address => 'you@example.com');
 
- my $g  = Mail::Message::Field::AddrGroup->new(...);
- $cc->addGroup($g);
+  my $msg = Mail::Message->build(Cc => $cc);
+  print $msg->string;
+
+  my $g  = Mail::Message::Field::AddrGroup->new(...);
+  $cc->addGroup($g);
 
 =head1 DESCRIPTION
 
@@ -796,8 +799,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.092,
-built on November 20, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.093,
+built on December 24, 2009. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

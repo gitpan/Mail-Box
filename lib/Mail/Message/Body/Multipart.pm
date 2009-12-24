@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Body::Multipart;
 use vars '$VERSION';
-$VERSION = '2.092';
+$VERSION = '2.093';
 
 use base 'Mail::Message::Body';
 
@@ -394,6 +394,8 @@ sub boundary(;$)
 }
 
 sub endsOnNewline() { 1 }
+
+sub toplevel() { my $msg = shift->message; $msg ? $msg->toplevel : undef}
 
 #-------------------------------------------
 

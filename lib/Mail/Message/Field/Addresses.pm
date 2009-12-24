@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Addresses;
 use vars '$VERSION';
-$VERSION = '2.092';
+$VERSION = '2.093';
 
 use base 'Mail::Message::Field::Structured';
 
@@ -68,6 +68,7 @@ sub addAddress(@)
 
     my $set = $self->group($group) || $self->addGroup(name => $group);
     $set->addAddress($email);
+    $email;
 }
 
 #------------------------------------------

@@ -1,10 +1,10 @@
 =head1 NAME
 
-Mail::Box::Locker::POSIX - lock a folder using kernel file-locking
+Mail::Box::Locker::FcntlLock - lock a folder using File::FcntlLock
 
 =head1 INHERITANCE
 
- Mail::Box::Locker::POSIX
+ Mail::Box::Locker::FcntlLock
    is a Mail::Box::Locker
    is a Mail::Reporter
 
@@ -14,28 +14,29 @@ Mail::Box::Locker::POSIX - lock a folder using kernel file-locking
 
 =head1 DESCRIPTION
 
-This locker object is created by the folder to get an exclusive lock on
-the file which contains the data using the kernel's POSIX facilities.  This
-lock is created on a separate file-handle to the folder file, so not the
-handle which is reading.  Not all platforms support POSIX locking.
+This locker object is uses File::FcntlLock, and was contributed by
+Jim in Aus. It is close to L<Mail::Box::Locker::POSIX|Mail::Box::Locker::POSIX>, but does work
+on more systems, for instance Darwin.
+
+You will need to install File::FcntlLock separately: there is no
+dependency to it by the MailBox distribution.
 
 =head1 METHODS
 
 =head2 Constructors
 
-Mail::Box::Locker::POSIX-E<gt>B<new>(OPTIONS)
+Mail::Box::Locker::FcntlLock-E<gt>B<new>(OPTIONS)
 
 =over 4
 
- Option    --Defined in     --Default
- expires     Mail::Box::Locker  1 hour
- file        Mail::Box::Locker  undef
- folder      Mail::Box::Locker  <undef>
- log         Mail::Reporter   'WARNINGS'
- method      Mail::Box::Locker  POSIX
- posix_file                   <undef>
- timeout     Mail::Box::Locker  10 seconds
- trace       Mail::Reporter   'WARNINGS'
+ Option --Defined in     --Default
+ expires  Mail::Box::Locker  1 hour
+ file     Mail::Box::Locker  undef
+ folder   Mail::Box::Locker  <undef>
+ log      Mail::Reporter   'WARNINGS'
+ method   Mail::Box::Locker  FcntlLock
+ timeout  Mail::Box::Locker  10 seconds
+ trace    Mail::Reporter   'WARNINGS'
 
 . expires => SECONDS
 
@@ -46,15 +47,6 @@ Mail::Box::Locker::POSIX-E<gt>B<new>(OPTIONS)
 . log => LEVEL
 
 . method => STRING|CLASS|ARRAY
-
-. posix_file => FILENAME
-
-=over 4
-
-Alternative name for C<file>, especially useful to avoid confusion
-when the multi-locker is used.
-
-=back
 
 . timeout => SECONDS|'NOTIMEOUT'
 
@@ -138,7 +130,7 @@ See L<Mail::Reporter/"Error handling">
 
 $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Box::Locker::POSIX-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+Mail::Box::Locker::FcntlLock-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -156,7 +148,7 @@ See L<Mail::Reporter/"Error handling">
 
 $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Mail::Box::Locker::POSIX-E<gt>B<log>([LEVEL [,STRINGS]])
+Mail::Box::Locker::FcntlLock-E<gt>B<log>([LEVEL [,STRINGS]])
 
 =over 4
 
@@ -166,7 +158,7 @@ See L<Mail::Reporter/"Error handling">
 
 $obj-E<gt>B<logPriority>(LEVEL)
 
-Mail::Box::Locker::POSIX-E<gt>B<logPriority>(LEVEL)
+Mail::Box::Locker::FcntlLock-E<gt>B<logPriority>(LEVEL)
 
 =over 4
 
@@ -270,16 +262,16 @@ locked neither that it is unlocked.
 
 =back
 
-Error: Unable to open POSIX lock file $filename for $folder: $!
+Error: Unable to open FcntlLock lock file $filename for $folder: $!
 
 =over 4
 
-For POSIX style locking, a folder it must be opened, which does not
+For FcntlLock style locking, a folder it must be opened, which does not
 succeed for the specified reason.
 
 =back
 
-Error: Will never get a POSIX lock at $filename for $folder: $!
+Error: Will never get a FcntlLock lock at $filename for $folder: $!
 
 =over 4
 

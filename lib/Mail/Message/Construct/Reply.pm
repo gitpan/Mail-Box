@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.092';
+$VERSION = '2.093';
 
 
 use Mail::Message::Body::Multipart;
@@ -77,14 +77,14 @@ sub reply(@)
     my $mainhead = $self->toplevel->head;
 
     # Where it comes from
-    my $from = $args{From};
+    my $from = delete $args{From};
     unless(defined $from)
     {   my @from = $self->to;
         $from    = \@from if @from;
     }
 
     # To whom to send
-    my $to = $args{To};
+    my $to = delete $args{To};
     unless(defined $to)
     {   my $reply = $mainhead->get('reply-to');
         $to       = [ $reply->addresses ] if defined $reply;
@@ -98,24 +98,21 @@ sub reply(@)
     defined $to or return;
 
     # Add Cc
-    my $cc = $args{Cc};
+    my $cc = delete $args{Cc};
     if(!defined $cc && $args{group_reply})
     {   my @cc = $self->cc;
         $cc    = [ $self->cc ] if @cc;
     }
 
-    # Add Bcc
-    my $bcc = $args{Bcc};
-
     # Create a subject
-    my $srcsub  = $args{Subject};
+    my $srcsub  = delete $args{Subject};
     my $subject
      = ! defined $srcsub ? $self->replySubject($self->subject)
      : ref $srcsub       ? $srcsub->($self->subject)
      :                     $srcsub;
 
     # Create a nice message-id
-    my $msgid   = $args{'Message-ID'};
+    my $msgid   = delete $args{'Message-ID'};
     $msgid      = "<$msgid>" if $msgid && $msgid !~ /^\s*\<.*\>\s*$/;
 
     # Thread information
@@ -177,7 +174,9 @@ sub reply(@)
 
     my $newhead = $reply->head;
     $newhead->set(Cc  => $cc)  if $cc;
-    $newhead->set(Bcc => $args{Bcc}) if $args{Bcc};
+    $newhead->set(Bcc => delete $args{Bcc}) if $args{Bcc};
+    $newhead->add($_ => $args{$_})
+        for sort grep /^[A-Z]/, keys %args;
 
     # Ready
 

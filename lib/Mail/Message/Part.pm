@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Part;
 use vars '$VERSION';
-$VERSION = '2.092';
+$VERSION = '2.093';
 
 use base 'Mail::Message';
 
@@ -88,13 +88,6 @@ sub toplevel()
 
 sub isPart() { 1 }
 
-
-sub printEscapedFrom($)
-{   my ($self, $out) = @_;
-    $self->head->print($out);
-    $self->body->printEscapedFrom($out);
-}
-
 sub readFromParser($;$)
 {   my ($self, $parser, $bodytype) = @_;
 
@@ -111,6 +104,14 @@ sub readFromParser($;$)
     $self->head($head);
     $self->storeBody($body->contentInfoFrom($head));
     $self;
+}
+
+#-----------------
+
+sub printEscapedFrom($)
+{   my ($self, $out) = @_;
+    $self->head->print($out);
+    $self->body->printEscapedFrom($out);
 }
 
 

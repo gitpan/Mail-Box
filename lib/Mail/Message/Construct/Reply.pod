@@ -21,17 +21,20 @@ $obj-E<gt>B<reply>(OPTIONS)
 
 =over 4
 
-Start a reply to this message.  Some of the header-lines of the original
-message will be taken.  A message-id will be assigned.  Some header lines
+Start a reply to this message. Some of the header-lines of the original
+message will be taken. A message-id will be assigned. Some header lines
 will be updated to facilitate message-thread detection
 (see L<Mail::Box::Thread::Manager|Mail::Box::Thread::Manager>).
 
-You may reply to a whole message or a message part.
-You may wish to overrule some of the default header settings for the
-reply immediately, or you may do that later with C<set> on the header.
+You may reply to a whole message or a message part.  You may wish to
+overrule some of the default header settings for the reply immediately,
+or you may do that later with C<set> on the header.
 
 ADDRESSES may be specified as string, or
 a L<Mail::Address|Mail::Address> object, or as array of L<Mail::Address|Mail::Address> objects.
+
+All OPTIONS which are not listed below AND start with a capital, will
+be added as additional headers to the reply message.
 
  Option         --Default
  Bcc              undef
@@ -234,6 +237,7 @@ example:
    , strip_signature => 1
    , signature       => $my_pgp_key
    , group_reply     => 1
+   , 'X-Extra'       => 'additional header'
    );
 
 =back
@@ -289,8 +293,8 @@ choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.092,
-built on November 20, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.093,
+built on December 24, 2009. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

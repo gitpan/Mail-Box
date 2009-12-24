@@ -49,6 +49,8 @@ lib/Mail/Box/Locker.pm
 lib/Mail/Box/Locker.pod
 lib/Mail/Box/Locker/DotLock.pm
 lib/Mail/Box/Locker/DotLock.pod
+lib/Mail/Box/Locker/FcntlLock.pm
+lib/Mail/Box/Locker/FcntlLock.pod
 lib/Mail/Box/Locker/Flock.pm
 lib/Mail/Box/Locker/Flock.pod
 lib/Mail/Box/Locker/Multi.pm

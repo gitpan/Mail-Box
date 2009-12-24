@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Body::Nested;
 use vars '$VERSION';
-$VERSION = '2.092';
+$VERSION = '2.093';
 
 use base 'Mail::Message::Body';
 
@@ -35,15 +35,9 @@ sub init($)
     $self;
 }
 
-#------------------------------------------
-
 sub isNested() {1}
 
-#------------------------------------------
-
 sub isBinary() { shift->nested->body->isBinary }
-
-#------------------------------------------
 
 sub clone()
 {   my $self     = shift;
@@ -55,43 +49,29 @@ sub clone()
      );
 }
 
-#------------------------------------------
-
 sub nrLines() { shift->nested->nrLines }
 
-#------------------------------------------
-
 sub size()    { shift->nested->size }
-
-#------------------------------------------
 
 sub string()
 {    my $nested = shift->nested;
      defined $nested ? $nested->string : '';
 }
 
-#------------------------------------------
-
 sub lines()
 {    my $nested = shift->nested;
      defined $nested ? ($nested->lines) : ();
 }
-
-#------------------------------------------
 
 sub file()
 {    my $nested = shift->nested;
      defined $nested ? $nested->file : undef;
 }
 
-#------------------------------------------
-
 sub print(;$)
 {   my $self = shift;
     $self->nested->print(shift || select);
 }
-
-#------------------------------------------
 
 
 sub foreachLine($)
@@ -100,23 +80,14 @@ sub foreachLine($)
     confess;
 }
 
-
-#------------------------------------------
-
 sub check() { shift->forNested( sub {$_[1]->check} ) }
-
-#------------------------------------------
 
 sub encode(@)
 {   my ($self, %args) = @_;
     $self->forNested( sub {$_[1]->encode(%args)} );
 }
 
-#------------------------------------------
-
 sub encoded() { shift->forNested( sub {$_[1]->encoded} ) }
-
-#------------------------------------------
 
 sub read($$$$)
 {   my ($self, $parser, $head, $bodytype) = @_;
@@ -130,8 +101,6 @@ sub read($$$$)
     $self;
 }
 
-#-------------------------------------------
-
 sub fileLocation()
 {   my $nested   = shift->nested;
 
@@ -140,11 +109,7 @@ sub fileLocation()
     );
 }
 
-#-------------------------------------------
-
 sub endsOnNewline() { shift->nested->body->endsOnNewline }
-
-#------------------------------------------
 
 sub moveLocation($)
 {   my $self   = shift;
@@ -156,12 +121,8 @@ sub moveLocation($)
     $self;
 }
 
-#------------------------------------------
-
 
 sub nested() { shift->{MMBN_nested} }
-
-#------------------------------------------
 
 
 sub forNested($)
@@ -190,6 +151,6 @@ sub forNested($)
     $created;
 }
 
-#-------------------------------------------
+sub toplevel() { my $msg = shift->message; $msg ? $msg->toplevel : undef}
 
 1;

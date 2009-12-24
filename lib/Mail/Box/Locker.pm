@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::Locker;
 use vars '$VERSION';
-$VERSION = '2.092';
+$VERSION = '2.093';
 
 use base 'Mail::Reporter';
 
@@ -18,13 +18,14 @@ use Scalar::Util 'weaken';
 
 
 my %lockers =
-  ( DOTLOCK => __PACKAGE__ .'::DotLock'
-  , FLOCK   => __PACKAGE__ .'::Flock'
-  , MULTI   => __PACKAGE__ .'::Multi'
-  , MUTT    => __PACKAGE__ .'::Mutt'
-  , NFS     => __PACKAGE__ .'::NFS'
-  , NONE    => __PACKAGE__
-  , POSIX   => __PACKAGE__ .'::POSIX'
+  ( DOTLOCK   => __PACKAGE__ .'::DotLock'
+  , FCNTLLOCK => __PACKAGE__ .'::FcntlLock'
+  , FLOCK     => __PACKAGE__ .'::Flock'
+  , MULTI     => __PACKAGE__ .'::Multi'
+  , MUTT      => __PACKAGE__ .'::Mutt'
+  , NFS       => __PACKAGE__ .'::NFS'
+  , NONE      => __PACKAGE__
+  , POSIX     => __PACKAGE__ .'::POSIX'
   );
 
 sub new(@)

@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.092';
+$VERSION = '2.093';
 
 use base 'Mail::Reporter';
 
@@ -130,16 +130,15 @@ sub init($)
         $self->{MMB_checked} = $args->{checked} || 0;
     }
 
-    if(defined $mime)
-    {   $mime = $self->type($mime);
-        $mime->attribute(charset => ($charset || 'PERL'))
-            if $mime =~ m!^text/!i && !$mime->attribute('charset');
-    }
+    $mime ||= 'text/plain';
+    $mime = $self->type($mime);
+    $mime->attribute(charset => ($charset || 'PERL'))
+        if $mime =~ m!^text/!i && !$mime->attribute('charset');
 
     $self->transferEncoding($transfer) if defined $transfer;
     $self->disposition($disp)          if defined $disp;
     $self->description($descr)         if defined $descr;
-    $self->type($mime) if defined $mime;
+    $self->type($mime);
 
     $self->{MMB_eol}   = $args->{eol} || 'NATIVE';
 

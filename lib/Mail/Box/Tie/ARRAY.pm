@@ -6,7 +6,7 @@
 use strict;
 package Mail::Box::Tie::ARRAY;
 use vars '$VERSION';
-$VERSION = '2.092';
+$VERSION = '2.093';
 
 
 use Carp;
