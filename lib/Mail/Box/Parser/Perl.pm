@@ -1,4 +1,4 @@
-# Copyrights 2001-2009 by Mark Overmeer.
+# Copyrights 2001-2010 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 1.06.
@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Box::Parser::Perl;
 use vars '$VERSION';
-$VERSION = '2.093';
+$VERSION = '2.094';
 
 use base 'Mail::Box::Parser';
 
@@ -169,7 +169,8 @@ sub _read_stripped_lines(;$$)
             push @$lines, $line;
         }
 
-        if(@$lines && $lines->[-1] =~ s/(\r?\n)\z//)
+        if(!@$lines) { $lines = undef }
+        elsif($lines->[-1] =~ s/(\r?\n)\z//)
         {   $file->seek(-length($1), 1);
             pop @$lines if length($lines->[-1])==0;
         }
@@ -180,12 +181,14 @@ sub _read_stripped_lines(;$$)
     }
 
     my $bodyend = $file->tell;
-
-    if($self->{MBPP_strip_gt})
-    {   map { s/^\>(\>*From\s)/$1/ } @$lines;
+    if($lines)
+    {   if($self->{MBPP_strip_gt})
+        {   s/^\>(\>*From\s)/$1/ for @$lines;
+        }
+        unless($self->{MBPP_trusted})
+        {   s/\015$// for @$lines;
+        }
     }
-  
-    unless($self->{MBPP_trusted}) { s/\015$// for @$lines }
 #warn "($bodyend, $msgend, ".@$lines, ")\n";
 
     ($bodyend, $lines, $msgend);

@@ -172,7 +172,8 @@ case-insensitive.
 When a known CHARSET is provided and the mime type says "text", then the
 data is expected to be bytes in that particular encoding (see Encode).
 When 'PERL' is given, then then the data is in Perl's internal encoding
-(either latin1 or utf8, you shouldn't know!)
+(either latin1 or utf8, you shouldn't know!) More details in
+L</Character encoding PERL>
 
 =back
 
@@ -1171,12 +1172,12 @@ Warning: Unknown line terminator $eol ignored
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.093,
-built on December 24, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.094,
+built on April 06, 2010. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2009 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

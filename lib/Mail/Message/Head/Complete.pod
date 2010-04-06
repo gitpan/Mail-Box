@@ -187,7 +187,7 @@ field constructor is called for you.
 LINE or BODY specifications which are terminated by a new-line are considered
 to be correctly folded.  Lines which are not terminated by a new-line will
 be folded when needed: new-lines will be added where required.  It is strongly
-adviced to let MailBox do the folding for you.
+advised to let MailBox do the folding for you.
 
 The return value of this method is the L<Mail::Message::Field|Mail::Message::Field> object
 which is created (or was specified).
@@ -501,7 +501,7 @@ the order as they appear in the header: the most recent one first.
 See also L<addResentGroup()|Mail::Message::Head::Complete/"Access to the header"> and L<removeResentGroups()|Mail::Message::Head::Complete/"Access to the header">.
 
 A resent group contains a set of header fields whose names start
-with C<Resent->.  Before the first C<Resent> line is I<trace> information,
+with C<Resent-*>.  Before the first C<Resent> line is I<trace> information,
 which is composed of an optional C<Return-Path> field and an required
 C<Received> field.
 
@@ -967,12 +967,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.093,
-built on December 24, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.094,
+built on April 06, 2010. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2009 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

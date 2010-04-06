@@ -192,14 +192,14 @@ when you have the message on STDIN or an array of lines which is supplied
 by an external program.
 
 Very important to remember from now on: information about the content of
-the body (the C<Content-> lines in the header) is stored within the body
+the body (the C<Content-*> lines in the header) is stored within the body
 object, for as long as the body is not contained with a message object.
 
 For instance, C<$message> method C<decoded> returns the decoded body of the
 C<$message>.  It is a body object by itself, however outside a real
 message.  Then you may want to play around with it, by concatenating
 some texts: again resulting in a new body.  Each body contains the
-right C<Content-> information.  Then, finally, you create a message
+right C<Content-*> information.  Then, finally, you create a message
 specifying the body and extra header lines.  At that moment you need
 to specify the source and destination addresses (the C<From> and C<To> lines>).
 At that moment, the body will automatically be encoded to be acceptable for
@@ -254,12 +254,12 @@ multi-part message is produced.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.093,
-built on December 24, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.094,
+built on April 06, 2010. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2009 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

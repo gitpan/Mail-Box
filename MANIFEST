@@ -16,6 +16,7 @@ examples/send.pl
 examples/smaller.pl
 examples/strip-attachments.pl
 examples/takelarge.pl
+examples/unpack.pl
 lib/Mail/Box-Cookbook.pod
 lib/Mail/Box-Index.pod
 lib/Mail/Box-Overview.pod

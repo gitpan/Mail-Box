@@ -932,7 +932,7 @@ See L<Mail::Reporter/"Cleanup">
 
 Labels (or flags) are known to all folder formats, but differ how they
 are stored.  Some folder types use message header lines to keep the
-labels, other use a seperate file.  The IMAP protocol does not specify
+labels, other use a separate file.  The IMAP protocol does not specify
 how the labels are kept on the server, but does specify how they are named.
 
 The label names as defined by the IMAP protocol are standardized into
@@ -1092,12 +1092,12 @@ Error: coercion starts with some object
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.093,
-built on December 24, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.094,
+built on April 06, 2010. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2009 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

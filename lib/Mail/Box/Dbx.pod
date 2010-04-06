@@ -380,7 +380,7 @@ Mail::Box::Dbx-E<gt>B<listSubFolders>(OPTIONS)
 
 =over 4
 
-It is adviced to set the C<check> flag, because dbx folder often list
+It is advised to set the C<check> flag, because dbx folder often list
 large amounts of folder names which do not really exist.  However, checking
 does consume some time.
 
@@ -605,8 +605,6 @@ See L<Mail::Box/"Internals">
 
 =back
 
-=head3 File based folders
-
 =head2 Other methods
 
 $obj-E<gt>B<timespan2seconds>(TIME)
@@ -741,6 +739,8 @@ See L<Mail::Reporter/"Cleanup">
 
 =back
 
+=head2 DETAILS
+
 =head1 DETAILS
 
 =head2 How DBX folders work
@@ -770,7 +770,7 @@ requires a C compiler.  Besides, the module will have its own life.
 
 The title of this section is to attract your attension, but is does
 not describe anything special related to DBX or MBOX: you can convert
-any kind of mail folder into an other with the following code.
+any kind of mail folder into another with the following code.
 
 example: converting folders
 
@@ -963,12 +963,12 @@ error messages to indicate the real problem.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.093,
-built on December 24, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.094,
+built on April 06, 2010. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2009 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

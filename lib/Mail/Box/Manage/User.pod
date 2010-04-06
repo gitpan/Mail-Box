@@ -153,7 +153,7 @@ $obj-E<gt>B<inbox>([NAME])
 =over 4
 
 (Set and) get the NAME of the mailbox which is considered the folder
-for incoming mail.  In many protocols, this folder is handled seperately.
+for incoming mail.  In many protocols, this folder is handled separately.
 For instance in IMAP this is the only case-insensitive folder name.
 
 =back
@@ -664,12 +664,12 @@ only useful for folders which have write or append access modes
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.093,
-built on December 24, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.094,
+built on April 06, 2010. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2009 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

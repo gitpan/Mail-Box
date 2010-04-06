@@ -211,7 +211,7 @@ Mail::Box::File-E<gt>B<appendMessages>(OPTIONS)
 
 Appending messages to a file based folder which is not opened is a little
 risky.  In practice, this is often done without locking the folder.  So,
-an other application may write to the folder at the same time... :(  Hopefully,
+another application may write to the folder at the same time... :(  Hopefully,
 all goes fast enough that the chance on collition is small.
 
 All OPTIONS of L<Mail::Box::Mbox::new()|Mail::Box::Mbox/"METHODS"> can be supplied.
@@ -562,7 +562,7 @@ $obj-E<gt>B<messageCreateOptions>([TYPE, CONFIG])
 =over 4
 
 Returns a key-value list of options to be used each time a new message
-is read from a file.  The list is preceeded by the TYPE of message which
+is read from a file.  The list is preceded by the TYPE of message which
 has to be created.
 
 This data is used by L<readMessages()|Mail::Box/"Internals"> and L<updateMessages()|Mail::Box::File/"Internals">.  With
@@ -712,32 +712,6 @@ See L<Mail::Box/"Internals">
 
 =back
 
-=head3 File based folders
-
-File based folders maintain a folder (a set of messages) in one
-single file.  The advantage is that your folder has only one
-single name, which speeds-up access to all messages at once.
-
-The disadvantage over directory based folder (see L<Mail::Box::Dir|Mail::Box::Dir>)
-is that you have to construct some means to keep all message apart,
-for instance by adding a message separator, and this will cause
-problems.  Where access to all messages at once is faster in file
-based folders, access to a single message is (much) slower, because
-the whole folder must be read.
-
-=head3 File based folders
-
-File based folders maintain a folder (a set of messages) in one
-single file.  The advantage is that your folder has only one
-single name, which speeds-up access to all messages at once.
-
-The disadvantage over directory based folder (see L<Mail::Box::Dir|Mail::Box::Dir>)
-is that you have to construct some means to keep all message apart,
-for instance by adding a message separator, and this will cause
-problems.  Where access to all messages at once is faster in file
-based folders, access to a single message is (much) slower, because
-the whole folder must be read.
-
 =head2 Other methods
 
 $obj-E<gt>B<timespan2seconds>(TIME)
@@ -871,6 +845,21 @@ $obj-E<gt>B<inGlobalDestruction>
 See L<Mail::Reporter/"Cleanup">
 
 =back
+
+=head2 DETAILS
+
+=head3 File based folders
+
+File based folders maintain a folder (a set of messages) in one
+single file.  The advantage is that your folder has only one
+single name, which speeds-up access to all messages at once.
+
+The disadvantage over directory based folder (see L<Mail::Box::Dir|Mail::Box::Dir>)
+is that you have to construct some means to keep all message apart,
+for instance by adding a message separator, and this will cause
+problems.  Where access to all messages at once is faster in file
+based folders, access to a single message is (much) slower, because
+the whole folder must be read.
 
 =head1 DETAILS
 
@@ -1082,12 +1071,12 @@ error messages to indicate the real problem.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.093,
-built on December 24, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.094,
+built on April 06, 2010. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2009 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -33,7 +33,7 @@ is certainly B<not> your best choice.
 
 Some people use this method in a procmail script: the message arrives
 at stdin, so we only have a filehandle.  In this case, you are stuck
-with this method.  The message is preceeded by a line which can be used
+with this method.  The message is preceded by a line which can be used
 as message separator in mbox folders.  See the example how to handle
 that one.
 
@@ -90,12 +90,12 @@ example:
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.093,
-built on December 24, 2009. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.094,
+built on April 06, 2010. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2009 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

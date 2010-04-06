@@ -1,4 +1,4 @@
-# Copyrights 2001-2009 by Mark Overmeer.
+# Copyrights 2001-2010 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 1.06.
@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Body::Multipart;
 use vars '$VERSION';
-$VERSION = '2.093';
+$VERSION = '2.094';
 
 use base 'Mail::Message::Body';
 
@@ -92,7 +92,7 @@ sub clone()
 
 sub nrLines()
 {   my $self = shift;
-    my $nr   = 1;     # trailing boundary
+    my $nr   = 0;
 
     if(my $preamble = $self->preamble)
     {   $nr += $preamble->nrLines;
@@ -104,7 +104,10 @@ sub nrLines()
         $nr++ if $part->body->endsOnNewline;
     }
 
-    if(my $epilogue = $self->epilogue) { $nr += $epilogue->nrLines }
+    if(my $epilogue = $self->epilogue)
+    {   $nr += $epilogue->nrLines +1;
+    }
+
     $nr;
 }
 
@@ -112,14 +115,15 @@ sub size()
 {   my $self   = shift;
     my $bbytes = length($self->boundary) +4;  # \n--$b\n
 
-    my $bytes  = $bbytes +2;   # last boundary, \n--$b--\n
+    my $bytes  = $bbytes +1;   # last boundary, \n--$b--
     if(my $preamble = $self->preamble)
          { $bytes += $preamble->size }
     else { $bytes -= 1 }      # no leading \n
 
     $bytes += $bbytes + $_->size foreach $self->parts('ACTIVE');
-    if(my $epilogue = $self->epilogue) { $bytes += $epilogue->size }
-
+    if(my $epilogue = $self->epilogue)
+    {   $bytes += $epilogue->size +1;
+    }
     $bytes;
 }
 
@@ -145,10 +149,12 @@ sub lines()
     if(!@lines) { ; }
     elsif($lines[-1] =~ m/\n$/) { push @lines, "\n" }
     else { $lines[-1] .= "\n" }
-    push @lines, "--$boundary--\n";
+    push @lines, "--$boundary--";
 
-    my $epilogue = $self->epilogue;
-    push @lines, $epilogue->lines if $epilogue;
+    if(my $epilogue = $self->epilogue)
+    {   $lines[-1] .= "\n";
+        push @lines, $epilogue->lines;
+    }
 
     wantarray ? @lines : \@lines;
 }
@@ -180,7 +186,7 @@ sub print(;$)
             $part->print($out);
         }
         print $out "\n" if $count++;
-        print $out "--$boundary--\n";
+        print $out "--$boundary--";
     }
     else
     {   foreach my $part ($self->parts('ACTIVE'))
@@ -189,10 +195,13 @@ sub print(;$)
             $part->print($out);
         }
         $out->print("\n") if $count++;
-        $out->print("--$boundary--\n");
+        $out->print("--$boundary--");
     }
 
-    if(my $epilogue = $self->epilogue) { $epilogue->print($out) }
+    if(my $epilogue = $self->epilogue)
+    {   $out->print("\n");
+        $epilogue->print($out);
+    }
 
     $self;
 }
@@ -240,7 +249,7 @@ sub read($$$$)
        ->read($parser, $head);
 
     $self->{MMBM_preamble} = $preamble
-        if defined $preamble && $preamble->nrLines > 0;
+        if defined $preamble;
 
     # Get the parts.
 
@@ -265,10 +274,10 @@ sub read($$$$)
         ->read($parser, $head);
 
     $self->{MMBM_epilogue} = $epilogue
-        if defined $epilogue && $epilogue->nrLines > 0;
+        if defined $epilogue;
 
     my $end = defined $epilogue ? ($epilogue->fileLocation)[1]
-            : @parts            ? ($parts[-1]->fileLocation)[1]
+            : @parts            ? ($parts[-1]->body->fileLocation)[1]
             : defined $preamble ? ($preamble->fileLocation)[1]
             :                      $begin;
 

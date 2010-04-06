@@ -1,4 +1,4 @@
-# Copyrights 2001-2009 by Mark Overmeer.
+# Copyrights 2001-2010 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 1.06.
@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.093';
+$VERSION = '2.094';
 
 use base 'Mail::Box::Net';
 
@@ -39,8 +39,8 @@ sub init($)
     # Also, this code can't handle a trailing slash and there's
     # no reason to ever offer one.  Strip that too.
     if($folder ne '/')
-    {   $folder =~ s#^/+##g;
-        $folder =~ s#/+$##g;
+    {   $folder =~ s,^/+,,g;
+        $folder =~ s,/+$,,g;
     }
 
     $args->{folder} = $folder;
