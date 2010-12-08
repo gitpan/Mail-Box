@@ -5,7 +5,7 @@
 
 package Mail::Box::POP3;
 use vars '$VERSION';
-$VERSION = '2.095';
+$VERSION = '2.096';
 
 use base 'Mail::Box::Net';
 
@@ -102,8 +102,8 @@ sub update() {shift->notImplemented}
 #-------------------------------------------
 
 
-sub popClient()
-{   my $self = shift;
+sub popClient(%)
+{   my ($self, %args) = @_;
 
     return $self->{MBP_client}
         if defined $self->{MBP_client};
@@ -117,6 +117,7 @@ sub popClient()
       , hostname     => $self->{MBN_hostname}
       , port         => $self->{MBN_port}
       , authenticate => $self->{MBP_auth}
+      , use_ssl      => $args{use_ssl}
       );
 
     $self->log(ERROR => "Cannot create POP3 client for $self.")

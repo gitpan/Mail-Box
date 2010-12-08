@@ -146,7 +146,7 @@ it selects one of these addresses as the main originator of the message.
 
 =over 4
 
-The header where the data is stored in.  Be dafault a
+The header where the data is stored in. By default a
 L<Mail::Message::Head::Partial|Mail::Message::Head::Partial> is created for you.
 
 =back
@@ -625,8 +625,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.095,
-built on July 02, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.096,
+built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

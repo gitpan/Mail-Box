@@ -28,7 +28,7 @@ Header information consumes a considerable amount of memory.  Most of this
 information is only useful during a short period of time in your program,
 or sometimes it is not used at all.  You then can decide to remove most
 of the header information.  However, be warned that it will be lost
-permanently: the header (and therefore the messsage) gets mutulated!
+permanently: the header (and therefore the message) gets mutulated!
 
 =head1 OVERLOADED
 
@@ -735,8 +735,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.095,
-built on July 02, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.096,
+built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -1,26 +1,23 @@
 =head1 NAME
 
-Mail::Box::Maildir - handle Maildir folders
+Mail::Box::POP3s - handle secure POP3 folders as client
 
 =head1 INHERITANCE
 
- Mail::Box::Maildir
-   is a Mail::Box::Dir
+ Mail::Box::POP3s
+   is a Mail::Box::POP3
+   is a Mail::Box::Net
    is a Mail::Box
    is a Mail::Reporter
 
 =head1 SYNOPSIS
 
- use Mail::Box::Maildir;
- my $folder = new Mail::Box::Maildir folder => $ENV{MAIL}, ...;
+ use Mail::Box::POP3s;
+ my $folder = new Mail::Box::POP3s folder => $ENV{MAIL}, ...;
 
 =head1 DESCRIPTION
 
-This documentation describes how Maildir mailboxes work, and what you
-can do with the Maildir folder object C<Mail::Box::Maildir>.
-
-Maildir is B<not supported for Windows>, because it create filenames
-which are not accepted by the Windows system.
+This module mainly extends L<Mail::Box::POP3|Mail::Box::POP3>.
 
 =head1 OVERLOADED
 
@@ -52,52 +49,47 @@ See L<Mail::Box/"OVERLOADED">
 
 =head2 Constructors
 
-Mail::Box::Maildir-E<gt>B<new>(OPTIONS)
+Mail::Box::POP3s-E<gt>B<new>(OPTIONS)
 
 =over 4
 
  Option           --Defined in     --Default
- accept_new                          <false>
  access             Mail::Box        'r'
+ authenticate       Mail::Box::POP3  'AUTO'
  body_delayed_type  Mail::Box        Mail::Message::Body::Delayed
  body_type          Mail::Box        Mail::Message::Body::Lines
  coerce_options     Mail::Box        []
- create             Mail::Box        <false>
- directory          Mail::Box::Dir   <derived from folder name>
+ create             Mail::Box        <not applicable>
  extract            Mail::Box        10240
  field_type         Mail::Box        undef
  fix_headers        Mail::Box        <false>
- folder             Mail::Box        $ENV{MAIL}
- folderdir          Mail::Box        $ENV{HOME}/.maildir
+ folder             Mail::Box        <not applicable>
+ folderdir          Mail::Box        <not used>
  head_delayed_type  Mail::Box        Mail::Message::Head::Delayed
  head_type          Mail::Box        Mail::Message::Head::Complete
  keep_dups          Mail::Box        <false>
- lock_file          Mail::Box        <not used>
- lock_timeout       Mail::Box        <not used>
- lock_type          Mail::Box        'NONE' (constant)
- lock_wait          Mail::Box        <not used>
+ lock_file          Mail::Box        undef
+ lock_timeout       Mail::Box        1 hour
+ lock_type          Mail::Box        'NONE'
+ lock_wait          Mail::Box        10 seconds
  locker             Mail::Box        undef
  log                Mail::Reporter   'WARNINGS'
  manager            Mail::Box        undef
- message_type       Mail::Box        Mail::Box::Message
+ message_type       Mail::Box        Mail::Box::POP3::Message
  multipart_type     Mail::Box        Mail::Message::Body::Multipart
- remove_when_empty  Mail::Box        <true>
+ password           Mail::Box::Net   undef
+ pop_client         Mail::Box::POP3  undef
+ remove_when_empty  Mail::Box        <false>
  save_on_exit       Mail::Box        <true>
+ server_name        Mail::Box::Net   undef
+ server_port        Mail::Box::Net   995
  trace              Mail::Reporter   'WARNINGS'
- trusted            Mail::Box        <depends on folder location>
-
-. accept_new => BOOLEAN
-
-=over 4
-
-When the folder is open, some messages may be stored in the C<new>
-sub-directory.  By default, these messages are immediately moved to
-the C<cur> directory when the folder is opened.  Otherwise, you have
-to call L<acceptMessages()|Mail::Box::Maildir/"Internals"> or L<Mail::Box::Maildir::Message::accept()|Mail::Box::Maildir::Message/"Internals">.
-
-=back
+ trusted            Mail::Box        <false>
+ username           Mail::Box::Net   undef
 
 . access => MODE
+
+. authenticate => 'LOGIN'|'APOP'|'AUTO'
 
 . body_delayed_type => CLASS
 
@@ -106,8 +98,6 @@ to call L<acceptMessages()|Mail::Box::Maildir/"Internals"> or L<Mail::Box::Maild
 . coerce_options => ARRAY
 
 . create => BOOLEAN
-
-. directory => DIRECTORY
 
 . extract => INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
 
@@ -143,35 +133,45 @@ to call L<acceptMessages()|Mail::Box::Maildir/"Internals"> or L<Mail::Box::Maild
 
 . multipart_type => CLASS
 
+. password => STRING
+
+. pop_client => OBJECT
+
 . remove_when_empty => BOOLEAN
 
 . save_on_exit => BOOLEAN
+
+. server_name => HOSTNAME
+
+. server_port => INTEGER
 
 . trace => LEVEL
 
 . trusted => BOOLEAN
 
+. username => STRING
+
 =back
 
 =head2 The folder
 
-$obj-E<gt>B<addMessage>(MESSAGE, OPTIONS)
+$obj-E<gt>B<addMessage>(MESSAGE)
 
 =over 4
 
-See L<Mail::Box/"The folder">
+See L<Mail::Box::POP3/"METHODS">
 
 =back
 
-$obj-E<gt>B<addMessages>(MESSAGE [, MESSAGE, ...])
+$obj-E<gt>B<addMessages>(MESSAGES)
 
 =over 4
 
-See L<Mail::Box/"The folder">
+See L<Mail::Box::POP3/"METHODS">
 
 =back
 
-Mail::Box::Maildir-E<gt>B<appendMessages>(OPTIONS)
+Mail::Box::POP3s-E<gt>B<appendMessages>(OPTIONS)
 
 =over 4
 
@@ -199,15 +199,7 @@ $obj-E<gt>B<delete>(OPTIONS)
 
 =over 4
 
-See L<Mail::Box/"The folder">
-
-=back
-
-$obj-E<gt>B<directory>
-
-=over 4
-
-See L<Mail::Box::Dir/"The folder">
+See L<Mail::Box::POP3/"METHODS">
 
 =back
 
@@ -215,7 +207,7 @@ $obj-E<gt>B<folderdir>([DIRECTORY])
 
 =over 4
 
-See L<Mail::Box/"The folder">
+See L<Mail::Box::Net/"METHODS">
 
 =back
 
@@ -251,11 +243,11 @@ See L<Mail::Box/"The folder">
 
 =back
 
-$obj-E<gt>B<update>(OPTIONS)
+$obj-E<gt>B<update>
 
 =over 4
 
-See L<Mail::Box/"The folder">
+See L<Mail::Box::POP3/"METHODS">
 
 =back
 
@@ -379,17 +371,17 @@ See L<Mail::Box/"The messages">
 
 $obj-E<gt>B<listSubFolders>(OPTIONS)
 
-Mail::Box::Maildir-E<gt>B<listSubFolders>(OPTIONS)
+Mail::Box::POP3s-E<gt>B<listSubFolders>(OPTIONS)
 
 =over 4
 
-See L<Mail::Box/"Sub-folders">
+See L<Mail::Box::POP3/"METHODS">
 
 =back
 
 $obj-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
 
-Mail::Box::Maildir-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
+Mail::Box::POP3s-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
 
 =over 4
 
@@ -405,17 +397,17 @@ See L<Mail::Box/"Sub-folders">
 
 =back
 
-$obj-E<gt>B<openSubFolder>(SUBNAME, OPTIONS)
+$obj-E<gt>B<openSubFolder>(OPTIONS)
 
 =over 4
 
-See L<Mail::Box/"Sub-folders">
+See L<Mail::Box::POP3/"METHODS">
 
 =back
 
 $obj-E<gt>B<topFolderWithMessages>
 
-Mail::Box::Maildir-E<gt>B<topFolderWithMessages>
+Mail::Box::POP3s-E<gt>B<topFolderWithMessages>
 
 =over 4
 
@@ -425,52 +417,21 @@ See L<Mail::Box/"Sub-folders">
 
 =head2 Internals
 
-$obj-E<gt>B<acceptMessages>
-
-=over 4
-
-Accept all messages which are waiting in the C<new> directory to be
-moved to the C<cur> directory.  This will not rescan the directory
-for newly arrived messages, because that's a task for L<update()|Mail::Box/"The folder">.
-
-=back
-
-Mail::Box::Maildir-E<gt>B<appendMessage>(OPTIONS)
-
-=over 4
-
-=back
-
 $obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
 
 =over 4
 
-=back
-
-$obj-E<gt>B<create>(FOLDERNAME, OPTIONS)
-
-Mail::Box::Maildir-E<gt>B<create>(FOLDERNAME, OPTIONS)
-
-=over 4
-
- Option   --Defined in--Default
- folderdir  Mail::Box   undef
-
-. folderdir => DIRECTORY
+See L<Mail::Box/"Internals">
 
 =back
 
-$obj-E<gt>B<createDirs>(FOLDERDIR)
+$obj-E<gt>B<create>(FOLDER, OPTIONS)
 
-Mail::Box::Maildir-E<gt>B<createDirs>(FOLDERDIR)
+Mail::Box::POP3s-E<gt>B<create>(FOLDER, OPTIONS)
 
 =over 4
 
-The FOLDERDIR contains the absolute path of the location where the
-messages are kept.  Maildir folders contain a C<tmp>, C<new>, and
-C<cur> sub-directory within that folder directory as well.  This
-method will ensure that all directories exist.
-Returns false on failure.
+See L<Mail::Box::POP3/"METHODS">
 
 =back
 
@@ -482,34 +443,27 @@ See L<Mail::Box/"Internals">
 
 =back
 
-$obj-E<gt>B<folderIsEmpty>(FOLDERDIR)
-
-Mail::Box::Maildir-E<gt>B<folderIsEmpty>(FOLDERDIR)
-
-=over 4
-
-Checks whether the folder whose directory is specified as absolute FOLDERDIR
-is empty or not.  A folder is empty when the C<tmp>, C<new>, and C<cur>
-subdirectories are empty and some files which are left there by application
-programs.  The maildir spec explicitly states: C<.qmail>, C<bulletintime>,
-C<bulletinlock> and C<seriallock>.  If any other files are found, the
-directory is considered not-empty.
-
-=back
-
-$obj-E<gt>B<folderToDirectory>(FOLDERNAME, FOLDERDIR)
-
-=over 4
-
-See L<Mail::Box::Dir/"Internals">
-
-=back
-
-Mail::Box::Maildir-E<gt>B<foundIn>([FOLDERNAME], OPTIONS)
+Mail::Box::POP3s-E<gt>B<foundIn>([FOLDERNAME], OPTIONS)
 
 =over 4
 
 See L<Mail::Box/"Internals">
+
+=back
+
+$obj-E<gt>B<getHead>(MESSAGE)
+
+=over 4
+
+See L<Mail::Box::POP3/"Internals">
+
+=back
+
+$obj-E<gt>B<getHeadAndBody>(MESSAGE)
+
+=over 4
+
+See L<Mail::Box::POP3/"Internals">
 
 =back
 
@@ -529,19 +483,19 @@ See L<Mail::Box/"Internals">
 
 =back
 
+$obj-E<gt>B<popClient>(OPTIONS)
+
+=over 4
+
+See L<Mail::Box::POP3/"Internals">
+
+=back
+
 $obj-E<gt>B<read>(OPTIONS)
 
 =over 4
 
 See L<Mail::Box/"Internals">
-
-=back
-
-$obj-E<gt>B<readMessageFilenames>(DIRECTORY)
-
-=over 4
-
-See L<Mail::Box::Dir/"Internals">
 
 =back
 
@@ -597,7 +551,7 @@ $obj-E<gt>B<writeMessages>(OPTIONS)
 
 =over 4
 
-See L<Mail::Box/"Internals">
+See L<Mail::Box::POP3/"Internals">
 
 =back
 
@@ -605,7 +559,7 @@ See L<Mail::Box/"Internals">
 
 $obj-E<gt>B<timespan2seconds>(TIME)
 
-Mail::Box::Maildir-E<gt>B<timespan2seconds>(TIME)
+Mail::Box::POP3s-E<gt>B<timespan2seconds>(TIME)
 
 =over 4
 
@@ -633,7 +587,7 @@ See L<Mail::Reporter/"Error handling">
 
 $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Box::Maildir-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+Mail::Box::POP3s-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 =over 4
 
@@ -651,7 +605,7 @@ See L<Mail::Reporter/"Error handling">
 
 $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Mail::Box::Maildir-E<gt>B<log>([LEVEL [,STRINGS]])
+Mail::Box::POP3s-E<gt>B<log>([LEVEL [,STRINGS]])
 
 =over 4
 
@@ -661,7 +615,7 @@ See L<Mail::Reporter/"Error handling">
 
 $obj-E<gt>B<logPriority>(LEVEL)
 
-Mail::Box::Maildir-E<gt>B<logPriority>(LEVEL)
+Mail::Box::POP3s-E<gt>B<logPriority>(LEVEL)
 
 =over 4
 
@@ -737,71 +691,33 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DETAILS
 
-The explanation is complicated, but for normal use you should bother
-yourself with all details.
-
-=head2 How MAILDIR folders work
-
-Maildir-type folders use a directory to store the messages of one folder.
-Each message is stored in a separate file.  This seems useful, because
-changes in a folder change only a few of these small files, in contrast with
-file-based folders where changes in a folder cause rewrites of huge
-folder-files.
-
-However, Maildir based folders perform very bad if you need header information
-of all messages.  For instance, if you want to have full knowledge about
-all message-threads (see L<Mail::Box::Thread::Manager|Mail::Box::Thread::Manager>) in the folder, it
-requires to read all header lines in all message files.  And usually, reading
-your messages as threads is desired.  Maildir maintains a tiny amount
-of info visible in the filename, which may make it perform just a little
-bit faster than MH.
-
 =head1 DIAGNOSTICS
 
-Error: Cannot append Maildir message in $new to folder $self.
+Error: Cannot create POP3 client for $name.
 
 =over 4
 
-The message (or messages) could not be stored in the right directories
-for the Maildir folder.
+The connection to the POP3 server cannot be established.  You may see
+more, related, error messages about the failure.
 
 =back
 
-Error: Cannot create Maildir directory $dir: $!
+Error: Cannot find head back for $uidl on POP3 server $name.
 
 =over 4
 
-A Maildir folder is represented by a directory, with some sub-directories.  The
-top folder directory could not be created for the reason indicated.
+The server told to have this message, but when asked for its headers, no
+single line was returned.  Did the message get destroyed?
 
 =back
 
-Error: Cannot create Maildir folder $name.
+Error: Cannot read body for $uidl on POP3 server $name.
 
 =over 4
 
-One or more of the directories required to administer a Maildir folder
-could not be created.
-
-=back
-
-Error: Cannot create Maildir message file $new.
-
-=over 4
-
-A message is converted from some other message format into a Maildir format
-by writing it to a file with a name which contains the status flags of the
-message.  Apparently, creating this file failed.
-
-=back
-
-Error: Cannot create Maildir subdir $dir: $!
-
-=over 4
-
-Each Maildir folder has three sub-directories for administration: C<new>,
-C<tmp>, and C<cur>.  The mentioned directory could not be created for
-the indicated reason.
+The message's headers are retreived from the server, but the body seems
+to be lost.  Did the message get destroyed between reading the header
+and reading the body?
 
 =back
 
@@ -855,23 +771,21 @@ write or append with L<new(access)|Mail::Box/"Constructors">, or the C<force> op
 
 =back
 
-Error: Folder $name not deleted: not writable.
-
-=over 4
-
-The folder must be opened with write access via L<new(access)|Mail::Box/"Constructors">, otherwise
-removing it will be refused.  So, you may have write-access according to
-the operating system, but that will not automatically mean that this
-C<delete> method permits you to.  The reverse remark is valid as well.
-
-=back
-
 Error: Invalid timespan '$timespan' specified.
 
 =over 4
 
 The string does not follow the strict rules of the time span syntax which
 is permitted as parameter.
+
+=back
+
+Warning: Message $uidl on POP3 server $name disappeared.
+
+=over 4
+
+The server indicated the existence of this message before, however it
+has no information about the message anymore.
 
 =back
 
@@ -883,6 +797,15 @@ According to the RFCs, message-ids need to contain a unique random part,
 then an C<@>, and then a domain name.  This is made to avoid the creation
 of two messages with the same id.  The warning emerges when the C<@> is
 missing from the string.
+
+=back
+
+Warning: POP3 folders cannot be deleted.
+
+=over 4
+
+Each user has only one POP3 folder on a server.  This folder is created and
+deleted by the server's administrator only.
 
 =back
 
@@ -907,6 +830,15 @@ to copy one of these.  Copying will proceed for all other sub-folders.
 
 =back
 
+Error: Update of $nr messages ignored for POP3 folder $name.
+
+=over 4
+
+The standard POP3 implementation does not support writing from client back
+to the server.  Therefore, modifications may be lost.
+
+=back
+
 Error: Writing folder $name failed
 
 =over 4
@@ -914,6 +846,16 @@ Error: Writing folder $name failed
 For some reason (you probably got more error messages about this problem)
 it is impossible to write the folder, although you should because there
 were changes made.
+
+=back
+
+Error: You cannot write a message to a pop server (yet)
+
+=over 4
+
+Some extensions to the POP3 protocol do permit writing messages to the server,
+but the standard protocol only implements retreival.  Feel invited to extend our
+implementation with writing.
 
 =back
 

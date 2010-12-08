@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Transport::POP3;
 use vars '$VERSION';
-$VERSION = '2.095';
+$VERSION = '2.096';
 
 use base 'Mail::Transport::Receive';
 
@@ -25,9 +25,10 @@ sub init($)
 
     $self->SUPER::init($args) or return;
 
-    $self->{MTP_auth}    = $args->{authenticate} || 'AUTO';
+    $self->{MTP_auth} = $args->{authenticate} || 'AUTO';
     return unless $self->socket;   # establish connection
 
+    $self->{MTP_ssl}  = $args->{use_ssl};
     $self;
 }
 
@@ -291,7 +292,10 @@ sub login(;$)
         return;
     }
 
-    my $socket = eval {IO::Socket::INET->new("$host:$port")};
+    my $net    = $self->{MTP_ssl} ? 'IO::Socket::SSL' : 'IO::Socket::INET';
+    eval "require $net" or die $@;
+
+    my $socket = eval {$net->new("$host:$port")};
     unless($socket)
     {   $self->log(ERROR => "Cannot connect to $host:$port for POP3: $!");
         return;

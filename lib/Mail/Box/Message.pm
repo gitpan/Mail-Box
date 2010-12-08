@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box::Message;
 use vars '$VERSION';
-$VERSION = '2.095';
+$VERSION = '2.096';
 
 use base 'Mail::Message';
 
@@ -77,9 +77,7 @@ sub seqnr(;$)
 
 sub copyTo($@)
 {   my ($self, $folder) = (shift, shift);
-    my $clone = $self->clone(@_);
-
-    $folder->addMessage($clone);
+    $folder->addMessage($self->clone(@_));
 }
 
 

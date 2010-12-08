@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Message::Dummy;
 use vars '$VERSION';
-$VERSION = '2.095';
+$VERSION = '2.096';
 
 use base 'Mail::Message';
 

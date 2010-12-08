@@ -178,7 +178,7 @@ $obj-E<gt>B<authentication>(['AUTO'|TYPE|LIST-OF-TYPES])
 
 Returned is a list of pairs (ref arrays) each describing one possible
 way to contact the server. Each pair contains a mechanism name and
-a challange callback (which may be C<undef>).
+a challenge callback (which may be C<undef>).
 
 The settings are used by L<login()|Mail::Transport::IMAP4/"Protocol [internals]"> to get server access.  The initial
 value origins from L<new(authenticate)|Mail::Transport::IMAP4/"METHODS">, but may be changed later.
@@ -589,8 +589,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.095,
-built on July 02, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.096,
+built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

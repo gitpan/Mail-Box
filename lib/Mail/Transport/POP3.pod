@@ -50,6 +50,7 @@ will return C<undef>.
  retry         Mail::Transport  <false>
  timeout       Mail::Transport  120
  trace         Mail::Reporter   'WARNINGS'
+ use_ssl                        <false>
  username      Mail::Transport  undef
  via           Mail::Transport  'sendmail'
 
@@ -83,6 +84,8 @@ used, first APOP is tried, and then LOGIN.
 . timeout => SECONDS
 
 . trace => LEVEL
+
+. use_ssl => BOOLEAN
 
 . username => STRING
 
@@ -555,8 +558,8 @@ service on the specified port.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.095,
-built on July 02, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.096,
+built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

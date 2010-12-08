@@ -3,21 +3,31 @@
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 1.06.
 
-use strict;
-use warnings;
-
-package Mail::Server::IMAP4::Search;
+package Mail::Box::POP3s;
 use vars '$VERSION';
 $VERSION = '2.096';
 
-use base 'Mail::Box::Search';
+use base 'Mail::Box::POP3';
+
+use strict;
+use warnings;
 
 
 sub init($)
 {   my ($self, $args) = @_;
-    $self->notImplemented;
+    $args->{server_port} ||= 995;
+    $self->SUPER::init($args);
+    $self;
 }
 
+sub type() {'pop3s'}
+
 #-------------------------------------------
+
+
+sub popClient(%)
+{   my $self = shift;
+    $self->SUPER::popClient(@_, use_ssl => 1);
+}
 
 1;

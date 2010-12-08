@@ -94,6 +94,8 @@ lib/Mail/Box/POP3.pm
 lib/Mail/Box/POP3.pod
 lib/Mail/Box/POP3/Message.pm
 lib/Mail/Box/POP3/Message.pod
+lib/Mail/Box/POP3s.pm
+lib/Mail/Box/POP3s.pod
 lib/Mail/Box/Parser.pm
 lib/Mail/Box/Parser.pod
 lib/Mail/Box/Parser/Perl.pm
