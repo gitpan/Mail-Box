@@ -31,111 +31,79 @@ add flexibility and use the powerful MailBox features.
 
 =head2 Constructors
 
-$obj-E<gt>B<address>
-
 =over 4
+
+=item $obj-E<gt>B<address>
 
 Returns a L<Mail::Message::Field::Address|Mail::Message::Field::Address> object (or C<undef>) which
 defines the posting address of the mailing list.
 
-=back
-
-$obj-E<gt>B<clone>
-
-=over 4
+=item $obj-E<gt>B<clone>
 
 See L<Mail::Message::Head::FieldGroup/"Constructors">
 
-=back
-
-$obj-E<gt>B<from>(HEAD|MESSAGE)
-
-=over 4
+=item $obj-E<gt>B<from>(HEAD|MESSAGE)
 
 Create a C<Mail::Message::Head::ListGroup> based in the specified MESSAGE
 or message HEAD.
 
-=back
-
-$obj-E<gt>B<implementedTypes>
+=item $obj-E<gt>B<implementedTypes>
 
 Mail::Message::Head::ListGroup-E<gt>B<implementedTypes>
 
-=over 4
-
 See L<Mail::Message::Head::FieldGroup/"Constructors">
 
-=back
-
-$obj-E<gt>B<listname>
-
-=over 4
+=item $obj-E<gt>B<listname>
 
 Returns the name of the mailing list, which is usually a part of the
 e-mail address which is used to post the messages to.
 
-=back
-
-Mail::Message::Head::ListGroup-E<gt>B<new>(FIELDS, OPTIONS)
-
-=over 4
+=item Mail::Message::Head::ListGroup-E<gt>B<new>(FIELDS, OPTIONS)
 
 Construct an object which maintains one set of mailing list headers
 
- Option  --Defined in     --Default
- address                    undef
- head      Mail::Message::Head::FieldGroup  undef
- listname                   <derived from address>
- log       Mail::Reporter   'WARNINGS'
- rfc                        undef
- software  Mail::Message::Head::FieldGroup  undef
- trace     Mail::Reporter   'WARNINGS'
- type      Mail::Message::Head::FieldGroup  undef
- version   Mail::Message::Head::FieldGroup  undef
+ -Option  --Defined in     --Default
+  address                    undef
+  head      Mail::Message::Head::FieldGroup  undef
+  listname                   <derived from address>
+  log       Mail::Reporter   'WARNINGS'
+  rfc                        undef
+  software  Mail::Message::Head::FieldGroup  undef
+  trace     Mail::Reporter   'WARNINGS'
+  type      Mail::Message::Head::FieldGroup  undef
+  version   Mail::Message::Head::FieldGroup  undef
 
-. address => STRING|OBJECT
+=over 2
 
-=over 4
+=item address => STRING|OBJECT
 
 Address of the mailing list, which may be specified as STRING
 or e-mail containing object (a L<Mail::Address|Mail::Address> or L<Mail::Identity|Mail::Identity>.
 In any case, the data is converted into a L<Mail::Identity|Mail::Identity>.
 
-=back
+=item head => HEAD
 
-. head => HEAD
-
-. listname => STRING
-
-=over 4
+=item listname => STRING
 
 A short textual representation of the mailing-list.
 
-=back
+=item log => LEVEL
 
-. log => LEVEL
-
-. rfc => 'rfc2919'|'rfc2369'
-
-=over 4
+=item rfc => 'rfc2919'|'rfc2369'
 
 Defines the mailing list software follows an rfc.
 
-=back
+=item software => STRING
 
-. software => STRING
+=item trace => LEVEL
 
-. trace => LEVEL
+=item type => STRING
 
-. type => STRING
-
-. version => STRING
+=item version => STRING
 
 =back
 
-$obj-E<gt>B<rfc>
-
-=over 4
+=item $obj-E<gt>B<rfc>
 
 When the mailing list software follows the guidelines of one of the dedicated
 RFCs, then this will be returned otherwise C<undef>.  The return values can
@@ -145,57 +113,33 @@ be C<rfc2919>, C<rfc2369>, or C<undef>.
 
 =head2 The header
 
-$obj-E<gt>B<add>((FIELD, VALUE) | OBJECT)
-
 =over 4
+
+=item $obj-E<gt>B<add>((FIELD, VALUE) | OBJECT)
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=back
-
-$obj-E<gt>B<addFields>([FIELDNAMES])
-
-=over 4
+=item $obj-E<gt>B<addFields>([FIELDNAMES])
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=back
-
-$obj-E<gt>B<attach>(HEAD)
-
-=over 4
+=item $obj-E<gt>B<attach>(HEAD)
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=back
-
-$obj-E<gt>B<delete>
-
-=over 4
+=item $obj-E<gt>B<delete>
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=back
-
-$obj-E<gt>B<fieldNames>
-
-=over 4
+=item $obj-E<gt>B<fieldNames>
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=back
-
-$obj-E<gt>B<fields>
-
-=over 4
+=item $obj-E<gt>B<fields>
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=back
-
-$obj-E<gt>B<head>
-
-=over 4
+=item $obj-E<gt>B<head>
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
@@ -203,33 +147,21 @@ See L<Mail::Message::Head::FieldGroup/"The header">
 
 =head2 Access to the header
 
-$obj-E<gt>B<isListGroupFieldName>(NAME)
+=over 4
+
+=item $obj-E<gt>B<isListGroupFieldName>(NAME)
 
 Mail::Message::Head::ListGroup-E<gt>B<isListGroupFieldName>(NAME)
 
-=over 4
-
-=back
-
-$obj-E<gt>B<software>
-
-=over 4
+=item $obj-E<gt>B<software>
 
 See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
-=back
-
-$obj-E<gt>B<type>
-
-=over 4
+=item $obj-E<gt>B<type>
 
 See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
-=back
-
-$obj-E<gt>B<version>
-
-=over 4
+=item $obj-E<gt>B<version>
 
 See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
@@ -237,9 +169,9 @@ See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
 =head2 Internals
 
-$obj-E<gt>B<collectFields>
-
 =over 4
+
+=item $obj-E<gt>B<collectFields>
 
 Scan the header for fields which are usually contained in mailing list
 software.  This method is automatically called when a list group is
@@ -252,11 +184,7 @@ a mailing list message.
 Please warn the author of MailBox if you see that to few
 or too many fields are included.
 
-=back
-
-$obj-E<gt>B<detected>(TYPE, SOFTWARE, VERSION)
-
-=over 4
+=item $obj-E<gt>B<detected>(TYPE, SOFTWARE, VERSION)
 
 See L<Mail::Message::Head::FieldGroup/"Internals">
 
@@ -264,120 +192,68 @@ See L<Mail::Message::Head::FieldGroup/"Internals">
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Message::Head::ListGroup-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<details>
-
-=over 4
+=item $obj-E<gt>B<details>
 
 Produce information about the detected/create list group, which may be
 helpful during debugging, by default to the selected file handle.
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Message::Head::ListGroup-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Message::Head::ListGroup-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<print>([FILEHANDLE])
-
-=over 4
+=item $obj-E<gt>B<print>([FILEHANDLE])
 
 See L<Mail::Message::Head::FieldGroup/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -385,17 +261,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Reporter/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -480,19 +352,15 @@ L<http://www.lsoft.com/>.
 
 =head1 DIAGNOSTICS
 
-Error: Cannot convert "$string" into an address object
-
 =over 4
+
+=item Error: Cannot convert "$string" into an address object
 
 The L<new(address)|Mail::Message::Head::ListGroup/"Constructors"> is coerced into a L<Mail::Message::Field::Address|Mail::Message::Field::Address>,
 which fails.  Have a look at L<Mail::Message::Field::Address::coerce()|Mail::Message::Field::Address/"Constructors">
 to see what valid arguments are.
 
-=back
-
-Error: Package $package does not implement $method.
-
-=over 4
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -504,12 +372,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

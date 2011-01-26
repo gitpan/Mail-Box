@@ -28,9 +28,9 @@ digits.
 
 =head2 Constructors
 
-Mail::Message::TransferEnc::QuotedPrint-E<gt>B<new>(OPTIONS)
-
 =over 4
+
+=item Mail::Message::TransferEnc::QuotedPrint-E<gt>B<new>(OPTIONS)
 
 See L<Mail::Reporter/"Constructors">
 
@@ -38,25 +38,17 @@ See L<Mail::Reporter/"Constructors">
 
 =head2 The Encoder
 
-Mail::Message::TransferEnc::QuotedPrint-E<gt>B<addTransferEncoder>(TYPE, CLASS)
-
 =over 4
+
+=item Mail::Message::TransferEnc::QuotedPrint-E<gt>B<addTransferEncoder>(TYPE, CLASS)
 
 See L<Mail::Message::TransferEnc/"The Encoder">
 
-=back
-
-$obj-E<gt>B<create>(TYPE, OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<create>(TYPE, OPTIONS)
 
 See L<Mail::Message::TransferEnc/"The Encoder">
 
-=back
-
-$obj-E<gt>B<name>
-
-=over 4
+=item $obj-E<gt>B<name>
 
 See L<Mail::Message::TransferEnc/"The Encoder">
 
@@ -64,17 +56,13 @@ See L<Mail::Message::TransferEnc/"The Encoder">
 
 =head2 Encoding
 
-$obj-E<gt>B<check>(BODY, OPTIONS)
-
 =over 4
+
+=item $obj-E<gt>B<check>(BODY, OPTIONS)
 
 See L<Mail::Message::TransferEnc/"Encoding">
 
-=back
-
-$obj-E<gt>B<decode>(BODY, OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<decode>(BODY, OPTIONS)
 
 Decoding is tricky, and not without loss of information.  Lines will
 stay separate lines, although they might have been joined before the
@@ -82,16 +70,16 @@ encoding split them up.  Characters which are not printable will be
 replaced by their octal value, and carriage returns (C<'=0D'>) at
 end of line are removed.
 
- Option     --Defined in                --Default
- result_type  Mail::Message::TransferEnc  <type of source body>
+ -Option     --Defined in                --Default
+  result_type  Mail::Message::TransferEnc  <type of source body>
 
-. result_type => CLASS
+=over 2
+
+=item result_type => CLASS
 
 =back
 
-$obj-E<gt>B<encode>(BODY, OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<encode>(BODY, OPTIONS)
 
 Encoding is to quoted-printable is a careful process: All characters
 outside the normal printing range, and including C<'='> are encoded.
@@ -102,112 +90,72 @@ at the end of a line.
 The lines which are constructed which must be 76 characters max, not
 broken on encoded characters.
 
- Option     --Defined in                --Default
- result_type  Mail::Message::TransferEnc  <type of source body>
+ -Option     --Defined in                --Default
+  result_type  Mail::Message::TransferEnc  <type of source body>
 
-. result_type => CLASS
+=over 2
+
+=item result_type => CLASS
+
+=back
 
 =back
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Message::TransferEnc::QuotedPrint-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Message::TransferEnc::QuotedPrint-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Message::TransferEnc::QuotedPrint-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -215,17 +163,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Reporter/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -233,26 +177,18 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-Error: Decoder for transfer encoding $type does not work: $@
-
 =over 4
+
+=item Error: Decoder for transfer encoding $type does not work: $@
 
 Compiling the required transfer encoding resulted in errors, which means
 that the decoder can not be used.
 
-=back
-
-Warning: No decoder for transfer encoding $type.
-
-=over 4
+=item Warning: No decoder for transfer encoding $type.
 
 A decoder for the specified type of transfer encoding is not implemented.
 
-=back
-
-Error: Package $package does not implement $method.
-
-=over 4
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -264,12 +200,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

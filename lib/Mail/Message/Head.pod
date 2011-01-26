@@ -37,9 +37,9 @@ described.  Read about differences in the sub-class specific pages.
 
 =head1 OVERLOADED
 
-overload: B<"">
-
 =over 4
+
+=item overload: B<"">
 
 (stringifaction) The header, when used as string, will format as if
 L<Mail::Message::Head::Complete::string()|Mail::Message::Head::Complete/"Access to the header"> was called, so return a
@@ -54,11 +54,7 @@ example: using a header object as string
 
  print "$head";   # explicit stringication
 
-=back
-
-overload: B<bool>
-
-=over 4
+=item overload: B<bool>
 
 When the header does not contain any lines (which is illegal, according
 to the RFCs), false is returned.  In all other cases, a true value is
@@ -70,9 +66,9 @@ produced.
 
 =head2 Constructors
 
-Mail::Message::Head-E<gt>B<build>([PAIR|FIELD]-LIST)
-
 =over 4
+
+=item Mail::Message::Head-E<gt>B<build>([PAIR|FIELD]-LIST)
 
 A fast way to construct a header with many lines.
 The PAIRs are C<(name, content)> pairs of the header, but it is also possible
@@ -96,11 +92,7 @@ example:
  print ref $head;
   # -->  Mail::Message::Head::Complete
 
-=back
-
-Mail::Message::Head-E<gt>B<new>(OPTIONS)
-
-=over 4
+=item Mail::Message::Head-E<gt>B<new>(OPTIONS)
 
 Create a new message header object.  The object will store all the
 fields of a header.  When you get information from the header, it
@@ -110,66 +102,54 @@ the fields may be stored differently internally.
 If you try to instantiate a L<Mail::Message::Head|Mail::Message::Head>, you will automatically
 be upgraded to a L<Mail::Message::Head::Complete|Mail::Message::Head::Complete> --a full head.
 
- Option    --Defined in     --Default
- field_type                   Mail::Message::Field::Fast
- log         Mail::Reporter   'WARNINGS'
- message                      undef
- modified                     <false>
- trace       Mail::Reporter   'WARNINGS'
+ -Option    --Defined in     --Default
+  field_type                   Mail::Message::Field::Fast
+  log         Mail::Reporter   'WARNINGS'
+  message                      undef
+  modified                     <false>
+  trace       Mail::Reporter   'WARNINGS'
 
-. field_type => CLASS
+=over 2
 
-=over 4
+=item field_type => CLASS
 
 The type of objects that all the fields will have.  This must be
 an extension of L<Mail::Message::Field|Mail::Message::Field>.
 
-=back
+=item log => LEVEL
 
-. log => LEVEL
-
-. message => MESSAGE
-
-=over 4
+=item message => MESSAGE
 
 The MESSAGE where this header belongs to.  Usually, this is not known
 at creation of the header, but sometimes it is.  If not, call the
 message() method later to set it.
 
+=item modified => BOOLEAN
+
+=item trace => LEVEL
+
 =back
-
-. modified => BOOLEAN
-
-. trace => LEVEL
 
 =back
 
 =head2 The header
 
-$obj-E<gt>B<isDelayed>
-
 =over 4
+
+=item $obj-E<gt>B<isDelayed>
 
 Headers may only be partially read, in which case they are called delayed.
 This method returns true if some header information still needs to be
 read. Returns false if all header data has been read.
 Will never trigger completion.
 
-=back
-
-$obj-E<gt>B<isEmpty>
-
-=over 4
+=item $obj-E<gt>B<isEmpty>
 
 Are there any fields defined in the current header?  Be warned that
 the header will not be loaded for this: delayed headers will return
 true in any case.
 
-=back
-
-$obj-E<gt>B<isModified>
-
-=over 4
+=item $obj-E<gt>B<isModified>
 
 Returns whether the header has been modified after being read.
 
@@ -177,30 +157,18 @@ example:
 
  if($head->isModified) { ... }
 
-=back
-
-$obj-E<gt>B<knownNames>
-
-=over 4
+=item $obj-E<gt>B<knownNames>
 
 Like L<Mail::Message::Head::Complete::names()|Mail::Message::Head::Complete/"Access to the header">, but only returns the known
 header fields, which may be less than C<names> for header types which are
 partial.  C<names()> will trigger completion, where C<knownNames()> does not.
 
-=back
-
-$obj-E<gt>B<message>([MESSAGE])
-
-=over 4
+=item $obj-E<gt>B<message>([MESSAGE])
 
 Get (after setting) the message where this header belongs to.
 This does not trigger completion.
 
-=back
-
-$obj-E<gt>B<modified>([BOOLEAN])
-
-=over 4
+=item $obj-E<gt>B<modified>([BOOLEAN])
 
 Sets the modified flag to BOOLEAN.  Without value, the current setting is
 returned, but in that case you can better use L<isModified()|Mail::Message::Head/"The header">.
@@ -212,11 +180,7 @@ example:
  if($head->modified) { ... }
  if($head->isModified) { ... }
 
-=back
-
-$obj-E<gt>B<orderedFields>
-
-=over 4
+=item $obj-E<gt>B<orderedFields>
 
 Retuns the fields ordered the way they were read or added.
 
@@ -224,9 +188,9 @@ Retuns the fields ordered the way they were read or added.
 
 =head2 Access to the header
 
-$obj-E<gt>B<get>(NAME [,INDEX])
-
 =over 4
+
+=item $obj-E<gt>B<get>(NAME [,INDEX])
 
 Get the data which is related to the field with the NAME.  The case of the
 characters in NAME does not matter.
@@ -253,11 +217,7 @@ example:
  my $sub_scalar = $head->get('Subject');
  print ",@sub_list,$sub_scalar,"     # ,greetings, greetings,
 
-=back
-
-$obj-E<gt>B<study>(NAME [,INDEX])
-
-=over 4
+=item $obj-E<gt>B<study>(NAME [,INDEX])
 
 Like L<get()|Mail::Message::Head/"Access to the header">, but puts more effort in understanding the contents of the
 field.  L<Mail::Message::Field::study()|Mail::Message::Field/"Access to the content"> will be called for the field
@@ -269,20 +229,16 @@ When an INDEX is specified, that element is returned.
 
 =head2 About the body
 
-$obj-E<gt>B<guessBodySize>
-
 =over 4
+
+=item $obj-E<gt>B<guessBodySize>
 
 Try to estimate the size of the body of this message, but without parsing
 the header or body.  The result might be C<undef> or a few percent of
 the real size.  It may even be very far of the real value, that's why
 this is a guess.
 
-=back
-
-$obj-E<gt>B<isMultipart>
-
-=over 4
+=item $obj-E<gt>B<isMultipart>
 
 Returns whether the body of the related message is a multipart body.
 May trigger completion, when the C<Content-Type> field is not defined.
@@ -291,63 +247,39 @@ May trigger completion, when the C<Content-Type> field is not defined.
 
 =head2 Internals
 
-$obj-E<gt>B<addNoRealize>(FIELD)
-
 =over 4
+
+=item $obj-E<gt>B<addNoRealize>(FIELD)
 
 Add a field, like L<Mail::Message::Head::Complete::add()|Mail::Message::Head::Complete/"Access to the header"> does, but
 avoid the loading of a possibly partial header.  This method does not
 test the validity of the argument, nor flag the header as changed.
 This does not trigger completion.
 
-=back
+=item $obj-E<gt>B<addOrderedFields>(FIELDS)
 
-$obj-E<gt>B<addOrderedFields>(FIELDS)
-
-=over 4
-
-=back
-
-$obj-E<gt>B<fileLocation>
-
-=over 4
+=item $obj-E<gt>B<fileLocation>
 
 Returns the location of the header in the file, as a pair begin and end.  The
 begin is the first byte of the header.  The end is the first byte after
 the header.
 
-=back
-
-$obj-E<gt>B<load>
-
-=over 4
+=item $obj-E<gt>B<load>
 
 Be sure that the header is loaded.  This returns the loaded header
 object.
 
-=back
-
-$obj-E<gt>B<moveLocation>(DISTANCE)
-
-=over 4
+=item $obj-E<gt>B<moveLocation>(DISTANCE)
 
 Move the registration of the header in the file.
 
-=back
-
-$obj-E<gt>B<read>(PARSER)
-
-=over 4
+=item $obj-E<gt>B<read>(PARSER)
 
 Read the header information of one message into this header structure.  This
 method is called by the folder object (some L<Mail::Box|Mail::Box> sub-class), which
 passes the PARSER as an argument.
 
-=back
-
-$obj-E<gt>B<setNoRealize>(FIELD)
-
-=over 4
+=item $obj-E<gt>B<setNoRealize>(FIELD)
 
 Set a field, but avoid the loading of a possibly partial header as set()
 does.  This method does not test the validity of the argument, nor flag the
@@ -357,103 +289,59 @@ header as changed.  This does not trigger completion.
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Message::Head-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Message::Head-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Message::Head-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -461,17 +349,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Reporter/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -567,9 +451,9 @@ you store a message for a longer period of time.
 
 =head1 DIAGNOSTICS
 
-Error: Package $package does not implement $method.
-
 =over 4
+
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -581,12 +465,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

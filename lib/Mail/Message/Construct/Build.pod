@@ -19,9 +19,9 @@ functionality related to building of messages from various components.
 
 =head2 Constructing a message
 
-Mail::Message-E<gt>B<build>([MESSAGE|PART|BODY], CONTENT)
-
 =over 4
+
+=item Mail::Message-E<gt>B<build>([MESSAGE|PART|BODY], CONTENT)
 
 Simplified message object builder.  In case a MESSAGE or message PART is
 specified, a new message is created with the same body to start with, but
@@ -44,16 +44,16 @@ to start playing with L<Mail::Message::Body|Mail::Message::Body> objects yoursel
 This C<build> method will use L<buildFromBody()|Mail::Message::Construct::Build/"Constructing a message"> when the body object has
 been constructed.  Together, they produce your message.
 
- Option--Default
- attach  undef
- data    undef
- file    undef
- files   [ ]
- head    undef
+ -Option--Default
+  attach  undef
+  data    undef
+  file    undef
+  files   [ ]
+  head    undef
 
-. attach => BODY|PART|MESSAGE|ARRAY
+=over 2
 
-=over 4
+=item attach => BODY|PART|MESSAGE|ARRAY
 
 One attachment to the message.  Each attachment can be full MESSAGE, a
 PART, or a BODY.
@@ -64,11 +64,7 @@ You can specify many items (may be of different types) at once.
  attach => $folder->message(3)           # message
  attach => [ $msg1, $msg2->part(6), $msg3->body ];
 
-=back
-
-. data => STRING|ARRAY-OF-LINES
-
-=over 4
+=item data => STRING|ARRAY-OF-LINES
 
 The text for one part, specified as one STRING, or an ARRAY of lines.  Each
 line, including the last, must be terminated by a newline.  This argument
@@ -81,11 +77,7 @@ construct one.
  line 2
  TEXT
 
-=back
-
-. file => FILENAME|FILEHANDLE|IOHANDLE
-
-=over 4
+=item file => FILENAME|FILEHANDLE|IOHANDLE
 
 Create a body where the data is read from the specified FILENAME,
 FILEHANDLE, or object of type IO::Handle.  Also this body is used
@@ -99,19 +91,11 @@ to create a L<Mail::Message::Body|Mail::Message::Body>.
 
  open my $in, '<', '/etc/passwd';        # alternative for IO::File
 
-=back
-
-. files => ARRAY-OF-FILE
-
-=over 4
+=item files => ARRAY-OF-FILE
 
 See option file, but then an array reference collection more of them.
 
-=back
-
-. head => HEAD
-
-=over 4
+=item head => HEAD
 
 Start with a prepared header, otherwise one is created.
 
@@ -137,11 +121,7 @@ example:
   , data   => "<html></html>"
   );
 
-=back
-
-Mail::Message-E<gt>B<buildFromBody>(BODY, [HEAD], HEADERS)
-
-=over 4
+=item Mail::Message-E<gt>B<buildFromBody>(BODY, [HEAD], HEADERS)
 
 Shape a message around a BODY.  Bodies have information about their
 content in them, which is used to construct a header for the message.
@@ -304,9 +284,9 @@ the right type.
 
 =head1 DIAGNOSTICS
 
-Error: Only build() Mail::Message's; they are not in a folder yet
-
 =over 4
+
+=item Error: Only build() Mail::Message's; they are not in a folder yet
 
 You may wish to construct a message to be stored in a some kind
 of folder, but you need to do that in two steps.  First, create a
@@ -318,12 +298,12 @@ into the right message type, adding storage information and the like.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

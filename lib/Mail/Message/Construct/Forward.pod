@@ -17,9 +17,9 @@ functionality related to creating forwarded messages.
 
 =head2 Constructing a message
 
-$obj-E<gt>B<forward>(OPTIONS)
-
 =over 4
+
+=item $obj-E<gt>B<forward>(OPTIONS)
 
 Forward the content of this message.  The body of the message to be forwarded
 is encapsulated in some accompanying text (if you have no wish for that, than
@@ -35,96 +35,64 @@ one message remains, it will be the added as single attachment, otherwise
 a nested multipart will be the result.  The value of this option does not
 matter, as long as it is present.  See C<Mail::Message::Body::Multipart>.
 
- Option    --Default
- Bcc         undef
- Cc          undef
- Date        <now>
- From        <'to' in current>
- Message-ID  <uniquely generated>
- Subject     forwardSubject()
- To          <required>
- body        undef
- include     <if body then 'NO' else C<'INLINE'>>
- preamble    constructed from prelude and postlude
- signature   undef
+ -Option    --Default
+  Bcc         undef
+  Cc          undef
+  Date        <now>
+  From        <'to' in current>
+  Message-ID  <uniquely generated>
+  Subject     forwardSubject()
+  To          <required>
+  body        undef
+  include     <if body then 'NO' else C<'INLINE'>>
+  preamble    constructed from prelude and postlude
+  signature   undef
 
-. Bcc => ADDRESSES
+=over 2
 
-=over 4
+=item Bcc => ADDRESSES
 
 Receivers of blind carbon copies: their names will not be published to
 other message receivers.
 
-=back
-
-. Cc => ADDRESSES
-
-=over 4
+=item Cc => ADDRESSES
 
 The carbon-copy receivers, by default none.
 
-=back
-
-. Date => DATE
-
-=over 4
+=item Date => DATE
 
 The date to be used in the message sent.
 
-=back
-
-. From => ADDRESSES
-
-=over 4
+=item From => ADDRESSES
 
 Your identification, by default taken from the C<To> field of the
 source message.
 
-=back
-
-. Message-ID => STRING
-
-=over 4
+=item Message-ID => STRING
 
 Supply a STRING as specific message-id for the forwarded message.
 By default, one is generated for you.  If there are no angles around
 your id, they will be added.
 
-=back
-
-. Subject => STRING|CODE
-
-=over 4
+=item Subject => STRING|CODE
 
 Force the subject line to the specific STRING, or the result of the
 subroutine specified by CODE.  The subroutine will be called passing
 the subject of the original message as only argument.  By default,
 the L<forwardSubject()|Mail::Message::Construct::Forward/"Constructing a message"> method is used.
 
-=back
-
-. To => ADDRESSES
-
-=over 4
+=item To => ADDRESSES
 
 The destination of your message. Obligatory.  The ADDRESSES may be
 specified as string, a L<Mail::Address|Mail::Address> object, or as array of
 L<Mail::Address|Mail::Address> objects.
 
-=back
-
-. body => OBJECT
-
-=over 4
+=item body => OBJECT
 
 If you specify a fully prepared body OBJECT, it will be used as forwarded
 message contents.  In this case, only the headers are constructed for you.
 
-=back
-
-. include => 'NO'|'INLINE'|'ATTACH'|'ENCAPSULATE'
-
-=over 4
+=item include => 'NO'|'INLINE'|'ATTACH'|'ENCAPSULATE'
 
 Must the message where this is a reply to be included in the message?
 When C<INLINE> is given, you may pass the options of L<forwardInline()|Mail::Message::Construct::Forward/"Constructing a message">
@@ -138,22 +106,14 @@ It is only possible to inline textual messages, therefore binary or
 multi-part messages will always be enclosed as attachment.
 Read the details in section L</Creating a forward>..
 
-=back
-
-. preamble => STRING|BODY
-
-=over 4
+=item preamble => STRING|BODY
 
 Part which is attached before the forwarded message.  If no preamble
 is given, then it is constructed from the prelude and postlude.  When
 these are also not present, you will still get a one liner: the result
 of L<forwardPrelude()|Mail::Message::Construct::Forward/"Constructing a message">
 
-=back
-
-. signature => BODY|MESSAGE
-
-=over 4
+=item signature => BODY|MESSAGE
 
 The signature to be added in case of a multi-part forward.  The mime-type
 of the signature body should indicate this is a used as such.  However,
@@ -162,27 +122,23 @@ before it, and added behind the epilogue.
 
 =back
 
-=back
-
-$obj-E<gt>B<forwardAttach>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<forwardAttach>(OPTIONS)
 
 Forward the message as I<flat> attachment to the specified C<preamble>.  You
 can specify all options available to C<forward()>, although a C<preamble>
 which is provided as body object is required, and any specified C<body>
 is ignored.
 
- Option  --Default
- preamble  <required>
+ -Option  --Default
+  preamble  <required>
 
-. preamble => BODY|PART
+=over 2
+
+=item preamble => BODY|PART
 
 =back
 
-$obj-E<gt>B<forwardEncapsulate>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<forwardEncapsulate>(OPTIONS)
 
 Like L<forwardAttach()|Mail::Message::Construct::Forward/"Constructing a message">, but in this case the original message is first
 encapsulated as nested message in a L<Mail::Message::Body::Nested|Mail::Message::Body::Nested>, and
@@ -192,33 +148,33 @@ You can specify all options available to C<forward()>, although a C<preamble>
 which is provided as body object is required, and any specified C<body>
 is ignored.  Signatures are not stripped.  Signatures are not stripped.
 
- Option  --Default
- preamble  <required>
+ -Option  --Default
+  preamble  <required>
 
-. preamble => BODY|PART
+=over 2
+
+=item preamble => BODY|PART
 
 =back
 
-$obj-E<gt>B<forwardInline>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<forwardInline>(OPTIONS)
 
 This method is equivalent in behavior to L<forward()|Mail::Message::Construct::Forward/"Constructing a message"> with the
 option C<include> set to C<'INLINE'>.  You can specify most of
 the fields which are available to L<forward()|Mail::Message::Construct::Forward/"Constructing a message"> except
 C<include> and C<body>.
 
- Option         --Default
- is_attached      "[The forwarded message is attached]\n"
- max_signature    10
- postlude         undef
- prelude          undef
- quote            undef
- strip_signature  qr/^--\s/
+ -Option         --Default
+  is_attached      "[The forwarded message is attached]\n"
+  max_signature    10
+  postlude         undef
+  prelude          undef
+  quote            undef
+  strip_signature  qr/^--\s/
 
-. is_attached => STRING
+=over 2
 
-=over 4
+=item is_attached => STRING
 
 A forward on binary messages can not be inlined.  Therefore, they are
 automatically translated into an attachment, as made by L<forwardAttach()|Mail::Message::Construct::Forward/"Constructing a message">.
@@ -227,41 +183,25 @@ to this method, to be used in case of such a forward of a binary, but
 is otherwise constructed from the prelude, the value of this option, and
 the postlude.
 
-=back
-
-. max_signature => INTEGER
-
-=over 4
+=item max_signature => INTEGER
 
 Passed to L<Mail::Message::Body::stripSignature(max_lines)|Mail::Message::Body::Construct/"Constructing a body">.  Only
 effective for single-part messages.
 
-=back
-
-. postlude => BODY
-
-=over 4
+=item postlude => BODY
 
 The line(s) which to be added after the quoted reply lines.  Create a
 body for it first.  This should not include the signature, which has its
 own option.  The signature will be added after the postlude when the
 forwarded message is C<INLINE>d.
 
-=back
-
-. prelude => BODY
-
-=over 4
+=item prelude => BODY
 
 The line(s) which will be added before the quoted forwarded lines.
 If nothing is specified, the result of the L<forwardPrelude()|Mail::Message::Construct::Forward/"Constructing a message"> method
 is used.  When C<undef> is specified, no prelude will be added.
 
-=back
-
-. quote => CODE|STRING
-
-=over 4
+=item quote => CODE|STRING
 
 Mangle the lines of an C<INLINE>d reply with CODE, or by prepending a
 STRING to each line.  The routine specified by CODE is called when the
@@ -270,11 +210,7 @@ line is in C<$_>.
 By default, nothing is added before each line.  This option is processed
 after the body has been decoded.
 
-=back
-
-. strip_signature => REGEXP|STRING|CODE
-
-=over 4
+=item strip_signature => REGEXP|STRING|CODE
 
 Remove the signature of the sender.  The value of this parameter is
 passed to L<Mail::Message::Body::stripSignature(pattern)|Mail::Message::Body::Construct/"Constructing a body">, unless the
@@ -283,11 +219,7 @@ before quoting.
 
 =back
 
-=back
-
-$obj-E<gt>B<forwardNo>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<forwardNo>(OPTIONS)
 
 Construct a forward, where the whole body of the message is already
 constructed.  That complex body is usually produced in L<forwardInline()|Mail::Message::Construct::Forward/"Constructing a message">,
@@ -296,16 +228,16 @@ L<forwardAttach()|Mail::Message::Construct::Forward/"Constructing a message">, o
 The OPTIONS are the same as for C<forward()> except that C<body> is
 required.  Some other options, like C<preamble>, are ignored.
 
- Option--Default
- body    <required>
+ -Option--Default
+  body    <required>
 
-. body => BODY
+=over 2
+
+=item body => BODY
 
 =back
 
-$obj-E<gt>B<forwardPostlude>
-
-=over 4
+=item $obj-E<gt>B<forwardPostlude>
 
 Added after the forwarded message.
 
@@ -313,11 +245,7 @@ example:
 
  ---- END forwarded message
 
-=back
-
-$obj-E<gt>B<forwardPrelude>
-
-=over 4
+=item $obj-E<gt>B<forwardPrelude>
 
 Create a few lines to be included before the forwarded message
 content.  The return is an array of lines.
@@ -331,11 +259,7 @@ example:
  Date: Wed, 9 Feb 2000 15:44:05 -0500
  <blank line>
 
-=back
-
-$obj-E<gt>B<forwardSubject>(STRING)
-
-=over 4
+=item $obj-E<gt>B<forwardSubject>(STRING)
 
 Create a subject for a message which is a forward from this one.  This routine
 tries to count the level of reply in subject field, and transform it into
@@ -353,25 +277,6 @@ example:
 =head1 DETAILS
 
 =head2 Creating a forward
-
-The main difference between L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> and L<forward()|Mail::Message::Construct::Forward/"Constructing a message"> is the reason
-for message processing.  The I<bounce> has no intention to modify the
-content of message: the same information is passed-on to someplace else.
-This may mean some conversions, but for instance, the Message-ID does
-not need to be changed.
-
-The purpose of I<forward()> is to pass on information which is
-modified: annotated or reduced.  The information is not sent back
-to the author of the original message (which is implemented by L<reply()|Mail::Message::Construct::Reply/"Constructing a message">),
-but to someone else.
-
-So: some information comes in, is modified, and than forwarded to someone
-else.  Currently, there are four ways to get the original information
-included, which are explained in the next sections.
-
-After the creation of the forward, you may want to L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> the
-message to remove unnecessary complexities.  Of course, that is not
-required.
 
 =head3 forward, specify a body
 
@@ -451,32 +356,39 @@ The message structure is much more complex, but no information is lost.
 This is probably the reason why many MUAs use this when the forward
 an original message as attachment.
 
+The main difference between L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> and L<forward()|Mail::Message::Construct::Forward/"Constructing a message"> is the reason
+for message processing.  The I<bounce> has no intention to modify the
+content of message: the same information is passed-on to someplace else.
+This may mean some conversions, but for instance, the Message-ID does
+not need to be changed.
+
+The purpose of I<forward()> is to pass on information which is
+modified: annotated or reduced.  The information is not sent back
+to the author of the original message (which is implemented by L<reply()|Mail::Message::Construct::Reply/"Constructing a message">),
+but to someone else.
+
+So: some information comes in, is modified, and than forwarded to someone
+else.  Currently, there are four ways to get the original information
+included, which are explained in the next sections.
+
+After the creation of the forward, you may want to L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> the
+message to remove unnecessary complexities.  Of course, that is not
+required.
+
 =head1 DIAGNOSTICS
 
-Error: Cannot include forward source as $include.
-
 =over 4
+
+=item Error: Cannot include forward source as $include.
 
 Unknown alternative for the L<forward(include)|Mail::Message::Construct::Forward/"Constructing a message">.  Valid choices are
 C<NO>, C<INLINE>, C<ATTACH>, and C<ENCAPSULATE>.
 
-=back
+=item Error: Method forwardAttach requires a preamble
 
-Error: Method forwardAttach requires a preamble
+=item Error: Method forwardEncapsulate requires a preamble
 
-=over 4
-
-=back
-
-Error: Method forwardEncapsulate requires a preamble
-
-=over 4
-
-=back
-
-Error: No address to create forwarded to.
-
-=over 4
+=item Error: No address to create forwarded to.
 
 If a forward message is created, a destination address must be specified.
 
@@ -484,12 +396,12 @@ If a forward message is created, a destination address must be specified.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -28,51 +28,39 @@ that software.
 
 =head2 Constructors
 
-$obj-E<gt>B<clone>
-
 =over 4
+
+=item $obj-E<gt>B<clone>
 
 See L<Mail::Message::Head::FieldGroup/"Constructors">
 
-=back
-
-$obj-E<gt>B<fighter>(NAME, [SETTINGS])
+=item $obj-E<gt>B<fighter>(NAME, [SETTINGS])
 
 Mail::Message::Head::SpamGroup-E<gt>B<fighter>(NAME, [SETTINGS])
-
-=over 4
 
 Get the SETTINGS of a certain spam-fighter, optionally after setting them.
 The L<knownFighters()> method returns the defined names.  The names
 are case-sensitive.
 
- Option --Default
- fields   <required>
- isspam   <required>
- version  undef
+ -Option --Default
+  fields   <required>
+  isspam   <required>
+  version  undef
 
-. fields => REGEXP
+=over 2
 
-=over 4
+=item fields => REGEXP
 
 The regular expression which indicates which of the header fields are
 added by the spam fighter software.
 
-=back
-
-. isspam => CODE
-
-=over 4
+=item isspam => CODE
 
 The CODE must return true or false, to indicate whether the spam fighter
 thinks that the message contains spam.  The CODE ref is called with
 the spamgroup object (under construction) and the header which is inspected.
 
-=back
-
-. version => CODE
-
-=over 4
+=item version => CODE
 
 Can be called to collect the official name and the version of the
 software which is used to detect spam.  The CODE ref is called with
@@ -87,34 +75,26 @@ example: adding your own spam-fighter definitions
     isspam => sub { my ($sg, $head) = @_; $head->fields > 100 }
    );
 
-=back
-
-$obj-E<gt>B<from>(HEAD|MESSAGE, OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<from>(HEAD|MESSAGE, OPTIONS)
 
 Returns a list of C<Mail::Message::Head::SpamGroup> objects, based on the
 specified MESSAGE or message HEAD.
 
- Option--Default
- types   undef
+ -Option--Default
+  types   undef
 
-. types => ARRAY-OF-NAMES
+=over 2
 
-=over 4
+=item types => ARRAY-OF-NAMES
 
 Only the specified types will be tried.  If the ARRAY is empty, an empty
 list is returned.  Without this option, all sets are returned.
 
 =back
 
-=back
-
-$obj-E<gt>B<habeasSweFieldsCorrect>([MESSAGE|HEAD])
+=item $obj-E<gt>B<habeasSweFieldsCorrect>([MESSAGE|HEAD])
 
 Mail::Message::Head::SpamGroup-E<gt>B<habeasSweFieldsCorrect>([MESSAGE|HEAD])
-
-=over 4
 
 Returns a true value if the MESSAGE or HEAD contains C<Habeas-SWE> fields
 which are correct.  Without argument, this is used as instance method on
@@ -134,70 +114,54 @@ example: checking Habeas-SWE fields
  {   ...
  }
 
-=back
-
-$obj-E<gt>B<implementedTypes>
+=item $obj-E<gt>B<implementedTypes>
 
 Mail::Message::Head::SpamGroup-E<gt>B<implementedTypes>
 
-=over 4
-
 See L<Mail::Message::Head::FieldGroup/"Constructors">
 
-=back
-
-$obj-E<gt>B<isSpamGroupFieldName>(NAME)
+=item $obj-E<gt>B<isSpamGroupFieldName>(NAME)
 
 Mail::Message::Head::SpamGroup-E<gt>B<isSpamGroupFieldName>(NAME)
 
-=over 4
-
-=back
-
-$obj-E<gt>B<knownFighters>
+=item $obj-E<gt>B<knownFighters>
 
 Mail::Message::Head::SpamGroup-E<gt>B<knownFighters>
-
-=over 4
 
 Returns an unsorted list of all names representing pre-defined spam-fighter
 software.  You can ask details about them, and register more fighters with
 the L<fighter()|Mail::Message::Head::SpamGroup/"Constructors"> method.
 
-=back
-
-Mail::Message::Head::SpamGroup-E<gt>B<new>(FIELDS, OPTIONS)
-
-=over 4
+=item Mail::Message::Head::SpamGroup-E<gt>B<new>(FIELDS, OPTIONS)
 
 Construct an object which maintains one set of fields which were added
 by spam fighting software.
 
- Option  --Defined in     --Default
- head      Mail::Message::Head::FieldGroup  undef
- log       Mail::Reporter   'WARNINGS'
- software  Mail::Message::Head::FieldGroup  undef
- trace     Mail::Reporter   'WARNINGS'
- type      Mail::Message::Head::FieldGroup  undef
- version   Mail::Message::Head::FieldGroup  undef
+ -Option  --Defined in     --Default
+  head      Mail::Message::Head::FieldGroup  undef
+  log       Mail::Reporter   'WARNINGS'
+  software  Mail::Message::Head::FieldGroup  undef
+  trace     Mail::Reporter   'WARNINGS'
+  type      Mail::Message::Head::FieldGroup  undef
+  version   Mail::Message::Head::FieldGroup  undef
 
-. head => HEAD
+=over 2
 
-. log => LEVEL
+=item head => HEAD
 
-. software => STRING
+=item log => LEVEL
 
-. trace => LEVEL
+=item software => STRING
 
-. type => STRING
+=item trace => LEVEL
 
-. version => STRING
+=item type => STRING
+
+=item version => STRING
 
 =back
 
-$obj-E<gt>B<spamDetected>([BOOLEAN])
-
-=over 4
+=item $obj-E<gt>B<spamDetected>([BOOLEAN])
 
 Returns (after setting) whether this group of spam headers thinks that
 this is spam.  See L<Mail::Message::Head::Complete::spamDetected()|Mail::Message::Head::Complete/"Access to the header">.
@@ -214,57 +178,33 @@ example:
 
 =head2 The header
 
-$obj-E<gt>B<add>((FIELD, VALUE) | OBJECT)
-
 =over 4
+
+=item $obj-E<gt>B<add>((FIELD, VALUE) | OBJECT)
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=back
-
-$obj-E<gt>B<addFields>([FIELDNAMES])
-
-=over 4
+=item $obj-E<gt>B<addFields>([FIELDNAMES])
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=back
-
-$obj-E<gt>B<attach>(HEAD)
-
-=over 4
+=item $obj-E<gt>B<attach>(HEAD)
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=back
-
-$obj-E<gt>B<delete>
-
-=over 4
+=item $obj-E<gt>B<delete>
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=back
-
-$obj-E<gt>B<fieldNames>
-
-=over 4
+=item $obj-E<gt>B<fieldNames>
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=back
-
-$obj-E<gt>B<fields>
-
-=over 4
+=item $obj-E<gt>B<fields>
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=back
-
-$obj-E<gt>B<head>
-
-=over 4
+=item $obj-E<gt>B<head>
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
@@ -272,25 +212,17 @@ See L<Mail::Message::Head::FieldGroup/"The header">
 
 =head2 Access to the header
 
-$obj-E<gt>B<software>
-
 =over 4
+
+=item $obj-E<gt>B<software>
 
 See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
-=back
-
-$obj-E<gt>B<type>
-
-=over 4
+=item $obj-E<gt>B<type>
 
 See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
-=back
-
-$obj-E<gt>B<version>
-
-=over 4
+=item $obj-E<gt>B<version>
 
 See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
@@ -298,17 +230,13 @@ See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
 =head2 Internals
 
-$obj-E<gt>B<collectFields>([NAME])
-
 =over 4
+
+=item $obj-E<gt>B<collectFields>([NAME])
 
 See L<Mail::Message::Head::FieldGroup/"Internals">
 
-=back
-
-$obj-E<gt>B<detected>(TYPE, SOFTWARE, VERSION)
-
-=over 4
+=item $obj-E<gt>B<detected>(TYPE, SOFTWARE, VERSION)
 
 See L<Mail::Message::Head::FieldGroup/"Internals">
 
@@ -316,119 +244,67 @@ See L<Mail::Message::Head::FieldGroup/"Internals">
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Message::Head::SpamGroup-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<details>
-
-=over 4
+=item $obj-E<gt>B<details>
 
 See L<Mail::Message::Head::FieldGroup/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Message::Head::SpamGroup-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Message::Head::SpamGroup-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<print>([FILEHANDLE])
-
-=over 4
+=item $obj-E<gt>B<print>([FILEHANDLE])
 
 See L<Mail::Message::Head::FieldGroup/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -436,17 +312,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Reporter/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -491,9 +363,9 @@ is provided via L<http://www.mailscanner.biz>.
 
 =head1 DIAGNOSTICS
 
-Error: Package $package does not implement $method.
-
 =over 4
+
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -505,12 +377,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -29,75 +29,75 @@ protocol weirdness and works as any other mail folder.
 
 =head2 Constructors
 
-Mail::Transport::POP3-E<gt>B<new>(OPTIONS)
-
 =over 4
+
+=item Mail::Transport::POP3-E<gt>B<new>(OPTIONS)
 
 Create a new pop3 server connection.  One object can only handle one
 connection: for a single user to one single server.  If the server
 could not be reached, or when the login fails, this instantiating C<new>
 will return C<undef>.
 
- Option      --Defined in     --Default
- authenticate                   'AUTO'
- executable    Mail::Transport  undef
- hostname      Mail::Transport  'localhost'
- interval      Mail::Transport  30
- log           Mail::Reporter   'WARNINGS'
- password      Mail::Transport  undef
- port          Mail::Transport  110
- proxy         Mail::Transport  undef
- retry         Mail::Transport  <false>
- timeout       Mail::Transport  120
- trace         Mail::Reporter   'WARNINGS'
- use_ssl                        <false>
- username      Mail::Transport  undef
- via           Mail::Transport  'sendmail'
+ -Option      --Defined in     --Default
+  authenticate                   'AUTO'
+  executable    Mail::Transport  undef
+  hostname      Mail::Transport  'localhost'
+  interval      Mail::Transport  30
+  log           Mail::Reporter   'WARNINGS'
+  password      Mail::Transport  undef
+  port          Mail::Transport  110
+  proxy         Mail::Transport  undef
+  retry         Mail::Transport  <false>
+  timeout       Mail::Transport  120
+  trace         Mail::Reporter   'WARNINGS'
+  use_ssl                        <false>
+  username      Mail::Transport  undef
+  via           Mail::Transport  'sendmail'
 
-. authenticate => 'LOGIN'|'APOP'|'AUTO'
+=over 2
 
-=over 4
+=item authenticate => 'LOGIN'|'APOP'|'AUTO'
 
 Authenthication method.  The standard defines two methods, named LOGIN and
 APOP.  The first sends the username and password in plain text to the server
 to get permission, the latter encrypts this data using MD5.  When AUTO is
 used, first APOP is tried, and then LOGIN.
 
+=item executable => FILENAME
+
+=item hostname => HOSTNAME|ARRAY-OF-HOSTNAMES
+
+=item interval => SECONDS
+
+=item log => LEVEL
+
+=item password => STRING
+
+=item port => INTEGER
+
+=item proxy => PATH
+
+=item retry => NUMBER|undef
+
+=item timeout => SECONDS
+
+=item trace => LEVEL
+
+=item use_ssl => BOOLEAN
+
+=item username => STRING
+
+=item via => CLASS|NAME
+
 =back
-
-. executable => FILENAME
-
-. hostname => HOSTNAME|ARRAY-OF-HOSTNAMES
-
-. interval => SECONDS
-
-. log => LEVEL
-
-. password => STRING
-
-. port => INTEGER
-
-. proxy => PATH
-
-. retry => NUMBER|undef
-
-. timeout => SECONDS
-
-. trace => LEVEL
-
-. use_ssl => BOOLEAN
-
-. username => STRING
-
-. via => CLASS|NAME
 
 =back
 
 =head2 Receiving mail
 
-$obj-E<gt>B<receive>([UNIQUE-MESSAGE-ID])
-
 =over 4
+
+=item $obj-E<gt>B<receive>([UNIQUE-MESSAGE-ID])
 
 See L<Mail::Transport::Receive/"Receiving mail">
 
@@ -105,29 +105,21 @@ See L<Mail::Transport::Receive/"Receiving mail">
 
 =head2 Exchanging information
 
-$obj-E<gt>B<deleteFetched>
-
 =over 4
+
+=item $obj-E<gt>B<deleteFetched>
 
 Mark all messages that have been fetched with L<message()|Mail::Transport::POP3/"Exchanging information"> for deletion.
 See L<fetched()|Mail::Transport::POP3/"Exchanging information">.
 
-=back
-
-$obj-E<gt>B<deleted>(BOOLEAN, ID's)
-
-=over 4
+=item $obj-E<gt>B<deleted>(BOOLEAN, ID's)
 
 Either mark the specified message(s) to be deleted on the remote server or
 unmark them for deletion (if the first parameter is false).  Deletion of
 messages will take place B<only> when the connection is specifically
 disconnected or the last reference to the object goes out of scope.
 
-=back
-
-$obj-E<gt>B<disconnect>
-
-=over 4
+=item $obj-E<gt>B<disconnect>
 
 Break contact with the server, if that (still) exists.  Returns true if
 successful.  Please note that even if the disconnect was not successful,
@@ -135,11 +127,7 @@ all knowledge of messages etc. will be removed from the object: the object
 basically has reverted to the state in which it was before anything was done
 with the mail box.
 
-=back
-
-$obj-E<gt>B<fetched>
-
-=over 4
+=item $obj-E<gt>B<fetched>
 
 Returns a reference to a list of ID's that have been fetched using
 L<message()|Mail::Transport::POP3/"Exchanging information">.  This can be used to update a database of messages that
@@ -152,19 +140,11 @@ the messages themselves).
 
 See also L<deleteFetched()|Mail::Transport::POP3/"Exchanging information">.
 
-=back
-
-$obj-E<gt>B<folderSize>
-
-=over 4
+=item $obj-E<gt>B<folderSize>
 
 Returns the total number of octets used by the mailbox on the remote server.
 
-=back
-
-$obj-E<gt>B<header>(ID, [BODYLINES])
-
-=over 4
+=item $obj-E<gt>B<header>(ID, [BODYLINES])
 
 Returns a reference to an array which contains the header of the message
 with the specified ID.  C<undef> is returned if something has gone wrong.
@@ -177,31 +157,19 @@ example:
  my $ref_lines = $pop3->header($uidl);
  print @$ref_lines;
 
-=back
-
-$obj-E<gt>B<id2n>(ID)
-
-=over 4
+=item $obj-E<gt>B<id2n>(ID)
 
 Translates the unique ID of a message into a sequence number which
 represents the message as long a this connection to the POP3 server
 exists.  When the message has been deleted for some reason, C<undef>
 is returned.
 
-=back
-
-$obj-E<gt>B<ids>
-
-=over 4
+=item $obj-E<gt>B<ids>
 
 Returns a list (in list context) or a reference to a list (in scalar context)
 of all ID's which are known by the server on this moment.
 
-=back
-
-$obj-E<gt>B<message>(ID)
-
-=over 4
+=item $obj-E<gt>B<message>(ID)
 
 Returns a reference to an array which contains the lines of the
 message with the specified ID.  Returns C<undef> if something has gone
@@ -212,21 +180,13 @@ example:
  my $ref_lines = $pop3->message($uidl);
  print @$ref_lines;
 
-=back
-
-$obj-E<gt>B<messageSize>(ID)
-
-=over 4
+=item $obj-E<gt>B<messageSize>(ID)
 
 Returns the size of the message which is indicated by the ID, in octets.
 If the message has been deleted on the remote server, this will return
 C<undef>.
 
-=back
-
-$obj-E<gt>B<messages>
-
-=over 4
+=item $obj-E<gt>B<messages>
 
 Returns (in scalar context only) the number of messages that are known
 to exist in the mailbox.
@@ -238,17 +198,13 @@ to exist in the mailbox.
 The follow methods handle protocol internals, and should not be used
 by a normal user of this class.
 
-$obj-E<gt>B<login>
-
 =over 4
+
+=item $obj-E<gt>B<login>
 
 Establish a new connection to the POP3 server, using username and password.
 
-=back
-
-$obj-E<gt>B<send>(SOCKET, data)
-
-=over 4
+=item $obj-E<gt>B<send>(SOCKET, data)
 
 Send data to the indicated socket and return the first line read from
 that socket.  Logs an error if either writing to or reading from socket failed.
@@ -256,11 +212,7 @@ that socket.  Logs an error if either writing to or reading from socket failed.
 This method does B<not> attempt to reconnect or anything: if reading or
 writing the socket fails, something is very definitely wrong.
 
-=back
-
-$obj-E<gt>B<sendList>(SOCKET, COMMAND)
-
-=over 4
+=item $obj-E<gt>B<sendList>(SOCKET, COMMAND)
 
 Sends the indicated COMMAND to the specified socket, and retrieves the
 response.  It returns a reference to an array with all the lines that
@@ -268,11 +220,7 @@ were reveived after the first C<+OK> line and before the end-of-message
 delimiter (a single dot on a line).  Returns C<undef>
 whenever something has gone wrong.
 
-=back
-
-$obj-E<gt>B<socket>
-
-=over 4
+=item $obj-E<gt>B<socket>
 
 Returns a connection to the POP3 server.  If there was no connection yet,
 it will be created transparently.  If the connection with the POP3 server
@@ -283,11 +231,7 @@ If the contact to the server was still present, or could be established,
 an IO::Socket::INET object is returned.  Else, C<undef> is returned and
 no further actions should be tried on the object.
 
-=back
-
-$obj-E<gt>B<status>(SOCKET)
-
-=over 4
+=item $obj-E<gt>B<status>(SOCKET)
 
 Update the current status of folder on the remote POP3 server.
 
@@ -295,33 +239,21 @@ Update the current status of folder on the remote POP3 server.
 
 =head2 Server connection
 
-$obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
-
 =over 4
+
+=item $obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
 
 See L<Mail::Transport/"Server connection">
 
-=back
-
-$obj-E<gt>B<remoteHost>
-
-=over 4
+=item $obj-E<gt>B<remoteHost>
 
 See L<Mail::Transport/"Server connection">
 
-=back
-
-$obj-E<gt>B<retry>
-
-=over 4
+=item $obj-E<gt>B<retry>
 
 See L<Mail::Transport/"Server connection">
 
-=back
-
-$obj-E<gt>B<url>
-
-=over 4
+=item $obj-E<gt>B<url>
 
 Represent this pop3 connection as URL.
 
@@ -329,103 +261,59 @@ Represent this pop3 connection as URL.
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Transport::POP3-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Transport::POP3-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Transport::POP3-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -433,17 +321,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Reporter/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -451,92 +335,56 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-Error: Cannot connect to $host:$port for POP3: $!
-
 =over 4
+
+=item Error: Cannot connect to $host:$port for POP3: $!
 
 Unsuccesful in connecting to the remote POP3 server.
 
-=back
-
-Error: Cannot get the messages of pop3 via messages()
-
-=over 4
+=item Error: Cannot get the messages of pop3 via messages()
 
 It is not possible to retreive all messages on a remote POP3 folder
 at once: each shall be taken separately.  The POP3 folder will hide this
 for you.
 
-=back
-
-Error: Cannot re-connect reliably to server which doesn't support UIDL.
-
-=over 4
+=item Error: Cannot re-connect reliably to server which doesn't support UIDL.
 
 The connection to the remote POP3 was lost, and cannot be re-established
 because the server's protocol implementation lacks the necessary information.
 
-=back
-
-Error: Cannot read POP3 from socket: $!
-
-=over 4
+=item Error: Cannot read POP3 from socket: $!
 
 It is not possible to read the success status of the previously given POP3
 command.  Connection lost?
 
-=back
-
-Error: Cannot write POP3 to socket: $@
-
-=over 4
+=item Error: Cannot write POP3 to socket: $@
 
 It is not possible to send a protocol command to the POP3 server.  Connection
 lost?
 
-=back
-
-Error: Could not authenticate using '$some' method.
-
-=over 4
+=item Error: Could not authenticate using '$some' method.
 
 The authenication method to get access to the POP3 server did not result in
 a connection.  Maybe you need a different authentication protocol, or your
 username with password are invalid.
 
-=back
-
-Error: Could not authenticate using any login method.
-
-=over 4
+=item Error: Could not authenticate using any login method.
 
 No authentication method was explicitly prescribed, so both AUTH and APOP were
 tried.  However, both failed.  There are other authentication methods, which
 are not defined by the main POP3 RFC rfc1939.  These protocols are not
 implemented yet.  Please contribute your implementation.
 
-=back
-
-Error: POP3 Could not do a STAT
-
-=over 4
+=item Error: POP3 Could not do a STAT
 
 For some weird reason, the server does not respond to the STAT call.
 
-=back
-
-Error: POP3 requires a username and password.
-
-=over 4
+=item Error: POP3 requires a username and password.
 
 No username and/or no password specified for this POP3 folder, although
 these are obligatory parts in the protocol.
 
-=back
-
-Error: Package $package does not implement $method.
-
-=over 4
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -544,11 +392,7 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-=back
-
-Error: Server at $host:$port does not seem to be talking POP3.
-
-=over 4
+=item Error: Server at $host:$port does not seem to be talking POP3.
 
 The remote server did not respond to an initial exchange of messages as is
 expected by the POP3 protocol.  The server has probably a different
@@ -558,12 +402,12 @@ service on the specified port.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

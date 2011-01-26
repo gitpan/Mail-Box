@@ -12,8 +12,6 @@ Mail::Box::File - handle file-based folders
    Mail::Box::Dbx
    Mail::Box::Mbox
 
-=head1 SYNOPSIS
-
 =head1 DESCRIPTION
 
 C<Mail::Box::File> is the base-class for all file-based folders: folders
@@ -23,25 +21,17 @@ the next one.
 
 =head1 OVERLOADED
 
-overload: B<"">
-
 =over 4
+
+=item overload: B<"">
 
 See L<Mail::Box/"OVERLOADED">
 
-=back
-
-overload: B<@{}>
-
-=over 4
+=item overload: B<@{}>
 
 See L<Mail::Box/"OVERLOADED">
 
-=back
-
-overload: B<cmp>
-
-=over 4
+=item overload: B<cmp>
 
 See L<Mail::Box/"OVERLOADED">
 
@@ -51,47 +41,47 @@ See L<Mail::Box/"OVERLOADED">
 
 =head2 Constructors
 
-Mail::Box::File-E<gt>B<new>(OPTIONS)
-
 =over 4
 
- Option           --Defined in     --Default
- access             Mail::Box        'r'
- body_delayed_type  Mail::Box        Mail::Message::Body::Delayed
- body_type                           <see description>
- coerce_options     Mail::Box        []
- create             Mail::Box        <false>
- extract            Mail::Box        10240
- field_type         Mail::Box        undef
- fix_headers        Mail::Box        <false>
- folder             Mail::Box        $ENV{MAIL}
- folderdir          Mail::Box        $ENV{HOME}.'/Mail'
- head_delayed_type  Mail::Box        Mail::Message::Head::Delayed
- head_type          Mail::Box        Mail::Message::Head::Complete
- keep_dups          Mail::Box        <false>
- lock_extension                      '.lock'
- lock_file          Mail::Box        <foldername><lock-extension>
- lock_timeout       Mail::Box        1 hour
- lock_type          Mail::Box        Mail::Box::Locker::DotLock
- lock_wait          Mail::Box        10 seconds
- locker             Mail::Box        undef
- log                Mail::Reporter   'WARNINGS'
- manager            Mail::Box        undef
- message_type       Mail::Box        Mail::Box::File::Message
- multipart_type     Mail::Box        Mail::Message::Body::Multipart
- remove_when_empty  Mail::Box        <true>
- save_on_exit       Mail::Box        <true>
- trace              Mail::Reporter   'WARNINGS'
- trusted            Mail::Box        <depends on folder location>
- write_policy                        undef
+=item Mail::Box::File-E<gt>B<new>(OPTIONS)
 
-. access => MODE
+ -Option           --Defined in     --Default
+  access             Mail::Box        'r'
+  body_delayed_type  Mail::Box        Mail::Message::Body::Delayed
+  body_type                           <see description>
+  coerce_options     Mail::Box        []
+  create             Mail::Box        <false>
+  extract            Mail::Box        10240
+  field_type         Mail::Box        undef
+  fix_headers        Mail::Box        <false>
+  folder             Mail::Box        $ENV{MAIL}
+  folderdir          Mail::Box        $ENV{HOME}.'/Mail'
+  head_delayed_type  Mail::Box        Mail::Message::Head::Delayed
+  head_type          Mail::Box        Mail::Message::Head::Complete
+  keep_dups          Mail::Box        <false>
+  lock_extension                      '.lock'
+  lock_file          Mail::Box        <foldername><lock-extension>
+  lock_timeout       Mail::Box        1 hour
+  lock_type          Mail::Box        Mail::Box::Locker::DotLock
+  lock_wait          Mail::Box        10 seconds
+  locker             Mail::Box        undef
+  log                Mail::Reporter   'WARNINGS'
+  manager            Mail::Box        undef
+  message_type       Mail::Box        Mail::Box::File::Message
+  multipart_type     Mail::Box        Mail::Message::Body::Multipart
+  remove_when_empty  Mail::Box        <true>
+  save_on_exit       Mail::Box        <true>
+  trace              Mail::Reporter   'WARNINGS'
+  trusted            Mail::Box        <depends on folder location>
+  write_policy                        undef
 
-. body_delayed_type => CLASS
+=over 2
 
-. body_type => CLASS|CODE
+=item access => MODE
 
-=over 4
+=item body_delayed_type => CLASS
+
+=item body_type => CLASS|CODE
 
 The default C<body_type> option for C<File> folders, which will cause
 messages larger than 10kB to be stored in files and smaller files
@@ -104,31 +94,27 @@ in memory, is implemented like this:
         . ($size > 10000 ? 'File' : 'Lines');
  }
 
-=back
+=item coerce_options => ARRAY
 
-. coerce_options => ARRAY
+=item create => BOOLEAN
 
-. create => BOOLEAN
+=item extract => INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
 
-. extract => INTEGER | CODE | METHOD | 'LAZY'|'ALWAYS'
+=item field_type => CLASS
 
-. field_type => CLASS
+=item fix_headers => BOOLEAN
 
-. fix_headers => BOOLEAN
+=item folder => FOLDERNAME
 
-. folder => FOLDERNAME
+=item folderdir => DIRECTORY
 
-. folderdir => DIRECTORY
+=item head_delayed_type => CLASS
 
-. head_delayed_type => CLASS
+=item head_type => CLASS
 
-. head_type => CLASS
+=item keep_dups => BOOLEAN
 
-. keep_dups => BOOLEAN
-
-. lock_extension => FILENAME|STRING
-
-=over 4
+=item lock_extension => FILENAME|STRING
 
 When the dotlock locking mechanism is used, the lock is created with a
 hardlink to the folder file.  For C<Mail::Box::File> type of folders, this
@@ -148,37 +134,33 @@ When the program runs with less priviledges (as normal user), often the
 default inbox folder can not be locked with the lockfile name which is
 produced by default.
 
-=back
+=item lock_file => FILENAME
 
-. lock_file => FILENAME
+=item lock_timeout => SECONDS
 
-. lock_timeout => SECONDS
+=item lock_type => CLASS|STRING|ARRAY
 
-. lock_type => CLASS|STRING|ARRAY
+=item lock_wait => SECONDS
 
-. lock_wait => SECONDS
+=item locker => OBJECT
 
-. locker => OBJECT
+=item log => LEVEL
 
-. log => LEVEL
+=item manager => MANAGER
 
-. manager => MANAGER
+=item message_type => CLASS
 
-. message_type => CLASS
+=item multipart_type => CLASS
 
-. multipart_type => CLASS
+=item remove_when_empty => BOOLEAN
 
-. remove_when_empty => BOOLEAN
+=item save_on_exit => BOOLEAN
 
-. save_on_exit => BOOLEAN
+=item trace => LEVEL
 
-. trace => LEVEL
+=item trusted => BOOLEAN
 
-. trusted => BOOLEAN
-
-. write_policy => 'REPLACE'|'INPLACE'|undef
-
-=over 4
+=item write_policy => 'REPLACE'|'INPLACE'|undef
 
 Sets the default write policy, as default for a later call to
 L<write(policy)|Mail::Box::File/"Internals">.  With C<undef>, the best policy is autodetected.
@@ -189,25 +171,17 @@ L<write(policy)|Mail::Box::File/"Internals">.  With C<undef>, the best policy is
 
 =head2 The folder
 
-$obj-E<gt>B<addMessage>(MESSAGE, OPTIONS)
-
 =over 4
+
+=item $obj-E<gt>B<addMessage>(MESSAGE, OPTIONS)
 
 See L<Mail::Box/"The folder">
 
-=back
-
-$obj-E<gt>B<addMessages>(MESSAGE [, MESSAGE, ...])
-
-=over 4
+=item $obj-E<gt>B<addMessages>(MESSAGE [, MESSAGE, ...])
 
 See L<Mail::Box/"The folder">
 
-=back
-
-Mail::Box::File-E<gt>B<appendMessages>(OPTIONS)
-
-=over 4
+=item Mail::Box::File-E<gt>B<appendMessages>(OPTIONS)
 
 Appending messages to a file based folder which is not opened is a little
 risky.  In practice, this is often done without locking the folder.  So,
@@ -216,58 +190,42 @@ all goes fast enough that the chance on collition is small.
 
 All OPTIONS of L<Mail::Box::Mbox::new()|Mail::Box::Mbox/"METHODS"> can be supplied.
 
- Option   --Defined in     --Default
- folder     Mail::Box        <required>
- lock_type                   NONE
- message    Mail::Box        undef
- messages   Mail::Box        undef
- share      Mail::Box        <false>
+ -Option   --Defined in     --Default
+  folder     Mail::Box        <required>
+  lock_type                   NONE
+  message    Mail::Box        undef
+  messages   Mail::Box        undef
+  share      Mail::Box        <false>
 
-. folder => FOLDERNAME
+=over 2
 
-. lock_type => ...
+=item folder => FOLDERNAME
 
-=over 4
+=item lock_type => ...
 
 See L<Mail::Box::new(lock_type)|Mail::Box/"Constructors"> for possible values.
 
-=back
+=item message => MESSAGE
 
-. message => MESSAGE
+=item messages => ARRAY-OF-MESSAGES
 
-. messages => ARRAY-OF-MESSAGES
-
-. share => BOOLEAN
+=item share => BOOLEAN
 
 =back
 
-$obj-E<gt>B<close>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<close>(OPTIONS)
 
 See L<Mail::Box/"The folder">
 
-=back
-
-$obj-E<gt>B<copyTo>(FOLDER, OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<copyTo>(FOLDER, OPTIONS)
 
 See L<Mail::Box/"The folder">
 
-=back
-
-$obj-E<gt>B<delete>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<delete>(OPTIONS)
 
 See L<Mail::Box/"The folder">
 
-=back
-
-$obj-E<gt>B<filename>
-
-=over 4
+=item $obj-E<gt>B<filename>
 
 Returns the filename for this folder, which may be an absolute or relative
 path to the file.
@@ -276,59 +234,31 @@ example:
 
  print $folder->filename;
 
-=back
-
-$obj-E<gt>B<folderdir>([DIRECTORY])
-
-=over 4
+=item $obj-E<gt>B<folderdir>([DIRECTORY])
 
 See L<Mail::Box/"The folder">
 
-=back
-
-$obj-E<gt>B<name>
-
-=over 4
+=item $obj-E<gt>B<name>
 
 See L<Mail::Box/"The folder">
 
-=back
-
-$obj-E<gt>B<organization>
-
-=over 4
+=item $obj-E<gt>B<organization>
 
 See L<Mail::Box/"The folder">
 
-=back
-
-$obj-E<gt>B<size>
-
-=over 4
+=item $obj-E<gt>B<size>
 
 See L<Mail::Box/"The folder">
 
-=back
-
-$obj-E<gt>B<type>
-
-=over 4
+=item $obj-E<gt>B<type>
 
 See L<Mail::Box/"The folder">
 
-=back
-
-$obj-E<gt>B<update>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<update>(OPTIONS)
 
 See L<Mail::Box/"The folder">
 
-=back
-
-$obj-E<gt>B<url>
-
-=over 4
+=item $obj-E<gt>B<url>
 
 See L<Mail::Box/"The folder">
 
@@ -336,33 +266,21 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
-$obj-E<gt>B<access>
-
 =over 4
+
+=item $obj-E<gt>B<access>
 
 See L<Mail::Box/"Folder flags">
 
-=back
-
-$obj-E<gt>B<isModified>
-
-=over 4
+=item $obj-E<gt>B<isModified>
 
 See L<Mail::Box/"Folder flags">
 
-=back
-
-$obj-E<gt>B<modified>([BOOLEAN])
-
-=over 4
+=item $obj-E<gt>B<modified>([BOOLEAN])
 
 See L<Mail::Box/"Folder flags">
 
-=back
-
-$obj-E<gt>B<writable>
-
-=over 4
+=item $obj-E<gt>B<writable>
 
 See L<Mail::Box/"Folder flags">
 
@@ -370,73 +288,41 @@ See L<Mail::Box/"Folder flags">
 
 =head2 The messages
 
-$obj-E<gt>B<current>([NUMBER|MESSAGE|MESSAGE-ID])
-
 =over 4
+
+=item $obj-E<gt>B<current>([NUMBER|MESSAGE|MESSAGE-ID])
 
 See L<Mail::Box/"The messages">
 
-=back
-
-$obj-E<gt>B<find>(MESSAGE-ID)
-
-=over 4
+=item $obj-E<gt>B<find>(MESSAGE-ID)
 
 See L<Mail::Box/"The messages">
 
-=back
-
-$obj-E<gt>B<findFirstLabeled>(LABEL, [BOOLEAN, [ARRAY-OF-MSGS]])
-
-=over 4
+=item $obj-E<gt>B<findFirstLabeled>(LABEL, [BOOLEAN, [ARRAY-OF-MSGS]])
 
 See L<Mail::Box/"The messages">
 
-=back
-
-$obj-E<gt>B<message>(INDEX [,MESSAGE])
-
-=over 4
+=item $obj-E<gt>B<message>(INDEX [,MESSAGE])
 
 See L<Mail::Box/"The messages">
 
-=back
-
-$obj-E<gt>B<messageId>(MESSAGE-ID [,MESSAGE])
-
-=over 4
+=item $obj-E<gt>B<messageId>(MESSAGE-ID [,MESSAGE])
 
 See L<Mail::Box/"The messages">
 
-=back
-
-$obj-E<gt>B<messageIds>
-
-=over 4
+=item $obj-E<gt>B<messageIds>
 
 See L<Mail::Box/"The messages">
 
-=back
-
-$obj-E<gt>B<messages>(['ALL',RANGE,'ACTIVE','DELETED',LABEL,!LABEL,FILTER])
-
-=over 4
+=item $obj-E<gt>B<messages>(['ALL',RANGE,'ACTIVE','DELETED',LABEL,!LABEL,FILTER])
 
 See L<Mail::Box/"The messages">
 
-=back
-
-$obj-E<gt>B<nrMessages>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<nrMessages>(OPTIONS)
 
 See L<Mail::Box/"The messages">
 
-=back
-
-$obj-E<gt>B<scanForMessages>(MESSAGE, MESSAGE-IDS, TIMESPAN, WINDOW)
-
-=over 4
+=item $obj-E<gt>B<scanForMessages>(MESSAGE, MESSAGE-IDS, TIMESPAN, WINDOW)
 
 See L<Mail::Box/"The messages">
 
@@ -444,47 +330,31 @@ See L<Mail::Box/"The messages">
 
 =head2 Sub-folders
 
-$obj-E<gt>B<listSubFolders>(OPTIONS)
+=over 4
+
+=item $obj-E<gt>B<listSubFolders>(OPTIONS)
 
 Mail::Box::File-E<gt>B<listSubFolders>(OPTIONS)
 
-=over 4
-
 See L<Mail::Box/"Sub-folders">
 
-=back
-
-$obj-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
+=item $obj-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
 
 Mail::Box::File-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
 
-=over 4
+See L<Mail::Box/"Sub-folders">
+
+=item $obj-E<gt>B<openRelatedFolder>(OPTIONS)
 
 See L<Mail::Box/"Sub-folders">
 
-=back
-
-$obj-E<gt>B<openRelatedFolder>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<openSubFolder>(SUBNAME, OPTIONS)
 
 See L<Mail::Box/"Sub-folders">
 
-=back
-
-$obj-E<gt>B<openSubFolder>(SUBNAME, OPTIONS)
-
-=over 4
-
-See L<Mail::Box/"Sub-folders">
-
-=back
-
-$obj-E<gt>B<topFolderWithMessages>
+=item $obj-E<gt>B<topFolderWithMessages>
 
 Mail::Box::File-E<gt>B<topFolderWithMessages>
-
-=over 4
 
 See L<Mail::Box/"Sub-folders">
 
@@ -492,74 +362,50 @@ See L<Mail::Box/"Sub-folders">
 
 =head2 Internals
 
-$obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
-
 =over 4
+
+=item $obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
 
 See L<Mail::Box/"Internals">
 
-=back
-
-$obj-E<gt>B<create>(FOLDERNAME, OPTIONS)
+=item $obj-E<gt>B<create>(FOLDERNAME, OPTIONS)
 
 Mail::Box::File-E<gt>B<create>(FOLDERNAME, OPTIONS)
 
-=over 4
+ -Option   --Defined in--Default
+  folderdir  Mail::Box   undef
 
- Option   --Defined in--Default
- folderdir  Mail::Box   undef
+=over 2
 
-. folderdir => DIRECTORY
+=item folderdir => DIRECTORY
 
 =back
 
-$obj-E<gt>B<determineBodyType>(MESSAGE, HEAD)
-
-=over 4
+=item $obj-E<gt>B<determineBodyType>(MESSAGE, HEAD)
 
 See L<Mail::Box/"Internals">
 
-=back
-
-$obj-E<gt>B<folderToFilename>(FOLDERNAME, FOLDERDIR, [SUBEXT])
+=item $obj-E<gt>B<folderToFilename>(FOLDERNAME, FOLDERDIR, [SUBEXT])
 
 Mail::Box::File-E<gt>B<folderToFilename>(FOLDERNAME, FOLDERDIR, [SUBEXT])
-
-=over 4
 
 Translate a folder name into a filename, using the
 FOLDERDIR value to replace a leading C<=>.  SUBEXT is only used for MBOX
 folders.
 
-=back
-
-Mail::Box::File-E<gt>B<foundIn>([FOLDERNAME], OPTIONS)
-
-=over 4
+=item Mail::Box::File-E<gt>B<foundIn>([FOLDERNAME], OPTIONS)
 
 See L<Mail::Box/"Internals">
 
-=back
-
-$obj-E<gt>B<lineSeparator>([STRING|'CR'|'LF'|'CRLF'])
-
-=over 4
+=item $obj-E<gt>B<lineSeparator>([STRING|'CR'|'LF'|'CRLF'])
 
 See L<Mail::Box/"Internals">
 
-=back
-
-$obj-E<gt>B<locker>
-
-=over 4
+=item $obj-E<gt>B<locker>
 
 See L<Mail::Box/"Internals">
 
-=back
-
-$obj-E<gt>B<messageCreateOptions>([TYPE, CONFIG])
-
-=over 4
+=item $obj-E<gt>B<messageCreateOptions>([TYPE, CONFIG])
 
 Returns a key-value list of options to be used each time a new message
 is read from a file.  The list is preceded by the TYPE of message which
@@ -568,91 +414,55 @@ has to be created.
 This data is used by L<readMessages()|Mail::Box/"Internals"> and L<updateMessages()|Mail::Box::File/"Internals">.  With
 TYPE and CONFIG, a new configuration is set.
 
-=back
-
-$obj-E<gt>B<moveAwaySubFolder>(DIRECTORY, EXTENSION)
-
-=over 4
+=item $obj-E<gt>B<moveAwaySubFolder>(DIRECTORY, EXTENSION)
 
 The DIRECTORY is renamed by appending the EXTENSION, which defaults to C<".d">,
 to make place for a folder file on that specific location.  C<false> is
 returned if this failed.
 
-=back
-
-$obj-E<gt>B<parser>
-
-=over 4
+=item $obj-E<gt>B<parser>
 
 Create a parser for this mailbox.  The parser stays alive as long as
 the folder is open.
 
-=back
-
-$obj-E<gt>B<read>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<read>(OPTIONS)
 
 See L<Mail::Box/"Internals">
 
-=back
-
-$obj-E<gt>B<readMessages>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<readMessages>(OPTIONS)
 
 See L<Mail::Box/"Internals">
 
-=back
-
-$obj-E<gt>B<storeMessage>(MESSAGE)
-
-=over 4
+=item $obj-E<gt>B<storeMessage>(MESSAGE)
 
 See L<Mail::Box/"Internals">
 
-=back
-
-$obj-E<gt>B<toBeThreaded>(MESSAGES)
-
-=over 4
+=item $obj-E<gt>B<toBeThreaded>(MESSAGES)
 
 See L<Mail::Box/"Internals">
 
-=back
-
-$obj-E<gt>B<toBeUnthreaded>(MESSAGES)
-
-=over 4
+=item $obj-E<gt>B<toBeUnthreaded>(MESSAGES)
 
 See L<Mail::Box/"Internals">
 
-=back
-
-$obj-E<gt>B<updateMessages>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<updateMessages>(OPTIONS)
 
 For file based folders, the file handle stays open until the folder
 is closed.  Update is therefore rather simple: move to the end
 of the last known message, and continue reading...
 
-=back
+=item $obj-E<gt>B<write>(OPTIONS)
 
-$obj-E<gt>B<write>(OPTIONS)
+ -Option      --Defined in     --Default
+  force         Mail::Box        <false>
+  policy                         undef
+  save_deleted  Mail::Box        <false>
 
-=over 4
+=over 2
 
- Option      --Defined in     --Default
- force         Mail::Box        <false>
- policy                         undef
- save_deleted  Mail::Box        <false>
+=item force => BOOLEAN
 
-. force => BOOLEAN
-
-. policy => 'REPLACE'|'INPLACE'|undef
-
-=over 4
+=item policy => 'REPLACE'|'INPLACE'|undef
 
 In what way will the mail folder be updated.  If not specified during the
 write, the value of the L<new(write_policy)|Mail::Box::File/"METHODS"> at folder creation is taken.
@@ -698,15 +508,11 @@ with permission of a normal user, you can only get it to work in C<INPLACE>
 mode.  Be warned that in this case folder locking via a lockfile is not
 possible as well.
 
-=back
-
-. save_deleted => BOOLEAN
+=item save_deleted => BOOLEAN
 
 =back
 
-$obj-E<gt>B<writeMessages>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<writeMessages>(OPTIONS)
 
 See L<Mail::Box/"Internals">
 
@@ -714,11 +520,11 @@ See L<Mail::Box/"Internals">
 
 =head2 Other methods
 
-$obj-E<gt>B<timespan2seconds>(TIME)
+=over 4
+
+=item $obj-E<gt>B<timespan2seconds>(TIME)
 
 Mail::Box::File-E<gt>B<timespan2seconds>(TIME)
-
-=over 4
 
 See L<Mail::Box/"Other methods">
 
@@ -726,103 +532,59 @@ See L<Mail::Box/"Other methods">
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Box::File-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Box::File-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Box::File-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -830,17 +592,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Box/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -861,128 +619,78 @@ problems.  Where access to all messages at once is faster in file
 based folders, access to a single message is (much) slower, because
 the whole folder must be read.
 
-=head1 DETAILS
-
 =head1 DIAGNOSTICS
 
-Error: Cannot append messages to folder file $filename: $!
-
 =over 4
+
+=item Error: Cannot append messages to folder file $filename: $!
 
 Appending messages to a not-opened file-organized folder may fail when the
 operating system does not allow write access to the file at hand.
 
-=back
-
-Error: Cannot create directory $dir for folder $name.
-
-=over 4
+=item Error: Cannot create directory $dir for folder $name.
 
 While creating a file-organized folder, at most one level of directories
 is created above it.  Apparently, more levels of directories are needed,
 or the operating system does not allow you to create the directory.
 
-=back
-
-Error: Cannot create folder file $name: $!
-
-=over 4
+=item Error: Cannot create folder file $name: $!
 
 The file-organized folder file cannot be created for the indicated reason.
 In common cases, the operating system does not grant you write access to
 the directory where the folder file should be stored.
 
-=back
-
-Error: Cannot get a lock on $type folder $self.
-
-=over 4
+=item Error: Cannot get a lock on $type folder $self.
 
 A lock is required to get access to the folder.  If no locking is needed,
 specify the NONE lock type.
 
-=back
+=item Error: Cannot move away sub-folder $dir
 
-Error: Cannot move away sub-folder $dir
-
-=over 4
-
-=back
-
-Warning: Cannot remove folder $name file $filename: $!
-
-=over 4
+=item Warning: Cannot remove folder $name file $filename: $!
 
 Writing an empty folder will usually cause that folder to be removed,
 which fails for the indicated reason.  L<new(remove_when_empty)|Mail::Box/"Constructors">
 
-=back
-
-Warning: Cannot remove folder $name file $filename: $!
-
-=over 4
+=item Warning: Cannot remove folder $name file $filename: $!
 
 Writing an empty folder will usually cause that folder to be removed,
 which fails for the indicated reason.  L<new(remove_when_empty)|Mail::Box/"Constructors">
 controls whether the empty folder will removed; setting it to false
 (C<0>) may be needed to avoid this message.
 
-=back
-
-Error: Cannot replace $filename by $tempname, to update folder $name: $!
-
-=over 4
+=item Error: Cannot replace $filename by $tempname, to update folder $name: $!
 
 The replace policy wrote a new folder file to update the existing, but
 was unable to give the final touch: replacing the old version of the
 folder file for the indicated reason.
 
-=back
-
-Warning: Changes not written to read-only folder $self.
-
-=over 4
+=item Warning: Changes not written to read-only folder $self.
 
 You have opened the folder read-only --which is the default set
 by L<new(access)|Mail::Box/"Constructors">--, made modifications, and now want to close it.
 Set L<close(force)|Mail::Box/"The folder"> if you want to overrule the access mode, or close
 the folder with L<close(write)|Mail::Box/"The folder"> set to C<NEVER>.
 
-=back
-
-Error: Copying failed for one message.
-
-=over 4
+=item Error: Copying failed for one message.
 
 For some reason, for instance disc full, removed by external process, or
 read-protection, it is impossible to copy one of the messages.  Copying will
 proceed for the other messages.
 
-=back
-
-Error: Destination folder $name is not writable.
-
-=over 4
+=item Error: Destination folder $name is not writable.
 
 The folder where the messages are copied to is not opened with write
 access (see L<new(access)|Mail::Box/"Constructors">).  This has no relation with write permission
 to the folder which is controled by your operating system.
 
-=back
-
-Warning: Different messages with id $msgid
-
-=over 4
+=item Warning: Different messages with id $msgid
 
 The message id is discovered more than once within the same folder, but the
 content of the message seems to be different.  This should not be possible:
 each message must be unique.
 
-=back
-
-Error: File too short to get write message $nr ($size, $need)
-
-=over 4
+=item Error: File too short to get write message $nr ($size, $need)
 
 Mail::Box is lazy: it tries to leave messages in the folders until they
 are used, which saves time and memory usage.  When this message appears,
@@ -995,52 +703,32 @@ This message does appear regularly on Windows systems when using the
 to do with Windows incorrectly handling multiple filehandles open in the
 same file.
 
-=back
-
-Warning: Folder $name file $filename is write-protected.
-
-=over 4
+=item Warning: Folder $name file $filename is write-protected.
 
 The folder is opened writable or for appending via L<new(access)|Mail::Box/"Constructors">,
 but the operating system does not permit writing to the file.  The folder
 will be opened read-only.
 
-=back
-
-Error: Folder $name not deleted: not writable.
-
-=over 4
+=item Error: Folder $name not deleted: not writable.
 
 The folder must be opened with write access via L<new(access)|Mail::Box/"Constructors">, otherwise
 removing it will be refused.  So, you may have write-access according to
 the operating system, but that will not automatically mean that this
 C<delete> method permits you to.  The reverse remark is valid as well.
 
-=back
-
-Error: Invalid timespan '$timespan' specified.
-
-=over 4
+=item Error: Invalid timespan '$timespan' specified.
 
 The string does not follow the strict rules of the time span syntax which
 is permitted as parameter.
 
-=back
-
-Warning: Message-id '$msgid' does not contain a domain.
-
-=over 4
+=item Warning: Message-id '$msgid' does not contain a domain.
 
 According to the RFCs, message-ids need to contain a unique random part,
 then an C<@>, and then a domain name.  This is made to avoid the creation
 of two messages with the same id.  The warning emerges when the C<@> is
 missing from the string.
 
-=back
-
-Error: Package $package does not implement $method.
-
-=over 4
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -1048,20 +736,12 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-=back
-
-Error: Unable to create subfolder $name of $folder.
-
-=over 4
+=item Error: Unable to create subfolder $name of $folder.
 
 The copy includes the subfolders, but for some reason it was not possible
 to copy one of these.  Copying will proceed for all other sub-folders.
 
-=back
-
-Error: Unable to update folder $self.
-
-=over 4
+=item Error: Unable to update folder $self.
 
 When a folder is to be written, both replace and inplace write policies are
 tried,  If both fail, the whole update fails.  You may see other, related,
@@ -1071,12 +751,12 @@ error messages to indicate the real problem.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

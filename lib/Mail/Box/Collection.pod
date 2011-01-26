@@ -11,8 +11,6 @@ Mail::Box::Collection - a collection of subfolders
  Mail::Box::Collection
    is a Mail::Reporter
 
-=head1 SYNOPSIS
-
 =head1 DESCRIPTION
 
 The L<Mail::Box::Collection|Mail::Box::Collection> object maintains a set L<Mail::Box::Identity|Mail::Box::Identity>
@@ -22,17 +20,13 @@ the folders of a single user, even if those folders are closed.
 
 =head1 OVERLOADED
 
-overload: B<@{}>
-
 =over 4
+
+=item overload: B<@{}>
 
 See L<User::Identity::Collection/"OVERLOADED">
 
-=back
-
-overload: B<stringification>
-
-=over 4
+=item overload: B<stringification>
 
 See L<User::Identity::Collection/"OVERLOADED">
 
@@ -42,146 +36,102 @@ See L<User::Identity::Collection/"OVERLOADED">
 
 =head2 Constructors
 
-Mail::Box::Collection-E<gt>B<new>([NAME], OPTIONS)
-
 =over 4
 
- Option     --Defined in     --Default
- description  User::Identity::Item  undef
- folder_type                   <from parent>
- item_type    User::Identity::Collection  Mail::Box::Identity
- log          Mail::Reporter   'WARNINGS'
- manager                       <from parent>
- name         User::Identity::Item  'folders'
- parent       User::Identity::Item  undef
- roles        User::Identity::Collection  undef
- trace        Mail::Reporter   'WARNINGS'
+=item Mail::Box::Collection-E<gt>B<new>([NAME], OPTIONS)
 
-. description => STRING
+ -Option     --Defined in     --Default
+  description  User::Identity::Item  undef
+  folder_type                   <from parent>
+  item_type    User::Identity::Collection  Mail::Box::Identity
+  log          Mail::Reporter   'WARNINGS'
+  manager                       <from parent>
+  name         User::Identity::Item  'folders'
+  parent       User::Identity::Item  undef
+  roles        User::Identity::Collection  undef
+  trace        Mail::Reporter   'WARNINGS'
 
-. folder_type => CLASS
+=over 2
 
-. item_type => CLASS
+=item description => STRING
 
-. log => LEVEL
+=item folder_type => CLASS
 
-. manager => OBJECT
+=item item_type => CLASS
 
-=over 4
+=item log => LEVEL
+
+=item manager => OBJECT
 
 An L<Mail::Box::Manager|Mail::Box::Manager> OBJECT (could be a L<Mail::Box::Manage::User|Mail::Box::Manage::User>).
 
+=item name => STRING
+
+=item parent => OBJECT
+
+=item roles => ROLE|ARRAY
+
+=item trace => LEVEL
+
 =back
-
-. name => STRING
-
-. parent => OBJECT
-
-. roles => ROLE|ARRAY
-
-. trace => LEVEL
 
 =back
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Box::Collection-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Box::Collection-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Box::Collection-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -189,17 +139,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Reporter/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -207,51 +153,31 @@ See L<Mail::Reporter/"Cleanup">
 
 =head2 Attributes
 
-$obj-E<gt>B<description>
-
 =over 4
+
+=item $obj-E<gt>B<description>
 
 See L<User::Identity::Item/"Attributes">
 
-=back
-
-$obj-E<gt>B<folderType>([FOLDERCLASS])
-
-=over 4
+=item $obj-E<gt>B<folderType>([FOLDERCLASS])
 
 Returns the type of folder (on this location).  When specified, then
 FOLDERCLASS must be a L<Mail::Box|Mail::Box> extension.
 
-=back
-
-$obj-E<gt>B<itemType>
-
-=over 4
+=item $obj-E<gt>B<itemType>
 
 See L<User::Identity::Collection/"Attributes">
 
-=back
-
-$obj-E<gt>B<manager>
-
-=over 4
+=item $obj-E<gt>B<manager>
 
 The L<Mail::Box::Manager|Mail::Box::Manager> (usually a L<Mail::Box::Manage::User|Mail::Box::Manage::User> object),
 which is handling the opening of folders.
 
-=back
-
-$obj-E<gt>B<name>([NEWNAME])
-
-=over 4
+=item $obj-E<gt>B<name>([NEWNAME])
 
 See L<User::Identity::Item/"Attributes">
 
-=back
-
-$obj-E<gt>B<roles>
-
-=over 4
+=item $obj-E<gt>B<roles>
 
 See L<User::Identity::Collection/"Attributes">
 
@@ -259,59 +185,35 @@ See L<User::Identity::Collection/"Attributes">
 
 =head2 Collections
 
-$obj-E<gt>B<add>(COLLECTION, ROLE)
-
 =over 4
+
+=item $obj-E<gt>B<add>(COLLECTION, ROLE)
 
 See L<User::Identity::Item/"Collections">
 
-=back
-
-$obj-E<gt>B<addCollection>(OBJECT | ([TYPE], OPTIONS))
-
-=over 4
+=item $obj-E<gt>B<addCollection>(OBJECT | ([TYPE], OPTIONS))
 
 See L<User::Identity::Item/"Collections">
 
-=back
-
-$obj-E<gt>B<collection>(NAME)
-
-=over 4
+=item $obj-E<gt>B<collection>(NAME)
 
 See L<User::Identity::Item/"Collections">
 
-=back
-
-$obj-E<gt>B<parent>([PARENT])
-
-=over 4
+=item $obj-E<gt>B<parent>([PARENT])
 
 See L<User::Identity::Item/"Collections">
 
-=back
-
-$obj-E<gt>B<removeCollection>(OBJECT|NAME)
-
-=over 4
+=item $obj-E<gt>B<removeCollection>(OBJECT|NAME)
 
 See L<User::Identity::Item/"Collections">
 
-=back
-
-$obj-E<gt>B<type>
+=item $obj-E<gt>B<type>
 
 Mail::Box::Collection-E<gt>B<type>
 
-=over 4
-
 See L<User::Identity::Item/"Collections">
 
-=back
-
-$obj-E<gt>B<user>
-
-=over 4
+=item $obj-E<gt>B<user>
 
 See L<User::Identity::Item/"Collections">
 
@@ -319,33 +221,21 @@ See L<User::Identity::Item/"Collections">
 
 =head2 Maintaining roles
 
-$obj-E<gt>B<addRole>(ROLE| ( [NAME],OPTIONS ) | ARRAY-OF-OPTIONS)
-
 =over 4
+
+=item $obj-E<gt>B<addRole>(ROLE| ( [NAME],OPTIONS ) | ARRAY-OF-OPTIONS)
 
 See L<User::Identity::Collection/"Maintaining roles">
 
-=back
-
-$obj-E<gt>B<removeRole>(ROLE|NAME)
-
-=over 4
+=item $obj-E<gt>B<removeRole>(ROLE|NAME)
 
 See L<User::Identity::Collection/"Maintaining roles">
 
-=back
-
-$obj-E<gt>B<renameRole>(ROLE|OLDNAME, NEWNAME)
-
-=over 4
+=item $obj-E<gt>B<renameRole>(ROLE|OLDNAME, NEWNAME)
 
 See L<User::Identity::Collection/"Maintaining roles">
 
-=back
-
-$obj-E<gt>B<sorted>
-
-=over 4
+=item $obj-E<gt>B<sorted>
 
 See L<User::Identity::Collection/"Maintaining roles">
 
@@ -353,9 +243,9 @@ See L<User::Identity::Collection/"Maintaining roles">
 
 =head2 Searching
 
-$obj-E<gt>B<find>(NAME|CODE|undef)
-
 =over 4
+
+=item $obj-E<gt>B<find>(NAME|CODE|undef)
 
 See L<User::Identity::Collection/"Searching">
 
@@ -363,77 +253,45 @@ See L<User::Identity::Collection/"Searching">
 
 =head1 DIAGNOSTICS
 
-Error: $object is not a collection.
-
 =over 4
+
+=item Error: $object is not a collection.
 
 The first argument is an object, but not of a class which extends
 L<User::Identity::Collection|User::Identity::Collection>.
 
-=back
-
-Error: Cannot create a $type to add this to my collection.
-
-=over 4
+=item Error: Cannot create a $type to add this to my collection.
 
 Some options are specified to create a $type object, which is native to
 this collection.  However, for some reason this failed.
 
-=back
-
-Error: Cannot load collection module for $type ($class).
-
-=over 4
+=item Error: Cannot load collection module for $type ($class).
 
 Either the specified $type does not exist, or that module named $class returns
 compilation errors.  If the type as specified in the warning is not
 the name of a package, you specified a nickname which was not defined.
 Maybe you forgot the 'require' the package which defines the nickname.
 
-=back
+=item Error: Cannot rename $name into $newname: already exists
 
-Error: Cannot rename $name into $newname: already exists
+=item Error: Cannot rename $name into $newname: doesn't exist
 
-=over 4
-
-=back
-
-Error: Cannot rename $name into $newname: doesn't exist
-
-=over 4
-
-=back
-
-Error: Creation of a collection via $class failed.
-
-=over 4
+=item Error: Creation of a collection via $class failed.
 
 The $class did compile, but it was not possible to create an object
 of that class using the options you specified.
 
-=back
-
-Error: Don't know what type of collection you want to add.
-
-=over 4
+=item Error: Don't know what type of collection you want to add.
 
 If you add a collection, it must either by a collection object or a
 list of options which can be used to create a collection object.  In
 the latter case, the type of collection must be specified.
 
-=back
-
-Warning: No collection $name
-
-=over 4
+=item Warning: No collection $name
 
 The collection with $name does not exist and can not be created.
 
-=back
-
-Error: Package $package does not implement $method.
-
-=over 4
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -441,11 +299,7 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-=back
-
-Error: Wrong type of role for $collection: requires a $expect but got a $type
-
-=over 4
+=item Error: Wrong type of role for $collection: requires a $expect but got a $type
 
 Each $collection groups sets of roles of one specific type ($expect).  You
 cannot add objects of a different $type.
@@ -454,12 +308,12 @@ cannot add objects of a different $type.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

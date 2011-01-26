@@ -13,60 +13,46 @@ Mail::Server::IMAP4::List - folder related IMAP4 answers
  my $imap = Mail::Server::IMAP4::List->new(user => $user);
  print $imap->list(...);        # for LIST command
 
-=head1 DESCRIPTION
-
 =head1 METHODS
 
 =head2 Constructors
 
-Mail::Server::IMAP4::List-E<gt>B<new>(USER)
-
 =over 4
+
+=item Mail::Server::IMAP4::List-E<gt>B<new>(USER)
 
 Create a (temporary) object to handle the LIST requests for
 a certain user, based upon a set of folders.  The data is kept by
 L<Mail::Box::Identity|Mail::Box::Identity> and L<Mail::Box::Collection|Mail::Box::Collection> objects, which
 mean that the folders will not be opened to answer these questions.
 
- Option   --Default
- delimeter  '/'
- folders    <from user>
- inbox      <from user>
- user       <undef>
+ -Option   --Default
+  delimeter  '/'
+  folders    <from user>
+  inbox      <from user>
+  user       <undef>
 
-. delimeter => STRING|CODE
+=over 2
 
-=over 4
+=item delimeter => STRING|CODE
 
 Either the constant delimiter, or a code reference which will get passed
 a folder name and should return the delimiter string used in that name.
 If that folder name is empty, the default delimiter must be reported.
 See L<delimiter()|Mail::Server::IMAP4::List/"Attributes"> for an example.
 
-=back
-
-. folders => OBJECT
-
-=over 4
+=item folders => OBJECT
 
 You need to specify either a set of folders explicitly or via the
 user. Some L<Mail::Box::Identity|Mail::Box::Identity> OBJECT is needed.
 
-=back
-
-. inbox => BOOLEAN
-
-=over 4
+=item inbox => BOOLEAN
 
 For now, only used to see whether there is an inbox, so a truth value will
 do.  This may change in the future.  By default, the flag is set if
 C<$user->inbox> is defined.
 
-=back
-
-. user => OBJECT
-
-=over 4
+=item user => OBJECT
 
 A L<Mail::Box::Manage::User|Mail::Box::Manage::User> OBJECT, representing the user who's folders
 must get reported.
@@ -77,9 +63,9 @@ must get reported.
 
 =head2 Attributes
 
-$obj-E<gt>B<delimiter>([FOLDERNAME])
-
 =over 4
+
+=item $obj-E<gt>B<delimiter>([FOLDERNAME])
 
 Returns the delimiter string.  The foldername is only required when a
 CODE reference was specified at initiation.
@@ -101,27 +87,15 @@ example: setting-up an IMAP4 delimeter
  print $list->delimiter('#news.feed');   # returns a . (dot)   and $news.
  print $list->delimiter('');             # returns default delimiter
 
-=back
-
-$obj-E<gt>B<folders>
-
-=over 4
+=item $obj-E<gt>B<folders>
 
 Returns the L<Mail::Box::Identity|Mail::Box::Identity> of the toplevel folder.
 
-=back
-
-$obj-E<gt>B<inbox>
-
-=over 4
+=item $obj-E<gt>B<inbox>
 
 Returns the L<Mail::Box|Mail::Box> or filename of the INBOX.
 
-=back
-
-$obj-E<gt>B<user>
-
-=over 4
+=item $obj-E<gt>B<user>
 
 Returns the L<Mail::Box::Manage::User|Mail::Box::Manage::User> object, if defined.
 
@@ -129,9 +103,9 @@ Returns the L<Mail::Box::Manage::User|Mail::Box::Manage::User> object, if define
 
 =head2 IMAP Commands
 
-$obj-E<gt>B<list>(BASE, PATTERN)
-
 =over 4
+
+=item $obj-E<gt>B<list>(BASE, PATTERN)
 
 IMAP's LIST command.  The request must be partially decoded, the answer
 will need to be encoded.
@@ -166,12 +140,12 @@ sections 6.3.8 (LIST question) and 7.2.2 (LIST answer)
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

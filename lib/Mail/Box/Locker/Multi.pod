@@ -26,40 +26,40 @@ safer, so that version is preferred.
 
 =head2 Constructors
 
-Mail::Box::Locker::Multi-E<gt>B<new>(OPTIONS)
-
 =over 4
+
+=item Mail::Box::Locker::Multi-E<gt>B<new>(OPTIONS)
 
 You may also pass all OPTIONS understood by the initiated lockers
 used by the multi locker.
 
- Option --Defined in     --Default
- expires  Mail::Box::Locker  1 hour
- file     Mail::Box::Locker  undef
- folder   Mail::Box::Locker  <undef>
- log      Mail::Reporter   'WARNINGS'
- method   Mail::Box::Locker  'MULTI'
- timeout  Mail::Box::Locker  10 seconds
- trace    Mail::Reporter   'WARNINGS'
- use                       <all possible>
+ -Option --Defined in     --Default
+  expires  Mail::Box::Locker  1 hour
+  file     Mail::Box::Locker  undef
+  folder   Mail::Box::Locker  <undef>
+  log      Mail::Reporter   'WARNINGS'
+  method   Mail::Box::Locker  'MULTI'
+  timeout  Mail::Box::Locker  10 seconds
+  trace    Mail::Reporter   'WARNINGS'
+  use                       <all possible>
 
-. expires => SECONDS
+=over 2
 
-. file => FILENAME
+=item expires => SECONDS
 
-. folder => FOLDER
+=item file => FILENAME
 
-. log => LEVEL
+=item folder => FOLDER
 
-. method => STRING|CLASS|ARRAY
+=item log => LEVEL
 
-. timeout => SECONDS|'NOTIMEOUT'
+=item method => STRING|CLASS|ARRAY
 
-. trace => LEVEL
+=item timeout => SECONDS|'NOTIMEOUT'
 
-. use => ARRAY-of-(NAMES|LOCKER)
+=item trace => LEVEL
 
-=over 4
+=item use => ARRAY-of-(NAMES|LOCKER)
 
 Array of locker type NAMES or LOCKER objects to be used to lock one
 folder.  The type NAMES are converted into objects.  When you create your
@@ -79,33 +79,21 @@ example: using a subset of multi-lockers
 
 =head2 The Locker
 
-$obj-E<gt>B<filename>([FILENAME])
-
 =over 4
+
+=item $obj-E<gt>B<filename>([FILENAME])
 
 See L<Mail::Box::Locker/"The Locker">
 
-=back
-
-$obj-E<gt>B<folder>([FOLDER])
-
-=over 4
+=item $obj-E<gt>B<folder>([FOLDER])
 
 See L<Mail::Box::Locker/"The Locker">
 
-=back
-
-$obj-E<gt>B<lockers>
-
-=over 4
+=item $obj-E<gt>B<lockers>
 
 Returns a list with all locker objects used by this object.
 
-=back
-
-$obj-E<gt>B<name>
-
-=over 4
+=item $obj-E<gt>B<name>
 
 See L<Mail::Box::Locker/"The Locker">
 
@@ -113,33 +101,21 @@ See L<Mail::Box::Locker/"The Locker">
 
 =head2 Locking
 
-$obj-E<gt>B<hasLock>
-
 =over 4
+
+=item $obj-E<gt>B<hasLock>
 
 See L<Mail::Box::Locker/"Locking">
 
-=back
-
-$obj-E<gt>B<isLocked>
-
-=over 4
+=item $obj-E<gt>B<isLocked>
 
 See L<Mail::Box::Locker/"Locking">
 
-=back
-
-$obj-E<gt>B<lock>(FOLDER)
-
-=over 4
+=item $obj-E<gt>B<lock>(FOLDER)
 
 See L<Mail::Box::Locker/"Locking">
 
-=back
-
-$obj-E<gt>B<unlock>
-
-=over 4
+=item $obj-E<gt>B<unlock>
 
 See L<Mail::Box::Locker/"Locking">
 
@@ -147,103 +123,59 @@ See L<Mail::Box::Locker/"Locking">
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Box::Locker::Multi-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Box::Locker::Multi-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Box::Locker::Multi-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -251,17 +183,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Box::Locker/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -269,9 +197,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-Error: Package $package does not implement $method.
-
 =over 4
+
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -283,12 +211,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

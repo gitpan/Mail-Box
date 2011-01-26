@@ -25,27 +25,19 @@ functionality related to creating message replies.
 
 =head2 The whole message as text
 
-$obj-E<gt>B<file>
-
 =over 4
+
+=item $obj-E<gt>B<file>
 
 Returns the message as file-handle.
 
-=back
-
-$obj-E<gt>B<lines>
-
-=over 4
+=item $obj-E<gt>B<lines>
 
 Returns the whole message as set of lines.  In LIST context, copies of the
 lines are returned.  In SCALAR context, a reference to an array of lines
 is returned.
 
-=back
-
-$obj-E<gt>B<printStructure>([FILEHANDLE|undef],[INDENT])
-
-=over 4
+=item $obj-E<gt>B<printStructure>([FILEHANDLE|undef],[INDENT])
 
 Print the structure of a message to the specified FILEHANDLE or the
 selected filehandle.  When explicitly C<undef> is specified as handle,
@@ -74,11 +66,7 @@ example:
           text/plain (148 bytes, deleted)
           text/html (358 bytes)
 
-=back
-
-$obj-E<gt>B<string>
-
-=over 4
+=item $obj-E<gt>B<string>
 
 Returns the whole message as string.
 
@@ -88,12 +76,12 @@ Returns the whole message as string.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -1,13 +1,13 @@
-# Copyrights 2001-2010 by Mark Overmeer.
+# Copyrights 2001-2011 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.06.
+# Pod stripped from pm file by OODoc 1.07.
 use strict;
 use warnings;
 
 package Mail::Message::Body::Multipart;
 use vars '$VERSION';
-$VERSION = '2.096';
+$VERSION = '2.097';
 
 use base 'Mail::Message::Body';
 
@@ -393,8 +393,6 @@ sub parts(;$)
 sub part($) { shift->{MMBM_parts}[shift] }
 
 
-my $unique_boundary = time;
-
 sub boundary(;$)
 {   my $self  = shift;
     my $mime  = $self->type;
@@ -404,7 +402,7 @@ sub boundary(;$)
         return $boundary if defined $boundary;
     }
 
-    my $boundary = @_ && defined $_[0] ? (shift) : "boundary-".$unique_boundary++;
+    my $boundary = @_ && defined $_[0] ? (shift) : "boundary-".int rand(1000000);
     $self->type->attribute(boundary => $boundary);
 }
 

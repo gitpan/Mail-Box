@@ -43,106 +43,82 @@ used automatically.
 
 =head2 Constructors
 
-Mail::Box::Parser-E<gt>B<new>(OPTIONS)
-
 =over 4
+
+=item Mail::Box::Parser-E<gt>B<new>(OPTIONS)
 
 Create a parser object which can handle one file.  For
 mbox-like mailboxes, this object can be used to read a whole folder.  In
 case of MH-like mailboxes, each message is contained in a single file,
 so each message has its own parser object.
 
- Option  --Defined in     --Default
- file                       undef
- filename                   <required>
- log       Mail::Reporter   'WARNINGS'
- mode                       'r'
- trace     Mail::Reporter   'WARNINGS'
+ -Option  --Defined in     --Default
+  file                       undef
+  filename                   <required>
+  log       Mail::Reporter   'WARNINGS'
+  mode                       'r'
+  trace     Mail::Reporter   'WARNINGS'
 
-. file => FILE-HANDLE
+=over 2
 
-=over 4
+=item file => FILE-HANDLE
 
 Any C<IO::File> or C<GLOB> which can be used to read the data from.  In
 case this option is specified, the C<filename> is informational only.
 
-=back
-
-. filename => FILENAME
-
-=over 4
+=item filename => FILENAME
 
 The name of the file to be read.
 
-=back
+=item log => LEVEL
 
-. log => LEVEL
-
-. mode => OPENMODE
-
-=over 4
+=item mode => OPENMODE
 
 File-open mode, which defaults to C<'r'>, which means `read-only'.
 See C<perldoc -f open> for possible modes.  Only applicable 
 when no C<file> is specified.
 
-=back
+=item trace => LEVEL
 
-. trace => LEVEL
+=back
 
 =back
 
 =head2 The parser
 
-$obj-E<gt>B<fileChanged>
-
 =over 4
+
+=item $obj-E<gt>B<fileChanged>
 
 Returns whether the file which is parsed has changed after the last
 time takeFileInfo() was called.
 
-=back
-
-$obj-E<gt>B<filename>
-
-=over 4
+=item $obj-E<gt>B<filename>
 
 Returns the name of the file this parser is working on.
 
-=back
-
-$obj-E<gt>B<restart>
-
-=over 4
+=item $obj-E<gt>B<restart>
 
 Restart the parser on a certain file, usually because the content has
 changed.
 
-=back
-
-$obj-E<gt>B<start>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<start>(OPTIONS)
 
 Start the parser by opening a file.
 
- Option--Default
- file    undef
+ -Option--Default
+  file    undef
 
-. file => FILEHANDLE|undef
+=over 2
 
-=over 4
+=item file => FILEHANDLE|undef
 
 The file is already open, for instance because the data must be read
 from STDIN.
 
 =back
 
-=back
-
-$obj-E<gt>B<stop>
-
-=over 4
+=item $obj-E<gt>B<stop>
 
 Stop the parser, which will include a close of the file.  The lock on the
 folder will not be removed (is not the responsibility of the parser).
@@ -151,9 +127,9 @@ folder will not be removed (is not the responsibility of the parser).
 
 =head2 Parsing
 
-$obj-E<gt>B<bodyAsFile>(FILEHANDLE [,CHARS [,LINES]])
-
 =over 4
+
+=item $obj-E<gt>B<bodyAsFile>(FILEHANDLE [,CHARS [,LINES]])
 
 Try to read one message-body from the file, and immediately write
 it to the specified file-handle.  Optionally, the predicted number
@@ -163,11 +139,7 @@ C<undef> and may be wrong.
 The return is a list of three scalars: the location of the body (begin
 and end) and the number of lines in the body.
 
-=back
-
-$obj-E<gt>B<bodyAsList>([,CHARS [,LINES]])
-
-=over 4
+=item $obj-E<gt>B<bodyAsList>([,CHARS [,LINES]])
 
 Try to read one message-body from the file.  Optionally, the predicted number
 of CHARacterS and/or LINES to be read can be supplied.  These values may be
@@ -177,11 +149,7 @@ The return is a list of scalars, each containing one line (including
 line terminator), preceded by two integers representing the location
 in the file where this body started and ended.
 
-=back
-
-$obj-E<gt>B<bodyAsString>([,CHARS [,LINES]])
-
-=over 4
+=item $obj-E<gt>B<bodyAsString>([,CHARS [,LINES]])
 
 Try to read one message-body from the file.  Optionally, the predicted number
 of CHARacterS and/or LINES to be read can be supplied.  These values may be
@@ -191,11 +159,7 @@ The return is a list of three scalars, the location in the file
 where the body starts, where the body ends, and the string containing the
 whole body.
 
-=back
-
-$obj-E<gt>B<bodyDelayed>([,CHARS [,LINES]])
-
-=over 4
+=item $obj-E<gt>B<bodyDelayed>([,CHARS [,LINES]])
 
 Try to read one message-body from the file, but the data is skipped.
 Optionally, the predicted number of CHARacterS and/or LINES to be skipped
@@ -205,41 +169,25 @@ The return is a list of four scalars: the location of the body (begin and
 end), the size of the body, and the number of lines in the body.  The
 number of lines may be C<undef>.
 
-=back
-
-$obj-E<gt>B<filePosition>([POSITION])
-
-=over 4
+=item $obj-E<gt>B<filePosition>([POSITION])
 
 Returns the location of the next byte to be used in the file which is
 parsed.  When a POSITION is specified, the location in the file is
 moved to the indicated spot first.
 
-=back
-
-$obj-E<gt>B<lineSeparator>
-
-=over 4
+=item $obj-E<gt>B<lineSeparator>
 
 Returns the character or characters which are used to separate lines
 in the folder file.  This is based on the first line of the file.
 UNIX systems use a single LF to separate lines.  Windows uses a CR and
 a LF.  Mac uses CR.
 
-=back
-
-$obj-E<gt>B<popSeparator>
-
-=over 4
+=item $obj-E<gt>B<popSeparator>
 
 Remove the last-pushed separator from the list which is maintained by the
 parser.  This will return C<undef> when there is none left.
 
-=back
-
-$obj-E<gt>B<pushSeparator>(STRING|REGEXP)
-
-=over 4
+=item $obj-E<gt>B<pushSeparator>(STRING|REGEXP)
 
 Add a boundary line.  Separators tell the parser where to stop reading.
 A famous separator is the C<From>-line, which is used in Mbox-like
@@ -249,11 +197,7 @@ message are divided by separators.
 The specified STRING describes the start of the separator-line.  The
 REGEXP can specify a more complicated format.
 
-=back
-
-$obj-E<gt>B<readHeader>
-
-=over 4
+=item $obj-E<gt>B<readHeader>
 
 Read the whole message-header and return it as list of field-value
 pairs.  Mind that some fields will appear more than once.
@@ -265,11 +209,7 @@ example:
 
  my ($where, @header) = $parser->readHeader;
 
-=back
-
-$obj-E<gt>B<readSeparator>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<readSeparator>(OPTIONS)
 
 Read the currently active separator (the last one which was pushed).  The
 line (or C<undef>) is returned.  Blank-lines before the separator lines
@@ -283,19 +223,15 @@ separator.  A new separator is activated using L<pushSeparator()|Mail::Box::Pars
 
 =head2 Internals
 
-$obj-E<gt>B<closeFile>
-
 =over 4
+
+=item $obj-E<gt>B<closeFile>
 
 Close the file which was being parsed.
 
-=back
-
-$obj-E<gt>B<defaultParserType>([CLASS])
+=item $obj-E<gt>B<defaultParserType>([CLASS])
 
 Mail::Box::Parser-E<gt>B<defaultParserType>([CLASS])
-
-=over 4
 
 Returns the parser to be used to parse all subsequent
 messages, possibly first setting the parser using the optional argument.
@@ -307,27 +243,23 @@ particular parser to be used (such as your own custom parser). You have
 to C<use> or C<require> the package yourself before calling this method
 with an argument. The parser must be a sub-class of C<Mail::Box::Parser>.
 
-=back
-
-$obj-E<gt>B<openFile>(ARGS)
-
-=over 4
+=item $obj-E<gt>B<openFile>(ARGS)
 
 Open the file to be parsed.  ARGS is a ref-hash of options.
 
- Option  --Default
- filename  <required>
- mode      <required>
+ -Option  --Default
+  filename  <required>
+  mode      <required>
 
-. filename => FILENAME
+=over 2
 
-. mode => STRING
+=item filename => FILENAME
+
+=item mode => STRING
 
 =back
 
-$obj-E<gt>B<takeFileInfo>
-
-=over 4
+=item $obj-E<gt>B<takeFileInfo>
 
 Capture some data about the file being parsed, to be compared later.
 
@@ -335,103 +267,59 @@ Capture some data about the file being parsed, to be compared later.
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Box::Parser-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Box::Parser-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Box::Parser-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -439,17 +327,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Reporter/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -457,9 +341,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-Warning: File $filename changed during access.
-
 =over 4
+
+=item Warning: File $filename changed during access.
 
 When a message parser starts working, it takes size and modification time
 of the file at hand.  If the folder is written, it checks wether there
@@ -471,21 +355,13 @@ locking: some external program (for instance the mail transfer agent,
 like sendmail) uses a different locking mechanism as you do and therefore
 violates your rights.
 
-=back
-
-Error: Filename or handle required to create a parser.
-
-=over 4
+=item Error: Filename or handle required to create a parser.
 
 A message parser needs to know the source of the message at creation.  These
 sources can be a filename (string), file handle object or GLOB.
 See new(filename) and new(file).
 
-=back
-
-Error: Package $package does not implement $method.
-
-=over 4
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -497,12 +373,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

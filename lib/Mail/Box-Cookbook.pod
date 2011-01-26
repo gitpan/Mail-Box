@@ -4,12 +4,6 @@ Mail::Box-Cookbook - Examples how to use Mail::Box
 
 =head1 DESCRIPTION
 
-The Mail::Box package is a suite of classes for accessing and managing
-email folders in a folder-independent manner.  This manual demonstrates
-a few simple applications.  Please contribute with examples and fixes.
-It may also help to have a look at the programs included in the
-C<scripts/> and the C<examples/> directories of the distribution.
-
 =head2 The Manager
 
 For more details about all the packages which are involved in the
@@ -252,14 +246,20 @@ multi-part message is produced.
   , attach     => $signature_body
   );
 
+The Mail::Box package is a suite of classes for accessing and managing
+email folders in a folder-independent manner.  This manual demonstrates
+a few simple applications.  Please contribute with examples and fixes.
+It may also help to have a look at the programs included in the
+C<scripts/> and the C<examples/> directories of the distribution.
+
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

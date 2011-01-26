@@ -26,56 +26,52 @@ operating systems do not support C<flock>.
 
 =head2 Constructors
 
-Mail::Box::Locker::Flock-E<gt>B<new>(OPTIONS)
-
 =over 4
 
- Option --Defined in     --Default
- expires  Mail::Box::Locker  1 hour
- file     Mail::Box::Locker  undef
- folder   Mail::Box::Locker  <undef>
- log      Mail::Reporter   'WARNINGS'
- method   Mail::Box::Locker  'FLOCK'
- timeout  Mail::Box::Locker  10 seconds
- trace    Mail::Reporter   'WARNINGS'
+=item Mail::Box::Locker::Flock-E<gt>B<new>(OPTIONS)
 
-. expires => SECONDS
+ -Option --Defined in     --Default
+  expires  Mail::Box::Locker  1 hour
+  file     Mail::Box::Locker  undef
+  folder   Mail::Box::Locker  <undef>
+  log      Mail::Reporter   'WARNINGS'
+  method   Mail::Box::Locker  'FLOCK'
+  timeout  Mail::Box::Locker  10 seconds
+  trace    Mail::Reporter   'WARNINGS'
 
-. file => FILENAME
+=over 2
 
-. folder => FOLDER
+=item expires => SECONDS
 
-. log => LEVEL
+=item file => FILENAME
 
-. method => STRING|CLASS|ARRAY
+=item folder => FOLDER
 
-. timeout => SECONDS|'NOTIMEOUT'
+=item log => LEVEL
 
-. trace => LEVEL
+=item method => STRING|CLASS|ARRAY
+
+=item timeout => SECONDS|'NOTIMEOUT'
+
+=item trace => LEVEL
+
+=back
 
 =back
 
 =head2 The Locker
 
-$obj-E<gt>B<filename>([FILENAME])
-
 =over 4
+
+=item $obj-E<gt>B<filename>([FILENAME])
 
 See L<Mail::Box::Locker/"The Locker">
 
-=back
-
-$obj-E<gt>B<folder>([FOLDER])
-
-=over 4
+=item $obj-E<gt>B<folder>([FOLDER])
 
 See L<Mail::Box::Locker/"The Locker">
 
-=back
-
-$obj-E<gt>B<name>
-
-=over 4
+=item $obj-E<gt>B<name>
 
 See L<Mail::Box::Locker/"The Locker">
 
@@ -83,29 +79,17 @@ See L<Mail::Box::Locker/"The Locker">
 
 =head2 Locking
 
-$obj-E<gt>B<hasLock>
-
 =over 4
+
+=item $obj-E<gt>B<hasLock>
 
 See L<Mail::Box::Locker/"Locking">
 
-=back
+=item $obj-E<gt>B<isLocked>
 
-$obj-E<gt>B<isLocked>
+=item $obj-E<gt>B<lock>
 
-=over 4
-
-=back
-
-$obj-E<gt>B<lock>
-
-=over 4
-
-=back
-
-$obj-E<gt>B<unlock>
-
-=over 4
+=item $obj-E<gt>B<unlock>
 
 See L<Mail::Box::Locker/"Locking">
 
@@ -113,103 +97,59 @@ See L<Mail::Box::Locker/"Locking">
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Box::Locker::Flock-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Box::Locker::Flock-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Box::Locker::Flock-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -217,17 +157,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Box::Locker/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -235,19 +171,15 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-Warning: Folder $folder already flocked
-
 =over 4
+
+=item Warning: Folder $folder already flocked
 
 The folder is already locked, but you attempt to lock it again.  The
 behavior of double flock's is platform dependend, and therefore should
 not be attempted.  The second lock is ignored (but the unlock isn't)
 
-=back
-
-Error: Package $package does not implement $method.
-
-=over 4
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -255,30 +187,18 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-=back
-
-Error: Unable to check lock file $filename for $folder: $!
-
-=over 4
+=item Error: Unable to check lock file $filename for $folder: $!
 
 To check whether the filename is used to flock a folder, the file must be
 opened.  Apparently this fails, which does not mean that the folder is
 locked neither that it is unlocked.
 
-=back
-
-Error: Unable to open flock file $filename for $folder: $!
-
-=over 4
+=item Error: Unable to open flock file $filename for $folder: $!
 
 For flock-ing a folder it must be opened, which does not succeed for the
 specified reason.
 
-=back
-
-Error: Will never get a flock at $filename for $folder: $!
-
-=over 4
+=item Error: Will never get a flock at $filename for $folder: $!
 
 Tried to flock the folder, but it did not succeed.  The error code received
 from the OS indicates that it will not succeed ever, so we do not need to
@@ -288,12 +208,12 @@ try again.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

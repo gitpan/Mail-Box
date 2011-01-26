@@ -40,9 +40,9 @@ from the folder, as shown in the examples below.
 
 =head2 Constructors
 
-Mail::Box::Locker-E<gt>B<new>(OPTIONS)
-
 =over 4
+
+=item Mail::Box::Locker-E<gt>B<new>(OPTIONS)
 
 Create a new lock. You may do this directly. However, in most cases the
 lock will not be separately instantiated but will be the second class in
@@ -51,46 +51,34 @@ a multiple inheritance construction with a L<Mail::Box|Mail::Box>.
 Generally the client program specifies the locking behavior through
 options given to the folder class.
 
- Option --Defined in     --Default
- expires                   1 hour
- file                      undef
- folder                    <undef>
- log      Mail::Reporter   'WARNINGS'
- method                    'DOTLOCK'
- timeout                   10 seconds
- trace    Mail::Reporter   'WARNINGS'
+ -Option --Defined in     --Default
+  expires                   1 hour
+  file                      undef
+  folder                    <undef>
+  log      Mail::Reporter   'WARNINGS'
+  method                    'DOTLOCK'
+  timeout                   10 seconds
+  trace    Mail::Reporter   'WARNINGS'
 
-. expires => SECONDS
+=over 2
 
-=over 4
+=item expires => SECONDS
 
 How long can a lock exist?  If a different e-mail program leaves a stale
 lock, then this lock will be removed automatically after the specified
 number of seconds.
 
-=back
-
-. file => FILENAME
-
-=over 4
+=item file => FILENAME
 
 Name of the file to lock.  By default, the name of the folder is taken.
 
-=back
-
-. folder => FOLDER
-
-=over 4
+=item folder => FOLDER
 
 Which FOLDER is to be locked, a L<Mail::Box|Mail::Box> object.
 
-=back
+=item log => LEVEL
 
-. log => LEVEL
-
-. method => STRING|CLASS|ARRAY
-
-=over 4
+=item method => STRING|CLASS|ARRAY
 
 Which kind of locking, specified as one of the following names as STRING.
 You may also specify a CLASS name, or an ARRAY of names.  In case of an
@@ -158,11 +146,7 @@ class with this parameter:
  my $locker = Mail::Box::Locker::MyOwn->new;
  $folder->open(locker => $locker);
 
-=back
-
-. timeout => SECONDS|'NOTIMEOUT'
-
-=over 4
+=item timeout => SECONDS|'NOTIMEOUT'
 
 How long to wait while trying to acquire the lock. The lock request will
 fail when the specified number of seconds is reached.  If C<'NOTIMEOUT'> is
@@ -172,17 +156,17 @@ Whether it is possible to limit the wait time is platform- and
 locking-method-specific.  For instance, the `dotlock' method on Windows
 will always wait until the lock has been received.
 
-=back
+=item trace => LEVEL
 
-. trace => LEVEL
+=back
 
 =back
 
 =head2 The Locker
 
-$obj-E<gt>B<filename>([FILENAME])
-
 =over 4
+
+=item $obj-E<gt>B<filename>([FILENAME])
 
 Returns the filename which is used to lock the folder, optionally after
 setting it to the specified FILENAME.
@@ -191,19 +175,11 @@ example:
 
  print $locker->filename;
 
-=back
-
-$obj-E<gt>B<folder>([FOLDER])
-
-=over 4
+=item $obj-E<gt>B<folder>([FOLDER])
 
 Returns the folder object which is locker.
 
-=back
-
-$obj-E<gt>B<name>
-
-=over 4
+=item $obj-E<gt>B<name>
 
 Returns the method used to lock the folder. See the L<new(method)|Mail::Box::Locker/"METHODS"> for
 details on how to specify the lock method.  The name of the method is
@@ -217,9 +193,9 @@ example:
 
 =head2 Locking
 
-$obj-E<gt>B<hasLock>
-
 =over 4
+
+=item $obj-E<gt>B<hasLock>
 
 Check whether the folder has the lock.
 
@@ -228,11 +204,7 @@ example:
  if($locker->hasLock) {...}
  if($folder->locker->hasLock) {...}
 
-=back
-
-$obj-E<gt>B<isLocked>
-
-=over 4
+=item $obj-E<gt>B<isLocked>
 
 Test if the folder is locked by this or a different application.
 
@@ -241,11 +213,7 @@ example:
  if($locker->isLocked) {...}
  if($folder->locker->isLocked) {...}
 
-=back
-
-$obj-E<gt>B<lock>(FOLDER)
-
-=over 4
+=item $obj-E<gt>B<lock>(FOLDER)
 
 Get a lock on a folder.  This will return false if the lock fails.
 
@@ -254,11 +222,7 @@ example:
  die unless $locker->lock;
  if($folder->locker->lock) {...}
 
-=back
-
-$obj-E<gt>B<unlock>
-
-=over 4
+=item $obj-E<gt>B<unlock>
 
 Undo the lock on a folder.
 
@@ -271,103 +235,59 @@ example:
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Box::Locker-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Box::Locker-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Box::Locker-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -375,18 +295,14 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 When the locker is destroyed, for instance when the folder is closed
 or the program ends, the lock will be automatically removed.
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -394,9 +310,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-Error: Package $package does not implement $method.
-
 =over 4
+
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -408,12 +324,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -45,9 +45,9 @@ Examples what you I<cannot> do:
 
 =head2 Constructors
 
-B<TIEARRAY>('Mail::Box::Tie::ARRAY', FOLDER)
-
 =over 4
+
+=item B<TIEARRAY>('Mail::Box::Tie::ARRAY', FOLDER)
 
 Create the tie on an existing folder.
 
@@ -61,9 +61,9 @@ example: tie an array to a folder
 
 =head2 Tied Interface
 
-$obj-E<gt>B<DELETE>
-
 =over 4
+
+=item $obj-E<gt>B<DELETE>
 
 Flag a message to be removed.  Be warned that the message stays in
 the folder, and is not removed before the folder is written.
@@ -73,11 +73,7 @@ example:
  delete $inbox[5];
  $inbox[5]->delete;   #same
 
-=back
-
-$obj-E<gt>B<FETCH>(INDEX)
-
-=over 4
+=item $obj-E<gt>B<FETCH>(INDEX)
 
 Get the message which is at the indicated location in the list of
 messages contained in this folder.  Deleted messages will be returned
@@ -89,11 +85,7 @@ example:
  print @inbox[3,0];   # 4th and first of the folder
  print $inbox[-1];    # last message
 
-=back
-
-$obj-E<gt>B<FETCHSIZE>
-
-=over 4
+=item $obj-E<gt>B<FETCHSIZE>
 
 Return the total number of messages in a folder.  This is called when
 the folder-array is used in scalar context, for instance.
@@ -103,11 +95,7 @@ example:
  if(@inbox > 10)    # contains more than 10 messages?
  my $nrmsgs = @inbox;
 
-=back
-
-$obj-E<gt>B<PUSH>(MESSAGES)
-
-=over 4
+=item $obj-E<gt>B<PUSH>(MESSAGES)
 
 Add MESSAGES to the end of the folder.
 
@@ -115,11 +103,7 @@ example:
 
     push @inbox, $newmsg;
 
-=back
-
-$obj-E<gt>B<STORE>(INDEX, MESSAGE)
-
-=over 4
+=item $obj-E<gt>B<STORE>(INDEX, MESSAGE)
 
 Random message replacement is not permitted --doing so would disturb threads
 etc.  An error occurs if you try to do this. The only thing which is allowed
@@ -132,11 +116,7 @@ example:
  $inbox[-1] = $add;
  push @inbox, $add;
 
-=back
-
-$obj-E<gt>B<STORESIZE>(LENGTH)
-
-=over 4
+=item $obj-E<gt>B<STORESIZE>(LENGTH)
 
 Sets all messages behind from LENGTH to the end of folder to be deleted.
 
@@ -157,12 +137,12 @@ is not permitted to shrink or be mutilated.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

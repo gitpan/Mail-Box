@@ -17,9 +17,9 @@ handle.
 
 =head2 Constructing a message
 
-Mail::Message-E<gt>B<read>(FILEHANDLE|SCALAR|REF-SCALAR|ARRAY-OF-LINES, OPTIONS)
-
 =over 4
+
+=item Mail::Message-E<gt>B<read>(FILEHANDLE|SCALAR|REF-SCALAR|ARRAY-OF-LINES, OPTIONS)
 
 Read a message from a FILEHANDLE, SCALAR, a reference to a SCALAR, or
 a reference to an array of LINES.  Most OPTIONS are passed to the L<new()|Mail::Message/"Constructors">
@@ -41,23 +41,19 @@ This method will remove C<Status> and C<X-Status> fields when they appear
 in the source, to avoid the risk that these fields accidentally interfere
 with your internal administration, which may have security implications.
 
- Option             --Default
- body_type            undef
- strip_status_fields  <true>
+ -Option             --Default
+  body_type            undef
+  strip_status_fields  <true>
 
-. body_type => CLASS
+=over 2
 
-=over 4
+=item body_type => CLASS
 
 Force a body type (any specific implementation of a L<Mail::Message::Body|Mail::Message::Body>)
 to be used to store the message content.  When the body is a multipart or
 nested, this will be overruled.
 
-=back
-
-. strip_status_fields => BOOLEAN
-
-=over 4
+=item strip_status_fields => BOOLEAN
 
 Remove the C<Status> and C<X-Status> fields from the message after
 reading, to lower the risk that received messages from external
@@ -90,12 +86,12 @@ example:
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -23,103 +23,87 @@ part of the qmail mail-delivery system.
 
 =head2 Constructors
 
-Mail::Transport::Qmail-E<gt>B<new>(OPTIONS)
-
 =over 4
 
- Option    --Defined in     --Default
- executable  Mail::Transport  undef
- hostname    Mail::Transport  'localhost'
- interval    Mail::Transport  30
- log         Mail::Reporter   'WARNINGS'
- password    Mail::Transport  undef
- port        Mail::Transport  undef
- proxy       Mail::Transport  'qmail-inject'
- retry       Mail::Transport  <false>
- timeout     Mail::Transport  120
- trace       Mail::Reporter   'WARNINGS'
- username    Mail::Transport  undef
- via         Mail::Transport  'qmail'
+=item Mail::Transport::Qmail-E<gt>B<new>(OPTIONS)
 
-. executable => FILENAME
+ -Option    --Defined in     --Default
+  executable  Mail::Transport  undef
+  hostname    Mail::Transport  'localhost'
+  interval    Mail::Transport  30
+  log         Mail::Reporter   'WARNINGS'
+  password    Mail::Transport  undef
+  port        Mail::Transport  undef
+  proxy       Mail::Transport  'qmail-inject'
+  retry       Mail::Transport  <false>
+  timeout     Mail::Transport  120
+  trace       Mail::Reporter   'WARNINGS'
+  username    Mail::Transport  undef
+  via         Mail::Transport  'qmail'
 
-. hostname => HOSTNAME|ARRAY-OF-HOSTNAMES
+=over 2
 
-. interval => SECONDS
+=item executable => FILENAME
 
-. log => LEVEL
+=item hostname => HOSTNAME|ARRAY-OF-HOSTNAMES
 
-. password => STRING
+=item interval => SECONDS
 
-. port => INTEGER
+=item log => LEVEL
 
-. proxy => PATH
+=item password => STRING
 
-. retry => NUMBER|undef
+=item port => INTEGER
 
-. timeout => SECONDS
+=item proxy => PATH
 
-. trace => LEVEL
+=item retry => NUMBER|undef
 
-. username => STRING
+=item timeout => SECONDS
 
-. via => CLASS|NAME
+=item trace => LEVEL
+
+=item username => STRING
+
+=item via => CLASS|NAME
+
+=back
 
 =back
 
 =head2 Sending mail
 
-$obj-E<gt>B<destinations>(MESSAGE, [ADDRESS|ARRAY-OF-ADDRESSES])
-
 =over 4
+
+=item $obj-E<gt>B<destinations>(MESSAGE, [ADDRESS|ARRAY-OF-ADDRESSES])
 
 See L<Mail::Transport::Send/"Sending mail">
 
-=back
-
-$obj-E<gt>B<putContent>(MESSAGE, FILEHANDLE, OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<putContent>(MESSAGE, FILEHANDLE, OPTIONS)
 
 See L<Mail::Transport::Send/"Sending mail">
 
-=back
-
-$obj-E<gt>B<send>(MESSAGE, OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<send>(MESSAGE, OPTIONS)
 
 See L<Mail::Transport::Send/"Sending mail">
 
-=back
-
-$obj-E<gt>B<trySend>(MESSAGE, OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<trySend>(MESSAGE, OPTIONS)
 
 =back
 
 =head2 Server connection
 
-$obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
-
 =over 4
+
+=item $obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
 
 See L<Mail::Transport/"Server connection">
 
-=back
-
-$obj-E<gt>B<remoteHost>
-
-=over 4
+=item $obj-E<gt>B<remoteHost>
 
 See L<Mail::Transport/"Server connection">
 
-=back
-
-$obj-E<gt>B<retry>
-
-=over 4
+=item $obj-E<gt>B<retry>
 
 See L<Mail::Transport/"Server connection">
 
@@ -127,103 +111,59 @@ See L<Mail::Transport/"Server connection">
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Transport::Qmail-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Transport::Qmail-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Transport::Qmail-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -231,17 +171,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Reporter/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -249,27 +185,19 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-Error: Errors when closing Qmail mailer $program: $!
-
 =over 4
+
+=item Error: Errors when closing Qmail mailer $program: $!
 
 The Qmail mail transfer agent did start, but was not able to handle the
 message for some specific reason.
 
-=back
-
-Warning: Message has no destination
-
-=over 4
+=item Warning: Message has no destination
 
 It was not possible to figure-out where the message is intended to go
 to.
 
-=back
-
-Error: Package $package does not implement $method.
-
-=over 4
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -277,11 +205,7 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-=back
-
-Warning: Resent group does not specify a destination
-
-=over 4
+=item Warning: Resent group does not specify a destination
 
 The message which is sent is the result of a bounce (for instance
 created with L<Mail::Message::bounce()|Mail::Message::Construct::Bounce/"Constructing a message">), and therefore starts with a
@@ -300,12 +224,12 @@ found in the message itself about the destination.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -50,49 +50,29 @@ are enough for your application.
 
 =head1 OVERLOADED
 
-overload: B<"">
-
 =over 4
+
+=item overload: B<"">
 
 See L<Mail::Message::Field/"OVERLOADED">
 
-=back
-
-overload: B<+0>
-
-=over 4
+=item overload: B<+0>
 
 See L<Mail::Message::Field/"OVERLOADED">
 
-=back
-
-overload: B<<=>>
-
-=over 4
+=item overload: B<<=>>
 
 See L<Mail::Message::Field/"OVERLOADED">
 
-=back
-
-overload: B<bool>
-
-=over 4
+=item overload: B<bool>
 
 See L<Mail::Message::Field/"OVERLOADED">
 
-=back
-
-overload: B<cmp>
-
-=over 4
+=item overload: B<cmp>
 
 See L<Mail::Message::Field/"OVERLOADED">
 
-=back
-
-overload: B<stringification>
-
-=over 4
+=item overload: B<stringification>
 
 In string context, the decoded body is returned, as if L<decodedBody()|Mail::Message::Field::Full/"Access to the body">
 would have been called.
@@ -103,17 +83,13 @@ would have been called.
 
 =head2 Constructors
 
-$obj-E<gt>B<clone>
-
 =over 4
+
+=item $obj-E<gt>B<clone>
 
 See L<Mail::Message::Field/"Constructors">
 
-=back
-
-Mail::Message::Field::Full-E<gt>B<from>(FIELD, OPTIONS)
-
-=over 4
+=item Mail::Message::Field::Full-E<gt>B<from>(FIELD, OPTIONS)
 
 Convert any FIELD (a L<Mail::Message::Field|Mail::Message::Field> object) into a new
 L<Mail::Message::Field::Full|Mail::Message::Field::Full> object.  This conversion is done the hard
@@ -135,11 +111,7 @@ example:
  my $full = $msg->head->study('subject');       # same
  my $full = $msg->get('subject');               # same
 
-=back
-
-Mail::Message::Field::Full-E<gt>B<new>(DATA)
-
-=over 4
+=item Mail::Message::Field::Full-E<gt>B<new>(DATA)
 
 Creating a new field object the correct way is a lot of work, because
 there is so much freedom in the RFCs, but at the same time so many
@@ -170,53 +142,41 @@ constructor of the field: the types which are accepted may differ.
 The optional ATTRIBUTE list contains L<Mail::Message::Field::Attribute|Mail::Message::Field::Attribute>
 objects.  Finally, there are some OPTIONS.
 
- Option  --Defined in     --Default
- charset                    undef
- encoding                   'q'
- force                      false
- language                   undef
- log       Mail::Reporter   'WARNINGS'
- trace     Mail::Reporter   'WARNINGS'
+ -Option  --Defined in     --Default
+  charset                    undef
+  encoding                   'q'
+  force                      false
+  language                   undef
+  log       Mail::Reporter   'WARNINGS'
+  trace     Mail::Reporter   'WARNINGS'
 
-. charset => STRING
+=over 2
 
-=over 4
+=item charset => STRING
 
 The body is specified in utf8, and must become 7-bits ascii to be
 transmited.  Specify a charset to which the multi-byte utf8 is converted
 before it gets encoded.  See L<encode()|Mail::Message::Field::Full/"Internals">, which does the job.
 
-=back
-
-. encoding => 'q'|'Q'|'b'|'B'
-
-=over 4
+=item encoding => 'q'|'Q'|'b'|'B'
 
 Non-ascii characters are encoded using Quoted-Printable ('q' or 'Q') or
 Base64 ('b' or 'B') encoding.
 
-=back
-
-. force => BOOLEAN
-
-=over 4
+=item force => BOOLEAN
 
 Enforce encoding in the specified charset, even when it is not needed
 because the body does not contain any non-ascii characters.
 
-=back
-
-. language => STRING
-
-=over 4
+=item language => STRING
 
 The language used can be specified, however is rarely used my mail clients.
 
+=item log => LEVEL
+
+=item trace => LEVEL
+
 =back
-
-. log => LEVEL
-
-. trace => LEVEL
 
 example: 
 
@@ -231,59 +191,35 @@ example:
 
 =head2 The field
 
-$obj-E<gt>B<isStructured>
+=over 4
+
+=item $obj-E<gt>B<isStructured>
 
 Mail::Message::Field::Full-E<gt>B<isStructured>
 
-=over 4
+See L<Mail::Message::Field/"The field">
+
+=item $obj-E<gt>B<length>
 
 See L<Mail::Message::Field/"The field">
 
-=back
-
-$obj-E<gt>B<length>
-
-=over 4
+=item $obj-E<gt>B<nrLines>
 
 See L<Mail::Message::Field/"The field">
 
-=back
-
-$obj-E<gt>B<nrLines>
-
-=over 4
+=item $obj-E<gt>B<print>([FILEHANDLE])
 
 See L<Mail::Message::Field/"The field">
 
-=back
-
-$obj-E<gt>B<print>([FILEHANDLE])
-
-=over 4
+=item $obj-E<gt>B<size>
 
 See L<Mail::Message::Field/"The field">
 
-=back
-
-$obj-E<gt>B<size>
-
-=over 4
+=item $obj-E<gt>B<string>([WRAP])
 
 See L<Mail::Message::Field/"The field">
 
-=back
-
-$obj-E<gt>B<string>([WRAP])
-
-=over 4
-
-See L<Mail::Message::Field/"The field">
-
-=back
-
-$obj-E<gt>B<toDisclose>
-
-=over 4
+=item $obj-E<gt>B<toDisclose>
 
 See L<Mail::Message::Field/"The field">
 
@@ -291,25 +227,17 @@ See L<Mail::Message::Field/"The field">
 
 =head2 Access to the name
 
-$obj-E<gt>B<Name>
-
 =over 4
+
+=item $obj-E<gt>B<Name>
 
 See L<Mail::Message::Field/"Access to the name">
 
-=back
-
-$obj-E<gt>B<name>
-
-=over 4
+=item $obj-E<gt>B<name>
 
 See L<Mail::Message::Field/"Access to the name">
 
-=back
-
-$obj-E<gt>B<wellformedName>([STRING])
-
-=over 4
+=item $obj-E<gt>B<wellformedName>([STRING])
 
 See L<Mail::Message::Field/"Access to the name">
 
@@ -317,17 +245,13 @@ See L<Mail::Message::Field/"Access to the name">
 
 =head2 Access to the body
 
-$obj-E<gt>B<body>
-
 =over 4
+
+=item $obj-E<gt>B<body>
 
 See L<Mail::Message::Field/"Access to the body">
 
-=back
-
-$obj-E<gt>B<decodedBody>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<decodedBody>(OPTIONS)
 
 Returns the unfolded body of the field, where encodings are resolved.  The
 returned line will still contain comments and such.  The OPTIONS are passed
@@ -338,37 +262,21 @@ because of encapsulated special characters.  By default, the body is decoded
 as text, which results in a small difference within comments as well
 (read the RFC).
 
-=back
-
-$obj-E<gt>B<folded>
-
-=over 4
+=item $obj-E<gt>B<folded>
 
 See L<Mail::Message::Field/"Access to the body">
 
-=back
-
-$obj-E<gt>B<foldedBody>([BODY])
-
-=over 4
+=item $obj-E<gt>B<foldedBody>([BODY])
 
 See L<Mail::Message::Field/"Access to the body">
 
-=back
-
-$obj-E<gt>B<stripCFWS>([STRING])
+=item $obj-E<gt>B<stripCFWS>([STRING])
 
 Mail::Message::Field::Full-E<gt>B<stripCFWS>([STRING])
 
-=over 4
-
 See L<Mail::Message::Field/"Access to the body">
 
-=back
-
-$obj-E<gt>B<unfoldedBody>([BODY, [WRAP]])
-
-=over 4
+=item $obj-E<gt>B<unfoldedBody>([BODY, [WRAP]])
 
 See L<Mail::Message::Field/"Access to the body">
 
@@ -376,54 +284,34 @@ See L<Mail::Message::Field/"Access to the body">
 
 =head2 Access to the content
 
-$obj-E<gt>B<addresses>
-
 =over 4
+
+=item $obj-E<gt>B<addresses>
 
 See L<Mail::Message::Field/"Access to the content">
 
-=back
-
-$obj-E<gt>B<attribute>(NAME [, VALUE])
-
-=over 4
+=item $obj-E<gt>B<attribute>(NAME [, VALUE])
 
 See L<Mail::Message::Field/"Access to the content">
 
-=back
-
-$obj-E<gt>B<attributes>
-
-=over 4
+=item $obj-E<gt>B<attributes>
 
 See L<Mail::Message::Field/"Access to the content">
 
-=back
-
-$obj-E<gt>B<beautify>
-
-=over 4
+=item $obj-E<gt>B<beautify>
 
 For structured header fields, this removes the original encoding of the
 field's body (the format as it was offered to L<parse()|Mail::Message::Field::Full/"Parsing">), therefore the
 next request for the field will have to re-produce the read data clean
 and nice.  For unstructured bodies, this method doesn't do a thing.
 
-=back
-
-$obj-E<gt>B<comment>([STRING])
-
-=over 4
+=item $obj-E<gt>B<comment>([STRING])
 
 See L<Mail::Message::Field/"Access to the content">
 
-=back
-
-$obj-E<gt>B<createComment>(STRING, OPTIONS)
+=item $obj-E<gt>B<createComment>(STRING, OPTIONS)
 
 Mail::Message::Field::Full-E<gt>B<createComment>(STRING, OPTIONS)
-
-=over 4
 
 Create a comment to become part in a field.  Comments are automatically
 included within parenthesis.  Matching pairs of parenthesis are
@@ -435,13 +323,9 @@ Backslashes will stay, except at the end, where it will be doubled.
 The OPTIONS are C<charset>, C<language>, and C<encoding> as always.
 The created comment is returned.
 
-=back
-
-$obj-E<gt>B<createPhrase>(STRING, OPTIONS)
+=item $obj-E<gt>B<createPhrase>(STRING, OPTIONS)
 
 Mail::Message::Field::Full-E<gt>B<createPhrase>(STRING, OPTIONS)
-
-=over 4
 
 A phrase is a text which plays a well defined role.  This is the main
 difference with comments, which have do specified meaning.  Some special
@@ -450,29 +334,17 @@ quotes: do not specify them yourself.
 
 The OPTIONS are C<charset>, C<language>, and C<encoding>, as always.
 
-=back
-
-$obj-E<gt>B<study>
-
-=over 4
+=item $obj-E<gt>B<study>
 
 See L<Mail::Message::Field/"Access to the content">
 
-=back
-
-$obj-E<gt>B<toDate>([TIME])
+=item $obj-E<gt>B<toDate>([TIME])
 
 Mail::Message::Field::Full-E<gt>B<toDate>([TIME])
 
-=over 4
-
 See L<Mail::Message::Field/"Access to the content">
 
-=back
-
-$obj-E<gt>B<toInt>
-
-=over 4
+=item $obj-E<gt>B<toInt>
 
 See L<Mail::Message::Field/"Access to the content">
 
@@ -480,11 +352,11 @@ See L<Mail::Message::Field/"Access to the content">
 
 =head2 Other methods
 
-$obj-E<gt>B<dateToTimestamp>(STRING)
+=over 4
+
+=item $obj-E<gt>B<dateToTimestamp>(STRING)
 
 Mail::Message::Field::Full-E<gt>B<dateToTimestamp>(STRING)
-
-=over 4
 
 See L<Mail::Message::Field/"Other methods">
 
@@ -492,19 +364,15 @@ See L<Mail::Message::Field/"Other methods">
 
 =head2 Internals
 
-$obj-E<gt>B<consume>(LINE | (NAME,BODY|OBJECTS))
-
 =over 4
+
+=item $obj-E<gt>B<consume>(LINE | (NAME,BODY|OBJECTS))
 
 See L<Mail::Message::Field/"Internals">
 
-=back
-
-$obj-E<gt>B<decode>(STRING, OPTIONS)
+=item $obj-E<gt>B<decode>(STRING, OPTIONS)
 
 Mail::Message::Field::Full-E<gt>B<decode>(STRING, OPTIONS)
-
-=over 4
 
 Decode field encoded STRING to an utf8 string.  The input STRING is part of
 a header field, and as such, may contain encoded words in C<=?...?.?...?=>
@@ -521,12 +389,12 @@ Encodings with unknown charsets are left untouched [requires v2.085,
 otherwise croaked].  Unknown characters within an charset are replaced by
 a '?'.
 
- Option --Default
- is_text  1
+ -Option --Default
+  is_text  1
 
-. is_text => BOOLEAN
+=over 2
 
-=over 4
+=item is_text => BOOLEAN
 
 Encoding on text is slightly more complicated than encoding structured data,
 because it contains blanks.  Visible blanks have to be ignored between two
@@ -540,98 +408,62 @@ example:
  print Mail::Message::Field::Full->decode('=?iso-8859-1?Q?J=F8rgen?=');
     # prints   JE<0slash>rgen
 
-=back
-
-$obj-E<gt>B<defaultWrapLength>([LENGTH])
-
-=over 4
+=item $obj-E<gt>B<defaultWrapLength>([LENGTH])
 
 See L<Mail::Message::Field/"Internals">
 
-=back
-
-$obj-E<gt>B<encode>(STRING, OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<encode>(STRING, OPTIONS)
 
 Encode the (possibly utf8 encoded) STRING to a string which is acceptable
 to the RFC2047 definition of a header: only containing us-ascii characters.
 
- Option  --Default
- charset   'us-ascii'
- encoding  'q'
- force     <flase>
- language  undef
+ -Option  --Default
+  charset   'us-ascii'
+  encoding  'q'
+  force     <flase>
+  language  undef
 
-. charset => STRING
+=over 2
 
-=over 4
+=item charset => STRING
 
 STRING is an utf8 string which has to be translated into any byte-wise
 character set for transport, because MIME-headers can only contain ascii
 characters.
 
-=back
-
-. encoding => 'q'|'Q'|'b'|'B'
-
-=over 4
+=item encoding => 'q'|'Q'|'b'|'B'
 
 The character encoding to be used.  With C<q> or C<Q>, quoted-printable
 encoding will be used.  With C<b > or C<B >, base64 encoding will be taken.
 
-=back
-
-. force => BOOLEAN
-
-=over 4
+=item force => BOOLEAN
 
 Encode the string, even when it only contains us-ascii characters.  By
 default, this is off because it decreases readibility of the produced
 header fields.
 
-=back
-
-. language => STRING
-
-=over 4
+=item language => STRING
 
 RFC2231 defines how to specify language encodings in encoded words.  The
 STRING is a strandard iso language name.
 
 =back
 
-=back
-
-$obj-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
+=item $obj-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
 
 Mail::Message::Field::Full-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
 
-=over 4
+See L<Mail::Message::Field/"Internals">
+
+=item $obj-E<gt>B<setWrapLength>([LENGTH])
 
 See L<Mail::Message::Field/"Internals">
 
-=back
-
-$obj-E<gt>B<setWrapLength>([LENGTH])
-
-=over 4
+=item $obj-E<gt>B<stringifyData>(STRING|ARRAY|OBJECTS)
 
 See L<Mail::Message::Field/"Internals">
 
-=back
-
-$obj-E<gt>B<stringifyData>(STRING|ARRAY|OBJECTS)
-
-=over 4
-
-See L<Mail::Message::Field/"Internals">
-
-=back
-
-$obj-E<gt>B<unfold>(STRING)
-
-=over 4
+=item $obj-E<gt>B<unfold>(STRING)
 
 See L<Mail::Message::Field/"Internals">
 
@@ -639,32 +471,24 @@ See L<Mail::Message::Field/"Internals">
 
 =head2 Parsing
 
-$obj-E<gt>B<consumeComment>(STRING)
+=over 4
+
+=item $obj-E<gt>B<consumeComment>(STRING)
 
 Mail::Message::Field::Full-E<gt>B<consumeComment>(STRING)
-
-=over 4
 
 Try to read a comment from the STRING.  When successful, the comment
 without encapsulation parenthesis is returned, together with the rest
 of the string.
 
-=back
-
-$obj-E<gt>B<consumeDotAtom>(STRING)
-
-=over 4
+=item $obj-E<gt>B<consumeDotAtom>(STRING)
 
 Returns three elemens: the atom-text, the rest string, and the
 concatenated comments.  Both atom and comments can be undef.
 
-=back
-
-$obj-E<gt>B<consumePhrase>(STRING)
+=item $obj-E<gt>B<consumePhrase>(STRING)
 
 Mail::Message::Field::Full-E<gt>B<consumePhrase>(STRING)
-
-=over 4
 
 Take the STRING, and try to strip-off a valid phrase.  In the obsolete
 phrase syntax, any sequence of words is accepted as phrase (as long as
@@ -680,21 +504,13 @@ example:
 
  my ($phrase, $rest) = $field->consumePhrase( q["hi!" <sales@example.com>] );
 
-=back
-
-$obj-E<gt>B<parse>(STRING)
-
-=over 4
+=item $obj-E<gt>B<parse>(STRING)
 
 Get the detailed information from the STRING, and store the data found
 in the field object.  The accepted input is very field type dependent.
 Unstructured fields do no parsing whatsoever.
 
-=back
-
-$obj-E<gt>B<produceBody>
-
-=over 4
+=item $obj-E<gt>B<produceBody>
 
 Produce the text for the field, based on the information stored within the
 field object.
@@ -708,103 +524,59 @@ a call to this method when the field is needed later.
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Message::Field::Full-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Message::Field::Full-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Message::Field::Full-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -812,78 +584,52 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
+
+See L<Mail::Reporter/"Cleanup">
+
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
 =back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
-
-See L<Mail::Reporter/"Cleanup">
-
-=back
-
-=head1 DETAILS
 
 =head1 DIAGNOSTICS
 
-Warning: Field content is not numerical: $content
-
 =over 4
+
+=item Warning: Field content is not numerical: $content
 
 The numeric value of a field is requested (for instance the C<Lines> or
 C<Content-Length> fields should be numerical), however the data contains
 weird characters.
 
-=back
-
-Warning: Illegal character in charset '$charset'
-
-=over 4
+=item Warning: Illegal character in charset '$charset'
 
 The field is created with an utf8 string which only contains data from the
 specified character set.  However, that character set can never be a valid
 name because it contains characters which are not permitted.
 
-=back
-
-Warning: Illegal character in field name $name
-
-=over 4
+=item Warning: Illegal character in field name $name
 
 A new field is being created which does contain characters not permitted
 by the RFCs.  Using this field in messages may break other e-mail clients
 or transfer agents, and therefore mutulate or extinguish your message.
 
-=back
-
-Warning: Illegal character in language '$lang'
-
-=over 4
+=item Warning: Illegal character in language '$lang'
 
 The field is created with data which is specified to be in a certain language,
 however, the name of the language cannot be valid: it contains characters
 which are not permitted by the RFCs.
 
-=back
-
-Warning: Illegal encoding '$encoding', used 'q'
-
-=over 4
+=item Warning: Illegal encoding '$encoding', used 'q'
 
 The RFCs only permit base64 (C<b > or C<B >) or quoted-printable
 (C<q> or C<Q>) encoding.  Other than these four options are illegal.
 
-=back
-
-Error: Package $package does not implement $method.
-
-=over 4
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -895,12 +641,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -52,9 +52,9 @@ NOT IMPLEMENTED YET
 
 =head2 Constructing a body
 
-$obj-E<gt>B<check>
-
 =over 4
+
+=item $obj-E<gt>B<check>
 
 Check the content of the body not to include illegal characters.  Which
 characters are considered illegal depends on the encoding of this body.
@@ -64,25 +64,21 @@ method is called upon, but also a new object, when serious changes had
 to be made.  If the check could not be made, because the decoder is not
 defined, then C<undef> is returned.
 
-=back
-
-$obj-E<gt>B<encode>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<encode>(OPTIONS)
 
 Encode (translate) a L<Mail::Message::Body|Mail::Message::Body> into a different format.
 See the DESCRIPTION above.  Options which are not specified will not trigger
 conversions.
 
- Option           --Default
- charset            PERL if text
- mime_type          undef
- result_type        <same as source>
- transfer_encoding  undef
+ -Option           --Default
+  charset            PERL if text
+  mime_type          undef
+  result_type        <same as source>
+  transfer_encoding  undef
 
-. charset => CODESET|'PERL'
+=over 2
 
-=over 4
+=item charset => CODESET|'PERL'
 
 If the CODESET is explicitly specified (for instance C<iso-8859-10>, then
 the data is interpreted as raw bytes (blob), not as text.  However, in
@@ -90,46 +86,30 @@ case of C<PERL>, it is considered to be an internal representation of
 characters (either latin1 or utf8 (not the same as utf-8), you should
 not know).
 
-=back
-
-. mime_type => STRING|FIELD
-
-=over 4
+=item mime_type => STRING|FIELD
 
 Convert into the specified mime type, which can be specified as STRING
 or FIELD.  The FIELD is a L<Mail::Message::Field|Mail::Message::Field>, and the STRING is
 converted in such object before use.
 
-=back
-
-. result_type => CLASS
-
-=over 4
+=item result_type => CLASS
 
 The type of body to be created when the body is changed to fulfill the request
 on re-coding.  Also the intermediate stages in the translation process (if
 needed) will use this type. CLASS must extend L<Mail::Message::Body|Mail::Message::Body>.
 
-=back
-
-. transfer_encoding => STRING|FIELD
+=item transfer_encoding => STRING|FIELD
 
 =back
 
-$obj-E<gt>B<encoded>
-
-=over 4
+=item $obj-E<gt>B<encoded>
 
 Encode the body to a format what is acceptable to transmit or write to
 a folder file.  This returns the body where this method was called
 upon when everything was already prepared, or a new encoded body
 otherwise.  In either case, the body is checked.
 
-=back
-
-$obj-E<gt>B<unify>(BODY)
-
-=over 4
+=item $obj-E<gt>B<unify>(BODY)
 
 Unify the type of the given BODY objects with the type of the called
 body.  C<undef> is returned when unification is impossible.  If the
@@ -148,9 +128,9 @@ Examples:
 
 =head2 About the payload
 
-$obj-E<gt>B<dispositionFilename>([DIRECTORY])
-
 =over 4
+
+=item $obj-E<gt>B<dispositionFilename>([DIRECTORY])
 
 Returns the name which can be used as filename to store the information
 in the indicated DIRECTORY. To get a filename, various fields are searched
@@ -162,20 +142,12 @@ otherwise, it may be possible to access other directories than the
 one indicated.  If no name was found, or the name is already in use,
 then an unique name is generated.
 
-=back
-
-$obj-E<gt>B<isBinary>
-
-=over 4
+=item $obj-E<gt>B<isBinary>
 
 Returns true when the un-encoded message is binary data.  This information
 is retrieved from knowledge provided by L<MIME::Types|MIME::Types>.
 
-=back
-
-$obj-E<gt>B<isText>
-
-=over 4
+=item $obj-E<gt>B<isText>
 
 Returns true when the un-encoded message contains printable
 text.
@@ -184,11 +156,11 @@ text.
 
 =head2 Internals
 
-$obj-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
+=over 4
+
+=item $obj-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
 
 Mail::Message::Body-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
-
-=over 4
 
 Relate the NAMEd transfer encoding to an OBJECTs or object of the specified
 CLASS.  In the latter case, an object of that CLASS will be created on the
@@ -199,11 +171,7 @@ replace existing class and object for this NAME.
 
 Why aren't you contributing this class to MailBox?
 
-=back
-
-$obj-E<gt>B<getTransferEncHandler>(TYPE)
-
-=over 4
+=item $obj-E<gt>B<getTransferEncHandler>(TYPE)
 
 Get the transfer encoder/decoder which is able to handle TYPE, or return
 undef if there is no such handler.
@@ -212,27 +180,19 @@ undef if there is no such handler.
 
 =head1 DIAGNOSTICS
 
-Warning: Charset $name is not known
-
 =over 4
+
+=item Warning: Charset $name is not known
 
 The encoding or decoding of a message body encounters a character set which
 is not understood by Perl's Encode module.
 
-=back
-
-Warning: No decoder defined for transfer encoding $name.
-
-=over 4
+=item Warning: No decoder defined for transfer encoding $name.
 
 The data (message body) is encoded in a way which is not currently understood,
 therefore no decoding (or recoding) can take place.
 
-=back
-
-Warning: No encoder defined for transfer encoding $name.
-
-=over 4
+=item Warning: No encoder defined for transfer encoding $name.
 
 The data (message body) has been decoded, but the required encoding is
 unknown.  The decoded data is returned.
@@ -241,12 +201,12 @@ unknown.  The decoded data is returned.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

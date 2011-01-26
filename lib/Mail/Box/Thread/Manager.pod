@@ -38,79 +38,59 @@ creates flexible trees with L<Mail::Box::Thread::Node|Mail::Box::Thread::Node> o
 
 =head2 Constructors
 
-Mail::Box::Thread::Manager-E<gt>B<new>(OPTIONS)
-
 =over 4
+
+=item Mail::Box::Thread::Manager-E<gt>B<new>(OPTIONS)
 
 A C<Mail::Box::Thread::Manager> object is usually created by a
 L<Mail::Box::Manager|Mail::Box::Manager>.  One manager can produce more than one of these
 objects.  One thread manager can combine messages from a set of folders,
 which may be partially overlapping with other objects of the same type.
 
- Option     --Defined in     --Default
- dummy_type                    Mail::Message::Dummy
- folder                        [ ]
- folders                       [ ]
- log          Mail::Reporter   'WARNINGS'
- thread_body                   <false>
- thread_type                   Mail::Box::Thread::Node
- timespan                      '3 days'
- trace        Mail::Reporter   'WARNINGS'
- window                        10
+ -Option     --Defined in     --Default
+  dummy_type                    Mail::Message::Dummy
+  folder                        [ ]
+  folders                       [ ]
+  log          Mail::Reporter   'WARNINGS'
+  thread_body                   <false>
+  thread_type                   Mail::Box::Thread::Node
+  timespan                      '3 days'
+  trace        Mail::Reporter   'WARNINGS'
+  window                        10
 
-. dummy_type => CLASS
+=over 2
 
-=over 4
+=item dummy_type => CLASS
 
 The type of dummy messages.  Dummy messages are used to fill holes in
 detected threads: referred to by messages found in the folder, but itself
 not in the folder. 
 
-=back
-
-. folder => FOLDER | REF-ARRAY-FOLDERS
-
-=over 4
+=item folder => FOLDER | REF-ARRAY-FOLDERS
 
 Specifies which folders are to be covered by the threads.  You can
 specify one or more open folders.  When you close a folder, the
 manager will automatically remove the messages of that folder from
 your threads.
 
-=back
-
-. folders => FOLDER | REF-ARRAY-FOLDERS
-
-=over 4
+=item folders => FOLDER | REF-ARRAY-FOLDERS
 
 Equivalent to the C<folder> option.
 
-=back
+=item log => LEVEL
 
-. log => LEVEL
-
-. thread_body => BOOLEAN
-
-=over 4
+=item thread_body => BOOLEAN
 
 May thread-detection be based on the content of a message?  This has
 a serious performance implication when there are many messages without
 C<In-Reply-To> and C<References> headers in the folder, because it
 will cause many messages to be parsed. NOT IMPLEMENTED YET.
 
-=back
-
-. thread_type => CLASS
-
-=over 4
+=item thread_type => CLASS
 
 Type of the thread nodes.
 
-=back
-
-. timespan => TIME | 'EVER'
-
-=over 4
+=item timespan => TIME | 'EVER'
 
 Specify how fast threads usually work: the amount of time between an
 answer and a reply.  This is used in combination with the C<window>
@@ -120,13 +100,9 @@ See Mail::Box::timespan2seconds() for the possibilities for TIME.
 With 'EVER', the search for messages in a thread
 will only be limited by the window-size.
 
-=back
+=item trace => LEVEL
 
-. trace => LEVEL
-
-. window => INTEGER|'ALL'
-
-=over 4
+=item window => INTEGER|'ALL'
 
 The thread-window describes how many messages should be checked at
 maximum to fill `holes' in threads for folder which use delay-loading
@@ -155,17 +131,13 @@ example:
 
 =head2 Grouping Folders
 
-$obj-E<gt>B<folders>
-
 =over 4
+
+=item $obj-E<gt>B<folders>
 
 Returns the folders as managed by this threader.
 
-=back
-
-$obj-E<gt>B<includeFolder>(FOLDERS)
-
-=over 4
+=item $obj-E<gt>B<includeFolder>(FOLDERS)
 
 Add one or more folders to the list of folders whose messages are
 organized in the threads maintained by this object.  Duplicated
@@ -180,11 +152,7 @@ example:
 
  $threads->includeFolder($inbox, $draft);
 
-=back
-
-$obj-E<gt>B<removeFolder>(FOLDERS)
-
-=over 4
+=item $obj-E<gt>B<removeFolder>(FOLDERS)
 
 Remove one or more folders from the list of folders whose messages are
 organized in the threads maintained by this object.
@@ -197,9 +165,9 @@ example:
 
 =head2 The Threads
 
-$obj-E<gt>B<all>
-
 =over 4
+
+=item $obj-E<gt>B<all>
 
 Returns all messages which start a thread.  The list may contain dummy
 messages and messages which are scheduled for deletion.
@@ -208,11 +176,7 @@ To be able to return all threads, thread construction on each
 message is performed first, which may be slow for some folder-types
 because is will enforce parsing of message-bodies.
 
-=back
-
-$obj-E<gt>B<known>
-
-=over 4
+=item $obj-E<gt>B<known>
 
 Returns the list of all messages which are known to be the start of
 a thread.  Threads containing messages which where not read from their
@@ -226,29 +190,17 @@ L<inThread()|Mail::Box::Thread::Manager/"Internals"> and L<thread()|Mail::Box::T
 Be warned that, each time a message's header is read from the folder,
 the return of the method can change.
 
-=back
-
-$obj-E<gt>B<sortedAll>([PREPARE [COMPARE]])
-
-=over 4
+=item $obj-E<gt>B<sortedAll>([PREPARE [COMPARE]])
 
 Returns L<all()|Mail::Box::Thread::Manager/"The Threads"> the threads by default, but sorted on timestamp.
 
-=back
-
-$obj-E<gt>B<sortedKnown>([PREPARE [,COMPARE]])
-
-=over 4
+=item $obj-E<gt>B<sortedKnown>([PREPARE [,COMPARE]])
 
 Returns all L<known()|Mail::Box::Thread::Manager/"The Threads"> threads, in sorted order.  By default, the threads
 will be sorted on timestamp, But a different COMPARE method can be
 specified.
 
-=back
-
-$obj-E<gt>B<thread>(MESSAGE)
-
-=over 4
+=item $obj-E<gt>B<thread>(MESSAGE)
 
 Returns the thread where this MESSAGE is the start of.  However, there
 is a possibility that this message is a reply itself.
@@ -263,11 +215,7 @@ example:
  my $thread  = $threads->thread($inbox->message(3));
  print $thread->string;
 
-=back
-
-$obj-E<gt>B<threadStart>(MESSAGE)
-
-=over 4
+=item $obj-E<gt>B<threadStart>(MESSAGE)
 
 Based on a message, and facts from previously detected threads, try
 to build solid knowledge about the thread where this message is in.
@@ -276,49 +224,33 @@ to build solid knowledge about the thread where this message is in.
 
 =head2 Internals
 
-$obj-E<gt>B<createDummy>(MESSAGE-ID)
-
 =over 4
+
+=item $obj-E<gt>B<createDummy>(MESSAGE-ID)
 
 Get a replacement message to be used in threads.  Be warned that a
 dummy is not a member of any folder, so the program working with
 threads must test with L<Mail::Message::isDummy()|Mail::Message/"The message"> before trying things only
 available to real messages.
 
-=back
-
-$obj-E<gt>B<inThread>(MESSAGE)
-
-=over 4
+=item $obj-E<gt>B<inThread>(MESSAGE)
 
 Collect the thread-information of one message.  The `In-Reply-To' and
 `Reference' header-fields are processed.  If this method is called on
 a message whose header was not read yet (as usual for MH-folders,
 for instance) the reading of that header will be triggered here.
 
-=back
-
-$obj-E<gt>B<outThread>(MESSAGE)
-
-=over 4
+=item $obj-E<gt>B<outThread>(MESSAGE)
 
 Remove the message from the thread-infrastructure.  A message is
 replaced by a dummy.
 
-=back
-
-$obj-E<gt>B<toBeThreaded>(FOLDER, MESSAGES)
-
-=over 4
+=item $obj-E<gt>B<toBeThreaded>(FOLDER, MESSAGES)
 
 Include the specified messages in/from the threads managed by
 this object, if this folder is maintained by this thread-manager.
 
-=back
-
-$obj-E<gt>B<toBeUnthreaded>(FOLDER, MESSAGES)
-
-=over 4
+=item $obj-E<gt>B<toBeUnthreaded>(FOLDER, MESSAGES)
 
 Remove the specified messages in/from the threads managed by
 this object, if this folder is maintained by this thread-manager.
@@ -327,103 +259,59 @@ this object, if this folder is maintained by this thread-manager.
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Box::Thread::Manager-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Box::Thread::Manager-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Box::Thread::Manager-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -431,29 +319,19 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Reporter/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
 =back
 
 =head1 DETAILS
-
-This module implements thread-detection on a folder.  Messages created
-by the better mailers will include C<In-Reply-To> and C<References>
-lines, which are used to figure out how messages are related.  If you
-prefer a better thread detection, they are implementable, but there
-may be a serious performance hit (depends on the type of folder used).
 
 =head2 Maintaining threads
 
@@ -532,11 +410,17 @@ all messages in mbox-folders, the correct thread is determined
 immediately.  Also, all messages where the head get loaded later, are
 automatically included.
 
+This module implements thread-detection on a folder.  Messages created
+by the better mailers will include C<In-Reply-To> and C<References>
+lines, which are used to figure out how messages are related.  If you
+prefer a better thread detection, they are implementable, but there
+may be a serious performance hit (depends on the type of folder used).
+
 =head1 DIAGNOSTICS
 
-Error: Package $package does not implement $method.
-
 =over 4
+
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -548,12 +432,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -26,31 +26,31 @@ C<sendmail>, C<mail>, or other programs on the local host.
 
 =head2 Constructors
 
-Mail::Transport::SMTP-E<gt>B<new>(OPTIONS)
-
 =over 4
 
- Option    --Defined in     --Default
- executable  Mail::Transport  undef
- helo                         <from Net::Config>
- hostname    Mail::Transport  <from Net::Config>
- interval    Mail::Transport  30
- log         Mail::Reporter   'WARNINGS'
- password                     undef
- port        Mail::Transport  25
- proxy       Mail::Transport  <from Net::Config>
- retry       Mail::Transport  <false>
- smtp_debug                   <false>
- timeout                      120
- trace       Mail::Reporter   'WARNINGS'
- username                     undef
- via         Mail::Transport  'smtp'
+=item Mail::Transport::SMTP-E<gt>B<new>(OPTIONS)
 
-. executable => FILENAME
+ -Option    --Defined in     --Default
+  executable  Mail::Transport  undef
+  helo                         <from Net::Config>
+  hostname    Mail::Transport  <from Net::Config>
+  interval    Mail::Transport  30
+  log         Mail::Reporter   'WARNINGS'
+  password                     undef
+  port        Mail::Transport  25
+  proxy       Mail::Transport  <from Net::Config>
+  retry       Mail::Transport  <false>
+  smtp_debug                   <false>
+  timeout                      120
+  trace       Mail::Reporter   'WARNINGS'
+  username                     undef
+  via         Mail::Transport  'smtp'
 
-. helo => HOST
+=over 2
 
-=over 4
+=item executable => FILENAME
+
+=item helo => HOST
 
 The fully qualified name of the sender's host (your system) which
 is used for the greeting message to the receiver.  If not specified,
@@ -58,52 +58,36 @@ Net::Config or else Net::Domain are questioned to find it.
 When even these do not supply a valid name, the name of the domain in the
 C<From> line of the message is assumed.
 
-=back
+=item hostname => HOSTNAME|ARRAY-OF-HOSTNAMES
 
-. hostname => HOSTNAME|ARRAY-OF-HOSTNAMES
+=item interval => SECONDS
 
-. interval => SECONDS
+=item log => LEVEL
 
-. log => LEVEL
-
-. password => STRING
-
-=over 4
+=item password => STRING
 
 The password to be used with the new(username) to log in to the remote
 server.
 
-=back
+=item port => INTEGER
 
-. port => INTEGER
+=item proxy => PATH
 
-. proxy => PATH
+=item retry => NUMBER|undef
 
-. retry => NUMBER|undef
-
-. smtp_debug => BOOLEAN
-
-=over 4
+=item smtp_debug => BOOLEAN
 
 Simulate transmission: the SMTP protocol output will be sent to your
 screen.
 
-=back
-
-. timeout => SECONDS
-
-=over 4
+=item timeout => SECONDS
 
 The number of seconds to wait for a valid response from the server before
 failing.
 
-=back
+=item trace => LEVEL
 
-. trace => LEVEL
-
-. username => STRING
-
-=over 4
+=item username => STRING
 
 Use SASL authentication to contact the remote SMTP server (RFC2554).
 This username in combination with new(password) is passed as arguments
@@ -111,41 +95,29 @@ to Net::SMTP method auth.  Other forms of authentication are not
 supported by Net::SMTP.  The C<username> can also be specified as an
 Authen::SASL object.
 
-=back
+=item via => CLASS|NAME
 
-. via => CLASS|NAME
+=back
 
 =back
 
 =head2 Sending mail
 
-$obj-E<gt>B<destinations>(MESSAGE, [ADDRESS|ARRAY-OF-ADDRESSES])
-
 =over 4
+
+=item $obj-E<gt>B<destinations>(MESSAGE, [ADDRESS|ARRAY-OF-ADDRESSES])
 
 See L<Mail::Transport::Send/"Sending mail">
 
-=back
-
-$obj-E<gt>B<putContent>(MESSAGE, FILEHANDLE, OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<putContent>(MESSAGE, FILEHANDLE, OPTIONS)
 
 See L<Mail::Transport::Send/"Sending mail">
 
-=back
-
-$obj-E<gt>B<send>(MESSAGE, OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<send>(MESSAGE, OPTIONS)
 
 See L<Mail::Transport::Send/"Sending mail">
 
-=back
-
-$obj-E<gt>B<trySend>(MESSAGE, OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<trySend>(MESSAGE, OPTIONS)
 
 Try to send the MESSAGE once.   This may fail, in which case this
 method will return C<false>.  In list context, the reason for failure
@@ -158,24 +130,20 @@ Success and quit success are booleans.  The error code and -text are
 protocol specific codes and texts.  The location tells where the
 problem occurred.
 
- Option--Default
- from    < >
- to      []
+ -Option--Default
+  from    < >
+  to      []
 
-. from => ADDRESS
+=over 2
 
-=over 4
+=item from => ADDRESS
 
 Your own identification.  This may be fake.  If not specified, it is
 taken from L<Mail::Message::sender()|Mail::Message/"The header">, which means the content of the
 C<Sender> field of the message or the first address of the C<From>
 field.  This defaults to "E<lt> E<gt>", which represents "no address".
 
-=back
-
-. to => ADDRESS|[ADDRESSES]
-
-=over 4
+=item to => ADDRESS|[ADDRESSES]
 
 Alternative destinations.  If not specified, the C<To>, C<Cc> and C<Bcc>
 fields of the header are used.  An address is a string or a Mail::Address
@@ -187,43 +155,27 @@ object.
 
 =head2 Server connection
 
-$obj-E<gt>B<contactAnyServer>
-
 =over 4
+
+=item $obj-E<gt>B<contactAnyServer>
 
 Creates the connection to the SMTP server.  When more than one hostname
 was specified, the first which accepts a connection is taken.  An
 IO::Socket::INET object is returned.
 
-=back
-
-$obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
-
-=over 4
+=item $obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
 
 See L<Mail::Transport/"Server connection">
 
-=back
-
-$obj-E<gt>B<remoteHost>
-
-=over 4
+=item $obj-E<gt>B<remoteHost>
 
 See L<Mail::Transport/"Server connection">
 
-=back
-
-$obj-E<gt>B<retry>
-
-=over 4
+=item $obj-E<gt>B<retry>
 
 See L<Mail::Transport/"Server connection">
 
-=back
-
-$obj-E<gt>B<tryConnectTo>(HOST, OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<tryConnectTo>(HOST, OPTIONS)
 
 Try to establish a connection to deliver SMTP to the specified HOST.  The
 OPTIONS are passed to the C<new> method of Net::SMTP.
@@ -232,103 +184,59 @@ OPTIONS are passed to the C<new> method of Net::SMTP.
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Transport::SMTP-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Transport::SMTP-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Transport::SMTP-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -336,17 +244,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Reporter/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -354,24 +258,16 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-Warning: Message has no destination
-
 =over 4
+
+=item Warning: Message has no destination
 
 It was not possible to figure-out where the message is intended to go
 to.
 
-=back
+=item Notice: No addresses found to send the message to, no connection made
 
-Notice: No addresses found to send the message to, no connection made
-
-=over 4
-
-=back
-
-Error: Package $package does not implement $method.
-
-=over 4
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -379,11 +275,7 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-=back
-
-Warning: Resent group does not specify a destination
-
-=over 4
+=item Warning: Resent group does not specify a destination
 
 The message which is sent is the result of a bounce (for instance
 created with L<Mail::Message::bounce()|Mail::Message::Construct::Bounce/"Constructing a message">), and therefore starts with a
@@ -402,12 +294,12 @@ found in the message itself about the destination.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

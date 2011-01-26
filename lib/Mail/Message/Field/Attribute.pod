@@ -35,9 +35,9 @@ L<Mail::Message::Field::Full|Mail::Message::Field::Full> header field.
 
 =head2 Constructors
 
-Mail::Message::Field::Attribute-E<gt>B<new>((NAME, [VALUE] | STRING), OPTIONS)
-
 =over 4
+
+=item Mail::Message::Field::Attribute-E<gt>B<new>((NAME, [VALUE] | STRING), OPTIONS)
 
 Create a new attribute NAME with the optional VALUE.  If no VALUE is specified,
 the first argument of this method is inspected for an equals sign C<'='>.
@@ -52,42 +52,34 @@ characters, hence is never encoded.
 To speed things up, attributes are not derived from the L<Mail::Reporter|Mail::Reporter>
 base-class.
 
- Option           --Defined in     --Default
- charset                             'us-ascii'
- language                            undef
- log                Mail::Reporter   'WARNINGS'
- trace              Mail::Reporter   'WARNINGS'
- use_continuations                   <true>
+ -Option           --Defined in     --Default
+  charset                             'us-ascii'
+  language                            undef
+  log                Mail::Reporter   'WARNINGS'
+  trace              Mail::Reporter   'WARNINGS'
+  use_continuations                   <true>
 
-. charset => STRING
+=over 2
 
-=over 4
+=item charset => STRING
 
 The VALUE is translated from utf-8 (Perl internal) to this character set,
 and the resulting string is encoded if required.  C<us-ascii> is the normal
 encoding for e-mail.  Valid character sets can be found with 
 Encode::encodings(':all').
 
-=back
-
-. language => STRING
-
-=over 4
+=item language => STRING
 
 RFC2231 adds the possiblity to specify a language with the field.  When no
 language is specified, none is included in the encoding.  Valid language
 names are defined by RFC2130.  This module has only limited support for
 this feature.
 
-=back
+=item log => LEVEL
 
-. log => LEVEL
+=item trace => LEVEL
 
-. trace => LEVEL
-
-. use_continuations => BOOLEAN
-
-=over 4
+=item use_continuations => BOOLEAN
 
 Continuations are used to break-up long parameters into pieces which
 are no longer than 76 characters. Encodings are specified in RFC2231,
@@ -113,103 +105,59 @@ example:
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Message::Field::Attribute-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Message::Field::Attribute-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Message::Field::Attribute-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -217,17 +165,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Reporter/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -235,9 +179,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =head2 The attribute
 
-$obj-E<gt>B<addComponent>(STRING)
-
 =over 4
+
+=item $obj-E<gt>B<addComponent>(STRING)
 
 A component is a parameter as defined by RFC2045, optionally using
 encoding or continuations as defined by RFC2231.  Components of an
@@ -250,48 +194,28 @@ example:
  my $param = Mail::Message::Field::Attribute->new;
  $param->addComponent("filename*=iso10646'nl-BE'%Re\47u");
 
-=back
-
-$obj-E<gt>B<charset>
-
-=over 4
+=item $obj-E<gt>B<charset>
 
 Returns the character set which is used for this parameter.  If any component
 is added which contains character set information, this is directly
 available.  Be warned that a character-set is case insensitive.
 
-=back
-
-$obj-E<gt>B<language>
-
-=over 4
+=item $obj-E<gt>B<language>
 
 Returns the language which is defined in the argument.  If no language is
 defined C<undef> is returned, which should be interpreted as "ANY"
 
-=back
-
-$obj-E<gt>B<name>
-
-=over 4
+=item $obj-E<gt>B<name>
 
 Returns the name of this attribute.
 
-=back
-
-$obj-E<gt>B<string>
-
-=over 4
+=item $obj-E<gt>B<string>
 
 Returns the parameter as reference to an array of lines.  When only one line
 is returned, it may be short enough to fit on the same line with other
 components of the header field.
 
-=back
-
-$obj-E<gt>B<value>([STRING])
-
-=over 4
+=item $obj-E<gt>B<value>([STRING])
 
 Returns the value of this parameter, optionally after setting it first.
 
@@ -299,26 +223,22 @@ Returns the value of this parameter, optionally after setting it first.
 
 =head2 Attribute encoding
 
-$obj-E<gt>B<decode>
-
 =over 4
+
+=item $obj-E<gt>B<decode>
 
 Translate all known continuations into a value.  The produced value is
 returned and may be utf-8 encoded or a plain string.
 
-=back
-
-$obj-E<gt>B<encode>
-
-=over 4
+=item $obj-E<gt>B<encode>
 
 =back
 
 =head2 Internals
 
-$obj-E<gt>B<mergeComponent>(ATTRIBUTE)
-
 =over 4
+
+=item $obj-E<gt>B<mergeComponent>(ATTRIBUTE)
 
 Merge the components from the specified attribute in this attribute.  This is
 needed when components of the same attribute are created separately.  Merging
@@ -328,19 +248,15 @@ is required by the field parsing.
 
 =head1 DIAGNOSTICS
 
-Warning: Illegal character in parameter name '$name'
-
 =over 4
+
+=item Warning: Illegal character in parameter name '$name'
 
 The specified parameter name contains characters which are not permitted by
 the RFCs.  You can better change the name into something which is accepted,
 or risk applications to corrupt or ignore the message.
 
-=back
-
-Error: Package $package does not implement $method.
-
-=over 4
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -348,22 +264,18 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-=back
-
-Error: Too late to merge: value already changed.
-
-=over 4
+=item Error: Too late to merge: value already changed.
 
 =back
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

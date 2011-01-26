@@ -20,75 +20,59 @@ Mutt is not automatically installed.
 
 =head1 METHODS
 
-$obj-E<gt>B<exe>
-
-=over 4
-
-Returns the name of the external binary.
-
-=back
-
 =head2 Constructors
 
-Mail::Box::Locker::Mutt-E<gt>B<new>(OPTIONS)
-
 =over 4
 
- Option --Defined in     --Default
- exe                       mutt_dotlock
- expires  Mail::Box::Locker  1 hour
- file     Mail::Box::Locker  undef
- folder   Mail::Box::Locker  <undef>
- log      Mail::Reporter   'WARNINGS'
- method   Mail::Box::Locker  'DOTLOCK'
- timeout  Mail::Box::Locker  10 seconds
- trace    Mail::Reporter   'WARNINGS'
+=item Mail::Box::Locker::Mutt-E<gt>B<new>(OPTIONS)
 
-. exe => PATH
+ -Option --Defined in     --Default
+  exe                       mutt_dotlock
+  expires  Mail::Box::Locker  1 hour
+  file     Mail::Box::Locker  undef
+  folder   Mail::Box::Locker  <undef>
+  log      Mail::Reporter   'WARNINGS'
+  method   Mail::Box::Locker  'DOTLOCK'
+  timeout  Mail::Box::Locker  10 seconds
+  trace    Mail::Reporter   'WARNINGS'
 
-=over 4
+=over 2
+
+=item exe => PATH
 
 The name of the program.  May be a relative or absolute path.
 
+=item expires => SECONDS
+
+=item file => FILENAME
+
+=item folder => FOLDER
+
+=item log => LEVEL
+
+=item method => STRING|CLASS|ARRAY
+
+=item timeout => SECONDS|'NOTIMEOUT'
+
+=item trace => LEVEL
+
 =back
-
-. expires => SECONDS
-
-. file => FILENAME
-
-. folder => FOLDER
-
-. log => LEVEL
-
-. method => STRING|CLASS|ARRAY
-
-. timeout => SECONDS|'NOTIMEOUT'
-
-. trace => LEVEL
 
 =back
 
 =head2 The Locker
 
-$obj-E<gt>B<filename>([FILENAME])
-
 =over 4
+
+=item $obj-E<gt>B<filename>([FILENAME])
 
 See L<Mail::Box::Locker/"The Locker">
 
-=back
-
-$obj-E<gt>B<folder>([FOLDER])
-
-=over 4
+=item $obj-E<gt>B<folder>([FOLDER])
 
 See L<Mail::Box::Locker/"The Locker">
 
-=back
-
-$obj-E<gt>B<name>
-
-=over 4
+=item $obj-E<gt>B<name>
 
 See L<Mail::Box::Locker/"The Locker">
 
@@ -96,133 +80,77 @@ See L<Mail::Box::Locker/"The Locker">
 
 =head2 Locking
 
-$obj-E<gt>B<hasLock>
-
 =over 4
+
+=item $obj-E<gt>B<hasLock>
 
 See L<Mail::Box::Locker/"Locking">
 
-=back
-
-$obj-E<gt>B<isLocked>
-
-=over 4
+=item $obj-E<gt>B<isLocked>
 
 See L<Mail::Box::Locker/"Locking">
 
-=back
+=item $obj-E<gt>B<lock>
 
-$obj-E<gt>B<lock>
-
-=over 4
-
-=back
-
-$obj-E<gt>B<unlock>
-
-=over 4
+=item $obj-E<gt>B<unlock>
 
 =back
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Box::Locker::Mutt-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Box::Locker::Mutt-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Box::Locker::Mutt-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -230,45 +158,37 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Box::Locker/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
 =back
 
+=over 4
+
+=item $obj-E<gt>B<exe>
+
+Returns the name of the external binary.
+
+=back
+
 =head1 DIAGNOSTICS
 
-Warning: Couldn't remove mutt-unlock $folder: $!
-
 =over 4
 
-=back
+=item Warning: Couldn't remove mutt-unlock $folder: $!
 
-Error: Failed to remove expired mutt-lock $lockfile: $!
+=item Error: Failed to remove expired mutt-lock $lockfile: $!
 
-=over 4
+=item Warning: Folder $folder already mutt-locked
 
-=back
-
-Warning: Folder $folder already mutt-locked
-
-=over 4
-
-=back
-
-Error: Package $package does not implement $method.
-
-=over 4
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -276,22 +196,18 @@ related classes do implement this method however the class at hand does
 not.  Probably you should investigate this and probably inform the author
 of the package.
 
-=back
-
-Warning: Removed expired mutt-lock $lockfile
-
-=over 4
+=item Warning: Removed expired mutt-lock $lockfile
 
 =back
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

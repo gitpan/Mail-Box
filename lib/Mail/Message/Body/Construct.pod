@@ -2,8 +2,6 @@
 
 Mail::Message::Body::Construct - adds functionality to Mail::Message::Body
 
-=head1 SYNOPSIS
-
 =head1 DESCRIPTION
 
 This package adds complex functionality to the L<Mail::Message::Body|Mail::Message::Body>
@@ -14,9 +12,9 @@ compile this package.
 
 =head2 Constructing a body
 
-$obj-E<gt>B<attach>(MESSAGES, OPTIONS)
-
 =over 4
+
+=item $obj-E<gt>B<attach>(MESSAGES, OPTIONS)
 
 Make a multipart containing this body and the specified MESSAGES. The
 options are passed to the constructor of the multi-part body.  If you
@@ -41,11 +39,7 @@ example:
  # Now create a new message
  my $msg     = Mail::Message->new(head => ..., body => $multi);
 
-=back
-
-$obj-E<gt>B<concatenate>(COMPONENTS)
-
-=over 4
+=item $obj-E<gt>B<concatenate>(COMPONENTS)
 
 Concatenate a list of elements into one new body.
 
@@ -61,11 +55,7 @@ example:
  # all arguments are Mail::Message::Body's.
  my $sum = $body->concatenate($preamble, $body, $epilogue, "-- \n" , $sig);
 
-=back
-
-$obj-E<gt>B<foreachLine>(CODE)
-
-=over 4
+=item $obj-E<gt>B<foreachLine>(CODE)
 
 Create a new body by performing an action on each of its lines.  If none
 of the lines change, the current body will be returned, otherwise a new
@@ -89,11 +79,7 @@ example:
  my $right    = $content->foreachLine(
         sub {(my $x=$_) =~ s/a/A/; $x} );
 
-=back
-
-$obj-E<gt>B<stripSignature>(OPTIONS)
-
-=over 4
+=item $obj-E<gt>B<stripSignature>(OPTIONS)
 
 Strip the signature from the body.  The body must already be decoded
 otherwise the wrong lines may get stripped.  Returned is the stripped
@@ -108,23 +94,19 @@ a reply to the person's message you do not need to include that signature.
 If the body had no signature, the original body object is returned,
 and C<undef> for the signature body.
 
- Option     --Default
- max_lines    10
- pattern      qr/^--\s?$/
- result_type  <same as current>
+ -Option     --Default
+  max_lines    10
+  pattern      qr/^--\s?$/
+  result_type  <same as current>
 
-. max_lines => INTEGER|undef
+=over 2
 
-=over 4
+=item max_lines => INTEGER|undef
 
 The maximum number of lines which can be the length of a signature.
 Specify C<undef> to remove the limit.
 
-=back
-
-. pattern => REGEX|STRING|CODE
-
-=over 4
+=item pattern => REGEX|STRING|CODE
 
 Which pattern defines the line which indicates the separator between
 the message and the signature.  In case of a STRING, this is matched
@@ -134,11 +116,7 @@ In case of CODE, each line (from last to front) is passed to the
 specified subroutine as first argument.  The subroutine must return
 TRUE when the separator is found.
 
-=back
-
-. result_type => CLASS
-
-=over 4
+=item result_type => CLASS
 
 The type of body to be created for the stripped body (and maybe also to
 contain the stripped signature)
@@ -159,12 +137,12 @@ example:
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

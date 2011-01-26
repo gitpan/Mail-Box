@@ -49,9 +49,9 @@ spam-detection already is.
 
 =head2 Constructors
 
-Mail::Box::Search::SpamAssassin-E<gt>B<new>(OPTIONS)
-
 =over 4
+
+=item Mail::Box::Search::SpamAssassin-E<gt>B<new>(OPTIONS)
 
 Create a spam filter.  Internally, a Mail::SpamAssassin object is
 maintained.
@@ -59,83 +59,71 @@ maintained.
 Only the whole message can be searched; this is a limitation of
 the Mail::SpamAssassin module.
 
- Option       --Defined in     --Default
- binaries       Mail::Box::Search  <false>
- decode         Mail::Box::Search  <true>
- delayed        Mail::Box::Search  <true>
- deleted        Mail::Box::Search  <false>
- deliver        Mail::Box::Search  undef
- in             Mail::Box::Search  'MESSAGE'
- label                           c<'spam'>
- limit          Mail::Box::Search  0
- log            Mail::Reporter   'WARNINGS'
- logical        Mail::Box::Search  'REPLACE'
- multiparts     Mail::Box::Search  <true>
- rewrite_mail                    <true>
- sa_options                      { }
- spam_assassin                   undef
- trace          Mail::Reporter   'WARNINGS'
+ -Option       --Defined in     --Default
+  binaries       Mail::Box::Search  <false>
+  decode         Mail::Box::Search  <true>
+  delayed        Mail::Box::Search  <true>
+  deleted        Mail::Box::Search  <false>
+  deliver        Mail::Box::Search  undef
+  in             Mail::Box::Search  'MESSAGE'
+  label                           c<'spam'>
+  limit          Mail::Box::Search  0
+  log            Mail::Reporter   'WARNINGS'
+  logical        Mail::Box::Search  'REPLACE'
+  multiparts     Mail::Box::Search  <true>
+  rewrite_mail                    <true>
+  sa_options                      { }
+  spam_assassin                   undef
+  trace          Mail::Reporter   'WARNINGS'
 
-. binaries => BOOLEAN
+=over 2
 
-. decode => BOOLEAN
+=item binaries => BOOLEAN
 
-. delayed => BOOLEAN
+=item decode => BOOLEAN
 
-. deleted => BOOLEAN
+=item delayed => BOOLEAN
 
-. deliver => undef|CODE|'DELETE'
+=item deleted => BOOLEAN
 
-. in => 'HEAD'|'BODY'|'MESSAGE'
+=item deliver => undef|CODE|'DELETE'
 
-. label => STRING|undef
+=item in => 'HEAD'|'BODY'|'MESSAGE'
 
-=over 4
+=item label => STRING|undef
 
 Mark all selected message with the specified STRING.  If this
 option is explicitly set to C<undef>, the label will not be set.
 
-=back
+=item limit => NUMBER
 
-. limit => NUMBER
+=item log => LEVEL
 
-. log => LEVEL
+=item logical => 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT'
 
-. logical => 'REPLACE'|'AND'|'OR'|'NOT'|'AND NOT'|'OR NOT'
+=item multiparts => BOOLEAN
 
-. multiparts => BOOLEAN
-
-. rewrite_mail => BOOLEAN
-
-=over 4
+=item rewrite_mail => BOOLEAN
 
 Add lines to the message header describing the results of the spam
 scan. See Mail::SpamAssassin::PerMsgStatus subroutine rewrite_mail.
 
-=back
-
-. sa_options => HASH
-
-=over 4
+=item sa_options => HASH
 
 Options to create the internal Mail::SpamAssassin object; see its
 manual page for the available options.  Other setting may be provided
 via SpamAssassins configuration file mechanism, which is explained in
 L<Mail::SpamAssassin::Conf>.
 
-=back
-
-. spam_assassin => OBJECT
-
-=over 4
+=item spam_assassin => OBJECT
 
 Provide a Mail::SpamAssassin object to be used for searching spam.  If
 none is specified, one is created internally.  The object can be
 retreived with assassinator().
 
-=back
+=item trace => LEVEL
 
-. trace => LEVEL
+=back
 
 example: 
 
@@ -146,42 +134,26 @@ example:
 
 =head2 Searching
 
-$obj-E<gt>B<assassinator>
-
 =over 4
+
+=item $obj-E<gt>B<assassinator>
 
 Returns the internally maintained assassinator object.  You may want
 to reach this object for complex configuration.
 
-=back
-
-$obj-E<gt>B<inBody>(PART, BODY)
-
-=over 4
+=item $obj-E<gt>B<inBody>(PART, BODY)
 
 See L<Mail::Box::Search/"Searching">
 
-=back
-
-$obj-E<gt>B<inHead>(PART, HEAD)
-
-=over 4
+=item $obj-E<gt>B<inHead>(PART, HEAD)
 
 See L<Mail::Box::Search/"Searching">
 
-=back
-
-$obj-E<gt>B<search>(FOLDER|THREAD|MESSAGE|ARRAY-OF-MESSAGES)
-
-=over 4
+=item $obj-E<gt>B<search>(FOLDER|THREAD|MESSAGE|ARRAY-OF-MESSAGES)
 
 See L<Mail::Box::Search/"Searching">
 
-=back
-
-$obj-E<gt>B<searchPart>(PART)
-
-=over 4
+=item $obj-E<gt>B<searchPart>(PART)
 
 See L<Mail::Box::Search/"Searching">
 
@@ -189,9 +161,9 @@ See L<Mail::Box::Search/"Searching">
 
 =head2 The Results
 
-$obj-E<gt>B<printMatch>([FILEHANDLE], HASH)
-
 =over 4
+
+=item $obj-E<gt>B<printMatch>([FILEHANDLE], HASH)
 
 See L<Mail::Box::Search/"The Results">
 
@@ -199,103 +171,59 @@ See L<Mail::Box::Search/"The Results">
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Box::Search::SpamAssassin-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Box::Search::SpamAssassin-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Box::Search::SpamAssassin-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -303,17 +231,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Reporter/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -321,9 +245,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-Error: Package $package does not implement $method.
-
 =over 4
+
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -335,12 +259,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

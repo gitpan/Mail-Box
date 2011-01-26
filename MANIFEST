@@ -15,6 +15,7 @@ examples/reply.pl
 examples/send.pl
 examples/smaller.pl
 examples/strip-attachments.pl
+examples/strip-spam-markup.pl
 examples/takelarge.pl
 examples/unpack.pl
 lib/Mail/Box-Cookbook.pod

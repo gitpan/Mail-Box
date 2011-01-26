@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Mail-Box
-version:            2.096
+version:            2.097
 abstract:           E-mail handling
 author:
     - Mark Overmeer

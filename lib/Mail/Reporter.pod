@@ -45,27 +45,23 @@ and logging error messages.
 
 =head1 METHODS
 
-The C<Mail::Reporter> class is the base for nearly all other
-objects.  It can store and report problems, and contains the general
-constructor L<new()|Mail::Reporter/"Constructors">.
-
 =head2 Constructors
 
-Mail::Reporter-E<gt>B<new>(OPTIONS)
-
 =over 4
+
+=item Mail::Reporter-E<gt>B<new>(OPTIONS)
 
 This error container is also the base constructor for all modules, (as long
 as there is no need for another base object)  The constructor always accepts
 the following OPTIONS related to error reports.
 
- Option--Default
- log     'WARNINGS'
- trace   'WARNINGS'
+ -Option--Default
+  log     'WARNINGS'
+  trace   'WARNINGS'
 
-. log => LEVEL
+=over 2
 
-=over 4
+=item log => LEVEL
 
 Log messages which have a priority higher or equal to the specified
 level are stored internally and can be retrieved later.  The global
@@ -78,11 +74,7 @@ errors to be logged.
 By the way: C<ERROR> is an alias for C<ERRORS>, as C<WARNING> is an alias
 for C<WARNINGS>, and C<NOTICE> for C<NOTICES>.
 
-=back
-
-. trace => LEVEL
-
-=over 4
+=item trace => LEVEL
 
 Trace messages which have a level higher or equal to the specified level
 are directly printed using warn.  The global default for this option can
@@ -94,31 +86,23 @@ be changed with L<defaultTrace()|Mail::Reporter/"Error handling">.
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 By default, produce a nice warning if the sub-classes cannot resolve
 a method.
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 Add the report from other OBJECT to the report of this object. This is
 useful when complex actions use temporary objects which are not returned
 to the main application but where the main application would like to know
 about any problems.
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Reporter-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
-
-=over 4
 
 Reports the default log and trace level which is used for object as list
 of two elements.  When not explicitly set, both are set to C<WARNINGS>.
@@ -158,23 +142,15 @@ example: installing a callback
 
  Mail::Reporter->defaultTrace
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
+=item $obj-E<gt>B<errors>
 
 Equivalent to
 
  $folder->report('ERRORS')
 
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Reporter-E<gt>B<log>([LEVEL [,STRINGS]])
-
-=over 4
 
 As instance method this function has three different purposes.  Without
 any argument, it returns one scalar containing the number which is internally
@@ -206,13 +182,9 @@ example:
 
  Mail::Message->log(ERROR => 'Unknown');
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Reporter-E<gt>B<logPriority>(LEVEL)
-
-=over 4
 
 One error level (log or trace) has more than one representation: a
 numeric value and one or more strings.  For instance, C<4>, C<'WARNING'>,
@@ -232,11 +204,7 @@ example:
  print $r + 0;  # prints 4
  if($r < Mail::Reporter->logPriority('ERROR')) {..} # true
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<logSettings>
 
 Returns a list of C<(key => value)> pairs which can be used to initiate
 a new object with the same log-settings as this one.
@@ -245,20 +213,12 @@ example:
 
  $head->new($folder->logSettings);
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 A special case of L<log()|Mail::Reporter/"Error handling">, which logs a C<INTERNAL>-error
 and then croaks.  This is used by extension writers.
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 Get logged reports, as list of strings.  If a LEVEL is specified, the log
 for that level is returned.
@@ -282,11 +242,7 @@ example:
     print "$level report: $text";
  }
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 Report all messages which were produced by this object and all the objects
 which are maintained by this object.  This will return a list of triplets,
@@ -307,22 +263,14 @@ example:
     }
  }
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 Change the trace LEVEL of the object. When no arguments are specified, the
 current level is returned only.  It will be returned in one scalar which
 contains both the number which is internally used to represent the level,
 and the string which represents it.  See L<logPriority()|Mail::Reporter/"Error handling">.
 
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 Equivalent to
 
@@ -332,28 +280,28 @@ Equivalent to
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 Cleanup the object.
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 Returns whether the program is breaking down.  This is used in L<DESTROY()|Mail::Reporter/"Cleanup">,
 where during global destructions references cannot be used.
 
 =back
 
+The C<Mail::Reporter> class is the base for nearly all other
+objects.  It can store and report problems, and contains the general
+constructor L<new()|Mail::Reporter/"Constructors">.
+
 =head1 DIAGNOSTICS
 
-Error: Package $package does not implement $method.
-
 =over 4
+
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -365,12 +313,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

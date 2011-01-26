@@ -8,8 +8,6 @@ Mail::Box::IMAP4::Head - header fields related IMAP interface
    is a Mail::Message::Head
    is a Mail::Reporter
 
-=head1 SYNOPSIS
-
 =head1 DESCRIPTION
 
 This class implements a pure IMAP4 protocol interface, where as little
@@ -24,17 +22,13 @@ games with headers.  On the other hand: the other settings are not
 
 =head1 OVERLOADED
 
-overload: B<"">
-
 =over 4
+
+=item overload: B<"">
 
 See L<Mail::Message::Head/"OVERLOADED">
 
-=back
-
-overload: B<bool>
-
-=over 4
+=item overload: B<bool>
 
 See L<Mail::Message::Head/"OVERLOADED">
 
@@ -44,101 +38,73 @@ See L<Mail::Message::Head/"OVERLOADED">
 
 =head2 Constructors
 
-Mail::Box::IMAP4::Head-E<gt>B<build>([PAIR|FIELD]-LIST)
-
 =over 4
+
+=item Mail::Box::IMAP4::Head-E<gt>B<build>([PAIR|FIELD]-LIST)
 
 See L<Mail::Message::Head/"Constructors">
 
-=back
+=item Mail::Box::IMAP4::Head-E<gt>B<new>(OPTIONS)
 
-Mail::Box::IMAP4::Head-E<gt>B<new>(OPTIONS)
+ -Option      --Defined in     --Default
+  cache_fields                   false
+  field_type    Mail::Message::Head  Mail::Message::Field::Fast
+  log           Mail::Reporter   'WARNINGS'
+  message       Mail::Message::Head  undef
+  modified      Mail::Message::Head  <false>
+  trace         Mail::Reporter   'WARNINGS'
 
-=over 4
+=over 2
 
- Option      --Defined in     --Default
- cache_fields                   false
- field_type    Mail::Message::Head  Mail::Message::Field::Fast
- log           Mail::Reporter   'WARNINGS'
- message       Mail::Message::Head  undef
- modified      Mail::Message::Head  <false>
- trace         Mail::Reporter   'WARNINGS'
-
-. cache_fields => BOOLEAN
-
-=over 4
+=item cache_fields => BOOLEAN
 
 This is only a read-cache on fields, because this kind of header does
 not allow writing of fields.  See L<Mail::Box::IMAP4::new(cache_head)|Mail::Box::IMAP4/"METHODS">,
 this value is set to C<false> for C<NO> and C<true> for C<PARTIAL>..
 
+=item field_type => CLASS
+
+=item log => LEVEL
+
+=item message => MESSAGE
+
+=item modified => BOOLEAN
+
+=item trace => LEVEL
+
 =back
-
-. field_type => CLASS
-
-. log => LEVEL
-
-. message => MESSAGE
-
-. modified => BOOLEAN
-
-. trace => LEVEL
 
 =back
 
 =head2 The header
 
-$obj-E<gt>B<isDelayed>
-
 =over 4
+
+=item $obj-E<gt>B<isDelayed>
 
 See L<Mail::Message::Head/"The header">
 
-=back
-
-$obj-E<gt>B<isEmpty>
-
-=over 4
+=item $obj-E<gt>B<isEmpty>
 
 See L<Mail::Message::Head/"The header">
 
-=back
-
-$obj-E<gt>B<isModified>
-
-=over 4
+=item $obj-E<gt>B<isModified>
 
 See L<Mail::Message::Head/"The header">
 
-=back
-
-$obj-E<gt>B<knownNames>
-
-=over 4
+=item $obj-E<gt>B<knownNames>
 
 See L<Mail::Message::Head/"The header">
 
-=back
-
-$obj-E<gt>B<message>([MESSAGE])
-
-=over 4
+=item $obj-E<gt>B<message>([MESSAGE])
 
 See L<Mail::Message::Head/"The header">
 
-=back
-
-$obj-E<gt>B<modified>([BOOLEAN])
-
-=over 4
+=item $obj-E<gt>B<modified>([BOOLEAN])
 
 See L<Mail::Message::Head/"The header">
 
-=back
-
-$obj-E<gt>B<orderedFields>
-
-=over 4
+=item $obj-E<gt>B<orderedFields>
 
 See L<Mail::Message::Head/"The header">
 
@@ -146,18 +112,14 @@ See L<Mail::Message::Head/"The header">
 
 =head2 Access to the header
 
-$obj-E<gt>B<get>(NAME [,INDEX])
-
 =over 4
+
+=item $obj-E<gt>B<get>(NAME [,INDEX])
 
 Get the information about the header line NAME.  Realization will
 take place.
 
-=back
-
-$obj-E<gt>B<study>(NAME [,INDEX])
-
-=over 4
+=item $obj-E<gt>B<study>(NAME [,INDEX])
 
 See L<Mail::Message::Head/"Access to the header">
 
@@ -165,17 +127,13 @@ See L<Mail::Message::Head/"Access to the header">
 
 =head2 About the body
 
-$obj-E<gt>B<guessBodySize>
-
 =over 4
+
+=item $obj-E<gt>B<guessBodySize>
 
 See L<Mail::Message::Head/"About the body">
 
-=back
-
-$obj-E<gt>B<isMultipart>
-
-=over 4
+=item $obj-E<gt>B<isMultipart>
 
 See L<Mail::Message::Head/"About the body">
 
@@ -183,57 +141,33 @@ See L<Mail::Message::Head/"About the body">
 
 =head2 Internals
 
-$obj-E<gt>B<addNoRealize>(FIELD)
-
 =over 4
+
+=item $obj-E<gt>B<addNoRealize>(FIELD)
 
 See L<Mail::Message::Head/"Internals">
 
-=back
-
-$obj-E<gt>B<addOrderedFields>(FIELDS)
-
-=over 4
+=item $obj-E<gt>B<addOrderedFields>(FIELDS)
 
 See L<Mail::Message::Head/"Internals">
 
-=back
-
-$obj-E<gt>B<fileLocation>
-
-=over 4
+=item $obj-E<gt>B<fileLocation>
 
 See L<Mail::Message::Head/"Internals">
 
-=back
-
-$obj-E<gt>B<load>
-
-=over 4
+=item $obj-E<gt>B<load>
 
 See L<Mail::Message::Head/"Internals">
 
-=back
-
-$obj-E<gt>B<moveLocation>(DISTANCE)
-
-=over 4
+=item $obj-E<gt>B<moveLocation>(DISTANCE)
 
 See L<Mail::Message::Head/"Internals">
 
-=back
-
-$obj-E<gt>B<read>(PARSER)
-
-=over 4
+=item $obj-E<gt>B<read>(PARSER)
 
 See L<Mail::Message::Head/"Internals">
 
-=back
-
-$obj-E<gt>B<setNoRealize>(FIELD)
-
-=over 4
+=item $obj-E<gt>B<setNoRealize>(FIELD)
 
 See L<Mail::Message::Head/"Internals">
 
@@ -241,103 +175,59 @@ See L<Mail::Message::Head/"Internals">
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Box::IMAP4::Head-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Box::IMAP4::Head-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Box::IMAP4::Head-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -345,29 +235,23 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
+
+See L<Mail::Reporter/"Cleanup">
+
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
 =back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
-
-See L<Mail::Reporter/"Cleanup">
-
-=back
-
-=head1 DETAILS
 
 =head1 DIAGNOSTICS
 
-Error: Package $package does not implement $method.
-
 =over 4
+
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -379,12 +263,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

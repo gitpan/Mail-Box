@@ -17,9 +17,9 @@ tries to simplify this task and add some standard features.
 
 =head2 Constructing a message
 
-$obj-E<gt>B<rebuild>(OPTIONS)
-
 =over 4
+
+=item $obj-E<gt>B<rebuild>(OPTIONS)
 
 Reconstruct an existing message into something new.  Returned is a new
 message when there were modifications made, C<undef> if the message has
@@ -38,14 +38,14 @@ Reconstructing is a hazardous task, where multi level multiparts and
 nested messages come into play.  The rebuild method tries to simplify
 handing these messages for you.
 
- Option         --Default
- extra_rules      []
- keep_message_id  <false>
- rules            <see text>
+ -Option         --Default
+  extra_rules      []
+  keep_message_id  <false>
+  rules            <see text>
 
-. extra_rules => ARRAY
+=over 2
 
-=over 4
+=item extra_rules => ARRAY
 
 The standard set of rules, which is the default for the C<rules> option,
 is a moderest setting.  In stead of copying that list into a full set
@@ -57,11 +57,7 @@ need to rewrite the whole rule is (see C<rule> option).  For instance,
 the extra rule of C<removeDeletedParts> returns an C<undef>, which
 means that it cancels the effect of the default rule C<replaceDeletedParts>.
 
-=back
-
-. keep_message_id => BOOLEAN
-
-=over 4
+=item keep_message_id => BOOLEAN
 
 The message-id is an unique identification of the message: no two messages
 with different content shall exist anywhere.  However in practice, when
@@ -69,11 +65,7 @@ a message is changed during transmission, the id is often incorrectly
 not changed.  This may lead to complications in application which see
 both messages with the same id.
 
-=back
-
-. rules => ARRAY
-
-=over 4
+=item rules => ARRAY
 
 The ARRAY is a list of rules, which each describe an action which will
 be called on each part which is found in the message.  Most rules
@@ -104,16 +96,16 @@ example:
 
 =head2 Internals
 
-$obj-E<gt>B<recursiveRebuildPart>(PART, OPTIONS)
-
 =over 4
 
- Option--Default
- rules   <required>
+=item $obj-E<gt>B<recursiveRebuildPart>(PART, OPTIONS)
 
-. rules => ARRAY-OF-RULES
+ -Option--Default
+  rules   <required>
 
-=over 4
+=over 2
+
+=item rules => ARRAY-OF-RULES
 
 Rules are method names which can be called on messages and message parts
 objects.  The ARRAY can also list code references which can be called.
@@ -134,27 +126,6 @@ stop it.
 =head1 DETAILS
 
 =head2 Rebuilding a message
-
-Modifying an existing message is a complicated job.  Not only do you need
-to know what you are willing to change, but you have to take care about
-multiparts (possibly nested in multiple levels), rfc822 encapsulated
-messages, header field consistency, and so on.  The L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> method
-let you focus on the task, and takes care of the rest.
-
-The L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> method uses rules to transform the one message into an
-other.  If one or more of the rules apply, a new message will be returned.
-A simple numeric comparison tells whether the message has changed.  For
-example
-
- print "No change"
-    if $message == $message->rebuild;
-
-Transformation is made with a set of rules.  Each rule performs only a
-small step, which makes is easily configurable.  The rules are ordered,
-and when one makes a change to the result, the result will be passed
-to all the rules again until no rule makes a change on the part anymore.
-A rule may also return C<undef> in which case the part will be removed
-from the (resulting) message.
 
 =head3 General rules
 
@@ -268,22 +239,43 @@ When you have your own routine, you simply call:
  my $rebuild_message = $message->rebuild
   ( extra_rules => [ \&my_own_rule, 'other_rule' ] );
 
+Modifying an existing message is a complicated job.  Not only do you need
+to know what you are willing to change, but you have to take care about
+multiparts (possibly nested in multiple levels), rfc822 encapsulated
+messages, header field consistency, and so on.  The L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> method
+let you focus on the task, and takes care of the rest.
+
+The L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> method uses rules to transform the one message into an
+other.  If one or more of the rules apply, a new message will be returned.
+A simple numeric comparison tells whether the message has changed.  For
+example
+
+ print "No change"
+    if $message == $message->rebuild;
+
+Transformation is made with a set of rules.  Each rule performs only a
+small step, which makes is easily configurable.  The rules are ordered,
+and when one makes a change to the result, the result will be passed
+to all the rules again until no rule makes a change on the part anymore.
+A rule may also return C<undef> in which case the part will be removed
+from the (resulting) message.
+
 =head1 DIAGNOSTICS
 
-Error: No rebuild rule $name defined.
-
 =over 4
+
+=item Error: No rebuild rule $name defined.
 
 =back
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -27,77 +27,57 @@ predefined, but more can be added without limitation.
 
 =head2 Constructors
 
-Mail::Box::MH::Labels-E<gt>B<new>(OPTIONS)
-
 =over 4
 
- Option  --Defined in     --Default
- filename                   <required>
- log       Mail::Reporter   'WARNINGS'
- trace     Mail::Reporter   'WARNINGS'
+=item Mail::Box::MH::Labels-E<gt>B<new>(OPTIONS)
 
-. filename => FILENAME
+ -Option  --Defined in     --Default
+  filename                   <required>
+  log       Mail::Reporter   'WARNINGS'
+  trace     Mail::Reporter   'WARNINGS'
 
-=over 4
+=over 2
+
+=item filename => FILENAME
 
 The FILENAME which is used in each directory to store the headers of all
 mails. The filename must be an absolute path.
 
+=item log => LEVEL
+
+=item trace => LEVEL
+
 =back
-
-. log => LEVEL
-
-. trace => LEVEL
 
 =back
 
 =head2 The Label Table
 
-$obj-E<gt>B<append>(MESSAGES)
-
 =over 4
+
+=item $obj-E<gt>B<append>(MESSAGES)
 
 Append the label information about the specified MESSAGES to the end
 of the label file.  The information will not be merged with the
 information already present in the label file.
 
-=back
-
-$obj-E<gt>B<filename>
-
-=over 4
+=item $obj-E<gt>B<filename>
 
 Returns the name of the index file.
 
-=back
-
-$obj-E<gt>B<get>(MSGNR)
-
-=over 4
+=item $obj-E<gt>B<get>(MSGNR)
 
 Look if there is label info for message MSGNR.
 
-=back
-
-$obj-E<gt>B<print>(FILEHANDLE, MESSAGES)
-
-=over 4
+=item $obj-E<gt>B<print>(FILEHANDLE, MESSAGES)
 
 Print the labels of the specified messages to the opened file.
 
-=back
-
-$obj-E<gt>B<read>
-
-=over 4
+=item $obj-E<gt>B<read>
 
 Read all label information from file.
 
-=back
-
-$obj-E<gt>B<write>(MESSAGES)
-
-=over 4
+=item $obj-E<gt>B<write>(MESSAGES)
 
 Write the labels related to the specified messages to the label file.
 
@@ -105,103 +85,59 @@ Write the labels related to the specified messages to the label file.
 
 =head2 Error handling
 
-$obj-E<gt>B<AUTOLOAD>
-
 =over 4
+
+=item $obj-E<gt>B<AUTOLOAD>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<addReport>(OBJECT)
-
-=over 4
+=item $obj-E<gt>B<addReport>(OBJECT)
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Mail::Box::MH::Labels-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<errors>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<errors>
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
 Mail::Box::MH::Labels-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=over 4
-
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>(LEVEL)
 
 Mail::Box::MH::Labels-E<gt>B<logPriority>(LEVEL)
 
-=over 4
+See L<Mail::Reporter/"Error handling">
+
+=item $obj-E<gt>B<logSettings>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<logSettings>
-
-=over 4
+=item $obj-E<gt>B<notImplemented>
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<notImplemented>
-
-=over 4
+=item $obj-E<gt>B<report>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<report>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<reportAll>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<reportAll>([LEVEL])
-
-=over 4
+=item $obj-E<gt>B<trace>([LEVEL])
 
 See L<Mail::Reporter/"Error handling">
 
-=back
-
-$obj-E<gt>B<trace>([LEVEL])
-
-=over 4
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-$obj-E<gt>B<warnings>
-
-=over 4
+=item $obj-E<gt>B<warnings>
 
 See L<Mail::Reporter/"Error handling">
 
@@ -209,17 +145,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-$obj-E<gt>B<DESTROY>
-
 =over 4
+
+=item $obj-E<gt>B<DESTROY>
 
 See L<Mail::Reporter/"Cleanup">
 
-=back
-
-$obj-E<gt>B<inGlobalDestruction>
-
-=over 4
+=item $obj-E<gt>B<inGlobalDestruction>
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -227,9 +159,9 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DIAGNOSTICS
 
-Error: Package $package does not implement $method.
-
 =over 4
+
+=item Error: Package $package does not implement $method.
 
 Fatal error: the specific package (or one of its superclasses) does not
 implement this method where it should. This message means that some other
@@ -241,12 +173,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.096,
-built on November 09, 2010. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.097,
+built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2010 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
