@@ -273,7 +273,7 @@ See L<Mail::Message::Body/"Access to the payload">
 
 =item $obj-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
 
-Mail::Message::Body::String-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
+=item Mail::Message::Body::String-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
 
 See L<Mail::Message::Body::Encode/"Internals">
 
@@ -329,7 +329,7 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Message::Body::String-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Message::Body::String-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 See L<Mail::Reporter/"Error handling">
 
@@ -339,13 +339,13 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Mail::Message::Body::String-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Message::Body::String-E<gt>B<log>([LEVEL [,STRINGS]])
 
 See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logPriority>(LEVEL)
 
-Mail::Message::Body::String-E<gt>B<logPriority>(LEVEL)
+=item Mail::Message::Body::String-E<gt>B<logPriority>(LEVEL)
 
 See L<Mail::Reporter/"Error handling">
 
@@ -427,8 +427,8 @@ file, but it is impossible to read that file to retrieve the lines within.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.097,
-built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.098,
+built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -1,11 +1,11 @@
 # Copyrights 2001-2011 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.07.
+# Pod stripped from pm file by OODoc 2.00.
 
 package Mail::Box::Maildir;
 use vars '$VERSION';
-$VERSION = '2.097';
+$VERSION = '2.098';
 
 use base 'Mail::Box::Dir';
 
@@ -46,8 +46,6 @@ sub init($)
     $self;
 }
 
-#-------------------------------------------
-
 
 sub create($@)
 {   my ($thingy, $name, %args) = @_;
@@ -65,8 +63,6 @@ sub create($@)
     }
 }
 
-#-------------------------------------------
-
 sub foundIn($@)
 {   my $class = shift;
     my $name  = @_ % 2 ? shift : undef;
@@ -77,11 +73,7 @@ sub foundIn($@)
     -d "$directory/cur";
 }
 
-#-------------------------------------------
-
 sub type() {'maildir'}
-
-#-------------------------------------------
 
 sub listSubFolders(@)
 {   my ($class, %args) = @_;
@@ -129,19 +121,13 @@ sub listSubFolders(@)
     grep { $class->foundIn("$dir/$_") } @dirs;
 }
 
-#-------------------------------------------
-
 sub openSubFolder($@)
 {   my ($self, $name) = (shift, shift);
     $self->createDirs($self->nameOfSubFolder($name));
     $self->SUPER::openSubFolder($name, @_);
 }
 
-#-------------------------------------------
-
 sub topFolderWithMessages() { 1 }
-
-#-------------------------------------------
 
 my $uniq = rand 1000;
 
@@ -191,8 +177,6 @@ sub createDirs($)
     $thing;
 }
 
-#-------------------------------------------
-
 
 sub folderIsEmpty($)
 {   my ($self, $dir) = @_;
@@ -222,16 +206,12 @@ sub folderIsEmpty($)
     1;
 }
 
-#-------------------------------------------
-
 sub delete(@)
 {   my $self = shift;
 
     # Subfolders are not nested in the directory structure
     remove \1, $self->directory;
 }
-
-#-------------------------------------------
 
 sub readMessageFilenames
 {   my ($self, $dirname) = @_;
@@ -255,8 +235,6 @@ sub readMessageFilenames
     map { "$dirname/$unified{$_}" }
         sort keys %unified;
 }
-
-#-------------------------------------------
 
 sub readMessages(@)
 {   my ($self, %args) = @_;
@@ -293,8 +271,6 @@ sub readMessages(@)
     $self;
 }
  
-#-------------------------------------------
-
 
 sub acceptMessages($)
 {   my ($self, %args) = @_;
@@ -302,8 +278,6 @@ sub acceptMessages($)
     $_->accept foreach @accept;
     @accept;
 }
-
-#-------------------------------------------
 
 sub writeMessages($)
 {   my ($self, $args) = @_;
@@ -355,8 +329,6 @@ sub writeMessages($)
 
     $self;
 }
-
-#-------------------------------------------
 
 
 sub appendMessages(@)

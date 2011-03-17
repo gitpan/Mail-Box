@@ -1,13 +1,13 @@
 # Copyrights 2001-2011 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.07.
+# Pod stripped from pm file by OODoc 2.00.
 use strict;
 use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.097';
+$VERSION = '2.098';
 
 use base 'Mail::Reporter';
 
@@ -183,7 +183,7 @@ sub head(;$)
         return undef;
     }
 
-    $self->log(INTERNAL => "wrong type of head for message $self")
+    $self->log(INTERNAL => "wrong type of head ($head) for message $self")
         unless ref $head && $head->isa('Mail::Message::Head');
 
     $head->message($self);

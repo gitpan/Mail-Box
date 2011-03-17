@@ -220,7 +220,7 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Transport::Send-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Transport::Send-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 See L<Mail::Reporter/"Error handling">
 
@@ -230,13 +230,13 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Mail::Transport::Send-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Transport::Send-E<gt>B<log>([LEVEL [,STRINGS]])
 
 See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logPriority>(LEVEL)
 
-Mail::Transport::Send-E<gt>B<logPriority>(LEVEL)
+=item Mail::Transport::Send-E<gt>B<logPriority>(LEVEL)
 
 See L<Mail::Reporter/"Error handling">
 
@@ -321,8 +321,8 @@ but only receive message.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.097,
-built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.098,
+built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

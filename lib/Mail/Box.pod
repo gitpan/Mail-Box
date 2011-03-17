@@ -935,7 +935,7 @@ example: scanning through a folder for a message
 
 =item $obj-E<gt>B<listSubFolders>(OPTIONS)
 
-Mail::Box-E<gt>B<listSubFolders>(OPTIONS)
+=item Mail::Box-E<gt>B<listSubFolders>(OPTIONS)
 
 List the names of all sub-folders to this folder, not recursively
 decending.  Use these names as argument to L<openSubFolder()|Mail::Box/"Sub-folders">, to get
@@ -981,7 +981,7 @@ example:
 
 =item $obj-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
 
-Mail::Box-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
+=item Mail::Box-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
 
 Returns the constructed name of the folder with NAME, which is a
 sub-folder of this current one.  You have either to call this method
@@ -1017,7 +1017,7 @@ example:
 
 =item $obj-E<gt>B<topFolderWithMessages>
 
-Mail::Box-E<gt>B<topFolderWithMessages>
+=item Mail::Box-E<gt>B<topFolderWithMessages>
 
 Some folder types can have messages in the top-level folder, some other
 can't.
@@ -1036,7 +1036,7 @@ here: they will be translated into Mail::Message messages first.
 
 =item $obj-E<gt>B<create>(FOLDERNAME, OPTIONS)
 
-Mail::Box-E<gt>B<create>(FOLDERNAME, OPTIONS)
+=item Mail::Box-E<gt>B<create>(FOLDERNAME, OPTIONS)
 
 Create a folder.  If the folder already exists, it will be left unchanged.
 The folder is created, but not opened!  If you want to open a file which
@@ -1226,7 +1226,7 @@ current folder.
 
 =item $obj-E<gt>B<timespan2seconds>(TIME)
 
-Mail::Box-E<gt>B<timespan2seconds>(TIME)
+=item Mail::Box-E<gt>B<timespan2seconds>(TIME)
 
 TIME is a string, which starts with a float, and then one of the
 words 'hour', 'hours', 'day', 'days', 'week', or 'weeks'.  For instance:
@@ -1248,7 +1248,7 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Box-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Box-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 See L<Mail::Reporter/"Error handling">
 
@@ -1258,13 +1258,13 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Mail::Box-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Box-E<gt>B<log>([LEVEL [,STRINGS]])
 
 See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logPriority>(LEVEL)
 
-Mail::Box-E<gt>B<logPriority>(LEVEL)
+=item Mail::Box-E<gt>B<logPriority>(LEVEL)
 
 See L<Mail::Reporter/"Error handling">
 
@@ -1541,8 +1541,8 @@ were changes made.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.097,
-built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.098,
+built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

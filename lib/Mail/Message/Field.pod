@@ -128,7 +128,7 @@ By default, a C<Fast> field is produced.
 
 =item $obj-E<gt>B<isStructured>
 
-Mail::Message::Field-E<gt>B<isStructured>
+=item Mail::Message::Field-E<gt>B<isStructured>
 
 Some fields are described in the RFCs as being I<structured>: having a
 well described syntax.  These fields have common ideas about comments
@@ -250,7 +250,7 @@ argument must be correct.
 
 =item $obj-E<gt>B<stripCFWS>([STRING])
 
-Mail::Message::Field-E<gt>B<stripCFWS>([STRING])
+=item Mail::Message::Field-E<gt>B<stripCFWS>([STRING])
 
 Remove the I<comments> and I<folding white spaces> from the STRING.  Without
 string and only as instance method, the L<unfoldedBody()|Mail::Message::Field/"Access to the body"> is being stripped
@@ -348,7 +348,7 @@ example:
 
 =item $obj-E<gt>B<toDate>([TIME])
 
-Mail::Message::Field-E<gt>B<toDate>([TIME])
+=item Mail::Message::Field-E<gt>B<toDate>([TIME])
 
 Convert a timestamp into an rfc2822 compliant date format.  This differs
 from the default output of C<localtime> in scalar context.  Without
@@ -383,7 +383,7 @@ performed whether this is right.
 
 =item $obj-E<gt>B<dateToTimestamp>(STRING)
 
-Mail::Message::Field-E<gt>B<dateToTimestamp>(STRING)
+=item Mail::Message::Field-E<gt>B<dateToTimestamp>(STRING)
 
 Convert a STRING which represents and RFC compliant time string into
 a timestamp like is produced by the C<time> function.
@@ -413,7 +413,7 @@ the current value is returned.  The default is 78.
 
 =item $obj-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
 
-Mail::Message::Field-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
+=item Mail::Message::Field-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
 
 Make the header field with NAME fold into multiple lines.
 Wrapping is performed by inserting newlines before a blanks in the
@@ -460,7 +460,7 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Message::Field-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Message::Field-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 See L<Mail::Reporter/"Error handling">
 
@@ -470,13 +470,13 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Mail::Message::Field-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Message::Field-E<gt>B<log>([LEVEL [,STRINGS]])
 
 See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logPriority>(LEVEL)
 
-Mail::Message::Field-E<gt>B<logPriority>(LEVEL)
+=item Mail::Message::Field-E<gt>B<logPriority>(LEVEL)
 
 See L<Mail::Reporter/"Error handling">
 
@@ -800,8 +800,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.097,
-built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.098,
+built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

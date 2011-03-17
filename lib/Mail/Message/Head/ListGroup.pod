@@ -49,7 +49,7 @@ or message HEAD.
 
 =item $obj-E<gt>B<implementedTypes>
 
-Mail::Message::Head::ListGroup-E<gt>B<implementedTypes>
+=item Mail::Message::Head::ListGroup-E<gt>B<implementedTypes>
 
 See L<Mail::Message::Head::FieldGroup/"Constructors">
 
@@ -151,7 +151,7 @@ See L<Mail::Message::Head::FieldGroup/"The header">
 
 =item $obj-E<gt>B<isListGroupFieldName>(NAME)
 
-Mail::Message::Head::ListGroup-E<gt>B<isListGroupFieldName>(NAME)
+=item Mail::Message::Head::ListGroup-E<gt>B<isListGroupFieldName>(NAME)
 
 =item $obj-E<gt>B<software>
 
@@ -204,7 +204,7 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Message::Head::ListGroup-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Message::Head::ListGroup-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 See L<Mail::Reporter/"Error handling">
 
@@ -219,13 +219,13 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Mail::Message::Head::ListGroup-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Message::Head::ListGroup-E<gt>B<log>([LEVEL [,STRINGS]])
 
 See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logPriority>(LEVEL)
 
-Mail::Message::Head::ListGroup-E<gt>B<logPriority>(LEVEL)
+=item Mail::Message::Head::ListGroup-E<gt>B<logPriority>(LEVEL)
 
 See L<Mail::Reporter/"Error handling">
 
@@ -372,8 +372,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.097,
-built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.098,
+built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

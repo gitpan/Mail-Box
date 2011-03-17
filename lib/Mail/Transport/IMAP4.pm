@@ -1,14 +1,14 @@
 # Copyrights 2001-2011 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.07.
+# Pod stripped from pm file by OODoc 2.00.
 
 use strict;
 use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.097';
+$VERSION = '2.098';
 
 use base 'Mail::Transport::Receive';
 
@@ -202,7 +202,7 @@ sub currentFolder(;$)
 
     my $name = shift;
 
-    if(exists $self->{MTI_folder} && $name eq $self->{MTI_folder})
+    if(defined $self->{MTI_folder} && $name eq $self->{MTI_folder})
     {   $self->log(DEBUG => "Folder $name already selected.");
         return $name;
     }

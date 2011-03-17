@@ -394,13 +394,13 @@ See L<Mail::Box/"The messages">
 
 =item $obj-E<gt>B<listSubFolders>(OPTIONS)
 
-Mail::Box::IMAP4-E<gt>B<listSubFolders>(OPTIONS)
+=item Mail::Box::IMAP4-E<gt>B<listSubFolders>(OPTIONS)
 
 See L<Mail::Box/"Sub-folders">
 
 =item $obj-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
 
-Mail::Box::IMAP4-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
+=item Mail::Box::IMAP4-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
 
 See L<Mail::Box/"Sub-folders">
 
@@ -414,7 +414,7 @@ See L<Mail::Box/"Sub-folders">
 
 =item $obj-E<gt>B<topFolderWithMessages>
 
-Mail::Box::IMAP4-E<gt>B<topFolderWithMessages>
+=item Mail::Box::IMAP4-E<gt>B<topFolderWithMessages>
 
 See L<Mail::Box/"Sub-folders">
 
@@ -432,7 +432,7 @@ See L<Mail::Box/"Internals">
 
 =item $obj-E<gt>B<create>(FOLDER, OPTIONS)
 
-Mail::Box::IMAP4-E<gt>B<create>(FOLDER, OPTIONS)
+=item Mail::Box::IMAP4-E<gt>B<create>(FOLDER, OPTIONS)
 
 See L<Mail::Box::Net/"METHODS">
 
@@ -573,7 +573,7 @@ but they will be removed anyway when the folder is closed.
 
 =item $obj-E<gt>B<timespan2seconds>(TIME)
 
-Mail::Box::IMAP4-E<gt>B<timespan2seconds>(TIME)
+=item Mail::Box::IMAP4-E<gt>B<timespan2seconds>(TIME)
 
 See L<Mail::Box/"Other methods">
 
@@ -593,7 +593,7 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Box::IMAP4-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Box::IMAP4-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 See L<Mail::Reporter/"Error handling">
 
@@ -603,13 +603,13 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Mail::Box::IMAP4-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Box::IMAP4-E<gt>B<log>([LEVEL [,STRINGS]])
 
 See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logPriority>(LEVEL)
 
-Mail::Box::IMAP4-E<gt>B<logPriority>(LEVEL)
+=item Mail::Box::IMAP4-E<gt>B<logPriority>(LEVEL)
 
 See L<Mail::Reporter/"Error handling">
 
@@ -741,8 +741,8 @@ to copy one of these.  Copying will proceed for all other sub-folders.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.097,
-built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.098,
+built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -203,7 +203,7 @@ See L<Mail::Message::Construct::Forward/"Constructing a message">
 
 =item $obj-E<gt>B<read>(ARRAY|FILEHANDLE, OPTIONS)
 
-Mail::Message::Replace::MailInternet-E<gt>B<read>(ARRAY|FILEHANDLE, OPTIONS)
+=item Mail::Message::Replace::MailInternet-E<gt>B<read>(ARRAY|FILEHANDLE, OPTIONS)
 
 Read header and body from the specified ARRAY or FILEHANDLE.  When used as
 object method, L<Mail::Message::read()|Mail::Message::Construct::Read/"Constructing a message"> is called, to be MailBox compliant.
@@ -329,7 +329,7 @@ See L<Mail::Message::Construct::Reply/"Constructing a message">
 
 =item $obj-E<gt>B<replySubject>(STRING)
 
-Mail::Message::Replace::MailInternet-E<gt>B<replySubject>(STRING)
+=item Mail::Message::Replace::MailInternet-E<gt>B<replySubject>(STRING)
 
 See L<Mail::Message::Construct::Reply/"Constructing a message">
 
@@ -707,7 +707,7 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 
 =item $obj-E<gt>B<isa>(CLASS)
 
-Mail::Message::Replace::MailInternet-E<gt>B<isa>(CLASS)
+=item Mail::Message::Replace::MailInternet-E<gt>B<isa>(CLASS)
 
 Of course, the C<isa()> class inheritance check should not see our
 nasty trick.
@@ -772,7 +772,7 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Message::Replace::MailInternet-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Message::Replace::MailInternet-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 See L<Mail::Reporter/"Error handling">
 
@@ -782,13 +782,13 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Mail::Message::Replace::MailInternet-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Message::Replace::MailInternet-E<gt>B<log>([LEVEL [,STRINGS]])
 
 See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logPriority>(LEVEL)
 
-Mail::Message::Replace::MailInternet-E<gt>B<logPriority>(LEVEL)
+=item Mail::Message::Replace::MailInternet-E<gt>B<logPriority>(LEVEL)
 
 See L<Mail::Reporter/"Error handling">
 
@@ -810,7 +810,7 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<shortSize>([VALUE])
 
-Mail::Message::Replace::MailInternet-E<gt>B<shortSize>([VALUE])
+=item Mail::Message::Replace::MailInternet-E<gt>B<shortSize>([VALUE])
 
 See L<Mail::Message/"Error handling">
 
@@ -898,8 +898,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.097,
-built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.098,
+built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

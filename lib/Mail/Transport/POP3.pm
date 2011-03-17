@@ -1,14 +1,14 @@
 # Copyrights 2001-2011 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.07.
+# Pod stripped from pm file by OODoc 2.00.
 
 use strict;
 use warnings;
 
 package Mail::Transport::POP3;
 use vars '$VERSION';
-$VERSION = '2.097';
+$VERSION = '2.098';
 
 use base 'Mail::Transport::Receive';
 
@@ -26,9 +26,9 @@ sub init($)
     $self->SUPER::init($args) or return;
 
     $self->{MTP_auth} = $args->{authenticate} || 'AUTO';
+    $self->{MTP_ssl}  = $args->{use_ssl};
     return unless $self->socket;   # establish connection
 
-    $self->{MTP_ssl}  = $args->{use_ssl};
     $self;
 }
 
@@ -53,12 +53,8 @@ sub messages()
     $self->{MTP_messages};
 }
 
-#------------------------------------------
-
 
 sub folderSize() { shift->{MTP_total} }
-
-#------------------------------------------
 
 
 sub header($;$)
@@ -71,8 +67,6 @@ sub header($;$)
 
     $self->sendList($socket, "TOP $n $bodylines$CRLF");
 }
-
-#------------------------------------------
 
 
 sub message($;$)
@@ -93,8 +87,6 @@ sub message($;$)
 
     $message;
 }
-
-#------------------------------------------
 
 
 sub messageSize($)
@@ -117,8 +109,6 @@ sub messageSize($)
     $list->[$n];
 }
 
-#------------------------------------------
-
 
 sub deleted($@)
 {   my $dele = shift->{MTP_dele} ||= {};
@@ -126,15 +116,10 @@ sub deleted($@)
 }
 
 
-#------------------------------------------
-
-
 sub deleteFetched()
 {   my $self = shift;
     $self->deleted(1, keys %{$self->{MTP_fetched}});
 }
-
-#------------------------------------------
 
 
 sub disconnect()
@@ -166,8 +151,6 @@ sub disconnect()
     OK($quit);
 }
 
-#------------------------------------------
-
 
 sub fetched(;$)
 {   my $self = shift;
@@ -175,13 +158,8 @@ sub fetched(;$)
     $self->{MTP_fetched};
 }
 
-#------------------------------------------
-
 
 sub id2n($;$) { shift->{MTP_uidl2n}{shift()} }
-
-#------------------------------------------
-
 
 #------------------------------------------
 
@@ -206,8 +184,6 @@ sub socket(;$)
     $self->{MTP_socket} = $socket;
 }
 
-#------------------------------------------
-
 
 sub send($$)
 {   my $self = shift;
@@ -224,8 +200,6 @@ sub send($$)
     }
     $response;
 }
-
-#------------------------------------------
 
 
 sub sendList($$)
@@ -246,19 +220,13 @@ sub sendList($$)
     \@list;
 }
 
-#------------------------------------------
-
 sub DESTROY()
 {   my $self = shift;
     $self->SUPER::DESTROY;
     $self->disconnect if $self->{MTP_socket}; # only do if not already done
 }
 
-#------------------------------------------
-
 sub OK($;$) { substr(shift || '', 0, 3) eq '+OK' }
-
-#------------------------------------------
 
 sub _connection(;$)
 {   my $self = shift;
@@ -275,8 +243,6 @@ sub _connection(;$)
 
     $socket;
 }
-
-#------------------------------------------
 
 
 sub login(;$)

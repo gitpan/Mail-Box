@@ -102,7 +102,7 @@ about any problems.
 
 =item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Reporter-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Reporter-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 Reports the default log and trace level which is used for object as list
 of two elements.  When not explicitly set, both are set to C<WARNINGS>.
@@ -150,7 +150,7 @@ Equivalent to
 
 =item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Mail::Reporter-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Reporter-E<gt>B<log>([LEVEL [,STRINGS]])
 
 As instance method this function has three different purposes.  Without
 any argument, it returns one scalar containing the number which is internally
@@ -184,7 +184,7 @@ example:
 
 =item $obj-E<gt>B<logPriority>(LEVEL)
 
-Mail::Reporter-E<gt>B<logPriority>(LEVEL)
+=item Mail::Reporter-E<gt>B<logPriority>(LEVEL)
 
 One error level (log or trace) has more than one representation: a
 numeric value and one or more strings.  For instance, C<4>, C<'WARNING'>,
@@ -313,8 +313,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.097,
-built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.098,
+built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

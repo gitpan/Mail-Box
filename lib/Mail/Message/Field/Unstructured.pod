@@ -119,7 +119,7 @@ example:
 
 =item $obj-E<gt>B<isStructured>
 
-Mail::Message::Field::Unstructured-E<gt>B<isStructured>
+=item Mail::Message::Field::Unstructured-E<gt>B<isStructured>
 
 See L<Mail::Message::Field/"The field">
 
@@ -189,7 +189,7 @@ See L<Mail::Message::Field/"Access to the body">
 
 =item $obj-E<gt>B<stripCFWS>([STRING])
 
-Mail::Message::Field::Unstructured-E<gt>B<stripCFWS>([STRING])
+=item Mail::Message::Field::Unstructured-E<gt>B<stripCFWS>([STRING])
 
 See L<Mail::Message::Field/"Access to the body">
 
@@ -225,13 +225,13 @@ See L<Mail::Message::Field/"Access to the content">
 
 =item $obj-E<gt>B<createComment>(STRING, OPTIONS)
 
-Mail::Message::Field::Unstructured-E<gt>B<createComment>(STRING, OPTIONS)
+=item Mail::Message::Field::Unstructured-E<gt>B<createComment>(STRING, OPTIONS)
 
 See L<Mail::Message::Field::Full/"Access to the content">
 
 =item $obj-E<gt>B<createPhrase>(STRING, OPTIONS)
 
-Mail::Message::Field::Unstructured-E<gt>B<createPhrase>(STRING, OPTIONS)
+=item Mail::Message::Field::Unstructured-E<gt>B<createPhrase>(STRING, OPTIONS)
 
 See L<Mail::Message::Field::Full/"Access to the content">
 
@@ -241,7 +241,7 @@ See L<Mail::Message::Field/"Access to the content">
 
 =item $obj-E<gt>B<toDate>([TIME])
 
-Mail::Message::Field::Unstructured-E<gt>B<toDate>([TIME])
+=item Mail::Message::Field::Unstructured-E<gt>B<toDate>([TIME])
 
 See L<Mail::Message::Field/"Access to the content">
 
@@ -257,7 +257,7 @@ See L<Mail::Message::Field/"Access to the content">
 
 =item $obj-E<gt>B<dateToTimestamp>(STRING)
 
-Mail::Message::Field::Unstructured-E<gt>B<dateToTimestamp>(STRING)
+=item Mail::Message::Field::Unstructured-E<gt>B<dateToTimestamp>(STRING)
 
 See L<Mail::Message::Field/"Other methods">
 
@@ -273,7 +273,7 @@ See L<Mail::Message::Field/"Internals">
 
 =item $obj-E<gt>B<decode>(STRING, OPTIONS)
 
-Mail::Message::Field::Unstructured-E<gt>B<decode>(STRING, OPTIONS)
+=item Mail::Message::Field::Unstructured-E<gt>B<decode>(STRING, OPTIONS)
 
 See L<Mail::Message::Field::Full/"Internals">
 
@@ -287,7 +287,7 @@ See L<Mail::Message::Field::Full/"Internals">
 
 =item $obj-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
 
-Mail::Message::Field::Unstructured-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
+=item Mail::Message::Field::Unstructured-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
 
 See L<Mail::Message::Field/"Internals">
 
@@ -311,7 +311,7 @@ See L<Mail::Message::Field/"Internals">
 
 =item $obj-E<gt>B<consumeComment>(STRING)
 
-Mail::Message::Field::Unstructured-E<gt>B<consumeComment>(STRING)
+=item Mail::Message::Field::Unstructured-E<gt>B<consumeComment>(STRING)
 
 See L<Mail::Message::Field::Full/"Parsing">
 
@@ -321,7 +321,7 @@ See L<Mail::Message::Field::Full/"Parsing">
 
 =item $obj-E<gt>B<consumePhrase>(STRING)
 
-Mail::Message::Field::Unstructured-E<gt>B<consumePhrase>(STRING)
+=item Mail::Message::Field::Unstructured-E<gt>B<consumePhrase>(STRING)
 
 See L<Mail::Message::Field::Full/"Parsing">
 
@@ -349,7 +349,7 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Message::Field::Unstructured-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Message::Field::Unstructured-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 See L<Mail::Reporter/"Error handling">
 
@@ -359,13 +359,13 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Mail::Message::Field::Unstructured-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Message::Field::Unstructured-E<gt>B<log>([LEVEL [,STRINGS]])
 
 See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logPriority>(LEVEL)
 
-Mail::Message::Field::Unstructured-E<gt>B<logPriority>(LEVEL)
+=item Mail::Message::Field::Unstructured-E<gt>B<logPriority>(LEVEL)
 
 See L<Mail::Reporter/"Error handling">
 
@@ -454,8 +454,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.097,
-built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.098,
+built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

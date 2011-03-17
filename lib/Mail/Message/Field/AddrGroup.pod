@@ -104,7 +104,7 @@ See L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<type>
 
-Mail::Message::Field::AddrGroup-E<gt>B<type>
+=item Mail::Message::Field::AddrGroup-E<gt>B<type>
 
 See L<User::Identity::Item/"Collections">
 
@@ -246,8 +246,8 @@ cannot add objects of a different $type.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.097,
-built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.098,
+built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

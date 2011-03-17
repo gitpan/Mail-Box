@@ -36,7 +36,7 @@ See L<Mail::Message::Head::FieldGroup/"Constructors">
 
 =item $obj-E<gt>B<fighter>(NAME, [SETTINGS])
 
-Mail::Message::Head::SpamGroup-E<gt>B<fighter>(NAME, [SETTINGS])
+=item Mail::Message::Head::SpamGroup-E<gt>B<fighter>(NAME, [SETTINGS])
 
 Get the SETTINGS of a certain spam-fighter, optionally after setting them.
 The L<knownFighters()> method returns the defined names.  The names
@@ -94,7 +94,7 @@ list is returned.  Without this option, all sets are returned.
 
 =item $obj-E<gt>B<habeasSweFieldsCorrect>([MESSAGE|HEAD])
 
-Mail::Message::Head::SpamGroup-E<gt>B<habeasSweFieldsCorrect>([MESSAGE|HEAD])
+=item Mail::Message::Head::SpamGroup-E<gt>B<habeasSweFieldsCorrect>([MESSAGE|HEAD])
 
 Returns a true value if the MESSAGE or HEAD contains C<Habeas-SWE> fields
 which are correct.  Without argument, this is used as instance method on
@@ -116,17 +116,17 @@ example: checking Habeas-SWE fields
 
 =item $obj-E<gt>B<implementedTypes>
 
-Mail::Message::Head::SpamGroup-E<gt>B<implementedTypes>
+=item Mail::Message::Head::SpamGroup-E<gt>B<implementedTypes>
 
 See L<Mail::Message::Head::FieldGroup/"Constructors">
 
 =item $obj-E<gt>B<isSpamGroupFieldName>(NAME)
 
-Mail::Message::Head::SpamGroup-E<gt>B<isSpamGroupFieldName>(NAME)
+=item Mail::Message::Head::SpamGroup-E<gt>B<isSpamGroupFieldName>(NAME)
 
 =item $obj-E<gt>B<knownFighters>
 
-Mail::Message::Head::SpamGroup-E<gt>B<knownFighters>
+=item Mail::Message::Head::SpamGroup-E<gt>B<knownFighters>
 
 Returns an unsorted list of all names representing pre-defined spam-fighter
 software.  You can ask details about them, and register more fighters with
@@ -256,7 +256,7 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-Mail::Message::Head::SpamGroup-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Message::Head::SpamGroup-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 See L<Mail::Reporter/"Error handling">
 
@@ -270,13 +270,13 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-Mail::Message::Head::SpamGroup-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Message::Head::SpamGroup-E<gt>B<log>([LEVEL [,STRINGS]])
 
 See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logPriority>(LEVEL)
 
-Mail::Message::Head::SpamGroup-E<gt>B<logPriority>(LEVEL)
+=item Mail::Message::Head::SpamGroup-E<gt>B<logPriority>(LEVEL)
 
 See L<Mail::Reporter/"Error handling">
 
@@ -377,8 +377,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.097,
-built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.098,
+built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

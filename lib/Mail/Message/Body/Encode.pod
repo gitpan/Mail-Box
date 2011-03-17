@@ -160,7 +160,7 @@ text.
 
 =item $obj-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
 
-Mail::Message::Body-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
+=item Mail::Message::Body-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
 
 Relate the NAMEd transfer encoding to an OBJECTs or object of the specified
 CLASS.  In the latter case, an object of that CLASS will be created on the
@@ -201,8 +201,8 @@ unknown.  The decoded data is returned.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.097,
-built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.098,
+built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

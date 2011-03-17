@@ -195,7 +195,7 @@ An characteristic example of the output is
 
 =item $obj-E<gt>B<replySubject>(STRING)
 
-Mail::Message-E<gt>B<replySubject>(STRING)
+=item Mail::Message-E<gt>B<replySubject>(STRING)
 
 Create a subject for a message which is a reply for this one.  This routine
 tries to count the level of reply in subject field, and transform it into
@@ -225,8 +225,8 @@ choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.097,
-built on January 26, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.098,
+built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
