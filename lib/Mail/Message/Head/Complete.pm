@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Head::Complete;
 use vars '$VERSION';
-$VERSION = '2.098';
+$VERSION = '2.099';
 
 use base 'Mail::Message::Head';
 
@@ -26,8 +26,6 @@ sub clone(;@)
     $copy->modified(1);
     $copy;
 }
-
-#------------------------------------------
 
 
 sub build(@)
@@ -62,17 +60,11 @@ sub build(@)
 
 sub isDelayed() {0}
 
-#------------------------------------------
-
 
 sub nrLines() { sum 1, map { $_->nrLines } shift->orderedFields }
 
-#------------------------------------------
-
 
 sub size() { sum 1, map {$_->size} shift->orderedFields }
-
-#------------------------------------------
 
 
 sub wrap($)
@@ -115,8 +107,6 @@ sub add(@)
     $field;
 }
 
-#------------------------------------------
-
 
 sub count($)
 {   my $known = shift->{MMH_fields};
@@ -127,12 +117,8 @@ sub count($)
     :                    1;
 }
 
-#------------------------------------------
-
 
 sub names() {shift->knownNames}
-
-#------------------------------------------
 
 
 sub grepNames(@)
@@ -154,8 +140,6 @@ sub grepNames(@)
 
     grep {$_->name =~ $take} $self->orderedFields;
 }
-
-#------------------------------------------
 
 
 my @skip_none = qw/content-transfer-encoding content-disposition
@@ -189,8 +173,6 @@ sub set(@)
     $field;
 }
 
-#------------------------------------------
-
 
 sub reset($@)
 {   my ($self, $name) = (shift, lc shift);
@@ -216,12 +198,8 @@ sub reset($@)
     $self;
 }
 
-#------------------------------------------
-
 
 sub delete($) { $_[0]->reset($_[1]) }
-
-#------------------------------------------
 
 
 sub removeField($)
@@ -247,15 +225,11 @@ sub removeField($)
     return;
 }
 
-#------------------------------------------
-
 
 sub removeFields(@)
 {   my $self = shift;
     (bless $self, 'Mail::Message::Head::Partial')->removeFields(@_);
 }
-
-#------------------------------------------
 
 
 sub removeFieldsExcept(@)
@@ -263,12 +237,8 @@ sub removeFieldsExcept(@)
     (bless $self, 'Mail::Message::Head::Partial')->removeFieldsExcept(@_);
 }
 
-#------------------------------------------
-
 
 sub removeContentInfo() { shift->removeFields(qr/^Content-/, 'Lines') }
-
-#------------------------------------------
 
 
 sub removeResentGroups(@)
@@ -276,15 +246,11 @@ sub removeResentGroups(@)
     (bless $self, 'Mail::Message::Head::Partial')->removeResentGroups(@_);
 }
 
-#------------------------------------------
-
 
 sub removeListGroup(@)
 {   my $self = shift;
     (bless $self, 'Mail::Message::Head::Partial')->removeListGroup(@_);
 }
-
-#------------------------------------------
 
 
 sub removeSpamGroups(@)
@@ -292,16 +258,12 @@ sub removeSpamGroups(@)
     (bless $self, 'Mail::Message::Head::Partial')->removeSpamGroups(@_);
 }
 
-#------------------------------------------
-
 
 sub spamDetected()
 {   my $self = shift;
     my @sgs = $self->spamGroups or return undef;
     grep { $_->spamDetected } @sgs;
 }
-
-#------------------------------------------
 
 
 sub print(;$)
@@ -317,8 +279,6 @@ sub print(;$)
     $self;
 }
 
-#------------------------------------------
-
 
 sub printUndisclosed($)
 {   my ($self, $fh) = @_;
@@ -331,8 +291,6 @@ sub printUndisclosed($)
 
     $self;
 }
-
-#------------------------------------------
 
 
 sub printSelected($@)
@@ -357,9 +315,6 @@ sub printSelected($@)
 }
 
 
-#------------------------------------------
-
-
 sub toString() {shift->string}
 sub string()
 {   my $self  = shift;
@@ -370,16 +325,12 @@ sub string()
     wantarray ? @lines : join('', @lines);
 }
 
-#------------------------------------------
-
 
 sub resentGroups()
 {   my $self = shift;
     require Mail::Message::Head::ResentGroup;
     Mail::Message::Head::ResentGroup->from($self);
 }
-
-#------------------------------------------
 
 
 sub addResentGroup(@)
@@ -421,8 +372,6 @@ sub addResentGroup(@)
     $rg;
 }
 
-#------------------------------------------
-
 
 sub listGroup()
 {   my $self = shift;
@@ -430,15 +379,11 @@ sub listGroup()
     Mail::Message::Head::ListGroup->from($self);
 }
 
-#------------------------------------------
-
 
 sub addListGroup($)
 {   my ($self, $lg) = @_;
     $lg->attach($self);
 }
-
-#------------------------------------------
 
 
 sub spamGroups(@)
@@ -449,8 +394,6 @@ sub spamGroups(@)
     wantarray || @_ != 1 ? @sgs : $sgs[0];
 }
 
-#------------------------------------------
-
 
 sub addSpamGroup($)
 {   my ($self, $sg) = @_;
@@ -460,10 +403,7 @@ sub addSpamGroup($)
 #------------------------------------------
 
 
-
 sub timestamp() {shift->guessTimestamp || time}
-
-#------------------------------------------
 
 
 sub recvstamp()
@@ -478,8 +418,6 @@ sub recvstamp()
 
     $self->{MMH_recvstamp} = defined $stamp && $stamp > 0 ? $stamp : undef;
 }
-
-#------------------------------------------
 
 
 sub guessTimestamp()
@@ -500,8 +438,6 @@ sub guessTimestamp()
 
     $self->{MMH_timestamp} = defined $stamp && $stamp > 0 ? $stamp : undef;
 }
-
-#------------------------------------------
 
 sub guessBodySize()
 {   my $self = shift;
@@ -526,8 +462,6 @@ sub createFromLine()
     "From $addr ".(gmtime $stamp)."\n"
 }
 
-#------------------------------------------
-
 
 my $msgid_creator;
 
@@ -535,8 +469,6 @@ sub createMessageId()
 {   $msgid_creator ||= $_[0]->messageIdPrefix;
     $msgid_creator->(@_);
 }
-
-#------------------------------------------
 
 
 sub messageIdPrefix(;$$)

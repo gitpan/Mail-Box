@@ -6,7 +6,7 @@
 use strict;
 package Mail::Box::Net;
 use vars '$VERSION';
-$VERSION = '2.098';
+$VERSION = '2.099';
 
 
 use base 'Mail::Box';

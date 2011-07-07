@@ -181,6 +181,8 @@ lib/Mail/Message/Field/Addresses.pm
 lib/Mail/Message/Field/Addresses.pod
 lib/Mail/Message/Field/Attribute.pm
 lib/Mail/Message/Field/Attribute.pod
+lib/Mail/Message/Field/Date.pm
+lib/Mail/Message/Field/Date.pod
 lib/Mail/Message/Field/Fast.pm
 lib/Mail/Message/Field/Fast.pod
 lib/Mail/Message/Field/Flex.pm

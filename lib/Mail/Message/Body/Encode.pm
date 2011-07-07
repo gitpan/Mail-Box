@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.098';
+$VERSION = '2.099';
 
 use base 'Mail::Reporter';
 
@@ -217,12 +217,8 @@ sub isBinary()
     $mime->isBinary;
 }
  
-#------------------------------------------
-
 
 sub isText() { not shift->isBinary }
-
-#------------------------------------------
 
 
 sub dispositionFilename(;$)

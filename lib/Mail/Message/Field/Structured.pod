@@ -11,6 +11,7 @@ Mail::Message::Field::Structured - one line of a structured message header
 
  Mail::Message::Field::Structured is extended by
    Mail::Message::Field::Addresses
+   Mail::Message::Field::Date
    Mail::Message::Field::URIs
 
 =head1 SYNOPSIS
@@ -115,7 +116,7 @@ L<Mail::Message::Field::Attribute|Mail::Message::Field::Attribute> objects.
 =item datum => STRING
 
 The method name I<body> is very confusing, even in the RFC.  In MailBox,
-for historical reasons, L<body()|Mail::Message::Field/"Access to the body"> returns the past of the field contents
+for historical reasons, L<body()|Mail::Message::Field/"Access to the body"> returns the part of the field contents
 before the first semi-colon.  L<foldedBody()|Mail::Message::Field/"Access to the body"> and L<unfoldedBody()|Mail::Message::Field/"Access to the body">
 address the whole field.
 
@@ -385,7 +386,7 @@ See L<Mail::Message::Field::Full/"Parsing">
 
 =item $obj-E<gt>B<datum>([VALUE])
 
-Equivalent to L<body()|Mail::Message::Field/"Access to the body">, but maybe less confusing.
+The part of the field before the semi-colon (C<;>).
 
 =item $obj-E<gt>B<parse>(STRING)
 
@@ -516,8 +517,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.098,
-built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.099,
+built on July 07, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

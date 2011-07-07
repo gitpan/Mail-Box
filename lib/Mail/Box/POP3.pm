@@ -5,7 +5,7 @@
 
 package Mail::Box::POP3;
 use vars '$VERSION';
-$VERSION = '2.098';
+$VERSION = '2.099';
 
 use base 'Mail::Box::Net';
 

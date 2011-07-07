@@ -5,7 +5,7 @@
 
 package Mail::Box::Search::Grep;
 use vars '$VERSION';
-$VERSION = '2.098';
+$VERSION = '2.099';
 
 use base 'Mail::Box::Search';
 
@@ -51,15 +51,11 @@ sub init($)
     $self;
 }
 
-#-------------------------------------------
-
 sub search(@)
 {   my ($self, $object, %args) = @_;
     delete $self->{MBSG_last_printed};
     $self->SUPER::search($object, %args);
 }
-
-#-------------------------------------------
 
 sub inHead(@)
 {   my ($self, $part, $head, $args) = @_;
@@ -81,9 +77,6 @@ sub inHead(@)
 
     $matched;
 }
-
-
-#-------------------------------------------
 
 sub inBody(@)
 {   my ($self, $part, $body, $args) = @_;
@@ -111,8 +104,6 @@ sub inBody(@)
 #-------------------------------------------
 
 
-#-------------------------------------------
-
 sub printMatch($;$)
 {   my $self = shift;
     my ($out, $match) = @_==2 ? @_ : (select, shift);
@@ -121,8 +112,6 @@ sub printMatch($;$)
     ? $self->printMatchedHead($out, $match)
     : $self->printMatchedBody($out, $match)
 }
-
-#-------------------------------------------
 
 
 sub printMatchedHead($$)
@@ -144,8 +133,6 @@ sub printMatchedHead($$)
     $self;
 }
 
-#-------------------------------------------
-
 
 sub printMatchedBody($$)
 {   my ($self, $out, $match) = @_;
@@ -164,7 +151,5 @@ sub printMatchedBody($$)
     $out->print(sprintf "$inpart %2d: %s", $match->{linenr}, $match->{line});
     $self;
 }
-
-#-------------------------------------------
 
 1;

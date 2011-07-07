@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::Message::Destructed;
 use vars '$VERSION';
-$VERSION = '2.098';
+$VERSION = '2.099';
 
 use base 'Mail::Box::Message';
 

@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Convert::TextAutoformat;
 use vars '$VERSION';
-$VERSION = '2.098';
+$VERSION = '2.099';
 
 use base 'Mail::Message::Convert';
 

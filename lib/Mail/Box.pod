@@ -685,10 +685,10 @@ C<maildir>, or C<pop3>.
 =item $obj-E<gt>B<update>(OPTIONS)
 
 Read new messages from the folder, which where received after opening
-it.  This is quite dangerous and shouldn't be possible: folders which
-are open are locked.  However, some applications do not use locks or
-the wrong kind of locks.  This method reads the changes (not always
-failsafe) and incorporates them in the open folder administration.
+it. This is quite dangerous and shouldn't be possible: folders which
+are open are locked. However, some applications do not use locks or the
+wrong kind of locks. This method reads the changes (not always failsafe)
+and incorporates them in the open folder administration.
 
 The OPTIONS are extra values which are passed to the
 L<updateMessages()|Mail::Box/"Internals"> method which is doing the actual work here.
@@ -1541,8 +1541,8 @@ were changes made.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.098,
-built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.099,
+built on July 07, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

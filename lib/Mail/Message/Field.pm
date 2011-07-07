@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field;
 use vars '$VERSION';
-$VERSION = '2.098';
+$VERSION = '2.099';
 
 use base 'Mail::Reporter';
 
@@ -42,12 +42,12 @@ sub new(@)
     $class->SUPER::new(@_);
 }
 
+
+
 #------------------------------------------
 
 
 sub length { length shift->folded }
-
-#------------------------------------------
 
 
 BEGIN {
@@ -68,16 +68,12 @@ sub isStructured(;$)
     exists $_structured{lc $name};
 }
 
-#------------------------------------------
-
 
 sub print(;$)
 {   my $self = shift;
     my $fh   = shift || select;
     $fh->print(scalar $self->folded);
 }
-
-#------------------------------------------
 
 
 sub toString(;$) {shift->string(@_)}
@@ -92,8 +88,6 @@ sub string(;$)
     wantarray ? @lines : join('', @lines);
 }
 
-#------------------------------------------
-
 
 sub toDisclose()
 {   shift->name !~ m!^(?: (?:x-)?status
@@ -103,12 +97,8 @@ sub toDisclose()
                       ) $!x;
 }
 
-#------------------------------------------
-
 
 sub nrLines() { my @l = shift->foldedBody; scalar @l }
-
-#------------------------------------------
 
 
 *size = \&length;
@@ -141,8 +131,6 @@ sub wellformedName(;$)
 
 sub folded { shift->notImplemented }
 
-#------------------------------------------
-
 
 sub body()
 {   my $self = shift;
@@ -152,8 +140,6 @@ sub body()
     $body =~ s/\s*\;.*//s;
     $body;
 }
-
-#------------------------------------------
 
 
 sub foldedBody { shift->notImplemented }

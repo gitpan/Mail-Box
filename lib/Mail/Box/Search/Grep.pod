@@ -171,9 +171,7 @@ See L<Mail::Box::Search/"Searching">
 
 =over 4
 
-=item $obj-E<gt>B<printMatch>([FILEHANDLE], HASH)
-
-See L<Mail::Box::Search/"The Results">
+=item $obj-E<gt>B<printMatch>([FILEHANDLE], MATCH)
 
 =item $obj-E<gt>B<printMatchedBody>(FILEHANDLE, MATCH)
 
@@ -271,8 +269,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.098,
-built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.099,
+built on July 07, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

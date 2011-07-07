@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Box::Parser::Perl;
 use vars '$VERSION';
-$VERSION = '2.098';
+$VERSION = '2.099';
 
 use base 'Mail::Box::Parser';
 
@@ -161,8 +161,6 @@ sub _read_stripped_lines(;$$)
 
                 $file->setpos($where);
                 $msgend = $file->tell;
-                last LINE;
-
                 last LINE;
             }
 

@@ -4,7 +4,7 @@
 # Pod stripped from pm file by OODoc 2.00.
 package Mail::Box::FastScalar;
 use vars '$VERSION';
-$VERSION = '2.098';
+$VERSION = '2.099';
 
 
 
@@ -14,11 +14,8 @@ use integer;
 
 sub new($) {
     my ($class, $ref) = @_;
-    $$ref = '' unless defined($$ref);
-    my $self = { ref => $ref, pos => 0 };
-
-    bless $self, $class;
-    return $self;
+    $$ref = '' unless defined $$ref;
+    bless { ref => $ref, pos => 0 }, $class;
 }
 
 sub autoflush() {}

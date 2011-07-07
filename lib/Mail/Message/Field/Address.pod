@@ -36,6 +36,11 @@ handle interpretation and character set encoding and decoding for you.
 
 The object used as boolean will always return C<true>
 
+=item overload: B<string comparison>
+
+Two address objects are the same when their email addresses are the
+same.
+
 =item overload: B<stringification>
 
 When the object is used in string context, it will return the encoded
@@ -236,8 +241,8 @@ The collection with $name does not exist and can not be created.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.098,
-built on March 17, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.099,
+built on July 07, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

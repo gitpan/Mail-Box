@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Full;
 use vars '$VERSION';
-$VERSION = '2.098';
+$VERSION = '2.099';
 
 use base 'Mail::Message::Field';
 
@@ -20,6 +20,7 @@ use Mail::Message::Field::Structured;
 use Mail::Message::Field::Unstructured;
 use Mail::Message::Field::Addresses;
 use Mail::Message::Field::URIs;
+use Mail::Message::Field::Date;
 
 my $atext = q[a-zA-Z0-9!#\$%&'*+\-\/=?^_`{|}~];  # from RFC
 my $atext_ill = q/\[\]/;     # illegal, but still used (esp spam)
@@ -33,19 +34,19 @@ use overload '""' => sub { shift->decodedBody };
 my %implementation;
 
 BEGIN {
-   $implementation{$_} = 'Addresses' foreach
-      qw/from to sender cc bcc reply-to envelope-to
+   $implementation{$_} = 'Addresses'
+      for qw/from to sender cc bcc reply-to envelope-to
          resent-from resent-to resent-cc resent-bcc resent-reply-to
          resent-sender
          x-beenthere errors-to mail-follow-up x-loop delivered-to
          original-sender x-original-sender/;
-   $implementation{$_} = 'URIs' foreach
-      qw/list-help list-post list-subscribe list-unsubscribe list-archive
-         list-owner/;
-   $implementation{$_} = 'Structured' foreach
-      qw/content-disposition content-type/;
-#  $implementation{$_} = 'Date' foreach
-#     qw/date resent-date/;
+   $implementation{$_} = 'URIs'
+      for qw/list-help list-post list-subscribe list-unsubscribe
+         list-archive list-owner/;
+   $implementation{$_} = 'Structured'
+      for qw/content-disposition content-type/;
+   $implementation{$_} = 'Date'
+      for qw/date resent-date/;
 }
 
 sub new($;$$@)

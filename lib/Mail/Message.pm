@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.098';
+$VERSION = '2.099';
 
 use base 'Mail::Reporter';
 
@@ -214,8 +214,8 @@ sub study($)
 
 
 sub from()
-{  my $from = shift->head->get('From') or return ();
-   map {$_->addresses} $from;
+{  my @from = shift->head->get('From') or return ();
+   map {$_->addresses} @from;
 }
 
 

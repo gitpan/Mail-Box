@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Addresses;
 use vars '$VERSION';
-$VERSION = '2.098';
+$VERSION = '2.099';
 
 use base 'Mail::Message::Field::Structured';
 
@@ -24,12 +24,9 @@ my $mailbox_list = {multi => 1};
 my $mailbox      = {};
 
 my %accepted     =    # defaults to $address_list
- ( from       => $mailbox_list
- , sender     => $mailbox
- );
-
-
-#------------------------------------------
+  ( from       => $mailbox_list
+  , sender     => $mailbox
+  );
 
 sub init($)
 {   my ($self, $args) = @_;
@@ -71,8 +68,6 @@ sub addAddress(@)
     $email;
 }
 
-#------------------------------------------
-
 
 sub addGroup(@)
 {   my $self  = shift;
@@ -83,8 +78,6 @@ sub addGroup(@)
     $group;
 }
 
-#------------------------------------------
-
 
 sub group($)
 {   my ($self, $name) = @_;
@@ -92,22 +85,14 @@ sub group($)
     first { lc($_->name) eq lc($name) } $self->groups;
 }
 
-#------------------------------------------
-
 
 sub groups() { @{shift->{MMFF_groups}} }
-
-#------------------------------------------
 
 
 sub groupNames() { map {$_->name} shift->groups }
 
-#------------------------------------------
-
 
 sub addresses() { map {$_->addresses} shift->groups }
-
-#------------------------------------------
 
 
 sub addAttribute($;@)
@@ -184,8 +169,6 @@ sub parse($)
    0;
 }
 
-#------------------------------------------
-
 sub produceBody()
 {  my @groups = sort {$a->name cmp $b->name} shift->groups;
 
@@ -199,8 +182,6 @@ sub produceBody()
 
    join ' ', $plain, map({$_->string} @groups);
 }
-
-#------------------------------------------
 
 
 sub consumeAddress($@)
@@ -221,8 +202,6 @@ sub consumeAddress($@)
 
     ($email, $shorter);
 }
-
-#------------------------------------------
 
 
 sub consumeDomain($)

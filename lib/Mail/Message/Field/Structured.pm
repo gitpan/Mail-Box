@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Structured;
 use vars '$VERSION';
-$VERSION = '2.098';
+$VERSION = '2.099';
 
 use base 'Mail::Message::Field::Full';
 
@@ -17,11 +17,9 @@ use Mail::Message::Field::Attribute;
 sub init($)
 {   my ($self, $args) = @_;
     $self->{MMFS_attrs} = {};
+    $self->{MMFS_datum} = $args->{datum};
 
     $self->SUPER::init($args);
-
-    $self->datum($args->{datum})
-        if defined $args->{datum};
 
     my $attr = $args->{attributes} || [];
     $attr    = [ %$attr ] if ref $attr eq 'HASH';
@@ -63,8 +61,9 @@ sub attribute($;$)
 
 
 sub attributes() { values %{shift->{MMFS_attrs}} }
-
 sub beautify() { delete shift->{MMFF_body} }
+
+#-------------------------
 
 
 sub parse($)
@@ -74,7 +73,7 @@ sub parse($)
     {   (undef, $string)  = $self->consumeComment($string);
         $datum .= $1 if $string =~ s/^([^;(]+)//;
     }
-    $self->datum($datum);
+    $self->{MMFS_datum} = $datum;
 
     my $found = '';
     while($string =~ m/\S/)
@@ -108,7 +107,7 @@ sub parse($)
 sub produceBody()
 {   my $self  = shift;
     my $attrs = $self->{MMFS_attrs};
-    my $datum = $self->datum;
+    my $datum = $self->{MMFS_datum};
 
     join '; '
        , (defined $datum ? $datum : '')
@@ -116,10 +115,11 @@ sub produceBody()
 }
 
 
-sub datum(;$)
+sub datum(@)
 {   my $self = shift;
-    @_ ? ($self->{MMFS_datum} = shift) : $self->{MMFS_datum};
+    @_ or return $self->{MMFS_datum};
+    delete $self->{MMFF_body};
+    $self->{MMFS_datum} = shift;
 }
-*body = \&datum;
 
 1;

@@ -1,20 +1,27 @@
 =head1 NAME
 
-Mail::Message::Field::Flex - one line of a message header
+Mail::Message::Field::Date - message header field with uris
 
 =head1 INHERITANCE
 
- Mail::Message::Field::Flex
+ Mail::Message::Field::Date
+   is a Mail::Message::Field::Structured
+   is a Mail::Message::Field::Full
    is a Mail::Message::Field
    is a Mail::Reporter
 
+=head1 SYNOPSIS
+
+ my $f = Mail::Message::Field->new(Date => time);
+
 =head1 DESCRIPTION
 
-This is the flexible implementation of a field: it can easily be
-extended because it stores its data in a hash and the constructor
-(C<new>) and initializer (C<init>) are split.  However, you pay the
-price in performance.  L<Mail::Message::Field::Fast|Mail::Message::Field::Fast> is faster (as the
-name predicts).
+Dates are a little more tricky than it should be: the formatting permits
+a few constructs more than other RFCs use for timestamps.  For instance,
+a small subset of timezone abbreviations are permitted.
+
+The studied date field will reformat the content into a standard
+form.
 
 =head1 OVERLOADED
 
@@ -40,6 +47,10 @@ See L<Mail::Message::Field/"OVERLOADED">
 
 See L<Mail::Message::Field/"OVERLOADED">
 
+=item overload: B<stringification>
+
+See L<Mail::Message::Field::Full/"OVERLOADED">
+
 =back
 
 =head1 METHODS
@@ -52,34 +63,19 @@ See L<Mail::Message::Field/"OVERLOADED">
 
 See L<Mail::Message::Field/"Constructors">
 
-=item Mail::Message::Field::Flex-E<gt>B<new>(DATA)
+=item Mail::Message::Field::Date-E<gt>B<from>(FIELD, OPTIONS)
 
-If you stick to this flexible class of header fields, you have a bit
-more facilities than with L<Mail::Message::Field::Fast|Mail::Message::Field::Fast>.  Amongst it, you
-can specify options with the creation.  Possible arguments:
+See L<Mail::Message::Field::Full/"Constructors">
 
-=over 4
-
-=item * B<new> LINE
-
-ass a LINE as it could be found in a file: a (possibly folded) line
-which is terminated by a new-line.
-
-=item * B<new> NAME, (BODY|OBJECTS), [ATTRIBUTES], OPTIONS
-
-A set of values which shape the line.
-
-=back
-
-To be able to distinguish the different parameters, you will have
-to specify the OPTIONS as ARRAY of option pairs, or HASH of options.
-The ATTRIBUTES are a flat list of key-value pairs.  The body is
-specified as one BODY string, one OBJECT, or a reference to an array
-of OBJECTS.  See L<Mail::Message::Field|Mail::Message::Field>:
+=item Mail::Message::Field::Date-E<gt>B<new>(DATA)
 
  -Option    --Defined in     --Default
-  attributes                   []
-  comment                      undef
+  attributes  Mail::Message::Field::Structured  <ignored>
+  charset     Mail::Message::Field::Full  undef
+  datum       Mail::Message::Field::Structured  undef
+  encoding    Mail::Message::Field::Full  'q'
+  force       Mail::Message::Field::Full  false
+  language    Mail::Message::Field::Full  undef
   log         Mail::Reporter   'WARNINGS'
   trace       Mail::Reporter   'WARNINGS'
 
@@ -87,19 +83,26 @@ of OBJECTS.  See L<Mail::Message::Field|Mail::Message::Field>:
 
 =item attributes => ATTRS
 
-Reference to array with list of key-value pairs representing attributes,
-or reference to a hash containing these pairs.  This is an alternative
-notation for specifying ATTRIBUTES directly as method arguments.
+=item charset => STRING
 
-=item comment => STRING
+=item datum => STRING
 
-A pre-formatted list of attributes.
+=item encoding => 'q'|'Q'|'b'|'B'
+
+=item force => BOOLEAN
+
+=item language => STRING
 
 =item log => LEVEL
 
 =item trace => LEVEL
 
 =back
+
+example: 
+
+ my $mmfd = 'Mail::Message::Field::Date';
+ my $f = $mmfd->new(Date => time);
 
 =back
 
@@ -109,7 +112,7 @@ A pre-formatted list of attributes.
 
 =item $obj-E<gt>B<isStructured>
 
-=item Mail::Message::Field::Flex-E<gt>B<isStructured>
+=item Mail::Message::Field::Date-E<gt>B<isStructured>
 
 See L<Mail::Message::Field/"The field">
 
@@ -165,6 +168,10 @@ See L<Mail::Message::Field/"Access to the name">
 
 See L<Mail::Message::Field/"Access to the body">
 
+=item $obj-E<gt>B<decodedBody>(OPTIONS)
+
+See L<Mail::Message::Field::Full/"Access to the body">
+
 =item $obj-E<gt>B<folded>
 
 See L<Mail::Message::Field/"Access to the body">
@@ -175,7 +182,7 @@ See L<Mail::Message::Field/"Access to the body">
 
 =item $obj-E<gt>B<stripCFWS>([STRING])
 
-=item Mail::Message::Field::Flex-E<gt>B<stripCFWS>([STRING])
+=item Mail::Message::Field::Date-E<gt>B<stripCFWS>([STRING])
 
 See L<Mail::Message::Field/"Access to the body">
 
@@ -189,29 +196,53 @@ See L<Mail::Message::Field/"Access to the body">
 
 =over 4
 
+=item $obj-E<gt>B<addAttribute>(...)
+
+Attributes are not supported for date fields.
+
 =item $obj-E<gt>B<addresses>
 
 See L<Mail::Message::Field/"Access to the content">
 
-=item $obj-E<gt>B<attribute>(NAME [, VALUE])
+=item $obj-E<gt>B<attribute>(OBJECT|(STRING, OPTIONS)|(NAME,VALUE,OPTIONS))
 
-See L<Mail::Message::Field/"Access to the content">
+See L<Mail::Message::Field::Structured/"Access to the content">
 
 =item $obj-E<gt>B<attributes>
 
-See L<Mail::Message::Field/"Access to the content">
+See L<Mail::Message::Field::Structured/"Access to the content">
+
+=item $obj-E<gt>B<beautify>
+
+See L<Mail::Message::Field::Full/"Access to the content">
 
 =item $obj-E<gt>B<comment>([STRING])
 
 See L<Mail::Message::Field/"Access to the content">
 
+=item $obj-E<gt>B<createComment>(STRING, OPTIONS)
+
+=item Mail::Message::Field::Date-E<gt>B<createComment>(STRING, OPTIONS)
+
+See L<Mail::Message::Field::Full/"Access to the content">
+
+=item $obj-E<gt>B<createPhrase>(STRING, OPTIONS)
+
+=item Mail::Message::Field::Date-E<gt>B<createPhrase>(STRING, OPTIONS)
+
+See L<Mail::Message::Field::Full/"Access to the content">
+
 =item $obj-E<gt>B<study>
 
 See L<Mail::Message::Field/"Access to the content">
 
+=item $obj-E<gt>B<time>
+
+Convert date into a timestamp, as produced with POSIX::time().
+
 =item $obj-E<gt>B<toDate>([TIME])
 
-=item Mail::Message::Field::Flex-E<gt>B<toDate>([TIME])
+=item Mail::Message::Field::Date-E<gt>B<toDate>([TIME])
 
 See L<Mail::Message::Field/"Access to the content">
 
@@ -227,7 +258,7 @@ See L<Mail::Message::Field/"Access to the content">
 
 =item $obj-E<gt>B<dateToTimestamp>(STRING)
 
-=item Mail::Message::Field::Flex-E<gt>B<dateToTimestamp>(STRING)
+=item Mail::Message::Field::Date-E<gt>B<dateToTimestamp>(STRING)
 
 See L<Mail::Message::Field/"Other methods">
 
@@ -241,13 +272,23 @@ See L<Mail::Message::Field/"Other methods">
 
 See L<Mail::Message::Field/"Internals">
 
+=item $obj-E<gt>B<decode>(STRING, OPTIONS)
+
+=item Mail::Message::Field::Date-E<gt>B<decode>(STRING, OPTIONS)
+
+See L<Mail::Message::Field::Full/"Internals">
+
 =item $obj-E<gt>B<defaultWrapLength>([LENGTH])
 
 See L<Mail::Message::Field/"Internals">
 
+=item $obj-E<gt>B<encode>(STRING, OPTIONS)
+
+See L<Mail::Message::Field::Full/"Internals">
+
 =item $obj-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
 
-=item Mail::Message::Field::Flex-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
+=item Mail::Message::Field::Date-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
 
 See L<Mail::Message::Field/"Internals">
 
@@ -265,6 +306,40 @@ See L<Mail::Message::Field/"Internals">
 
 =back
 
+=head2 Parsing
+
+=over 4
+
+=item $obj-E<gt>B<consumeComment>(STRING)
+
+=item Mail::Message::Field::Date-E<gt>B<consumeComment>(STRING)
+
+See L<Mail::Message::Field::Full/"Parsing">
+
+=item $obj-E<gt>B<consumeDotAtom>(STRING)
+
+See L<Mail::Message::Field::Full/"Parsing">
+
+=item $obj-E<gt>B<consumePhrase>(STRING)
+
+=item Mail::Message::Field::Date-E<gt>B<consumePhrase>(STRING)
+
+See L<Mail::Message::Field::Full/"Parsing">
+
+=item $obj-E<gt>B<datum>([VALUE])
+
+See L<Mail::Message::Field::Structured/"Parsing">
+
+=item $obj-E<gt>B<parse>(STRING)
+
+See L<Mail::Message::Field::Full/"Parsing">
+
+=item $obj-E<gt>B<produceBody>
+
+See L<Mail::Message::Field::Full/"Parsing">
+
+=back
+
 =head2 Error handling
 
 =over 4
@@ -279,7 +354,7 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
-=item Mail::Message::Field::Flex-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Message::Field::Date-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
 
 See L<Mail::Reporter/"Error handling">
 
@@ -289,13 +364,13 @@ See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
 
-=item Mail::Message::Field::Flex-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Message::Field::Date-E<gt>B<log>([LEVEL [,STRINGS]])
 
 See L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logPriority>(LEVEL)
 
-=item Mail::Message::Field::Flex-E<gt>B<logPriority>(LEVEL)
+=item Mail::Message::Field::Date-E<gt>B<logPriority>(LEVEL)
 
 See L<Mail::Reporter/"Error handling">
 
@@ -349,11 +424,33 @@ The numeric value of a field is requested (for instance the C<Lines> or
 C<Content-Length> fields should be numerical), however the data contains
 weird characters.
 
+=item Warning: Illegal character in charset '$charset'
+
+The field is created with an utf8 string which only contains data from the
+specified character set.  However, that character set can never be a valid
+name because it contains characters which are not permitted.
+
 =item Warning: Illegal character in field name $name
 
 A new field is being created which does contain characters not permitted
 by the RFCs.  Using this field in messages may break other e-mail clients
 or transfer agents, and therefore mutulate or extinguish your message.
+
+=item Warning: Illegal character in language '$lang'
+
+The field is created with data which is specified to be in a certain language,
+however, the name of the language cannot be valid: it contains characters
+which are not permitted by the RFCs.
+
+=item Warning: Illegal encoding '$encoding', used 'q'
+
+The RFCs only permit base64 (C<b > or C<B >) or quoted-printable
+(C<q> or C<Q>) encoding.  Other than these four options are illegal.
+
+=item Error: No attributes for date fields.
+
+Is is not possible to add attributes to date fields: it is not permitted
+by the RFCs.
 
 =item Error: Package $package does not implement $method.
 

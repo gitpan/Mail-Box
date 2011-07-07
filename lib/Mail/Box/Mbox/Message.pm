@@ -6,12 +6,10 @@
 use strict;
 package Mail::Box::Mbox::Message;
 use vars '$VERSION';
-$VERSION = '2.098';
+$VERSION = '2.099';
 
 use base 'Mail::Box::File::Message';
 
-
-#-------------------------------------------
 
 sub head(;$$)
 {   my $self  = shift;
@@ -24,8 +22,6 @@ sub head(;$$)
     $head;
 }
 
-#-------------------------------------------
-
 sub label(@)
 {   my $self   = shift;
     $self->loadHead;    # be sure the status fields have been read
@@ -33,14 +29,10 @@ sub label(@)
     $return;
 }
 
-#-------------------------------------------
-
 sub labels(@)
 {   my $self   = shift;
     $self->loadHead;    # be sure the status fields have been read
     $self->SUPER::labels(@_);
 }
-
-#------------------------------------------
 
 1;
