@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Body::Multipart;
 use vars '$VERSION';
-$VERSION = '2.099';
+$VERSION = '2.101';
 
 use base 'Mail::Message::Body';
 
@@ -21,8 +21,7 @@ use Carp;
 sub init($)
 {   my ($self, $args) = @_;
     my $based = $args->{based_on};
-    $args->{mime_type} ||=
-        defined $based ? $based->mimeType : 'multipart/mixed';
+    $args->{mime_type} ||= defined $based ? $based->type : 'multipart/mixed';
 
     $self->SUPER::init($args);
 

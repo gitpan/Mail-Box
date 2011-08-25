@@ -5,7 +5,7 @@
 
 package Mail::Box::POP3s;
 use vars '$VERSION';
-$VERSION = '2.099';
+$VERSION = '2.101';
 
 use base 'Mail::Box::POP3';
 

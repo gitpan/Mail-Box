@@ -5,7 +5,7 @@
 
 package MailBox::Test::13body::Definition;
 use vars '$VERSION';
-$VERSION = '2.099';
+$VERSION = '2.101';
 
 
 sub name     {"Mail::Message::Body; message bodies"}

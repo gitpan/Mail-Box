@@ -273,11 +273,12 @@ will share the header which can be modified in the undeleted message.
 
 example: of moving a message
 
- my $t = $msg->moveTo('trash');
+ my $trash = Mail::Box::Mbox->new(folder => 'trash');
+ my $t = $msg->moveTo($trash);
 
 is equivalent to
 
- my $t = $msg->copyTo('trash', share => 1);
+ my $t = $msg->copyTo($trash, share => 1);
  $msg->delete;
 
 =item $obj-E<gt>B<print>([FILEHANDLE])
@@ -675,8 +676,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.099,
-built on July 07, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.101,
+built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

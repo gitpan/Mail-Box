@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Head::Complete;
 use vars '$VERSION';
-$VERSION = '2.099';
+$VERSION = '2.101';
 
 use base 'Mail::Message::Head';
 
@@ -482,12 +482,17 @@ sub messageIdPrefix(;$$)
     my $prefix   = shift || "mailbox-$$";
 
     my $hostname = shift;
-    unless(defined $hostname)
-    {   require Sys::Hostname;
-        $hostname = Sys::Hostname::hostname() || 'localhost';
+    if(!defined $hostname)
+    {   eval "require Net::Domain";
+        $@ or $hostname = Net::Domain::hostfqdn();
     }
+    if(!defined $hostname)
+    {   eval "require Sys::Hostname";
+        $@ or $hostname = Sys::Hostname::hostname();
+    }
+    $hostname ||= 'localhost';
 
-    eval {require Time::HiRes};
+    eval "require Time::HiRes";
     if(Time::HiRes->can('gettimeofday'))
     {
         return $msgid_creator

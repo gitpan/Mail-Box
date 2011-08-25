@@ -29,7 +29,7 @@ Name of the file to lock.  By default, the folder's name is extended
 with C<.lock>.
 
  -Option      --Defined in     --Default
-  dotlock_file                   undef
+  dotlock_file                   <undef>
   expires       Mail::Box::Locker  1 hour
   file          Mail::Box::Locker  <folderfile>.lock
   folder        Mail::Box::Locker  <undef>
@@ -40,7 +40,7 @@ with C<.lock>.
 
 =over 2
 
-=item dotlock_file => <undef>
+=item dotlock_file => FILENAME
 
 Alternative name for C<file>, especially useful to confusion when
 the multi locker is used.
@@ -197,8 +197,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.099,
-built on July 07, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.101,
+built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

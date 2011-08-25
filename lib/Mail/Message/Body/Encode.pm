@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.099';
+$VERSION = '2.101';
 
 use base 'Mail::Reporter';
 
@@ -238,12 +238,23 @@ sub dispositionFilename(;$)
              || $field->attribute('name');
     }
 
-    return $raw unless @_;
+    my $base;
+    if(!defined $raw || !length $raw) {}
+    elsif(index($raw, '?') >= 0)
+    {   eval 'require Mail::Message::Field::Full';
+        $base = Mail::Message::Field::Full->decode($raw);
+    }
+    else
+    {   $base = $raw;
+    }
+
+    return $base
+        unless @_;
 
     my $dir      = shift;
     my $filename = '';
-    if(defined $raw)
-    {   $filename = basename $raw;
+    if(defined $base)
+    {   $filename = basename $base;
         $filename =~ s/[^\w.-]//;
     }
 
