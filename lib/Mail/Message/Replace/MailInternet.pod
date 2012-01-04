@@ -38,12 +38,12 @@ a look at your L<smtpsend()|Mail::Message::Replace::MailInternet/"The body"> and
 
 See L<Mail::Message/"Constructors">
 
-=item $obj-E<gt>B<dup>
+=item $obj-E<gt>B<dup>()
 
 Duplicate the message.  The result will again be a L<Mail::Internet>
 compatible object.
 
-=item $obj-E<gt>B<empty>
+=item $obj-E<gt>B<empty>()
 
 Remove all data from this object.  Very dangerous!
 
@@ -189,11 +189,11 @@ See L<Mail::Message::Construct::Forward/"Constructing a message">
 
 See L<Mail::Message::Construct::Forward/"Constructing a message">
 
-=item $obj-E<gt>B<forwardPostlude>
+=item $obj-E<gt>B<forwardPostlude>()
 
 See L<Mail::Message::Construct::Forward/"Constructing a message">
 
-=item $obj-E<gt>B<forwardPrelude>
+=item $obj-E<gt>B<forwardPrelude>()
 
 See L<Mail::Message::Construct::Forward/"Constructing a message">
 
@@ -359,19 +359,19 @@ The signature in memory.
 
 =over 4
 
-=item $obj-E<gt>B<container>
+=item $obj-E<gt>B<container>()
 
 See L<Mail::Message/"The message">
 
-=item $obj-E<gt>B<isDummy>
+=item $obj-E<gt>B<isDummy>()
 
 See L<Mail::Message/"The message">
 
-=item $obj-E<gt>B<isPart>
+=item $obj-E<gt>B<isPart>()
 
 See L<Mail::Message/"The message">
 
-=item $obj-E<gt>B<messageId>
+=item $obj-E<gt>B<messageId>()
 
 See L<Mail::Message/"The message">
 
@@ -405,11 +405,11 @@ STDOUT.  This calls L<Mail::Message::print()|Mail::Message/"The message">.
 Send via Mail Transfer Agents (MUA).  These will be handled by various
 L<Mail::Transport::Send|Mail::Transport::Send> extensions.  The C<test> TYPE is not supported.
 
-=item $obj-E<gt>B<size>
+=item $obj-E<gt>B<size>()
 
 See L<Mail::Message/"The message">
 
-=item $obj-E<gt>B<toplevel>
+=item $obj-E<gt>B<toplevel>()
 
 See L<Mail::Message/"The message">
 
@@ -428,15 +428,15 @@ See L<Mail::Message/"The message">
 Add header lines, which simply calls C<Mail::Message::Head::add()> on
 the header for each specified LINE. The last added LINE is returned.
 
-=item $obj-E<gt>B<bcc>
+=item $obj-E<gt>B<bcc>()
 
 See L<Mail::Message/"The header">
 
-=item $obj-E<gt>B<cc>
+=item $obj-E<gt>B<cc>()
 
 See L<Mail::Message/"The header">
 
-=item $obj-E<gt>B<clean_header>
+=item $obj-E<gt>B<clean_header>()
 
 Not to be used, replaced by L<header()|Mail::Message::Replace::MailInternet/"The header">.
 
@@ -444,7 +444,7 @@ Not to be used, replaced by L<header()|Mail::Message::Replace::MailInternet/"The
 
 Not implemented, because I see no use for it.
 
-=item $obj-E<gt>B<date>
+=item $obj-E<gt>B<date>()
 
 See L<Mail::Message/"The header">
 
@@ -459,7 +459,7 @@ will be called.  This may have no negative effect at all...
 
 Calls L<Mail::Message::Replace::MailHeader::delete()|Mail::Message::Replace::MailHeader/"Access to the header">
 
-=item $obj-E<gt>B<destinations>
+=item $obj-E<gt>B<destinations>()
 
 See L<Mail::Message/"The header">
 
@@ -473,7 +473,7 @@ Implemented by L<Mail::Message::Replace::MailHeader::fold()|Mail::Message::Repla
 Set the maximum line LENGTH.  TAG is ignored.
 Implemented by L<Mail::Message::Replace::MailHeader::fold_length()|Mail::Message::Replace::MailHeader/"Simulating Mail::Header">
 
-=item $obj-E<gt>B<from>
+=item $obj-E<gt>B<from>()
 
 See L<Mail::Message/"The header">
 
@@ -484,7 +484,7 @@ only the first fitting NAME is returned.  Even when only one NAME is
 specified, multiple lines may be returned: some fields appear more than
 once in a header.  Calls L<Mail::Message::Replace::MailHeader::get()|Mail::Message::Replace::MailHeader/"Access to the header">
 
-=item $obj-E<gt>B<guessTimestamp>
+=item $obj-E<gt>B<guessTimestamp>()
 
 See L<Mail::Message/"The header">
 
@@ -501,7 +501,7 @@ Optionally reads a header from the ARRAY, and then returns those fields
 as array-ref nicely folded.
 Implemented by L<Mail::Message::Replace::MailHeader::header()|Mail::Message::Replace::MailHeader/"Simulating Mail::Header">
 
-=item $obj-E<gt>B<nrLines>
+=item $obj-E<gt>B<nrLines>()
 
 See L<Mail::Message/"The header">
 
@@ -514,7 +514,7 @@ Calls L<Mail::Message::Head::Complete::print()|Mail::Message::Head::Complete/"Ac
 Adds LINES to the header, but removes fields with the same name if they
 already exist.  Calls L<Mail::Message::Replace::MailHeader::replace()|Mail::Message::Replace::MailHeader/"Access to the header">
 
-=item $obj-E<gt>B<sender>
+=item $obj-E<gt>B<sender>()
 
 See L<Mail::Message/"The header">
 
@@ -522,19 +522,19 @@ See L<Mail::Message/"The header">
 
 See L<Mail::Message/"The header">
 
-=item $obj-E<gt>B<subject>
+=item $obj-E<gt>B<subject>()
 
 See L<Mail::Message/"The header">
 
-=item $obj-E<gt>B<tidy_headers>
+=item $obj-E<gt>B<tidy_headers>()
 
 No effect anymore (always performed).
 
-=item $obj-E<gt>B<timestamp>
+=item $obj-E<gt>B<timestamp>()
 
 See L<Mail::Message/"The header">
 
-=item $obj-E<gt>B<to>
+=item $obj-E<gt>B<to>()
 
 See L<Mail::Message/"The header">
 
@@ -559,7 +559,7 @@ body's data.
 Calls L<Mail::Message::body()|Mail::Message/"The body">, because that C<body> method is overruled
 by the one which has a L<Mail::Internet> compatible interface.
 
-=item $obj-E<gt>B<contentType>
+=item $obj-E<gt>B<contentType>()
 
 See L<Mail::Message/"The body">
 
@@ -571,11 +571,11 @@ See L<Mail::Message/"The body">
 
 See L<Mail::Message/"The body">
 
-=item $obj-E<gt>B<isMultipart>
+=item $obj-E<gt>B<isMultipart>()
 
 See L<Mail::Message/"The body">
 
-=item $obj-E<gt>B<isNested>
+=item $obj-E<gt>B<isNested>()
 
 See L<Mail::Message/"The body">
 
@@ -629,7 +629,7 @@ as we have now-adays.
 
 =back
 
-=item $obj-E<gt>B<tidy_body>
+=item $obj-E<gt>B<tidy_body>()
 
 Removes blank lines from begin and end of the body.
 
@@ -643,11 +643,11 @@ Removes blank lines from begin and end of the body.
 
 See L<Mail::Message/"Flags">
 
-=item $obj-E<gt>B<isDeleted>
+=item $obj-E<gt>B<isDeleted>()
 
 See L<Mail::Message/"Flags">
 
-=item $obj-E<gt>B<isModified>
+=item $obj-E<gt>B<isModified>()
 
 See L<Mail::Message/"Flags">
 
@@ -655,11 +655,11 @@ See L<Mail::Message/"Flags">
 
 See L<Mail::Message/"Flags">
 
-=item $obj-E<gt>B<labels>
+=item $obj-E<gt>B<labels>()
 
 See L<Mail::Message/"Flags">
 
-=item $obj-E<gt>B<labelsToStatus>
+=item $obj-E<gt>B<labelsToStatus>()
 
 See L<Mail::Message/"Flags">
 
@@ -667,7 +667,7 @@ See L<Mail::Message/"Flags">
 
 See L<Mail::Message/"Flags">
 
-=item $obj-E<gt>B<statusToLabels>
+=item $obj-E<gt>B<statusToLabels>()
 
 See L<Mail::Message/"Flags">
 
@@ -677,17 +677,17 @@ See L<Mail::Message/"Flags">
 
 =over 4
 
-=item $obj-E<gt>B<as_mbox_string>
+=item $obj-E<gt>B<as_mbox_string>()
 
 Returns the whole message as one string, which can be included in an
 MBOX folder (while not using L<Mail::Box::Mbox|Mail::Box::Mbox>).  Lines in the body
 which start with C<From > are escaped with an E<gt>.
 
-=item $obj-E<gt>B<file>
+=item $obj-E<gt>B<file>()
 
 See L<Mail::Message::Construct::Text/"The whole message as text">
 
-=item $obj-E<gt>B<lines>
+=item $obj-E<gt>B<lines>()
 
 See L<Mail::Message::Construct::Text/"The whole message as text">
 
@@ -695,7 +695,7 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 
 See L<Mail::Message::Construct::Text/"The whole message as text">
 
-=item $obj-E<gt>B<string>
+=item $obj-E<gt>B<string>()
 
 See L<Mail::Message::Construct::Text/"The whole message as text">
 
@@ -718,7 +718,7 @@ nasty trick.
 
 =over 4
 
-=item $obj-E<gt>B<clonedFrom>
+=item $obj-E<gt>B<clonedFrom>()
 
 See L<Mail::Message/"Internals">
 
@@ -728,7 +728,7 @@ Coerce (adapt type) of the specified MESSAGE (anything
 L<Mail::Message::coerce()|Mail::Message/"Internals"> accepts) into an L<Mail::Internet|Mail::Internet> simulating
 object.
 
-=item $obj-E<gt>B<isDelayed>
+=item $obj-E<gt>B<isDelayed>()
 
 See L<Mail::Message/"Internals">
 
@@ -762,7 +762,7 @@ See L<Mail::Message/"Internals">
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Message::Construct/"METHODS">
 
@@ -776,7 +776,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -792,11 +792,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -814,7 +814,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Message/"Error handling">
 
-=item $obj-E<gt>B<shortString>
+=item $obj-E<gt>B<shortString>()
 
 See L<Mail::Message/"Error handling">
 
@@ -822,7 +822,7 @@ See L<Mail::Message/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -832,15 +832,15 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Message/"Cleanup">
 
-=item $obj-E<gt>B<destruct>
+=item $obj-E<gt>B<destruct>()
 
 See L<Mail::Message/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -898,12 +898,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

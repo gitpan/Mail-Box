@@ -33,12 +33,12 @@ add flexibility and use the powerful MailBox features.
 
 =over 4
 
-=item $obj-E<gt>B<address>
+=item $obj-E<gt>B<address>()
 
 Returns a L<Mail::Message::Field::Address|Mail::Message::Field::Address> object (or C<undef>) which
 defines the posting address of the mailing list.
 
-=item $obj-E<gt>B<clone>
+=item $obj-E<gt>B<clone>()
 
 See L<Mail::Message::Head::FieldGroup/"Constructors">
 
@@ -47,13 +47,13 @@ See L<Mail::Message::Head::FieldGroup/"Constructors">
 Create a C<Mail::Message::Head::ListGroup> based in the specified MESSAGE
 or message HEAD.
 
-=item $obj-E<gt>B<implementedTypes>
+=item $obj-E<gt>B<implementedTypes>()
 
-=item Mail::Message::Head::ListGroup-E<gt>B<implementedTypes>
+=item Mail::Message::Head::ListGroup-E<gt>B<implementedTypes>()
 
 See L<Mail::Message::Head::FieldGroup/"Constructors">
 
-=item $obj-E<gt>B<listname>
+=item $obj-E<gt>B<listname>()
 
 Returns the name of the mailing list, which is usually a part of the
 e-mail address which is used to post the messages to.
@@ -103,7 +103,7 @@ Defines the mailing list software follows an rfc.
 
 =back
 
-=item $obj-E<gt>B<rfc>
+=item $obj-E<gt>B<rfc>()
 
 When the mailing list software follows the guidelines of one of the dedicated
 RFCs, then this will be returned otherwise C<undef>.  The return values can
@@ -127,19 +127,19 @@ See L<Mail::Message::Head::FieldGroup/"The header">
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=item $obj-E<gt>B<delete>
+=item $obj-E<gt>B<delete>()
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=item $obj-E<gt>B<fieldNames>
+=item $obj-E<gt>B<fieldNames>()
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=item $obj-E<gt>B<fields>
+=item $obj-E<gt>B<fields>()
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=item $obj-E<gt>B<head>
+=item $obj-E<gt>B<head>()
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
@@ -153,15 +153,15 @@ See L<Mail::Message::Head::FieldGroup/"The header">
 
 =item Mail::Message::Head::ListGroup-E<gt>B<isListGroupFieldName>(NAME)
 
-=item $obj-E<gt>B<software>
+=item $obj-E<gt>B<software>()
 
 See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
-=item $obj-E<gt>B<type>
+=item $obj-E<gt>B<type>()
 
 See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
-=item $obj-E<gt>B<version>
+=item $obj-E<gt>B<version>()
 
 See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
@@ -171,7 +171,7 @@ See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
 =over 4
 
-=item $obj-E<gt>B<collectFields>
+=item $obj-E<gt>B<collectFields>()
 
 Scan the header for fields which are usually contained in mailing list
 software.  This method is automatically called when a list group is
@@ -194,7 +194,7 @@ See L<Mail::Message::Head::FieldGroup/"Internals">
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -208,12 +208,12 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<details>
+=item $obj-E<gt>B<details>()
 
 Produce information about the detected/create list group, which may be
 helpful during debugging, by default to the selected file handle.
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -229,11 +229,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -253,7 +253,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -263,11 +263,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -372,12 +372,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

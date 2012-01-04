@@ -1,10 +1,10 @@
-# Copyrights 2001-2011 by Mark Overmeer.
+# Copyrights 2001-2012 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.00.
 package Mail::Box::FastScalar;
 use vars '$VERSION';
-$VERSION = '2.101';
+$VERSION = '2.102';
 
 
 

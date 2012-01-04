@@ -127,6 +127,27 @@ stop it.
 
 =head2 Rebuilding a message
 
+Modifying an existing message is a complicated job.  Not only do you need
+to know what you are willing to change, but you have to take care about
+multiparts (possibly nested in multiple levels), rfc822 encapsulated
+messages, header field consistency, and so on.  The L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> method
+let you focus on the task, and takes care of the rest.
+
+The L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> method uses rules to transform the one message into an
+other.  If one or more of the rules apply, a new message will be returned.
+A simple numeric comparison tells whether the message has changed.  For
+example
+
+ print "No change"
+    if $message == $message->rebuild;
+
+Transformation is made with a set of rules.  Each rule performs only a
+small step, which makes is easily configurable.  The rules are ordered,
+and when one makes a change to the result, the result will be passed
+to all the rules again until no rule makes a change on the part anymore.
+A rule may also return C<undef> in which case the part will be removed
+from the (resulting) message.
+
 =head3 General rules
 
 This sections describes the general configuration rules: all quite straight
@@ -239,27 +260,6 @@ When you have your own routine, you simply call:
  my $rebuild_message = $message->rebuild
   ( extra_rules => [ \&my_own_rule, 'other_rule' ] );
 
-Modifying an existing message is a complicated job.  Not only do you need
-to know what you are willing to change, but you have to take care about
-multiparts (possibly nested in multiple levels), rfc822 encapsulated
-messages, header field consistency, and so on.  The L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> method
-let you focus on the task, and takes care of the rest.
-
-The L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> method uses rules to transform the one message into an
-other.  If one or more of the rules apply, a new message will be returned.
-A simple numeric comparison tells whether the message has changed.  For
-example
-
- print "No change"
-    if $message == $message->rebuild;
-
-Transformation is made with a set of rules.  Each rule performs only a
-small step, which makes is easily configurable.  The rules are ordered,
-and when one makes a change to the result, the result will be passed
-to all the rules again until no rule makes a change on the part anymore.
-A rule may also return C<undef> in which case the part will be removed
-from the (resulting) message.
-
 =head1 DIAGNOSTICS
 
 =over 4
@@ -270,12 +270,12 @@ from the (resulting) message.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -237,7 +237,7 @@ required.  Some other options, like C<preamble>, are ignored.
 
 =back
 
-=item $obj-E<gt>B<forwardPostlude>
+=item $obj-E<gt>B<forwardPostlude>()
 
 Added after the forwarded message.
 
@@ -245,7 +245,7 @@ example:
 
  ---- END forwarded message
 
-=item $obj-E<gt>B<forwardPrelude>
+=item $obj-E<gt>B<forwardPrelude>()
 
 Create a few lines to be included before the forwarded message
 content.  The return is an array of lines.
@@ -277,6 +277,25 @@ example:
 =head1 DETAILS
 
 =head2 Creating a forward
+
+The main difference between L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> and L<forward()|Mail::Message::Construct::Forward/"Constructing a message"> is the reason
+for message processing.  The I<bounce> has no intention to modify the
+content of message: the same information is passed-on to someplace else.
+This may mean some conversions, but for instance, the Message-ID does
+not need to be changed.
+
+The purpose of I<forward()> is to pass on information which is
+modified: annotated or reduced.  The information is not sent back
+to the author of the original message (which is implemented by L<reply()|Mail::Message::Construct::Reply/"Constructing a message">),
+but to someone else.
+
+So: some information comes in, is modified, and than forwarded to someone
+else.  Currently, there are four ways to get the original information
+included, which are explained in the next sections.
+
+After the creation of the forward, you may want to L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> the
+message to remove unnecessary complexities.  Of course, that is not
+required.
 
 =head3 forward, specify a body
 
@@ -356,25 +375,6 @@ The message structure is much more complex, but no information is lost.
 This is probably the reason why many MUAs use this when the forward
 an original message as attachment.
 
-The main difference between L<bounce()|Mail::Message::Construct::Bounce/"Constructing a message"> and L<forward()|Mail::Message::Construct::Forward/"Constructing a message"> is the reason
-for message processing.  The I<bounce> has no intention to modify the
-content of message: the same information is passed-on to someplace else.
-This may mean some conversions, but for instance, the Message-ID does
-not need to be changed.
-
-The purpose of I<forward()> is to pass on information which is
-modified: annotated or reduced.  The information is not sent back
-to the author of the original message (which is implemented by L<reply()|Mail::Message::Construct::Reply/"Constructing a message">),
-but to someone else.
-
-So: some information comes in, is modified, and than forwarded to someone
-else.  Currently, there are four ways to get the original information
-included, which are explained in the next sections.
-
-After the creation of the forward, you may want to L<rebuild()|Mail::Message::Construct::Rebuild/"Constructing a message"> the
-message to remove unnecessary complexities.  Of course, that is not
-required.
-
 =head1 DIAGNOSTICS
 
 =over 4
@@ -396,12 +396,12 @@ If a forward message is created, a destination address must be specified.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

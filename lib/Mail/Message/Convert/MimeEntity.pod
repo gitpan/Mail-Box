@@ -26,14 +26,14 @@ Mail::Message::Convert::MimeEntity - translate Mail::Message to MIME::Entity vv
 
 =head1 DESCRIPTION
 
-=head2 Converters between message objects
-
-=head2 Other converters
-
 The MIME::Entity extends L<Mail::Internet|Mail::Internet> message with multiparts
 and more methods.  The L<Mail::Message|Mail::Message> objects are more flexible
 in how the message parts are stored, and uses separate header and body
 objects.
+
+=head2 Converters between message objects
+
+=head2 Other converters
 
 =head1 METHODS
 
@@ -93,7 +93,7 @@ See L<Mail::Message::Convert/"Converting">
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -107,7 +107,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -123,11 +123,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -143,7 +143,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -153,11 +153,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -181,12 +181,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

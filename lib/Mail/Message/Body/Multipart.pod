@@ -30,19 +30,19 @@ when a message contains attachments (parts).
 
 =over 4
 
-=item overload: B<"">
+=item overload: B<"">()
 
 See L<Mail::Message::Body/"OVERLOADED">
 
-=item overload: B<'==' and '!='>
+=item overload: B<'==' and '!='>()
 
 See L<Mail::Message::Body/"OVERLOADED">
 
-=item overload: B<@{}>
+=item overload: B<@{}>()
 
 See L<Mail::Message::Body/"OVERLOADED">
 
-=item overload: B<bool>
+=item overload: B<bool>()
 
 See L<Mail::Message::Body/"OVERLOADED">
 
@@ -54,7 +54,7 @@ See L<Mail::Message::Body/"OVERLOADED">
 
 =over 4
 
-=item $obj-E<gt>B<clone>
+=item $obj-E<gt>B<clone>()
 
 See L<Mail::Message::Body/"Constructors">
 
@@ -171,7 +171,7 @@ real messages.  MIME::Entity and L<Mail::Internet|Mail::Internet> objects may be
 specified too.  In any case, the parts will be coerced into
 L<Mail::Message::Part|Mail::Message::Part>'s.
 
-=item $obj-E<gt>B<check>
+=item $obj-E<gt>B<check>()
 
 See L<Mail::Message::Body::Encode/"Constructing a body">
 
@@ -187,7 +187,7 @@ See L<Mail::Message::Body/"Constructing a body">
 
 See L<Mail::Message::Body::Encode/"Constructing a body">
 
-=item $obj-E<gt>B<encoded>
+=item $obj-E<gt>B<encoded>()
 
 See L<Mail::Message::Body::Encode/"Constructing a body">
 
@@ -250,15 +250,15 @@ See L<Mail::Message::Body::Encode/"Constructing a body">
 
 =over 4
 
-=item $obj-E<gt>B<isDelayed>
+=item $obj-E<gt>B<isDelayed>()
 
 See L<Mail::Message::Body/"The body">
 
-=item $obj-E<gt>B<isMultipart>
+=item $obj-E<gt>B<isMultipart>()
 
 See L<Mail::Message::Body/"The body">
 
-=item $obj-E<gt>B<isNested>
+=item $obj-E<gt>B<isNested>()
 
 See L<Mail::Message::Body/"The body">
 
@@ -272,7 +272,7 @@ See L<Mail::Message::Body/"The body">
 
 =over 4
 
-=item $obj-E<gt>B<charset>
+=item $obj-E<gt>B<charset>()
 
 See L<Mail::Message::Body/"About the payload">
 
@@ -292,23 +292,23 @@ See L<Mail::Message::Body/"About the payload">
 
 See L<Mail::Message::Body::Encode/"About the payload">
 
-=item $obj-E<gt>B<isBinary>
+=item $obj-E<gt>B<isBinary>()
 
 See L<Mail::Message::Body::Encode/"About the payload">
 
-=item $obj-E<gt>B<isText>
+=item $obj-E<gt>B<isText>()
 
 See L<Mail::Message::Body::Encode/"About the payload">
 
-=item $obj-E<gt>B<mimeType>
+=item $obj-E<gt>B<mimeType>()
 
 See L<Mail::Message::Body/"About the payload">
 
-=item $obj-E<gt>B<nrLines>
+=item $obj-E<gt>B<nrLines>()
 
 See L<Mail::Message::Body/"About the payload">
 
-=item $obj-E<gt>B<size>
+=item $obj-E<gt>B<size>()
 
 See L<Mail::Message::Body/"About the payload">
 
@@ -332,22 +332,22 @@ Returns the boundary which is used to separate the parts in this
 body.  If none was read from file, then one will be assigned.  With
 STRING you explicitly set the boundary to be used.
 
-=item $obj-E<gt>B<endsOnNewline>
+=item $obj-E<gt>B<endsOnNewline>()
 
 See L<Mail::Message::Body/"Access to the payload">
 
-=item $obj-E<gt>B<epilogue>
+=item $obj-E<gt>B<epilogue>()
 
 Returns the epilogue; the text after the last message part (after the
 last real attachment).
 The epilogue is stored in a BODY object, and its encoding is taken
 from the general multipart header.
 
-=item $obj-E<gt>B<file>
+=item $obj-E<gt>B<file>()
 
 See L<Mail::Message::Body/"Access to the payload">
 
-=item $obj-E<gt>B<lines>
+=item $obj-E<gt>B<lines>()
 
 See L<Mail::Message::Body/"Access to the payload">
 
@@ -381,7 +381,7 @@ example:
      print "Type: ", $part->get('Content-Type');
  }
 
-=item $obj-E<gt>B<preamble>
+=item $obj-E<gt>B<preamble>()
 
 Returns the preamble; the text before the first message part (before the
 first real attachment).
@@ -396,11 +396,11 @@ See L<Mail::Message::Body/"Access to the payload">
 
 See L<Mail::Message::Body/"Access to the payload">
 
-=item $obj-E<gt>B<string>
+=item $obj-E<gt>B<string>()
 
 See L<Mail::Message::Body/"Access to the payload">
 
-=item $obj-E<gt>B<stripTrailingNewline>
+=item $obj-E<gt>B<stripTrailingNewline>()
 
 See L<Mail::Message::Body/"Access to the payload">
 
@@ -436,11 +436,11 @@ See L<Mail::Message::Body/"Internals">
 
 See L<Mail::Message::Body::Encode/"Internals">
 
-=item $obj-E<gt>B<isModified>
+=item $obj-E<gt>B<isModified>()
 
 See L<Mail::Message::Body/"Internals">
 
-=item $obj-E<gt>B<load>
+=item $obj-E<gt>B<load>()
 
 See L<Mail::Message::Body/"Internals">
 
@@ -462,7 +462,7 @@ See L<Mail::Message::Body/"Internals">
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Message::Body/"Error handling">
 
@@ -476,7 +476,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -492,11 +492,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -512,7 +512,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -522,11 +522,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -581,12 +581,12 @@ clearly not acceptible.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

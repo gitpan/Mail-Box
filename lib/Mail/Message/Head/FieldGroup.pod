@@ -33,7 +33,7 @@ which are based on the implementation in this class.
 
 =over 4
 
-=item $obj-E<gt>B<clone>
+=item $obj-E<gt>B<clone>()
 
 Make a copy of this object.  The collected fieldnames are copied and the
 list type information.  No deep copy is made for the header: this is
@@ -46,9 +46,9 @@ This may return one or more of the objects, which depends on the
 type of group.  Mailing list fields are all stored in one object,
 where resent and spam groups can appear more than once.
 
-=item $obj-E<gt>B<implementedTypes>
+=item $obj-E<gt>B<implementedTypes>()
 
-=item Mail::Message::Head::FieldGroup-E<gt>B<implementedTypes>
+=item Mail::Message::Head::FieldGroup-E<gt>B<implementedTypes>()
 
 Returns a list of strings containing all possible return values for
 L<type()|Mail::Message::Head::FieldGroup/"Access to the header">.
@@ -139,20 +139,20 @@ example: attaching a list group to a message
 
  $msg->head->addSpamGroup($sg);   # also implemented with attach
 
-=item $obj-E<gt>B<delete>
+=item $obj-E<gt>B<delete>()
 
 Remove all the header lines which are combined in this fields group,
 from the header.
 
-=item $obj-E<gt>B<fieldNames>
+=item $obj-E<gt>B<fieldNames>()
 
 Return the names of the fields which are used in this group.
 
-=item $obj-E<gt>B<fields>
+=item $obj-E<gt>B<fields>()
 
 Return the fields which are defined for this group.
 
-=item $obj-E<gt>B<head>
+=item $obj-E<gt>B<head>()
 
 Returns the header object, which includes these fields.
 
@@ -162,20 +162,20 @@ Returns the header object, which includes these fields.
 
 =over 4
 
-=item $obj-E<gt>B<software>
+=item $obj-E<gt>B<software>()
 
 Returns the name of the software as is defined in the headers.  The may
 be slightly different from the return value of L<type()|Mail::Message::Head::FieldGroup/"Access to the header">, but usually
 not too different.
 
-=item $obj-E<gt>B<type>
+=item $obj-E<gt>B<type>()
 
 Returns an abstract name for the field group; which software is
 controling it.  C<undef> is returned in case the type is not known.
 Valid names are group type dependent: see the applicable manual
 pages.  A list of all types can be retreived with L<implementedTypes()|Mail::Message::Head::FieldGroup/"Constructors">.
 
-=item $obj-E<gt>B<version>
+=item $obj-E<gt>B<version>()
 
 Returns the version number of the software used to produce the fields.
 Some kinds of software do leave such a trace, other cases will return
@@ -215,7 +215,7 @@ prossibly to C<undef>.
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -229,12 +229,12 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<details>
+=item $obj-E<gt>B<details>()
 
 Produce information about the detected/created field group, which may be
 helpful during debugging.  A nicely formatted string is returned.
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -250,11 +250,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -276,7 +276,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -286,11 +286,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -312,12 +312,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

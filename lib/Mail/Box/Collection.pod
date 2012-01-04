@@ -22,11 +22,11 @@ the folders of a single user, even if those folders are closed.
 
 =over 4
 
-=item overload: B<@{}>
+=item overload: B<@{}>()
 
 See L<User::Identity::Collection/"OVERLOADED">
 
-=item overload: B<stringification>
+=item overload: B<stringification>()
 
 See L<User::Identity::Collection/"OVERLOADED">
 
@@ -81,7 +81,7 @@ An L<Mail::Box::Manager|Mail::Box::Manager> OBJECT (could be a L<Mail::Box::Mana
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -95,7 +95,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -111,11 +111,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -131,7 +131,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -141,11 +141,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -155,7 +155,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =over 4
 
-=item $obj-E<gt>B<description>
+=item $obj-E<gt>B<description>()
 
 See L<User::Identity::Item/"Attributes">
 
@@ -164,11 +164,11 @@ See L<User::Identity::Item/"Attributes">
 Returns the type of folder (on this location).  When specified, then
 FOLDERCLASS must be a L<Mail::Box|Mail::Box> extension.
 
-=item $obj-E<gt>B<itemType>
+=item $obj-E<gt>B<itemType>()
 
 See L<User::Identity::Collection/"Attributes">
 
-=item $obj-E<gt>B<manager>
+=item $obj-E<gt>B<manager>()
 
 The L<Mail::Box::Manager|Mail::Box::Manager> (usually a L<Mail::Box::Manage::User|Mail::Box::Manage::User> object),
 which is handling the opening of folders.
@@ -177,7 +177,7 @@ which is handling the opening of folders.
 
 See L<User::Identity::Item/"Attributes">
 
-=item $obj-E<gt>B<roles>
+=item $obj-E<gt>B<roles>()
 
 See L<User::Identity::Collection/"Attributes">
 
@@ -207,13 +207,13 @@ See L<User::Identity::Item/"Collections">
 
 See L<User::Identity::Item/"Collections">
 
-=item $obj-E<gt>B<type>
+=item $obj-E<gt>B<type>()
 
-=item Mail::Box::Collection-E<gt>B<type>
+=item Mail::Box::Collection-E<gt>B<type>()
 
 See L<User::Identity::Item/"Collections">
 
-=item $obj-E<gt>B<user>
+=item $obj-E<gt>B<user>()
 
 See L<User::Identity::Item/"Collections">
 
@@ -235,7 +235,7 @@ See L<User::Identity::Collection/"Maintaining roles">
 
 See L<User::Identity::Collection/"Maintaining roles">
 
-=item $obj-E<gt>B<sorted>
+=item $obj-E<gt>B<sorted>()
 
 See L<User::Identity::Collection/"Maintaining roles">
 
@@ -308,12 +308,12 @@ cannot add objects of a different $type.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

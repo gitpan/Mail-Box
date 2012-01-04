@@ -64,11 +64,11 @@ tests.  Related to L<Mail::Box::new(trusted)|Mail::Box/"Constructors">.
 
 =over 4
 
-=item $obj-E<gt>B<fileChanged>
+=item $obj-E<gt>B<fileChanged>()
 
 See L<Mail::Box::Parser/"The parser">
 
-=item $obj-E<gt>B<filename>
+=item $obj-E<gt>B<filename>()
 
 See L<Mail::Box::Parser/"The parser">
 
@@ -83,7 +83,7 @@ example:
  $folder->parser->fixHeaderErrors(1);
  my $folder = $mgr->open('folder', fix_header_errors => 1);
 
-=item $obj-E<gt>B<restart>
+=item $obj-E<gt>B<restart>()
 
 See L<Mail::Box::Parser/"The parser">
 
@@ -91,7 +91,7 @@ See L<Mail::Box::Parser/"The parser">
 
 See L<Mail::Box::Parser/"The parser">
 
-=item $obj-E<gt>B<stop>
+=item $obj-E<gt>B<stop>()
 
 See L<Mail::Box::Parser/"The parser">
 
@@ -121,11 +121,11 @@ See L<Mail::Box::Parser/"Parsing">
 
 See L<Mail::Box::Parser/"Parsing">
 
-=item $obj-E<gt>B<lineSeparator>
+=item $obj-E<gt>B<lineSeparator>()
 
 See L<Mail::Box::Parser/"Parsing">
 
-=item $obj-E<gt>B<popSeparator>
+=item $obj-E<gt>B<popSeparator>()
 
 See L<Mail::Box::Parser/"Parsing">
 
@@ -133,7 +133,7 @@ See L<Mail::Box::Parser/"Parsing">
 
 See L<Mail::Box::Parser/"Parsing">
 
-=item $obj-E<gt>B<readHeader>
+=item $obj-E<gt>B<readHeader>()
 
 =item $obj-E<gt>B<readSeparator>(OPTIONS)
 
@@ -145,7 +145,7 @@ See L<Mail::Box::Parser/"Parsing">
 
 =over 4
 
-=item $obj-E<gt>B<closeFile>
+=item $obj-E<gt>B<closeFile>()
 
 See L<Mail::Box::Parser/"Internals">
 
@@ -159,7 +159,7 @@ See L<Mail::Box::Parser/"Internals">
 
 See L<Mail::Box::Parser/"Internals">
 
-=item $obj-E<gt>B<takeFileInfo>
+=item $obj-E<gt>B<takeFileInfo>()
 
 See L<Mail::Box::Parser/"Internals">
 
@@ -169,7 +169,7 @@ See L<Mail::Box::Parser/"Internals">
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -183,7 +183,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -199,11 +199,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -219,7 +219,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -229,11 +229,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -280,12 +280,12 @@ The erroneous line will be added to the preceding field.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

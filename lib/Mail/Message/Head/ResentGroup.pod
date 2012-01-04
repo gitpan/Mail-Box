@@ -34,7 +34,7 @@ reply, forward, or bounce messages at all!
 
 =over 4
 
-=item $obj-E<gt>B<clone>
+=item $obj-E<gt>B<clone>()
 
 See L<Mail::Message::Head::FieldGroup/"Constructors">
 
@@ -47,9 +47,9 @@ return the C<From> field of this resent group.
 With any arguments, a list of C<Mail::Message::Head::ResentGroup> objects
 is returned, taken from the specified MESSAGE or message HEAD.
 
-=item $obj-E<gt>B<implementedTypes>
+=item $obj-E<gt>B<implementedTypes>()
 
-=item Mail::Message::Head::ResentGroup-E<gt>B<implementedTypes>
+=item Mail::Message::Head::ResentGroup-E<gt>B<implementedTypes>()
 
 See L<Mail::Message::Head::FieldGroup/"Constructors">
 
@@ -157,19 +157,19 @@ one group.  Therefore, a FIELDNAME is sufficiently distinctive.
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=item $obj-E<gt>B<delete>
+=item $obj-E<gt>B<delete>()
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=item $obj-E<gt>B<fieldNames>
+=item $obj-E<gt>B<fieldNames>()
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=item $obj-E<gt>B<fields>
+=item $obj-E<gt>B<fields>()
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
-=item $obj-E<gt>B<head>
+=item $obj-E<gt>B<head>()
 
 See L<Mail::Message::Head::FieldGroup/"The header">
 
@@ -179,7 +179,7 @@ Returns (optionally after setting) the real header where this resent group
 belongs to.  This may be undef at creation, and then later filled in
 when L<Mail::Message::Head::Complete::addResentGroup()|Mail::Message::Head::Complete/"Access to the header"> is called.
 
-=item $obj-E<gt>B<orderedFields>
+=item $obj-E<gt>B<orderedFields>()
 
 Returns the fields in the order as should appear in header according
 to rfc2822.  For the C<Resent-*> fields of the group, the order is
@@ -211,33 +211,33 @@ example:
 
 =over 4
 
-=item $obj-E<gt>B<bcc>
+=item $obj-E<gt>B<bcc>()
 
 In scalar context, the C<Resent-Bcc> field is returned.  In list context,
 the addresses as specified within the bcc field are returned as
 L<Mail::Address|Mail::Address> objects.  Bcc fields are not transmitted (hidden for
 external parties).
 
-=item $obj-E<gt>B<cc>
+=item $obj-E<gt>B<cc>()
 
 In scalar context, the C<Resent-Cc> field is returned.  In list context,
 the addresses as specified within the cc field are returned as
 L<Mail::Address|Mail::Address> objects.
 
-=item $obj-E<gt>B<date>
+=item $obj-E<gt>B<date>()
 
 Returns the C<Resent-Date> field, or C<undef> if it was not defined.
 
-=item $obj-E<gt>B<dateTimestamp>
+=item $obj-E<gt>B<dateTimestamp>()
 
 The timestamp as stored within the C<Resent-Date> field converted to
 local system time.
 
-=item $obj-E<gt>B<deliveredTo>
+=item $obj-E<gt>B<deliveredTo>()
 
 The field which describes the C<Delivered-To> of this resent group.
 
-=item $obj-E<gt>B<destinations>
+=item $obj-E<gt>B<destinations>()
 
 Returns a list of all addresses specified in the C<Resent-To>, C<-Cc>, and
 C<-Bcc> fields of this resent group.
@@ -246,20 +246,20 @@ C<-Bcc> fields of this resent group.
 
 =item Mail::Message::Head::ResentGroup-E<gt>B<isResentGroupFieldName>(NAME)
 
-=item $obj-E<gt>B<messageId>
+=item $obj-E<gt>B<messageId>()
 
 Returns the message-ID used for this group of resent lines.
 
-=item $obj-E<gt>B<received>
+=item $obj-E<gt>B<received>()
 
 The field which describes the C<Received> data of this resent group.
 
-=item $obj-E<gt>B<receivedTimestamp>
+=item $obj-E<gt>B<receivedTimestamp>()
 
 The timestamp as stored within the C<Received> field converted to
 local system time.
 
-=item $obj-E<gt>B<resentFrom>
+=item $obj-E<gt>B<resentFrom>()
 
 In scalar context, the C<Resent-From> field is returned.  In list
 context, the addresses as specified within the from field are
@@ -268,31 +268,31 @@ returned as L<Mail::Address|Mail::Address> objects.
 For reasons of backward compatibility and consistency, the L<from()|Mail::Message::Head::ResentGroup/"METHODS">
 method will return the same as this method.
 
-=item $obj-E<gt>B<returnPath>
+=item $obj-E<gt>B<returnPath>()
 
 The field which describes the C<Return-Path> of this resent group.
 
-=item $obj-E<gt>B<sender>
+=item $obj-E<gt>B<sender>()
 
 In scalar context, the C<Resent-Sender> field is returned.  In list
 context, the addresses as specified within the from field are
 returned as L<Mail::Address|Mail::Address> objects.
 
-=item $obj-E<gt>B<software>
+=item $obj-E<gt>B<software>()
 
 See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
-=item $obj-E<gt>B<to>
+=item $obj-E<gt>B<to>()
 
 In scalar context, the C<Resent-To> field is returned.  In list context,
 the addresses as specified within the to field are returned as
 L<Mail::Address|Mail::Address> objects.
 
-=item $obj-E<gt>B<type>
+=item $obj-E<gt>B<type>()
 
 See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
-=item $obj-E<gt>B<version>
+=item $obj-E<gt>B<version>()
 
 See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
@@ -324,7 +324,7 @@ See L<Mail::Message::Head::FieldGroup/"Internals">
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -338,11 +338,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<details>
+=item $obj-E<gt>B<details>()
 
 See L<Mail::Message::Head::FieldGroup/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -358,11 +358,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -382,7 +382,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -392,11 +392,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -425,12 +425,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

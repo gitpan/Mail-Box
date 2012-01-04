@@ -54,7 +54,7 @@ NOT IMPLEMENTED YET
 
 =over 4
 
-=item $obj-E<gt>B<check>
+=item $obj-E<gt>B<check>()
 
 Check the content of the body not to include illegal characters.  Which
 characters are considered illegal depends on the encoding of this body.
@@ -102,7 +102,7 @@ needed) will use this type. CLASS must extend L<Mail::Message::Body|Mail::Messag
 
 =back
 
-=item $obj-E<gt>B<encoded>
+=item $obj-E<gt>B<encoded>()
 
 Encode the body to a format what is acceptable to transmit or write to
 a folder file.  This returns the body where this method was called
@@ -142,12 +142,12 @@ otherwise, it may be possible to access other directories than the
 one indicated.  If no name was found, or the name is already in use,
 then an unique name is generated.
 
-=item $obj-E<gt>B<isBinary>
+=item $obj-E<gt>B<isBinary>()
 
 Returns true when the un-encoded message is binary data.  This information
 is retrieved from knowledge provided by L<MIME::Types|MIME::Types>.
 
-=item $obj-E<gt>B<isText>
+=item $obj-E<gt>B<isText>()
 
 Returns true when the un-encoded message contains printable
 text.
@@ -201,12 +201,12 @@ unknown.  The decoded data is returned.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

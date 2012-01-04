@@ -28,17 +28,28 @@ are L<Mail::Message::Field::Address|Mail::Message::Field::Address> objects).
 
 =over 4
 
-=item overload: B<@{}>
+=item overload: B<@{}>()
 
 See L<User::Identity::Collection/"OVERLOADED">
 
-=item overload: B<stringification>
+=item overload: B<stringification>()
 
 Returns the L<string()|Mail::Message::Field::AddrGroup/"METHODS"> value.
 
 =back
 
 =head1 METHODS
+
+=over 4
+
+=item $obj-E<gt>B<string>()
+
+Returns the address group as string.  When no name is specified, it will
+only be a comma separated list of addresses.  With a name, the groups
+name will be prepended and a semi-colon appended.  When no addresses
+where included and there is no name, then C<undef> is returned.
+
+=back
 
 =head2 Constructors
 
@@ -60,11 +71,11 @@ See L<User::Identity::Collection::Emails/"Constructors">
 
 =over 4
 
-=item $obj-E<gt>B<description>
+=item $obj-E<gt>B<description>()
 
 See L<User::Identity::Item/"Attributes">
 
-=item $obj-E<gt>B<itemType>
+=item $obj-E<gt>B<itemType>()
 
 See L<User::Identity::Collection/"Attributes">
 
@@ -72,7 +83,7 @@ See L<User::Identity::Collection/"Attributes">
 
 See L<User::Identity::Item/"Attributes">
 
-=item $obj-E<gt>B<roles>
+=item $obj-E<gt>B<roles>()
 
 See L<User::Identity::Collection/"Attributes">
 
@@ -102,13 +113,13 @@ See L<User::Identity::Item/"Collections">
 
 See L<User::Identity::Item/"Collections">
 
-=item $obj-E<gt>B<type>
+=item $obj-E<gt>B<type>()
 
-=item Mail::Message::Field::AddrGroup-E<gt>B<type>
+=item Mail::Message::Field::AddrGroup-E<gt>B<type>()
 
 See L<User::Identity::Item/"Collections">
 
-=item $obj-E<gt>B<user>
+=item $obj-E<gt>B<user>()
 
 See L<User::Identity::Item/"Collections">
 
@@ -130,7 +141,7 @@ See L<User::Identity::Collection/"Maintaining roles">
 
 See L<User::Identity::Collection/"Maintaining roles">
 
-=item $obj-E<gt>B<sorted>
+=item $obj-E<gt>B<sorted>()
 
 See L<User::Identity::Collection/"Maintaining roles">
 
@@ -169,7 +180,7 @@ example: of adding an address to an address group
  my $ma = Mail::Address->new(...);
  $group->addAddress($ma);
 
-=item $obj-E<gt>B<addresses>
+=item $obj-E<gt>B<addresses>()
 
 Returns all addresses defined in this group.  The addresses will be
 ordered alphabetically to make automated testing possible: roles are
@@ -183,17 +194,6 @@ example: getting all addresses from a group
 =back
 
 =head2 Error handling
-
-=over 4
-
-=item $obj-E<gt>B<string>
-
-Returns the address group as string.  When no name is specified, it will
-only be a comma separated list of addresses.  With a name, the groups
-name will be prepended and a semi-colon appended.  When no addresses
-where included and there is no name, then C<undef> is returned.
-
-=back
 
 =head1 DIAGNOSTICS
 
@@ -246,12 +246,12 @@ cannot add objects of a different $type.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

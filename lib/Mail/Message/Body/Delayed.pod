@@ -23,7 +23,7 @@ how a message body gets delay loaded.
 
 =over 4
 
-=item overload: B<"">
+=item overload: B<"">()
 
 (stringification) Returns the body as string --which will trigger
 completion-- unless called to produce a string for C<Carp>.  The latter
@@ -36,12 +36,12 @@ example: stringification of delayed body
  my $body = $msg->body;
  my $x    = "$body"; # explicit by interpolation
 
-=item overload: B<@{}>
+=item overload: B<@{}>()
 
 When a body object is used as being an array reference, the lines of
 the body are returned.  This is the same as using the C<lines> method.
 
-=item overload: B<bool>
+=item overload: B<bool>()
 
 Always returns a true value, which is needed to have overloaded
 objects to be used as in C<if($body)>.  Otherwise, C<if(defined $body)>
@@ -80,7 +80,7 @@ The MESSAGE object which contains this delayed body.
 
 =over 4
 
-=item $obj-E<gt>B<message>
+=item $obj-E<gt>B<message>()
 
 =back
 
@@ -88,17 +88,17 @@ The MESSAGE object which contains this delayed body.
 
 =over 4
 
-=item $obj-E<gt>B<guessSize>
+=item $obj-E<gt>B<guessSize>()
 
-=item $obj-E<gt>B<isDelayed>
+=item $obj-E<gt>B<isDelayed>()
 
-=item $obj-E<gt>B<isModified>
+=item $obj-E<gt>B<isModified>()
 
-=item $obj-E<gt>B<isMultipart>
+=item $obj-E<gt>B<isMultipart>()
 
-=item $obj-E<gt>B<modified>
+=item $obj-E<gt>B<modified>()
 
-=item $obj-E<gt>B<nrLines>
+=item $obj-E<gt>B<nrLines>()
 
 =back
 
@@ -108,7 +108,7 @@ The MESSAGE object which contains this delayed body.
 
 =item $obj-E<gt>B<fileLocation>([BEGIN, END])
 
-=item $obj-E<gt>B<load>
+=item $obj-E<gt>B<load>()
 
 Returns the loaded version of this body.
 
@@ -122,7 +122,7 @@ Returns the loaded version of this body.
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -136,7 +136,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -152,11 +152,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -172,7 +172,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -182,11 +182,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -208,12 +208,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

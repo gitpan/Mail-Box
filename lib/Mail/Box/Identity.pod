@@ -112,11 +112,11 @@ L<Mail::Box::Collection|Mail::Box::Collection>.
 
 =over 4
 
-=item $obj-E<gt>B<description>
+=item $obj-E<gt>B<description>()
 
 See L<User::Identity::Item/"Attributes">
 
-=item $obj-E<gt>B<folderType>
+=item $obj-E<gt>B<folderType>()
 
 Returns the type of this folder.
 
@@ -138,7 +138,7 @@ it is computed based on the knowledge about the folder type.  Be sure to set
 the location of the toplevel folder to the folderdir of the user to get
 this to work.
 
-=item $obj-E<gt>B<manager>
+=item $obj-E<gt>B<manager>()
 
 Returns the manager (usually a L<Mail::Box::Manage::User|Mail::Box::Manage::User> which owns
 the folders.  May be undefined, by default from parent.
@@ -160,7 +160,7 @@ Than this folder be opened (without trying) or not?  The default
 depends on the folder type, and whether this is the toplevel folder
 or not.  See L<Mail::Box::topFolderWithMessages()|Mail::Box/"Sub-folders">
 
-=item $obj-E<gt>B<topfolder>
+=item $obj-E<gt>B<topfolder>()
 
 Run up the tree to find the highest level folder.
 
@@ -194,13 +194,13 @@ See L<User::Identity::Item/"Collections">
 
 See L<User::Identity::Item/"Collections">
 
-=item $obj-E<gt>B<type>
+=item $obj-E<gt>B<type>()
 
-=item Mail::Box::Identity-E<gt>B<type>
+=item Mail::Box::Identity-E<gt>B<type>()
 
 See L<User::Identity::Item/"Collections">
 
-=item $obj-E<gt>B<user>
+=item $obj-E<gt>B<user>()
 
 See L<User::Identity::Item/"Collections">
 
@@ -262,11 +262,11 @@ example: renaming a folder
  print $f->name;      # 123
  print $f->fullname;  # =/xyz/123
 
-=item $obj-E<gt>B<subfolderNames>
+=item $obj-E<gt>B<subfolderNames>()
 
 Convenience method: returns the names of the collected subfolders.
 
-=item $obj-E<gt>B<subfolders>
+=item $obj-E<gt>B<subfolders>()
 
 Returns the subfolders or C<undef> if there are none.  This
 information is lazy evaluated and cached.  In LIST context, the folder
@@ -279,7 +279,7 @@ the collection, the L<Mail::Box::Collection|Mail::Box::Collection>.
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -293,7 +293,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -309,11 +309,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -329,7 +329,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -339,11 +339,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -408,12 +408,12 @@ you have to look for a method of that object.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

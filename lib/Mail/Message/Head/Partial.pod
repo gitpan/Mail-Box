@@ -34,11 +34,11 @@ permanently: the header (and therefore the message) gets mutulated!
 
 =over 4
 
-=item overload: B<"">
+=item overload: B<"">()
 
 See L<Mail::Message::Head/"OVERLOADED">
 
-=item overload: B<bool>
+=item overload: B<bool>()
 
 See L<Mail::Message::Head/"OVERLOADED">
 
@@ -68,19 +68,19 @@ See L<Mail::Message::Head/"Constructors">
 
 =over 4
 
-=item $obj-E<gt>B<isDelayed>
+=item $obj-E<gt>B<isDelayed>()
 
 See L<Mail::Message::Head/"The header">
 
-=item $obj-E<gt>B<isEmpty>
+=item $obj-E<gt>B<isEmpty>()
 
 See L<Mail::Message::Head/"The header">
 
-=item $obj-E<gt>B<isModified>
+=item $obj-E<gt>B<isModified>()
 
 See L<Mail::Message::Head/"The header">
 
-=item $obj-E<gt>B<knownNames>
+=item $obj-E<gt>B<knownNames>()
 
 See L<Mail::Message::Head/"The header">
 
@@ -92,15 +92,15 @@ See L<Mail::Message::Head/"The header">
 
 See L<Mail::Message::Head/"The header">
 
-=item $obj-E<gt>B<nrLines>
+=item $obj-E<gt>B<nrLines>()
 
 See L<Mail::Message::Head::Complete/"The header">
 
-=item $obj-E<gt>B<orderedFields>
+=item $obj-E<gt>B<orderedFields>()
 
 See L<Mail::Message::Head/"The header">
 
-=item $obj-E<gt>B<size>
+=item $obj-E<gt>B<size>()
 
 See L<Mail::Message::Head::Complete/"The header">
 
@@ -130,7 +130,7 @@ See L<Mail::Message::Head::Complete/"Access to the header">
 
 See L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<cleanupOrderedFields>
+=item $obj-E<gt>B<cleanupOrderedFields>()
 
 The header maintains a list of fields which are ordered in sequence of
 definition.  It is required to maintain the header order to keep the
@@ -162,11 +162,11 @@ See L<Mail::Message::Head/"Access to the header">
 
 See L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<listGroup>
+=item $obj-E<gt>B<listGroup>()
 
 See L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<names>
+=item $obj-E<gt>B<names>()
 
 See L<Mail::Message::Head::Complete/"Access to the header">
 
@@ -182,7 +182,7 @@ See L<Mail::Message::Head::Complete/"Access to the header">
 
 See L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<removeContentInfo>
+=item $obj-E<gt>B<removeContentInfo>()
 
 See L<Mail::Message::Head::Complete/"Access to the header">
 
@@ -220,13 +220,13 @@ example:
  $head->removeFieldsExcept('subject', qr/^content-/i ); 
  $head->removeFieldsExcept( qw/subject to from sender cc/ );
 
-=item $obj-E<gt>B<removeListGroup>
+=item $obj-E<gt>B<removeListGroup>()
 
 Removes all header lines which are used to administer mailing lists.
 Which fields that are is explained in L<Mail::Message::Head::ListGroup|Mail::Message::Head::ListGroup>.
 Returned is the number of removed lines.
 
-=item $obj-E<gt>B<removeResentGroups>
+=item $obj-E<gt>B<removeResentGroups>()
 
 Removes all header lines which are member of a I<resent group>, which
 are explained in L<Mail::Message::Head::ResentGroup|Mail::Message::Head::ResentGroup>.  Returned is the
@@ -235,13 +235,13 @@ number of removed lines.
 For removing single groups (for instance because you want to keep the
 last), use L<Mail::Message::Head::FieldGroup::delete()|Mail::Message::Head::FieldGroup/"The header">.
 
-=item $obj-E<gt>B<removeSpamGroups>
+=item $obj-E<gt>B<removeSpamGroups>()
 
 Removes all header lines which were produced by spam detection and
 spam-fighting software.  Which fields that are is explained in
 L<Mail::Message::Head::SpamGroup|Mail::Message::Head::SpamGroup>.  Returned is the number of removed lines.
 
-=item $obj-E<gt>B<resentGroups>
+=item $obj-E<gt>B<resentGroups>()
 
 See L<Mail::Message::Head::Complete/"Access to the header">
 
@@ -253,7 +253,7 @@ See L<Mail::Message::Head::Complete/"Access to the header">
 
 See L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<spamDetected>
+=item $obj-E<gt>B<spamDetected>()
 
 See L<Mail::Message::Head::Complete/"Access to the header">
 
@@ -261,7 +261,7 @@ See L<Mail::Message::Head::Complete/"Access to the header">
 
 See L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<string>
+=item $obj-E<gt>B<string>()
 
 See L<Mail::Message::Head::Complete/"Access to the header">
 
@@ -275,23 +275,23 @@ See L<Mail::Message::Head/"Access to the header">
 
 =over 4
 
-=item $obj-E<gt>B<guessBodySize>
+=item $obj-E<gt>B<guessBodySize>()
 
 See L<Mail::Message::Head/"About the body">
 
-=item $obj-E<gt>B<guessTimeStamp>
+=item $obj-E<gt>B<guessTimeStamp>()
 
 See L<Mail::Message::Head::Complete/"About the body">
 
-=item $obj-E<gt>B<isMultipart>
+=item $obj-E<gt>B<isMultipart>()
 
 See L<Mail::Message::Head/"About the body">
 
-=item $obj-E<gt>B<recvstamp>
+=item $obj-E<gt>B<recvstamp>()
 
 See L<Mail::Message::Head::Complete/"About the body">
 
-=item $obj-E<gt>B<timestamp>
+=item $obj-E<gt>B<timestamp>()
 
 See L<Mail::Message::Head::Complete/"About the body">
 
@@ -309,19 +309,19 @@ See L<Mail::Message::Head/"Internals">
 
 See L<Mail::Message::Head/"Internals">
 
-=item $obj-E<gt>B<createFromLine>
+=item $obj-E<gt>B<createFromLine>()
 
 See L<Mail::Message::Head::Complete/"Internals">
 
-=item $obj-E<gt>B<createMessageId>
+=item $obj-E<gt>B<createMessageId>()
 
 See L<Mail::Message::Head::Complete/"Internals">
 
-=item $obj-E<gt>B<fileLocation>
+=item $obj-E<gt>B<fileLocation>()
 
 See L<Mail::Message::Head/"Internals">
 
-=item $obj-E<gt>B<load>
+=item $obj-E<gt>B<load>()
 
 See L<Mail::Message::Head/"Internals">
 
@@ -349,7 +349,7 @@ See L<Mail::Message::Head/"Internals">
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -363,7 +363,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -379,11 +379,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -399,7 +399,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -409,11 +409,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -470,12 +470,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

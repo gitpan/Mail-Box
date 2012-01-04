@@ -88,16 +88,16 @@ when no C<file> is specified.
 
 =over 4
 
-=item $obj-E<gt>B<fileChanged>
+=item $obj-E<gt>B<fileChanged>()
 
 Returns whether the file which is parsed has changed after the last
 time takeFileInfo() was called.
 
-=item $obj-E<gt>B<filename>
+=item $obj-E<gt>B<filename>()
 
 Returns the name of the file this parser is working on.
 
-=item $obj-E<gt>B<restart>
+=item $obj-E<gt>B<restart>()
 
 Restart the parser on a certain file, usually because the content has
 changed.
@@ -118,7 +118,7 @@ from STDIN.
 
 =back
 
-=item $obj-E<gt>B<stop>
+=item $obj-E<gt>B<stop>()
 
 Stop the parser, which will include a close of the file.  The lock on the
 folder will not be removed (is not the responsibility of the parser).
@@ -175,14 +175,14 @@ Returns the location of the next byte to be used in the file which is
 parsed.  When a POSITION is specified, the location in the file is
 moved to the indicated spot first.
 
-=item $obj-E<gt>B<lineSeparator>
+=item $obj-E<gt>B<lineSeparator>()
 
 Returns the character or characters which are used to separate lines
 in the folder file.  This is based on the first line of the file.
 UNIX systems use a single LF to separate lines.  Windows uses a CR and
 a LF.  Mac uses CR.
 
-=item $obj-E<gt>B<popSeparator>
+=item $obj-E<gt>B<popSeparator>()
 
 Remove the last-pushed separator from the list which is maintained by the
 parser.  This will return C<undef> when there is none left.
@@ -197,7 +197,7 @@ message are divided by separators.
 The specified STRING describes the start of the separator-line.  The
 REGEXP can specify a more complicated format.
 
-=item $obj-E<gt>B<readHeader>
+=item $obj-E<gt>B<readHeader>()
 
 Read the whole message-header and return it as list of field-value
 pairs.  Mind that some fields will appear more than once.
@@ -225,7 +225,7 @@ separator.  A new separator is activated using L<pushSeparator()|Mail::Box::Pars
 
 =over 4
 
-=item $obj-E<gt>B<closeFile>
+=item $obj-E<gt>B<closeFile>()
 
 Close the file which was being parsed.
 
@@ -259,7 +259,7 @@ Open the file to be parsed.  ARGS is a ref-hash of options.
 
 =back
 
-=item $obj-E<gt>B<takeFileInfo>
+=item $obj-E<gt>B<takeFileInfo>()
 
 Capture some data about the file being parsed, to be compared later.
 
@@ -269,7 +269,7 @@ Capture some data about the file being parsed, to be compared later.
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -283,7 +283,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -299,11 +299,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -319,7 +319,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -329,11 +329,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -373,12 +373,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

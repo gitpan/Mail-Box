@@ -32,16 +32,16 @@ handle interpretation and character set encoding and decoding for you.
 
 =over 4
 
-=item overload: B<boolean>
+=item overload: B<boolean>()
 
 The object used as boolean will always return C<true>
 
-=item overload: B<string comparison>
+=item overload: B<string comparison>()
 
 Two address objects are the same when their email addresses are the
 same.
 
-=item overload: B<stringification>
+=item overload: B<stringification>()
 
 When the object is used in string context, it will return the encoded
 representation of the e-mail address, just like L<string()|Mail::Message::Field::Address/"Access to the content"> does.
@@ -85,11 +85,11 @@ one is taken at random.
 
 =over 4
 
-=item $obj-E<gt>B<address>
+=item $obj-E<gt>B<address>()
 
 See L<Mail::Identity/"Attributes">
 
-=item $obj-E<gt>B<charset>
+=item $obj-E<gt>B<charset>()
 
 See L<Mail::Identity/"Attributes">
 
@@ -97,19 +97,19 @@ See L<Mail::Identity/"Attributes">
 
 See L<Mail::Identity/"Attributes">
 
-=item $obj-E<gt>B<description>
+=item $obj-E<gt>B<description>()
 
 See L<User::Identity::Item/"Attributes">
 
-=item $obj-E<gt>B<domain>
+=item $obj-E<gt>B<domain>()
 
 See L<Mail::Identity/"Attributes">
 
-=item $obj-E<gt>B<language>
+=item $obj-E<gt>B<language>()
 
 See L<Mail::Identity/"Attributes">
 
-=item $obj-E<gt>B<location>
+=item $obj-E<gt>B<location>()
 
 See L<Mail::Identity/"Attributes">
 
@@ -117,15 +117,15 @@ See L<Mail::Identity/"Attributes">
 
 See L<User::Identity::Item/"Attributes">
 
-=item $obj-E<gt>B<organization>
+=item $obj-E<gt>B<organization>()
 
 See L<Mail::Identity/"Attributes">
 
-=item $obj-E<gt>B<phrase>
+=item $obj-E<gt>B<phrase>()
 
 See L<Mail::Identity/"Attributes">
 
-=item $obj-E<gt>B<username>
+=item $obj-E<gt>B<username>()
 
 See L<Mail::Identity/"Attributes">
 
@@ -159,13 +159,13 @@ See L<User::Identity::Item/"Collections">
 
 See L<User::Identity::Item/"Collections">
 
-=item $obj-E<gt>B<type>
+=item $obj-E<gt>B<type>()
 
-=item Mail::Message::Field::Address-E<gt>B<type>
+=item Mail::Message::Field::Address-E<gt>B<type>()
 
 See L<User::Identity::Item/"Collections">
 
-=item $obj-E<gt>B<user>
+=item $obj-E<gt>B<user>()
 
 See L<User::Identity::Item/"Collections">
 
@@ -175,7 +175,7 @@ See L<User::Identity::Item/"Collections">
 
 =over 4
 
-=item $obj-E<gt>B<encoding>
+=item $obj-E<gt>B<encoding>()
 
 Character-set encoding, like 'q' and 'b', to be used when non-ascii
 characters are to be transmitted.
@@ -186,7 +186,7 @@ characters are to be transmitted.
 
 =over 4
 
-=item $obj-E<gt>B<string>
+=item $obj-E<gt>B<string>()
 
 Returns an RFC compliant e-mail address, which will have character
 set encoding if needed.  The objects are also overloaded to call
@@ -241,12 +241,12 @@ The collection with $name does not exist and can not be created.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -1,4 +1,4 @@
-# Copyrights 2001-2011 by Mark Overmeer.
+# Copyrights 2001-2012 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.00.
@@ -6,7 +6,7 @@
 use strict;
 package Mail::Box::Thread::Node;
 use vars '$VERSION';
-$VERSION = '2.101';
+$VERSION = '2.102';
 
 use base 'Mail::Reporter';
 
@@ -77,20 +77,14 @@ sub addMessage($)
     $message;
 }
 
-#-------------------------------------------
-
 
 sub isDummy()
 {   my $self = shift;
     !defined $self->{MBTN_messages} || $self->{MBTN_messages}[0]->isDummy;
 }
 
-#-------------------------------------------
-
 
 sub messageId() { shift->{MBTN_msgid} }
-
-#-------------------------------------------
 
 
 sub expand(;$)
@@ -191,7 +185,7 @@ sub sortedFollowUps()
 
 sub threadToString(;$$$)   # two undocumented parameters for layout args
 {   my $self    = shift;
-    my $code    = shift || sub {shift->head->get('subject')};
+    my $code    = shift || sub {shift->head->study('subject')};
     my ($first, $other) = (shift || '', shift || '');
     my $message = $self->message;
     my @follows = $self->sortedFollowUps;
@@ -265,8 +259,6 @@ sub endTimeEstimate()
     $latest;
 }
 
-#-------------------------------------------
-
 
 sub recurse($)
 {   my ($self, $code) = @_;
@@ -278,8 +270,6 @@ sub recurse($)
 
     $self;
 }
-
-#-------------------------------------------
 
 
 sub totalSize()
@@ -296,8 +286,6 @@ sub totalSize()
     $total;
 }
 
-#-------------------------------------------
-
 
 sub numberOfMessages()
 {   my $self  = shift;
@@ -307,8 +295,6 @@ sub numberOfMessages()
 }
 
 sub nrMessages() {shift->numberOfMessages}  # compatibility
-
-#-------------------------------------------
 
 
 sub threadMessages()
@@ -325,8 +311,6 @@ sub threadMessages()
     @messages;
 }
 
-
-#-------------------------------------------
 
 
 sub ids()

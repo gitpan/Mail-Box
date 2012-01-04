@@ -52,27 +52,27 @@ are enough for your application.
 
 =over 4
 
-=item overload: B<"">
+=item overload: B<"">()
 
 See L<Mail::Message::Field/"OVERLOADED">
 
-=item overload: B<+0>
+=item overload: B<+0>()
 
 See L<Mail::Message::Field/"OVERLOADED">
 
-=item overload: B<<=>>
+=item overload: B<<=>>()
 
 See L<Mail::Message::Field/"OVERLOADED">
 
-=item overload: B<bool>
+=item overload: B<bool>()
 
 See L<Mail::Message::Field/"OVERLOADED">
 
-=item overload: B<cmp>
+=item overload: B<cmp>()
 
 See L<Mail::Message::Field/"OVERLOADED">
 
-=item overload: B<stringification>
+=item overload: B<stringification>()
 
 In string context, the decoded body is returned, as if L<decodedBody()|Mail::Message::Field::Full/"Access to the body">
 would have been called.
@@ -85,7 +85,7 @@ would have been called.
 
 =over 4
 
-=item $obj-E<gt>B<clone>
+=item $obj-E<gt>B<clone>()
 
 See L<Mail::Message::Field/"Constructors">
 
@@ -193,17 +193,17 @@ example:
 
 =over 4
 
-=item $obj-E<gt>B<isStructured>
+=item $obj-E<gt>B<isStructured>()
 
-=item Mail::Message::Field::Full-E<gt>B<isStructured>
-
-See L<Mail::Message::Field/"The field">
-
-=item $obj-E<gt>B<length>
+=item Mail::Message::Field::Full-E<gt>B<isStructured>()
 
 See L<Mail::Message::Field/"The field">
 
-=item $obj-E<gt>B<nrLines>
+=item $obj-E<gt>B<length>()
+
+See L<Mail::Message::Field/"The field">
+
+=item $obj-E<gt>B<nrLines>()
 
 See L<Mail::Message::Field/"The field">
 
@@ -211,7 +211,7 @@ See L<Mail::Message::Field/"The field">
 
 See L<Mail::Message::Field/"The field">
 
-=item $obj-E<gt>B<size>
+=item $obj-E<gt>B<size>()
 
 See L<Mail::Message::Field/"The field">
 
@@ -219,7 +219,7 @@ See L<Mail::Message::Field/"The field">
 
 See L<Mail::Message::Field/"The field">
 
-=item $obj-E<gt>B<toDisclose>
+=item $obj-E<gt>B<toDisclose>()
 
 See L<Mail::Message::Field/"The field">
 
@@ -229,11 +229,11 @@ See L<Mail::Message::Field/"The field">
 
 =over 4
 
-=item $obj-E<gt>B<Name>
+=item $obj-E<gt>B<Name>()
 
 See L<Mail::Message::Field/"Access to the name">
 
-=item $obj-E<gt>B<name>
+=item $obj-E<gt>B<name>()
 
 See L<Mail::Message::Field/"Access to the name">
 
@@ -247,7 +247,7 @@ See L<Mail::Message::Field/"Access to the name">
 
 =over 4
 
-=item $obj-E<gt>B<body>
+=item $obj-E<gt>B<body>()
 
 See L<Mail::Message::Field/"Access to the body">
 
@@ -262,7 +262,7 @@ because of encapsulated special characters.  By default, the body is decoded
 as text, which results in a small difference within comments as well
 (read the RFC).
 
-=item $obj-E<gt>B<folded>
+=item $obj-E<gt>B<folded>()
 
 See L<Mail::Message::Field/"Access to the body">
 
@@ -286,7 +286,7 @@ See L<Mail::Message::Field/"Access to the body">
 
 =over 4
 
-=item $obj-E<gt>B<addresses>
+=item $obj-E<gt>B<addresses>()
 
 See L<Mail::Message::Field/"Access to the content">
 
@@ -294,11 +294,11 @@ See L<Mail::Message::Field/"Access to the content">
 
 See L<Mail::Message::Field/"Access to the content">
 
-=item $obj-E<gt>B<attributes>
+=item $obj-E<gt>B<attributes>()
 
 See L<Mail::Message::Field/"Access to the content">
 
-=item $obj-E<gt>B<beautify>
+=item $obj-E<gt>B<beautify>()
 
 For structured header fields, this removes the original encoding of the
 field's body (the format as it was offered to L<parse()|Mail::Message::Field::Full/"Parsing">), therefore the
@@ -334,7 +334,7 @@ quotes: do not specify them yourself.
 
 The OPTIONS are C<charset>, C<language>, and C<encoding>, as always.
 
-=item $obj-E<gt>B<study>
+=item $obj-E<gt>B<study>()
 
 See L<Mail::Message::Field/"Access to the content">
 
@@ -344,7 +344,7 @@ See L<Mail::Message::Field/"Access to the content">
 
 See L<Mail::Message::Field/"Access to the content">
 
-=item $obj-E<gt>B<toInt>
+=item $obj-E<gt>B<toInt>()
 
 See L<Mail::Message::Field/"Access to the content">
 
@@ -510,7 +510,7 @@ Get the detailed information from the STRING, and store the data found
 in the field object.  The accepted input is very field type dependent.
 Unstructured fields do no parsing whatsoever.
 
-=item $obj-E<gt>B<produceBody>
+=item $obj-E<gt>B<produceBody>()
 
 Produce the text for the field, based on the information stored within the
 field object.
@@ -526,7 +526,7 @@ a call to this method when the field is needed later.
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -540,7 +540,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -556,11 +556,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -576,7 +576,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -586,11 +586,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -641,12 +641,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -107,7 +107,7 @@ See L<Mail::Transport::Receive/"Receiving mail">
 
 =over 4
 
-=item $obj-E<gt>B<deleteFetched>
+=item $obj-E<gt>B<deleteFetched>()
 
 Mark all messages that have been fetched with L<message()|Mail::Transport::POP3/"Exchanging information"> for deletion.
 See L<fetched()|Mail::Transport::POP3/"Exchanging information">.
@@ -119,7 +119,7 @@ unmark them for deletion (if the first parameter is false).  Deletion of
 messages will take place B<only> when the connection is specifically
 disconnected or the last reference to the object goes out of scope.
 
-=item $obj-E<gt>B<disconnect>
+=item $obj-E<gt>B<disconnect>()
 
 Break contact with the server, if that (still) exists.  Returns true if
 successful.  Please note that even if the disconnect was not successful,
@@ -127,7 +127,7 @@ all knowledge of messages etc. will be removed from the object: the object
 basically has reverted to the state in which it was before anything was done
 with the mail box.
 
-=item $obj-E<gt>B<fetched>
+=item $obj-E<gt>B<fetched>()
 
 Returns a reference to a list of ID's that have been fetched using
 L<message()|Mail::Transport::POP3/"Exchanging information">.  This can be used to update a database of messages that
@@ -140,7 +140,7 @@ the messages themselves).
 
 See also L<deleteFetched()|Mail::Transport::POP3/"Exchanging information">.
 
-=item $obj-E<gt>B<folderSize>
+=item $obj-E<gt>B<folderSize>()
 
 Returns the total number of octets used by the mailbox on the remote server.
 
@@ -164,7 +164,7 @@ represents the message as long a this connection to the POP3 server
 exists.  When the message has been deleted for some reason, C<undef>
 is returned.
 
-=item $obj-E<gt>B<ids>
+=item $obj-E<gt>B<ids>()
 
 Returns a list (in list context) or a reference to a list (in scalar context)
 of all ID's which are known by the server on this moment.
@@ -186,7 +186,7 @@ Returns the size of the message which is indicated by the ID, in octets.
 If the message has been deleted on the remote server, this will return
 C<undef>.
 
-=item $obj-E<gt>B<messages>
+=item $obj-E<gt>B<messages>()
 
 Returns (in scalar context only) the number of messages that are known
 to exist in the mailbox.
@@ -200,7 +200,7 @@ by a normal user of this class.
 
 =over 4
 
-=item $obj-E<gt>B<login>
+=item $obj-E<gt>B<login>()
 
 Establish a new connection to the POP3 server, using username and password.
 
@@ -220,7 +220,7 @@ were reveived after the first C<+OK> line and before the end-of-message
 delimiter (a single dot on a line).  Returns C<undef>
 whenever something has gone wrong.
 
-=item $obj-E<gt>B<socket>
+=item $obj-E<gt>B<socket>()
 
 Returns a connection to the POP3 server.  If there was no connection yet,
 it will be created transparently.  If the connection with the POP3 server
@@ -245,15 +245,15 @@ Update the current status of folder on the remote POP3 server.
 
 See L<Mail::Transport/"Server connection">
 
-=item $obj-E<gt>B<remoteHost>
+=item $obj-E<gt>B<remoteHost>()
 
 See L<Mail::Transport/"Server connection">
 
-=item $obj-E<gt>B<retry>
+=item $obj-E<gt>B<retry>()
 
 See L<Mail::Transport/"Server connection">
 
-=item $obj-E<gt>B<url>
+=item $obj-E<gt>B<url>()
 
 Represent this pop3 connection as URL.
 
@@ -263,7 +263,7 @@ Represent this pop3 connection as URL.
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -277,7 +277,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -293,11 +293,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -313,7 +313,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -323,11 +323,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -402,12 +402,12 @@ service on the specified port.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -85,12 +85,12 @@ Returns whether this (part of the) folder has to be shown expanded or not.
 This is simply done by a label, which means that most folder types can
 store this.
 
-=item $obj-E<gt>B<isDummy>
+=item $obj-E<gt>B<isDummy>()
 
 Returns true if the message is a dummy. A dummy is a "hole" in a thread
 which has follow-ups but does not have a message.
 
-=item $obj-E<gt>B<message>
+=item $obj-E<gt>B<message>()
 
 Get the message which is stored in this thread node.  NOTE: the same
 message may be located in many folders at the same time, and these
@@ -116,7 +116,7 @@ example:
 
  print "Subject is ", $node->message->subject, ".\n";
 
-=item $obj-E<gt>B<messageId>
+=item $obj-E<gt>B<messageId>()
 
 Return the message-id related to this thread node.  Each of the messages
 listed in this node will have the same ID.
@@ -127,7 +127,7 @@ listed in this node will have the same ID.
 
 =over 4
 
-=item $obj-E<gt>B<followUps>
+=item $obj-E<gt>B<followUps>()
 
 Returns the list of follow-ups to this thread node.  This list
 may contain parsed, not-parsed, and dummy messages.
@@ -154,7 +154,7 @@ specified, later calls to the follow method will have no effect. If
 C<follows> is called with a QUALITY that matches the current quality, the
 new thread overrides the previous.
 
-=item $obj-E<gt>B<repliedTo>
+=item $obj-E<gt>B<repliedTo>()
 
 Returns the message(s) to which the message in this node replies. In
 scalar context, this method will return the message to which the message
@@ -216,12 +216,12 @@ information from it.
 
 =over 4
 
-=item $obj-E<gt>B<endTimeEstimate>
+=item $obj-E<gt>B<endTimeEstimate>()
 
 Returns a guess as to when the thread has ended (although you never
 know for sure whether there fill follow messages in the future).
 
-=item $obj-E<gt>B<ids>
+=item $obj-E<gt>B<ids>()
 
 Returns all the ids in the thread starting at the current thread node.
 
@@ -230,7 +230,7 @@ example:
  $newfolder->addMessages($folder->ids($thread->ids));
  $folder->delete($thread->ids);
 
-=item $obj-E<gt>B<numberOfMessages>
+=item $obj-E<gt>B<numberOfMessages>()
 
 Number of messages in the thread starting at the current thread node, but
 not counting the dummies.
@@ -242,7 +242,7 @@ sub-threads are visited recursively. Otherwise, the current branch
 traversal is aborted. The routine is called with the thread-node as the
 only argument.
 
-=item $obj-E<gt>B<startTimeEstimate>
+=item $obj-E<gt>B<startTimeEstimate>()
 
 Returns a guess as to when the thread was started.  Each message contains
 various date specifications (each with various uncertainties resulting
@@ -251,7 +251,7 @@ is used as the timestamp for the message. If the node contains a dummy
 message the lowest timestamp of the replies is returned. Otherwise the
 estimated timestamp of the node's message is returned.
 
-=item $obj-E<gt>B<threadMessages>
+=item $obj-E<gt>B<threadMessages>()
 
 Returns all the messages in the thread starting at the current thread
 node.  This list will not include dummies.
@@ -299,7 +299,7 @@ presents a folded thread with three messages.
     length $subject ? $subject : '<no subject>';
  }
 
-=item $obj-E<gt>B<totalSize>
+=item $obj-E<gt>B<totalSize>()
 
 Returns the sum of the size of all the messages in the thread.
 
@@ -309,7 +309,7 @@ Returns the sum of the size of all the messages in the thread.
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -323,7 +323,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -339,11 +339,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -359,7 +359,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -369,11 +369,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -395,12 +395,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

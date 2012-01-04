@@ -49,27 +49,27 @@ kind of field, you will be warned.
 
 =over 4
 
-=item overload: B<"">
+=item overload: B<"">()
 
 See L<Mail::Message::Field/"OVERLOADED">
 
-=item overload: B<+0>
+=item overload: B<+0>()
 
 See L<Mail::Message::Field/"OVERLOADED">
 
-=item overload: B<<=>>
+=item overload: B<<=>>()
 
 See L<Mail::Message::Field/"OVERLOADED">
 
-=item overload: B<bool>
+=item overload: B<bool>()
 
 See L<Mail::Message::Field/"OVERLOADED">
 
-=item overload: B<cmp>
+=item overload: B<cmp>()
 
 See L<Mail::Message::Field/"OVERLOADED">
 
-=item overload: B<stringification>
+=item overload: B<stringification>()
 
 See L<Mail::Message::Field::Full/"OVERLOADED">
 
@@ -81,7 +81,7 @@ See L<Mail::Message::Field::Full/"OVERLOADED">
 
 =over 4
 
-=item $obj-E<gt>B<clone>
+=item $obj-E<gt>B<clone>()
 
 See L<Mail::Message::Field/"Constructors">
 
@@ -89,7 +89,7 @@ See L<Mail::Message::Field/"Constructors">
 
 See L<Mail::Message::Field::Full/"Constructors">
 
-=item Mail::Message::Field::Addresses-E<gt>B<new>
+=item Mail::Message::Field::Addresses-E<gt>B<new>()
 
  -Option    --Defined in     --Default
   attributes  Mail::Message::Field::Structured  <ignored>
@@ -127,17 +127,17 @@ See L<Mail::Message::Field::Full/"Constructors">
 
 =over 4
 
-=item $obj-E<gt>B<isStructured>
+=item $obj-E<gt>B<isStructured>()
 
-=item Mail::Message::Field::Addresses-E<gt>B<isStructured>
-
-See L<Mail::Message::Field/"The field">
-
-=item $obj-E<gt>B<length>
+=item Mail::Message::Field::Addresses-E<gt>B<isStructured>()
 
 See L<Mail::Message::Field/"The field">
 
-=item $obj-E<gt>B<nrLines>
+=item $obj-E<gt>B<length>()
+
+See L<Mail::Message::Field/"The field">
+
+=item $obj-E<gt>B<nrLines>()
 
 See L<Mail::Message::Field/"The field">
 
@@ -145,7 +145,7 @@ See L<Mail::Message::Field/"The field">
 
 See L<Mail::Message::Field/"The field">
 
-=item $obj-E<gt>B<size>
+=item $obj-E<gt>B<size>()
 
 See L<Mail::Message::Field/"The field">
 
@@ -153,7 +153,7 @@ See L<Mail::Message::Field/"The field">
 
 See L<Mail::Message::Field/"The field">
 
-=item $obj-E<gt>B<toDisclose>
+=item $obj-E<gt>B<toDisclose>()
 
 See L<Mail::Message::Field/"The field">
 
@@ -163,11 +163,11 @@ See L<Mail::Message::Field/"The field">
 
 =over 4
 
-=item $obj-E<gt>B<Name>
+=item $obj-E<gt>B<Name>()
 
 See L<Mail::Message::Field/"Access to the name">
 
-=item $obj-E<gt>B<name>
+=item $obj-E<gt>B<name>()
 
 See L<Mail::Message::Field/"Access to the name">
 
@@ -181,7 +181,7 @@ See L<Mail::Message::Field/"Access to the name">
 
 =over 4
 
-=item $obj-E<gt>B<body>
+=item $obj-E<gt>B<body>()
 
 See L<Mail::Message::Field/"Access to the body">
 
@@ -189,7 +189,7 @@ See L<Mail::Message::Field/"Access to the body">
 
 See L<Mail::Message::Field::Full/"Access to the body">
 
-=item $obj-E<gt>B<folded>
+=item $obj-E<gt>B<folded>()
 
 See L<Mail::Message::Field/"Access to the body">
 
@@ -249,7 +249,7 @@ using the OPTIONS.  The group is returned.
 
 =back
 
-=item $obj-E<gt>B<addresses>
+=item $obj-E<gt>B<addresses>()
 
 Returns a list with all addresses defined in any group of addresses:
 all addresses which are specified on the line.  The addresses are
@@ -263,11 +263,11 @@ example:
 
 See L<Mail::Message::Field::Structured/"Access to the content">
 
-=item $obj-E<gt>B<attributes>
+=item $obj-E<gt>B<attributes>()
 
 See L<Mail::Message::Field::Structured/"Access to the content">
 
-=item $obj-E<gt>B<beautify>
+=item $obj-E<gt>B<beautify>()
 
 See L<Mail::Message::Field::Full/"Access to the content">
 
@@ -293,16 +293,16 @@ Returns the group of addresses with the specified NAME, or C<undef>
 if it does not exist.  If NAME is C<undef>, then the default groep
 is returned.
 
-=item $obj-E<gt>B<groupNames>
+=item $obj-E<gt>B<groupNames>()
 
 Returns a list with all group names which are defined.
 
-=item $obj-E<gt>B<groups>
+=item $obj-E<gt>B<groups>()
 
 Returns all address groups which are defined in this field.  Each
 element is a L<Mail::Message::Field::AddrGroup|Mail::Message::Field::AddrGroup> object.
 
-=item $obj-E<gt>B<study>
+=item $obj-E<gt>B<study>()
 
 See L<Mail::Message::Field/"Access to the content">
 
@@ -312,7 +312,7 @@ See L<Mail::Message::Field/"Access to the content">
 
 See L<Mail::Message::Field/"Access to the content">
 
-=item $obj-E<gt>B<toInt>
+=item $obj-E<gt>B<toInt>()
 
 See L<Mail::Message::Field/"Access to the content">
 
@@ -411,7 +411,7 @@ See L<Mail::Message::Field::Structured/"Parsing">
 
 See L<Mail::Message::Field::Full/"Parsing">
 
-=item $obj-E<gt>B<produceBody>
+=item $obj-E<gt>B<produceBody>()
 
 See L<Mail::Message::Field::Full/"Parsing">
 
@@ -421,7 +421,7 @@ See L<Mail::Message::Field::Full/"Parsing">
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -435,7 +435,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -451,11 +451,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -471,7 +471,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -481,11 +481,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -541,12 +541,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

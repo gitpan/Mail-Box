@@ -26,11 +26,11 @@ by a L<Mail::Message::Head|Mail::Message::Head> when someone accesses the header
 
 =over 4
 
-=item overload: B<"">
+=item overload: B<"">()
 
 See L<Mail::Message::Head/"OVERLOADED">
 
-=item overload: B<bool>
+=item overload: B<bool>()
 
 See L<Mail::Message::Head/"OVERLOADED">
 
@@ -56,19 +56,19 @@ See L<Mail::Message::Head/"Constructors">
 
 =over 4
 
-=item $obj-E<gt>B<isDelayed>
+=item $obj-E<gt>B<isDelayed>()
 
 See L<Mail::Message::Head/"The header">
 
-=item $obj-E<gt>B<isEmpty>
+=item $obj-E<gt>B<isEmpty>()
 
 See L<Mail::Message::Head/"The header">
 
-=item $obj-E<gt>B<isModified>
+=item $obj-E<gt>B<isModified>()
 
 See L<Mail::Message::Head/"The header">
 
-=item $obj-E<gt>B<knownNames>
+=item $obj-E<gt>B<knownNames>()
 
 See L<Mail::Message::Head/"The header">
 
@@ -80,7 +80,7 @@ See L<Mail::Message::Head/"The header">
 
 See L<Mail::Message::Head/"The header">
 
-=item $obj-E<gt>B<orderedFields>
+=item $obj-E<gt>B<orderedFields>()
 
 See L<Mail::Message::Head/"The header">
 
@@ -105,7 +105,7 @@ See L<Mail::Message::Head/"Access to the header">
 
 =over 4
 
-=item $obj-E<gt>B<guessBodySize>
+=item $obj-E<gt>B<guessBodySize>()
 
 On a delayed head, this retuns C<undef>, because when there is no header
 there is also no body.
@@ -115,14 +115,14 @@ L<Mail::Message::size()|Mail::Message/"The message"> usually will give a figure 
 without much cost.  Subtract a few hundred bytes for the header, and
 you will get a good estimate.
 
-=item $obj-E<gt>B<guessTimeStamp>
+=item $obj-E<gt>B<guessTimeStamp>()
 
 Make a guess about when the message was originally posted.
 On a delayed head, this returns C<undef>.
 For messages in directory or network organized folders,
 L<Mail::Message::timestamp()|Mail::Message/"The header"> usually will give a figure without much cost.
 
-=item $obj-E<gt>B<isMultipart>
+=item $obj-E<gt>B<isMultipart>()
 
 See L<Mail::Message::Head/"About the body">
 
@@ -140,11 +140,11 @@ See L<Mail::Message::Head/"Internals">
 
 See L<Mail::Message::Head/"Internals">
 
-=item $obj-E<gt>B<fileLocation>
+=item $obj-E<gt>B<fileLocation>()
 
 See L<Mail::Message::Head/"Internals">
 
-=item $obj-E<gt>B<load>
+=item $obj-E<gt>B<load>()
 
 See L<Mail::Message::Head/"Internals">
 
@@ -166,7 +166,7 @@ See L<Mail::Message::Head/"Internals">
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -180,7 +180,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -196,11 +196,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -216,7 +216,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -226,11 +226,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -257,12 +257,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

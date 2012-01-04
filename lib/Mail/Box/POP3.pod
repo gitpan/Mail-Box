@@ -29,15 +29,15 @@ handling of messages within a POP3 folder.
 
 =over 4
 
-=item overload: B<"">
+=item overload: B<"">()
 
 See L<Mail::Box/"OVERLOADED">
 
-=item overload: B<@{}>
+=item overload: B<@{}>()
 
 See L<Mail::Box/"OVERLOADED">
 
-=item overload: B<cmp>
+=item overload: B<cmp>()
 
 See L<Mail::Box/"OVERLOADED">
 
@@ -235,27 +235,27 @@ A notice is logged about this.
 
 See L<Mail::Box::Net/"METHODS">
 
-=item $obj-E<gt>B<name>
+=item $obj-E<gt>B<name>()
 
 See L<Mail::Box/"The folder">
 
-=item $obj-E<gt>B<organization>
+=item $obj-E<gt>B<organization>()
 
 See L<Mail::Box/"The folder">
 
-=item $obj-E<gt>B<size>
+=item $obj-E<gt>B<size>()
 
 See L<Mail::Box/"The folder">
 
-=item $obj-E<gt>B<type>
+=item $obj-E<gt>B<type>()
 
 See L<Mail::Box/"The folder">
 
-=item $obj-E<gt>B<update>
+=item $obj-E<gt>B<update>()
 
 NOT IMPLEMENTED YET
 
-=item $obj-E<gt>B<url>
+=item $obj-E<gt>B<url>()
 
 See L<Mail::Box/"The folder">
 
@@ -265,11 +265,11 @@ See L<Mail::Box/"The folder">
 
 =over 4
 
-=item $obj-E<gt>B<access>
+=item $obj-E<gt>B<access>()
 
 See L<Mail::Box/"Folder flags">
 
-=item $obj-E<gt>B<isModified>
+=item $obj-E<gt>B<isModified>()
 
 See L<Mail::Box/"Folder flags">
 
@@ -277,7 +277,7 @@ See L<Mail::Box/"Folder flags">
 
 See L<Mail::Box/"Folder flags">
 
-=item $obj-E<gt>B<writable>
+=item $obj-E<gt>B<writable>()
 
 See L<Mail::Box/"Folder flags">
 
@@ -307,7 +307,7 @@ See L<Mail::Box/"The messages">
 
 See L<Mail::Box/"The messages">
 
-=item $obj-E<gt>B<messageIds>
+=item $obj-E<gt>B<messageIds>()
 
 See L<Mail::Box/"The messages">
 
@@ -370,9 +370,9 @@ It is not possible to open a sub-folder for a POP3 folder, because that
 is not supported by the official POP3 protocol. In any case, C<undef>
 is returned to indicate a failure.
 
-=item $obj-E<gt>B<topFolderWithMessages>
+=item $obj-E<gt>B<topFolderWithMessages>()
 
-=item Mail::Box::POP3-E<gt>B<topFolderWithMessages>
+=item Mail::Box::POP3-E<gt>B<topFolderWithMessages>()
 
 See L<Mail::Box/"Sub-folders">
 
@@ -422,7 +422,7 @@ Read all data for the specified message from the remote server.
 
 See L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<locker>
+=item $obj-E<gt>B<locker>()
 
 See L<Mail::Box/"Internals">
 
@@ -496,7 +496,7 @@ See L<Mail::Box/"Other methods">
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -510,7 +510,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -526,11 +526,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -546,7 +546,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -556,11 +556,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Box/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -704,12 +704,12 @@ implementation with writing.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -39,7 +39,7 @@ described.  Read about differences in the sub-class specific pages.
 
 =over 4
 
-=item overload: B<"">
+=item overload: B<"">()
 
 (stringifaction) The header, when used as string, will format as if
 L<Mail::Message::Head::Complete::string()|Mail::Message::Head::Complete/"Access to the header"> was called, so return a
@@ -54,7 +54,7 @@ example: using a header object as string
 
  print "$head";   # explicit stringication
 
-=item overload: B<bool>
+=item overload: B<bool>()
 
 When the header does not contain any lines (which is illegal, according
 to the RFCs), false is returned.  In all other cases, a true value is
@@ -136,20 +136,20 @@ message() method later to set it.
 
 =over 4
 
-=item $obj-E<gt>B<isDelayed>
+=item $obj-E<gt>B<isDelayed>()
 
 Headers may only be partially read, in which case they are called delayed.
 This method returns true if some header information still needs to be
 read. Returns false if all header data has been read.
 Will never trigger completion.
 
-=item $obj-E<gt>B<isEmpty>
+=item $obj-E<gt>B<isEmpty>()
 
 Are there any fields defined in the current header?  Be warned that
 the header will not be loaded for this: delayed headers will return
 true in any case.
 
-=item $obj-E<gt>B<isModified>
+=item $obj-E<gt>B<isModified>()
 
 Returns whether the header has been modified after being read.
 
@@ -157,7 +157,7 @@ example:
 
  if($head->isModified) { ... }
 
-=item $obj-E<gt>B<knownNames>
+=item $obj-E<gt>B<knownNames>()
 
 Like L<Mail::Message::Head::Complete::names()|Mail::Message::Head::Complete/"Access to the header">, but only returns the known
 header fields, which may be less than C<names> for header types which are
@@ -180,7 +180,7 @@ example:
  if($head->modified) { ... }
  if($head->isModified) { ... }
 
-=item $obj-E<gt>B<orderedFields>
+=item $obj-E<gt>B<orderedFields>()
 
 Retuns the fields ordered the way they were read or added.
 
@@ -231,14 +231,14 @@ When an INDEX is specified, that element is returned.
 
 =over 4
 
-=item $obj-E<gt>B<guessBodySize>
+=item $obj-E<gt>B<guessBodySize>()
 
 Try to estimate the size of the body of this message, but without parsing
 the header or body.  The result might be C<undef> or a few percent of
 the real size.  It may even be very far of the real value, that's why
 this is a guess.
 
-=item $obj-E<gt>B<isMultipart>
+=item $obj-E<gt>B<isMultipart>()
 
 Returns whether the body of the related message is a multipart body.
 May trigger completion, when the C<Content-Type> field is not defined.
@@ -258,13 +258,13 @@ This does not trigger completion.
 
 =item $obj-E<gt>B<addOrderedFields>(FIELDS)
 
-=item $obj-E<gt>B<fileLocation>
+=item $obj-E<gt>B<fileLocation>()
 
 Returns the location of the header in the file, as a pair begin and end.  The
 begin is the first byte of the header.  The end is the first byte after
 the header.
 
-=item $obj-E<gt>B<load>
+=item $obj-E<gt>B<load>()
 
 Be sure that the header is loaded.  This returns the loaded header
 object.
@@ -291,7 +291,7 @@ header as changed.  This does not trigger completion.
 
 =over 4
 
-=item $obj-E<gt>B<AUTOLOAD>
+=item $obj-E<gt>B<AUTOLOAD>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -305,7 +305,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<errors>
+=item $obj-E<gt>B<errors>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -321,11 +321,11 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logSettings>
+=item $obj-E<gt>B<logSettings>()
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<notImplemented>
+=item $obj-E<gt>B<notImplemented>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -341,7 +341,7 @@ See L<Mail::Reporter/"Error handling">
 
 See L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<warnings>
+=item $obj-E<gt>B<warnings>()
 
 See L<Mail::Reporter/"Error handling">
 
@@ -351,11 +351,11 @@ See L<Mail::Reporter/"Error handling">
 
 =over 4
 
-=item $obj-E<gt>B<DESTROY>
+=item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>
+=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -465,12 +465,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.101,
-built on August 25, 2011. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.102,
+built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2011 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
