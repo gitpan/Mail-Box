@@ -1,4 +1,4 @@
-# Copyrights 2001-2012 by Mark Overmeer.
+# Copyrights 2001-2012 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.00.
@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Head;
 use vars '$VERSION';
-$VERSION = '2.102';
+$VERSION = '2.103';
 
 use base 'Mail::Reporter';
 
@@ -151,6 +151,7 @@ sub isMultipart()
     $type && scalar $type->body =~ m[^multipart/]i;
 }
 
+#------------------------------
 
 sub read($)
 {   my ($self, $parser) = @_;
@@ -161,7 +162,7 @@ sub read($)
     my $type   = $self->{MMH_field_type} || 'Mail::Message::Field::Fast';
 
     $self->addNoRealize($type->new( @$_ ))
-        foreach @fields;
+        for @fields;
 
     $self;
 }

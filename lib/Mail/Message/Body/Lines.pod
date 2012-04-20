@@ -60,6 +60,7 @@ See L<Mail::Message::Body/"Constructors">
   based_on           Mail::Message::Body  undef
   charset            Mail::Message::Body  'PERL' or <undef>
   checked            Mail::Message::Body  <false>
+  content_id         Mail::Message::Body  undef
   data               Mail::Message::Body  undef
   description        Mail::Message::Body  undef
   disposition        Mail::Message::Body  undef
@@ -79,6 +80,8 @@ See L<Mail::Message::Body/"Constructors">
 =item charset => CHARSET|'PERL'
 
 =item checked => BOOLEAN
+
+=item content_id => STRING
 
 =item data => ARRAY-OF-LINES | STRING
 
@@ -183,6 +186,10 @@ See L<Mail::Message::Body/"The body">
 See L<Mail::Message::Body/"About the payload">
 
 =item $obj-E<gt>B<checked>([BOOLEAN])
+
+See L<Mail::Message::Body/"About the payload">
+
+=item $obj-E<gt>B<contentId>([STRING|FIELD])
 
 See L<Mail::Message::Body/"About the payload">
 
@@ -426,12 +433,12 @@ but it is impossible to read that file to retrieve the lines within.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.102,
-built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.103,
+built on April 20, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

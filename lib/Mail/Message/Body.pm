@@ -1,4 +1,4 @@
-# Copyrights 2001-2012 by Mark Overmeer.
+# Copyrights 2001-2012 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.00.
@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.102';
+$VERSION = '2.103';
 
 use base 'Mail::Reporter';
 
@@ -96,8 +96,9 @@ sub init($)
 
     # Set the content info
 
-    my ($mime, $transfer, $disp, $charset, $descr) = @$args{
-       qw/mime_type transfer_encoding disposition charset description/ }; 
+    my ($mime, $transfer, $disp, $charset, $descr, $cid) = @$args{
+       qw/mime_type transfer_encoding disposition charset
+          description content_id/ }; 
 
     if(defined $filename)
     {   $disp = Mail::Message::Field->new
@@ -121,6 +122,7 @@ sub init($)
         $transfer = $based->transferEncoding unless defined $transfer;
         $disp     = $based->disposition      unless defined $disp;
         $descr    = $based->description      unless defined $descr;
+        $cid      = $based->contentId        unless defined $cid;
 
         $self->{MMB_checked}
                = defined $args->{checked} ? $args->{checked} : $based->checked;
@@ -138,6 +140,7 @@ sub init($)
     $self->transferEncoding($transfer) if defined $transfer;
     $self->disposition($disp)          if defined $disp;
     $self->description($descr)         if defined $descr;
+    $self->contentId($cid)             if defined $cid;
     $self->type($mime);
 
     $self->{MMB_eol}   = $args->{eol} || 'NATIVE';
@@ -290,6 +293,16 @@ sub disposition(;$)
 }
 
 
+sub contentId(;$)
+{   my $self = shift;
+    return $self->{MMB_id} if !@_ && $self->{MMB_id};
+
+    my $cid = defined $_[0] ? shift : 'none';
+    $self->{MMB_id} = ref $cid ? $cid->clone
+       : Mail::Message::Field->new('Content-ID' => $cid);
+}
+
+
 sub checked(;$)
 {   my $self = shift;
     @_ ? ($self->{MMB_checked} = shift) : $self->{MMB_checked};
@@ -362,6 +375,7 @@ sub contentInfoTo($)
     $head->set($self->transferEncoding);
     $head->set($self->disposition);
     $head->set($self->description);
+    $head->set($self->contentId);
     $self;
 }
 
@@ -373,6 +387,7 @@ sub contentInfoFrom($)
     $self->transferEncoding($head->get('Content-Transfer-Encoding'));
     $self->disposition($head->get('Content-Disposition'));
     $self->description($head->get('Content-Description'));
+    $self->contentId($head->get('Content-ID'));
 
     delete $self->{MMB_mime};
     $self;

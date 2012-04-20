@@ -1,4 +1,4 @@
-# Copyrights 2001-2012 by Mark Overmeer.
+# Copyrights 2001-2012 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.00.
@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.102';
+$VERSION = '2.103';
 
 
 use Mail::Message::Head::Complete;
@@ -56,7 +56,7 @@ sub rebuild(@)
         $rebuild = $clone;
     }
 
-    $rebuild->takeMessageId unless $args{keep_message_id};
+    $args{keep_message_id} or $rebuild->takeMessageId;
     $rebuild;
 }
 
@@ -65,7 +65,7 @@ sub rebuild(@)
 
 sub flattenNesting($@)
 {   my ($self, $part) = @_;
-    $part->isNested ?  $part->body->nested : $part;
+    $part->isNested ? $part->body->nested : $part;
 }
 
 sub flattenMultiparts($@)
@@ -123,8 +123,7 @@ sub descendMultiparts($@)
 	else               { push @newparts, $new; $changed++ }
     }
 
-    $changed
-        or return $part;
+    $changed  or return $part;
 
     my $newbody = ref($body)->new
       ( based_on  => $body
@@ -142,29 +141,22 @@ sub descendMultiparts($@)
 
 sub descendNested($@)
 {   my ($self, $part, %args) = @_;
-
-    return $part unless $part->isNested;
+    $part->isNested or return $part;
 
     my $body      = $part->body;
     my $srcnested = $body->nested;
     my $newnested = $self->recursiveRebuildPart($srcnested, %args);
 
-    return undef      unless defined $newnested;
+    defined $newnested or return undef;
     return $part if $newnested==$srcnested;
 
     # Changes in the encapsulated message
-    my $newbody   = ref($body)->new
-      ( based_on => $body
-      , nested   => $newnested
-      );
+    my $newbody = ref($body)->new(based_on => $body, nested => $newnested);
+    my $rebuild = ref($part)->new(head => $part->head->clone
+      , container => undef);
 
-   my $rebuild    = ref($part)->new
-    ( head       => $part->head->clone
-    , container => undef
-    );
-
-   $rebuild->body($newbody);
-   $rebuild;
+    $rebuild->body($newbody);
+    $rebuild;
 }
 
 sub removeDeletedParts($@)
@@ -198,8 +190,8 @@ sub removeHtmlAlternativeToText($@)
     my $container = $part->container;
 
     return $part
-       unless defined $container
-           && $container->mimeType eq 'multipart/alternative';
+        unless defined $container
+            && $container->mimeType eq 'multipart/alternative';
 
     foreach my $subpart ($container->parts)
     {   return undef if $subpart->body->mimeType eq 'text/plain';

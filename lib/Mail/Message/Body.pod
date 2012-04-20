@@ -123,6 +123,7 @@ got, and then call L<encode()|Mail::Message::Body::Encode/"Constructing a body">
   based_on                            undef
   charset                             'PERL' or <undef>
   checked                             <false>
+  content_id                          undef
   data                                undef
   description                         undef
   disposition                         undef
@@ -160,6 +161,21 @@ L</Character encoding PERL>
 Whether the added information has been check not to contain illegal
 octets with respect to the transfer encoding and mime type.  If not
 checked, and then set as body for a message, it will be.
+
+=item content_id => STRING
+
+In multipart/related MIME content, the content_id is required to
+allow access to the related content via a cid:<...> descriptor of
+an inline disposition.
+
+A C<Content-ID> is supposed to be globally unique.  As such, it
+is common to append '@computer.domain' to the end of some unique
+string.  As other content in the multipart/related container also
+needs to know what this C<Content-ID> is, this should be left to
+the imagination of the person making the content (for now).
+
+As a MIME header field, the C<Content-ID> string is expected to
+be inside angle brackets
 
 =item data => ARRAY-OF-LINES | STRING
 
@@ -259,7 +275,8 @@ example:
     transfer_encoding => 'base64');
 
  my $body = Mail::Message::Body::Lines->new(file => 'picture.gif',
-    mime_type => 'image/gif');
+    mime_type => 'image/gif', content_id => '<12345@example.com>',
+    disposition => 'inline');
 
 =back
 
@@ -382,6 +399,17 @@ is part of the result of what the C<type> method returns.
 
 Returns whether the body encoding has been checked or not (optionally
 after setting the flag to a new value).
+
+=item $obj-E<gt>B<contentId>([STRING|FIELD])
+
+Returns (optionally after setting) the id (unique reference) of a
+message part.  The related header field is C<Content-ID>.
+A L<Mail::Message::Field|Mail::Message::Field> object is returned (which stringifies into
+the field content).  The field content will be C<none> if no disposition
+was specified.
+
+The argument can be a STRING (which is converted into a field), or a
+fully prepared header FIELD.
 
 =item $obj-E<gt>B<description>([STRING|FIELD])
 
@@ -888,12 +916,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.102,
-built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.103,
+built on April 20, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

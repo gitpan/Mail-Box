@@ -1,11 +1,11 @@
-# Copyrights 2001-2012 by Mark Overmeer.
+# Copyrights 2001-2012 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.00.
 
 package Mail::Box::POP3;
 use vars '$VERSION';
-$VERSION = '2.102';
+$VERSION = '2.103';
 
 use base 'Mail::Box::Net';
 

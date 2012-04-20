@@ -1,4 +1,4 @@
-# Copyrights 2001-2012 by Mark Overmeer.
+# Copyrights 2001-2012 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.00.
@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Body::Multipart;
 use vars '$VERSION';
-$VERSION = '2.102';
+$VERSION = '2.103';
 
 use base 'Mail::Message::Body';
 
@@ -52,9 +52,10 @@ sub init($)
             = defined $preamble ? $preamble : $based->preamble;
 
         $self->{MMBM_parts}
-            = @parts              ? \@parts
-            : $based->isMultipart ? [ $based->parts('ACTIVE') ]
-            : [];
+            = @parts ? \@parts
+            : !$args->{parts} && $based->isMultipart
+                     ? [ $based->parts('ACTIVE') ]
+            :          [];
 
         $self->{MMBM_epilogue}
             = defined $epilogue ? $epilogue : $based->epilogue;
@@ -265,7 +266,8 @@ sub read($$$$)
          );
 
         last unless $part->readFromParser($parser, $bodytype);
-        push @parts, $part;
+        push @parts, $part
+            if $part->head->names || $part->body->size;
     }
     $self->{MMBM_parts} = \@parts;
 

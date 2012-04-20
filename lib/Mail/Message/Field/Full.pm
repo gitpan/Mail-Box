@@ -1,4 +1,4 @@
-# Copyrights 2001-2012 by Mark Overmeer.
+# Copyrights 2001-2012 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.00.
@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Full;
 use vars '$VERSION';
-$VERSION = '2.102';
+$VERSION = '2.103';
 
 use base 'Mail::Message::Field';
 
@@ -44,7 +44,7 @@ BEGIN {
       for qw/list-help list-post list-subscribe list-unsubscribe
          list-archive list-owner/;
    $implementation{$_} = 'Structured'
-      for qw/content-disposition content-type/;
+      for qw/content-disposition content-type content-id/;
    $implementation{$_} = 'Date'
       for qw/date resent-date/;
 }
@@ -297,8 +297,8 @@ sub _decoder($$$)
 }
 
 sub decode($@)
-{   my $self    = shift;
-    my @encoded = split /(\=\?[^?\s]*\?[bqBQ]?\?[^?\s]*\?\=)/, shift;
+{   my $thing   = shift;
+    my @encoded = split /(\=\?[^?\s]*\?[bqBQ]?\?[^?]*\?\=)/, shift;
     @encoded or return '';
 
     my %args    = @_;
@@ -307,7 +307,7 @@ sub decode($@)
     my @decoded = shift @encoded;
 
     while(@encoded)
-    {   shift(@encoded) =~ /\=\?([^?\s]*)\?([^?\s]*)\?([^?\s]*)\?\=/;
+    {   shift(@encoded) =~ /\=\?([^?\s]*)\?([^?\s]*)\?([^?]*)\?\=/;
         push @decoded, _decoder $1, $2, $3;
 
         @encoded or last;
@@ -329,17 +329,18 @@ sub parse($) { shift }
 sub consumePhrase($)
 {   my ($thing, $string) = @_;
 
+    my $phrase;
     if($string =~ s/^\s*\" ((?:[^"\r\n\\]*|\\.)*) (?:\"|\s*$)//x )
-    {   (my $phrase = $1) =~ s/\\\"/"/g;
-        return ($phrase, $string);
+    {   ($phrase = $1) =~ s/\\\"/"/g;
     }
-
-    if($string =~ s/^\s*([${atext}${atext_ill}\ \t.]+)//o )
-    {   (my $phrase = $1) =~ s/\s+$//;
-        return CORE::length($phrase) ? ($phrase, $string) : (undef, $_[1]);
+    elsif($string =~ s/^\s*([${atext}${atext_ill}\ \t.]+)//o )
+    {   ($phrase = $1) =~ s/\s+$//;
+        CORE::length($phrase) or undef $phrase;
     }
-
-    (undef, $string);
+        
+      defined $phrase
+    ? ($thing->decode($phrase), $string)
+    : (undef, $string);
 }
 
 

@@ -515,11 +515,13 @@ or better:
 
 =item $obj-E<gt>B<subject>()
 
-Returns the message's subject, or the empty string.
+Returns the message's subject, or the empty string.  The subject may
+have encoded characters in it; use L<study()|Mail::Message/"The header"> to get rit of that.
 
 example: using subject() to get the message's subject
 
  print $msg->subject;
+ print $msg->study('subject');
 
 =item $obj-E<gt>B<timestamp>()
 
@@ -594,34 +596,7 @@ defined.  The parameters will be stripped off.
 =item $obj-E<gt>B<decoded>(OPTIONS)
 
 Decodes the body of this message, and returns it as a body object.
-If there was no encoding, the body object as read from file is passed
-on, however, some more work will be needed when a serious encoding
-is encountered.  The OPTIONS control how the conversion takes place.
-
- -Option     --Default
-  charset      PERL
-  result_type  <type of body>
-
-=over 2
-
-=item charset => CODESET|'PERL'
-
-Translate the bytes of the message into the CODESET.  When C<PERL> is
-given, the content will be translated into Perl strings.
-
-=item result_type => BODYTYPE
-
-Specifies which kind of body should be used for the final result, and
-eventual intermediate conversion stages.  It is not sure that this
-will be the type of the body returned.  BODYTYPE extends
-L<Mail::Message::Body|Mail::Message::Body>.
-
-=back
-
-example: 
-
- $message->decoded->print(\*OUT);
- $message->decoded->print;
+Short for C<<$msg->body->decoded>>  All OPTIONS are passed-on.
 
 =item $obj-E<gt>B<encode>(OPTIONS)
 
@@ -1291,12 +1266,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.102,
-built on January 04, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.103,
+built on April 20, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

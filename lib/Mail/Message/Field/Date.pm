@@ -1,4 +1,4 @@
-# Copyrights 2001-2012 by Mark Overmeer.
+# Copyrights 2001-2012 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.00.
@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Message::Field::Date;
 use vars '$VERSION';
-$VERSION = '2.102';
+$VERSION = '2.103';
 
 use base 'Mail::Message::Field::Structured';
 
@@ -33,15 +33,18 @@ sub parse($)
                   ( [0-1][0-9] | 2[0-3] ) \s*  # hour
                \: ( [0-5][0-9] ) \s*           # minute
            (?: \: ( [0-5][0-9] ) )? \s+        # second
-           ( [+-][0-9]{4} | [A-Z]+ )           # zone
+           ( [+-][0-9]{4} | [A-Z]+ )?          # zone
            \s* /x
        or return undef;
 
-    $dn =~ s/\s+//g if $dn;
-    $y += 2000 if $y < 50;
-    $y += 1900 if $y < 100;
+    defined $dn or $dn = '';
+    $dn  =~ s/\s+//g;
 
-    $z  =  $tz{$z} || '-0000'
+    $y  += 2000 if $y < 50;
+    $y  += 1900 if $y < 100;
+
+    $z ||= '-0000';
+    $z   =  $tz{$z} || '-0000'
         if $z =~ m/[A-Z]/;
 
     $self->{MMFD_date} = sprintf "%s%s%02d %s %04d %02d:%02d:%02d %s"

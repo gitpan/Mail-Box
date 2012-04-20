@@ -1,4 +1,4 @@
-# Copyrights 2001-2012 by Mark Overmeer.
+# Copyrights 2001-2012 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.00.
@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box::Maildir::Message;
 use vars '$VERSION';
-$VERSION = '2.102';
+$VERSION = '2.103';
 
 use base 'Mail::Box::Dir::Message';
 
@@ -96,7 +96,7 @@ sub labelsToFilename()
     }
 
     my $flags = $newset ne 'new' || $newflags ne '' ? ":2,$newflags"          
-              : length $oldflags ? ':2,' : '';                                
+              : $oldflags ? ':2,' : '';                                
     my $new   = File::Spec->catfile($folderdir, $newset, $oldname.$flags);
 
     if($new ne $old)
