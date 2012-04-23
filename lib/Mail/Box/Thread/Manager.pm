@@ -6,7 +6,7 @@
 use strict;
 package Mail::Box::Thread::Manager;
 use vars '$VERSION';
-$VERSION = '2.103';
+$VERSION = '2.104';
 
 use base 'Mail::Reporter';
 

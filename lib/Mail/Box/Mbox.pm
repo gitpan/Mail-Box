@@ -5,7 +5,7 @@
 
 package Mail::Box::Mbox;
 use vars '$VERSION';
-$VERSION = '2.103';
+$VERSION = '2.104';
 
 use base 'Mail::Box::File';
 

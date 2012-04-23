@@ -1,0 +1,60 @@
+{
+   "abstract" : "E-mail handling",
+   "author" : [
+      "Mark Overmeer"
+   ],
+   "dynamic_config" : 1,
+   "generated_by" : "ExtUtils::MakeMaker version 6.6302, CPAN::Meta::Converter version 2.120921",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Mail-Box",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Date::Format" : "0",
+            "Date::Parse" : "0",
+            "Digest::HMAC_MD5" : "0",
+            "Encode" : "2.26",
+            "Errno" : "0",
+            "File::Remove" : "0.20",
+            "File::Spec" : "0.7",
+            "IO::Scalar" : "0",
+            "MIME::Base64" : "0",
+            "MIME::Types" : "1.004",
+            "Mail::Address" : "0",
+            "Object::Realize::Later" : "0.14",
+            "Scalar::Util" : "1.13",
+            "Sys::Hostname" : "0",
+            "TAP::Harness" : "3.00",
+            "Test::More" : "0.47",
+            "Test::Pod" : "1.00",
+            "Time::Zone" : "0",
+            "URI" : "1.23",
+            "User::Identity" : "0.93"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "version" : "2.104"
+}

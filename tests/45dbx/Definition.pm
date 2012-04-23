@@ -5,7 +5,7 @@
 
 package MailBox::Test::45dbx::Definition;
 use vars '$VERSION';
-$VERSION = '2.103';
+$VERSION = '2.104';
 
 
 sub name     {"Mail::Box::Dbx; Outlook Express folders"}
