@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.104';
+$VERSION = '2.105';
 
 use base 'Mail::Reporter';
 
@@ -162,11 +162,7 @@ sub clone() {shift->notImplemented}
 
 sub decoded(@)
 {   my $self = shift;
-    $self->encode
-     ( charset           => 'PERL'
-     , transfer_encoding => 'none'
-     , @_
-     );
+    $self->encode(charset => 'PERL', transfer_encoding => 'none', @_);
 }
 
 
@@ -197,11 +193,7 @@ sub eol(;$)
         }
     }
 
-    (ref $self)->new
-      ( based_on => $self
-      , eol      => $eol
-      , data     => $lines
-      );
+    (ref $self)->new(based_on => $self, eol => $eol, data => $lines);
 }
 
 #------------------------------------------

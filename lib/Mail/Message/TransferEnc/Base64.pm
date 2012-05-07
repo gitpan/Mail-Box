@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Message::TransferEnc::Base64;
 use vars '$VERSION';
-$VERSION = '2.104';
+$VERSION = '2.105';
 
 use base 'Mail::Message::TransferEnc';
 

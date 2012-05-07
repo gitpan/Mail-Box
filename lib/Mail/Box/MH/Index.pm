@@ -5,7 +5,7 @@
 
 package Mail::Box::MH::Index;
 use vars '$VERSION';
-$VERSION = '2.104';
+$VERSION = '2.105';
 
 use base 'Mail::Reporter';
 

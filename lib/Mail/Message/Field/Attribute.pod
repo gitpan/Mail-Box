@@ -31,6 +31,21 @@ becomes more and more in demand.
 A C<Mail::Message::Field::Attribute> can be found in any structured
 L<Mail::Message::Field::Full|Mail::Message::Field::Full> header field.
 
+=head1 OVERLOADED
+
+=over 4
+
+=item overload: B<comparison>()
+
+When the second argument is a field, then both attribute name (case-sensitive)
+and the decoded value must be the same.  Otherwise, the value is compared.
+
+=item overload: B<stringification>()
+
+Returns the decoded content of the attribute.
+
+=back
+
 =head1 METHODS
 
 =head2 Constructors
@@ -240,9 +255,9 @@ returned and may be utf-8 encoded or a plain string.
 
 =item $obj-E<gt>B<mergeComponent>(ATTRIBUTE)
 
-Merge the components from the specified attribute in this attribute.  This is
-needed when components of the same attribute are created separately.  Merging
-is required by the field parsing.
+Merge the components from the specified attribute into this attribute.  This
+is needed when components of the same attribute are created separately.
+Merging is required by the field parsing.
 
 =back
 
@@ -270,8 +285,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.104,
-built on April 23, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.105,
+built on May 07, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -259,8 +259,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.104,
-built on April 23, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.105,
+built on May 07, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

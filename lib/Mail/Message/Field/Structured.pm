@@ -7,11 +7,12 @@ use warnings;
 
 package Mail::Message::Field::Structured;
 use vars '$VERSION';
-$VERSION = '2.104';
+$VERSION = '2.105';
 
 use base 'Mail::Message::Field::Full';
 
 use Mail::Message::Field::Attribute;
+use Storable 'dclone';
 
 
 sub init($)
@@ -49,19 +50,15 @@ sub attribute($;$)
     }
 
     delete $self->{MMFF_body};
-    if(my $old =  $self->{MMFS_attrs}{$name})
-    {   $old->mergeComponent($attr);
-        return $old;
-    }
-    else
-    {   $self->{MMFS_attrs}{$name} = $attr;
-        return $attr;
-    }
+    $self->{MMFS_attrs}{$name} = $attr;
 }
 
 
 sub attributes() { values %{shift->{MMFS_attrs}} }
 sub beautify() { delete shift->{MMFF_body} }
+
+
+sub attrPairs() { map { $_->name, $_->value } shift->attributes }
 
 #-------------------------
 

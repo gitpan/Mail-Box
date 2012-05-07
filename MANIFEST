@@ -314,6 +314,7 @@ tests/30encode/10base64.t
 tests/30encode/20eight.t
 tests/30encode/30quoted.t
 tests/30encode/40seven.t
+tests/30encode/50charset.t
 tests/30encode/90body.t
 tests/30encode/Definition.pm
 tests/31fgroups/10resent.t

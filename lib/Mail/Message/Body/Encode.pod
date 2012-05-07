@@ -83,7 +83,7 @@ conversions.
 If the CODESET is explicitly specified (for instance C<iso-8859-10>, then
 the data is interpreted as raw bytes (blob), not as text.  However, in
 case of C<PERL>, it is considered to be an internal representation of
-characters (either latin1 or utf8 (not the same as utf-8), you should
+characters (either latin1 or Perl's utf8 --not the same as utf-8--, you should
 not know).
 
 =item mime_type => STRING|FIELD
@@ -201,8 +201,8 @@ unknown.  The decoded data is returned.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.104,
-built on April 23, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.105,
+built on May 07, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

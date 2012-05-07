@@ -5,7 +5,7 @@
 
 package MailBox::Test::20pparser::Definition;
 use vars '$VERSION';
-$VERSION = '2.104';
+$VERSION = '2.105';
 
 
 sub name     {"Mail::Box::Parser::Perl; parser in pure perl"}

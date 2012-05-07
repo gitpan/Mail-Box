@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Server::IMAP4::Fetch;
 use vars '$VERSION';
-$VERSION = '2.104';
+$VERSION = '2.105';
 
 
 use Date::Parse;
@@ -20,12 +20,11 @@ sub new($)
 
     my $head  = $part->head;
     my $body  = $part->body;
-    
-    my $type  = $body->type;
+    my $type  = $body->type->study;
 
     my $self  = bless
       { type        => $type->body
-      , typeattr    => [ $type->attributes ]
+      , typeattr    => [ $type->attrPairs ]
       , charset     => $body->charset
       , bodylines   => $body->nrLines
       , bodysize    => $body->size
