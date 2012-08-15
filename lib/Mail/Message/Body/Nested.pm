@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Body::Nested;
 use vars '$VERSION';
-$VERSION = '2.105';
+$VERSION = '2.106';
 
 use base 'Mail::Message::Body';
 
@@ -71,6 +71,11 @@ sub file()
 sub print(;$)
 {   my $self = shift;
     $self->nested->print(shift || select);
+}
+
+sub partNumberOf($)
+{   my ($self, $part) = @_;
+    $self->message->partNumber;
 }
 
 

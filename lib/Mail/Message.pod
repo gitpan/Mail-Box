@@ -307,6 +307,16 @@ the case for L<Mail::Message::Part|Mail::Message::Part> extensions of C<Mail::Me
 Retrieve the message's id.  Every message has a unique message-id.  This id
 is used mainly for recognizing discussion threads.
 
+=item $obj-E<gt>B<partNumber>()
+
+Returns a string representing the location of this part.  In case the
+top message is a single message, 'undef' is returned.  When it is a
+multipart, '1' upto the number of multiparts is returned.  A multi-level
+nested part may for instance return '2.5.1'.
+
+Usually, this string is very short.  Numbering follows the IMAP4 design,
+see RFC2060 secion 6.4.5.
+
 =item $obj-E<gt>B<print>([FILEHANDLE])
 
 Print the message to the FILE-HANDLE, which defaults to the selected
@@ -1266,8 +1276,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.105,
-built on May 07, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.106,
+built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

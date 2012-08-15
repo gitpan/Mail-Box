@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Body::Multipart;
 use vars '$VERSION';
-$VERSION = '2.105';
+$VERSION = '2.106';
 
 use base 'Mail::Message::Body';
 
@@ -392,6 +392,23 @@ sub parts(;$)
 
 
 sub part($) { shift->{MMBM_parts}[shift] }
+
+sub partNumberOf($)
+{   my ($self, $part) = @_;
+    my @parts = $self->parts('ACTIVE');
+    my $msg   = $self->message;
+    unless($msg)
+    {   $self->log(ERROR => 'multipart is not connected');
+        return 'ERROR';
+    }
+    my $base  = $msg->isa('Mail::Message::Part') ? $msg->partNumber.'.' : '';
+    foreach my $partnr (0..@parts)
+    {   return $base.($partnr+1)
+            if $parts[$partnr] == $part;
+    }
+    $self->log(ERROR => 'multipart is not found or not active');
+    'ERROR';
+}
 
 
 sub boundary(;$)

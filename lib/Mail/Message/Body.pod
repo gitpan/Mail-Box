@@ -380,9 +380,14 @@ the C<Mail::Message::Body::Nested> body type.
 
 =item $obj-E<gt>B<message>([MESSAGE])
 
-Returns the message where this body belongs to, optionally setting it
-to a new MESSAGE first.  If C<undef> is passed, the body will be
-disconnected from the message.
+Returns the message (or message part) where this body belongs to,
+optionally setting it to a new MESSAGE first.  If C<undef> is passed,
+the body will be disconnected from the message.
+
+=item $obj-E<gt>B<partNumberOf>(PART)
+
+Returns a string for multiparts and nested, otherwise an error.  It is
+used in L<Mail::Message::partNumber()|Mail::Message/"The message">.
 
 =back
 
@@ -916,8 +921,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.105,
-built on May 07, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.106,
+built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.105';
+$VERSION = '2.106';
 
 use base 'Mail::Reporter';
 
@@ -112,6 +112,13 @@ sub container() { undef } # overridden by Mail::Message::Part
 
 
 sub isPart() { 0 } # overridden by Mail::Message::Part
+
+
+sub partNumber()
+{   my $self = shift;
+    my $cont = $self->container;
+    $cont ? $cont->partNumber : undef;
+}
 
 
 sub toplevel() { shift } # overridden by Mail::Message::Part

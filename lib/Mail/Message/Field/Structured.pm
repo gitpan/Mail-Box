@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Structured;
 use vars '$VERSION';
-$VERSION = '2.105';
+$VERSION = '2.106';
 
 use base 'Mail::Message::Field::Full';
 
@@ -65,6 +65,7 @@ sub attrPairs() { map { $_->name, $_->value } shift->attributes }
 
 sub parse($)
 {   my ($self, $string) = @_;
+    chomp $string;
     my $datum = '';
     while(length $string && substr($string, 0, 1) ne ';')
     {   (undef, $string)  = $self->consumeComment($string);

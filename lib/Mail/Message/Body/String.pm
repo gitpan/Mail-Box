@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Body::String;
 use vars '$VERSION';
-$VERSION = '2.105';
+$VERSION = '2.106';
 
 use base 'Mail::Message::Body';
 

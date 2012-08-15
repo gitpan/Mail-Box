@@ -5,7 +5,7 @@
 use strict;
 package Tools;
 use vars '$VERSION';
-$VERSION = '2.105';
+$VERSION = '2.106';
 
 
 use lib qw(lib ../lib);

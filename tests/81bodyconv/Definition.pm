@@ -5,7 +5,7 @@
 
 package MailBox::Test::81bodyconv::Definition;
 use vars '$VERSION';
-$VERSION = '2.105';
+$VERSION = '2.106';
 
 
 sub name     {"Mail::Message::Convert; body type conversions"}

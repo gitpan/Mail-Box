@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Addresses;
 use vars '$VERSION';
-$VERSION = '2.105';
+$VERSION = '2.106';
 
 use base 'Mail::Message::Field::Structured';
 
@@ -156,7 +156,7 @@ sub parse($)
             $angle =~ s/^\@.*?\://;
 
             ($email, $angle) = $self->consumeAddress($angle
-                , phrase => $phrase, comment => $comment);
+              , phrase => $phrase, comment => $comment);
         }
 
         $self->addAddress($email, group => $group) if defined $email;
@@ -197,8 +197,8 @@ sub consumeAddress($@)
     return (undef, $string) unless defined $domain;
 
     # loccomment and domcomment ignored
-    my $email   = Mail::Message::Field::Address->new
-     ( username => $local, domain => $domain, @options);
+    my $email   = Mail::Message::Field::Address
+        ->new(username => $local, domain => $domain, @options);
 
     ($email, $shorter);
 }

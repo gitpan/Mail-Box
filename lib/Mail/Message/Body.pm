@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.105';
+$VERSION = '2.106';
 
 use base 'Mail::Reporter';
 
@@ -67,15 +67,15 @@ sub init($)
     if(defined(my $file = $args->{file}))
     {
         if(!ref $file)
-        {    $self->_data_from_filename($file) or return;
-             $filename = $file;
+        {   $self->_data_from_filename($file) or return;
+            $filename = $file;
         }
         elsif(ref $file eq 'GLOB')
-        {    $self->_data_from_glob($file) or return }
+        {   $self->_data_from_glob($file) or return }
         elsif($file->isa('IO::Handle'))
-        {    $self->_data_from_filehandle($file) or return }
+        {   $self->_data_from_filehandle($file) or return }
         else
-        {    croak "message body: illegal datatype `".ref($file)."' for file option" }
+        {   croak "message body: illegal datatype `".ref($file)."' for file option" }
     }
     elsif(defined(my $data = $args->{data}))
     {
@@ -217,6 +217,12 @@ sub isMultipart() {0}
 
 sub isNested() {0}
 
+
+sub partNumberOf($)
+{   shift->log(ERROR => 'part number needs multi-part or nested');
+    'ERROR';
+}
+
 #------------------------------------------
 
 
@@ -227,12 +233,9 @@ sub type(;$)
     delete $self->{MMB_mime};
     my $type = defined $_[0] ? shift : 'text/plain';
 
-    $self->{MMB_type}
-      = ref $type ? $type->clone
+    $self->{MMB_type} = ref $type ? $type->clone
       : Mail::Message::Field->new('Content-Type' => $type);
 }
-
-#------------------------------------------
 
 
 sub mimeType()

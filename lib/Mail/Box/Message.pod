@@ -281,6 +281,10 @@ is equivalent to
  my $t = $msg->copyTo($trash, share => 1);
  $msg->delete;
 
+=item $obj-E<gt>B<partNumber>()
+
+See L<Mail::Message/"The message">
+
 =item $obj-E<gt>B<print>([FILEHANDLE])
 
 See L<Mail::Message/"The message">
@@ -676,8 +680,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.105,
-built on May 07, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.106,
+built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

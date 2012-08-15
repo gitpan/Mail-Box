@@ -31,7 +31,7 @@ form.
 
 See L<Mail::Message::Field/"OVERLOADED">
 
-=item overload: B<+0>()
+=item overload: B<0+>()
 
 See L<Mail::Message::Field/"OVERLOADED">
 
@@ -468,8 +468,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.105,
-built on May 07, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.106,
+built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

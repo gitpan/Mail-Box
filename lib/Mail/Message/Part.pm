@@ -7,12 +7,11 @@ use warnings;
 
 package Mail::Message::Part;
 use vars '$VERSION';
-$VERSION = '2.105';
+$VERSION = '2.106';
 
 use base 'Mail::Message';
 
 use Scalar::Util    'weaken';
-
 use Carp;
 
 
@@ -87,6 +86,12 @@ sub toplevel()
 }
 
 sub isPart() { 1 }
+
+sub partNumber()
+{   my $self = shift;
+    my $body = $self->container or confess 'no container';
+    $body->partNumberOf($self);
+}
 
 sub readFromParser($;$)
 {   my ($self, $parser, $bodytype) = @_;

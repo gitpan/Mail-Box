@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::AddrGroup;
 use vars '$VERSION';
-$VERSION = '2.105';
+$VERSION = '2.106';
 
 use base 'User::Identity::Collection::Emails';
 
@@ -64,8 +64,6 @@ sub addAddress(@)
     $self->addRole($addr);
     $addr;
 }
-
-#------------------------------------------
 
 
 # roles are stored in a hash, so produce

@@ -198,6 +198,10 @@ See L<Mail::Message::Body/"The body">
 
 See L<Mail::Message::Body/"The body">
 
+=item $obj-E<gt>B<partNumberOf>(PART)
+
+See L<Mail::Message::Body/"The body">
+
 =back
 
 =head2 About the payload
@@ -467,8 +471,8 @@ clearly not acceptible.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.105,
-built on May 07, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.106,
+built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

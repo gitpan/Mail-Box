@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field;
 use vars '$VERSION';
-$VERSION = '2.105';
+$VERSION = '2.106';
 
 use base 'Mail::Reporter';
 
@@ -22,10 +22,10 @@ my $default_wrap_length = 78;
 
 use overload
     qq("") => sub { $_[0]->unfoldedBody }
- , '+0'   => sub { $_[0]->toInt || 0 }
- , bool   => sub {1}
- , cmp    => sub { $_[0]->unfoldedBody cmp "$_[1]" }
- , '<=>'  => sub { $_[2] ? $_[1] <=> $_[0]->toInt : $_[0]->toInt <=> $_[1] }
+ , '0+'    => sub { $_[0]->toInt || 0 }
+ , bool    => sub {1}
+ , cmp     => sub { $_[0]->unfoldedBody cmp "$_[1]" }
+ , '<=>'   => sub { $_[2] ? $_[1] <=> $_[0]->toInt : $_[0]->toInt <=> $_[1] }
  , fallback => 1;
 
 #------------------------------------------
@@ -142,12 +142,8 @@ sub body()
 
 sub foldedBody { shift->notImplemented }
 
-#------------------------------------------
-
 
 sub unfoldedBody { shift->notImplemented }
-
-#------------------------------------------
 
 
 sub stripCFWS($)
@@ -203,11 +199,7 @@ sub comment(;$)
     $body =~ s/.*?\;\s*// ? $body : '';
 }
 
-#------------------------------------------
-
 sub content() { shift->unfoldedBody }  # Compatibility
-
-#------------------------------------------
 
 
 sub attribute($;$)

@@ -64,7 +64,7 @@ example:
  my $subject = $msg->get('subject') || 'your mail';
  print "Re: $subject\n";
 
-=item overload: B<+0>()
+=item overload: B<0+>()
 
 (numification) When the field is numeric, the value will be returned.
 The result is produced by L<toInt()|Mail::Message::Field/"Access to the content">.  If the value is not correct,
@@ -800,8 +800,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.105,
-built on May 07, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.106,
+built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
