@@ -33,15 +33,15 @@ safer, so that version is preferred.
 You may also pass all OPTIONS understood by the initiated lockers
 used by the multi locker.
 
- -Option --Defined in     --Default
+ -Option --Defined in       --Default
   expires  Mail::Box::Locker  1 hour
   file     Mail::Box::Locker  undef
   folder   Mail::Box::Locker  <undef>
-  log      Mail::Reporter   'WARNINGS'
+  log      Mail::Reporter     'WARNINGS'
   method   Mail::Box::Locker  'MULTI'
   timeout  Mail::Box::Locker  10 seconds
-  trace    Mail::Reporter   'WARNINGS'
-  use                       <all possible>
+  trace    Mail::Reporter     'WARNINGS'
+  use                         <all possible>
 
 =over 2
 
@@ -211,8 +211,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

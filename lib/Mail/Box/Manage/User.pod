@@ -41,20 +41,20 @@ folder files.
 Use L<new(default_folder_type)|Mail::Box::Manager/"METHODS"> to explicitly state which kind of folders
 you use.
 
- -Option             --Defined in     --Default
+ -Option             --Defined in        --Default
   autodetect           Mail::Box::Manager  undef
-  collection_type                       Mail::Box::Collection
+  collection_type                          Mail::Box::Collection
   default_folder_type  Mail::Box::Manager  'mbox'
-  delimiter                             "/"
-  folder_id_type                        Mail::Box::Identity
+  delimiter                                "/"
+  folder_id_type                           Mail::Box::Identity
   folder_types         Mail::Box::Manager  <all standard types>
   folderdir            Mail::Box::Manager  [ '.' ]
   folderdirs           Mail::Box::Manager  <synonym for C<folderdir>>
-  identity                              <required>
-  inbox                                 undef
-  log                  Mail::Reporter   'WARNINGS'
-  topfolder_name                        '='
-  trace                Mail::Reporter   'WARNINGS'
+  identity                                 <required>
+  inbox                                    undef
+  log                  Mail::Reporter      'WARNINGS'
+  topfolder_name                           '='
+  trace                Mail::Reporter      'WARNINGS'
 
 =over 2
 
@@ -474,8 +474,8 @@ only useful for folders which have write or append access modes
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

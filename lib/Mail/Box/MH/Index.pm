@@ -5,7 +5,7 @@
 
 package Mail::Box::MH::Index;
 use vars '$VERSION';
-$VERSION = '2.106';
+$VERSION = '2.107';
 
 use base 'Mail::Reporter';
 
@@ -52,7 +52,7 @@ sub write(@)
     }
 
     local *INDEX;
-    open INDEX, '>', $index
+    open INDEX, '>:raw', $index
         or return $self;
 
     my $fieldtype = 'Mail::Message::Field';
@@ -85,7 +85,7 @@ sub append(@)
     my $index     = $self->filename or return $self;
 
     local *INDEX;
-    open INDEX, '>>', $index
+    open INDEX, '>>:raw', $index
         or return $self;
 
     my $fieldtype = 'Mail::Message::Field';

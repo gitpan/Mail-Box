@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Message::Body;
 use vars '$VERSION';
-$VERSION = '2.106';
+$VERSION = '2.107';
 
 use base 'Mail::Reporter';
 
@@ -255,7 +255,7 @@ sub dispositionFilename(;$)
         my $unique;
         for($unique = 'part-0'; 1; $unique++)
         {   my $out = File::Spec->catfile($dir, "$unique.$ext");
-            open IN, "<", $out or last;  # does not exist: can use it
+            open IN, '<', $out or last;  # does not exist: can use it
             close IN;
         }
         $filename = "$unique.$ext";

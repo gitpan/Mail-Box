@@ -41,20 +41,20 @@ Nearly all methods can return undef.
 
 =item Mail::Box::Identity-E<gt>B<new>([NAME], OPTIONS)
 
- -Option     --Defined in     --Default
-  deleted                       <false>
+ -Option     --Defined in          --Default
+  deleted                            <false>
   description  User::Identity::Item  undef
-  folder_type                   from parent
-  inferiors                     1
-  location                      undef
-  log          Mail::Reporter   'WARNINGS'
-  manager                       <from parent>
-  marked                        undef
+  folder_type                        from parent
+  inferiors                          1
+  location                           undef
+  log          Mail::Reporter        'WARNINGS'
+  manager                            <from parent>
+  marked                             undef
   name         User::Identity::Item  <required>
-  only_subs                     <foldertype and name dependent>
+  only_subs                          <foldertype and name dependent>
   parent       User::Identity::Item  undef
-  subf_type                     <same as parent>
-  trace        Mail::Reporter   'WARNINGS'
+  subf_type                          <same as parent>
+  trace        Mail::Reporter        'WARNINGS'
 
 =over 2
 
@@ -408,8 +408,8 @@ you have to look for a method of that object.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

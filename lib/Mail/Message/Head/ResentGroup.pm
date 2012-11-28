@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Message::Head::ResentGroup;
 use vars '$VERSION';
-$VERSION = '2.106';
+$VERSION = '2.107';
 
 use base 'Mail::Message::Head::FieldGroup';
 
@@ -39,8 +39,6 @@ sub init($$)
 
     $self;
 }
-
-#------------------------------------------
 
 
 sub from($@)
@@ -84,15 +82,11 @@ sub messageHead(;$)
     @_ ? $self->{MMHR_real} = shift : $self->{MMHR_real};
 }
 
-#------------------------------------------
-
 
 sub orderedFields()
 {   my $head = shift->head;
     map { $head->get($_) || () } @ordered_field_names;
 }
-
-#------------------------------------------
 
 
 sub set($;$)
@@ -110,15 +104,8 @@ sub set($;$)
     $field;
 }
 
-#-------------------------------------------
-
-sub fields() { shift->orderedFields }
-
-#-------------------------------------------
-
+sub fields()     { shift->orderedFields }
 sub fieldNames() { map { $_->Name } shift->orderedFields }
-
-#-------------------------------------------
 
 sub delete()
 {   my $self   = shift;
@@ -127,12 +114,8 @@ sub delete()
     $self;
 }
 
-#------------------------------------------
-
 
 sub add(@) { shift->set(@_) }
-
-#-------------------------------------------
 
 
 sub addFields(@) { shift->notImplemented }
@@ -142,17 +125,11 @@ sub addFields(@) { shift->notImplemented }
 
 sub returnPath() { shift->{MMHR_return_path} }
 
-#------------------------------------------
-
 
 sub deliveredTo() { shift->head->get('Delivered-To') }
 
-#------------------------------------------
-
 
 sub received() { shift->head->get('Received') }
-
-#------------------------------------------
 
 
 sub receivedTimestamp()
@@ -161,12 +138,8 @@ sub receivedTimestamp()
     Mail::Message::Field->dateToTimestamp($comment);
 }
 
-#------------------------------------------
-
 
 sub date($) { shift->head->get('resent-date') }
-
-#------------------------------------------
 
 
 sub dateTimestamp()
@@ -174,15 +147,11 @@ sub dateTimestamp()
     Mail::Message::Field->dateToTimestamp($date->unfoldedBody);
 }
 
-#------------------------------------------
-
 
 sub resentFrom()
 {   my $from = shift->head->get('resent-from') or return ();
     wantarray ? $from->addresses : $from;
 }
-
-#------------------------------------------
 
 
 sub sender()
@@ -190,15 +159,11 @@ sub sender()
     wantarray ? $sender->addresses : $sender;
 }
 
-#------------------------------------------
-
 
 sub to()
 {   my $to = shift->head->get('resent-to') or return ();
     wantarray ? $to->addresses : $to;
 }
-
-#------------------------------------------
 
 
 sub cc()
@@ -206,15 +171,11 @@ sub cc()
     wantarray ? $cc->addresses : $cc;
 }
 
-#------------------------------------------
-
 
 sub bcc()
 {   my $bcc = shift->head->get('resent-bcc') or return ();
     wantarray ? $bcc->addresses : $bcc;
 }
-
-#------------------------------------------
 
 
 sub destinations()
@@ -222,12 +183,8 @@ sub destinations()
     ($self->to, $self->cc, $self->bcc);
 }
 
-#------------------------------------------
-
 
 sub messageId() { shift->head->get('resent-message-id') }
-
-#------------------------------------------
 
 
 sub isResentGroupFieldName($) { $resent_field_names{lc $_[1]} }

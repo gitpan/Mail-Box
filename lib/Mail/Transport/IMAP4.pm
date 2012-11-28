@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.106';
+$VERSION = '2.107';
 
 use base 'Mail::Transport::Receive';
 
@@ -464,12 +464,16 @@ sub fetch($@)
 
 
 sub appendMessage($$)
-{   my ($self, $message, $foldername) = @_;
-    my $imap   = $self->imapClient or return ();
+{   my ($self, $message, $foldername, $date) = @_;
+    my $imap = $self->imapClient or return ();
+
+    $date    = $imap->Rfc_822($date)
+        if $date && $date !~ m/\D/;
 
     $imap->append_string
      ( $foldername, $message->string
      , $self->labelsToFlags($message->labels)
+     , $date
      );
 }
 

@@ -91,15 +91,15 @@ See L<Mail::Message::Field::Full/"Constructors">
 
 =item Mail::Message::Field::Addresses-E<gt>B<new>()
 
- -Option    --Defined in     --Default
+ -Option    --Defined in                      --Default
   attributes  Mail::Message::Field::Structured  <ignored>
-  charset     Mail::Message::Field::Full  undef
+  charset     Mail::Message::Field::Full        undef
   datum       Mail::Message::Field::Structured  undef
-  encoding    Mail::Message::Field::Full  'q'
-  force       Mail::Message::Field::Full  false
-  language    Mail::Message::Field::Full  undef
-  log         Mail::Reporter   'WARNINGS'
-  trace       Mail::Reporter   'WARNINGS'
+  encoding    Mail::Message::Field::Full        'q'
+  force       Mail::Message::Field::Full        false
+  language    Mail::Message::Field::Full        undef
+  log         Mail::Reporter                    'WARNINGS'
+  trace       Mail::Reporter                    'WARNINGS'
 
 =over 2
 
@@ -545,8 +545,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

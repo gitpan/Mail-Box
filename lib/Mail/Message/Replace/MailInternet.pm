@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Message::Replace::MailInternet;
 use vars '$VERSION';
-$VERSION = '2.106';
+$VERSION = '2.107';
 
 use base 'Mail::Message';
 
@@ -153,7 +153,7 @@ sub reply(@)
     my $home       = $ENV{HOME} || File::Spec->curdir;
     my $headtemp   = File::Spec->catfile($home, '.mailhdr');
 
-    if(open HEAD, '<', $headtemp)
+    if(open HEAD, '<:raw', $headtemp)
     {    my $parser = Mail::Box::Parser::Perl->new
            ( filename  => $headtemp
            , file      => \*HEAD

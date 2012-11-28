@@ -246,8 +246,8 @@ cannot add objects of a different $type.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Server::IMAP4::Fetch;
 use vars '$VERSION';
-$VERSION = '2.106';
+$VERSION = '2.107';
 
 
 use Date::Parse;
@@ -229,7 +229,7 @@ sub printStructure(;$$)
     my $number  = @_ ? shift : '';
 
     my $buffer;   # only filled if filehandle==undef
-    open $fh, '>', \$buffer unless defined $fh;
+    open $fh, '>:raw', \$buffer unless defined $fh;
 
     my $type    = $self->{type};
     my $subject = $self->{subject} || '';

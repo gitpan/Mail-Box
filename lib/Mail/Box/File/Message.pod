@@ -37,22 +37,22 @@ See L<Mail::Message/"Constructors">
 
 Messages in file-based folders use the following options for creation:
 
- -Option    --Defined in     --Default
-  body        Mail::Message    undef
+ -Option    --Defined in        --Default
+  body        Mail::Message       undef
   body_type   Mail::Box::Message  <from folder>
-  deleted     Mail::Message    <false>
-  field_type  Mail::Message    undef
+  deleted     Mail::Message       <false>
+  field_type  Mail::Message       undef
   folder      Mail::Box::Message  <required>
-  from_line                    undef
-  head        Mail::Message    undef
-  head_type   Mail::Message    Mail::Message::Head::Complete
-  labels      Mail::Message    {}
-  log         Mail::Reporter   'WARNINGS'
-  messageId   Mail::Message    undef
-  modified    Mail::Message    <false>
+  from_line                       undef
+  head        Mail::Message       undef
+  head_type   Mail::Message       Mail::Message::Head::Complete
+  labels      Mail::Message       {}
+  log         Mail::Reporter      'WARNINGS'
+  messageId   Mail::Message       undef
+  modified    Mail::Message       <false>
   size        Mail::Box::Message  undef
-  trace       Mail::Reporter   'WARNINGS'
-  trusted     Mail::Message    <false>
+  trace       Mail::Reporter      'WARNINGS'
+  trusted     Mail::Message       <false>
 
 =over 2
 
@@ -627,8 +627,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

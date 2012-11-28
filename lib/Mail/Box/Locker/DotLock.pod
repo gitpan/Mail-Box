@@ -28,15 +28,15 @@ same name as the folder, extended by C<.lock>.
 Name of the file to lock.  By default, the folder's name is extended
 with C<.lock>.
 
- -Option      --Defined in     --Default
-  dotlock_file                   <undef>
+ -Option      --Defined in       --Default
+  dotlock_file                     <undef>
   expires       Mail::Box::Locker  1 hour
   file          Mail::Box::Locker  <folderfile>.lock
   folder        Mail::Box::Locker  <undef>
-  log           Mail::Reporter   'WARNINGS'
+  log           Mail::Reporter     'WARNINGS'
   method        Mail::Box::Locker  'DOTLOCK'
   timeout       Mail::Box::Locker  10 seconds
-  trace         Mail::Reporter   'WARNINGS'
+  trace         Mail::Reporter     'WARNINGS'
 
 =over 2
 
@@ -197,8 +197,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -71,7 +71,7 @@ See L<Mail::Box/"OVERLOADED">
   locker             Mail::Box        undef
   log                Mail::Reporter   'WARNINGS'
   manager            Mail::Box        undef
-  message_type       Mail::Box        Mail::Box::Message
+  message_type       Mail::Box        <folder-class>::Message
   multipart_type     Mail::Box        Mail::Message::Body::Multipart
   remove_when_empty  Mail::Box        <true>
   save_on_exit       Mail::Box        <true>
@@ -625,8 +625,8 @@ were changes made.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

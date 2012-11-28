@@ -5,7 +5,7 @@
 
 package Mail::Box::POP3s;
 use vars '$VERSION';
-$VERSION = '2.106';
+$VERSION = '2.107';
 
 use base 'Mail::Box::POP3';
 
@@ -16,6 +16,7 @@ use warnings;
 sub init($)
 {   my ($self, $args) = @_;
     $args->{server_port} ||= 995;
+    $args->{message_type} = 'Mail::Box::POP3::Message';
     $self->SUPER::init($args);
     $self;
 }

@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box::Dir::Message;
 use vars '$VERSION';
-$VERSION = '2.106';
+$VERSION = '2.107';
 
 use base 'Mail::Box::Message';
 
@@ -41,7 +41,7 @@ sub print(;$)
 
     my $filename = $self->filename;
     if($filename && -r $filename)
-    {   if(open my $in, '<', $filename)
+    {   if(open my $in, '<:raw', $filename)
         {    local $_;
              print $out $_ while <$in>;
              close $in;

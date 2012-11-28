@@ -210,7 +210,7 @@ object method, L<Mail::Message::read()|Mail::Message::Construct::Read/"Construct
 As class method, the Mail::Internet compatible read is called.  OPTIONS are
 only available in the first case.
 
- -Option             --Defined in     --Default
+ -Option             --Defined in                    --Default
   body_type            Mail::Message::Construct::Read  undef
   strip_status_fields  Mail::Message::Construct::Read  <true>
 
@@ -240,20 +240,20 @@ BE WARNED: the main job for creating a reply is done by
 L<Mail::Message::reply()|Mail::Message::Construct::Reply/"Constructing a message">, which may produce a result which is compatible,
 but may be different from L<Mail::Internet>'s version.
 
- -Option         --Defined in     --Default
+ -Option         --Defined in                     --Default
   Bcc              Mail::Message::Construct::Reply  undef
   Cc               Mail::Message::Construct::Reply  <'cc' in current>
-  Exclude                           []
+  Exclude                                           []
   From             Mail::Message::Construct::Reply  <'to' in current>
-  Inline                            >
-  Keep                              []
+  Inline                                            >
+  Keep                                              []
   Message-ID       Mail::Message::Construct::Reply  <uniquely generated>
-  ReplyAll                          <false>
+  ReplyAll                                          <false>
   Subject          Mail::Message::Construct::Reply  replySubject()
   To               Mail::Message::Construct::Reply  <sender in current>
   body             Mail::Message::Construct::Reply  undef
   group_reply      Mail::Message::Construct::Reply  <true>
-  header_template                   $ENV{HOME}/.mailhdr
+  header_template                                   $ENV{HOME}/.mailhdr
   include          Mail::Message::Construct::Reply  'INLINE'
   max_signature    Mail::Message::Construct::Reply  10
   message_type     Mail::Message::Construct::Reply  Mail::Message
@@ -902,8 +902,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

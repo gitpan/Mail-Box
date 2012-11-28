@@ -63,15 +63,15 @@ See L<Mail::Message::Head::Complete/"Constructors">
 
 The ARG is an array with header lines.
 
- -Option    --Defined in     --Default
-  FoldLength                   79
-  MailFrom                     'KEEP'
-  Modify                       <false>
+ -Option    --Defined in         --Default
+  FoldLength                       79
+  MailFrom                         'KEEP'
+  Modify                           <false>
   field_type  Mail::Message::Head  Mail::Message::Field::Fast
-  log         Mail::Reporter   'WARNINGS'
+  log         Mail::Reporter       'WARNINGS'
   message     Mail::Message::Head  undef
   modified    Mail::Message::Head  <false>
-  trace       Mail::Reporter   'WARNINGS'
+  trace       Mail::Reporter       'WARNINGS'
 
 =over 2
 
@@ -536,8 +536,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

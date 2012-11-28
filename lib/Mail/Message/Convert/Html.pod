@@ -36,12 +36,12 @@ which do require extra packages to be installed.
 
 =item Mail::Message::Convert::Html-E<gt>B<new>(OPTIONS)
 
- -Option     --Defined in     --Default
+ -Option     --Defined in            --Default
   fields       Mail::Message::Convert  <see description>
-  head_mailto                   <true>
-  log          Mail::Reporter   'WARNINGS'
-  produce                       HTML
-  trace        Mail::Reporter   'WARNINGS'
+  head_mailto                          <true>
+  log          Mail::Reporter          'WARNINGS'
+  produce                              HTML
+  trace        Mail::Reporter          'WARNINGS'
 
 =over 2
 
@@ -221,8 +221,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

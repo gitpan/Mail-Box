@@ -55,7 +55,7 @@ See L<Mail::Message::Body/"Constructors">
 
 =item Mail::Message::Body::File-E<gt>B<new>(OPTIONS)
 
- -Option           --Defined in     --Default
+ -Option           --Defined in         --Default
   based_on           Mail::Message::Body  undef
   charset            Mail::Message::Body  'PERL' or <undef>
   checked            Mail::Message::Body  <false>
@@ -65,11 +65,11 @@ See L<Mail::Message::Body/"Constructors">
   disposition        Mail::Message::Body  undef
   eol                Mail::Message::Body  'NATIVE'
   file               Mail::Message::Body  undef
-  log                Mail::Reporter   'WARNINGS'
+  log                Mail::Reporter       'WARNINGS'
   message            Mail::Message::Body  undef
   mime_type          Mail::Message::Body  'text/plain'
   modified           Mail::Message::Body  <false>
-  trace              Mail::Reporter   'WARNINGS'
+  trace              Mail::Reporter       'WARNINGS'
   transfer_encoding  Mail::Message::Body  'none'
 
 =over 2
@@ -447,8 +447,8 @@ no copy to a temporary file can be made.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

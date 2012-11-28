@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::MH::Labels;
 use vars '$VERSION';
-$VERSION = '2.106';
+$VERSION = '2.107';
 
 use base 'Mail::Reporter';
 
@@ -49,7 +49,7 @@ sub read()
 {   my $self = shift;
     my $seq  = $self->filename;
 
-    open SEQ, '<', $seq
+    open SEQ, '<:raw', $seq
        or return;
 
     my @labels;
@@ -95,7 +95,7 @@ sub write(@)
         return $self;
     }
 
-    open my $out, '>', $filename or return;
+    open my $out, '>:raw', $filename or return;
     $self->print($out, @_);
     close $out;
 
@@ -109,7 +109,7 @@ sub append(@)
 {   my $self     = shift;
     my $filename = $self->filename;
 
-    open(my $out, '>>', $filename) or return;
+    open(my $out, '>>:raw', $filename) or return;
     $self->print($out, @_);
     close $out;
 

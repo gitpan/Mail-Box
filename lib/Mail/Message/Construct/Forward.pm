@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.106';
+$VERSION = '2.107';
 
 
 use Mail::Message::Body::Multipart;

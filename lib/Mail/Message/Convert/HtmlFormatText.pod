@@ -35,12 +35,12 @@ C<text_alternative_for_html>.
 
 =item Mail::Message::Convert::HtmlFormatText-E<gt>B<new>(OPTIONS)
 
- -Option     --Defined in     --Default
+ -Option     --Defined in            --Default
   fields       Mail::Message::Convert  <see description>
-  leftmargin                    3
-  log          Mail::Reporter   'WARNINGS'
-  rightmargin                   72
-  trace        Mail::Reporter   'WARNINGS'
+  leftmargin                           3
+  log          Mail::Reporter          'WARNINGS'
+  rightmargin                          72
+  trace        Mail::Reporter          'WARNINGS'
 
 =over 2
 
@@ -167,8 +167,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -13,7 +13,7 @@ Mail::Box::POP3s - handle secure POP3 folders as client
 =head1 SYNOPSIS
 
  use Mail::Box::POP3s;
- my $folder = new Mail::Box::POP3s folder => $ENV{MAIL}, ...;
+ my $folder = Mail::Box::POP3s->new(folder => $ENV{MAIL}, ...);
 
 =head1 DESCRIPTION
 
@@ -571,8 +571,8 @@ implementation with writing.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

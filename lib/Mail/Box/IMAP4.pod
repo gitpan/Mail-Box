@@ -12,7 +12,7 @@ Mail::Box::IMAP4 - handle IMAP4 folders as client
 =head1 SYNOPSIS
 
  use Mail::Box::IMAP4;
- my $folder = new Mail::Box::IMAP4 folder => $ENV{MAIL}, ...;
+ my $folder = Mail::Box::IMAP4->new(folder => $ENV{MAIL}, ...);
 
 =head1 DESCRIPTION
 
@@ -741,8 +741,8 @@ to copy one of these.  Copying will proceed for all other sub-folders.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

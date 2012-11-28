@@ -62,22 +62,22 @@ OPTIONS which start with capitals will be used to construct additional
 fields.  These option names are prepended with C<Resent-*>, keeping the
 capitization of what is specified.
 
- -Option      --Defined in     --Default
-  Bcc                            undef
-  Cc                             undef
-  Date                           <now>
-  Delivered-To                   undef
-  From                           <required>
-  Message-ID                     <uniquely created>
-  Received                       <created>
-  Return-Path                    undef
-  Sender                         undef
-  To                             undef
-  head                           <created automatically>
-  log           Mail::Reporter   'WARNINGS'
-  message_head                   undef
+ -Option      --Defined in                     --Default
+  Bcc                                            undef
+  Cc                                             undef
+  Date                                           <now>
+  Delivered-To                                   undef
+  From                                           <required>
+  Message-ID                                     <uniquely created>
+  Received                                       <created>
+  Return-Path                                    undef
+  Sender                                         undef
+  To                                             undef
+  head                                           <created automatically>
+  log           Mail::Reporter                   'WARNINGS'
+  message_head                                   undef
   software      Mail::Message::Head::FieldGroup  undef
-  trace         Mail::Reporter   'WARNINGS'
+  trace         Mail::Reporter                   'WARNINGS'
   type          Mail::Message::Head::FieldGroup  undef
   version       Mail::Message::Head::FieldGroup  undef
 
@@ -425,8 +425,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

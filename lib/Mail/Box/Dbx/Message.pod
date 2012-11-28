@@ -27,26 +27,26 @@ See L<Mail::Message/"Constructors">
 
 =item Mail::Box::Dbx::Message-E<gt>B<new>(OPTIONS)
 
- -Option      --Defined in     --Default
-  account_name                   <from dbx_record>
-  account_nr                     <from dbx_record>
-  body          Mail::Message    undef
-  body_type     Mail::Box::Message  <from folder>
-  dbx_record                     <required>
-  deleted       Mail::Message    <false>
-  field_type    Mail::Message    undef
-  folder        Mail::Box::Message  <required>
+ -Option      --Defined in              --Default
+  account_name                            <from dbx_record>
+  account_nr                              <from dbx_record>
+  body          Mail::Message             undef
+  body_type     Mail::Box::Message        <from folder>
+  dbx_record                              <required>
+  deleted       Mail::Message             <false>
+  field_type    Mail::Message             undef
+  folder        Mail::Box::Message        <required>
   from_line     Mail::Box::File::Message  undef
-  head          Mail::Message    undef
-  head_type     Mail::Message    Mail::Message::Head::Complete
-  labels        Mail::Message    {}
-  log           Mail::Reporter   'WARNINGS'
-  messageId     Mail::Message    undef
-  modified      Mail::Message    <false>
-  seen                           <from dbx_record>
-  size          Mail::Box::Message  undef
-  trace         Mail::Reporter   'WARNINGS'
-  trusted       Mail::Message    <false>
+  head          Mail::Message             undef
+  head_type     Mail::Message             Mail::Message::Head::Complete
+  labels        Mail::Message             {}
+  log           Mail::Reporter            'WARNINGS'
+  messageId     Mail::Message             undef
+  modified      Mail::Message             <false>
+  seen                                    <from dbx_record>
+  size          Mail::Box::Message        undef
+  trace         Mail::Reporter            'WARNINGS'
+  trusted       Mail::Message             <false>
 
 =over 2
 
@@ -638,8 +638,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

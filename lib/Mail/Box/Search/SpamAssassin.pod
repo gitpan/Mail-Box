@@ -59,22 +59,22 @@ maintained.
 Only the whole message can be searched; this is a limitation of
 the Mail::SpamAssassin module.
 
- -Option       --Defined in     --Default
+ -Option       --Defined in       --Default
   binaries       Mail::Box::Search  <false>
   decode         Mail::Box::Search  <true>
   delayed        Mail::Box::Search  <true>
   deleted        Mail::Box::Search  <false>
   deliver        Mail::Box::Search  undef
   in             Mail::Box::Search  'MESSAGE'
-  label                           c<'spam'>
+  label                             c<'spam'>
   limit          Mail::Box::Search  0
-  log            Mail::Reporter   'WARNINGS'
+  log            Mail::Reporter     'WARNINGS'
   logical        Mail::Box::Search  'REPLACE'
   multiparts     Mail::Box::Search  <true>
-  rewrite_mail                    <true>
-  sa_options                      { }
-  spam_assassin                   undef
-  trace          Mail::Reporter   'WARNINGS'
+  rewrite_mail                      <true>
+  sa_options                        { }
+  spam_assassin                     undef
+  trace          Mail::Reporter     'WARNINGS'
 
 =over 2
 
@@ -259,8 +259,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

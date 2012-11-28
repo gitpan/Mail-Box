@@ -60,9 +60,9 @@ See L<Mail::Message::Body/"Constructors">
 
 =item Mail::Message::Body::Multipart-E<gt>B<new>(OPTIONS)
 
- -Option           --Defined in     --Default
+ -Option           --Defined in         --Default
   based_on           Mail::Message::Body  undef
-  boundary                            undef
+  boundary                                undef
   charset            Mail::Message::Body  'PERL' or <undef>
   checked            Mail::Message::Body  <false>
   content_id         Mail::Message::Body  undef
@@ -70,15 +70,15 @@ See L<Mail::Message::Body/"Constructors">
   description        Mail::Message::Body  undef
   disposition        Mail::Message::Body  undef
   eol                Mail::Message::Body  'NATIVE'
-  epilogue                            ''
+  epilogue                                ''
   file               Mail::Message::Body  undef
-  log                Mail::Reporter   'WARNINGS'
+  log                Mail::Reporter       'WARNINGS'
   message            Mail::Message::Body  undef
   mime_type          Mail::Message::Body  'multipart/mixed'
   modified           Mail::Message::Body  <false>
-  parts                               undef
-  preamble                            undef
-  trace              Mail::Reporter   'WARNINGS'
+  parts                                   undef
+  preamble                                undef
+  trace              Mail::Reporter       'WARNINGS'
   transfer_encoding  Mail::Message::Body  'none'
 
 =over 2
@@ -228,7 +228,7 @@ returned, containing the remaining parts.  No OPTIONS are defined yet,
 although some may be specified, because this method overrules the
 C<stripSignature> method for normal bodies.
 
- -Option     --Defined in     --Default
+ -Option     --Defined in                    --Default
   max_lines    Mail::Message::Body::Construct  10
   pattern      Mail::Message::Body::Construct  qr/^--\s?$/
   result_type  Mail::Message::Body::Construct  <same as current>
@@ -592,8 +592,8 @@ clearly not acceptible.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.106,
-built on August 15, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.107,
+built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
