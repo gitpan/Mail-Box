@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Box::POP3 - handle POP3 folders as client
@@ -25,8 +27,12 @@ using the POP3 protocol.  This class uses L<Mail::Transport::POP3|Mail::Transpor
 hide the transport of information, and focusses solely on the correct
 handling of messages within a POP3 folder.
 
+See L<documentation in base class|Mail::Box::Net/"DESCRIPTION">.
+ 
 =head1 OVERLOADED
 
+See L<documentation in base class|Mail::Box::Net/"OVERLOADED">.
+ 
 =over 4
 
 =item overload: B<"">()
@@ -45,8 +51,12 @@ See L<Mail::Box/"OVERLOADED">
 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Box::Net/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Box::Net/"Constructors">.
+ 
 =over 4
 
 =item Mail::Box::POP3-E<gt>B<new>(OPTIONS)
@@ -179,6 +189,8 @@ example:
 
 =head2 The folder
 
+See L<documentation in base class|Mail::Box::Net/"The folder">.
+ 
 =over 4
 
 =item $obj-E<gt>B<addMessage>(MESSAGE)
@@ -263,6 +275,8 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
+See L<documentation in base class|Mail::Box::Net/"Folder flags">.
+ 
 =over 4
 
 =item $obj-E<gt>B<access>()
@@ -285,6 +299,8 @@ See L<Mail::Box/"Folder flags">
 
 =head2 The messages
 
+See L<documentation in base class|Mail::Box::Net/"The messages">.
+ 
 =over 4
 
 =item $obj-E<gt>B<current>([NUMBER|MESSAGE|MESSAGE-ID])
@@ -327,6 +343,8 @@ See L<Mail::Box/"The messages">
 
 =head2 Sub-folders
 
+See L<documentation in base class|Mail::Box::Net/"Sub-folders">.
+ 
 =over 4
 
 =item $obj-E<gt>B<listSubFolders>(OPTIONS)
@@ -380,6 +398,8 @@ See L<Mail::Box/"Sub-folders">
 
 =head2 Internals
 
+See L<documentation in base class|Mail::Box::Net/"Internals">.
+ 
 =over 4
 
 =item $obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
@@ -482,6 +502,8 @@ See L<Mail::Box/"Internals">
 
 =head2 Other methods
 
+See L<documentation in base class|Mail::Box::Net/"Other methods">.
+ 
 =over 4
 
 =item $obj-E<gt>B<timespan2seconds>(TIME)
@@ -494,6 +516,8 @@ See L<Mail::Box/"Other methods">
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Box::Net/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -554,26 +578,32 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Box::Net/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Box/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>()
-
-See L<Mail::Reporter/"Cleanup">
-
 =back
 
 =head1 DETAILS
 
+See L<documentation in base class|Mail::Box::Net/"DETAILS">.
+ 
 =head2 Different kinds of folders
 
+See L<documentation in base class|Mail::Box::Net/"Different kinds of folders">.
+ 
 =head2 Available folder types
 
+See L<documentation in base class|Mail::Box::Net/"Available folder types">.
+ 
 =head2 Folder class implementation
 
+See L<documentation in base class|Mail::Box::Net/"Folder class implementation">.
+ 
 =head2 How POP3 folders work
 
 Rfc1939 defines how POP3 works.  POP3 is a really simple protocol to
@@ -704,12 +734,12 @@ implementation with writing.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

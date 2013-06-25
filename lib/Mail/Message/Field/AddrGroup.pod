@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Message::Field::AddrGroup - A group of Mail::Message::Field::Address objects
@@ -24,8 +26,12 @@ Mail::Message::Field::AddrGroup - A group of Mail::Message::Field::Address objec
 An address group collects a set of e-mail addresses (in this case they
 are L<Mail::Message::Field::Address|Mail::Message::Field::Address> objects).
 
+See L<documentation in base class|User::Identity::Collection::Emails/"DESCRIPTION">.
+ 
 =head1 OVERLOADED
 
+See L<documentation in base class|User::Identity::Collection::Emails/"OVERLOADED">.
+ 
 =over 4
 
 =item overload: B<@{}>()
@@ -40,6 +46,8 @@ Returns the L<string()|Mail::Message::Field::AddrGroup/"METHODS"> value.
 
 =head1 METHODS
 
+See L<documentation in base class|User::Identity::Collection::Emails/"METHODS">.
+ 
 =over 4
 
 =item $obj-E<gt>B<string>()
@@ -53,6 +61,8 @@ where included and there is no name, then C<undef> is returned.
 
 =head2 Constructors
 
+See L<documentation in base class|User::Identity::Collection::Emails/"Constructors">.
+ 
 =over 4
 
 =item $obj-E<gt>B<coerce>(OBJECT)
@@ -69,6 +79,8 @@ See L<User::Identity::Collection::Emails/"Constructors">
 
 =head2 Attributes
 
+See L<documentation in base class|User::Identity::Collection::Emails/"Attributes">.
+ 
 =over 4
 
 =item $obj-E<gt>B<description>()
@@ -91,6 +103,8 @@ See L<User::Identity::Collection/"Attributes">
 
 =head2 Collections
 
+See L<documentation in base class|User::Identity::Collection::Emails/"Collections">.
+ 
 =over 4
 
 =item $obj-E<gt>B<add>(COLLECTION, ROLE)
@@ -127,6 +141,8 @@ See L<User::Identity::Item/"Collections">
 
 =head2 Maintaining roles
 
+See L<documentation in base class|User::Identity::Collection::Emails/"Maintaining roles">.
+ 
 =over 4
 
 =item $obj-E<gt>B<addRole>(ROLE| ( [NAME],OPTIONS ) | ARRAY-OF-OPTIONS)
@@ -149,6 +165,8 @@ See L<User::Identity::Collection/"Maintaining roles">
 
 =head2 Searching
 
+See L<documentation in base class|User::Identity::Collection::Emails/"Searching">.
+ 
 =over 4
 
 =item $obj-E<gt>B<find>(NAME|CODE|undef)
@@ -246,12 +264,12 @@ cannot add objects of a different $type.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

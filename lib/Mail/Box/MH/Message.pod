@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Box::MH::Message - one message in an MH-folder
@@ -21,10 +23,16 @@ A C<Mail::Box::MH::Message> represents one message in an
 L<Mail::Box::MH|Mail::Box::MH> folder . Each message is stored in a separate file,
 as for all L<Mail::Box::Dir|Mail::Box::Dir> folder types.
 
+See L<documentation in base class|Mail::Box::Dir::Message/"DESCRIPTION">.
+ 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Box::Dir::Message/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Box::Dir::Message/"Constructors">.
+ 
 =over 4
 
 =item $obj-E<gt>B<clone>(OPTIONS)
@@ -39,6 +47,8 @@ See L<Mail::Box::Dir::Message/"METHODS">
 
 =head2 Constructing a message
 
+See L<documentation in base class|Mail::Box::Dir::Message/"Constructing a message">.
+ 
 =over 4
 
 =item $obj-E<gt>B<bounce>([RG-OBJECT|OPTIONS])
@@ -111,6 +121,8 @@ See L<Mail::Message::Construct::Reply/"Constructing a message">
 
 =head2 The message
 
+See L<documentation in base class|Mail::Box::Dir::Message/"The message">.
+ 
 =over 4
 
 =item $obj-E<gt>B<container>()
@@ -182,6 +194,8 @@ See L<Mail::Message/"The message">
 
 =head2 The header
 
+See L<documentation in base class|Mail::Box::Dir::Message/"The header">.
+ 
 =over 4
 
 =item $obj-E<gt>B<bcc>()
@@ -244,6 +258,8 @@ See L<Mail::Message/"The header">
 
 =head2 The body
 
+See L<documentation in base class|Mail::Box::Dir::Message/"The body">.
+ 
 =over 4
 
 =item $obj-E<gt>B<body>([BODY])
@@ -278,6 +294,8 @@ See L<Mail::Message/"The body">
 
 =head2 Flags
 
+See L<documentation in base class|Mail::Box::Dir::Message/"Flags">.
+ 
 =over 4
 
 =item $obj-E<gt>B<delete>()
@@ -320,6 +338,8 @@ See L<Mail::Message/"Flags">
 
 =head2 The whole message as text
 
+See L<documentation in base class|Mail::Box::Dir::Message/"The whole message as text">.
+ 
 =over 4
 
 =item $obj-E<gt>B<file>()
@@ -342,6 +362,8 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 
 =head2 Internals
 
+See L<documentation in base class|Mail::Box::Dir::Message/"Internals">.
+ 
 =over 4
 
 =item $obj-E<gt>B<clonedFrom>()
@@ -404,6 +426,8 @@ See L<Mail::Message/"Internals">
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Box::Dir::Message/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -474,6 +498,8 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Box::Dir::Message/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
@@ -484,30 +510,36 @@ See L<Mail::Message/"Cleanup">
 
 See L<Mail::Box::Message/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>()
-
-See L<Mail::Reporter/"Cleanup">
-
 =back
 
 =head1 DETAILS
 
+See L<documentation in base class|Mail::Box::Dir::Message/"DETAILS">.
+ 
 =head2 Structure of a Message
 
-=head3 The header
-
-=head3 The body
-
+See L<documentation in base class|Mail::Box::Dir::Message/"Structure of a Message">.
+ 
 =head2 Message object implementation
 
+See L<documentation in base class|Mail::Box::Dir::Message/"Message object implementation">.
+ 
 =head2 Message class implementation
 
+See L<documentation in base class|Mail::Box::Dir::Message/"Message class implementation">.
+ 
 =head2 Labels
 
+See L<documentation in base class|Mail::Box::Dir::Message/"Labels">.
+ 
 =head3 Predefined labels
 
+See L<documentation in base class|Mail::Box::Dir::Message/"Predefined labels">.
+ 
 =head3 Status and X-Status fields
 
+See L<documentation in base class|Mail::Box::Dir::Message/"Status and X-Status fields">.
+ 
 =head3 The .mh_sequences file
 
 Typically, the file which contains the labels is called C<.mh_sequences>.
@@ -635,12 +667,12 @@ unreadible for some other reason.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

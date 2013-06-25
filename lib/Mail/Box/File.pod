@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Box::File - handle file-based folders
@@ -12,6 +14,8 @@ Mail::Box::File - handle file-based folders
    Mail::Box::Dbx
    Mail::Box::Mbox
 
+=head1 SYNOPSIS
+
 =head1 DESCRIPTION
 
 C<Mail::Box::File> is the base-class for all file-based folders: folders
@@ -19,8 +23,12 @@ which bundle multiple messages into one single file.  Usually, these
 messages are separated by a special line which indicates the start of
 the next one.
 
+See L<documentation in base class|Mail::Box/"DESCRIPTION">.
+ 
 =head1 OVERLOADED
 
+See L<documentation in base class|Mail::Box/"OVERLOADED">.
+ 
 =over 4
 
 =item overload: B<"">()
@@ -39,8 +47,12 @@ See L<Mail::Box/"OVERLOADED">
 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Box/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Box/"Constructors">.
+ 
 =over 4
 
 =item Mail::Box::File-E<gt>B<new>(OPTIONS)
@@ -171,6 +183,8 @@ L<write(policy)|Mail::Box::File/"Internals">.  With C<undef>, the best policy is
 
 =head2 The folder
 
+See L<documentation in base class|Mail::Box/"The folder">.
+ 
 =over 4
 
 =item $obj-E<gt>B<addMessage>(MESSAGE, OPTIONS)
@@ -266,6 +280,8 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
+See L<documentation in base class|Mail::Box/"Folder flags">.
+ 
 =over 4
 
 =item $obj-E<gt>B<access>()
@@ -288,6 +304,8 @@ See L<Mail::Box/"Folder flags">
 
 =head2 The messages
 
+See L<documentation in base class|Mail::Box/"The messages">.
+ 
 =over 4
 
 =item $obj-E<gt>B<current>([NUMBER|MESSAGE|MESSAGE-ID])
@@ -330,6 +348,8 @@ See L<Mail::Box/"The messages">
 
 =head2 Sub-folders
 
+See L<documentation in base class|Mail::Box/"Sub-folders">.
+ 
 =over 4
 
 =item $obj-E<gt>B<listSubFolders>(OPTIONS)
@@ -362,6 +382,8 @@ See L<Mail::Box/"Sub-folders">
 
 =head2 Internals
 
+See L<documentation in base class|Mail::Box/"Internals">.
+ 
 =over 4
 
 =item $obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
@@ -520,6 +542,8 @@ See L<Mail::Box/"Internals">
 
 =head2 Other methods
 
+See L<documentation in base class|Mail::Box/"Other methods">.
+ 
 =over 4
 
 =item $obj-E<gt>B<timespan2seconds>(TIME)
@@ -532,6 +556,8 @@ See L<Mail::Box/"Other methods">
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Box/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -592,15 +618,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Box/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Box/"Cleanup">
-
-=item $obj-E<gt>B<inGlobalDestruction>()
-
-See L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -619,6 +643,10 @@ problems.  Where access to all messages at once is faster in file
 based folders, access to a single message is (much) slower, because
 the whole folder must be read.
 
+=head1 DETAILS
+
+See L<documentation in base class|Mail::Box/"DETAILS">.
+ 
 =head1 DIAGNOSTICS
 
 =over 4
@@ -751,12 +779,12 @@ error messages to indicate the real problem.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

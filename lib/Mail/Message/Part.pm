@@ -1,13 +1,13 @@
-# Copyrights 2001-2012 by [Mark Overmeer].
+# Copyrights 2001-2013 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 2.00.
+# Pod stripped from pm file by OODoc 2.01.
 use strict;
 use warnings;
 
 package Mail::Message::Part;
 use vars '$VERSION';
-$VERSION = '2.107';
+$VERSION = '2.108';
 
 use base 'Mail::Message';
 
@@ -53,19 +53,19 @@ sub coerce($@)
 
 sub buildFromBody($$;@)
 {   my ($class, $body, $container) = (shift, shift, shift);
-    my @log     = $body->logSettings;
+    my @log  = $body->logSettings;
 
-    my $head    = Mail::Message::Head::Complete->new(@log);
+    my $head = Mail::Message::Head::Complete->new(@log);
     while(@_)
     {   if(ref $_[0]) {$head->add(shift)}
         else          {$head->add(shift, shift)}
     }
 
     my $part = $class->new
-     ( head      => $head
-     , container => $container
-     , @log
-     );
+      ( head      => $head
+      , container => $container
+      , @log
+      );
 
     $part->body($body);
     $part;

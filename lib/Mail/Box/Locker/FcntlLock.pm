@@ -1,13 +1,13 @@
-# Copyrights 2001-2012 by [Mark Overmeer].
+# Copyrights 2001-2013 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 2.00.
+# Pod stripped from pm file by OODoc 2.01.
 
 use strict;
 
 package Mail::Box::Locker::FcntlLock;
 use vars '$VERSION';
-$VERSION = '2.107';
+$VERSION = '2.108';
 
 use base 'Mail::Box::Locker';
 
@@ -29,7 +29,6 @@ sub name() {'FcntlLock'}
 sub _try_lock($)
 {   my ($self, $file) = @_;
     my $fl = File::FcntlLock->new;
-    $fl->l_pid($!+0);
     $fl->l_type(F_WRLCK);
     $? = $fl->lock($file, F_SETLK);
     $?==0;

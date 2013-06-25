@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Box::Locker::POSIX - lock a folder using kernel file-locking
@@ -19,10 +21,16 @@ the file which contains the data using the kernel's POSIX facilities.  This
 lock is created on a separate file-handle to the folder file, so not the
 handle which is reading.  Not all platforms support POSIX locking.
 
+See L<documentation in base class|Mail::Box::Locker/"DESCRIPTION">.
+ 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Box::Locker/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Box::Locker/"Constructors">.
+ 
 =over 4
 
 =item Mail::Box::Locker::POSIX-E<gt>B<new>(OPTIONS)
@@ -64,6 +72,8 @@ when the multi-locker is used.
 
 =head2 The Locker
 
+See L<documentation in base class|Mail::Box::Locker/"The Locker">.
+ 
 =over 4
 
 =item $obj-E<gt>B<filename>([FILENAME])
@@ -82,6 +92,8 @@ See L<Mail::Box::Locker/"The Locker">
 
 =head2 Locking
 
+See L<documentation in base class|Mail::Box::Locker/"Locking">.
+ 
 =over 4
 
 =item $obj-E<gt>B<hasLock>()
@@ -100,6 +112,8 @@ See L<Mail::Box::Locker/"Locking">
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Box::Locker/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -160,15 +174,13 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Box::Locker/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Box::Locker/"Cleanup">
-
-=item $obj-E<gt>B<inGlobalDestruction>()
-
-See L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -207,12 +219,12 @@ try again.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

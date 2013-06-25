@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Message::Convert::TextAutoformat - Reformat plain text messages
@@ -20,14 +22,16 @@ Mail::Message::Convert::TextAutoformat - Reformat plain text messages
 Play trics with plain text, for instance bodies with type C<text/plain>
 using Damian Conway's Text::Autoformat.
 
-=head2 Converters between message objects
-
-=head2 Other converters
-
+See L<documentation in base class|Mail::Message::Convert/"DESCRIPTION">.
+ 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Message::Convert/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Message::Convert/"Constructors">.
+ 
 =over 4
 
 =item Mail::Message::Convert::TextAutoformat-E<gt>B<new>(OPTIONS)
@@ -57,6 +61,8 @@ is called.
 
 =head2 Converting
 
+See L<documentation in base class|Mail::Message::Convert/"Converting">.
+ 
 =over 4
 
 =item $obj-E<gt>B<autoformatBody>(BODY)
@@ -73,6 +79,8 @@ See L<Mail::Message::Convert/"Converting">
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Message::Convert/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -133,13 +141,11 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Message::Convert/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
-
-See L<Mail::Reporter/"Cleanup">
-
-=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -161,12 +167,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

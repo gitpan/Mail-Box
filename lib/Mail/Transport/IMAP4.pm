@@ -1,14 +1,14 @@
-# Copyrights 2001-2012 by [Mark Overmeer].
+# Copyrights 2001-2013 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 2.00.
+# Pod stripped from pm file by OODoc 2.01.
 
 use strict;
 use warnings;
 
 package Mail::Transport::IMAP4;
 use vars '$VERSION';
-$VERSION = '2.107';
+$VERSION = '2.108';
 
 use base 'Mail::Transport::Receive';
 
@@ -39,7 +39,8 @@ sub init($)
     $self->{MTI_domain} = $args->{domain};
 
     unless(ref $imap)
-    {   $imap = $self->createImapClient($imap) or return undef;
+    {   $imap = $self->createImapClient($imap, Starttls => $args->{starttls})
+             or return undef;
     }
  
     $self->imapClient($imap) or return undef;
@@ -114,25 +115,24 @@ sub imapClient(;$)
 }
 
 
-sub createImapClient($)
-{   my ($self, $class) = @_;
+sub createImapClient($@)
+{   my ($self, $class, @args) = @_;
 
     my ($host, $port) = $self->remoteHost;
 
     my $debug_level = $self->logPriority('DEBUG')+0;
-    my @debug;
     if($self->log <= $debug_level || $self->trace <= $debug_level)
     {   tie *dh, 'Mail::IMAPClient::Debug', $self;
-        @debug = (Debug => 1, Debug_fh => \*dh);
+        push @args, Debug => 1, Debug_fh => \*dh;
     }
 
     my $client = $class->new
-     ( Server => $host, Port => $port
-     , User   => undef, Password => undef   # disable auto-login
-     , Uid    => 1                          # Safer
-     , Peek   => 1                          # Don't set \Seen automaticly
-     , @debug
-     );
+      ( Server => $host, Port => $port
+      , User   => undef, Password => undef   # disable auto-login
+      , Uid    => 1                          # Safer
+      , Peek   => 1                          # Don't set \Seen automaticly
+      , @args
+      );
 
     $self->log(ERROR => $@), return undef if $@;
     $client;

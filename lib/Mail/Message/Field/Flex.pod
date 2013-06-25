@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Message::Field::Flex - one line of a message header
@@ -8,6 +10,8 @@ Mail::Message::Field::Flex - one line of a message header
    is a Mail::Message::Field
    is a Mail::Reporter
 
+=head1 SYNOPSIS
+
 =head1 DESCRIPTION
 
 This is the flexible implementation of a field: it can easily be
@@ -16,8 +20,12 @@ extended because it stores its data in a hash and the constructor
 price in performance.  L<Mail::Message::Field::Fast|Mail::Message::Field::Fast> is faster (as the
 name predicts).
 
+See L<documentation in base class|Mail::Message::Field/"DESCRIPTION">.
+ 
 =head1 OVERLOADED
 
+See L<documentation in base class|Mail::Message::Field/"OVERLOADED">.
+ 
 =over 4
 
 =item overload: B<"">()
@@ -44,8 +52,12 @@ See L<Mail::Message::Field/"OVERLOADED">
 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Message::Field/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Message::Field/"Constructors">.
+ 
 =over 4
 
 =item $obj-E<gt>B<clone>()
@@ -105,6 +117,8 @@ A pre-formatted list of attributes.
 
 =head2 The field
 
+See L<documentation in base class|Mail::Message::Field/"The field">.
+ 
 =over 4
 
 =item $obj-E<gt>B<isStructured>()
@@ -141,6 +155,8 @@ See L<Mail::Message::Field/"The field">
 
 =head2 Access to the name
 
+See L<documentation in base class|Mail::Message::Field/"Access to the name">.
+ 
 =over 4
 
 =item $obj-E<gt>B<Name>()
@@ -159,6 +175,8 @@ See L<Mail::Message::Field/"Access to the name">
 
 =head2 Access to the body
 
+See L<documentation in base class|Mail::Message::Field/"Access to the body">.
+ 
 =over 4
 
 =item $obj-E<gt>B<body>()
@@ -187,6 +205,8 @@ See L<Mail::Message::Field/"Access to the body">
 
 =head2 Access to the content
 
+See L<documentation in base class|Mail::Message::Field/"Access to the content">.
+ 
 =over 4
 
 =item $obj-E<gt>B<addresses>()
@@ -223,6 +243,8 @@ See L<Mail::Message::Field/"Access to the content">
 
 =head2 Other methods
 
+See L<documentation in base class|Mail::Message::Field/"Other methods">.
+ 
 =over 4
 
 =item $obj-E<gt>B<dateToTimestamp>(STRING)
@@ -235,6 +257,8 @@ See L<Mail::Message::Field/"Other methods">
 
 =head2 Internals
 
+See L<documentation in base class|Mail::Message::Field/"Internals">.
+ 
 =over 4
 
 =item $obj-E<gt>B<consume>(LINE | (NAME,BODY|OBJECTS))
@@ -267,6 +291,8 @@ See L<Mail::Message::Field/"Internals">
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Message::Field/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -327,18 +353,20 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Message::Field/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>()
-
-See L<Mail::Reporter/"Cleanup">
-
 =back
 
+=head1 DETAILS
+
+See L<documentation in base class|Mail::Message::Field/"DETAILS">.
+ 
 =head1 DIAGNOSTICS
 
 =over 4
@@ -367,12 +395,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

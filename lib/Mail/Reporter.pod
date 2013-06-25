@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Reporter - base-class and error reporter for Mail::Box
@@ -290,11 +292,6 @@ Equivalent to
 
 Cleanup the object.
 
-=item $obj-E<gt>B<inGlobalDestruction>()
-
-Returns whether the program is breaking down.  This is used in L<DESTROY()|Mail::Reporter/"Cleanup">,
-where during global destructions references cannot be used.
-
 =back
 
 =head1 DIAGNOSTICS
@@ -313,12 +310,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

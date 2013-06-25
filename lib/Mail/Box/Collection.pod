@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Box::Collection - a collection of subfolders
@@ -11,6 +13,8 @@ Mail::Box::Collection - a collection of subfolders
  Mail::Box::Collection
    is a Mail::Reporter
 
+=head1 SYNOPSIS
+
 =head1 DESCRIPTION
 
 The L<Mail::Box::Collection|Mail::Box::Collection> object maintains a set L<Mail::Box::Identity|Mail::Box::Identity>
@@ -18,8 +22,14 @@ objects, each describing a the location of a single mailbox (folder).  The
 collection is used by the L<Mail::Box::Manage::User|Mail::Box::Manage::User> object to administer
 the folders of a single user, even if those folders are closed.
 
+See L<documentation in base class|Mail::Reporter/"DESCRIPTION">.
+ 
+See L<documentation in base class|User::Identity::Collection/"DESCRIPTION">.
+ 
 =head1 OVERLOADED
 
+See L<documentation in base class|User::Identity::Collection/"OVERLOADED">.
+ 
 =over 4
 
 =item overload: B<@{}>()
@@ -34,8 +44,16 @@ See L<User::Identity::Collection/"OVERLOADED">
 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Reporter/"METHODS">.
+ 
+See L<documentation in base class|User::Identity::Collection/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Reporter/"Constructors">.
+ 
+See L<documentation in base class|User::Identity::Collection/"Constructors">.
+ 
 =over 4
 
 =item Mail::Box::Collection-E<gt>B<new>([NAME], OPTIONS)
@@ -79,6 +97,8 @@ An L<Mail::Box::Manager|Mail::Box::Manager> OBJECT (could be a L<Mail::Box::Mana
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Reporter/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -139,13 +159,11 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Reporter/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
-
-See L<Mail::Reporter/"Cleanup">
-
-=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -153,6 +171,8 @@ See L<Mail::Reporter/"Cleanup">
 
 =head2 Attributes
 
+See L<documentation in base class|User::Identity::Collection/"Attributes">.
+ 
 =over 4
 
 =item $obj-E<gt>B<description>()
@@ -185,6 +205,8 @@ See L<User::Identity::Collection/"Attributes">
 
 =head2 Collections
 
+See L<documentation in base class|User::Identity::Collection/"Collections">.
+ 
 =over 4
 
 =item $obj-E<gt>B<add>(COLLECTION, ROLE)
@@ -221,6 +243,8 @@ See L<User::Identity::Item/"Collections">
 
 =head2 Maintaining roles
 
+See L<documentation in base class|User::Identity::Collection/"Maintaining roles">.
+ 
 =over 4
 
 =item $obj-E<gt>B<addRole>(ROLE| ( [NAME],OPTIONS ) | ARRAY-OF-OPTIONS)
@@ -243,6 +267,8 @@ See L<User::Identity::Collection/"Maintaining roles">
 
 =head2 Searching
 
+See L<documentation in base class|User::Identity::Collection/"Searching">.
+ 
 =over 4
 
 =item $obj-E<gt>B<find>(NAME|CODE|undef)
@@ -308,12 +334,12 @@ cannot add objects of a different $type.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

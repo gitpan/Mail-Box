@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Message::Field::Addresses - Fields with e-mail addresses
@@ -45,8 +47,12 @@ messages.
 When you try to create constructs which are not allowed for a certain
 kind of field, you will be warned.
 
+See L<documentation in base class|Mail::Message::Field::Structured/"DESCRIPTION">.
+ 
 =head1 OVERLOADED
 
+See L<documentation in base class|Mail::Message::Field::Structured/"OVERLOADED">.
+ 
 =over 4
 
 =item overload: B<"">()
@@ -77,8 +83,12 @@ See L<Mail::Message::Field::Full/"OVERLOADED">
 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Message::Field::Structured/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Message::Field::Structured/"Constructors">.
+ 
 =over 4
 
 =item $obj-E<gt>B<clone>()
@@ -125,6 +135,8 @@ See L<Mail::Message::Field::Full/"Constructors">
 
 =head2 The field
 
+See L<documentation in base class|Mail::Message::Field::Structured/"The field">.
+ 
 =over 4
 
 =item $obj-E<gt>B<isStructured>()
@@ -161,6 +173,8 @@ See L<Mail::Message::Field/"The field">
 
 =head2 Access to the name
 
+See L<documentation in base class|Mail::Message::Field::Structured/"Access to the name">.
+ 
 =over 4
 
 =item $obj-E<gt>B<Name>()
@@ -179,6 +193,8 @@ See L<Mail::Message::Field/"Access to the name">
 
 =head2 Access to the body
 
+See L<documentation in base class|Mail::Message::Field::Structured/"Access to the body">.
+ 
 =over 4
 
 =item $obj-E<gt>B<body>()
@@ -211,6 +227,8 @@ See L<Mail::Message::Field/"Access to the body">
 
 =head2 Access to the content
 
+See L<documentation in base class|Mail::Message::Field::Structured/"Access to the content">.
+ 
 =over 4
 
 =item $obj-E<gt>B<addAddress>([ADDRESS], OPTIONS)
@@ -324,6 +342,8 @@ See L<Mail::Message::Field/"Access to the content">
 
 =head2 Other methods
 
+See L<documentation in base class|Mail::Message::Field::Structured/"Other methods">.
+ 
 =over 4
 
 =item $obj-E<gt>B<dateToTimestamp>(STRING)
@@ -336,6 +356,8 @@ See L<Mail::Message::Field/"Other methods">
 
 =head2 Internals
 
+See L<documentation in base class|Mail::Message::Field::Structured/"Internals">.
+ 
 =over 4
 
 =item $obj-E<gt>B<consume>(LINE | (NAME,BODY|OBJECTS))
@@ -378,6 +400,8 @@ See L<Mail::Message::Field/"Internals">
 
 =head2 Parsing
 
+See L<documentation in base class|Mail::Message::Field::Structured/"Parsing">.
+ 
 =over 4
 
 =item $obj-E<gt>B<consumeAddress>(STRING, OPTIONS)
@@ -423,6 +447,8 @@ See L<Mail::Message::Field::Full/"Parsing">
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Message::Field::Structured/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -483,18 +509,20 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Message::Field::Structured/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>()
-
-See L<Mail::Reporter/"Cleanup">
-
 =back
 
+=head1 DETAILS
+
+See L<documentation in base class|Mail::Message::Field::Structured/"DETAILS">.
+ 
 =head1 DIAGNOSTICS
 
 =over 4
@@ -545,12 +573,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

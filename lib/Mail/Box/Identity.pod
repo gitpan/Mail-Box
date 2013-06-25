@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Box::Identity - represents an unopened folder
@@ -33,10 +35,22 @@ object.  This corresponds with IMAP's C<\NoSelect>, for instance.
 
 Nearly all methods can return undef.
 
+See L<documentation in base class|Mail::Reporter/"DESCRIPTION">.
+ 
+See L<documentation in base class|User::Identity::Item/"DESCRIPTION">.
+ 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Reporter/"METHODS">.
+ 
+See L<documentation in base class|User::Identity::Item/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Reporter/"Constructors">.
+ 
+See L<documentation in base class|User::Identity::Item/"Constructors">.
+ 
 =over 4
 
 =item Mail::Box::Identity-E<gt>B<new>([NAME], OPTIONS)
@@ -110,6 +124,8 @@ L<Mail::Box::Collection|Mail::Box::Collection>.
 
 =head2 Attributes
 
+See L<documentation in base class|User::Identity::Item/"Attributes">.
+ 
 =over 4
 
 =item $obj-E<gt>B<description>()
@@ -168,6 +184,8 @@ Run up the tree to find the highest level folder.
 
 =head2 Collections
 
+See L<documentation in base class|User::Identity::Item/"Collections">.
+ 
 =over 4
 
 =item $obj-E<gt>B<add>(COLLECTION, ROLE)
@@ -277,6 +295,8 @@ the collection, the L<Mail::Box::Collection|Mail::Box::Collection>.
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Reporter/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -337,13 +357,11 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Reporter/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
-
-See L<Mail::Reporter/"Cleanup">
-
-=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -408,12 +426,12 @@ you have to look for a method of that object.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

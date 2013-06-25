@@ -1,14 +1,14 @@
-# Copyrights 2001-2012 by [Mark Overmeer].
+# Copyrights 2001-2013 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 2.00.
+# Pod stripped from pm file by OODoc 2.01.
 
 use strict;
 use warnings;
 
 package Mail::Box;
 use vars '$VERSION';
-$VERSION = '2.107';
+$VERSION = '2.108';
 
 use base 'Mail::Reporter';
 
@@ -19,6 +19,7 @@ use File::Spec;
 use Carp;
 use Scalar::Util 'weaken';
 use List::Util   qw/sum first/;
+use Devel::GlobalDestruction 'in_global_destruction';
 
 
 #-------------------------------------------
@@ -833,9 +834,8 @@ sub timespan2seconds($)
 
 sub DESTROY
 {   my $self = shift;
-    $self->close unless $self->inGlobalDestruction || $self->{MB_is_closed};
+    $self->close unless in_global_destruction || $self->{MB_is_closed};
 }
-
 
 #-------------------------------------------
 # Instance variables

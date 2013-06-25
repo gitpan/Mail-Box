@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Box::IMAP4::Head - header fields related IMAP interface
@@ -7,6 +9,8 @@ Mail::Box::IMAP4::Head - header fields related IMAP interface
  Mail::Box::IMAP4::Head
    is a Mail::Message::Head
    is a Mail::Reporter
+
+=head1 SYNOPSIS
 
 =head1 DESCRIPTION
 
@@ -20,8 +24,12 @@ get a message header which is capable of performing all possible
 games with headers.  On the other hand: the other settings are not
 100% safe...
 
+See L<documentation in base class|Mail::Message::Head/"DESCRIPTION">.
+ 
 =head1 OVERLOADED
 
+See L<documentation in base class|Mail::Message::Head/"OVERLOADED">.
+ 
 =over 4
 
 =item overload: B<"">()
@@ -36,8 +44,12 @@ See L<Mail::Message::Head/"OVERLOADED">
 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Message::Head/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Message::Head/"Constructors">.
+ 
 =over 4
 
 =item Mail::Box::IMAP4::Head-E<gt>B<build>([PAIR|FIELD]-LIST)
@@ -78,6 +90,8 @@ this value is set to C<false> for C<NO> and C<true> for C<PARTIAL>..
 
 =head2 The header
 
+See L<documentation in base class|Mail::Message::Head/"The header">.
+ 
 =over 4
 
 =item $obj-E<gt>B<isDelayed>()
@@ -112,6 +126,8 @@ See L<Mail::Message::Head/"The header">
 
 =head2 Access to the header
 
+See L<documentation in base class|Mail::Message::Head/"Access to the header">.
+ 
 =over 4
 
 =item $obj-E<gt>B<get>(NAME [,INDEX])
@@ -127,6 +143,8 @@ See L<Mail::Message::Head/"Access to the header">
 
 =head2 About the body
 
+See L<documentation in base class|Mail::Message::Head/"About the body">.
+ 
 =over 4
 
 =item $obj-E<gt>B<guessBodySize>()
@@ -141,6 +159,8 @@ See L<Mail::Message::Head/"About the body">
 
 =head2 Internals
 
+See L<documentation in base class|Mail::Message::Head/"Internals">.
+ 
 =over 4
 
 =item $obj-E<gt>B<addNoRealize>(FIELD)
@@ -175,6 +195,8 @@ See L<Mail::Message::Head/"Internals">
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Message::Head/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -235,18 +257,20 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Message::Head/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>()
-
-See L<Mail::Reporter/"Cleanup">
-
 =back
 
+=head1 DETAILS
+
+See L<documentation in base class|Mail::Message::Head/"DETAILS">.
+ 
 =head1 DIAGNOSTICS
 
 =over 4
@@ -263,12 +287,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

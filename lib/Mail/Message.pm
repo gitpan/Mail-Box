@@ -1,13 +1,13 @@
-# Copyrights 2001-2012 by [Mark Overmeer].
+# Copyrights 2001-2013 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 2.00.
+# Pod stripped from pm file by OODoc 2.01.
 use strict;
 use warnings;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.107';
+$VERSION = '2.108';
 
 use base 'Mail::Reporter';
 
@@ -21,6 +21,7 @@ use Mail::Message::Body::Nested;
 
 use Carp;
 use Scalar::Util   'weaken';
+use Devel::GlobalDestruction 'in_global_destruction';
 
 
 our $crlf_platform;
@@ -689,7 +690,7 @@ sub shortString()
 
 sub DESTROY()
 {   my $self = shift;
-    return if $self->inGlobalDestruction;
+    return if in_global_destruction;
 
     $self->SUPER::DESTROY;
     $self->head(undef);

@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Transport::Mailx - transmit messages using external mailx program
@@ -31,10 +33,16 @@ standard,  what may cause many headers to be lost.  For these platforms (and
 probably for other platforms as well), you can better not use this transport
 mechanism.
 
+See L<documentation in base class|Mail::Transport::Send/"DESCRIPTION">.
+ 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Transport::Send/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Transport::Send/"Constructors">.
+ 
 =over 4
 
 =item Mail::Transport::Mailx-E<gt>B<new>(OPTIONS)
@@ -96,6 +104,8 @@ distributions).
 
 =head2 Sending mail
 
+See L<documentation in base class|Mail::Transport::Send/"Sending mail">.
+ 
 =over 4
 
 =item $obj-E<gt>B<destinations>(MESSAGE, [ADDRESS|ARRAY-OF-ADDRESSES])
@@ -116,6 +126,8 @@ See L<Mail::Transport::Send/"Sending mail">
 
 =head2 Server connection
 
+See L<documentation in base class|Mail::Transport::Send/"Server connection">.
+ 
 =over 4
 
 =item $obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
@@ -134,6 +146,8 @@ See L<Mail::Transport/"Server connection">
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Transport::Send/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -194,13 +208,11 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Transport::Send/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
-
-See L<Mail::Reporter/"Cleanup">
-
-=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -247,12 +259,12 @@ accepting messages, but did not succeed sending it.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

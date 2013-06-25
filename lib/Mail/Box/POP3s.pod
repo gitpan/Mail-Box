@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Box::POP3s - handle secure POP3 folders as client
@@ -19,8 +21,12 @@ Mail::Box::POP3s - handle secure POP3 folders as client
 
 This module mainly extends L<Mail::Box::POP3|Mail::Box::POP3>.
 
+See L<documentation in base class|Mail::Box::POP3/"DESCRIPTION">.
+ 
 =head1 OVERLOADED
 
+See L<documentation in base class|Mail::Box::POP3/"OVERLOADED">.
+ 
 =over 4
 
 =item overload: B<"">()
@@ -39,8 +45,12 @@ See L<Mail::Box/"OVERLOADED">
 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Box::POP3/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Box::POP3/"Constructors">.
+ 
 =over 4
 
 =item Mail::Box::POP3s-E<gt>B<new>(OPTIONS)
@@ -151,6 +161,8 @@ See L<Mail::Box/"OVERLOADED">
 
 =head2 The folder
 
+See L<documentation in base class|Mail::Box::POP3/"The folder">.
+ 
 =over 4
 
 =item $obj-E<gt>B<addMessage>(MESSAGE)
@@ -209,6 +221,8 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
+See L<documentation in base class|Mail::Box::POP3/"Folder flags">.
+ 
 =over 4
 
 =item $obj-E<gt>B<access>()
@@ -231,6 +245,8 @@ See L<Mail::Box/"Folder flags">
 
 =head2 The messages
 
+See L<documentation in base class|Mail::Box::POP3/"The messages">.
+ 
 =over 4
 
 =item $obj-E<gt>B<current>([NUMBER|MESSAGE|MESSAGE-ID])
@@ -273,6 +289,8 @@ See L<Mail::Box/"The messages">
 
 =head2 Sub-folders
 
+See L<documentation in base class|Mail::Box::POP3/"Sub-folders">.
+ 
 =over 4
 
 =item $obj-E<gt>B<listSubFolders>(OPTIONS)
@@ -305,6 +323,8 @@ See L<Mail::Box/"Sub-folders">
 
 =head2 Internals
 
+See L<documentation in base class|Mail::Box::POP3/"Internals">.
+ 
 =over 4
 
 =item $obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
@@ -381,6 +401,8 @@ See L<Mail::Box::POP3/"Internals">
 
 =head2 Other methods
 
+See L<documentation in base class|Mail::Box::POP3/"Other methods">.
+ 
 =over 4
 
 =item $obj-E<gt>B<timespan2seconds>(TIME)
@@ -393,6 +415,8 @@ See L<Mail::Box/"Other methods">
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Box::POP3/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -453,18 +477,20 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Box::POP3/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Box/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>()
-
-See L<Mail::Reporter/"Cleanup">
-
 =back
 
+=head1 DETAILS
+
+See L<documentation in base class|Mail::Box::POP3/"DETAILS">.
+ 
 =head1 DIAGNOSTICS
 
 =over 4
@@ -571,12 +597,12 @@ implementation with writing.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

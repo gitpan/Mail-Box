@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Transport::POP3 - receive messages via POP3
@@ -25,10 +27,16 @@ You probably should B<not use this> module, but L<Mail::Box::POP3|Mail::Box::POP
 module is the interface to POP3, whereas L<Mail::Box::POP3|Mail::Box::POP3> hides the
 protocol weirdness and works as any other mail folder.
 
+See L<documentation in base class|Mail::Transport::Receive/"DESCRIPTION">.
+ 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Transport::Receive/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Transport::Receive/"Constructors">.
+ 
 =over 4
 
 =item Mail::Transport::POP3-E<gt>B<new>(OPTIONS)
@@ -95,6 +103,8 @@ used, first APOP is tried, and then LOGIN.
 
 =head2 Receiving mail
 
+See L<documentation in base class|Mail::Transport::Receive/"Receiving mail">.
+ 
 =over 4
 
 =item $obj-E<gt>B<receive>([UNIQUE-MESSAGE-ID])
@@ -239,6 +249,8 @@ Update the current status of folder on the remote POP3 server.
 
 =head2 Server connection
 
+See L<documentation in base class|Mail::Transport::Receive/"Server connection">.
+ 
 =over 4
 
 =item $obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
@@ -261,6 +273,8 @@ Represent this pop3 connection as URL.
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Transport::Receive/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -321,13 +335,11 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Transport::Receive/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
-
-See L<Mail::Reporter/"Cleanup">
-
-=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -402,12 +414,12 @@ service on the specified port.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

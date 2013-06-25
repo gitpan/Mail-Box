@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Message::Head::SpamGroup - spam fighting related header fields
@@ -24,10 +26,16 @@ A I<spam group> is a set of header fields which are added by spam detection
 and spam fighting software.  This class knows various details about
 that software.
 
+See L<documentation in base class|Mail::Message::Head::FieldGroup/"DESCRIPTION">.
+ 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Message::Head::FieldGroup/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Message::Head::FieldGroup/"Constructors">.
+ 
 =over 4
 
 =item $obj-E<gt>B<clone>()
@@ -178,6 +186,8 @@ example:
 
 =head2 The header
 
+See L<documentation in base class|Mail::Message::Head::FieldGroup/"The header">.
+ 
 =over 4
 
 =item $obj-E<gt>B<add>((FIELD, VALUE) | OBJECT)
@@ -212,6 +222,8 @@ See L<Mail::Message::Head::FieldGroup/"The header">
 
 =head2 Access to the header
 
+See L<documentation in base class|Mail::Message::Head::FieldGroup/"Access to the header">.
+ 
 =over 4
 
 =item $obj-E<gt>B<software>()
@@ -230,6 +242,8 @@ See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
 =head2 Internals
 
+See L<documentation in base class|Mail::Message::Head::FieldGroup/"Internals">.
+ 
 =over 4
 
 =item $obj-E<gt>B<collectFields>([NAME])
@@ -244,6 +258,8 @@ See L<Mail::Message::Head::FieldGroup/"Internals">
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Message::Head::FieldGroup/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -312,13 +328,11 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Message::Head::FieldGroup/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
-
-See L<Mail::Reporter/"Cleanup">
-
-=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -377,12 +391,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

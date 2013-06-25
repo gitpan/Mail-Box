@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Transport::IMAP4 - proxy to Mail::IMAPClient
@@ -35,8 +37,12 @@ module, and solving those is outside the scope of MailBox.  See
 F<http://rt.cpan.org/Public/Dist/Display.html?Name=Mail-IMAPClient>
 for all the reported bugs.
 
+See L<documentation in base class|Mail::Transport::Receive/"DESCRIPTION">.
+ 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Transport::Receive/"METHODS">.
+ 
 =over 4
 
 =item $obj-E<gt>B<url>()
@@ -47,6 +53,8 @@ Represent this imap4 connection as URL.
 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Transport::Receive/"Constructors">.
+ 
 =over 4
 
 =item Mail::Transport::IMAP4-E<gt>B<new>(OPTIONS)
@@ -70,6 +78,7 @@ C<port>, C<username>, and C<password> are extracted from it.
   port          Mail::Transport  143
   proxy         Mail::Transport  undef
   retry         Mail::Transport  <false>
+  starttls                       false
   timeout       Mail::Transport  120
   trace         Mail::Reporter   'WARNINGS'
   username      Mail::Transport  undef
@@ -114,6 +123,10 @@ defined by L<Mail::IMAPClient|Mail::IMAPClient>.
 
 =item retry => NUMBER|undef
 
+=item starttls => BOOLEAN
+
+tart Transport Security Layer (TLS).
+
 =item timeout => SECONDS
 
 =item trace => LEVEL
@@ -128,6 +141,8 @@ defined by L<Mail::IMAPClient|Mail::IMAPClient>.
 
 =head2 Receiving mail
 
+See L<documentation in base class|Mail::Transport::Receive/"Receiving mail">.
+ 
 =over 4
 
 =item $obj-E<gt>B<receive>([UNIQUE-MESSAGE-ID])
@@ -138,6 +153,8 @@ See L<Mail::Transport::Receive/"Receiving mail">
 
 =head2 Server connection
 
+See L<documentation in base class|Mail::Transport::Receive/"Server connection">.
+ 
 =over 4
 
 =item $obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
@@ -216,9 +233,11 @@ The optional DATA can be a RFC-822 date or a timestamp.
 
 Add a folder.
 
-=item $obj-E<gt>B<createImapClient>(CLASS)
+=item $obj-E<gt>B<createImapClient>(CLASS, OPTIONS)
 
 Create an object of CLASS, which extends L<Mail::IMAPClient>.
+
+All OPTIONS will be passed to the constructor (new) of CLASS.
 
 =item $obj-E<gt>B<currentFolder>([FOLDERNAME])
 
@@ -335,6 +354,8 @@ the IMAP server.  These values may be cached in a different way.
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Transport::Receive/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -395,16 +416,14 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Transport::Receive/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
 The connection is cleanly terminated when the program is
 terminated.
-
-=item $obj-E<gt>B<inGlobalDestruction>()
-
-See L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -434,12 +453,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

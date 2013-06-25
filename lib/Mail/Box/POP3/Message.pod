@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Box::POP3::Message - one message on a POP3 server
@@ -22,10 +24,16 @@ maintained by a L<Mail::Box::POP3|Mail::Box::POP3> folder. Each message is store
 separate entity on the server, and maybe temporarily in your program
 as well.
 
+See L<documentation in base class|Mail::Box::Net::Message/"DESCRIPTION">.
+ 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Box::Net::Message/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Box::Net::Message/"Constructors">.
+ 
 =over 4
 
 =item $obj-E<gt>B<clone>(OPTIONS)
@@ -89,6 +97,8 @@ See L<Mail::Message/"Constructors">
 
 =head2 Constructing a message
 
+See L<documentation in base class|Mail::Box::Net::Message/"Constructing a message">.
+ 
 =over 4
 
 =item $obj-E<gt>B<bounce>([RG-OBJECT|OPTIONS])
@@ -161,6 +171,8 @@ See L<Mail::Message::Construct::Reply/"Constructing a message">
 
 =head2 The message
 
+See L<documentation in base class|Mail::Box::Net::Message/"The message">.
+ 
 =over 4
 
 =item $obj-E<gt>B<container>()
@@ -230,6 +242,8 @@ See L<Mail::Message/"The message">
 
 =head2 The header
 
+See L<documentation in base class|Mail::Box::Net::Message/"The header">.
+ 
 =over 4
 
 =item $obj-E<gt>B<bcc>()
@@ -292,6 +306,8 @@ See L<Mail::Message/"The header">
 
 =head2 The body
 
+See L<documentation in base class|Mail::Box::Net::Message/"The body">.
+ 
 =over 4
 
 =item $obj-E<gt>B<body>([BODY])
@@ -326,6 +342,8 @@ See L<Mail::Message/"The body">
 
 =head2 Flags
 
+See L<documentation in base class|Mail::Box::Net::Message/"Flags">.
+ 
 =over 4
 
 =item $obj-E<gt>B<delete>()
@@ -368,6 +386,8 @@ See L<Mail::Message/"Flags">
 
 =head2 The whole message as text
 
+See L<documentation in base class|Mail::Box::Net::Message/"The whole message as text">.
+ 
 =over 4
 
 =item $obj-E<gt>B<file>()
@@ -390,6 +410,8 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 
 =head2 Internals
 
+See L<documentation in base class|Mail::Box::Net::Message/"Internals">.
+ 
 =over 4
 
 =item $obj-E<gt>B<clonedFrom>()
@@ -440,6 +462,8 @@ See L<Mail::Message/"Internals">
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Box::Net::Message/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -510,6 +534,8 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Box::Net::Message/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
@@ -520,12 +546,12 @@ See L<Mail::Message/"Cleanup">
 
 See L<Mail::Box::Message/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>()
-
-See L<Mail::Reporter/"Cleanup">
-
 =back
 
+=head1 DETAILS
+
+See L<documentation in base class|Mail::Box::Net::Message/"DETAILS">.
+ 
 =head1 DIAGNOSTICS
 
 =over 4
@@ -592,12 +618,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

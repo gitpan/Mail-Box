@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Message::Replace::MailInternet - fake Mail::Internet
@@ -28,10 +30,18 @@ and many methods are added.
 Most methods will work without any change, but you may need to have
 a look at your L<smtpsend()|Mail::Message::Replace::MailInternet/"The body"> and L<send()|Mail::Message::Replace::MailInternet/"The message"> calls.
 
+See L<documentation in base class|Mail::Message/"DESCRIPTION">.
+ 
+=head1 OVERLOADED
+
 =head1 METHODS
 
+See L<documentation in base class|Mail::Message/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Message/"Constructors">.
+ 
 =over 4
 
 =item $obj-E<gt>B<clone>(OPTIONS)
@@ -146,6 +156,8 @@ Your email address.
 
 =head2 Constructing a message
 
+See L<documentation in base class|Mail::Message/"Constructing a message">.
+ 
 =over 4
 
 =item $obj-E<gt>B<add_signature>([FILENAME])
@@ -357,6 +369,8 @@ The signature in memory.
 
 =head2 The message
 
+See L<documentation in base class|Mail::Message/"The message">.
+ 
 =over 4
 
 =item $obj-E<gt>B<container>()
@@ -425,6 +439,8 @@ See L<Mail::Message/"The message">
 
 =head2 The header
 
+See L<documentation in base class|Mail::Message/"The header">.
+ 
 =over 4
 
 =item $obj-E<gt>B<add>(LINES)
@@ -546,6 +562,8 @@ See L<Mail::Message/"The header">
 
 =head2 The body
 
+See L<documentation in base class|Mail::Message/"The body">.
+ 
 =over 4
 
 =item $obj-E<gt>B<body>([ARRAY-OF-LINES|LIST-OF-LINES])
@@ -641,6 +659,8 @@ Removes blank lines from begin and end of the body.
 
 =head2 Flags
 
+See L<documentation in base class|Mail::Message/"Flags">.
+ 
 =over 4
 
 =item $obj-E<gt>B<deleted>([BOOLEAN])
@@ -679,6 +699,8 @@ See L<Mail::Message/"Flags">
 
 =head2 The whole message as text
 
+See L<documentation in base class|Mail::Message/"The whole message as text">.
+ 
 =over 4
 
 =item $obj-E<gt>B<as_mbox_string>()
@@ -720,6 +742,8 @@ nasty trick.
 
 =head2 Internals
 
+See L<documentation in base class|Mail::Message/"Internals">.
+ 
 =over 4
 
 =item $obj-E<gt>B<clonedFrom>()
@@ -764,6 +788,8 @@ See L<Mail::Message/"Internals">
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Message/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -834,6 +860,8 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Message/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
@@ -844,12 +872,12 @@ See L<Mail::Message/"Cleanup">
 
 See L<Mail::Message/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>()
-
-See L<Mail::Reporter/"Cleanup">
-
 =back
 
+=head1 DETAILS
+
+See L<documentation in base class|Mail::Message/"DETAILS">.
+ 
 =head1 DIAGNOSTICS
 
 =over 4
@@ -902,12 +930,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

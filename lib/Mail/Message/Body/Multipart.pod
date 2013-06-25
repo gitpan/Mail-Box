@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Message::Body::Multipart - body of a message with attachments
@@ -26,8 +28,12 @@ The body (content) of a message can be stored in various ways.  In this
 manual-page you find the description of extra functionality you have
 when a message contains attachments (parts).
 
+See L<documentation in base class|Mail::Message::Body/"DESCRIPTION">.
+ 
 =head1 OVERLOADED
 
+See L<documentation in base class|Mail::Message::Body/"OVERLOADED">.
+ 
 =over 4
 
 =item overload: B<"">()
@@ -50,8 +56,12 @@ See L<Mail::Message::Body/"OVERLOADED">
 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Message::Body/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Message::Body/"Constructors">.
+ 
 =over 4
 
 =item $obj-E<gt>B<clone>()
@@ -164,6 +174,8 @@ example:
 
 =head2 Constructing a body
 
+See L<documentation in base class|Mail::Message::Body/"Constructing a body">.
+ 
 =over 4
 
 =item $obj-E<gt>B<attach>(MESSAGES|BODIES)
@@ -251,6 +263,8 @@ See L<Mail::Message::Body::Encode/"Constructing a body">
 
 =head2 The body
 
+See L<documentation in base class|Mail::Message::Body/"The body">.
+ 
 =over 4
 
 =item $obj-E<gt>B<isDelayed>()
@@ -277,6 +291,8 @@ See L<Mail::Message::Body/"The body">
 
 =head2 About the payload
 
+See L<documentation in base class|Mail::Message::Body/"About the payload">.
+ 
 =over 4
 
 =item $obj-E<gt>B<charset>()
@@ -335,6 +351,8 @@ See L<Mail::Message::Body/"About the payload">
 
 =head2 Access to the payload
 
+See L<documentation in base class|Mail::Message::Body/"Access to the payload">.
+ 
 =over 4
 
 =item $obj-E<gt>B<boundary>([STRING])
@@ -423,6 +441,8 @@ See L<Mail::Message::Body/"Access to the payload">
 
 =head2 Internals
 
+See L<documentation in base class|Mail::Message::Body/"Internals">.
+ 
 =over 4
 
 =item $obj-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
@@ -471,6 +491,8 @@ See L<Mail::Message::Body/"Internals">
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Message::Body/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -531,18 +553,20 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Message::Body/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
 See L<Mail::Reporter/"Cleanup">
 
-=item $obj-E<gt>B<inGlobalDestruction>()
-
-See L<Mail::Reporter/"Cleanup">
-
 =back
 
+=head1 DETAILS
+
+See L<documentation in base class|Mail::Message::Body/"DETAILS">.
+ 
 =head1 DIAGNOSTICS
 
 =over 4
@@ -592,12 +616,12 @@ clearly not acceptible.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

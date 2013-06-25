@@ -1,14 +1,14 @@
-# Copyrights 2001-2012 by [Mark Overmeer].
+# Copyrights 2001-2013 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 2.00.
+# Pod stripped from pm file by OODoc 2.01.
 
 use strict;
 use warnings;
 
 package Mail::Box::Message;
 use vars '$VERSION';
-$VERSION = '2.107';
+$VERSION = '2.108';
 
 use base 'Mail::Message';
 
@@ -27,8 +27,6 @@ sub init($)
     return $self if $self->isDummy;
     $self;
 }
-
-#-------------------------------------------
 
 sub head(;$)
 {   my $self  = shift;
@@ -122,7 +120,5 @@ sub destruct()
 {   require Mail::Box::Message::Destructed;
     Mail::Box::Message::Destructed->coerce(shift);
 }
-
-#-------------------------------------------
 
 1;

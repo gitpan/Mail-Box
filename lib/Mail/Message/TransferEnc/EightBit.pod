@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Message::TransferEnc::EightBit - encode/decode 8bit message bodies
@@ -30,128 +32,12 @@ RFC-2045 Section 2.8 defines legal `8bit' data:
 As you can safely conclude: decoding of these bodies is no work
 at all.
 
+See L<documentation in base class|Mail::Message::TransferEnc/"DESCRIPTION">.
+ 
 =head1 METHODS
 
-=head2 Constructors
-
-=over 4
-
-=item Mail::Message::TransferEnc::EightBit-E<gt>B<new>(OPTIONS)
-
-See L<Mail::Reporter/"Constructors">
-
-=back
-
-=head2 The Encoder
-
-=over 4
-
-=item Mail::Message::TransferEnc::EightBit-E<gt>B<addTransferEncoder>(TYPE, CLASS)
-
-See L<Mail::Message::TransferEnc/"The Encoder">
-
-=item $obj-E<gt>B<create>(TYPE, OPTIONS)
-
-See L<Mail::Message::TransferEnc/"The Encoder">
-
-=item $obj-E<gt>B<name>()
-
-See L<Mail::Message::TransferEnc/"The Encoder">
-
-=back
-
-=head2 Encoding
-
-=over 4
-
-=item $obj-E<gt>B<check>(BODY, OPTIONS)
-
-See L<Mail::Message::TransferEnc/"Encoding">
-
-=item $obj-E<gt>B<decode>(BODY [, OPTIONS])
-
-See L<Mail::Message::TransferEnc/"Encoding">
-
-=item $obj-E<gt>B<encode>(BODY, OPTIONS)
-
-See L<Mail::Message::TransferEnc/"Encoding">
-
-=back
-
-=head2 Error handling
-
-=over 4
-
-=item $obj-E<gt>B<AUTOLOAD>()
-
-See L<Mail::Reporter/"Error handling">
-
-=item $obj-E<gt>B<addReport>(OBJECT)
-
-See L<Mail::Reporter/"Error handling">
-
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
-
-=item Mail::Message::TransferEnc::EightBit-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
-
-See L<Mail::Reporter/"Error handling">
-
-=item $obj-E<gt>B<errors>()
-
-See L<Mail::Reporter/"Error handling">
-
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
-
-=item Mail::Message::TransferEnc::EightBit-E<gt>B<log>([LEVEL [,STRINGS]])
-
-See L<Mail::Reporter/"Error handling">
-
-=item $obj-E<gt>B<logPriority>(LEVEL)
-
-=item Mail::Message::TransferEnc::EightBit-E<gt>B<logPriority>(LEVEL)
-
-See L<Mail::Reporter/"Error handling">
-
-=item $obj-E<gt>B<logSettings>()
-
-See L<Mail::Reporter/"Error handling">
-
-=item $obj-E<gt>B<notImplemented>()
-
-See L<Mail::Reporter/"Error handling">
-
-=item $obj-E<gt>B<report>([LEVEL])
-
-See L<Mail::Reporter/"Error handling">
-
-=item $obj-E<gt>B<reportAll>([LEVEL])
-
-See L<Mail::Reporter/"Error handling">
-
-=item $obj-E<gt>B<trace>([LEVEL])
-
-See L<Mail::Reporter/"Error handling">
-
-=item $obj-E<gt>B<warnings>()
-
-See L<Mail::Reporter/"Error handling">
-
-=back
-
-=head2 Cleanup
-
-=over 4
-
-=item $obj-E<gt>B<DESTROY>()
-
-See L<Mail::Reporter/"Cleanup">
-
-=item $obj-E<gt>B<inGlobalDestruction>()
-
-See L<Mail::Reporter/"Cleanup">
-
-=back
-
+See L<documentation in base class|Mail::Message::TransferEnc/"METHODS">.
+ 
 =head1 DIAGNOSTICS
 
 =over 4
@@ -177,12 +63,12 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 Mail::Box::Parser::Perl - reading messages from file using Perl
@@ -8,6 +10,8 @@ Mail::Box::Parser::Perl - reading messages from file using Perl
    is a Mail::Box::Parser
    is a Mail::Reporter
 
+=head1 SYNOPSIS
+
 =head1 DESCRIPTION
 
 The C<Mail::Box::Parser::Perl> implements parsing of messages
@@ -15,10 +19,16 @@ in Perl.  This may be a little slower than the C<C> based parser
 Mail::Box::Parser::C, but will also work on platforms where no C
 compiler is available.
 
+See L<documentation in base class|Mail::Box::Parser/"DESCRIPTION">.
+ 
 =head1 METHODS
 
+See L<documentation in base class|Mail::Box::Parser/"METHODS">.
+ 
 =head2 Constructors
 
+See L<documentation in base class|Mail::Box::Parser/"Constructors">.
+ 
 =over 4
 
 =item Mail::Box::Parser::Perl-E<gt>B<new>(OPTIONS)
@@ -62,6 +72,8 @@ tests.  Related to L<Mail::Box::new(trusted)|Mail::Box/"Constructors">.
 
 =head2 The parser
 
+See L<documentation in base class|Mail::Box::Parser/"The parser">.
+ 
 =over 4
 
 =item $obj-E<gt>B<fileChanged>()
@@ -99,6 +111,8 @@ See L<Mail::Box::Parser/"The parser">
 
 =head2 Parsing
 
+See L<documentation in base class|Mail::Box::Parser/"Parsing">.
+ 
 =over 4
 
 =item $obj-E<gt>B<bodyAsFile>(FILEHANDLE [,CHARS [,LINES]])
@@ -143,6 +157,8 @@ See L<Mail::Box::Parser/"Parsing">
 
 =head2 Internals
 
+See L<documentation in base class|Mail::Box::Parser/"Internals">.
+ 
 =over 4
 
 =item $obj-E<gt>B<closeFile>()
@@ -167,6 +183,8 @@ See L<Mail::Box::Parser/"Internals">
 
 =head2 Error handling
 
+See L<documentation in base class|Mail::Box::Parser/"Error handling">.
+ 
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
@@ -227,13 +245,11 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
+See L<documentation in base class|Mail::Box::Parser/"Cleanup">.
+ 
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
-
-See L<Mail::Reporter/"Cleanup">
-
-=item $obj-E<gt>B<inGlobalDestruction>()
 
 See L<Mail::Reporter/"Cleanup">
 
@@ -280,12 +296,12 @@ The erroneous line will be added to the preceding field.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.107,
-built on November 28, 2012. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.108,
+built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
