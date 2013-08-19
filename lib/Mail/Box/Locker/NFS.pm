@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::Locker::NFS;
 use vars '$VERSION';
-$VERSION = '2.108';
+$VERSION = '2.109';
 
 use base 'Mail::Box::Locker';
 

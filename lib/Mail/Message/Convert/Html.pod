@@ -26,15 +26,15 @@ The package contains various translators which handle HTML or XHTML
 without the help of external modules.  There are more HTML related modules,
 which do require extra packages to be installed.
 
-See L<documentation in base class|Mail::Message::Convert/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Message::Convert/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in base class|Mail::Message::Convert/"METHODS">.
+See L<documentation in the base class|Mail::Message::Convert/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Message::Convert/"Constructors">.
+See L<documentation in the base class|Mail::Message::Convert/"Constructors">.
  
 =over 4
 
@@ -70,7 +70,7 @@ html browsers will usually accept the XHTML data.
 
 =head2 Converting
 
-See L<documentation in base class|Mail::Message::Convert/"Converting">.
+See L<documentation in the base class|Mail::Message::Convert/"Converting">.
  
 =over 4
 
@@ -139,7 +139,7 @@ context, the resulting lines are returned as one.
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Message::Convert/"Error handling">.
+See L<documentation in the base class|Mail::Message::Convert/"Error handling">.
  
 =over 4
 
@@ -201,7 +201,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Message::Convert/"Cleanup">.
+See L<documentation in the base class|Mail::Message::Convert/"Cleanup">.
  
 =over 4
 
@@ -227,8 +227,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

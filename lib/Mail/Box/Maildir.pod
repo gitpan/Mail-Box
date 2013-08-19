@@ -24,11 +24,11 @@ can do with the Maildir folder object C<Mail::Box::Maildir>.
 Maildir is B<not supported for Windows>, because it create filenames
 which are not accepted by the Windows system.
 
-See L<documentation in base class|Mail::Box::Dir/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Box::Dir/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in base class|Mail::Box::Dir/"OVERLOADED">.
+See L<documentation in the base class|Mail::Box::Dir/"OVERLOADED">.
  
 =over 4
 
@@ -48,11 +48,11 @@ See L<Mail::Box/"OVERLOADED">
 
 =head1 METHODS
 
-See L<documentation in base class|Mail::Box::Dir/"METHODS">.
+See L<documentation in the base class|Mail::Box::Dir/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Box::Dir/"Constructors">.
+See L<documentation in the base class|Mail::Box::Dir/"Constructors">.
  
 =over 4
 
@@ -157,7 +157,7 @@ to call L<acceptMessages()|Mail::Box::Maildir/"Internals"> or L<Mail::Box::Maild
 
 =head2 The folder
 
-See L<documentation in base class|Mail::Box::Dir/"The folder">.
+See L<documentation in the base class|Mail::Box::Dir/"The folder">.
  
 =over 4
 
@@ -221,7 +221,7 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
-See L<documentation in base class|Mail::Box::Dir/"Folder flags">.
+See L<documentation in the base class|Mail::Box::Dir/"Folder flags">.
  
 =over 4
 
@@ -245,7 +245,7 @@ See L<Mail::Box/"Folder flags">
 
 =head2 The messages
 
-See L<documentation in base class|Mail::Box::Dir/"The messages">.
+See L<documentation in the base class|Mail::Box::Dir/"The messages">.
  
 =over 4
 
@@ -289,7 +289,7 @@ See L<Mail::Box/"The messages">
 
 =head2 Sub-folders
 
-See L<documentation in base class|Mail::Box::Dir/"Sub-folders">.
+See L<documentation in the base class|Mail::Box::Dir/"Sub-folders">.
  
 =over 4
 
@@ -323,7 +323,7 @@ See L<Mail::Box/"Sub-folders">
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Box::Dir/"Internals">.
+See L<documentation in the base class|Mail::Box::Dir/"Internals">.
  
 =over 4
 
@@ -431,7 +431,7 @@ See L<Mail::Box/"Internals">
 
 =head2 Other methods
 
-See L<documentation in base class|Mail::Box::Dir/"Other methods">.
+See L<documentation in the base class|Mail::Box::Dir/"Other methods">.
  
 =over 4
 
@@ -445,7 +445,7 @@ See L<Mail::Box/"Other methods">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Box::Dir/"Error handling">.
+See L<documentation in the base class|Mail::Box::Dir/"Error handling">.
  
 =over 4
 
@@ -507,7 +507,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Box::Dir/"Cleanup">.
+See L<documentation in the base class|Mail::Box::Dir/"Cleanup">.
  
 =over 4
 
@@ -522,19 +522,19 @@ See L<Mail::Box/"Cleanup">
 The explanation is complicated, but for normal use you should bother
 yourself with all details.
 
-See L<documentation in base class|Mail::Box::Dir/"DETAILS">.
+See L<documentation in the base class|Mail::Box::Dir/"DETAILS">.
  
 =head2 Different kinds of folders
 
-See L<documentation in base class|Mail::Box::Dir/"Different kinds of folders">.
+See L<documentation in the base class|Mail::Box::Dir/"Different kinds of folders">.
  
 =head2 Available folder types
 
-See L<documentation in base class|Mail::Box::Dir/"Available folder types">.
+See L<documentation in the base class|Mail::Box::Dir/"Available folder types">.
  
 =head2 Folder class implementation
 
-See L<documentation in base class|Mail::Box::Dir/"Folder class implementation">.
+See L<documentation in the base class|Mail::Box::Dir/"Folder class implementation">.
  
 =head2 How MAILDIR folders work
 
@@ -655,8 +655,8 @@ were changes made.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

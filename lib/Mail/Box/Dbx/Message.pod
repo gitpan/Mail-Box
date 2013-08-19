@@ -19,15 +19,15 @@ Mail::Box::Dbx::Message - one message in a Dbx folder
 
 =head1 DESCRIPTION
 
-See L<documentation in base class|Mail::Box::File::Message/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Box::File::Message/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in base class|Mail::Box::File::Message/"METHODS">.
+See L<documentation in the base class|Mail::Box::File::Message/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Box::File::Message/"Constructors">.
+See L<documentation in the base class|Mail::Box::File::Message/"Constructors">.
  
 =over 4
 
@@ -62,7 +62,7 @@ See L<Mail::Message/"Constructors">
 
 =item account_name => STRING
 
-The string representation of the account which was used to retreive the
+The string representation of the account which was used to retrieve the
 message.
 
 =item account_nr => INTEGER
@@ -114,7 +114,7 @@ I<seen>.  Folders store this flag in different ways.
 
 =head2 Constructing a message
 
-See L<documentation in base class|Mail::Box::File::Message/"Constructing a message">.
+See L<documentation in the base class|Mail::Box::File::Message/"Constructing a message">.
  
 =over 4
 
@@ -188,7 +188,7 @@ See L<Mail::Message::Construct::Reply/"Constructing a message">
 
 =head2 The message
 
-See L<documentation in base class|Mail::Box::File::Message/"The message">.
+See L<documentation in the base class|Mail::Box::File::Message/"The message">.
  
 =over 4
 
@@ -264,7 +264,7 @@ See L<Mail::Box::File::Message/"METHODS">
 
 =head2 The header
 
-See L<documentation in base class|Mail::Box::File::Message/"The header">.
+See L<documentation in the base class|Mail::Box::File::Message/"The header">.
  
 =over 4
 
@@ -328,7 +328,7 @@ See L<Mail::Message/"The header">
 
 =head2 The body
 
-See L<documentation in base class|Mail::Box::File::Message/"The body">.
+See L<documentation in the base class|Mail::Box::File::Message/"The body">.
  
 =over 4
 
@@ -364,7 +364,7 @@ See L<Mail::Message/"The body">
 
 =head2 Flags
 
-See L<documentation in base class|Mail::Box::File::Message/"Flags">.
+See L<documentation in the base class|Mail::Box::File::Message/"Flags">.
  
 =over 4
 
@@ -408,7 +408,7 @@ See L<Mail::Message/"Flags">
 
 =head2 The whole message as text
 
-See L<documentation in base class|Mail::Box::File::Message/"The whole message as text">.
+See L<documentation in the base class|Mail::Box::File::Message/"The whole message as text">.
  
 =over 4
 
@@ -432,7 +432,7 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Box::File::Message/"Internals">.
+See L<documentation in the base class|Mail::Box::File::Message/"Internals">.
  
 =over 4
 
@@ -492,7 +492,7 @@ See L<Mail::Message/"Internals">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Box::File::Message/"Error handling">.
+See L<documentation in the base class|Mail::Box::File::Message/"Error handling">.
  
 =over 4
 
@@ -564,7 +564,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Box::File::Message/"Cleanup">.
+See L<documentation in the base class|Mail::Box::File::Message/"Cleanup">.
  
 =over 4
 
@@ -584,13 +584,13 @@ See L<Mail::Box::Message/"Cleanup">
 
 =item $obj-E<gt>B<accountName>()
 
-Returns the Outlook Express account name which was used to retreive
+Returns the Outlook Express account name which was used to retrieve
 this message, represented as a string.  The L<accountNr()|Mail::Box::Dbx::Message/"The flags"> returns
 a numerical representation of the same fact.
 
 =item $obj-E<gt>B<accountNr>()
 
-Returns the Outlook Express account name which was used to retreive
+Returns the Outlook Express account name which was used to retrieve
 this message, represented as a number.  The L<accountName()|Mail::Box::Dbx::Message/"The flags"> returns
 a string representation of the same fact.
 
@@ -598,7 +598,7 @@ a string representation of the same fact.
 
 =head1 DETAILS
 
-See L<documentation in base class|Mail::Box::File::Message/"DETAILS">.
+See L<documentation in the base class|Mail::Box::File::Message/"DETAILS">.
  
 =head1 DIAGNOSTICS
 
@@ -666,8 +666,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

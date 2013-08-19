@@ -22,11 +22,11 @@ any way.  RFC2822 defines some unstructured fields, but by default all
 unknown fields are unstructured as well.  Things like attributes and
 comments have no meaning for unstructured fields, but encoding does.
 
-See L<documentation in base class|Mail::Message::Field::Full/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Message::Field::Full/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in base class|Mail::Message::Field::Full/"OVERLOADED">.
+See L<documentation in the base class|Mail::Message::Field::Full/"OVERLOADED">.
  
 =over 4
 
@@ -58,11 +58,11 @@ See L<Mail::Message::Field::Full/"OVERLOADED">
 
 =head1 METHODS
 
-See L<documentation in base class|Mail::Message::Field::Full/"METHODS">.
+See L<documentation in the base class|Mail::Message::Field::Full/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Message::Field::Full/"Constructors">.
+See L<documentation in the base class|Mail::Message::Field::Full/"Constructors">.
  
 =over 4
 
@@ -125,7 +125,7 @@ example:
 
 =head2 The field
 
-See L<documentation in base class|Mail::Message::Field::Full/"The field">.
+See L<documentation in the base class|Mail::Message::Field::Full/"The field">.
  
 =over 4
 
@@ -163,7 +163,7 @@ See L<Mail::Message::Field/"The field">
 
 =head2 Access to the name
 
-See L<documentation in base class|Mail::Message::Field::Full/"Access to the name">.
+See L<documentation in the base class|Mail::Message::Field::Full/"Access to the name">.
  
 =over 4
 
@@ -183,7 +183,7 @@ See L<Mail::Message::Field/"Access to the name">
 
 =head2 Access to the body
 
-See L<documentation in base class|Mail::Message::Field::Full/"Access to the body">.
+See L<documentation in the base class|Mail::Message::Field::Full/"Access to the body">.
  
 =over 4
 
@@ -217,7 +217,7 @@ See L<Mail::Message::Field/"Access to the body">
 
 =head2 Access to the content
 
-See L<documentation in base class|Mail::Message::Field::Full/"Access to the content">.
+See L<documentation in the base class|Mail::Message::Field::Full/"Access to the content">.
  
 =over 4
 
@@ -271,7 +271,7 @@ See L<Mail::Message::Field/"Access to the content">
 
 =head2 Other methods
 
-See L<documentation in base class|Mail::Message::Field::Full/"Other methods">.
+See L<documentation in the base class|Mail::Message::Field::Full/"Other methods">.
  
 =over 4
 
@@ -285,7 +285,7 @@ See L<Mail::Message::Field/"Other methods">
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Message::Field::Full/"Internals">.
+See L<documentation in the base class|Mail::Message::Field::Full/"Internals">.
  
 =over 4
 
@@ -329,7 +329,7 @@ See L<Mail::Message::Field/"Internals">
 
 =head2 Parsing
 
-See L<documentation in base class|Mail::Message::Field::Full/"Parsing">.
+See L<documentation in the base class|Mail::Message::Field::Full/"Parsing">.
  
 =over 4
 
@@ -361,7 +361,7 @@ See L<Mail::Message::Field::Full/"Parsing">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Message::Field::Full/"Error handling">.
+See L<documentation in the base class|Mail::Message::Field::Full/"Error handling">.
  
 =over 4
 
@@ -423,7 +423,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Message::Field::Full/"Cleanup">.
+See L<documentation in the base class|Mail::Message::Field::Full/"Cleanup">.
  
 =over 4
 
@@ -435,7 +435,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DETAILS
 
-See L<documentation in base class|Mail::Message::Field::Full/"DETAILS">.
+See L<documentation in the base class|Mail::Message::Field::Full/"DETAILS">.
  
 =head1 DIAGNOSTICS
 
@@ -482,8 +482,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -47,11 +47,11 @@ messages.
 When you try to create constructs which are not allowed for a certain
 kind of field, you will be warned.
 
-See L<documentation in base class|Mail::Message::Field::Structured/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Message::Field::Structured/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in base class|Mail::Message::Field::Structured/"OVERLOADED">.
+See L<documentation in the base class|Mail::Message::Field::Structured/"OVERLOADED">.
  
 =over 4
 
@@ -83,11 +83,11 @@ See L<Mail::Message::Field::Full/"OVERLOADED">
 
 =head1 METHODS
 
-See L<documentation in base class|Mail::Message::Field::Structured/"METHODS">.
+See L<documentation in the base class|Mail::Message::Field::Structured/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Message::Field::Structured/"Constructors">.
+See L<documentation in the base class|Mail::Message::Field::Structured/"Constructors">.
  
 =over 4
 
@@ -135,7 +135,7 @@ See L<Mail::Message::Field::Full/"Constructors">
 
 =head2 The field
 
-See L<documentation in base class|Mail::Message::Field::Structured/"The field">.
+See L<documentation in the base class|Mail::Message::Field::Structured/"The field">.
  
 =over 4
 
@@ -173,7 +173,7 @@ See L<Mail::Message::Field/"The field">
 
 =head2 Access to the name
 
-See L<documentation in base class|Mail::Message::Field::Structured/"Access to the name">.
+See L<documentation in the base class|Mail::Message::Field::Structured/"Access to the name">.
  
 =over 4
 
@@ -193,7 +193,7 @@ See L<Mail::Message::Field/"Access to the name">
 
 =head2 Access to the body
 
-See L<documentation in base class|Mail::Message::Field::Structured/"Access to the body">.
+See L<documentation in the base class|Mail::Message::Field::Structured/"Access to the body">.
  
 =over 4
 
@@ -227,7 +227,7 @@ See L<Mail::Message::Field/"Access to the body">
 
 =head2 Access to the content
 
-See L<documentation in base class|Mail::Message::Field::Structured/"Access to the content">.
+See L<documentation in the base class|Mail::Message::Field::Structured/"Access to the content">.
  
 =over 4
 
@@ -342,7 +342,7 @@ See L<Mail::Message::Field/"Access to the content">
 
 =head2 Other methods
 
-See L<documentation in base class|Mail::Message::Field::Structured/"Other methods">.
+See L<documentation in the base class|Mail::Message::Field::Structured/"Other methods">.
  
 =over 4
 
@@ -356,7 +356,7 @@ See L<Mail::Message::Field/"Other methods">
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Message::Field::Structured/"Internals">.
+See L<documentation in the base class|Mail::Message::Field::Structured/"Internals">.
  
 =over 4
 
@@ -400,7 +400,7 @@ See L<Mail::Message::Field/"Internals">
 
 =head2 Parsing
 
-See L<documentation in base class|Mail::Message::Field::Structured/"Parsing">.
+See L<documentation in the base class|Mail::Message::Field::Structured/"Parsing">.
  
 =over 4
 
@@ -447,7 +447,7 @@ See L<Mail::Message::Field::Full/"Parsing">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Message::Field::Structured/"Error handling">.
+See L<documentation in the base class|Mail::Message::Field::Structured/"Error handling">.
  
 =over 4
 
@@ -509,7 +509,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Message::Field::Structured/"Cleanup">.
+See L<documentation in the base class|Mail::Message::Field::Structured/"Cleanup">.
  
 =over 4
 
@@ -521,7 +521,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DETAILS
 
-See L<documentation in base class|Mail::Message::Field::Structured/"DETAILS">.
+See L<documentation in the base class|Mail::Message::Field::Structured/"DETAILS">.
  
 =head1 DIAGNOSTICS
 
@@ -573,8 +573,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

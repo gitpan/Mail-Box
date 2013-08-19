@@ -37,11 +37,11 @@ module, and solving those is outside the scope of MailBox.  See
 F<http://rt.cpan.org/Public/Dist/Display.html?Name=Mail-IMAPClient>
 for all the reported bugs.
 
-See L<documentation in base class|Mail::Transport::Receive/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Transport::Receive/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in base class|Mail::Transport::Receive/"METHODS">.
+See L<documentation in the base class|Mail::Transport::Receive/"METHODS">.
  
 =over 4
 
@@ -53,7 +53,7 @@ Represent this imap4 connection as URL.
 
 =head2 Constructors
 
-See L<documentation in base class|Mail::Transport::Receive/"Constructors">.
+See L<documentation in the base class|Mail::Transport::Receive/"Constructors">.
  
 =over 4
 
@@ -108,7 +108,7 @@ the OBJECT to have the accessors to produce correct results. The OBJECT
 shall be a L<Mail::IMAPClient|Mail::IMAPClient>.
 
 When a CLASS is given, an object of that type is created for you.  The created
-object can be retreived via L<imapClient()|Mail::Transport::IMAP4/"Protocol [internals]">, and than configured as
+object can be retrieved via L<imapClient()|Mail::Transport::IMAP4/"Protocol [internals]">, and than configured as
 defined by L<Mail::IMAPClient|Mail::IMAPClient>.
 
 =item interval => SECONDS
@@ -141,7 +141,7 @@ tart Transport Security Layer (TLS).
 
 =head2 Receiving mail
 
-See L<documentation in base class|Mail::Transport::Receive/"Receiving mail">.
+See L<documentation in the base class|Mail::Transport::Receive/"Receiving mail">.
  
 =over 4
 
@@ -153,7 +153,7 @@ See L<Mail::Transport::Receive/"Receiving mail">
 
 =head2 Server connection
 
-See L<documentation in base class|Mail::Transport::Receive/"Server connection">.
+See L<documentation in the base class|Mail::Transport::Receive/"Server connection">.
  
 =over 4
 
@@ -354,7 +354,7 @@ the IMAP server.  These values may be cached in a different way.
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Transport::Receive/"Error handling">.
+See L<documentation in the base class|Mail::Transport::Receive/"Error handling">.
  
 =over 4
 
@@ -416,7 +416,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Transport::Receive/"Cleanup">.
+See L<documentation in the base class|Mail::Transport::Receive/"Cleanup">.
  
 =over 4
 
@@ -453,8 +453,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

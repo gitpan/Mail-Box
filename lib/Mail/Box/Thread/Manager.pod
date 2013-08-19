@@ -38,15 +38,15 @@ and speed), it also can maintain threads from messages residing in different
 opened folders.  Both facilities are rare for mail-agents.  The manager
 creates flexible trees with L<Mail::Box::Thread::Node|Mail::Box::Thread::Node> objects.
 
-See L<documentation in base class|Mail::Reporter/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Reporter/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in base class|Mail::Reporter/"METHODS">.
+See L<documentation in the base class|Mail::Reporter/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Reporter/"Constructors">.
+See L<documentation in the base class|Mail::Reporter/"Constructors">.
  
 =over 4
 
@@ -269,7 +269,7 @@ this object, if this folder is maintained by this thread-manager.
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Reporter/"Error handling">.
+See L<documentation in the base class|Mail::Reporter/"Error handling">.
  
 =over 4
 
@@ -331,7 +331,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Reporter/"Cleanup">.
+See L<documentation in the base class|Mail::Reporter/"Cleanup">.
  
 =over 4
 
@@ -442,8 +442,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

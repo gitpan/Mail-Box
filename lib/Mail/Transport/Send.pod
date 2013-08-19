@@ -70,15 +70,15 @@ known to have exploitable security breaches.
 
 =back
 
-See L<documentation in base class|Mail::Transport/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Transport/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in base class|Mail::Transport/"METHODS">.
+See L<documentation in the base class|Mail::Transport/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Transport/"Constructors">.
+See L<documentation in the base class|Mail::Transport/"Constructors">.
  
 =over 4
 
@@ -198,7 +198,7 @@ the exit status of the command which was started.
 
 =head2 Server connection
 
-See L<documentation in base class|Mail::Transport/"Server connection">.
+See L<documentation in the base class|Mail::Transport/"Server connection">.
  
 =over 4
 
@@ -218,7 +218,7 @@ See L<Mail::Transport/"Server connection">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Transport/"Error handling">.
+See L<documentation in the base class|Mail::Transport/"Error handling">.
  
 =over 4
 
@@ -280,7 +280,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Transport/"Cleanup">.
+See L<documentation in the base class|Mail::Transport/"Cleanup">.
  
 =over 4
 
@@ -331,8 +331,8 @@ but only receive message.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

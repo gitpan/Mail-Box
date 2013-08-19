@@ -30,7 +30,7 @@ Many header fields can contain e-mail addresses.  Each e-mail address
 can be represented by an object of this class.  These objects will
 handle interpretation and character set encoding and decoding for you.
 
-See L<documentation in base class|Mail::Identity/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Identity/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
@@ -54,11 +54,11 @@ representation of the e-mail address, just like L<string()|Mail::Message::Field:
 
 =head1 METHODS
 
-See L<documentation in base class|Mail::Identity/"METHODS">.
+See L<documentation in the base class|Mail::Identity/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Identity/"Constructors">.
+See L<documentation in the base class|Mail::Identity/"Constructors">.
  
 =over 4
 
@@ -91,7 +91,7 @@ one is taken at random.
 
 =head2 Attributes
 
-See L<documentation in base class|Mail::Identity/"Attributes">.
+See L<documentation in the base class|Mail::Identity/"Attributes">.
  
 =over 4
 
@@ -143,7 +143,7 @@ See L<Mail::Identity/"Attributes">
 
 =head2 Collections
 
-See L<documentation in base class|Mail::Identity/"Collections">.
+See L<documentation in the base class|Mail::Identity/"Collections">.
  
 =over 4
 
@@ -253,8 +253,8 @@ The collection with $name does not exist and can not be created.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

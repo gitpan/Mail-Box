@@ -32,11 +32,11 @@ or sometimes it is not used at all.  You then can decide to remove most
 of the header information.  However, be warned that it will be lost
 permanently: the header (and therefore the message) gets mutulated!
 
-See L<documentation in base class|Mail::Message::Head::Complete/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in base class|Mail::Message::Head::Complete/"OVERLOADED">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"OVERLOADED">.
  
 =over 4
 
@@ -52,11 +52,11 @@ See L<Mail::Message::Head/"OVERLOADED">
 
 =head1 METHODS
 
-See L<documentation in base class|Mail::Message::Head::Complete/"METHODS">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Message::Head::Complete/"Constructors">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"Constructors">.
  
 =over 4
 
@@ -76,7 +76,7 @@ See L<Mail::Message::Head/"Constructors">
 
 =head2 The header
 
-See L<documentation in base class|Mail::Message::Head::Complete/"The header">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"The header">.
  
 =over 4
 
@@ -124,7 +124,7 @@ See L<Mail::Message::Head::Complete/"The header">
 
 =head2 Access to the header
 
-See L<documentation in base class|Mail::Message::Head::Complete/"Access to the header">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"Access to the header">.
  
 =over 4
 
@@ -287,7 +287,7 @@ See L<Mail::Message::Head/"Access to the header">
 
 =head2 About the body
 
-See L<documentation in base class|Mail::Message::Head::Complete/"About the body">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"About the body">.
  
 =over 4
 
@@ -315,7 +315,7 @@ See L<Mail::Message::Head::Complete/"About the body">
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Message::Head::Complete/"Internals">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"Internals">.
  
 =over 4
 
@@ -365,7 +365,7 @@ See L<Mail::Message::Head/"Internals">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Message::Head::Complete/"Error handling">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"Error handling">.
  
 =over 4
 
@@ -427,7 +427,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Message::Head::Complete/"Cleanup">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"Cleanup">.
  
 =over 4
 
@@ -439,19 +439,19 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DETAILS
 
-See L<documentation in base class|Mail::Message::Head::Complete/"DETAILS">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"DETAILS">.
  
 =head2 Ordered header fields
 
-See L<documentation in base class|Mail::Message::Head::Complete/"Ordered header fields">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"Ordered header fields">.
  
 =head2 Head class implementation
 
-See L<documentation in base class|Mail::Message::Head::Complete/"Head class implementation">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"Head class implementation">.
  
 =head2 Subsets of header fields
 
-See L<documentation in base class|Mail::Message::Head::Complete/"Subsets of header fields">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"Subsets of header fields">.
  
 =head2 Reducing the header size
 
@@ -496,8 +496,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

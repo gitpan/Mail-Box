@@ -41,11 +41,11 @@ the SEARCH request.  Not implemented yet... looking for a volunteer.
 
 =back
 
-See L<documentation in base class|Mail::Server/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Server/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in base class|Mail::Server/"METHODS">.
+See L<documentation in the base class|Mail::Server/"METHODS">.
  
 =head1 DETAILS
 
@@ -57,7 +57,7 @@ See
 
 =back
 
-See L<documentation in base class|Mail::Server/"DETAILS">.
+See L<documentation in the base class|Mail::Server/"DETAILS">.
  
 =head1 DIAGNOSTICS
 
@@ -75,8 +75,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

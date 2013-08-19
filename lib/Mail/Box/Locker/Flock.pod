@@ -24,15 +24,15 @@ is reading.
 File locking does not work in some situations, for instance for
 operating systems do not support C<flock>.
 
-See L<documentation in base class|Mail::Box::Locker/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Box::Locker/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in base class|Mail::Box::Locker/"METHODS">.
+See L<documentation in the base class|Mail::Box::Locker/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Box::Locker/"Constructors">.
+See L<documentation in the base class|Mail::Box::Locker/"Constructors">.
  
 =over 4
 
@@ -69,7 +69,7 @@ See L<documentation in base class|Mail::Box::Locker/"Constructors">.
 
 =head2 The Locker
 
-See L<documentation in base class|Mail::Box::Locker/"The Locker">.
+See L<documentation in the base class|Mail::Box::Locker/"The Locker">.
  
 =over 4
 
@@ -89,7 +89,7 @@ See L<Mail::Box::Locker/"The Locker">
 
 =head2 Locking
 
-See L<documentation in base class|Mail::Box::Locker/"Locking">.
+See L<documentation in the base class|Mail::Box::Locker/"Locking">.
  
 =over 4
 
@@ -109,7 +109,7 @@ See L<Mail::Box::Locker/"Locking">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Box::Locker/"Error handling">.
+See L<documentation in the base class|Mail::Box::Locker/"Error handling">.
  
 =over 4
 
@@ -171,7 +171,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Box::Locker/"Cleanup">.
+See L<documentation in the base class|Mail::Box::Locker/"Cleanup">.
  
 =over 4
 
@@ -220,8 +220,8 @@ try again.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -41,15 +41,15 @@ Regular Expression and Print".  Although you can search using regular
 expressions (the Perl way of them), you do not have to print those as
 result.
 
-See L<documentation in base class|Mail::Box::Search/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Box::Search/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in base class|Mail::Box::Search/"METHODS">.
+See L<documentation in the base class|Mail::Box::Search/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Box::Search/"Constructors">.
+See L<documentation in the base class|Mail::Box::Search/"Constructors">.
  
 =over 4
 
@@ -155,7 +155,7 @@ both formats.
 
 =head2 Searching
 
-See L<documentation in base class|Mail::Box::Search/"Searching">.
+See L<documentation in the base class|Mail::Box::Search/"Searching">.
  
 =over 4
 
@@ -179,7 +179,7 @@ See L<Mail::Box::Search/"Searching">
 
 =head2 The Results
 
-See L<documentation in base class|Mail::Box::Search/"The Results">.
+See L<documentation in the base class|Mail::Box::Search/"The Results">.
  
 =over 4
 
@@ -193,7 +193,7 @@ See L<documentation in base class|Mail::Box::Search/"The Results">.
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Box::Search/"Error handling">.
+See L<documentation in the base class|Mail::Box::Search/"Error handling">.
  
 =over 4
 
@@ -255,7 +255,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Box::Search/"Cleanup">.
+See L<documentation in the base class|Mail::Box::Search/"Cleanup">.
  
 =over 4
 
@@ -281,8 +281,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Box::Manage::User;
 use vars '$VERSION';
-$VERSION = '2.108';
+$VERSION = '2.109';
 
 use base 'Mail::Box::Manager';
 

@@ -32,15 +32,15 @@ this extension will add knowledge about some related person.  At the
 same time, it will try to cache some information about that person's
 folder files.
 
-See L<documentation in base class|Mail::Box::Manager/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Box::Manager/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in base class|Mail::Box::Manager/"METHODS">.
+See L<documentation in the base class|Mail::Box::Manager/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Box::Manager/"Constructors">.
+See L<documentation in the base class|Mail::Box::Manager/"Constructors">.
  
 =over 4
 
@@ -112,7 +112,7 @@ The name of the user's inbox.
 
 =head2 Attributes
 
-See L<documentation in base class|Mail::Box::Manager/"Attributes">.
+See L<documentation in the base class|Mail::Box::Manager/"Attributes">.
  
 =over 4
 
@@ -146,7 +146,7 @@ See L<Mail::Box::Manager/"Attributes">
 
 =head2 Manage open folders
 
-See L<documentation in base class|Mail::Box::Manager/"Manage open folders">.
+See L<documentation in the base class|Mail::Box::Manager/"Manage open folders">.
  
 =over 4
 
@@ -174,7 +174,7 @@ See L<Mail::Box::Manager/"Manage open folders">
 
 =head2 Manage existing folders
 
-See L<documentation in base class|Mail::Box::Manager/"Manage existing folders">.
+See L<documentation in the base class|Mail::Box::Manager/"Manage existing folders">.
  
 =over 4
 
@@ -277,7 +277,7 @@ Returns the top folder of the user's mailbox storage.
 
 =head2 Move messages to folders
 
-See L<documentation in base class|Mail::Box::Manager/"Move messages to folders">.
+See L<documentation in the base class|Mail::Box::Manager/"Move messages to folders">.
  
 =over 4
 
@@ -297,7 +297,7 @@ See L<Mail::Box::Manager/"Move messages to folders">
 
 =head2 Manage message threads
 
-See L<documentation in base class|Mail::Box::Manager/"Manage message threads">.
+See L<documentation in the base class|Mail::Box::Manager/"Manage message threads">.
  
 =over 4
 
@@ -309,7 +309,7 @@ See L<Mail::Box::Manager/"Manage message threads">
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Box::Manager/"Internals">.
+See L<documentation in the base class|Mail::Box::Manager/"Internals">.
  
 =over 4
 
@@ -329,7 +329,7 @@ See L<Mail::Box::Manager/"Internals">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Box::Manager/"Error handling">.
+See L<documentation in the base class|Mail::Box::Manager/"Error handling">.
  
 =over 4
 
@@ -391,7 +391,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Box::Manager/"Cleanup">.
+See L<documentation in the base class|Mail::Box::Manager/"Cleanup">.
  
 =over 4
 
@@ -403,7 +403,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DETAILS
 
-See L<documentation in base class|Mail::Box::Manager/"DETAILS">.
+See L<documentation in the base class|Mail::Box::Manager/"DETAILS">.
  
 =head1 DIAGNOSTICS
 
@@ -498,8 +498,8 @@ only useful for folders which have write or append access modes
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

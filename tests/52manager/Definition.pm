@@ -5,7 +5,7 @@
 
 package MailBox::Test::52manager::Definition;
 use vars '$VERSION';
-$VERSION = '2.108';
+$VERSION = '2.109';
 
 
 sub name     {"Mail::Box::Manager; library manager"}

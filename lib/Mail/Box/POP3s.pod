@@ -21,11 +21,11 @@ Mail::Box::POP3s - handle secure POP3 folders as client
 
 This module mainly extends L<Mail::Box::POP3|Mail::Box::POP3>.
 
-See L<documentation in base class|Mail::Box::POP3/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Box::POP3/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in base class|Mail::Box::POP3/"OVERLOADED">.
+See L<documentation in the base class|Mail::Box::POP3/"OVERLOADED">.
  
 =over 4
 
@@ -45,11 +45,11 @@ See L<Mail::Box/"OVERLOADED">
 
 =head1 METHODS
 
-See L<documentation in base class|Mail::Box::POP3/"METHODS">.
+See L<documentation in the base class|Mail::Box::POP3/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Box::POP3/"Constructors">.
+See L<documentation in the base class|Mail::Box::POP3/"Constructors">.
  
 =over 4
 
@@ -161,7 +161,7 @@ See L<documentation in base class|Mail::Box::POP3/"Constructors">.
 
 =head2 The folder
 
-See L<documentation in base class|Mail::Box::POP3/"The folder">.
+See L<documentation in the base class|Mail::Box::POP3/"The folder">.
  
 =over 4
 
@@ -221,7 +221,7 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
-See L<documentation in base class|Mail::Box::POP3/"Folder flags">.
+See L<documentation in the base class|Mail::Box::POP3/"Folder flags">.
  
 =over 4
 
@@ -245,7 +245,7 @@ See L<Mail::Box/"Folder flags">
 
 =head2 The messages
 
-See L<documentation in base class|Mail::Box::POP3/"The messages">.
+See L<documentation in the base class|Mail::Box::POP3/"The messages">.
  
 =over 4
 
@@ -289,7 +289,7 @@ See L<Mail::Box/"The messages">
 
 =head2 Sub-folders
 
-See L<documentation in base class|Mail::Box::POP3/"Sub-folders">.
+See L<documentation in the base class|Mail::Box::POP3/"Sub-folders">.
  
 =over 4
 
@@ -323,7 +323,7 @@ See L<Mail::Box/"Sub-folders">
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Box::POP3/"Internals">.
+See L<documentation in the base class|Mail::Box::POP3/"Internals">.
  
 =over 4
 
@@ -401,7 +401,7 @@ See L<Mail::Box::POP3/"Internals">
 
 =head2 Other methods
 
-See L<documentation in base class|Mail::Box::POP3/"Other methods">.
+See L<documentation in the base class|Mail::Box::POP3/"Other methods">.
  
 =over 4
 
@@ -415,7 +415,7 @@ See L<Mail::Box/"Other methods">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Box::POP3/"Error handling">.
+See L<documentation in the base class|Mail::Box::POP3/"Error handling">.
  
 =over 4
 
@@ -477,7 +477,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Box::POP3/"Cleanup">.
+See L<documentation in the base class|Mail::Box::POP3/"Cleanup">.
  
 =over 4
 
@@ -489,7 +489,7 @@ See L<Mail::Box/"Cleanup">
 
 =head1 DETAILS
 
-See L<documentation in base class|Mail::Box::POP3/"DETAILS">.
+See L<documentation in the base class|Mail::Box::POP3/"DETAILS">.
  
 =head1 DIAGNOSTICS
 
@@ -507,7 +507,7 @@ single line was returned.  Did the message get destroyed?
 
 =item Error: Cannot read body for $uidl on POP3 server $name.
 
-The message's headers are retreived from the server, but the body seems
+The message's headers are retrieved from the server, but the body seems
 to be lost.  Did the message get destroyed between reading the header
 and reading the body?
 
@@ -597,8 +597,8 @@ implementation with writing.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

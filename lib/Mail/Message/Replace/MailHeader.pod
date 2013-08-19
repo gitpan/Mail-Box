@@ -33,11 +33,11 @@ Most methods will work without any change, but you should test your
 software again.  Small changes have been made to L<fold_length()|Mail::Message::Replace::MailHeader/"Simulating Mail::Header">,
 L<header_hashref()|Mail::Message::Replace::MailHeader/"Simulating Mail::Header">.
 
-See L<documentation in base class|Mail::Message::Head::Complete/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in base class|Mail::Message::Head::Complete/"OVERLOADED">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"OVERLOADED">.
  
 =over 4
 
@@ -53,11 +53,11 @@ See L<Mail::Message::Head/"OVERLOADED">
 
 =head1 METHODS
 
-See L<documentation in base class|Mail::Message::Head::Complete/"METHODS">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Message::Head::Complete/"Constructors">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"Constructors">.
  
 =over 4
 
@@ -111,7 +111,7 @@ Reformat all header lines when they come in: change the folding.
 
 =head2 The header
 
-See L<documentation in base class|Mail::Message::Head::Complete/"The header">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"The header">.
  
 =over 4
 
@@ -159,7 +159,7 @@ See L<Mail::Message::Head::Complete/"The header">
 
 =head2 Access to the header
 
-See L<documentation in base class|Mail::Message::Head::Complete/"Access to the header">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"Access to the header">.
  
 =over 4
 
@@ -287,7 +287,7 @@ See L<Mail::Message::Head/"Access to the header">
 
 =head2 About the body
 
-See L<documentation in base class|Mail::Message::Head::Complete/"About the body">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"About the body">.
  
 =over 4
 
@@ -315,7 +315,7 @@ See L<Mail::Message::Head::Complete/"About the body">
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Message::Head::Complete/"Internals">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"Internals">.
  
 =over 4
 
@@ -361,7 +361,7 @@ See L<Mail::Message::Head/"Internals">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Message::Head::Complete/"Error handling">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"Error handling">.
  
 =over 4
 
@@ -423,7 +423,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Message::Head::Complete/"Cleanup">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"Cleanup">.
  
 =over 4
 
@@ -532,7 +532,7 @@ nasty trick.
 
 =head1 DETAILS
 
-See L<documentation in base class|Mail::Message::Head::Complete/"DETAILS">.
+See L<documentation in the base class|Mail::Message::Head::Complete/"DETAILS">.
  
 =head1 DIAGNOSTICS
 
@@ -558,8 +558,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

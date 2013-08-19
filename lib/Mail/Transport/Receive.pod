@@ -36,15 +36,15 @@ Implements the POP3 protocol.  See also L<Mail::Box::POP3|Mail::Box::POP3>.
 
 =back
 
-See L<documentation in base class|Mail::Transport/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Transport/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in base class|Mail::Transport/"METHODS">.
+See L<documentation in the base class|Mail::Transport/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Transport/"Constructors">.
+See L<documentation in the base class|Mail::Transport/"Constructors">.
  
 =over 4
 
@@ -68,7 +68,7 @@ specified ID.
 
 =head2 Server connection
 
-See L<documentation in base class|Mail::Transport/"Server connection">.
+See L<documentation in the base class|Mail::Transport/"Server connection">.
  
 =over 4
 
@@ -88,7 +88,7 @@ See L<Mail::Transport/"Server connection">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Transport/"Error handling">.
+See L<documentation in the base class|Mail::Transport/"Error handling">.
  
 =over 4
 
@@ -150,7 +150,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Transport/"Cleanup">.
+See L<documentation in the base class|Mail::Transport/"Cleanup">.
  
 =over 4
 
@@ -187,8 +187,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

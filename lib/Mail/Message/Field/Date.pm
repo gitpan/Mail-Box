@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Message::Field::Date;
 use vars '$VERSION';
-$VERSION = '2.108';
+$VERSION = '2.109';
 
 use base 'Mail::Message::Field::Structured';
 
@@ -30,9 +30,9 @@ sub parse($)
            ( 0?[1-9] | [12][0-9] | 3[01] ) \s* # day
            \s+ ( [A-Z][a-z][a-z] ) \s+         # month
            ( 19[0-9][0-9] | 2[0-9]{3} ) \s+    # year
-                  ( [0-1][0-9] | 2[0-3] ) \s*  # hour
-               \: ( [0-5][0-9] ) \s*           # minute
-           (?: \: ( [0-5][0-9] ) )? \s+        # second
+                  ( [0-1]?[0-9] | 2[0-3] ) \s* # hour
+               [:.] ( [0-5][0-9] ) \s*         # minute
+           (?: [:.] ( [0-5][0-9] ) )? \s+      # second
            ( [+-][0-9]{4} | [A-Z]+ )?          # zone
            \s* /x
        or return undef;

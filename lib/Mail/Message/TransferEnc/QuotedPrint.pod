@@ -26,15 +26,15 @@ characters (as defined by English Americans) are represented by a
 triplet consisting of the character "=" followed by two hexadecimal
 digits.
 
-See L<documentation in base class|Mail::Message::TransferEnc/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Message::TransferEnc/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in base class|Mail::Message::TransferEnc/"METHODS">.
+See L<documentation in the base class|Mail::Message::TransferEnc/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Message::TransferEnc/"Constructors">.
+See L<documentation in the base class|Mail::Message::TransferEnc/"Constructors">.
  
 =over 4
 
@@ -46,7 +46,7 @@ See L<Mail::Reporter/"Constructors">
 
 =head2 The Encoder
 
-See L<documentation in base class|Mail::Message::TransferEnc/"The Encoder">.
+See L<documentation in the base class|Mail::Message::TransferEnc/"The Encoder">.
  
 =over 4
 
@@ -66,7 +66,7 @@ See L<Mail::Message::TransferEnc/"The Encoder">
 
 =head2 Encoding
 
-See L<documentation in base class|Mail::Message::TransferEnc/"Encoding">.
+See L<documentation in the base class|Mail::Message::TransferEnc/"Encoding">.
  
 =over 4
 
@@ -115,7 +115,7 @@ broken on encoded characters.
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Message::TransferEnc/"Error handling">.
+See L<documentation in the base class|Mail::Message::TransferEnc/"Error handling">.
  
 =over 4
 
@@ -177,7 +177,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Message::TransferEnc/"Cleanup">.
+See L<documentation in the base class|Mail::Message::TransferEnc/"Cleanup">.
  
 =over 4
 
@@ -212,8 +212,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

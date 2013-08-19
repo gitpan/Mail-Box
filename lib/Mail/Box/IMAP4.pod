@@ -27,11 +27,11 @@ information, and focusses solely on the correct handling of messages
 within a IMAP4 folder.  More than one IMAP4 folder can be handled by
 one single IMAP4 connection.
 
-See L<documentation in base class|Mail::Box::Net/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Box::Net/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in base class|Mail::Box::Net/"OVERLOADED">.
+See L<documentation in the base class|Mail::Box::Net/"OVERLOADED">.
  
 =over 4
 
@@ -51,11 +51,11 @@ See L<Mail::Box/"OVERLOADED">
 
 =head1 METHODS
 
-See L<documentation in base class|Mail::Box::Net/"METHODS">.
+See L<documentation in the base class|Mail::Box::Net/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Box::Net/"Constructors">.
+See L<documentation in the base class|Mail::Box::Net/"Constructors">.
  
 =over 4
 
@@ -122,7 +122,7 @@ Body objects are immutable, but may still cached or not.  In common
 case, the body of a message is requested via L<Mail::Message::body()|Mail::Message/"The body">
 or L<Mail::Message::decoded()|Mail::Message/"The body">.  This returns a handle to a body object.
 You may decide wether that body object can be reused or not.  C<NO>
-means: retreive the data each time again, C<YES> will cache the body data,
+means: retrieve the data each time again, C<YES> will cache the body data,
 C<DELAY> will send the whole message when the folder is closed.
 
         [local cache]  [write]
@@ -259,7 +259,7 @@ example:
 
 =head2 The folder
 
-See L<documentation in base class|Mail::Box::Net/"The folder">.
+See L<documentation in the base class|Mail::Box::Net/"The folder">.
  
 =over 4
 
@@ -338,7 +338,7 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
-See L<documentation in base class|Mail::Box::Net/"Folder flags">.
+See L<documentation in the base class|Mail::Box::Net/"Folder flags">.
  
 =over 4
 
@@ -362,7 +362,7 @@ See L<Mail::Box/"Folder flags">
 
 =head2 The messages
 
-See L<documentation in base class|Mail::Box::Net/"The messages">.
+See L<documentation in the base class|Mail::Box::Net/"The messages">.
  
 =over 4
 
@@ -406,7 +406,7 @@ See L<Mail::Box/"The messages">
 
 =head2 Sub-folders
 
-See L<documentation in base class|Mail::Box::Net/"Sub-folders">.
+See L<documentation in the base class|Mail::Box::Net/"Sub-folders">.
  
 =over 4
 
@@ -440,7 +440,7 @@ See L<Mail::Box/"Sub-folders">
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Box::Net/"Internals">.
+See L<documentation in the base class|Mail::Box::Net/"Internals">.
  
 =over 4
 
@@ -589,7 +589,7 @@ but they will be removed anyway when the folder is closed.
 
 =head2 Other methods
 
-See L<documentation in base class|Mail::Box::Net/"Other methods">.
+See L<documentation in the base class|Mail::Box::Net/"Other methods">.
  
 =over 4
 
@@ -603,7 +603,7 @@ See L<Mail::Box/"Other methods">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Box::Net/"Error handling">.
+See L<documentation in the base class|Mail::Box::Net/"Error handling">.
  
 =over 4
 
@@ -665,7 +665,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Box::Net/"Cleanup">.
+See L<documentation in the base class|Mail::Box::Net/"Cleanup">.
  
 =over 4
 
@@ -677,7 +677,7 @@ See L<Mail::Box/"Cleanup">
 
 =head1 DETAILS
 
-See L<documentation in base class|Mail::Box::Net/"DETAILS">.
+See L<documentation in the base class|Mail::Box::Net/"DETAILS">.
  
 =head1 DIAGNOSTICS
 
@@ -690,7 +690,7 @@ not produce the header lines anymore.
 
 =item Warning: Cannot read body for $uidl in $folder.
 
-The header of the message was retreived from the IMAP4 server, but the
+The header of the message was retrieved from the IMAP4 server, but the
 body is not read, for an unknown reason.
 
 =item Error: Copying failed for one message.
@@ -767,8 +767,8 @@ to copy one of these.  Copying will proceed for all other sub-folders.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

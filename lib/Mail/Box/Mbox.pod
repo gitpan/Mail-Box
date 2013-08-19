@@ -21,11 +21,11 @@ Mail::Box::Mbox - handle folders in Mbox format
 This documentation describes how Mbox mailboxes work, and also describes
 what you can do with the Mbox folder object Mail::Box::Mbox.
 
-See L<documentation in base class|Mail::Box::File/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Box::File/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in base class|Mail::Box::File/"OVERLOADED">.
+See L<documentation in the base class|Mail::Box::File/"OVERLOADED">.
  
 =over 4
 
@@ -45,11 +45,11 @@ See L<Mail::Box/"OVERLOADED">
 
 =head1 METHODS
 
-See L<documentation in base class|Mail::Box::File/"METHODS">.
+See L<documentation in the base class|Mail::Box::File/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Box::File/"Constructors">.
+See L<documentation in the base class|Mail::Box::File/"Constructors">.
  
 =over 4
 
@@ -157,7 +157,7 @@ to contain them.  This extension C<.d> can be changed using this option.
 
 =head2 The folder
 
-See L<documentation in base class|Mail::Box::File/"The folder">.
+See L<documentation in the base class|Mail::Box::File/"The folder">.
  
 =over 4
 
@@ -221,7 +221,7 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
-See L<documentation in base class|Mail::Box::File/"Folder flags">.
+See L<documentation in the base class|Mail::Box::File/"Folder flags">.
  
 =over 4
 
@@ -245,7 +245,7 @@ See L<Mail::Box/"Folder flags">
 
 =head2 The messages
 
-See L<documentation in base class|Mail::Box::File/"The messages">.
+See L<documentation in the base class|Mail::Box::File/"The messages">.
  
 =over 4
 
@@ -289,7 +289,7 @@ See L<Mail::Box/"The messages">
 
 =head2 Sub-folders
 
-See L<documentation in base class|Mail::Box::File/"Sub-folders">.
+See L<documentation in the base class|Mail::Box::File/"Sub-folders">.
  
 =over 4
 
@@ -345,7 +345,7 @@ See L<Mail::Box/"Sub-folders">
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Box::File/"Internals">.
+See L<documentation in the base class|Mail::Box::File/"Internals">.
  
 =over 4
 
@@ -465,7 +465,7 @@ See L<Mail::Box/"Internals">
 
 =head2 Other methods
 
-See L<documentation in base class|Mail::Box::File/"Other methods">.
+See L<documentation in the base class|Mail::Box::File/"Other methods">.
  
 =over 4
 
@@ -479,7 +479,7 @@ See L<Mail::Box/"Other methods">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Box::File/"Error handling">.
+See L<documentation in the base class|Mail::Box::File/"Error handling">.
  
 =over 4
 
@@ -541,7 +541,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Box::File/"Cleanup">.
+See L<documentation in the base class|Mail::Box::File/"Cleanup">.
  
 =over 4
 
@@ -553,23 +553,23 @@ See L<Mail::Box/"Cleanup">
 
 =head2 DETAILS
 
-See L<documentation in base class|Mail::Box::File/"DETAILS">.
+See L<documentation in the base class|Mail::Box::File/"DETAILS">.
  
 =head1 DETAILS
 
-See L<documentation in base class|Mail::Box::File/"DETAILS">.
+See L<documentation in the base class|Mail::Box::File/"DETAILS">.
  
 =head2 Different kinds of folders
 
-See L<documentation in base class|Mail::Box::File/"Different kinds of folders">.
+See L<documentation in the base class|Mail::Box::File/"Different kinds of folders">.
  
 =head2 Available folder types
 
-See L<documentation in base class|Mail::Box::File/"Available folder types">.
+See L<documentation in the base class|Mail::Box::File/"Available folder types">.
  
 =head2 Folder class implementation
 
-See L<documentation in base class|Mail::Box::File/"Folder class implementation">.
+See L<documentation in the base class|Mail::Box::File/"Folder class implementation">.
  
 =head2 How MBOX folders work
 
@@ -662,7 +662,7 @@ each message must be unique.
 Mail::Box is lazy: it tries to leave messages in the folders until they
 are used, which saves time and memory usage.  When this message appears,
 something is terribly wrong: some lazy message are needed for updating the
-folder, but they cannot be retreived from the original file anymore.  In
+folder, but they cannot be retrieved from the original file anymore.  In
 this case, messages can be lost.
 
 This message does appear regularly on Windows systems when using the
@@ -712,8 +712,8 @@ error messages to indicate the real problem.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

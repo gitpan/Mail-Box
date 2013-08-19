@@ -26,11 +26,11 @@ Mail::Message::Field::AddrGroup - A group of Mail::Message::Field::Address objec
 An address group collects a set of e-mail addresses (in this case they
 are L<Mail::Message::Field::Address|Mail::Message::Field::Address> objects).
 
-See L<documentation in base class|User::Identity::Collection::Emails/"DESCRIPTION">.
+See L<documentation in the base class|User::Identity::Collection::Emails/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in base class|User::Identity::Collection::Emails/"OVERLOADED">.
+See L<documentation in the base class|User::Identity::Collection::Emails/"OVERLOADED">.
  
 =over 4
 
@@ -46,7 +46,7 @@ Returns the L<string()|Mail::Message::Field::AddrGroup/"METHODS"> value.
 
 =head1 METHODS
 
-See L<documentation in base class|User::Identity::Collection::Emails/"METHODS">.
+See L<documentation in the base class|User::Identity::Collection::Emails/"METHODS">.
  
 =over 4
 
@@ -61,7 +61,7 @@ where included and there is no name, then C<undef> is returned.
 
 =head2 Constructors
 
-See L<documentation in base class|User::Identity::Collection::Emails/"Constructors">.
+See L<documentation in the base class|User::Identity::Collection::Emails/"Constructors">.
  
 =over 4
 
@@ -79,7 +79,7 @@ See L<User::Identity::Collection::Emails/"Constructors">
 
 =head2 Attributes
 
-See L<documentation in base class|User::Identity::Collection::Emails/"Attributes">.
+See L<documentation in the base class|User::Identity::Collection::Emails/"Attributes">.
  
 =over 4
 
@@ -103,7 +103,7 @@ See L<User::Identity::Collection/"Attributes">
 
 =head2 Collections
 
-See L<documentation in base class|User::Identity::Collection::Emails/"Collections">.
+See L<documentation in the base class|User::Identity::Collection::Emails/"Collections">.
  
 =over 4
 
@@ -141,7 +141,7 @@ See L<User::Identity::Item/"Collections">
 
 =head2 Maintaining roles
 
-See L<documentation in base class|User::Identity::Collection::Emails/"Maintaining roles">.
+See L<documentation in the base class|User::Identity::Collection::Emails/"Maintaining roles">.
  
 =over 4
 
@@ -165,7 +165,7 @@ See L<User::Identity::Collection/"Maintaining roles">
 
 =head2 Searching
 
-See L<documentation in base class|User::Identity::Collection::Emails/"Searching">.
+See L<documentation in the base class|User::Identity::Collection::Emails/"Searching">.
  
 =over 4
 
@@ -264,8 +264,8 @@ cannot add objects of a different $type.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -27,11 +27,11 @@ using the POP3 protocol.  This class uses L<Mail::Transport::POP3|Mail::Transpor
 hide the transport of information, and focusses solely on the correct
 handling of messages within a POP3 folder.
 
-See L<documentation in base class|Mail::Box::Net/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Box::Net/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in base class|Mail::Box::Net/"OVERLOADED">.
+See L<documentation in the base class|Mail::Box::Net/"OVERLOADED">.
  
 =over 4
 
@@ -51,11 +51,11 @@ See L<Mail::Box/"OVERLOADED">
 
 =head1 METHODS
 
-See L<documentation in base class|Mail::Box::Net/"METHODS">.
+See L<documentation in the base class|Mail::Box::Net/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Box::Net/"Constructors">.
+See L<documentation in the base class|Mail::Box::Net/"Constructors">.
  
 =over 4
 
@@ -189,7 +189,7 @@ example:
 
 =head2 The folder
 
-See L<documentation in base class|Mail::Box::Net/"The folder">.
+See L<documentation in the base class|Mail::Box::Net/"The folder">.
  
 =over 4
 
@@ -275,7 +275,7 @@ See L<Mail::Box/"The folder">
 
 =head2 Folder flags
 
-See L<documentation in base class|Mail::Box::Net/"Folder flags">.
+See L<documentation in the base class|Mail::Box::Net/"Folder flags">.
  
 =over 4
 
@@ -299,7 +299,7 @@ See L<Mail::Box/"Folder flags">
 
 =head2 The messages
 
-See L<documentation in base class|Mail::Box::Net/"The messages">.
+See L<documentation in the base class|Mail::Box::Net/"The messages">.
  
 =over 4
 
@@ -343,7 +343,7 @@ See L<Mail::Box/"The messages">
 
 =head2 Sub-folders
 
-See L<documentation in base class|Mail::Box::Net/"Sub-folders">.
+See L<documentation in the base class|Mail::Box::Net/"Sub-folders">.
  
 =over 4
 
@@ -398,7 +398,7 @@ See L<Mail::Box/"Sub-folders">
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Box::Net/"Internals">.
+See L<documentation in the base class|Mail::Box::Net/"Internals">.
  
 =over 4
 
@@ -502,7 +502,7 @@ See L<Mail::Box/"Internals">
 
 =head2 Other methods
 
-See L<documentation in base class|Mail::Box::Net/"Other methods">.
+See L<documentation in the base class|Mail::Box::Net/"Other methods">.
  
 =over 4
 
@@ -516,7 +516,7 @@ See L<Mail::Box/"Other methods">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Box::Net/"Error handling">.
+See L<documentation in the base class|Mail::Box::Net/"Error handling">.
  
 =over 4
 
@@ -578,7 +578,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Box::Net/"Cleanup">.
+See L<documentation in the base class|Mail::Box::Net/"Cleanup">.
  
 =over 4
 
@@ -590,19 +590,19 @@ See L<Mail::Box/"Cleanup">
 
 =head1 DETAILS
 
-See L<documentation in base class|Mail::Box::Net/"DETAILS">.
+See L<documentation in the base class|Mail::Box::Net/"DETAILS">.
  
 =head2 Different kinds of folders
 
-See L<documentation in base class|Mail::Box::Net/"Different kinds of folders">.
+See L<documentation in the base class|Mail::Box::Net/"Different kinds of folders">.
  
 =head2 Available folder types
 
-See L<documentation in base class|Mail::Box::Net/"Available folder types">.
+See L<documentation in the base class|Mail::Box::Net/"Available folder types">.
  
 =head2 Folder class implementation
 
-See L<documentation in base class|Mail::Box::Net/"Folder class implementation">.
+See L<documentation in the base class|Mail::Box::Net/"Folder class implementation">.
  
 =head2 How POP3 folders work
 
@@ -644,7 +644,7 @@ single line was returned.  Did the message get destroyed?
 
 =item Error: Cannot read body for $uidl on POP3 server $name.
 
-The message's headers are retreived from the server, but the body seems
+The message's headers are retrieved from the server, but the body seems
 to be lost.  Did the message get destroyed between reading the header
 and reading the body?
 
@@ -734,8 +734,8 @@ implementation with writing.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

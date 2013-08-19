@@ -19,15 +19,15 @@ in Perl.  This may be a little slower than the C<C> based parser
 Mail::Box::Parser::C, but will also work on platforms where no C
 compiler is available.
 
-See L<documentation in base class|Mail::Box::Parser/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Box::Parser/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in base class|Mail::Box::Parser/"METHODS">.
+See L<documentation in the base class|Mail::Box::Parser/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Box::Parser/"Constructors">.
+See L<documentation in the base class|Mail::Box::Parser/"Constructors">.
  
 =over 4
 
@@ -72,7 +72,7 @@ tests.  Related to L<Mail::Box::new(trusted)|Mail::Box/"Constructors">.
 
 =head2 The parser
 
-See L<documentation in base class|Mail::Box::Parser/"The parser">.
+See L<documentation in the base class|Mail::Box::Parser/"The parser">.
  
 =over 4
 
@@ -111,7 +111,7 @@ See L<Mail::Box::Parser/"The parser">
 
 =head2 Parsing
 
-See L<documentation in base class|Mail::Box::Parser/"Parsing">.
+See L<documentation in the base class|Mail::Box::Parser/"Parsing">.
  
 =over 4
 
@@ -157,7 +157,7 @@ See L<Mail::Box::Parser/"Parsing">
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Box::Parser/"Internals">.
+See L<documentation in the base class|Mail::Box::Parser/"Internals">.
  
 =over 4
 
@@ -183,7 +183,7 @@ See L<Mail::Box::Parser/"Internals">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Box::Parser/"Error handling">.
+See L<documentation in the base class|Mail::Box::Parser/"Error handling">.
  
 =over 4
 
@@ -245,7 +245,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Box::Parser/"Cleanup">.
+See L<documentation in the base class|Mail::Box::Parser/"Cleanup">.
  
 =over 4
 
@@ -296,8 +296,8 @@ The erroneous line will be added to the preceding field.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

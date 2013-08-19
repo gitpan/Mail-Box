@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Server::IMAP4::Fetch;
 use vars '$VERSION';
-$VERSION = '2.108';
+$VERSION = '2.109';
 
 
 use Date::Parse;

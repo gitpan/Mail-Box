@@ -24,15 +24,15 @@ maintained by a L<Mail::Box::IMAP4|Mail::Box::IMAP4> folder. Each message is sto
 separate entity on the server, and maybe temporarily in your program
 as well.
 
-See L<documentation in base class|Mail::Box::Net::Message/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Box::Net::Message/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in base class|Mail::Box::Net::Message/"METHODS">.
+See L<documentation in the base class|Mail::Box::Net::Message/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Box::Net::Message/"Constructors">.
+See L<documentation in the base class|Mail::Box::Net::Message/"Constructors">.
  
 =over 4
 
@@ -119,7 +119,7 @@ changes in the same folder, and will get the updates too late or never...
 
 =head2 Constructing a message
 
-See L<documentation in base class|Mail::Box::Net::Message/"Constructing a message">.
+See L<documentation in the base class|Mail::Box::Net::Message/"Constructing a message">.
  
 =over 4
 
@@ -193,7 +193,7 @@ See L<Mail::Message::Construct::Reply/"Constructing a message">
 
 =head2 The message
 
-See L<documentation in base class|Mail::Box::Net::Message/"The message">.
+See L<documentation in the base class|Mail::Box::Net::Message/"The message">.
  
 =over 4
 
@@ -264,7 +264,7 @@ See L<Mail::Message/"The message">
 
 =head2 The header
 
-See L<documentation in base class|Mail::Box::Net::Message/"The header">.
+See L<documentation in the base class|Mail::Box::Net::Message/"The header">.
  
 =over 4
 
@@ -328,7 +328,7 @@ See L<Mail::Message/"The header">
 
 =head2 The body
 
-See L<documentation in base class|Mail::Box::Net::Message/"The body">.
+See L<documentation in the base class|Mail::Box::Net::Message/"The body">.
  
 =over 4
 
@@ -364,7 +364,7 @@ See L<Mail::Message/"The body">
 
 =head2 Flags
 
-See L<documentation in base class|Mail::Box::Net::Message/"Flags">.
+See L<documentation in the base class|Mail::Box::Net::Message/"Flags">.
  
 =over 4
 
@@ -418,7 +418,7 @@ See L<Mail::Message/"Flags">
 
 =head2 The whole message as text
 
-See L<documentation in base class|Mail::Box::Net::Message/"The whole message as text">.
+See L<documentation in the base class|Mail::Box::Net::Message/"The whole message as text">.
  
 =over 4
 
@@ -442,7 +442,7 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Box::Net::Message/"Internals">.
+See L<documentation in the base class|Mail::Box::Net::Message/"Internals">.
  
 =over 4
 
@@ -462,7 +462,7 @@ See L<Mail::Box::Message/"Internals">
 
 Use the IMAP's C<UID FETCH IMAP> command to get some data about this
 message.  The INFO request is passed to L<Mail::Box::IMAP4::fetch()|Mail::Box::IMAP4/"Internals">.
-Without INFO, C<ALL> information is retreived and returned as a HASH.
+Without INFO, C<ALL> information is retrieved and returned as a HASH.
 
 =item $obj-E<gt>B<isDelayed>()
 
@@ -516,7 +516,7 @@ for deletion.
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Box::Net::Message/"Error handling">.
+See L<documentation in the base class|Mail::Box::Net::Message/"Error handling">.
  
 =over 4
 
@@ -588,7 +588,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Box::Net::Message/"Cleanup">.
+See L<documentation in the base class|Mail::Box::Net::Message/"Cleanup">.
  
 =over 4
 
@@ -604,31 +604,31 @@ See L<Mail::Box::Message/"Cleanup">
 
 =head1 DETAILS
 
-See L<documentation in base class|Mail::Box::Net::Message/"DETAILS">.
+See L<documentation in the base class|Mail::Box::Net::Message/"DETAILS">.
  
 =head2 Structure of a Message
 
-See L<documentation in base class|Mail::Box::Net::Message/"Structure of a Message">.
+See L<documentation in the base class|Mail::Box::Net::Message/"Structure of a Message">.
  
 =head2 Message object implementation
 
-See L<documentation in base class|Mail::Box::Net::Message/"Message object implementation">.
+See L<documentation in the base class|Mail::Box::Net::Message/"Message object implementation">.
  
 =head2 Message class implementation
 
-See L<documentation in base class|Mail::Box::Net::Message/"Message class implementation">.
+See L<documentation in the base class|Mail::Box::Net::Message/"Message class implementation">.
  
 =head2 Labels
 
-See L<documentation in base class|Mail::Box::Net::Message/"Labels">.
+See L<documentation in the base class|Mail::Box::Net::Message/"Labels">.
  
 =head3 Predefined labels
 
-See L<documentation in base class|Mail::Box::Net::Message/"Predefined labels">.
+See L<documentation in the base class|Mail::Box::Net::Message/"Predefined labels">.
  
 =head3 Status and X-Status fields
 
-See L<documentation in base class|Mail::Box::Net::Message/"Status and X-Status fields">.
+See L<documentation in the base class|Mail::Box::Net::Message/"Status and X-Status fields">.
  
 =head3 IMAP protocol flags
 
@@ -733,8 +733,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

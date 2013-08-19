@@ -29,11 +29,11 @@ E-mail's message can be in various states: unread, partially read, and
 fully read.  The class stores a message of which all header lines are
 known for sure.
 
-See L<documentation in base class|Mail::Message::Head/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Message::Head/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in base class|Mail::Message::Head/"OVERLOADED">.
+See L<documentation in the base class|Mail::Message::Head/"OVERLOADED">.
  
 =over 4
 
@@ -49,11 +49,11 @@ See L<Mail::Message::Head/"OVERLOADED">
 
 =head1 METHODS
 
-See L<documentation in base class|Mail::Message::Head/"METHODS">.
+See L<documentation in the base class|Mail::Message::Head/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Message::Head/"Constructors">.
+See L<documentation in the base class|Mail::Message::Head/"Constructors">.
  
 =over 4
 
@@ -79,7 +79,7 @@ See L<Mail::Message::Head/"Constructors">
 
 =head2 The header
 
-See L<documentation in base class|Mail::Message::Head/"The header">.
+See L<documentation in the base class|Mail::Message::Head/"The header">.
  
 =over 4
 
@@ -136,7 +136,7 @@ example: re-folding a header
 
 =head2 Access to the header
 
-See L<documentation in base class|Mail::Message::Head/"Access to the header">.
+See L<documentation in the base class|Mail::Message::Head/"Access to the header">.
  
 =over 4
 
@@ -472,7 +472,7 @@ See L<Mail::Message::Head/"Access to the header">
 
 =head2 About the body
 
-See L<documentation in base class|Mail::Message::Head/"About the body">.
+See L<documentation in the base class|Mail::Message::Head/"About the body">.
  
 =over 4
 
@@ -542,7 +542,7 @@ and C<localtime> methods.
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Message::Head/"Internals">.
+See L<documentation in the base class|Mail::Message::Head/"Internals">.
  
 =over 4
 
@@ -628,7 +628,7 @@ See L<Mail::Message::Head/"Internals">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Message::Head/"Error handling">.
+See L<documentation in the base class|Mail::Message::Head/"Error handling">.
  
 =over 4
 
@@ -690,7 +690,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Message::Head/"Cleanup">.
+See L<documentation in the base class|Mail::Message::Head/"Cleanup">.
  
 =over 4
 
@@ -702,7 +702,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DETAILS
 
-See L<documentation in base class|Mail::Message::Head/"DETAILS">.
+See L<documentation in the base class|Mail::Message::Head/"DETAILS">.
  
 =head1 DIAGNOSTICS
 
@@ -728,8 +728,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

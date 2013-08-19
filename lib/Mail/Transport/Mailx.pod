@@ -33,15 +33,15 @@ standard,  what may cause many headers to be lost.  For these platforms (and
 probably for other platforms as well), you can better not use this transport
 mechanism.
 
-See L<documentation in base class|Mail::Transport::Send/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Transport::Send/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in base class|Mail::Transport::Send/"METHODS">.
+See L<documentation in the base class|Mail::Transport::Send/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Transport::Send/"Constructors">.
+See L<documentation in the base class|Mail::Transport::Send/"Constructors">.
  
 =over 4
 
@@ -104,7 +104,7 @@ distributions).
 
 =head2 Sending mail
 
-See L<documentation in base class|Mail::Transport::Send/"Sending mail">.
+See L<documentation in the base class|Mail::Transport::Send/"Sending mail">.
  
 =over 4
 
@@ -126,7 +126,7 @@ See L<Mail::Transport::Send/"Sending mail">
 
 =head2 Server connection
 
-See L<documentation in base class|Mail::Transport::Send/"Server connection">.
+See L<documentation in the base class|Mail::Transport::Send/"Server connection">.
  
 =over 4
 
@@ -146,7 +146,7 @@ See L<Mail::Transport/"Server connection">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Transport::Send/"Error handling">.
+See L<documentation in the base class|Mail::Transport::Send/"Error handling">.
  
 =over 4
 
@@ -208,7 +208,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Transport::Send/"Cleanup">.
+See L<documentation in the base class|Mail::Transport::Send/"Cleanup">.
  
 =over 4
 
@@ -259,8 +259,8 @@ accepting messages, but did not succeed sending it.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

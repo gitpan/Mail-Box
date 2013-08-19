@@ -30,15 +30,15 @@ step in the message transport.  Resent groups B<have NOTHING to do> with
 user activety; there is no relation to the C<user's> sense of creating
 reply, forward, or bounce messages at all!
 
-See L<documentation in base class|Mail::Message::Head::FieldGroup/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Message::Head::FieldGroup/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in base class|Mail::Message::Head::FieldGroup/"METHODS">.
+See L<documentation in the base class|Mail::Message::Head::FieldGroup/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Message::Head::FieldGroup/"Constructors">.
+See L<documentation in the base class|Mail::Message::Head::FieldGroup/"Constructors">.
  
 =over 4
 
@@ -150,7 +150,7 @@ C<head> used in this class is only a container for a subset of fields.
 
 =head2 The header
 
-See L<documentation in base class|Mail::Message::Head::FieldGroup/"The header">.
+See L<documentation in the base class|Mail::Message::Head::FieldGroup/"The header">.
  
 =over 4
 
@@ -219,7 +219,7 @@ example:
 
 =head2 Access to the header
 
-See L<documentation in base class|Mail::Message::Head::FieldGroup/"Access to the header">.
+See L<documentation in the base class|Mail::Message::Head::FieldGroup/"Access to the header">.
  
 =over 4
 
@@ -312,7 +312,7 @@ See L<Mail::Message::Head::FieldGroup/"Access to the header">
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Message::Head::FieldGroup/"Internals">.
+See L<documentation in the base class|Mail::Message::Head::FieldGroup/"Internals">.
  
 =over 4
 
@@ -336,7 +336,7 @@ See L<Mail::Message::Head::FieldGroup/"Internals">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Message::Head::FieldGroup/"Error handling">.
+See L<documentation in the base class|Mail::Message::Head::FieldGroup/"Error handling">.
  
 =over 4
 
@@ -406,7 +406,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Message::Head::FieldGroup/"Cleanup">.
+See L<documentation in the base class|Mail::Message::Head::FieldGroup/"Cleanup">.
  
 =over 4
 
@@ -439,8 +439,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

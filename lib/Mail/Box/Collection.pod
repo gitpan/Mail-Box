@@ -22,13 +22,13 @@ objects, each describing a the location of a single mailbox (folder).  The
 collection is used by the L<Mail::Box::Manage::User|Mail::Box::Manage::User> object to administer
 the folders of a single user, even if those folders are closed.
 
-See L<documentation in base class|Mail::Reporter/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Reporter/"DESCRIPTION">.
  
-See L<documentation in base class|User::Identity::Collection/"DESCRIPTION">.
+See L<documentation in the base class|User::Identity::Collection/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in base class|User::Identity::Collection/"OVERLOADED">.
+See L<documentation in the base class|User::Identity::Collection/"OVERLOADED">.
  
 =over 4
 
@@ -44,15 +44,15 @@ See L<User::Identity::Collection/"OVERLOADED">
 
 =head1 METHODS
 
-See L<documentation in base class|Mail::Reporter/"METHODS">.
+See L<documentation in the base class|Mail::Reporter/"METHODS">.
  
-See L<documentation in base class|User::Identity::Collection/"METHODS">.
+See L<documentation in the base class|User::Identity::Collection/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Reporter/"Constructors">.
+See L<documentation in the base class|Mail::Reporter/"Constructors">.
  
-See L<documentation in base class|User::Identity::Collection/"Constructors">.
+See L<documentation in the base class|User::Identity::Collection/"Constructors">.
  
 =over 4
 
@@ -97,7 +97,7 @@ An L<Mail::Box::Manager|Mail::Box::Manager> OBJECT (could be a L<Mail::Box::Mana
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Reporter/"Error handling">.
+See L<documentation in the base class|Mail::Reporter/"Error handling">.
  
 =over 4
 
@@ -159,7 +159,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Reporter/"Cleanup">.
+See L<documentation in the base class|Mail::Reporter/"Cleanup">.
  
 =over 4
 
@@ -171,7 +171,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =head2 Attributes
 
-See L<documentation in base class|User::Identity::Collection/"Attributes">.
+See L<documentation in the base class|User::Identity::Collection/"Attributes">.
  
 =over 4
 
@@ -205,7 +205,7 @@ See L<User::Identity::Collection/"Attributes">
 
 =head2 Collections
 
-See L<documentation in base class|User::Identity::Collection/"Collections">.
+See L<documentation in the base class|User::Identity::Collection/"Collections">.
  
 =over 4
 
@@ -243,7 +243,7 @@ See L<User::Identity::Item/"Collections">
 
 =head2 Maintaining roles
 
-See L<documentation in base class|User::Identity::Collection/"Maintaining roles">.
+See L<documentation in the base class|User::Identity::Collection/"Maintaining roles">.
  
 =over 4
 
@@ -267,7 +267,7 @@ See L<User::Identity::Collection/"Maintaining roles">
 
 =head2 Searching
 
-See L<documentation in base class|User::Identity::Collection/"Searching">.
+See L<documentation in the base class|User::Identity::Collection/"Searching">.
  
 =over 4
 
@@ -334,8 +334,8 @@ cannot add objects of a different $type.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

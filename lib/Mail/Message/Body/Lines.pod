@@ -24,11 +24,11 @@ Storing a whole message as an array of lines is useful when the data is not
 encoded, and you want to process it on a line-by-line basis (a common practice
 for inspecting message bodies).
 
-See L<documentation in base class|Mail::Message::Body/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Message::Body/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in base class|Mail::Message::Body/"OVERLOADED">.
+See L<documentation in the base class|Mail::Message::Body/"OVERLOADED">.
  
 =over 4
 
@@ -52,11 +52,11 @@ See L<Mail::Message::Body/"OVERLOADED">
 
 =head1 METHODS
 
-See L<documentation in base class|Mail::Message::Body/"METHODS">.
+See L<documentation in the base class|Mail::Message::Body/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Message::Body/"Constructors">.
+See L<documentation in the base class|Mail::Message::Body/"Constructors">.
  
 =over 4
 
@@ -121,7 +121,7 @@ See L<Mail::Message::Body/"Constructors">
 
 =head2 Constructing a body
 
-See L<documentation in base class|Mail::Message::Body/"Constructing a body">.
+See L<documentation in the base class|Mail::Message::Body/"Constructing a body">.
  
 =over 4
 
@@ -169,7 +169,7 @@ See L<Mail::Message::Body::Encode/"Constructing a body">
 
 =head2 The body
 
-See L<documentation in base class|Mail::Message::Body/"The body">.
+See L<documentation in the base class|Mail::Message::Body/"The body">.
  
 =over 4
 
@@ -197,7 +197,7 @@ See L<Mail::Message::Body/"The body">
 
 =head2 About the payload
 
-See L<documentation in base class|Mail::Message::Body/"About the payload">.
+See L<documentation in the base class|Mail::Message::Body/"About the payload">.
  
 =over 4
 
@@ -257,7 +257,7 @@ See L<Mail::Message::Body/"About the payload">
 
 =head2 Access to the payload
 
-See L<documentation in base class|Mail::Message::Body/"Access to the payload">.
+See L<documentation in the base class|Mail::Message::Body/"Access to the payload">.
  
 =over 4
 
@@ -297,7 +297,7 @@ See L<Mail::Message::Body/"Access to the payload">
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Message::Body/"Internals">.
+See L<documentation in the base class|Mail::Message::Body/"Internals">.
  
 =over 4
 
@@ -347,7 +347,7 @@ See L<Mail::Message::Body/"Internals">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Message::Body/"Error handling">.
+See L<documentation in the base class|Mail::Message::Body/"Error handling">.
  
 =over 4
 
@@ -409,7 +409,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Message::Body/"Cleanup">.
+See L<documentation in the base class|Mail::Message::Body/"Cleanup">.
  
 =over 4
 
@@ -421,7 +421,7 @@ See L<Mail::Reporter/"Cleanup">
 
 =head1 DETAILS
 
-See L<documentation in base class|Mail::Message::Body/"DETAILS">.
+See L<documentation in the base class|Mail::Message::Body/"DETAILS">.
  
 =head1 DIAGNOSTICS
 
@@ -461,8 +461,8 @@ but it is impossible to read that file to retrieve the lines within.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -26,7 +26,7 @@ Available methods are very converter-specific.
 
 This class is the base for various message (and message parts) converters.
 
-See L<documentation in base class|Mail::Reporter/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Reporter/"DESCRIPTION">.
  
 =head2 Converters between message objects
 
@@ -78,11 +78,11 @@ Converts a text message into text using Text::Autoformat.
 
 =head1 METHODS
 
-See L<documentation in base class|Mail::Reporter/"METHODS">.
+See L<documentation in the base class|Mail::Reporter/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Reporter/"Constructors">.
+See L<documentation in the base class|Mail::Reporter/"Constructors">.
  
 =over 4
 
@@ -127,7 +127,7 @@ through the information as specified with L<new(fields)|Mail::Message::Convert/"
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Reporter/"Error handling">.
+See L<documentation in the base class|Mail::Reporter/"Error handling">.
  
 =over 4
 
@@ -189,7 +189,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Reporter/"Cleanup">.
+See L<documentation in the base class|Mail::Reporter/"Cleanup">.
  
 =over 4
 
@@ -215,8 +215,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

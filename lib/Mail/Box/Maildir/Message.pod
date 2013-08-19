@@ -22,15 +22,15 @@ Mail::Box::Maildir::Message - one message in a Maildir folder
 A C<Mail::Box::Maildir::Message> represents one message in an
 L<Mail::Box::Maildir|Mail::Box::Maildir> folder. Each message is stored in a separate file.
 
-See L<documentation in base class|Mail::Box::Dir::Message/"DESCRIPTION">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in base class|Mail::Box::Dir::Message/"METHODS">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in base class|Mail::Box::Dir::Message/"Constructors">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"Constructors">.
  
 =over 4
 
@@ -46,7 +46,7 @@ See L<Mail::Box::Dir::Message/"METHODS">
 
 =head2 Constructing a message
 
-See L<documentation in base class|Mail::Box::Dir::Message/"Constructing a message">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"Constructing a message">.
  
 =over 4
 
@@ -120,7 +120,7 @@ See L<Mail::Message::Construct::Reply/"Constructing a message">
 
 =head2 The message
 
-See L<documentation in base class|Mail::Box::Dir::Message/"The message">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"The message">.
  
 =over 4
 
@@ -192,7 +192,7 @@ See L<Mail::Message/"The message">
 
 =head2 The header
 
-See L<documentation in base class|Mail::Box::Dir::Message/"The header">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"The header">.
  
 =over 4
 
@@ -259,7 +259,7 @@ See L<Mail::Message/"The header">
 
 =head2 The body
 
-See L<documentation in base class|Mail::Box::Dir::Message/"The body">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"The body">.
  
 =over 4
 
@@ -295,7 +295,7 @@ See L<Mail::Message/"The body">
 
 =head2 Flags
 
-See L<documentation in base class|Mail::Box::Dir::Message/"Flags">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"Flags">.
  
 =over 4
 
@@ -339,7 +339,7 @@ See L<Mail::Message/"Flags">
 
 =head2 The whole message as text
 
-See L<documentation in base class|Mail::Box::Dir::Message/"The whole message as text">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"The whole message as text">.
  
 =over 4
 
@@ -376,7 +376,7 @@ C<undef> is returned when the rename is required but fails.
 
 =head2 Internals
 
-See L<documentation in base class|Mail::Box::Dir::Message/"Internals">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"Internals">.
  
 =over 4
 
@@ -447,7 +447,7 @@ See L<Mail::Message/"Internals">
 
 =head2 Error handling
 
-See L<documentation in base class|Mail::Box::Dir::Message/"Error handling">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"Error handling">.
  
 =over 4
 
@@ -519,7 +519,7 @@ See L<Mail::Reporter/"Error handling">
 
 =head2 Cleanup
 
-See L<documentation in base class|Mail::Box::Dir::Message/"Cleanup">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"Cleanup">.
  
 =over 4
 
@@ -535,31 +535,31 @@ See L<Mail::Box::Message/"Cleanup">
 
 =head1 DETAILS
 
-See L<documentation in base class|Mail::Box::Dir::Message/"DETAILS">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"DETAILS">.
  
 =head2 Structure of a Message
 
-See L<documentation in base class|Mail::Box::Dir::Message/"Structure of a Message">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"Structure of a Message">.
  
 =head2 Message object implementation
 
-See L<documentation in base class|Mail::Box::Dir::Message/"Message object implementation">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"Message object implementation">.
  
 =head2 Message class implementation
 
-See L<documentation in base class|Mail::Box::Dir::Message/"Message class implementation">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"Message class implementation">.
  
 =head2 Labels
 
-See L<documentation in base class|Mail::Box::Dir::Message/"Labels">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"Labels">.
  
 =head3 Predefined labels
 
-See L<documentation in base class|Mail::Box::Dir::Message/"Predefined labels">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"Predefined labels">.
  
 =head3 Status and X-Status fields
 
-See L<documentation in base class|Mail::Box::Dir::Message/"Status and X-Status fields">.
+See L<documentation in the base class|Mail::Box::Dir::Message/"Status and X-Status fields">.
  
 =head3 Flags in filename
 
@@ -706,8 +706,8 @@ unreadible for some other reason.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.108,
-built on June 25, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.109,
+built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
