@@ -1,4 +1,4 @@
-# Copyrights 2001-2013 by [Mark Overmeer].
+# Copyrights 2001-2014 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.01.
@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Field::Attribute;
 use vars '$VERSION';
-$VERSION = '2.109';
+$VERSION = '2.110';
 
 use base 'Mail::Reporter';
 use 5.007003;
@@ -40,7 +40,7 @@ sub init($$)
 
     my ($attr, $value, $cont) = @$args{ qw/attr value use_continuations/ };
 
-    my $name  = ($attr =~ m/^(.*?)(?:\*\d+)?\*?\=/ ? $1 : $attr);
+    my $name  = ($attr =~ m/^(.*?)(?:\*\d+)?\*?\s*\=\s*/ ? $1 : $attr);
     $self->log(WARNING => "Illegal character in parameter name '$name'.")
         if $name !~ m/^[!#-'*+\-.0-9A-Z^-~]+$/;
 

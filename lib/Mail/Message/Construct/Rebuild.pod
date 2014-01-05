@@ -224,9 +224,8 @@ content.  Please contribute with ideas and implementations.
 =item * removeHtmlAlternativeToText
 
 When a multipart alternative is encountered, which contains both a
-plain text and an html part, then the html part is flagged for
-deletion.  Especially useful in combination with the C<removeDeletedParts>
-and C<flattenMultiparts> rules.
+plain text and an html part, then the html part is deleted.
+Especially useful in combination with the C<flattenMultiparts> rule.
 
 =item * textAlternativeForHtml
 
@@ -235,6 +234,14 @@ plain text part will have one added.  You must have a working
 L<Mail::Message::Convert::HtmlFormatText|Mail::Message::Convert::HtmlFormatText>, which means that
 HTML::TreeBuilder and HTML::FormatText  must be installed on
 your system.
+
+=item * removeExtraAlternativeText
+
+[2.110] When a multipart alternative is encountered, deletes all its parts
+except for the last part (the preferred part in accordance
+with RFC2046). In practice, this normally results in the alternative
+plain text part being deleted of an html message. Useful in combination
+with the C<flattenMultiparts> rule.
 
 =back
 
@@ -272,12 +279,12 @@ When you have your own routine, you simply call:
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.109,
-built on August 19, 2013. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.110,
+built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
-Copyrights 2001-2013 by [Mark Overmeer]. For other contributors see ChangeLog.
+Copyrights 2001-2014 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

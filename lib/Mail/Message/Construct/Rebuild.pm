@@ -1,4 +1,4 @@
-# Copyrights 2001-2013 by [Mark Overmeer].
+# Copyrights 2001-2014 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.01.
@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Message;
 use vars '$VERSION';
-$VERSION = '2.109';
+$VERSION = '2.110';
 
 
 use Mail::Message::Head::Complete;
@@ -185,7 +185,8 @@ sub replaceDeletedParts($@)
 
 sub removeHtmlAlternativeToText($@)
 {   my ($self, $part, %args) = @_;
-    return $part unless $part->body->mimeType eq 'text/html';
+    $part->body->mimeType eq 'text/html'
+        or return $part;
 
     my $container = $part->container;
 
@@ -193,6 +194,7 @@ sub removeHtmlAlternativeToText($@)
         unless defined $container
             && $container->mimeType eq 'multipart/alternative';
 
+    # The HTML $part will be nulled when a plain text part is found
     foreach my $subpart ($container->parts)
     {   return undef if $subpart->body->mimeType eq 'text/plain';
     }
@@ -200,8 +202,19 @@ sub removeHtmlAlternativeToText($@)
     $part;
 }
 
-my $has_hft;
+sub removeExtraAlternativeText($@)
+{   my ($self, $part, %args) = @_;
 
+    my $container = $part->container;
+    $container && $container->mimeType eq 'multipart/alternative'
+        or return $part;
+
+    # The last part is the preferred part (as per RFC2046)
+    my $last = ($container->parts)[-1];
+    $last && $part==$last ? $part : undef;
+}
+
+my $has_hft;
 sub textAlternativeForHtml($@)
 {   my ($self, $part, %args) = @_;
 

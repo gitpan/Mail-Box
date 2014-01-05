@@ -1,4 +1,4 @@
-# Copyrights 2001-2013 by [Mark Overmeer].
+# Copyrights 2001-2014 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.01.
@@ -7,11 +7,11 @@ use strict;
 
 package Mail::Message::Field::Date;
 use vars '$VERSION';
-$VERSION = '2.109';
+$VERSION = '2.110';
 
 use base 'Mail::Message::Field::Structured';
 
-use POSIX qw/mktime/;
+use POSIX qw/mktime tzset/;
 
 
 my $dayname = qr/Mon|Tue|Wed|Thu|Fri|Sat|Sun/;
@@ -71,9 +71,15 @@ sub time()
     my ($d, $mon, $y, $h, $min, $s, $z)
       = $date =~ m/^ (?:\w\w\w\,\s+)? (\d\d)\s+(\w+)\s+(\d\d\d\d)
                      \s+ (\d\d)\:(\d\d)\:(\d\d) \s+ ([+-]\d\d\d\d)? \s*$ /x;
-    my $timestamp = mktime $s, $min, $h, $d, $monthnr{$mon}-1, $y-1900
-      , 0, 0, -1;
-    $timestamp += ($1 eq '-' ? -1 : 1) * ($2*3600 + $3*60)
+
+    my $oldtz = $ENV{TZ};
+    $ENV{TZ}  = 'UTC';
+    tzset;
+    my $timestamp = mktime $s, $min, $h, $d, $monthnr{$mon}-1, $y-1900;
+    $ENV{TZ}  = $oldtz;
+    tzset;
+
+    $timestamp += ($1 eq '-' ? 1 : -1) * ($2*3600 + $3*60)
         if $z =~ m/^([+-])(\d\d)(\d\d)$/;
     $timestamp;
 }

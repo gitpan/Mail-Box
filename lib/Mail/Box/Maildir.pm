@@ -1,11 +1,11 @@
-# Copyrights 2001-2013 by [Mark Overmeer].
+# Copyrights 2001-2014 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.01.
 
 package Mail::Box::Maildir;
 use vars '$VERSION';
-$VERSION = '2.109';
+$VERSION = '2.110';
 
 use base 'Mail::Box::Dir';
 
@@ -219,7 +219,7 @@ sub readMessageFilenames
     opendir DIR, $dirname or return ();
 
     # unsorted list of untainted filenames.
-    my @files = map { /^(\d[\w.:,=\-]+)$/
+    my @files = map { /^([0-9][\w.:,=\-]+)$/
                       && -f "$dirname/$1" ? $1 : () }
                    readdir DIR;
     closedir DIR;
@@ -232,8 +232,8 @@ sub readMessageFilenames
     my %unified;
     m/^(\d+)/ and $unified{ ('0' x (9-length($1))).$_ } = $_ foreach @files;
 
-    map { "$dirname/$unified{$_}" }
-        sort keys %unified;
+    map "$dirname/$unified{$_}"
+      , sort keys %unified;
 }
 
 sub readMessages(@)
@@ -247,10 +247,10 @@ sub readMessages(@)
     #
 
     my $curdir  = "$directory/cur";
-    my @cur     = map { [$_, 1] } $self->readMessageFilenames($curdir);
+    my @cur     = map +[$_, 1], $self->readMessageFilenames($curdir);
 
     my $newdir  = "$directory/new";
-    my @new     = map { [$_, 0] } $self->readMessageFilenames($newdir);
+    my @new     = map +[$_, 0], $self->readMessageFilenames($newdir);
     my @log     = $self->logSettings;
 
     foreach (@cur, @new)
