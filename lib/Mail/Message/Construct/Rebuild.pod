@@ -21,7 +21,7 @@ tries to simplify this task and add some standard features.
 
 =over 4
 
-=item $obj-E<gt>B<rebuild>(OPTIONS)
+=item $obj-E<gt>B<rebuild>(%options)
 
 Reconstruct an existing message into something new.  Returned is a new
 message when there were modifications made, C<undef> if the message has
@@ -100,7 +100,7 @@ example:
 
 =over 4
 
-=item $obj-E<gt>B<recursiveRebuildPart>(PART, OPTIONS)
+=item $obj-E<gt>B<recursiveRebuildPart>($part, %options)
 
  -Option--Default
   rules   <required>
@@ -279,8 +279,8 @@ When you have your own routine, you simply call:
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

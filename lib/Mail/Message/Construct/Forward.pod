@@ -21,7 +21,7 @@ functionality related to creating forwarded messages.
 
 =over 4
 
-=item $obj-E<gt>B<forward>(OPTIONS)
+=item $obj-E<gt>B<forward>(%options)
 
 Forward the content of this message.  The body of the message to be forwarded
 is encapsulated in some accompanying text (if you have no wish for that, than
@@ -124,7 +124,7 @@ before it, and added behind the epilogue.
 
 =back
 
-=item $obj-E<gt>B<forwardAttach>(OPTIONS)
+=item $obj-E<gt>B<forwardAttach>(%options)
 
 Forward the message as I<flat> attachment to the specified C<preamble>.  You
 can specify all options available to C<forward()>, although a C<preamble>
@@ -140,7 +140,7 @@ is ignored.
 
 =back
 
-=item $obj-E<gt>B<forwardEncapsulate>(OPTIONS)
+=item $obj-E<gt>B<forwardEncapsulate>(%options)
 
 Like L<forwardAttach()|Mail::Message::Construct::Forward/"Constructing a message">, but in this case the original message is first
 encapsulated as nested message in a L<Mail::Message::Body::Nested|Mail::Message::Body::Nested>, and
@@ -159,7 +159,7 @@ is ignored.  Signatures are not stripped.  Signatures are not stripped.
 
 =back
 
-=item $obj-E<gt>B<forwardInline>(OPTIONS)
+=item $obj-E<gt>B<forwardInline>(%options)
 
 This method is equivalent in behavior to L<forward()|Mail::Message::Construct::Forward/"Constructing a message"> with the
 option C<include> set to C<'INLINE'>.  You can specify most of
@@ -221,13 +221,13 @@ before quoting.
 
 =back
 
-=item $obj-E<gt>B<forwardNo>(OPTIONS)
+=item $obj-E<gt>B<forwardNo>(%options)
 
 Construct a forward, where the whole body of the message is already
 constructed.  That complex body is usually produced in L<forwardInline()|Mail::Message::Construct::Forward/"Constructing a message">,
 L<forwardAttach()|Mail::Message::Construct::Forward/"Constructing a message">, or L<forwardEncapsulate()|Mail::Message::Construct::Forward/"Constructing a message">.
 
-The OPTIONS are the same as for C<forward()> except that C<body> is
+The %options are the same as for C<forward()> except that C<body> is
 required.  Some other options, like C<preamble>, are ignored.
 
  -Option--Default
@@ -398,8 +398,8 @@ If a forward message is created, a destination address must be specified.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

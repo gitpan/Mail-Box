@@ -30,23 +30,23 @@ and many methods are added.
 Most methods will work without any change, but you may need to have
 a look at your L<smtpsend()|Mail::Message::Replace::MailInternet/"The body"> and L<send()|Mail::Message::Replace::MailInternet/"The message"> calls.
 
-See L<documentation in the base class|Mail::Message/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Message|Mail::Message/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Message/"METHODS">.
+Extends L<"METHODS" in Mail::Message|Mail::Message/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Message/"Constructors">.
+Extends L<"Constructors" in Mail::Message|Mail::Message/"Constructors">.
  
 =over 4
 
-=item $obj-E<gt>B<clone>(OPTIONS)
+=item $obj-E<gt>B<clone>(%options)
 
-See L<Mail::Message/"Constructors">
+Inherited, see L<Mail::Message/"Constructors">
 
 =item $obj-E<gt>B<dup>()
 
@@ -57,7 +57,7 @@ compatible object.
 
 Remove all data from this object.  Very dangerous!
 
-=item Mail::Message::Replace::MailInternet-E<gt>B<new>([ARG], [OPTIONS])
+=item Mail::Message::Replace::MailInternet-E<gt>B<new>( [$arg], [%options] )
 
  -Option    --Defined in     --Default
   Body                         undef
@@ -83,7 +83,7 @@ Remove all data from this object.  Very dangerous!
 =item Body => ARRAY-OF-LINES
 
 Array of C<"\n"> terminated lines.  If not specified, the lines will be
-read from ARG.
+read from $arg.
 
 =item FoldLength => INTEGER
 
@@ -94,7 +94,7 @@ Passed to L<Mail::Message::Replace::MailHeader::new(FoldLength)|Mail::Message::R
 
 The L<Mail::Header> object, which is passed here, is a fake one as well...
 It is translated into a L<new(head)|Mail::Message/"Constructors">.  If not given, the header will be
-parsed from the ARG.
+parsed from the $arg.
 
 =item MailFrom => 'IGNORE'|'ERROR'|'COERCE'|'KEEP'
 
@@ -148,7 +148,7 @@ example: replace traditional Mail::Internet by this wrapper
 
 =over 4
 
-=item $obj-E<gt>B<MailFrom>([STRING])
+=item $obj-E<gt>B<MailFrom>( [STRING] )
 
 Your email address.
 
@@ -156,70 +156,70 @@ Your email address.
 
 =head2 Constructing a message
 
-See L<documentation in the base class|Mail::Message/"Constructing a message">.
+Extends L<"Constructing a message" in Mail::Message|Mail::Message/"Constructing a message">.
  
 =over 4
 
-=item $obj-E<gt>B<add_signature>([FILENAME])
+=item $obj-E<gt>B<add_signature>( [$filename] )
 
-Replaced by L<sign()|Mail::Message::Replace::MailInternet/"Constructing a message">, but still usable. FILENAME is the file which
+Replaced by L<sign()|Mail::Message::Replace::MailInternet/"Constructing a message">, but still usable. $filename is the file which
 contains the signature, which defaults to C<$ENV{HOME}/.signature>.
 
-=item $obj-E<gt>B<bounce>([RG-OBJECT|OPTIONS])
+=item $obj-E<gt>B<bounce>( [<$rg_object|%options>] )
 
-See L<Mail::Message::Construct::Bounce/"Constructing a message">
+Inherited, see L<Mail::Message::Construct::Bounce/"Constructing a message">
 
-=item Mail::Message::Replace::MailInternet-E<gt>B<build>([MESSAGE|PART|BODY], CONTENT)
+=item Mail::Message::Replace::MailInternet-E<gt>B<build>( [$message|$part|$body], $content )
 
-See L<Mail::Message::Construct::Build/"Constructing a message">
+Inherited, see L<Mail::Message::Construct::Build/"Constructing a message">
 
-=item Mail::Message::Replace::MailInternet-E<gt>B<buildFromBody>(BODY, [HEAD], HEADERS)
+=item Mail::Message::Replace::MailInternet-E<gt>B<buildFromBody>($body, [$head], $headers)
 
-See L<Mail::Message::Construct::Build/"Constructing a message">
+Inherited, see L<Mail::Message::Construct::Build/"Constructing a message">
 
-=item $obj-E<gt>B<extract>(ARRAY or FILEHANDLE)
+=item $obj-E<gt>B<extract>(ARRAY|$fh)
 
-Read header and body from an ARRAY or FILEHANDLE
+Read header and body from an ARRAY or $fh
 
-=item $obj-E<gt>B<forward>(OPTIONS)
+=item $obj-E<gt>B<forward>(%options)
 
-See L<Mail::Message::Construct::Forward/"Constructing a message">
+Inherited, see L<Mail::Message::Construct::Forward/"Constructing a message">
 
-=item $obj-E<gt>B<forwardAttach>(OPTIONS)
+=item $obj-E<gt>B<forwardAttach>(%options)
 
-See L<Mail::Message::Construct::Forward/"Constructing a message">
+Inherited, see L<Mail::Message::Construct::Forward/"Constructing a message">
 
-=item $obj-E<gt>B<forwardEncapsulate>(OPTIONS)
+=item $obj-E<gt>B<forwardEncapsulate>(%options)
 
-See L<Mail::Message::Construct::Forward/"Constructing a message">
+Inherited, see L<Mail::Message::Construct::Forward/"Constructing a message">
 
-=item $obj-E<gt>B<forwardInline>(OPTIONS)
+=item $obj-E<gt>B<forwardInline>(%options)
 
-See L<Mail::Message::Construct::Forward/"Constructing a message">
+Inherited, see L<Mail::Message::Construct::Forward/"Constructing a message">
 
-=item $obj-E<gt>B<forwardNo>(OPTIONS)
+=item $obj-E<gt>B<forwardNo>(%options)
 
-See L<Mail::Message::Construct::Forward/"Constructing a message">
+Inherited, see L<Mail::Message::Construct::Forward/"Constructing a message">
 
 =item $obj-E<gt>B<forwardPostlude>()
 
-See L<Mail::Message::Construct::Forward/"Constructing a message">
+Inherited, see L<Mail::Message::Construct::Forward/"Constructing a message">
 
 =item $obj-E<gt>B<forwardPrelude>()
 
-See L<Mail::Message::Construct::Forward/"Constructing a message">
+Inherited, see L<Mail::Message::Construct::Forward/"Constructing a message">
 
 =item $obj-E<gt>B<forwardSubject>(STRING)
 
-See L<Mail::Message::Construct::Forward/"Constructing a message">
+Inherited, see L<Mail::Message::Construct::Forward/"Constructing a message">
 
-=item $obj-E<gt>B<read>(ARRAY|FILEHANDLE, OPTIONS)
+=item $obj-E<gt>B<read>(ARRAY|$fh, %options)
 
-=item Mail::Message::Replace::MailInternet-E<gt>B<read>(ARRAY|FILEHANDLE, OPTIONS)
+=item Mail::Message::Replace::MailInternet-E<gt>B<read>(ARRAY|$fh, %options)
 
-Read header and body from the specified ARRAY or FILEHANDLE.  When used as
+Read header and body from the specified ARRAY or $fh.  When used as
 object method, L<Mail::Message::read()|Mail::Message::Construct::Read/"Constructing a message"> is called, to be MailBox compliant.
-As class method, the Mail::Internet compatible read is called.  OPTIONS are
+As class method, the Mail::Internet compatible read is called.  %options are
 only available in the first case.
 
  -Option             --Defined in                    --Default
@@ -234,19 +234,19 @@ only available in the first case.
 
 =back
 
-=item $obj-E<gt>B<read_body>(ARRAY|FILEHANDLE)
+=item $obj-E<gt>B<read_body>(ARRAY|$fh)
 
-Read only the message's body from the ARRAY or FILEHANDLE.
+Read only the message's body from the ARRAY or $fh.
 
-=item $obj-E<gt>B<read_header>(ARRAY|FILEHANDLE)
+=item $obj-E<gt>B<read_header>(ARRAY|$fh)
 
-Read only the message's header from the ARRAY or FILEHANDLE
+Read only the message's header from the ARRAY or $fh
 
-=item $obj-E<gt>B<rebuild>(OPTIONS)
+=item $obj-E<gt>B<rebuild>(%options)
 
-See L<Mail::Message::Construct::Rebuild/"Constructing a message">
+Inherited, see L<Mail::Message::Construct::Rebuild/"Constructing a message">
 
-=item $obj-E<gt>B<reply>(OPTIONS)
+=item $obj-E<gt>B<reply>(%options)
 
 BE WARNED: the main job for creating a reply is done by
 L<Mail::Message::reply()|Mail::Message::Construct::Reply/"Constructing a message">, which may produce a result which is compatible,
@@ -335,17 +335,17 @@ set to C<undef>, or the file does not exist, then a header will be created.
 
 =back
 
-=item $obj-E<gt>B<replyPrelude>([STRING|FIELD|ADDRESS|ARRAY-OF-THINGS])
+=item $obj-E<gt>B<replyPrelude>( [STRING|$field|$address|ARRAY-$of-$things] )
 
-See L<Mail::Message::Construct::Reply/"Constructing a message">
+Inherited, see L<Mail::Message::Construct::Reply/"Constructing a message">
 
 =item $obj-E<gt>B<replySubject>(STRING)
 
 =item Mail::Message::Replace::MailInternet-E<gt>B<replySubject>(STRING)
 
-See L<Mail::Message::Construct::Reply/"Constructing a message">
+Inherited, see L<Mail::Message::Construct::Reply/"Constructing a message">
 
-=item $obj-E<gt>B<sign>(OPTIONS)
+=item $obj-E<gt>B<sign>(%options)
 
 Add a signature (a few extra lines) to the message.
 
@@ -369,27 +369,27 @@ The signature in memory.
 
 =head2 The message
 
-See L<documentation in the base class|Mail::Message/"The message">.
+Extends L<"The message" in Mail::Message|Mail::Message/"The message">.
  
 =over 4
 
 =item $obj-E<gt>B<container>()
 
-See L<Mail::Message/"The message">
+Inherited, see L<Mail::Message/"The message">
 
 =item $obj-E<gt>B<isDummy>()
 
-See L<Mail::Message/"The message">
+Inherited, see L<Mail::Message/"The message">
 
 =item $obj-E<gt>B<isPart>()
 
-See L<Mail::Message/"The message">
+Inherited, see L<Mail::Message/"The message">
 
 =item $obj-E<gt>B<messageId>()
 
-See L<Mail::Message/"The message">
+Inherited, see L<Mail::Message/"The message">
 
-=item $obj-E<gt>B<nntppost>(OPTIONS)
+=item $obj-E<gt>B<nntppost>(%options)
 
 Send an NNTP message (newsgroup message), which is equivalent to
 Mail::Transport::NNTP or L<Mail::Message::send()|Mail::Message/"The message"> with C<via 'nntp'>.
@@ -411,69 +411,69 @@ Mail::Transport::NNTP or L<Mail::Message::send()|Mail::Message/"The message"> wi
 
 =item $obj-E<gt>B<partNumber>()
 
-See L<Mail::Message/"The message">
+Inherited, see L<Mail::Message/"The message">
 
-=item $obj-E<gt>B<print>([FILEHANDLE])
+=item $obj-E<gt>B<print>( [$fh] )
 
-Prints the whole message to the specified FILEHANDLE, which default to
+Prints the whole message to the specified $fh, which default to
 STDOUT.  This calls L<Mail::Message::print()|Mail::Message/"The message">.
 
-=item $obj-E<gt>B<send>(TYPE, OPTIONS)
+=item $obj-E<gt>B<send>($type, %options)
 
 Send via Mail Transfer Agents (MUA).  These will be handled by various
-L<Mail::Transport::Send|Mail::Transport::Send> extensions.  The C<test> TYPE is not supported.
+L<Mail::Transport::Send|Mail::Transport::Send> extensions.  The C<test> $type is not supported.
 
 =item $obj-E<gt>B<size>()
 
-See L<Mail::Message/"The message">
+Inherited, see L<Mail::Message/"The message">
 
 =item $obj-E<gt>B<toplevel>()
 
-See L<Mail::Message/"The message">
+Inherited, see L<Mail::Message/"The message">
 
-=item $obj-E<gt>B<write>([FILEHANDLE])
+=item $obj-E<gt>B<write>( [$fh] )
 
-See L<Mail::Message/"The message">
+Inherited, see L<Mail::Message/"The message">
 
 =back
 
 =head2 The header
 
-See L<documentation in the base class|Mail::Message/"The header">.
+Extends L<"The header" in Mail::Message|Mail::Message/"The header">.
  
 =over 4
 
-=item $obj-E<gt>B<add>(LINES)
+=item $obj-E<gt>B<add>($lines)
 
 Add header lines, which simply calls C<Mail::Message::Head::add()> on
 the header for each specified LINE. The last added LINE is returned.
 
 =item $obj-E<gt>B<bcc>()
 
-See L<Mail::Message/"The header">
+Inherited, see L<Mail::Message/"The header">
 
 =item $obj-E<gt>B<cc>()
 
-See L<Mail::Message/"The header">
+Inherited, see L<Mail::Message/"The header">
 
 =item $obj-E<gt>B<clean_header>()
 
 Not to be used, replaced by L<header()|Mail::Message::Replace::MailInternet/"The header">.
 
-=item $obj-E<gt>B<combine>(TAG, [WITH])
+=item $obj-E<gt>B<combine>( $tag, [$with] )
 
 Not implemented, because I see no use for it.
 
 =item $obj-E<gt>B<date>()
 
-See L<Mail::Message/"The header">
+Inherited, see L<Mail::Message/"The header">
 
-=item $obj-E<gt>B<delete>(NAME, [INDEX]])
+=item $obj-E<gt>B<delete>( $name, [$index]] )
 
-Delete the fields with the specified NAME.  The deleted fields are
+Delete the fields with the specified $name.  The deleted fields are
 returned.
 
-BE WARNED: if no NAME is specified, the C<delete> is interpreted as
+BE WARNED: if no $name is specified, the C<delete> is interpreted as
 the deletion of the message in a folder, so L<Mail::Box::Message::delete()|Mail::Message/"Flags">
 will be called.  This may have no negative effect at all...
 
@@ -481,41 +481,41 @@ Calls L<Mail::Message::Replace::MailHeader::delete()|Mail::Message::Replace::Mai
 
 =item $obj-E<gt>B<destinations>()
 
-See L<Mail::Message/"The header">
+Inherited, see L<Mail::Message/"The header">
 
-=item $obj-E<gt>B<fold>([LENGTH])
+=item $obj-E<gt>B<fold>( [$length] )
 
-Fold all the fields to a certain maximum LENGTH.
+Fold all the fields to a certain maximum $length.
 Implemented by L<Mail::Message::Replace::MailHeader::fold()|Mail::Message::Replace::MailHeader/"Simulating Mail::Header">
 
-=item $obj-E<gt>B<fold_length>([[TAG], LENGTH])
+=item $obj-E<gt>B<fold_length>( [[$tag], $length] )
 
-Set the maximum line LENGTH.  TAG is ignored.
+Set the maximum line $length.  $tag is ignored.
 Implemented by L<Mail::Message::Replace::MailHeader::fold_length()|Mail::Message::Replace::MailHeader/"Simulating Mail::Header">
 
 =item $obj-E<gt>B<from>()
 
-See L<Mail::Message/"The header">
+Inherited, see L<Mail::Message/"The header">
 
-=item $obj-E<gt>B<get>(NAME, [INDEX])
+=item $obj-E<gt>B<get>( $name, [$index] )
 
-Get all the header fields with the specified NAME.  In scalar context,
-only the first fitting NAME is returned.  Even when only one NAME is
+Get all the header fields with the specified $name.  In scalar context,
+only the first fitting $name is returned.  Even when only one $name is
 specified, multiple lines may be returned: some fields appear more than
 once in a header.  Calls L<Mail::Message::Replace::MailHeader::get()|Mail::Message::Replace::MailHeader/"Access to the header">
 
 =item $obj-E<gt>B<guessTimestamp>()
 
-See L<Mail::Message/"The header">
+Inherited, see L<Mail::Message/"The header">
 
-=item $obj-E<gt>B<head>([HEAD])
+=item $obj-E<gt>B<head>( [$head] )
 
 Returns the head of the message, or creates an empty one if none is
-defined.  The HEAD argument, which sets the header, is not available
+defined.  The $head argument, which sets the header, is not available
 for L<Mail::Internet>, but is there to be compatible with the C<head>
 method of L<Mail::Message|Mail::Message>.
 
-=item $obj-E<gt>B<header>([ARRAY])
+=item $obj-E<gt>B<header>( [ARRAY] )
 
 Optionally reads a header from the ARRAY, and then returns those fields
 as array-ref nicely folded.
@@ -523,28 +523,28 @@ Implemented by L<Mail::Message::Replace::MailHeader::header()|Mail::Message::Rep
 
 =item $obj-E<gt>B<nrLines>()
 
-See L<Mail::Message/"The header">
+Inherited, see L<Mail::Message/"The header">
 
-=item $obj-E<gt>B<print_header>(FILEHANDLE)
+=item $obj-E<gt>B<print_header>($fh)
 
 Calls L<Mail::Message::Head::Complete::print()|Mail::Message::Head::Complete/"Access to the header">.
 
-=item $obj-E<gt>B<replace>(TAG, LINE, [INDEX])
+=item $obj-E<gt>B<replace>( $tag, $line, [$index] )
 
 Adds LINES to the header, but removes fields with the same name if they
 already exist.  Calls L<Mail::Message::Replace::MailHeader::replace()|Mail::Message::Replace::MailHeader/"Access to the header">
 
 =item $obj-E<gt>B<sender>()
 
-See L<Mail::Message/"The header">
+Inherited, see L<Mail::Message/"The header">
 
-=item $obj-E<gt>B<study>(FIELDNAME)
+=item $obj-E<gt>B<study>($fieldname)
 
-See L<Mail::Message/"The header">
+Inherited, see L<Mail::Message/"The header">
 
 =item $obj-E<gt>B<subject>()
 
-See L<Mail::Message/"The header">
+Inherited, see L<Mail::Message/"The header">
 
 =item $obj-E<gt>B<tidy_headers>()
 
@@ -552,23 +552,23 @@ No effect anymore (always performed).
 
 =item $obj-E<gt>B<timestamp>()
 
-See L<Mail::Message/"The header">
+Inherited, see L<Mail::Message/"The header">
 
 =item $obj-E<gt>B<to>()
 
-See L<Mail::Message/"The header">
+Inherited, see L<Mail::Message/"The header">
 
 =back
 
 =head2 The body
 
-See L<documentation in the base class|Mail::Message/"The body">.
+Extends L<"The body" in Mail::Message|Mail::Message/"The body">.
  
 =over 4
 
-=item $obj-E<gt>B<body>([ARRAY-OF-LINES|LIST-OF-LINES])
+=item $obj-E<gt>B<body>($lines|@lines)
 
-Returns an array of lines, representing the body.  With arguments, a
+Returns an ARRAY of lines, representing the body.  With arguments, a
 new body will be created.  In L<Mail::Internet>, the body is not an
 object but a simple array.
 
@@ -576,47 +576,47 @@ BE WARNED: this overrules the L<Mail::Message::body()|Mail::Message/"The body"> 
 may cause some confusion.  Use L<bodyObject()|Mail::Message::Replace::MailInternet/"The body"> to get access to that
 body's data.
 
-=item $obj-E<gt>B<bodyObject>([BODY])
+=item $obj-E<gt>B<bodyObject>( [$body] )
 
 Calls L<Mail::Message::body()|Mail::Message/"The body">, because that C<body> method is overruled
 by the one which has a L<Mail::Internet> compatible interface.
 
 =item $obj-E<gt>B<contentType>()
 
-See L<Mail::Message/"The body">
+Inherited, see L<Mail::Message/"The body">
 
-=item $obj-E<gt>B<decoded>(OPTIONS)
+=item $obj-E<gt>B<decoded>(%options)
 
-See L<Mail::Message/"The body">
+Inherited, see L<Mail::Message/"The body">
 
-=item $obj-E<gt>B<encode>(OPTIONS)
+=item $obj-E<gt>B<encode>(%options)
 
-See L<Mail::Message/"The body">
+Inherited, see L<Mail::Message/"The body">
 
 =item $obj-E<gt>B<isMultipart>()
 
-See L<Mail::Message/"The body">
+Inherited, see L<Mail::Message/"The body">
 
 =item $obj-E<gt>B<isNested>()
 
-See L<Mail::Message/"The body">
+Inherited, see L<Mail::Message/"The body">
 
-=item $obj-E<gt>B<parts>(['ALL'|'ACTIVE'|'DELETED'|'RECURSE'|FILTER])
+=item $obj-E<gt>B<parts>( [<'ALL'|'ACTIVE'|'DELETED'|'RECURSE'|$filter>] )
 
-See L<Mail::Message/"The body">
+Inherited, see L<Mail::Message/"The body">
 
-=item $obj-E<gt>B<print_body>([FILEHANDLE])
+=item $obj-E<gt>B<print_body>( [$fh] )
 
-Prints the body to the specified FILEHANDLE, which defaults to STDOUT.  This
+Prints the body to the specified $fh, which defaults to STDOUT.  This
 calls L<Mail::Message::Body::print()|Mail::Message::Body/"Access to the payload">.
 
-=item $obj-E<gt>B<remove_sig>([NRLINES])
+=item $obj-E<gt>B<remove_sig>( [$nrlines] )
 
-Remove the signature of a message with a maximum of NRLINES lines, which
+Remove the signature of a message with a maximum of $nrlines lines, which
 defaults to 10.  The work is done on the decoded body content, by
 L<Mail::Message::Body::stripSignature()|Mail::Message::Body::Construct/"Constructing a body">.
 
-=item $obj-E<gt>B<smtpsend>(OPTIONS)
+=item $obj-E<gt>B<smtpsend>(%options)
 
 This method is calling L<Mail::Message::send()|Mail::Message/"The message"> via C<smtp>, which is
 implemented in L<Mail::Transport::SMTP|Mail::Transport::SMTP>.  The implementation is
@@ -659,47 +659,47 @@ Removes blank lines from begin and end of the body.
 
 =head2 Flags
 
-See L<documentation in the base class|Mail::Message/"Flags">.
+Extends L<"Flags" in Mail::Message|Mail::Message/"Flags">.
  
 =over 4
 
-=item $obj-E<gt>B<deleted>([BOOLEAN])
+=item $obj-E<gt>B<deleted>( [BOOLEAN] )
 
-See L<Mail::Message/"Flags">
+Inherited, see L<Mail::Message/"Flags">
 
 =item $obj-E<gt>B<isDeleted>()
 
-See L<Mail::Message/"Flags">
+Inherited, see L<Mail::Message/"Flags">
 
 =item $obj-E<gt>B<isModified>()
 
-See L<Mail::Message/"Flags">
+Inherited, see L<Mail::Message/"Flags">
 
-=item $obj-E<gt>B<label>(LABEL|PAIRS)
+=item $obj-E<gt>B<label>($label|PAIRS)
 
-See L<Mail::Message/"Flags">
+Inherited, see L<Mail::Message/"Flags">
 
 =item $obj-E<gt>B<labels>()
 
-See L<Mail::Message/"Flags">
+Inherited, see L<Mail::Message/"Flags">
 
 =item $obj-E<gt>B<labelsToStatus>()
 
-See L<Mail::Message/"Flags">
+Inherited, see L<Mail::Message/"Flags">
 
-=item $obj-E<gt>B<modified>([BOOLEAN])
+=item $obj-E<gt>B<modified>( [BOOLEAN] )
 
-See L<Mail::Message/"Flags">
+Inherited, see L<Mail::Message/"Flags">
 
 =item $obj-E<gt>B<statusToLabels>()
 
-See L<Mail::Message/"Flags">
+Inherited, see L<Mail::Message/"Flags">
 
 =back
 
 =head2 The whole message as text
 
-See L<documentation in the base class|Mail::Message/"The whole message as text">.
+Extends L<"The whole message as text" in Mail::Message|Mail::Message/"The whole message as text">.
  
 =over 4
 
@@ -711,19 +711,19 @@ which start with C<From > are escaped with an E<gt>.
 
 =item $obj-E<gt>B<file>()
 
-See L<Mail::Message::Construct::Text/"The whole message as text">
+Inherited, see L<Mail::Message::Construct::Text/"The whole message as text">
 
 =item $obj-E<gt>B<lines>()
 
-See L<Mail::Message::Construct::Text/"The whole message as text">
+Inherited, see L<Mail::Message::Construct::Text/"The whole message as text">
 
-=item $obj-E<gt>B<printStructure>([FILEHANDLE|undef],[INDENT])
+=item $obj-E<gt>B<printStructure>( [$fh|undef],[$indent] )
 
-See L<Mail::Message::Construct::Text/"The whole message as text">
+Inherited, see L<Mail::Message::Construct::Text/"The whole message as text">
 
 =item $obj-E<gt>B<string>()
 
-See L<Mail::Message::Construct::Text/"The whole message as text">
+Inherited, see L<Mail::Message::Construct::Text/"The whole message as text">
 
 =back
 
@@ -731,9 +731,9 @@ See L<Mail::Message::Construct::Text/"The whole message as text">
 
 =over 4
 
-=item $obj-E<gt>B<isa>(CLASS)
+=item $obj-E<gt>B<isa>($class)
 
-=item Mail::Message::Replace::MailInternet-E<gt>B<isa>(CLASS)
+=item Mail::Message::Replace::MailInternet-E<gt>B<isa>($class)
 
 Of course, the C<isa()> class inheritance check should not see our
 nasty trick.
@@ -742,141 +742,141 @@ nasty trick.
 
 =head2 Internals
 
-See L<documentation in the base class|Mail::Message/"Internals">.
+Extends L<"Internals" in Mail::Message|Mail::Message/"Internals">.
  
 =over 4
 
 =item $obj-E<gt>B<clonedFrom>()
 
-See L<Mail::Message/"Internals">
+Inherited, see L<Mail::Message/"Internals">
 
-=item Mail::Message::Replace::MailInternet-E<gt>B<coerce>(MESSAGE)
+=item Mail::Message::Replace::MailInternet-E<gt>B<coerce>($message)
 
-Coerce (adapt type) of the specified MESSAGE (anything
+Coerce (adapt type) of the specified $message (anything
 L<Mail::Message::coerce()|Mail::Message/"Internals"> accepts) into an L<Mail::Internet|Mail::Internet> simulating
 object.
 
 =item $obj-E<gt>B<isDelayed>()
 
-See L<Mail::Message/"Internals">
+Inherited, see L<Mail::Message/"Internals">
 
-=item $obj-E<gt>B<readBody>(PARSER, HEAD [, BODYTYPE])
+=item $obj-E<gt>B<readBody>( $parser, $head, [$bodytype] )
 
-See L<Mail::Message/"Internals">
+Inherited, see L<Mail::Message/"Internals">
 
-=item $obj-E<gt>B<readFromParser>(PARSER, [BODYTYPE])
+=item $obj-E<gt>B<readFromParser>( $parser, [$bodytype] )
 
-See L<Mail::Message/"Internals">
+Inherited, see L<Mail::Message/"Internals">
 
-=item $obj-E<gt>B<readHead>(PARSER [,CLASS])
+=item $obj-E<gt>B<readHead>( $parser, [$class] )
 
-See L<Mail::Message/"Internals">
+Inherited, see L<Mail::Message/"Internals">
 
-=item $obj-E<gt>B<recursiveRebuildPart>(PART, OPTIONS)
+=item $obj-E<gt>B<recursiveRebuildPart>($part, %options)
 
-See L<Mail::Message::Construct::Rebuild/"Internals">
+Inherited, see L<Mail::Message::Construct::Rebuild/"Internals">
 
-=item $obj-E<gt>B<storeBody>(BODY)
+=item $obj-E<gt>B<storeBody>($body)
 
-See L<Mail::Message/"Internals">
+Inherited, see L<Mail::Message/"Internals">
 
-=item $obj-E<gt>B<takeMessageId>([STRING])
+=item $obj-E<gt>B<takeMessageId>( [STRING] )
 
-See L<Mail::Message/"Internals">
+Inherited, see L<Mail::Message/"Internals">
 
 =back
 
 =head2 Error handling
 
-See L<documentation in the base class|Mail::Message/"Error handling">.
+Extends L<"Error handling" in Mail::Message|Mail::Message/"Error handling">.
  
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
 
-See L<Mail::Message::Construct/"METHODS">
+Inherited, see L<Mail::Message::Construct/"METHODS">
 
-=item $obj-E<gt>B<addReport>(OBJECT)
+=item $obj-E<gt>B<addReport>($object)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-=item Mail::Message::Replace::MailInternet-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Message::Replace::MailInternet-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<errors>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>( [$level, [$strings]] )
 
-=item Mail::Message::Replace::MailInternet-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Message::Replace::MailInternet-E<gt>B<log>( [$level, [$strings]] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>($level)
 
-=item Mail::Message::Replace::MailInternet-E<gt>B<logPriority>(LEVEL)
+=item Mail::Message::Replace::MailInternet-E<gt>B<logPriority>($level)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logSettings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<notImplemented>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<report>([LEVEL])
+=item $obj-E<gt>B<report>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<reportAll>([LEVEL])
+=item $obj-E<gt>B<reportAll>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<shortSize>([VALUE])
+=item $obj-E<gt>B<shortSize>( [$value] )
 
-=item Mail::Message::Replace::MailInternet-E<gt>B<shortSize>([VALUE])
+=item Mail::Message::Replace::MailInternet-E<gt>B<shortSize>( [$value] )
 
-See L<Mail::Message/"Error handling">
+Inherited, see L<Mail::Message/"Error handling">
 
 =item $obj-E<gt>B<shortString>()
 
-See L<Mail::Message/"Error handling">
+Inherited, see L<Mail::Message/"Error handling">
 
-=item $obj-E<gt>B<trace>([LEVEL])
+=item $obj-E<gt>B<trace>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<warnings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =back
 
 =head2 Cleanup
 
-See L<documentation in the base class|Mail::Message/"Cleanup">.
+Extends L<"Cleanup" in Mail::Message|Mail::Message/"Cleanup">.
  
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
-See L<Mail::Message/"Cleanup">
+Inherited, see L<Mail::Reporter/"Cleanup">
 
 =item $obj-E<gt>B<destruct>()
 
-See L<Mail::Message/"Cleanup">
+Inherited, see L<Mail::Message/"Cleanup">
 
 =back
 
 =head1 DETAILS
 
-See L<documentation in the base class|Mail::Message/"DETAILS">.
+Extends L<"DETAILS" in Mail::Message|Mail::Message/"DETAILS">.
  
 =head1 DIAGNOSTICS
 
@@ -930,8 +930,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

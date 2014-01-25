@@ -19,19 +19,19 @@ in Perl.  This may be a little slower than the C<C> based parser
 Mail::Box::Parser::C, but will also work on platforms where no C
 compiler is available.
 
-See L<documentation in the base class|Mail::Box::Parser/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Box::Parser|Mail::Box::Parser/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Box::Parser/"METHODS">.
+Extends L<"METHODS" in Mail::Box::Parser|Mail::Box::Parser/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Box::Parser/"Constructors">.
+Extends L<"Constructors" in Mail::Box::Parser|Mail::Box::Parser/"Constructors">.
  
 =over 4
 
-=item Mail::Box::Parser::Perl-E<gt>B<new>(OPTIONS)
+=item Mail::Box::Parser::Perl-E<gt>B<new>(%options)
 
  -Option           --Defined in       --Default
   file               Mail::Box::Parser  undef
@@ -72,19 +72,19 @@ tests.  Related to L<Mail::Box::new(trusted)|Mail::Box/"Constructors">.
 
 =head2 The parser
 
-See L<documentation in the base class|Mail::Box::Parser/"The parser">.
+Extends L<"The parser" in Mail::Box::Parser|Mail::Box::Parser/"The parser">.
  
 =over 4
 
 =item $obj-E<gt>B<fileChanged>()
 
-See L<Mail::Box::Parser/"The parser">
+Inherited, see L<Mail::Box::Parser/"The parser">
 
 =item $obj-E<gt>B<filename>()
 
-See L<Mail::Box::Parser/"The parser">
+Inherited, see L<Mail::Box::Parser/"The parser">
 
-=item $obj-E<gt>B<fixHeaderErrors>([BOOLEAN])
+=item $obj-E<gt>B<fixHeaderErrors>( [BOOLEAN] )
 
 If set to C<true>, parsing of a header will not stop on an error, but
 attempt to add the erroneous this line to previous field.  Without BOOLEAN,
@@ -97,161 +97,161 @@ example:
 
 =item $obj-E<gt>B<restart>()
 
-See L<Mail::Box::Parser/"The parser">
+Inherited, see L<Mail::Box::Parser/"The parser">
 
-=item $obj-E<gt>B<start>(OPTIONS)
+=item $obj-E<gt>B<start>(%options)
 
-See L<Mail::Box::Parser/"The parser">
+Inherited, see L<Mail::Box::Parser/"The parser">
 
 =item $obj-E<gt>B<stop>()
 
-See L<Mail::Box::Parser/"The parser">
+Inherited, see L<Mail::Box::Parser/"The parser">
 
 =back
 
 =head2 Parsing
 
-See L<documentation in the base class|Mail::Box::Parser/"Parsing">.
+Extends L<"Parsing" in Mail::Box::Parser|Mail::Box::Parser/"Parsing">.
  
 =over 4
 
-=item $obj-E<gt>B<bodyAsFile>(FILEHANDLE [,CHARS [,LINES]])
+=item $obj-E<gt>B<bodyAsFile>( $fh [$chars, [$lines]] )
 
-See L<Mail::Box::Parser/"Parsing">
+Inherited, see L<Mail::Box::Parser/"Parsing">
 
-=item $obj-E<gt>B<bodyAsList>([,CHARS [,LINES]])
+=item $obj-E<gt>B<bodyAsList>( [$chars, [$lines]] )
 
-See L<Mail::Box::Parser/"Parsing">
+Inherited, see L<Mail::Box::Parser/"Parsing">
 
-=item $obj-E<gt>B<bodyAsString>([,CHARS [,LINES]])
+=item $obj-E<gt>B<bodyAsString>( [$chars, [$lines]] )
 
-See L<Mail::Box::Parser/"Parsing">
+Inherited, see L<Mail::Box::Parser/"Parsing">
 
-=item $obj-E<gt>B<bodyDelayed>([,CHARS [,LINES]])
+=item $obj-E<gt>B<bodyDelayed>( [$chars, [$lines]] )
 
-See L<Mail::Box::Parser/"Parsing">
+Inherited, see L<Mail::Box::Parser/"Parsing">
 
-=item $obj-E<gt>B<filePosition>([POSITION])
+=item $obj-E<gt>B<filePosition>( [$position] )
 
-See L<Mail::Box::Parser/"Parsing">
+Inherited, see L<Mail::Box::Parser/"Parsing">
 
 =item $obj-E<gt>B<lineSeparator>()
 
-See L<Mail::Box::Parser/"Parsing">
+Inherited, see L<Mail::Box::Parser/"Parsing">
 
 =item $obj-E<gt>B<popSeparator>()
 
-See L<Mail::Box::Parser/"Parsing">
+Inherited, see L<Mail::Box::Parser/"Parsing">
 
-=item $obj-E<gt>B<pushSeparator>(STRING|REGEXP)
+=item $obj-E<gt>B<pushSeparator>(STRING|Regexp)
 
-See L<Mail::Box::Parser/"Parsing">
+Inherited, see L<Mail::Box::Parser/"Parsing">
 
 =item $obj-E<gt>B<readHeader>()
 
-=item $obj-E<gt>B<readSeparator>(OPTIONS)
+=item $obj-E<gt>B<readSeparator>(%options)
 
-See L<Mail::Box::Parser/"Parsing">
+Inherited, see L<Mail::Box::Parser/"Parsing">
 
 =back
 
 =head2 Internals
 
-See L<documentation in the base class|Mail::Box::Parser/"Internals">.
+Extends L<"Internals" in Mail::Box::Parser|Mail::Box::Parser/"Internals">.
  
 =over 4
 
 =item $obj-E<gt>B<closeFile>()
 
-See L<Mail::Box::Parser/"Internals">
+Inherited, see L<Mail::Box::Parser/"Internals">
 
-=item $obj-E<gt>B<defaultParserType>([CLASS])
+=item $obj-E<gt>B<defaultParserType>( [$class] )
 
-=item Mail::Box::Parser::Perl-E<gt>B<defaultParserType>([CLASS])
+=item Mail::Box::Parser::Perl-E<gt>B<defaultParserType>( [$class] )
 
-See L<Mail::Box::Parser/"Internals">
+Inherited, see L<Mail::Box::Parser/"Internals">
 
-=item $obj-E<gt>B<openFile>(ARGS)
+=item $obj-E<gt>B<openFile>($args)
 
-See L<Mail::Box::Parser/"Internals">
+Inherited, see L<Mail::Box::Parser/"Internals">
 
 =item $obj-E<gt>B<takeFileInfo>()
 
-See L<Mail::Box::Parser/"Internals">
+Inherited, see L<Mail::Box::Parser/"Internals">
 
 =back
 
 =head2 Error handling
 
-See L<documentation in the base class|Mail::Box::Parser/"Error handling">.
+Extends L<"Error handling" in Mail::Box::Parser|Mail::Box::Parser/"Error handling">.
  
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<addReport>(OBJECT)
+=item $obj-E<gt>B<addReport>($object)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-=item Mail::Box::Parser::Perl-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Box::Parser::Perl-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<errors>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>( [$level, [$strings]] )
 
-=item Mail::Box::Parser::Perl-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Box::Parser::Perl-E<gt>B<log>( [$level, [$strings]] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>($level)
 
-=item Mail::Box::Parser::Perl-E<gt>B<logPriority>(LEVEL)
+=item Mail::Box::Parser::Perl-E<gt>B<logPriority>($level)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logSettings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<notImplemented>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<report>([LEVEL])
+=item $obj-E<gt>B<report>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<reportAll>([LEVEL])
+=item $obj-E<gt>B<reportAll>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<trace>([LEVEL])
+=item $obj-E<gt>B<trace>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<warnings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =back
 
 =head2 Cleanup
 
-See L<documentation in the base class|Mail::Box::Parser/"Cleanup">.
+Extends L<"Cleanup" in Mail::Box::Parser|Mail::Box::Parser/"Cleanup">.
  
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
-See L<Mail::Reporter/"Cleanup">
+Inherited, see L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -296,8 +296,8 @@ The erroneous line will be added to the preceding field.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

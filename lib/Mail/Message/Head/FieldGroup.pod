@@ -29,15 +29,15 @@ related software (implemented by L<Mail::Message::Head::SpamGroup|Mail::Message:
 Each set of fields can be extracted or added as group with objects
 which are based on the implementation in this class.
 
-See L<documentation in the base class|Mail::Reporter/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Reporter|Mail::Reporter/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Reporter/"METHODS">.
+Extends L<"METHODS" in Mail::Reporter|Mail::Reporter/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Reporter/"Constructors">.
+Extends L<"Constructors" in Mail::Reporter|Mail::Reporter/"Constructors">.
  
 =over 4
 
@@ -47,9 +47,9 @@ Make a copy of this object.  The collected fieldnames are copied and the
 list type information.  No deep copy is made for the header: this is
 only copied as reference.
 
-=item $obj-E<gt>B<from>(HEAD|MESSAGE)
+=item $obj-E<gt>B<from>($head|$message)
 
-Create a group of fields based on the specified MESSAGE or message HEAD.
+Create a group of fields based on the specified $message or message $head.
 This may return one or more of the objects, which depends on the
 type of group.  Mailing list fields are all stored in one object,
 where resent and spam groups can appear more than once.
@@ -61,13 +61,13 @@ where resent and spam groups can appear more than once.
 Returns a list of strings containing all possible return values for
 L<type()|Mail::Message::Head::FieldGroup/"Access to the header">.
 
-=item Mail::Message::Head::FieldGroup-E<gt>B<new>(FIELDS, OPTIONS)
+=item Mail::Message::Head::FieldGroup-E<gt>B<new>($fields, %options)
 
-Construct an object which maintains one set of header FIELDS.  The
-FIELDS may be specified as C<Mail::Message::Field> objects or as key-value
-pairs.  The OPTIONS and FIELDS (as key-value pair) can be mixed: they are
+Construct an object which maintains one set of header $fields.  The
+$fields may be specified as C<Mail::Message::Field> objects or as key-value
+pairs.  The %options and $fields (as key-value pair) can be mixed: they are
 distinguished by their name, where the fields always start with a capital.
-The field objects must aways lead the OPTIONS.
+The field objects must aways lead the %options.
 
  -Option  --Defined in     --Default
   head                       undef
@@ -111,7 +111,7 @@ Version number for the software which produced the fields.
 
 =over 4
 
-=item $obj-E<gt>B<add>((FIELD, VALUE) | OBJECT)
+=item $obj-E<gt>B<add>( <$field, $value> | $object )
 
 Add a field to the header, using the field group.  When the field group
 is already attached to a real message header, it will appear in that
@@ -130,13 +130,13 @@ example: adding a field to an attached list group
  my $lg = Mail::Message::Head::ListGroup->from($msg);
  $lg->add('List-Id' => 'mailbox');
 
-=item $obj-E<gt>B<addFields>([FIELDNAMES])
+=item $obj-E<gt>B<addFields>( [$fieldnames] )
 
-Add some FIELDNAMES to the set.
+Add some $fieldnames to the set.
 
-=item $obj-E<gt>B<attach>(HEAD)
+=item $obj-E<gt>B<attach>($head)
 
-Add a group of fields to a message HEAD.  The fields will be cloned(!)
+Add a group of fields to a message $head.  The fields will be cloned(!)
 into the header, so that the field group object can be used again.
 
 example: attaching a list group to a message
@@ -195,11 +195,11 @@ C<undef>
 
 =over 4
 
-=item $obj-E<gt>B<collectFields>([NAME])
+=item $obj-E<gt>B<collectFields>( [$name] )
 
 Scan the header for fields which are usually contained in field group
-with the specified NAME.  For mailinglist groups, you can not specify
-a NAME: only one set of headers will be found (all headers are considered
+with the specified $name.  For mailinglist groups, you can not specify
+a $name: only one set of headers will be found (all headers are considered
 to be produced by exactly one package of mailinglist software).
 
 This method is automatically called when a field group is
@@ -212,7 +212,7 @@ was no group to be found.
 Please warn the author of MailBox if you see that to few
 or too many fields are included.
 
-=item $obj-E<gt>B<detected>(TYPE, SOFTWARE, VERSION)
+=item $obj-E<gt>B<detected>($type, $software, $version)
 
 Sets the values for the field group type, software, and version,
 prossibly to C<undef>.
@@ -221,23 +221,23 @@ prossibly to C<undef>.
 
 =head2 Error handling
 
-See L<documentation in the base class|Mail::Reporter/"Error handling">.
+Extends L<"Error handling" in Mail::Reporter|Mail::Reporter/"Error handling">.
  
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<addReport>(OBJECT)
+=item $obj-E<gt>B<addReport>($object)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-=item Mail::Message::Head::FieldGroup-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Message::Head::FieldGroup-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<details>()
 
@@ -246,61 +246,61 @@ helpful during debugging.  A nicely formatted string is returned.
 
 =item $obj-E<gt>B<errors>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>( [$level, [$strings]] )
 
-=item Mail::Message::Head::FieldGroup-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Message::Head::FieldGroup-E<gt>B<log>( [$level, [$strings]] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>($level)
 
-=item Mail::Message::Head::FieldGroup-E<gt>B<logPriority>(LEVEL)
+=item Mail::Message::Head::FieldGroup-E<gt>B<logPriority>($level)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logSettings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<notImplemented>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<print>([FILEHANDLE])
+=item $obj-E<gt>B<print>( [$fh] )
 
-Print the group to the specified FILEHANDLE or GLOB.  This is probably only
+Print the group to the specified $fh or GLOB.  This is probably only
 useful for debugging purposed.  The output defaults to the selected file
 handle.
 
-=item $obj-E<gt>B<report>([LEVEL])
+=item $obj-E<gt>B<report>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<reportAll>([LEVEL])
+=item $obj-E<gt>B<reportAll>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<trace>([LEVEL])
+=item $obj-E<gt>B<trace>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<warnings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =back
 
 =head2 Cleanup
 
-See L<documentation in the base class|Mail::Reporter/"Cleanup">.
+Extends L<"Cleanup" in Mail::Reporter|Mail::Reporter/"Cleanup">.
  
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
-See L<Mail::Reporter/"Cleanup">
+Inherited, see L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -320,8 +320,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

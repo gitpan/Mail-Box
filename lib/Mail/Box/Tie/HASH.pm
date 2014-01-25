@@ -5,8 +5,7 @@
 
 use strict;
 package Mail::Box::Tie::HASH;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 
 use Carp;
@@ -22,10 +21,7 @@ sub TIEHASH(@)
 
 #-------------------------------------------
 
-
 sub FETCH($) { shift->{MBT_folder}->messageId(shift) }
-
-#-------------------------------------------
 
 
 sub STORE($$)
@@ -36,8 +32,6 @@ sub STORE($$)
 
     $self->{MBT_folder}->addMessages($basicmsg);
 }
-
-#-------------------------------------------
 
 
 sub FIRSTKEY()
@@ -68,8 +62,6 @@ sub NEXTKEY($)
     $msg->messageId;
 }
 
-#-------------------------------------------
-
 
 sub EXISTS($)
 {   my $folder = shift->{MBT_folder};
@@ -77,8 +69,6 @@ sub EXISTS($)
     my $msg    = $folder->messageId($msgid);
     defined $msg && ! $msg->isDeleted;
 }
-
-#-------------------------------------------
 
 
 sub DELETE($)

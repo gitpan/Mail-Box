@@ -6,8 +6,7 @@ use strict;
 use warnings;
 
 package Mail::Message;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Reporter';
 
@@ -21,7 +20,6 @@ use Mail::Message::Body::Nested;
 
 use Carp;
 use Scalar::Util   'weaken';
-use Devel::GlobalDestruction 'in_global_destruction';
 
 
 our $crlf_platform;
@@ -686,16 +684,6 @@ sub shortString()
 }
 
 #------------------------------------------
-
-
-sub DESTROY()
-{   my $self = shift;
-    return if in_global_destruction;
-
-    $self->SUPER::DESTROY;
-    $self->head(undef);
-    $self->body(undef);
-}
 
 
 sub destruct() { $_[0] = undef }

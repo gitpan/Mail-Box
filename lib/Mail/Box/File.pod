@@ -23,39 +23,39 @@ which bundle multiple messages into one single file.  Usually, these
 messages are separated by a special line which indicates the start of
 the next one.
 
-See L<documentation in the base class|Mail::Box/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Box|Mail::Box/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in the base class|Mail::Box/"OVERLOADED">.
+Extends L<"OVERLOADED" in Mail::Box|Mail::Box/"OVERLOADED">.
  
 =over 4
 
-=item overload: B<"">()
+=item overload: B<"">
 
-See L<Mail::Box/"OVERLOADED">
+Inherited, see L<Mail::Box/"OVERLOADED">
 
-=item overload: B<@{}>()
+=item overload: B<@{}>
 
-See L<Mail::Box/"OVERLOADED">
+Inherited, see L<Mail::Box/"OVERLOADED">
 
-=item overload: B<cmp>()
+=item overload: B<cmp>
 
-See L<Mail::Box/"OVERLOADED">
+Inherited, see L<Mail::Box/"OVERLOADED">
 
 =back
 
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Box/"METHODS">.
+Extends L<"METHODS" in Mail::Box|Mail::Box/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Box/"Constructors">.
+Extends L<"Constructors" in Mail::Box|Mail::Box/"Constructors">.
  
 =over 4
 
-=item Mail::Box::File-E<gt>B<new>(OPTIONS)
+=item Mail::Box::File-E<gt>B<new>(%options)
 
  -Option           --Defined in     --Default
   access             Mail::Box        'r'
@@ -183,26 +183,26 @@ L<write(policy)|Mail::Box::File/"Internals">.  With C<undef>, the best policy is
 
 =head2 The folder
 
-See L<documentation in the base class|Mail::Box/"The folder">.
+Extends L<"The folder" in Mail::Box|Mail::Box/"The folder">.
  
 =over 4
 
-=item $obj-E<gt>B<addMessage>(MESSAGE, OPTIONS)
+=item $obj-E<gt>B<addMessage>($message, %options)
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
-=item $obj-E<gt>B<addMessages>(MESSAGE [, MESSAGE, ...])
+=item $obj-E<gt>B<addMessages>(@messages)
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
-=item Mail::Box::File-E<gt>B<appendMessages>(OPTIONS)
+=item Mail::Box::File-E<gt>B<appendMessages>(%options)
 
 Appending messages to a file based folder which is not opened is a little
 risky.  In practice, this is often done without locking the folder.  So,
 another application may write to the folder at the same time... :(  Hopefully,
 all goes fast enough that the chance on collition is small.
 
-All OPTIONS of L<Mail::Box::Mbox::new()|Mail::Box::Mbox/"METHODS"> can be supplied.
+All %options of L<Mail::Box::Mbox::new()|Mail::Box::Mbox/"METHODS"> can be supplied.
 
  -Option   --Defined in     --Default
   folder     Mail::Box        <required>
@@ -227,17 +227,17 @@ See L<Mail::Box::new(lock_type)|Mail::Box/"Constructors"> for possible values.
 
 =back
 
-=item $obj-E<gt>B<close>(OPTIONS)
+=item $obj-E<gt>B<close>(%options)
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
-=item $obj-E<gt>B<copyTo>(FOLDER, OPTIONS)
+=item $obj-E<gt>B<copyTo>($folder, %options)
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
-=item $obj-E<gt>B<delete>(OPTIONS)
+=item $obj-E<gt>B<delete>(%options)
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
 =item $obj-E<gt>B<filename>()
 
@@ -248,151 +248,151 @@ example:
 
  print $folder->filename;
 
-=item $obj-E<gt>B<folderdir>([DIRECTORY])
+=item $obj-E<gt>B<folderdir>( [$directory] )
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
 =item $obj-E<gt>B<name>()
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
 =item $obj-E<gt>B<organization>()
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
 =item $obj-E<gt>B<size>()
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
 =item $obj-E<gt>B<type>()
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
-=item $obj-E<gt>B<update>(OPTIONS)
+=item $obj-E<gt>B<update>(%options)
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
 =item $obj-E<gt>B<url>()
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
 =back
 
 =head2 Folder flags
 
-See L<documentation in the base class|Mail::Box/"Folder flags">.
+Extends L<"Folder flags" in Mail::Box|Mail::Box/"Folder flags">.
  
 =over 4
 
 =item $obj-E<gt>B<access>()
 
-See L<Mail::Box/"Folder flags">
+Inherited, see L<Mail::Box/"Folder flags">
 
 =item $obj-E<gt>B<isModified>()
 
-See L<Mail::Box/"Folder flags">
+Inherited, see L<Mail::Box/"Folder flags">
 
-=item $obj-E<gt>B<modified>([BOOLEAN])
+=item $obj-E<gt>B<modified>( [BOOLEAN] )
 
-See L<Mail::Box/"Folder flags">
+Inherited, see L<Mail::Box/"Folder flags">
 
 =item $obj-E<gt>B<writable>()
 
-See L<Mail::Box/"Folder flags">
+Inherited, see L<Mail::Box/"Folder flags">
 
 =back
 
 =head2 The messages
 
-See L<documentation in the base class|Mail::Box/"The messages">.
+Extends L<"The messages" in Mail::Box|Mail::Box/"The messages">.
  
 =over 4
 
-=item $obj-E<gt>B<current>([NUMBER|MESSAGE|MESSAGE-ID])
+=item $obj-E<gt>B<current>( [$number|$message|$message_id] )
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
-=item $obj-E<gt>B<find>(MESSAGE-ID)
+=item $obj-E<gt>B<find>($message_id)
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
-=item $obj-E<gt>B<findFirstLabeled>(LABEL, [BOOLEAN, [ARRAY-OF-MSGS]])
+=item $obj-E<gt>B<findFirstLabeled>( $label, [BOOLEAN, [$msgs]] )
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
-=item $obj-E<gt>B<message>(INDEX [,MESSAGE])
+=item $obj-E<gt>B<message>( $index, [$message] )
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
-=item $obj-E<gt>B<messageId>(MESSAGE-ID [,MESSAGE])
+=item $obj-E<gt>B<messageId>( $message_id, [$message] )
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
 =item $obj-E<gt>B<messageIds>()
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
-=item $obj-E<gt>B<messages>(['ALL',RANGE,'ACTIVE','DELETED',LABEL,!LABEL,FILTER])
+=item $obj-E<gt>B<messages>( <'ALL'|$range|'ACTIVE'|'DELETED'|$label| !$label|$filter> )
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
-=item $obj-E<gt>B<nrMessages>(OPTIONS)
+=item $obj-E<gt>B<nrMessages>(%options)
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
-=item $obj-E<gt>B<scanForMessages>(MESSAGE, MESSAGE-IDS, TIMESPAN, WINDOW)
+=item $obj-E<gt>B<scanForMessages>($message, $message_ids, $timespan, $window)
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
 =back
 
 =head2 Sub-folders
 
-See L<documentation in the base class|Mail::Box/"Sub-folders">.
+Extends L<"Sub-folders" in Mail::Box|Mail::Box/"Sub-folders">.
  
 =over 4
 
-=item $obj-E<gt>B<listSubFolders>(OPTIONS)
+=item $obj-E<gt>B<listSubFolders>(%options)
 
-=item Mail::Box::File-E<gt>B<listSubFolders>(OPTIONS)
+=item Mail::Box::File-E<gt>B<listSubFolders>(%options)
 
-See L<Mail::Box/"Sub-folders">
+Inherited, see L<Mail::Box/"Sub-folders">
 
-=item $obj-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
+=item $obj-E<gt>B<nameOfSubFolder>( $subname, [$parentname] )
 
-=item Mail::Box::File-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
+=item Mail::Box::File-E<gt>B<nameOfSubFolder>( $subname, [$parentname] )
 
-See L<Mail::Box/"Sub-folders">
+Inherited, see L<Mail::Box/"Sub-folders">
 
-=item $obj-E<gt>B<openRelatedFolder>(OPTIONS)
+=item $obj-E<gt>B<openRelatedFolder>(%options)
 
-See L<Mail::Box/"Sub-folders">
+Inherited, see L<Mail::Box/"Sub-folders">
 
-=item $obj-E<gt>B<openSubFolder>(SUBNAME, OPTIONS)
+=item $obj-E<gt>B<openSubFolder>($subname, %options)
 
-See L<Mail::Box/"Sub-folders">
+Inherited, see L<Mail::Box/"Sub-folders">
 
 =item $obj-E<gt>B<topFolderWithMessages>()
 
 =item Mail::Box::File-E<gt>B<topFolderWithMessages>()
 
-See L<Mail::Box/"Sub-folders">
+Inherited, see L<Mail::Box/"Sub-folders">
 
 =back
 
 =head2 Internals
 
-See L<documentation in the base class|Mail::Box/"Internals">.
+Extends L<"Internals" in Mail::Box|Mail::Box/"Internals">.
  
 =over 4
 
-=item $obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
+=item $obj-E<gt>B<coerce>($message, %options)
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<create>(FOLDERNAME, OPTIONS)
+=item $obj-E<gt>B<create>($foldername, %options)
 
-=item Mail::Box::File-E<gt>B<create>(FOLDERNAME, OPTIONS)
+=item Mail::Box::File-E<gt>B<create>($foldername, %options)
 
  -Option   --Defined in--Default
   folderdir  Mail::Box   undef
@@ -403,42 +403,42 @@ See L<Mail::Box/"Internals">
 
 =back
 
-=item $obj-E<gt>B<determineBodyType>(MESSAGE, HEAD)
+=item $obj-E<gt>B<determineBodyType>($message, $head)
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<folderToFilename>(FOLDERNAME, FOLDERDIR, [SUBEXT])
+=item $obj-E<gt>B<folderToFilename>( $foldername, $folderdir, [$subext] )
 
-=item Mail::Box::File-E<gt>B<folderToFilename>(FOLDERNAME, FOLDERDIR, [SUBEXT])
+=item Mail::Box::File-E<gt>B<folderToFilename>( $foldername, $folderdir, [$subext] )
 
 Translate a folder name into a filename, using the
-FOLDERDIR value to replace a leading C<=>.  SUBEXT is only used for MBOX
+$folderdir value to replace a leading C<=>.  $subext is only used for MBOX
 folders.
 
-=item Mail::Box::File-E<gt>B<foundIn>([FOLDERNAME], OPTIONS)
+=item Mail::Box::File-E<gt>B<foundIn>( [$foldername], %options )
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<lineSeparator>([STRING|'CR'|'LF'|'CRLF'])
+=item $obj-E<gt>B<lineSeparator>( [<STRING|'CR'|'LF'|'CRLF'>] )
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
 =item $obj-E<gt>B<locker>()
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<messageCreateOptions>([TYPE, CONFIG])
+=item $obj-E<gt>B<messageCreateOptions>( [$type, $config] )
 
 Returns a key-value list of options to be used each time a new message
-is read from a file.  The list is preceded by the TYPE of message which
+is read from a file.  The list is preceded by the $type of message which
 has to be created.
 
 This data is used by L<readMessages()|Mail::Box/"Internals"> and L<updateMessages()|Mail::Box::File/"Internals">.  With
-TYPE and CONFIG, a new configuration is set.
+$type and $config, a new configuration is set.
 
-=item $obj-E<gt>B<moveAwaySubFolder>(DIRECTORY, EXTENSION)
+=item $obj-E<gt>B<moveAwaySubFolder>($directory, $extension)
 
-The DIRECTORY is renamed by appending the EXTENSION, which defaults to C<".d">,
+The $directory is renamed by appending the $extension, which defaults to C<".d">,
 to make place for a folder file on that specific location.  C<false> is
 returned if this failed.
 
@@ -447,33 +447,33 @@ returned if this failed.
 Create a parser for this mailbox.  The parser stays alive as long as
 the folder is open.
 
-=item $obj-E<gt>B<read>(OPTIONS)
+=item $obj-E<gt>B<read>(%options)
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<readMessages>(OPTIONS)
+=item $obj-E<gt>B<readMessages>(%options)
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<storeMessage>(MESSAGE)
+=item $obj-E<gt>B<storeMessage>($message)
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<toBeThreaded>(MESSAGES)
+=item $obj-E<gt>B<toBeThreaded>($messages)
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<toBeUnthreaded>(MESSAGES)
+=item $obj-E<gt>B<toBeUnthreaded>($messages)
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<updateMessages>(OPTIONS)
+=item $obj-E<gt>B<updateMessages>(%options)
 
 For file based folders, the file handle stays open until the folder
 is closed.  Update is therefore rather simple: move to the end
 of the last known message, and continue reading...
 
-=item $obj-E<gt>B<write>(OPTIONS)
+=item $obj-E<gt>B<write>(%options)
 
  -Option      --Defined in     --Default
   force         Mail::Box        <false>
@@ -534,97 +534,97 @@ possible as well.
 
 =back
 
-=item $obj-E<gt>B<writeMessages>(OPTIONS)
+=item $obj-E<gt>B<writeMessages>(%options)
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
 =back
 
 =head2 Other methods
 
-See L<documentation in the base class|Mail::Box/"Other methods">.
+Extends L<"Other methods" in Mail::Box|Mail::Box/"Other methods">.
  
 =over 4
 
-=item $obj-E<gt>B<timespan2seconds>(TIME)
+=item $obj-E<gt>B<timespan2seconds>($time)
 
-=item Mail::Box::File-E<gt>B<timespan2seconds>(TIME)
+=item Mail::Box::File-E<gt>B<timespan2seconds>($time)
 
-See L<Mail::Box/"Other methods">
+Inherited, see L<Mail::Box/"Other methods">
 
 =back
 
 =head2 Error handling
 
-See L<documentation in the base class|Mail::Box/"Error handling">.
+Extends L<"Error handling" in Mail::Box|Mail::Box/"Error handling">.
  
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<addReport>(OBJECT)
+=item $obj-E<gt>B<addReport>($object)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-=item Mail::Box::File-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Box::File-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<errors>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>( [$level, [$strings]] )
 
-=item Mail::Box::File-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Box::File-E<gt>B<log>( [$level, [$strings]] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>($level)
 
-=item Mail::Box::File-E<gt>B<logPriority>(LEVEL)
+=item Mail::Box::File-E<gt>B<logPriority>($level)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logSettings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<notImplemented>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<report>([LEVEL])
+=item $obj-E<gt>B<report>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<reportAll>([LEVEL])
+=item $obj-E<gt>B<reportAll>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<trace>([LEVEL])
+=item $obj-E<gt>B<trace>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<warnings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =back
 
 =head2 Cleanup
 
-See L<documentation in the base class|Mail::Box/"Cleanup">.
+Extends L<"Cleanup" in Mail::Box|Mail::Box/"Cleanup">.
  
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
-See L<Mail::Box/"Cleanup">
+Inherited, see L<Mail::Box/"Cleanup">
 
 =back
 
@@ -645,7 +645,7 @@ the whole folder must be read.
 
 =head1 DETAILS
 
-See L<documentation in the base class|Mail::Box/"DETAILS">.
+Extends L<"DETAILS" in Mail::Box|Mail::Box/"DETAILS">.
  
 =head1 DIAGNOSTICS
 
@@ -779,8 +779,8 @@ error messages to indicate the real problem.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

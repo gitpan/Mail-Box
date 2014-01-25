@@ -7,8 +7,7 @@ use strict;
 use warnings;
 
 package Mail::Message::TransferEnc;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Reporter';
 
@@ -42,8 +41,6 @@ sub create($@)
     $encoder->new(@_);
 }
 
-#------------------------------------------
-
 
 sub addTransferEncoder($$)
 {   my ($class, $type, $encoderclass) = @_;
@@ -51,27 +48,19 @@ sub addTransferEncoder($$)
     $class;
 }
 
-#------------------------------------------
-
 
 sub name {shift->notImplemented}
 
 #------------------------------------------
 
-
 sub check($@) {shift->notImplemented}
-
-#------------------------------------------
 
 
 sub decode($@) {shift->notImplemented}
-
-#------------------------------------------
 
 
 sub encode($) {shift->notImplemented}
 
 #------------------------------------------
-
 
 1;

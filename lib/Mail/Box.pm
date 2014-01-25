@@ -7,8 +7,7 @@ use strict;
 use warnings;
 
 package Mail::Box;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Reporter';
 
@@ -226,7 +225,7 @@ ERROR
 
 sub addMessages(@)
 {   my $self = shift;
-    map {$self->addMessage($_)} @_;
+    map $self->addMessage($_), @_;
 }
 
 
@@ -563,7 +562,7 @@ sub scanForMessages($$$$)
 {   my ($self, $startid, $msgids, $moment, $window) = @_;
 
     # Set-up msgid-list
-    my %search = map {($_ => 1)} ref $msgids ? @$msgids : $msgids;
+    my %search = map +($_ => 1), ref $msgids ? @$msgids : $msgids;
     return () unless keys %search;
 
     # do not run on empty folder

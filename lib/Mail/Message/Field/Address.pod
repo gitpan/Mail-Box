@@ -30,22 +30,22 @@ Many header fields can contain e-mail addresses.  Each e-mail address
 can be represented by an object of this class.  These objects will
 handle interpretation and character set encoding and decoding for you.
 
-See L<documentation in the base class|Mail::Identity/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Identity|Mail::Identity/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
 =over 4
 
-=item overload: B<boolean>()
+=item overload: B<boolean>
 
 The object used as boolean will always return C<true>
 
-=item overload: B<string comparison>()
+=item overload: B<string $comparison>
 
 Two address objects are the same when their email addresses are the
 same.
 
-=item overload: B<stringification>()
+=item overload: B<stringification>
 
 When the object is used in string context, it will return the encoded
 representation of the e-mail address, just like L<string()|Mail::Message::Field::Address/"Access to the content"> does.
@@ -54,31 +54,31 @@ representation of the e-mail address, just like L<string()|Mail::Message::Field:
 
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Identity/"METHODS">.
+Extends L<"METHODS" in Mail::Identity|Mail::Identity/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Identity/"Constructors">.
+Extends L<"Constructors" in Mail::Identity|Mail::Identity/"Constructors">.
  
 =over 4
 
-=item $obj-E<gt>B<coerce>(STRING|OBJECT, OPTIONS)
+=item $obj-E<gt>B<coerce>( <STRING|$object>, %options )
 
-Try to coerce the OBJECT into a C<Mail::Message::Field::Address>.
+Try to coerce the $object into a C<Mail::Message::Field::Address>.
 In case of a STRING, it is interpreted as an email address.
 
-The OPTIONS are passed to the object creation, and overrule the values
-found in the OBJECT.  The result may be C<undef> or a newly created
-object.  If the OBJECT is already of the correct type, it is returned
+The %options are passed to the object creation, and overrule the values
+found in the $object.  The result may be C<undef> or a newly created
+object.  If the $object is already of the correct type, it is returned
 unmodified.
 
-The OBJECT may currently be a L<Mail::Address|Mail::Address>, a L<Mail::Identity|Mail::Identity>, or
+The $object may currently be a L<Mail::Address|Mail::Address>, a L<Mail::Identity|Mail::Identity>, or
 a L<User::Identity|User::Identity>.  In case of the latter, one of the user's addresses
 is chosen at random.
 
-=item Mail::Message::Field::Address-E<gt>B<new>([NAME], OPTIONS)
+=item Mail::Message::Field::Address-E<gt>B<new>( [NAME], OPTIONS )
 
-See L<Mail::Identity/"Constructors">
+Inherited, see L<Mail::Identity/"Constructors">
 
 =item $obj-E<gt>B<parse>(STRING)
 
@@ -91,95 +91,95 @@ one is taken at random.
 
 =head2 Attributes
 
-See L<documentation in the base class|Mail::Identity/"Attributes">.
+Extends L<"Attributes" in Mail::Identity|Mail::Identity/"Attributes">.
  
 =over 4
 
 =item $obj-E<gt>B<address>()
 
-See L<Mail::Identity/"Attributes">
+Inherited, see L<Mail::Identity/"Attributes">
 
 =item $obj-E<gt>B<charset>()
 
-See L<Mail::Identity/"Attributes">
+Inherited, see L<Mail::Identity/"Attributes">
 
-=item $obj-E<gt>B<comment>([STRING])
+=item $obj-E<gt>B<comment>( [STRING] )
 
-See L<Mail::Identity/"Attributes">
+Inherited, see L<Mail::Identity/"Attributes">
 
 =item $obj-E<gt>B<description>()
 
-See L<User::Identity::Item/"Attributes">
+Inherited, see L<User::Identity::Item/"Attributes">
 
 =item $obj-E<gt>B<domain>()
 
-See L<Mail::Identity/"Attributes">
+Inherited, see L<Mail::Identity/"Attributes">
 
 =item $obj-E<gt>B<language>()
 
-See L<Mail::Identity/"Attributes">
+Inherited, see L<Mail::Identity/"Attributes">
 
 =item $obj-E<gt>B<location>()
 
-See L<Mail::Identity/"Attributes">
+Inherited, see L<Mail::Identity/"Attributes">
 
-=item $obj-E<gt>B<name>([NEWNAME])
+=item $obj-E<gt>B<name>( [NEWNAME] )
 
-See L<User::Identity::Item/"Attributes">
+Inherited, see L<User::Identity::Item/"Attributes">
 
 =item $obj-E<gt>B<organization>()
 
-See L<Mail::Identity/"Attributes">
+Inherited, see L<Mail::Identity/"Attributes">
 
 =item $obj-E<gt>B<phrase>()
 
-See L<Mail::Identity/"Attributes">
+Inherited, see L<Mail::Identity/"Attributes">
 
 =item $obj-E<gt>B<username>()
 
-See L<Mail::Identity/"Attributes">
+Inherited, see L<Mail::Identity/"Attributes">
 
 =back
 
 =head2 Collections
 
-See L<documentation in the base class|Mail::Identity/"Collections">.
+Extends L<"Collections" in Mail::Identity|Mail::Identity/"Collections">.
  
 =over 4
 
 =item $obj-E<gt>B<add>(COLLECTION, ROLE)
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<addCollection>(OBJECT | ([TYPE], OPTIONS))
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<collection>(NAME)
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<find>(COLLECTION, ROLE)
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
-=item $obj-E<gt>B<parent>([PARENT])
+=item $obj-E<gt>B<parent>( [PARENT] )
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<removeCollection>(OBJECT|NAME)
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<type>()
 
 =item Mail::Message::Field::Address-E<gt>B<type>()
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<user>()
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =back
 
@@ -253,8 +253,8 @@ The collection with $name does not exist and can not be created.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

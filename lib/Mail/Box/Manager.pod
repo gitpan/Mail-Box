@@ -43,19 +43,19 @@ supporting objects.  You are not obliged to use this object (you can
 directly create a L<Mail::Box::Mbox|Mail::Box::Mbox> if you prefer), but you will create
 more portable and safer code if you do use it.
 
-See L<documentation in the base class|Mail::Reporter/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Reporter|Mail::Reporter/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Reporter/"METHODS">.
+Extends L<"METHODS" in Mail::Reporter|Mail::Reporter/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Reporter/"Constructors">.
+Extends L<"Constructors" in Mail::Reporter|Mail::Reporter/"Constructors">.
  
 =over 4
 
-=item Mail::Box::Manager-E<gt>B<new>(ARGS)
+=item Mail::Box::Manager-E<gt>B<new>($args)
 
  -Option             --Defined in     --Default
   autodetect                            undef
@@ -132,11 +132,11 @@ example:
 In list context, this returns all folderdirs specified.  In SCALAR
 context only the first.
 
-=item $obj-E<gt>B<registerType>(TYPE, CLASS [,OPTIONS])
+=item $obj-E<gt>B<registerType>($type, $class, %options)
 
-With C<registerType> you can register one TYPE of folders.  The CLASS
+With C<registerType> you can register one $type of folders.  The $class
 is compiled automatically, so you do not need to C<use> them in your own
-modules.  The TYPE is just an arbitrary name.
+modules.  The $type is just an arbitrary name.
 
 The added types are prepended to the list of known types, so they are
 checked first when a folder is opened in autodetect mode.
@@ -152,11 +152,11 @@ example:
 
 =over 4
 
-=item $obj-E<gt>B<close>(FOLDER, OPTIONS)
+=item $obj-E<gt>B<close>($folder, %options)
 
 C<close> removes the specified folder from the list of open folders.
 Indirectly it will update the files on disk if needed (depends on
-the L<Mail::Box::new(save_on_exit)|Mail::Box/"Constructors"> flag for each folder). OPTIONS are
+the L<Mail::Box::new(save_on_exit)|Mail::Box/"Constructors"> flag for each folder). %options are
 passed to L<Mail::Box::close()|Mail::Box/"The folder"> of the folder.
 
 The folder's messages will also be withdrawn from the known message threads.
@@ -181,21 +181,21 @@ example:
  $mgr->close($inbox);
  $inbox->close;        # alternative
 
-=item $obj-E<gt>B<closeAllFolders>(, OPTIONS)
+=item $obj-E<gt>B<closeAllFolders>(, %options)
 
 C<closeAllFolders> calls close() for each folder managed by
 this object.  It is called just before the program stops (before global
 cleanup).
 
-=item $obj-E<gt>B<isOpenFolder>(FOLDER)
+=item $obj-E<gt>B<isOpenFolder>($folder)
 
-Returns true if the FOLDER is currently open.
+Returns true if the $folder is currently open.
 
 example: 
 
  print "Yes\n" if $mgr->isOpenFolder('Inbox');
 
-=item $obj-E<gt>B<open>([FOLDERNAME], OPTIONS)
+=item $obj-E<gt>B<open>( [$foldername], %options )
 
 Open a folder which name is specified as first parameter or with
 the option flag C<folder>.  The folder type is autodetected unless
@@ -286,9 +286,9 @@ Returns a list of all open folders.
 
 =over 4
 
-=item $obj-E<gt>B<delete>(FOLDERNAME, OPTIONS)
+=item $obj-E<gt>B<delete>($foldername, %options)
 
-Remove the named folder.  The OPTIONS are the same as those for L<open()|Mail::Box::Manager/"Manage open folders">.
+Remove the named folder.  The %options are the same as those for L<open()|Mail::Box::Manager/"Manage open folders">.
 
 The deletion of a folder can take some time.  Dependent on the type of
 folder, the folder must be read first.  For some folder-types this will
@@ -311,10 +311,10 @@ Some folder can only be recursively deleted, other have more flexibility.
 
 =over 4
 
-=item $obj-E<gt>B<appendMessage>([FOLDER|FOLDERNAME,] MESSAGES, OPTIONS)
+=item $obj-E<gt>B<appendMessage>( [$folder|$foldername], $messages, %options )
 
 Append one or more messages to a folder (therefore, an C<appendMessages()>
-is defined as well). You may specify a FOLDERNAME or an opened folder
+is defined as well). You may specify a $foldername or an opened folder
 as the first argument. When the name is that of an open folder, it is
 treated as if the folder-object was specified, and not directly access
 the folder-files.  You may also specify the foldername as part of the
@@ -331,7 +331,7 @@ type does not have to match the folder type--the folder will try to
 resolve the differences with minimal loss of information.  The coerced
 messages (how the were actually written) are returned as list.
 
-The OPTIONS is a list of key/values, which are added to (overriding)
+The %options is a list of key/values, which are added to (overriding)
 the default options for the detected folder type.
 
 example: 
@@ -343,7 +343,7 @@ example:
     folder => 'Drafts');
  $_->label(seen => 1) foreach @appended;
 
-=item $obj-E<gt>B<copyMessage>([FOLDER|FOLDERNAME,] MESSAGES, OPTIONS)
+=item $obj-E<gt>B<copyMessage>( [$folder|$foldername], $messages, %options )
 
 Copy a message from one folder into another folder.  If the destination
 folder is already opened, L<Mail::Box::copyTo()|Mail::Box/"The folder"> is used.  Otherwise,
@@ -380,7 +380,7 @@ example:
     folder => '=Drafts' folderdir => '/tmp',
     create => 1);
 
-=item $obj-E<gt>B<moveMessage>([FOLDER|FOLDERNAME,] MESSAGES, OPTIONS)
+=item $obj-E<gt>B<moveMessage>( [$folder|$foldername], $messages, %options )
 
 Move a message from one folder to another.
 
@@ -414,11 +414,11 @@ is equivalent to
 
 =over 4
 
-=item $obj-E<gt>B<threads>([FOLDERS], OPTIONS)
+=item $obj-E<gt>B<threads>( [$folders], %options )
 
 Create a new object which keeps track of message threads.  You can
 read about the possible options in L<Mail::Box::Thread::Manager|Mail::Box::Thread::Manager>.
-As OPTIONS specify one folder or an array of FOLDERS.
+As %options specify one folder or an array of $folders.
 It is also permitted to specify folders before the options.
 
 example: 
@@ -433,19 +433,19 @@ example:
 
 =over 4
 
-=item $obj-E<gt>B<decodeFolderURL>(URL)
+=item $obj-E<gt>B<decodeFolderURL>($url)
 
-Try to decompose a folder name which is specified as URL (see open())
+Try to decompose a folder name which is specified as $url (see open())
 into separate options.  Special characters like @-sign, colon, and slash
-used in the user or password parts must be passed URL-encoded.
+used in the user or password parts must be passed $url-encoded.
 
-=item $obj-E<gt>B<toBeThreaded>(FOLDER, MESSAGES)
+=item $obj-E<gt>B<toBeThreaded>($folder, $messages)
 
 Signal to the manager that all thread managers which are using the
 specified folder must be informed that new messages are
 coming in.
 
-=item $obj-E<gt>B<toBeUnthreaded>(FOLDER, MESSAGES)
+=item $obj-E<gt>B<toBeUnthreaded>($folder, $messages)
 
 Signal to the manager that all thread managers which are using the
 specified folder must be informed that new messages are
@@ -455,75 +455,75 @@ or going out.
 
 =head2 Error handling
 
-See L<documentation in the base class|Mail::Reporter/"Error handling">.
+Extends L<"Error handling" in Mail::Reporter|Mail::Reporter/"Error handling">.
  
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<addReport>(OBJECT)
+=item $obj-E<gt>B<addReport>($object)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-=item Mail::Box::Manager-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Box::Manager-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<errors>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>( [$level, [$strings]] )
 
-=item Mail::Box::Manager-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Box::Manager-E<gt>B<log>( [$level, [$strings]] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>($level)
 
-=item Mail::Box::Manager-E<gt>B<logPriority>(LEVEL)
+=item Mail::Box::Manager-E<gt>B<logPriority>($level)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logSettings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<notImplemented>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<report>([LEVEL])
+=item $obj-E<gt>B<report>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<reportAll>([LEVEL])
+=item $obj-E<gt>B<reportAll>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<trace>([LEVEL])
+=item $obj-E<gt>B<trace>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<warnings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =back
 
 =head2 Cleanup
 
-See L<documentation in the base class|Mail::Reporter/"Cleanup">.
+Extends L<"Cleanup" in Mail::Reporter|Mail::Reporter/"Cleanup">.
  
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
-See L<Mail::Reporter/"Cleanup">
+Inherited, see L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -671,8 +671,8 @@ only useful for folders which have write or append access modes
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

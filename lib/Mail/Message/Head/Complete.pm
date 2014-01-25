@@ -6,8 +6,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Head::Complete;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Message::Head';
 
@@ -61,15 +60,13 @@ sub build(@)
 sub isDelayed() {0}
 
 
-sub nrLines() { sum 1, map { $_->nrLines } shift->orderedFields }
-
-
-sub size() { sum 1, map {$_->size} shift->orderedFields }
+sub nrLines() { sum 1, map $_->nrLines, shift->orderedFields }
+sub size() { sum 1, map $_->size, shift->orderedFields }
 
 
 sub wrap($)
 {   my ($self, $length) = @_;
-    $_->setWrapLength($length) foreach $self->orderedFields;
+    $_->setWrapLength($length) for $self->orderedFields;
 }
 
 #------------------------------------------
@@ -189,7 +186,7 @@ sub reset($@)
     # Cloning required, otherwise double registrations will not be
     # removed from the ordered list: that's controled by 'weaken'
 
-    my @fields = map {$_->clone} @_;
+    my @fields = map $_->clone, @_;
 
     if(@_==1) { $known->{$name} = $fields[0] }
     else      { $known->{$name} = [@fields]  }

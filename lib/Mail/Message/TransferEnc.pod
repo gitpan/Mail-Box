@@ -55,21 +55,21 @@ C<quoted-printable> encdoded extended character set data.
 
 =back
 
-See L<documentation in the base class|Mail::Reporter/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Reporter|Mail::Reporter/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Reporter/"METHODS">.
+Extends L<"METHODS" in Mail::Reporter|Mail::Reporter/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Reporter/"Constructors">.
+Extends L<"Constructors" in Mail::Reporter|Mail::Reporter/"Constructors">.
  
 =over 4
 
-=item Mail::Message::TransferEnc-E<gt>B<new>(OPTIONS)
+=item Mail::Message::TransferEnc-E<gt>B<new>(%options)
 
-See L<Mail::Reporter/"Constructors">
+Inherited, see L<Mail::Reporter/"Constructors">
 
 =back
 
@@ -77,13 +77,13 @@ See L<Mail::Reporter/"Constructors">
 
 =over 4
 
-=item Mail::Message::TransferEnc-E<gt>B<addTransferEncoder>(TYPE, CLASS)
+=item Mail::Message::TransferEnc-E<gt>B<addTransferEncoder>($type, $class)
 
 Adds one new encoder to the list known by the Mail::Box suite.  The
-TYPE is found in the message's header in the C<Content-Transfer-Encoding>
+$type is found in the message's header in the C<Content-Transfer-Encoding>
 field.
 
-=item $obj-E<gt>B<create>(TYPE, OPTIONS)
+=item $obj-E<gt>B<create>($type, %options)
 
 Create a new coder/decoder based on the required type.
 
@@ -97,7 +97,7 @@ The name of the encoder.  Case is not significant.
 
 =over 4
 
-=item $obj-E<gt>B<check>(BODY, OPTIONS)
+=item $obj-E<gt>B<check>($body, %options)
 
 Check whether the body is correctly encoded.  If so, the body reference is
 returned with the C<checked> flag set.  Otherwise, a new object is created
@@ -115,9 +115,9 @@ modified data.
 
 =back
 
-=item $obj-E<gt>B<decode>(BODY [, OPTIONS])
+=item $obj-E<gt>B<decode>($body, %options)
 
-Use the encoder to decode the content of BODY.  A new body is returned.
+Use the encoder to decode the content of $body.  A new body is returned.
 
  -Option     --Default
   result_type  <type of source body>
@@ -131,9 +131,9 @@ modified data.
 
 =back
 
-=item $obj-E<gt>B<encode>(BODY, OPTIONS)
+=item $obj-E<gt>B<encode>($body, %options)
 
-Use the encoder to encode the content of BODY.
+Use the encoder to encode the content of $body.
 
  -Option     --Default
   result_type  <type of source body>
@@ -151,75 +151,75 @@ modified data.
 
 =head2 Error handling
 
-See L<documentation in the base class|Mail::Reporter/"Error handling">.
+Extends L<"Error handling" in Mail::Reporter|Mail::Reporter/"Error handling">.
  
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<addReport>(OBJECT)
+=item $obj-E<gt>B<addReport>($object)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-=item Mail::Message::TransferEnc-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Message::TransferEnc-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<errors>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>( [$level, [$strings]] )
 
-=item Mail::Message::TransferEnc-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Message::TransferEnc-E<gt>B<log>( [$level, [$strings]] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>($level)
 
-=item Mail::Message::TransferEnc-E<gt>B<logPriority>(LEVEL)
+=item Mail::Message::TransferEnc-E<gt>B<logPriority>($level)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logSettings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<notImplemented>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<report>([LEVEL])
+=item $obj-E<gt>B<report>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<reportAll>([LEVEL])
+=item $obj-E<gt>B<reportAll>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<trace>([LEVEL])
+=item $obj-E<gt>B<trace>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<warnings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =back
 
 =head2 Cleanup
 
-See L<documentation in the base class|Mail::Reporter/"Cleanup">.
+Extends L<"Cleanup" in Mail::Reporter|Mail::Reporter/"Cleanup">.
  
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
-See L<Mail::Reporter/"Cleanup">
+Inherited, see L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -248,8 +248,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

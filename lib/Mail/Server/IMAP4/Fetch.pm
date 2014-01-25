@@ -7,8 +7,7 @@ use strict;
 use warnings;
 
 package Mail::Server::IMAP4::Fetch;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 
 use Date::Parse;
@@ -101,13 +100,11 @@ sub new($)
 
 #------------------------------------------
 
-
 sub headLocation() { @{ (shift) }{ qw/headbegin bodybegin/ } }
 sub bodyLocation() { @{ (shift) }{ qw/bodybegin bodyend/ } }
 sub partLocation() { @{ (shift) }{ qw/headbegin bodyend/ } }
 
 #------------------------------------------
-
 
 sub fetchBody($)
 {   my ($self, $extended) = @_;
@@ -118,7 +115,7 @@ sub fetchBody($)
     if($self->{parts})
     {   # Multipart message
         # WARNING: no blanks between part descriptions
-        my $parts  = join '', map {$_->fetchBody($extended)} @{$self->{parts}};
+        my $parts  = join '', map $_->fetchBody($extended), @{$self->{parts}};
         my @fields = (\$parts, $subtype || 'MIXED');
 
         if($extended)     # only included when any valid info
@@ -136,33 +133,30 @@ sub fetchBody($)
     # Simple message
     #
 
-    my @fields = ( ($mediatype || 'TEXT')
-                 , ($subtype   || 'PLAIN')
-                 , $self->{typeattr}
-                 , $self->{messageid}
-                 , $self->{description}
-                 , uc($self->{transferenc} || '8BIT')
-                 , \($self->{bodysize})
-                 );
+    my @fields = 
+      ( ($mediatype || 'TEXT')
+      , ($subtype   || 'PLAIN')
+      , $self->{typeattr}
+      , $self->{messageid}
+      , $self->{description}
+      , uc($self->{transferenc} || '8BIT')
+      , \($self->{bodysize})
+      );
 
     if(my $nest = $self->{nest})
     {   # type MESSAGE (message/rfc822 encapsulated)
-        push @fields, \$nest->fetchEnvelope,
-                    , \$nest->fetchBody($extended);
+        push @fields
+         , \$nest->fetchEnvelope,
+         , \$nest->fetchBody($extended);
     }
-
     push @fields, \$self->{bodylines};
 
-    if(   $extended
-       && ($self->{bodyMD5} || $self->{disposition} || $self->{language})
-      )
-    {   push @fields, @{$self}{ qw/bodyMD5 disposition language/ };
-    }
+    push @fields, @{$self}{ qw/bodyMD5 disposition language/ }
+        if $extended
+        && ($self->{bodyMD5} || $self->{disposition} || $self->{language});
 
     $self->_imapList(@fields);
 }
-
-#------------------------------------------
 
 
 sub fetchEnvelope()
@@ -194,12 +188,8 @@ sub fetchEnvelope()
     $self->_imapList(@fields);
 }
 
-#------------------------------------------
-
 
 sub fetchSize() { shift->{bodysize} }
-
-#------------------------------------------
 
 
 sub part(;$)
@@ -218,8 +208,6 @@ sub part(;$)
 
     $self;
 }
-
-#------------------------------------------
 
 
 sub printStructure(;$$)

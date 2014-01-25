@@ -6,8 +6,7 @@
 use strict;
 
 package Mail::Box::Locker::Flock;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Box::Locker';
 

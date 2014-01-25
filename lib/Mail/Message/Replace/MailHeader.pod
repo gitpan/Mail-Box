@@ -33,45 +33,45 @@ Most methods will work without any change, but you should test your
 software again.  Small changes have been made to L<fold_length()|Mail::Message::Replace::MailHeader/"Simulating Mail::Header">,
 L<header_hashref()|Mail::Message::Replace::MailHeader/"Simulating Mail::Header">.
 
-See L<documentation in the base class|Mail::Message::Head::Complete/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Message::Head::Complete|Mail::Message::Head::Complete/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in the base class|Mail::Message::Head::Complete/"OVERLOADED">.
+Extends L<"OVERLOADED" in Mail::Message::Head::Complete|Mail::Message::Head::Complete/"OVERLOADED">.
  
 =over 4
 
-=item overload: B<"">()
+=item overload: B<"">
 
-See L<Mail::Message::Head/"OVERLOADED">
+Inherited, see L<Mail::Message::Head/"OVERLOADED">
 
-=item overload: B<bool>()
+=item overload: B<bool>
 
-See L<Mail::Message::Head/"OVERLOADED">
+Inherited, see L<Mail::Message::Head/"OVERLOADED">
 
 =back
 
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Message::Head::Complete/"METHODS">.
+Extends L<"METHODS" in Mail::Message::Head::Complete|Mail::Message::Head::Complete/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Message::Head::Complete/"Constructors">.
+Extends L<"Constructors" in Mail::Message::Head::Complete|Mail::Message::Head::Complete/"Constructors">.
  
 =over 4
 
-=item $obj-E<gt>B<build>([PAIR|FIELD]-LIST)
+=item $obj-E<gt>B<build>( [PAIR|$field], ... )
 
-See L<Mail::Message::Head::Complete/"Constructors">
+Inherited, see L<Mail::Message::Head::Complete/"Constructors">
 
-=item $obj-E<gt>B<clone>([NAMES|ARRAY-OF-NAMES|REGEXS])
+=item $obj-E<gt>B<clone>( [@names|ARRAY|Regexps] )
 
-See L<Mail::Message::Head::Complete/"Constructors">
+Inherited, see L<Mail::Message::Head::Complete/"Constructors">
 
-=item Mail::Message::Replace::MailHeader-E<gt>B<new>([ARG], OPTIONS)
+=item Mail::Message::Replace::MailHeader-E<gt>B<new>( [$arg], %options )
 
-The ARG is an array with header lines.
+The $arg is an array with header lines.
 
  -Option    --Defined in         --Default
   FoldLength                       79
@@ -111,325 +111,325 @@ Reformat all header lines when they come in: change the folding.
 
 =head2 The header
 
-See L<documentation in the base class|Mail::Message::Head::Complete/"The header">.
+Extends L<"The header" in Mail::Message::Head::Complete|Mail::Message::Head::Complete/"The header">.
  
 =over 4
 
 =item $obj-E<gt>B<isDelayed>()
 
-See L<Mail::Message::Head/"The header">
+Inherited, see L<Mail::Message::Head/"The header">
 
 =item $obj-E<gt>B<isEmpty>()
 
-See L<Mail::Message::Head/"The header">
+Inherited, see L<Mail::Message::Head/"The header">
 
 =item $obj-E<gt>B<isModified>()
 
-See L<Mail::Message::Head/"The header">
+Inherited, see L<Mail::Message::Head/"The header">
 
 =item $obj-E<gt>B<knownNames>()
 
-See L<Mail::Message::Head/"The header">
+Inherited, see L<Mail::Message::Head/"The header">
 
-=item $obj-E<gt>B<message>([MESSAGE])
+=item $obj-E<gt>B<message>( [$message] )
 
-See L<Mail::Message::Head/"The header">
+Inherited, see L<Mail::Message::Head/"The header">
 
-=item $obj-E<gt>B<modified>([BOOLEAN])
+=item $obj-E<gt>B<modified>( [BOOLEAN] )
 
-See L<Mail::Message::Head/"The header">
+Inherited, see L<Mail::Message::Head/"The header">
 
 =item $obj-E<gt>B<nrLines>()
 
-See L<Mail::Message::Head::Complete/"The header">
+Inherited, see L<Mail::Message::Head::Complete/"The header">
 
 =item $obj-E<gt>B<orderedFields>()
 
-See L<Mail::Message::Head/"The header">
+Inherited, see L<Mail::Message::Head/"The header">
 
 =item $obj-E<gt>B<size>()
 
-See L<Mail::Message::Head::Complete/"The header">
+Inherited, see L<Mail::Message::Head::Complete/"The header">
 
-=item $obj-E<gt>B<wrap>(INTEGER)
+=item $obj-E<gt>B<wrap>($integer)
 
-See L<Mail::Message::Head::Complete/"The header">
+Inherited, see L<Mail::Message::Head::Complete/"The header">
 
 =back
 
 =head2 Access to the header
 
-See L<documentation in the base class|Mail::Message::Head::Complete/"Access to the header">.
+Extends L<"Access to the header" in Mail::Message::Head::Complete|Mail::Message::Head::Complete/"Access to the header">.
  
 =over 4
 
-=item $obj-E<gt>B<add>(LINE, [INDEX])
+=item $obj-E<gt>B<add>( $line, [$index] )
 
 Add a header line, which simply calls C<Mail::Message::Head::add()> on
-the header for the specified LINE.  The INDEX is ignored, the unfolded
+the header for the specified $line.  The $index is ignored, the unfolded
 body of the field is returned.
 
-=item $obj-E<gt>B<addListGroup>(OBJECT)
+=item $obj-E<gt>B<addListGroup>($object)
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<addResentGroup>(RESENT-GROUP|DATA)
+=item $obj-E<gt>B<addResentGroup>($resent_group|$data)
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<addSpamGroup>(OBJECT)
+=item $obj-E<gt>B<addSpamGroup>($object)
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<count>(NAME)
+=item $obj-E<gt>B<count>($name)
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<delete>(TAG, [INDEX])
+=item $obj-E<gt>B<delete>( $tag, [$index] )
 
-Delete the fields with the specified TAG.  The deleted fields are
+Delete the fields with the specified $tag.  The deleted fields are
 returned.  If no index is given, then all are removed.
 
-=item $obj-E<gt>B<get>(NAME, [INDEX])
+=item $obj-E<gt>B<get>( $name, [$index] )
 
-Get all the header fields with the specified NAME.  In scalar context,
-only the first fitting NAME is returned.  Even when only one NAME is
+Get all the header fields with the specified $name.  In scalar context,
+only the first fitting $name is returned.  Even when only one $name is
 specified, multiple lines may be returned in list context: some fields
 appear more than once in a header.
 
-=item $obj-E<gt>B<grepNames>([NAMES|ARRAY-OF-NAMES|REGEXS])
+=item $obj-E<gt>B<grepNames>( [@names|ARRAY|Regexps] )
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
 =item $obj-E<gt>B<listGroup>()
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
 =item $obj-E<gt>B<names>()
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<print>([FILEHANDLE])
+=item $obj-E<gt>B<print>( [$fh] )
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<printSelected>(FILEHANDLE, (STRING|REGEXP)s)
+=item $obj-E<gt>B<printSelected>($fh, <STRING|Regexp>, ...)
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<printUndisclosed>([FILEHANDLE])
+=item $obj-E<gt>B<printUndisclosed>( [$fh] )
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
 =item $obj-E<gt>B<removeContentInfo>()
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<removeField>(FIELD)
+=item $obj-E<gt>B<removeField>($field)
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<removeFields>(STRING|REGEXP, [STRING|REGEXP, ...])
+=item $obj-E<gt>B<removeFields>( <STRING|Regexp>, ... )
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<removeFieldsExcept>(STRING|REGEXP, [STRING|REGEXP, ...])
+=item $obj-E<gt>B<removeFieldsExcept>( <STRING|Regexp>, ... )
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
 =item $obj-E<gt>B<removeListGroup>()
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
 =item $obj-E<gt>B<removeResentGroups>()
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
 =item $obj-E<gt>B<removeSpamGroups>()
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<replace>(TAG, LINE, [INDEX])
+=item $obj-E<gt>B<replace>( $tag, $line, [$index] )
 
-Replace the field named TAG. from place INDEX (by default the first) by
-the LINE.  When TAG is C<undef>, it will be extracted from the LINE first.
+Replace the field named $tag. from place $index (by default the first) by
+the $line.  When $tag is C<undef>, it will be extracted from the $line first.
 This calls L<Mail::Message::Head::Complete::reset()|Mail::Message::Head::Complete/"Access to the header"> on the message's head.
 
 =item $obj-E<gt>B<resentGroups>()
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<reset>(NAME, FIELDS)
+=item $obj-E<gt>B<reset>($name, @fields)
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<set>(FIELD | LINE | (NAME, BODY [,ATTRS]))
+=item $obj-E<gt>B<set>( $field | $line | <$name, $body, [$attrs]> )
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
 =item $obj-E<gt>B<spamDetected>()
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<spamGroups>([NAMES])
+=item $obj-E<gt>B<spamGroups>( [$names] )
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
 =item $obj-E<gt>B<string>()
 
-See L<Mail::Message::Head::Complete/"Access to the header">
+Inherited, see L<Mail::Message::Head::Complete/"Access to the header">
 
-=item $obj-E<gt>B<study>(NAME [,INDEX])
+=item $obj-E<gt>B<study>( $name, [$index] )
 
-See L<Mail::Message::Head/"Access to the header">
+Inherited, see L<Mail::Message::Head/"Access to the header">
 
 =back
 
 =head2 About the body
 
-See L<documentation in the base class|Mail::Message::Head::Complete/"About the body">.
+Extends L<"About the body" in Mail::Message::Head::Complete|Mail::Message::Head::Complete/"About the body">.
  
 =over 4
 
 =item $obj-E<gt>B<guessBodySize>()
 
-See L<Mail::Message::Head/"About the body">
+Inherited, see L<Mail::Message::Head/"About the body">
 
 =item $obj-E<gt>B<guessTimeStamp>()
 
-See L<Mail::Message::Head::Complete/"About the body">
+Inherited, see L<Mail::Message::Head::Complete/"About the body">
 
 =item $obj-E<gt>B<isMultipart>()
 
-See L<Mail::Message::Head/"About the body">
+Inherited, see L<Mail::Message::Head/"About the body">
 
 =item $obj-E<gt>B<recvstamp>()
 
-See L<Mail::Message::Head::Complete/"About the body">
+Inherited, see L<Mail::Message::Head::Complete/"About the body">
 
 =item $obj-E<gt>B<timestamp>()
 
-See L<Mail::Message::Head::Complete/"About the body">
+Inherited, see L<Mail::Message::Head::Complete/"About the body">
 
 =back
 
 =head2 Internals
 
-See L<documentation in the base class|Mail::Message::Head::Complete/"Internals">.
+Extends L<"Internals" in Mail::Message::Head::Complete|Mail::Message::Head::Complete/"Internals">.
  
 =over 4
 
-=item $obj-E<gt>B<addNoRealize>(FIELD)
+=item $obj-E<gt>B<addNoRealize>($field)
 
-See L<Mail::Message::Head/"Internals">
+Inherited, see L<Mail::Message::Head/"Internals">
 
-=item $obj-E<gt>B<addOrderedFields>(FIELDS)
+=item $obj-E<gt>B<addOrderedFields>($fields)
 
-See L<Mail::Message::Head/"Internals">
+Inherited, see L<Mail::Message::Head/"Internals">
 
 =item $obj-E<gt>B<createFromLine>()
 
-See L<Mail::Message::Head::Complete/"Internals">
+Inherited, see L<Mail::Message::Head::Complete/"Internals">
 
 =item $obj-E<gt>B<createMessageId>()
 
-See L<Mail::Message::Head::Complete/"Internals">
+Inherited, see L<Mail::Message::Head::Complete/"Internals">
 
 =item $obj-E<gt>B<fileLocation>()
 
-See L<Mail::Message::Head/"Internals">
+Inherited, see L<Mail::Message::Head/"Internals">
 
 =item $obj-E<gt>B<load>()
 
-See L<Mail::Message::Head/"Internals">
+Inherited, see L<Mail::Message::Head/"Internals">
 
-=item $obj-E<gt>B<messageIdPrefix>([PREFIX, [HOSTNAME]|CODE])
+=item $obj-E<gt>B<messageIdPrefix>( [$prefix, [$hostname]|CODE] )
 
-=item Mail::Message::Replace::MailHeader-E<gt>B<messageIdPrefix>([PREFIX, [HOSTNAME]|CODE])
+=item Mail::Message::Replace::MailHeader-E<gt>B<messageIdPrefix>( [$prefix, [$hostname]|CODE] )
 
-See L<Mail::Message::Head::Complete/"Internals">
+Inherited, see L<Mail::Message::Head::Complete/"Internals">
 
-=item $obj-E<gt>B<moveLocation>(DISTANCE)
+=item $obj-E<gt>B<moveLocation>($distance)
 
-See L<Mail::Message::Head/"Internals">
+Inherited, see L<Mail::Message::Head/"Internals">
 
-=item $obj-E<gt>B<setNoRealize>(FIELD)
+=item $obj-E<gt>B<setNoRealize>($field)
 
-See L<Mail::Message::Head/"Internals">
+Inherited, see L<Mail::Message::Head/"Internals">
 
 =back
 
 =head2 Error handling
 
-See L<documentation in the base class|Mail::Message::Head::Complete/"Error handling">.
+Extends L<"Error handling" in Mail::Message::Head::Complete|Mail::Message::Head::Complete/"Error handling">.
  
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<addReport>(OBJECT)
+=item $obj-E<gt>B<addReport>($object)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-=item Mail::Message::Replace::MailHeader-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Message::Replace::MailHeader-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<errors>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>( [$level, [$strings]] )
 
-=item Mail::Message::Replace::MailHeader-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Message::Replace::MailHeader-E<gt>B<log>( [$level, [$strings]] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>($level)
 
-=item Mail::Message::Replace::MailHeader-E<gt>B<logPriority>(LEVEL)
+=item Mail::Message::Replace::MailHeader-E<gt>B<logPriority>($level)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logSettings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<notImplemented>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<report>([LEVEL])
+=item $obj-E<gt>B<report>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<reportAll>([LEVEL])
+=item $obj-E<gt>B<reportAll>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<trace>([LEVEL])
+=item $obj-E<gt>B<trace>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<warnings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =back
 
 =head2 Cleanup
 
-See L<documentation in the base class|Mail::Message::Head::Complete/"Cleanup">.
+Extends L<"Cleanup" in Mail::Message::Head::Complete|Mail::Message::Head::Complete/"Cleanup">.
  
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
-See L<Mail::Reporter/"Cleanup">
+Inherited, see L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -448,7 +448,7 @@ Calls L<Mail::Message::Head::Complete::string()|Mail::Message::Head::Complete/"A
 
 Cleanup memory usage.  Not needed here.
 
-=item $obj-E<gt>B<combine>(TAG, [WITH])
+=item $obj-E<gt>B<combine>( $tag, [$with] )
 
 I do not see any valid reason for this command, so did not implement it.
 
@@ -469,19 +469,19 @@ Returns whether there are any fields.
 
 Extract (and remove) header fields from the array.
 
-=item $obj-E<gt>B<fold>([LENGTH])
+=item $obj-E<gt>B<fold>( [$length] )
 
-Refold all fields in the header, to LENGTH or whatever L<fold_length()|Mail::Message::Replace::MailHeader/"Simulating Mail::Header">
+Refold all fields in the header, to $length or whatever L<fold_length()|Mail::Message::Replace::MailHeader/"Simulating Mail::Header">
 returns.
 
-=item $obj-E<gt>B<fold_length>([[TAG], LENGTH])
+=item $obj-E<gt>B<fold_length>( [[$tag], $length] )
 
-Returns the line wrap, optionally after setting it to LENGTH.  The
-old value is returned.  The TAG argument is ignored, because it is
+Returns the line wrap, optionally after setting it to $length.  The
+old value is returned.  The $tag argument is ignored, because it is
 silly to have different lines fold in different ways.  This method
 cannot be called statically anymore.
 
-=item $obj-E<gt>B<header>([ARRAY])
+=item $obj-E<gt>B<header>( [ARRAY] )
 
 Extract the fields from the ARRAY, if specified, and then fold the fields.
 Returned is an array with all fields, produced via L<orderedFields()|Mail::Message::Head/"The header">.
@@ -491,29 +491,29 @@ Returned is an array with all fields, produced via L<orderedFields()|Mail::Messa
 If you are using this method, you must be stupid... anyway: I do not want to
 support it for now: use L<add()|Mail::Message::Replace::MailHeader/"Access to the header"> and friends.
 
-=item $obj-E<gt>B<mail_from>(['IGNORE'|'ERROR'|'COERCE'|'KEEP'])
+=item $obj-E<gt>B<mail_from>( ['IGNORE'|'ERROR'|'COERCE'|'KEEP'] )
 
 What to do when a header line in the form `From ' is encountered. Valid
 values are C<IGNORE> - ignore and discard the header, C<ERROR> - invoke
 an error (call die), C<COERCE> - rename them as Mail-From and C<KEEP>
 - keep them.
 
-=item $obj-E<gt>B<modify>([BOOLEAN])
+=item $obj-E<gt>B<modify>( [BOOLEAN] )
 
 Refold the headers when they are added.
 
-=item $obj-E<gt>B<read>(FILE)
+=item $obj-E<gt>B<read>($file)
 
-Read the header from the FILE.
+Read the header from the $file.
 
 =item $obj-E<gt>B<tags>()
 
 Returns all the names of fields, implemented by
 L<Mail::Message::Head::Complete::names()|Mail::Message::Head::Complete/"Access to the header">.
 
-=item $obj-E<gt>B<unfold>([TAG])
+=item $obj-E<gt>B<unfold>( [$tag] )
 
-Remove the folding for all instances of TAG, or all fields at once.
+Remove the folding for all instances of $tag, or all fields at once.
 
 =back
 
@@ -521,9 +521,9 @@ Remove the folding for all instances of TAG, or all fields at once.
 
 =over 4
 
-=item $obj-E<gt>B<isa>(CLASS)
+=item $obj-E<gt>B<isa>($class)
 
-=item Mail::Message::Replace::MailHeader-E<gt>B<isa>(CLASS)
+=item Mail::Message::Replace::MailHeader-E<gt>B<isa>($class)
 
 Of course, the C<isa()> class inheritance check should not see our
 nasty trick.
@@ -532,7 +532,7 @@ nasty trick.
 
 =head1 DETAILS
 
-See L<documentation in the base class|Mail::Message::Head::Complete/"DETAILS">.
+Extends L<"DETAILS" in Mail::Message::Head::Complete|Mail::Message::Head::Complete/"DETAILS">.
  
 =head1 DIAGNOSTICS
 
@@ -558,8 +558,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

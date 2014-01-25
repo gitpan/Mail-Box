@@ -21,11 +21,11 @@ Mail::Message::TransferEnc::Binary - encode/decode binary message bodies
 Encode or decode message bodies for binary transfer encoding.  This is
 totally no encoding.
 
-See L<documentation in the base class|Mail::Message::TransferEnc/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Message::TransferEnc|Mail::Message::TransferEnc/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Message::TransferEnc/"METHODS">.
+Extends L<"METHODS" in Mail::Message::TransferEnc|Mail::Message::TransferEnc/"METHODS">.
  
 =head1 DIAGNOSTICS
 
@@ -52,8 +52,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

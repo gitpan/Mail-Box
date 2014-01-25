@@ -30,7 +30,7 @@ requires:
   MIME::Base64: 0
   MIME::Types: 1.004
   Mail::Address: 0
-  Object::Realize::Later: 0.14
+  Object::Realize::Later: 0.19
   Scalar::Util: 1.13
   Sys::Hostname: 0
   TAP::Harness: 3.00
@@ -38,5 +38,5 @@ requires:
   Test::Pod: 1.00
   Time::Zone: 0
   URI: 1.23
-  User::Identity: 0.93
-version: 2.110
+  User::Identity: 0.94
+version: 2.111

@@ -2,12 +2,10 @@
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.01.
-
 use strict;
 
 package Mail::Message::Head::Delayed;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Message::Head';
 
@@ -67,13 +65,10 @@ sub get($;$)
 
 sub guessBodySize() {undef}
 
-#-------------------------------------------
-
 
 sub guessTimestamp() {undef}
 
 #------------------------------------------
-
 
 sub read($)
 {   my ($self, $parser, $headtype, $bodytype)  = @_;
@@ -83,14 +78,7 @@ sub read($)
     $self;
 }
 
-#------------------------------------------
-
 sub load() {$_[0] = $_[0]->message->loadHead}
-
-#------------------------------------------
-
 sub setNoRealize($) { shift->log(INTERNAL => "Setting field on a delayed?") }
-
-#-------------------------------------------
 
 1;

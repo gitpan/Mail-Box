@@ -6,8 +6,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Field;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Reporter';
 
@@ -455,8 +454,6 @@ sub fold($$;$)
     push @folded, " $line\n" if CORE::length($line);
     wantarray ? @folded : join('', @folded);
 }
-
-#------------------------------------------
 
 
 sub unfold($)

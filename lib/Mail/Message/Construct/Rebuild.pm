@@ -6,8 +6,7 @@
 use strict;
 
 package Mail::Message;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 
 use Mail::Message::Head::Complete;
@@ -82,11 +81,12 @@ sub removeEmptyMultiparts($@)
 
 sub flattenEmptyMultiparts($@)
 {   my ($self, $part) = @_;
-    return $part unless $part->isMultipart && $part->parts('ACTIVE')==0;
+
+    $part->isMultipart && $part->parts('ACTIVE')==0
+        or return $part;
 
     my $body     = $part->body;
-    my $preamble = $body->preamble
-                 || Mail::Message::Body::Lines->new(data => '');
+    my $preamble = $body->preamble || Mail::Message::Body::Lines->new(data=>'');
     my $epilogue = $body->epilogue;
     my $newbody  = $preamble->concatenate($preamble, <<NO_PARTS, $epilogue);
   * PLEASE NOTE:
@@ -96,9 +96,9 @@ sub flattenEmptyMultiparts($@)
 NO_PARTS
 
     my $rebuild  = Mail::Message::Part->new
-     ( head      => $part->head->clone
-     , container => undef
-     );
+      ( head      => $part->head->clone
+      , container => undef
+      );
     $rebuild->body($newbody);
     $rebuild;
 }
@@ -123,7 +123,7 @@ sub descendMultiparts($@)
 	else               { push @newparts, $new; $changed++ }
     }
 
-    $changed  or return $part;
+    $changed or return $part;
 
     my $newbody = ref($body)->new
       ( based_on  => $body
@@ -167,17 +167,17 @@ sub removeDeletedParts($@)
 sub replaceDeletedParts($@)
 {   my ($self, $part) = @_;
 
-    return $part
-       unless ($part->isNested && $part->body->nested->isDeleted)
-            || $part->isDeleted;
+    ($part->isNested && $part->body->nested->isDeleted) || $part->isDeleted
+        or return $part;
 
     my $structure = '';
     my $output    = Mail::Box::FastScalar->new(\$structure, '  ');
     $part->printStructure($output);
 
+    my $dispfn   = $part->body->dispositionFilename || '';
     Mail::Message::Part->build
-     ( data      => "Removed content:\n\n$structure"
-     );
+      ( data => "Removed content:\n\n$structure\n$dispfn"
+      );
 }
 
 #------------------------------------------
@@ -275,11 +275,7 @@ sub recursiveRebuildPart($@)
 
   RULES:
     foreach my $rule (@{$args{rules}})
-    {   my $rebuild
-           = ref $rule ? $rule->($self, $part, %args)
-           :             $self->$rule($part, %args);
-
-        defined $rebuild
+    {   my $rebuild = $self->$rule($part, %args)
             or return undef;
 
         if($part != $rebuild)

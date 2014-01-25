@@ -50,19 +50,19 @@ UNDER CONSTRUCTION till L<Mail::Transport::IMAP4|Mail::Transport::IMAP4> is comp
 
 =back
 
-See L<documentation in the base class|Mail::Reporter/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Reporter|Mail::Reporter/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Reporter/"METHODS">.
+Extends L<"METHODS" in Mail::Reporter|Mail::Reporter/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Reporter/"Constructors">.
+Extends L<"Constructors" in Mail::Reporter|Mail::Reporter/"Constructors">.
  
 =over 4
 
-=item Mail::Box::Search-E<gt>B<new>(OPTIONS)
+=item Mail::Box::Search-E<gt>B<new>(%options)
 
 Create a filter.
 
@@ -165,22 +165,22 @@ search will include the preamble and epilogue.
 
 =over 4
 
-=item $obj-E<gt>B<inBody>(PART, BODY)
+=item $obj-E<gt>B<inBody>($part, $body)
 
 Tests whether body contains the requesting information.  See the
 specific search module for its parameters.
 
-=item $obj-E<gt>B<inHead>(PART, HEAD)
+=item $obj-E<gt>B<inHead>($part, $head)
 
 Tests whether header contains the requesting information.  See the
 specific search module for its parameters.
 
-=item $obj-E<gt>B<search>(FOLDER|THREAD|MESSAGE|ARRAY-OF-MESSAGES)
+=item $obj-E<gt>B<search>($folder|$thread|$message|ARRAY)
 
-Check which messages from the FOLDER (Mail::Box) match the
+Check which messages from the $folder (Mail::Box) match the
 search parameters.  The matched messages are returned as list.  You
-can also specify a THREAD (a L<Mail::Box::Thread::Node|Mail::Box::Thread::Node>), one single
-MESSAGE (a L<Mail::Message|Mail::Message>), or an array of messages.
+can also specify a $thread (a L<Mail::Box::Thread::Node|Mail::Box::Thread::Node>), one single
+$message (a L<Mail::Message|Mail::Message>), or an ARRAY of messages.
 
 Sometimes we know how only one match is needed.  In this case, this
 searching will stop at the first match.  For instance, when C<limit> is C<-1>
@@ -201,9 +201,9 @@ example:
  my $thread  = $message->threadStart;
  $grep->search($thread);
 
-=item $obj-E<gt>B<searchPart>(PART)
+=item $obj-E<gt>B<searchPart>($part)
 
-Search this message PART for matches.
+Search this message $part for matches.
 
 =back
 
@@ -211,7 +211,7 @@ Search this message PART for matches.
 
 =over 4
 
-=item $obj-E<gt>B<printMatch>([FILEHANDLE], HASH)
+=item $obj-E<gt>B<printMatch>( [$fh], HASH )
 
 Print the information about the match (see L<new(deliver)|Mail::Box::Search/"METHODS">) in
 some understandable way.  If no file handle
@@ -222,75 +222,75 @@ C<perldoc -f select>).
 
 =head2 Error handling
 
-See L<documentation in the base class|Mail::Reporter/"Error handling">.
+Extends L<"Error handling" in Mail::Reporter|Mail::Reporter/"Error handling">.
  
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<addReport>(OBJECT)
+=item $obj-E<gt>B<addReport>($object)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-=item Mail::Box::Search-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Box::Search-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<errors>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>( [$level, [$strings]] )
 
-=item Mail::Box::Search-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Box::Search-E<gt>B<log>( [$level, [$strings]] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>($level)
 
-=item Mail::Box::Search-E<gt>B<logPriority>(LEVEL)
+=item Mail::Box::Search-E<gt>B<logPriority>($level)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logSettings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<notImplemented>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<report>([LEVEL])
+=item $obj-E<gt>B<report>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<reportAll>([LEVEL])
+=item $obj-E<gt>B<reportAll>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<trace>([LEVEL])
+=item $obj-E<gt>B<trace>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<warnings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =back
 
 =head2 Cleanup
 
-See L<documentation in the base class|Mail::Reporter/"Cleanup">.
+Extends L<"Cleanup" in Mail::Reporter|Mail::Reporter/"Cleanup">.
  
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
-See L<Mail::Reporter/"Cleanup">
+Inherited, see L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -329,8 +329,8 @@ The C<in> option defines only three names.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

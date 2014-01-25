@@ -5,8 +5,7 @@
 
 use strict;
 package Mail::Box::Thread::Manager;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Reporter';
 
@@ -38,10 +37,7 @@ sub init($)
 
 #-------------------------------------------
 
-
 sub folders() { values %{shift->{MBTM_folders}} }
-
-#-------------------------------------------
 
 
 sub includeFolder(@)
@@ -62,8 +58,6 @@ sub includeFolder(@)
 
     $self;
 }
-
-#-------------------------------------------
 
 
 sub removeFolder(@)
@@ -88,7 +82,6 @@ sub removeFolder(@)
 }
 
 #-------------------------------------------
-
 
 sub thread($)
 {   my ($self, $message) = @_;
@@ -128,8 +121,6 @@ sub thread($)
     $thread;
 }
 
-#-------------------------------------------
-
 
 sub threadStart($)
 {   my ($self, $message) = @_;
@@ -161,16 +152,12 @@ sub threadStart($)
     $thread;
 }
 
-#-------------------------------------------
-
 
 sub all()
 {   my $self = shift;
     $_->find('not-existing') for $self->folders;
     $self->known;
 }
-
-#-------------------------------------------
 
 
 sub sortedAll(@)
@@ -179,15 +166,11 @@ sub sortedAll(@)
     $self->sortedKnown(@_);
 }
 
-#-------------------------------------------
-
 
 sub known()
 {   my $self      = shift->_process_delayed_nodes->_cleanup;
     grep {!defined $_->repliedTo} values %{$self->{MBTM_ids}};
 }
-
-#-------------------------------------------
 
 
 sub sortedKnown(;$$)
@@ -197,8 +180,8 @@ sub sortedKnown(;$$)
  
     # Special care for double keys.
     my %value;
-    push @{$value{$prepare->($_)}}, $_  foreach $self->known; 
-    map { @{$value{$_}} } sort {$compare->($a, $b)} keys %value;
+    push @{$value{$prepare->($_)}}, $_ for $self->known; 
+    map @{$value{$_}}, sort {$compare->($a, $b)} keys %value;
 }
 
 # When a whole folder is removed, many threads can become existing
@@ -238,15 +221,12 @@ sub _cleanup()
 
 #-------------------------------------------
 
-
 sub toBeThreaded($@)
 {   my ($self, $folder) = (shift, shift);
     return $self unless exists $self->{MBTM_folders}{$folder->name};
     $self->inThread($_) foreach @_;
     $self;
 }
-
-#-------------------------------------------
 
 
 sub toBeUnthreaded($@)
@@ -255,8 +235,6 @@ sub toBeUnthreaded($@)
     $self->outThread($_) foreach @_;
     $self;
 }
-
-#-------------------------------------------
 
 
 sub inThread($)

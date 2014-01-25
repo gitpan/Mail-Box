@@ -22,41 +22,41 @@ objects, each describing a the location of a single mailbox (folder).  The
 collection is used by the L<Mail::Box::Manage::User|Mail::Box::Manage::User> object to administer
 the folders of a single user, even if those folders are closed.
 
-See L<documentation in the base class|Mail::Reporter/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Reporter|Mail::Reporter/"DESCRIPTION">.
  
-See L<documentation in the base class|User::Identity::Collection/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in User::Identity::Collection|User::Identity::Collection/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in the base class|User::Identity::Collection/"OVERLOADED">.
+Extends L<"OVERLOADED" in User::Identity::Collection|User::Identity::Collection/"OVERLOADED">.
  
 =over 4
 
-=item overload: B<@{}>()
+=item overload: B<@{}>
 
-See L<User::Identity::Collection/"OVERLOADED">
+Inherited, see L<User::Identity::Collection/"OVERLOADED">
 
-=item overload: B<stringification>()
+=item overload: B<stringification>
 
-See L<User::Identity::Collection/"OVERLOADED">
+Inherited, see L<User::Identity::Collection/"OVERLOADED">
 
 =back
 
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Reporter/"METHODS">.
+Extends L<"METHODS" in Mail::Reporter|Mail::Reporter/"METHODS">.
  
-See L<documentation in the base class|User::Identity::Collection/"METHODS">.
+Extends L<"METHODS" in User::Identity::Collection|User::Identity::Collection/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Reporter/"Constructors">.
+Extends L<"Constructors" in Mail::Reporter|Mail::Reporter/"Constructors">.
  
-See L<documentation in the base class|User::Identity::Collection/"Constructors">.
+Extends L<"Constructors" in User::Identity::Collection|User::Identity::Collection/"Constructors">.
  
 =over 4
 
-=item Mail::Box::Collection-E<gt>B<new>([NAME], OPTIONS)
+=item Mail::Box::Collection-E<gt>B<new>( [$name], %options )
 
  -Option     --Defined in                --Default
   description  User::Identity::Item        undef
@@ -97,183 +97,183 @@ An L<Mail::Box::Manager|Mail::Box::Manager> OBJECT (could be a L<Mail::Box::Mana
 
 =head2 Error handling
 
-See L<documentation in the base class|Mail::Reporter/"Error handling">.
+Extends L<"Error handling" in Mail::Reporter|Mail::Reporter/"Error handling">.
  
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<addReport>(OBJECT)
+=item $obj-E<gt>B<addReport>($object)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-=item Mail::Box::Collection-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Box::Collection-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<errors>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>( [$level, [$strings]] )
 
-=item Mail::Box::Collection-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Box::Collection-E<gt>B<log>( [$level, [$strings]] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>($level)
 
-=item Mail::Box::Collection-E<gt>B<logPriority>(LEVEL)
+=item Mail::Box::Collection-E<gt>B<logPriority>($level)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logSettings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<notImplemented>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<report>([LEVEL])
+=item $obj-E<gt>B<report>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<reportAll>([LEVEL])
+=item $obj-E<gt>B<reportAll>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<trace>([LEVEL])
+=item $obj-E<gt>B<trace>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<warnings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =back
 
 =head2 Cleanup
 
-See L<documentation in the base class|Mail::Reporter/"Cleanup">.
+Extends L<"Cleanup" in Mail::Reporter|Mail::Reporter/"Cleanup">.
  
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
-See L<Mail::Reporter/"Cleanup">
+Inherited, see L<Mail::Reporter/"Cleanup">
 
 =back
 
 =head2 Attributes
 
-See L<documentation in the base class|User::Identity::Collection/"Attributes">.
+Extends L<"Attributes" in User::Identity::Collection|User::Identity::Collection/"Attributes">.
  
 =over 4
 
 =item $obj-E<gt>B<description>()
 
-See L<User::Identity::Item/"Attributes">
+Inherited, see L<User::Identity::Item/"Attributes">
 
-=item $obj-E<gt>B<folderType>([FOLDERCLASS])
+=item $obj-E<gt>B<folderType>( [$folderclass] )
 
 Returns the type of folder (on this location).  When specified, then
-FOLDERCLASS must be a L<Mail::Box|Mail::Box> extension.
+$folderclass must be a L<Mail::Box|Mail::Box> extension.
 
 =item $obj-E<gt>B<itemType>()
 
-See L<User::Identity::Collection/"Attributes">
+Inherited, see L<User::Identity::Collection/"Attributes">
 
 =item $obj-E<gt>B<manager>()
 
 The L<Mail::Box::Manager|Mail::Box::Manager> (usually a L<Mail::Box::Manage::User|Mail::Box::Manage::User> object),
 which is handling the opening of folders.
 
-=item $obj-E<gt>B<name>([NEWNAME])
+=item $obj-E<gt>B<name>( [NEWNAME] )
 
-See L<User::Identity::Item/"Attributes">
+Inherited, see L<User::Identity::Item/"Attributes">
 
 =item $obj-E<gt>B<roles>()
 
-See L<User::Identity::Collection/"Attributes">
+Inherited, see L<User::Identity::Collection/"Attributes">
 
 =back
 
 =head2 Collections
 
-See L<documentation in the base class|User::Identity::Collection/"Collections">.
+Extends L<"Collections" in User::Identity::Collection|User::Identity::Collection/"Collections">.
  
 =over 4
 
 =item $obj-E<gt>B<add>(COLLECTION, ROLE)
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<addCollection>(OBJECT | ([TYPE], OPTIONS))
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<collection>(NAME)
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
-=item $obj-E<gt>B<parent>([PARENT])
+=item $obj-E<gt>B<parent>( [PARENT] )
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<removeCollection>(OBJECT|NAME)
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<type>()
 
 =item Mail::Box::Collection-E<gt>B<type>()
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<user>()
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =back
 
 =head2 Maintaining roles
 
-See L<documentation in the base class|User::Identity::Collection/"Maintaining roles">.
+Extends L<"Maintaining roles" in User::Identity::Collection|User::Identity::Collection/"Maintaining roles">.
  
 =over 4
 
-=item $obj-E<gt>B<addRole>(ROLE| ( [NAME],OPTIONS ) | ARRAY-OF-OPTIONS)
+=item $obj-E<gt>B<addRole>(ROLE| ([NAME],OPTIONS) | ARRAY)
 
-See L<User::Identity::Collection/"Maintaining roles">
+Inherited, see L<User::Identity::Collection/"Maintaining roles">
 
 =item $obj-E<gt>B<removeRole>(ROLE|NAME)
 
-See L<User::Identity::Collection/"Maintaining roles">
+Inherited, see L<User::Identity::Collection/"Maintaining roles">
 
-=item $obj-E<gt>B<renameRole>(ROLE|OLDNAME, NEWNAME)
+=item $obj-E<gt>B<renameRole>( <ROLE|OLDNAME>, NEWNAME )
 
-See L<User::Identity::Collection/"Maintaining roles">
+Inherited, see L<User::Identity::Collection/"Maintaining roles">
 
 =item $obj-E<gt>B<sorted>()
 
-See L<User::Identity::Collection/"Maintaining roles">
+Inherited, see L<User::Identity::Collection/"Maintaining roles">
 
 =back
 
 =head2 Searching
 
-See L<documentation in the base class|User::Identity::Collection/"Searching">.
+Extends L<"Searching" in User::Identity::Collection|User::Identity::Collection/"Searching">.
  
 =over 4
 
 =item $obj-E<gt>B<find>(NAME|CODE|undef)
 
-See L<User::Identity::Collection/"Searching">
+Inherited, see L<User::Identity::Collection/"Searching">
 
 =back
 
@@ -334,8 +334,8 @@ cannot add objects of a different $type.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

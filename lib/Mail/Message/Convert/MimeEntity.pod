@@ -33,40 +33,40 @@ and more methods.  The L<Mail::Message|Mail::Message> objects are more flexible
 in how the message parts are stored, and uses separate header and body
 objects.
 
-See L<documentation in the base class|Mail::Message::Convert/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Message::Convert|Mail::Message::Convert/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Message::Convert/"METHODS">.
+Extends L<"METHODS" in Mail::Message::Convert|Mail::Message::Convert/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Message::Convert/"Constructors">.
+Extends L<"Constructors" in Mail::Message::Convert|Mail::Message::Convert/"Constructors">.
  
 =over 4
 
-=item Mail::Message::Convert::MimeEntity-E<gt>B<new>(OPTIONS)
+=item Mail::Message::Convert::MimeEntity-E<gt>B<new>(%options)
 
-See L<Mail::Message::Convert/"METHODS">
+Inherited, see L<Mail::Message::Convert/"METHODS">
 
 =back
 
 =head2 Converting
 
-See L<documentation in the base class|Mail::Message::Convert/"Converting">.
+Extends L<"Converting" in Mail::Message::Convert|Mail::Message::Convert/"Converting">.
  
 =over 4
 
-=item $obj-E<gt>B<export>(MESSAGE, [PARSER])
+=item $obj-E<gt>B<export>( $message, [$parser] )
 
 Returns a new L<MIME::Entity> message object based on the
-information from the MESSAGE, which is a L<Mail::Message|Mail::Message> object.
+information from the $message, which is a L<Mail::Message|Mail::Message> object.
 
-You may want to supply your own PARSER, which is a MIME::Parser
-object, to change the parser flags.  Without a PARSER object, one
+You may want to supply your own $parser, which is a MIME::Parser
+object, to change the parser flags.  Without a $parser object, one
 is created for you, with all the default settings.
 
-If C<undef> is passed, in place of a MESSAGE, then an empty list is
+If C<undef> is passed, in place of a $message, then an empty list is
 returned.  When the parsing failes, then L<MIME::Parser> throws an
 exception.
 
@@ -76,7 +76,7 @@ example:
  my Mail::Message $msg  = Mail::Message->new;
  my manual MIME::Entity  $copy = $convert->export($msg);
 
-=item $obj-E<gt>B<from>(MIME-OBJECT)
+=item $obj-E<gt>B<from>($mime_object)
 
 Returns a new L<Mail::Message|Mail::Message> object based on the information from
 the specified L<MIME::Entity>.  If the conversion fails, the C<undef>
@@ -89,83 +89,83 @@ example:
  my MIME::Entity  $msg  = MIME::Entity->new;
  my Mail::Message $copy = $convert->from($msg);
 
-=item $obj-E<gt>B<selectedFields>(HEAD)
+=item $obj-E<gt>B<selectedFields>($head)
 
-See L<Mail::Message::Convert/"Converting">
+Inherited, see L<Mail::Message::Convert/"Converting">
 
 =back
 
 =head2 Error handling
 
-See L<documentation in the base class|Mail::Message::Convert/"Error handling">.
+Extends L<"Error handling" in Mail::Message::Convert|Mail::Message::Convert/"Error handling">.
  
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<addReport>(OBJECT)
+=item $obj-E<gt>B<addReport>($object)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-=item Mail::Message::Convert::MimeEntity-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Message::Convert::MimeEntity-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<errors>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>( [$level, [$strings]] )
 
-=item Mail::Message::Convert::MimeEntity-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Message::Convert::MimeEntity-E<gt>B<log>( [$level, [$strings]] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>($level)
 
-=item Mail::Message::Convert::MimeEntity-E<gt>B<logPriority>(LEVEL)
+=item Mail::Message::Convert::MimeEntity-E<gt>B<logPriority>($level)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logSettings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<notImplemented>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<report>([LEVEL])
+=item $obj-E<gt>B<report>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<reportAll>([LEVEL])
+=item $obj-E<gt>B<reportAll>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<trace>([LEVEL])
+=item $obj-E<gt>B<trace>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<warnings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =back
 
 =head2 Cleanup
 
-See L<documentation in the base class|Mail::Message::Convert/"Cleanup">.
+Extends L<"Cleanup" in Mail::Message::Convert|Mail::Message::Convert/"Cleanup">.
  
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
-See L<Mail::Reporter/"Cleanup">
+Inherited, see L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -187,8 +187,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

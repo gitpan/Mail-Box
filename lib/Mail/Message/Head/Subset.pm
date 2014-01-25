@@ -6,8 +6,7 @@
 use strict;
 
 package Mail::Message::Head::Subset;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Message::Head';
 
@@ -21,16 +20,10 @@ use Date::Parse;
 
 sub count($)
 {   my ($self, $name) = @_;
-
-    my @values = $self->get($name);
-
-    return $self->load->count($name)
-       unless @values;
-
+    my @values = $self->get($name)
+        or return $self->load->count($name);
     scalar @values;
 }
-
-#-------------------------------------------
 
 
 sub get($;$)
@@ -50,7 +43,6 @@ sub get($;$)
 
 
 #-------------------------------------------
-
 
 sub guessBodySize()
 {   my $self = shift;
@@ -89,9 +81,6 @@ sub guessTimestamp()
 
 #-------------------------------------------
 
-
 sub load() { $_[0] = $_[0]->message->loadHead }
-
-#------------------------------------------
 
 1;

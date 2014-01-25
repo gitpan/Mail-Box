@@ -4,8 +4,7 @@
 # Pod stripped from pm file by OODoc 2.01.
 
 package Mail::Box::Search::SpamAssassin;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Box::Search';
 

@@ -7,14 +7,12 @@ use strict;
 use warnings;
 
 package Mail::Transport::POP3;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Transport::Receive';
 
 use IO::Socket  ();
 use Socket      qw/$CRLF/;
-
 use Digest::MD5 ();
 
 

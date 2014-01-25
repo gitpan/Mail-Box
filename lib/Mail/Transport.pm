@@ -6,8 +6,7 @@ use strict;
 use warnings;
 
 package Mail::Transport;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Reporter';
 
@@ -26,8 +25,6 @@ my %mailers =
  , sendmail => '::Sendmail'
  , smtp     => '::SMTP'
  );
-
-#------------------------------------------
 
 
 sub new(@)
@@ -86,21 +83,16 @@ sub init($)
 
 #------------------------------------------
 
-
 sub remoteHost()
 {   my $self = shift;
     @$self{ qw/MT_hostname MT_port MT_username MT_password/ };
 }
-
-#------------------------------------------
 
 
 sub retry()
 {   my $self = shift;
     @$self{ qw/MT_interval MT_retry MT_timeout/ };
 }
-
-#------------------------------------------
 
 
 my @safe_directories
@@ -121,6 +113,5 @@ sub findBinary($@)
 }
 
 #------------------------------------------
-
 
 1;

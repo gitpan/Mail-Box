@@ -38,19 +38,19 @@ and speed), it also can maintain threads from messages residing in different
 opened folders.  Both facilities are rare for mail-agents.  The manager
 creates flexible trees with L<Mail::Box::Thread::Node|Mail::Box::Thread::Node> objects.
 
-See L<documentation in the base class|Mail::Reporter/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Reporter|Mail::Reporter/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Reporter/"METHODS">.
+Extends L<"METHODS" in Mail::Reporter|Mail::Reporter/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Reporter/"Constructors">.
+Extends L<"Constructors" in Mail::Reporter|Mail::Reporter/"Constructors">.
  
 =over 4
 
-=item Mail::Box::Thread::Manager-E<gt>B<new>(OPTIONS)
+=item Mail::Box::Thread::Manager-E<gt>B<new>(%options)
 
 A C<Mail::Box::Thread::Manager> object is usually created by a
 L<Mail::Box::Manager|Mail::Box::Manager>.  One manager can produce more than one of these
@@ -147,7 +147,7 @@ example:
 
 Returns the folders as managed by this threader.
 
-=item $obj-E<gt>B<includeFolder>(FOLDERS)
+=item $obj-E<gt>B<includeFolder>($folders)
 
 Add one or more folders to the list of folders whose messages are
 organized in the threads maintained by this object.  Duplicated
@@ -162,7 +162,7 @@ example:
 
  $threads->includeFolder($inbox, $draft);
 
-=item $obj-E<gt>B<removeFolder>(FOLDERS)
+=item $obj-E<gt>B<removeFolder>($folders)
 
 Remove one or more folders from the list of folders whose messages are
 organized in the threads maintained by this object.
@@ -200,19 +200,19 @@ L<inThread()|Mail::Box::Thread::Manager/"Internals"> and L<thread()|Mail::Box::T
 Be warned that, each time a message's header is read from the folder,
 the return of the method can change.
 
-=item $obj-E<gt>B<sortedAll>([PREPARE [COMPARE]])
+=item $obj-E<gt>B<sortedAll>( [$prepare, [$compare]] )
 
 Returns L<all()|Mail::Box::Thread::Manager/"The Threads"> the threads by default, but sorted on timestamp.
 
-=item $obj-E<gt>B<sortedKnown>([PREPARE [,COMPARE]])
+=item $obj-E<gt>B<sortedKnown>( [$prepare, [$compare]] )
 
 Returns all L<known()|Mail::Box::Thread::Manager/"The Threads"> threads, in sorted order.  By default, the threads
-will be sorted on timestamp, But a different COMPARE method can be
+will be sorted on timestamp, But a different $compare method can be
 specified.
 
-=item $obj-E<gt>B<thread>(MESSAGE)
+=item $obj-E<gt>B<thread>($message)
 
-Returns the thread where this MESSAGE is the start of.  However, there
+Returns the thread where this $message is the start of.  However, there
 is a possibility that this message is a reply itself.
 
 Usually, all messages which are in reply of this message are dated later
@@ -225,7 +225,7 @@ example:
  my $thread  = $threads->thread($inbox->message(3));
  print $thread->string;
 
-=item $obj-E<gt>B<threadStart>(MESSAGE)
+=item $obj-E<gt>B<threadStart>($message)
 
 Based on a message, and facts from previously detected threads, try
 to build solid knowledge about the thread where this message is in.
@@ -236,108 +236,108 @@ to build solid knowledge about the thread where this message is in.
 
 =over 4
 
-=item $obj-E<gt>B<createDummy>(MESSAGE-ID)
+=item $obj-E<gt>B<createDummy>($message_id)
 
 Get a replacement message to be used in threads.  Be warned that a
 dummy is not a member of any folder, so the program working with
 threads must test with L<Mail::Message::isDummy()|Mail::Message/"The message"> before trying things only
 available to real messages.
 
-=item $obj-E<gt>B<inThread>(MESSAGE)
+=item $obj-E<gt>B<inThread>($message)
 
 Collect the thread-information of one message.  The `In-Reply-To' and
 `Reference' header-fields are processed.  If this method is called on
 a message whose header was not read yet (as usual for MH-folders,
 for instance) the reading of that header will be triggered here.
 
-=item $obj-E<gt>B<outThread>(MESSAGE)
+=item $obj-E<gt>B<outThread>($message)
 
 Remove the message from the thread-infrastructure.  A message is
 replaced by a dummy.
 
-=item $obj-E<gt>B<toBeThreaded>(FOLDER, MESSAGES)
+=item $obj-E<gt>B<toBeThreaded>($folder, @messages)
 
 Include the specified messages in/from the threads managed by
 this object, if this folder is maintained by this thread-manager.
 
-=item $obj-E<gt>B<toBeUnthreaded>(FOLDER, MESSAGES)
+=item $obj-E<gt>B<toBeUnthreaded>($folder, @messages)
 
-Remove the specified messages in/from the threads managed by
+Remove the specified @messages in/from the threads managed by
 this object, if this folder is maintained by this thread-manager.
 
 =back
 
 =head2 Error handling
 
-See L<documentation in the base class|Mail::Reporter/"Error handling">.
+Extends L<"Error handling" in Mail::Reporter|Mail::Reporter/"Error handling">.
  
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<addReport>(OBJECT)
+=item $obj-E<gt>B<addReport>($object)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-=item Mail::Box::Thread::Manager-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Box::Thread::Manager-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<errors>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>( [$level, [$strings]] )
 
-=item Mail::Box::Thread::Manager-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Box::Thread::Manager-E<gt>B<log>( [$level, [$strings]] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>($level)
 
-=item Mail::Box::Thread::Manager-E<gt>B<logPriority>(LEVEL)
+=item Mail::Box::Thread::Manager-E<gt>B<logPriority>($level)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logSettings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<notImplemented>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<report>([LEVEL])
+=item $obj-E<gt>B<report>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<reportAll>([LEVEL])
+=item $obj-E<gt>B<reportAll>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<trace>([LEVEL])
+=item $obj-E<gt>B<trace>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<warnings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =back
 
 =head2 Cleanup
 
-See L<documentation in the base class|Mail::Reporter/"Cleanup">.
+Extends L<"Cleanup" in Mail::Reporter|Mail::Reporter/"Cleanup">.
  
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
-See L<Mail::Reporter/"Cleanup">
+Inherited, see L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -442,8 +442,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -66,7 +66,7 @@ method is called upon, but also a new object, when serious changes had
 to be made.  If the check could not be made, because the decoder is not
 defined, then C<undef> is returned.
 
-=item $obj-E<gt>B<encode>(OPTIONS)
+=item $obj-E<gt>B<encode>(%options)
 
 Encode (translate) a L<Mail::Message::Body|Mail::Message::Body> into a different format.
 See the DESCRIPTION above.  Options which are not specified will not trigger
@@ -111,11 +111,11 @@ a folder file.  This returns the body where this method was called
 upon when everything was already prepared, or a new encoded body
 otherwise.  In either case, the body is checked.
 
-=item $obj-E<gt>B<unify>(BODY)
+=item $obj-E<gt>B<unify>($body)
 
-Unify the type of the given BODY objects with the type of the called
+Unify the type of the given $body objects with the type of the called
 body.  C<undef> is returned when unification is impossible.  If the
-bodies have the same settings, the BODY object is returned unchanged.
+bodies have the same settings, the $body object is returned unchanged.
 
 Examples:
 
@@ -132,11 +132,11 @@ Examples:
 
 =over 4
 
-=item $obj-E<gt>B<dispositionFilename>([DIRECTORY])
+=item $obj-E<gt>B<dispositionFilename>( [$directory] )
 
 Returns the name which can be used as filename to store the information
-in the indicated DIRECTORY. To get a filename, various fields are searched
-for C<filename> and C<name> attributes.  Without DIRECTORY, the name found
+in the indicated $directory. To get a filename, various fields are searched
+for C<filename> and C<name> attributes.  Without $directory, the name found
 will be returned.
 
 Only the basename of the found name will be used, for security reasons:
@@ -160,22 +160,22 @@ text.
 
 =over 4
 
-=item $obj-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
+=item $obj-E<gt>B<addTransferEncHandler>( $name, <$class|$object> )
 
-=item Mail::Message::Body-E<gt>B<addTransferEncHandler>(NAME, CLASS|OBJECT)
+=item Mail::Message::Body-E<gt>B<addTransferEncHandler>( $name, <$class|$object> )
 
 Relate the NAMEd transfer encoding to an OBJECTs or object of the specified
-CLASS.  In the latter case, an object of that CLASS will be created on the
+$class.  In the latter case, an object of that $class will be created on the
 moment that one is needed to do encoding or decoding.
 
-The CLASS or OBJECT must extend L<Mail::Message::TransferEnc|Mail::Message::TransferEnc>.  It will
-replace existing class and object for this NAME.
+The $class or $object must extend L<Mail::Message::TransferEnc|Mail::Message::TransferEnc>.  It will
+replace existing class and object for this $name.
 
 Why aren't you contributing this class to MailBox?
 
-=item $obj-E<gt>B<getTransferEncHandler>(TYPE)
+=item $obj-E<gt>B<getTransferEncHandler>($type)
 
-Get the transfer encoder/decoder which is able to handle TYPE, or return
+Get the transfer encoder/decoder which is able to handle $type, or return
 undef if there is no such handler.
 
 =back
@@ -203,8 +203,8 @@ unknown.  The decoded data is returned.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

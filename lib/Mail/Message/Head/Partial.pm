@@ -6,8 +6,7 @@
 use strict;
 
 package Mail::Message::Head::Partial;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Message::Head::Complete';
 
@@ -21,15 +20,12 @@ sub removeFields(@)
     foreach my $match (@_)
     {
         if(ref $match)
-        {   $_ =~ $match && delete $known->{$_} foreach keys %$known;
-        }
+             { $_ =~ $match && delete $known->{$_} foreach keys %$known }
         else { delete $known->{lc $match} }
     }
 
     $self->cleanupOrderedFields;
 }
-
-#------------------------------------------
 
 
 sub removeFieldsExcept(@)

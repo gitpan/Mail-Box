@@ -27,19 +27,19 @@ multiple folders, and merge there content, you may find the same message
 in more folders.  All versions of the same message (based on message-id)
 are stored in the same node.
 
-See L<documentation in the base class|Mail::Reporter/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Reporter|Mail::Reporter/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Reporter/"METHODS">.
+Extends L<"METHODS" in Mail::Reporter|Mail::Reporter/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Reporter/"Constructors">.
+Extends L<"Constructors" in Mail::Reporter|Mail::Reporter/"Constructors">.
  
 =over 4
 
-=item Mail::Box::Thread::Node-E<gt>B<new>(OPTIONS)
+=item Mail::Box::Thread::Node-E<gt>B<new>(%options)
 
 You will not call this method yourself. The L<Mail::Box::Thread::Manager|Mail::Box::Thread::Manager>
 object will call it to construct C<Mail::Box::Thread::Node> objects.
@@ -81,13 +81,13 @@ specify it when you don't have the message yet.
 
 =over 4
 
-=item $obj-E<gt>B<addMessage>(MESSAGE)
+=item $obj-E<gt>B<addMessage>($message)
 
 Add one message to the thread node.  If the node contains a dummy, then
 the dummy is replaced. Otherwise, the messages is added to the end of the
 list.
 
-=item $obj-E<gt>B<expand>([BOOLEAN])
+=item $obj-E<gt>B<expand>( [BOOLEAN] )
 
 Returns whether this (part of the) folder has to be shown expanded or not.
 This is simply done by a label, which means that most folder types can
@@ -140,26 +140,26 @@ listed in this node will have the same ID.
 Returns the list of follow-ups to this thread node.  This list
 may contain parsed, not-parsed, and dummy messages.
 
-=item $obj-E<gt>B<followedBy>(THREADS)
+=item $obj-E<gt>B<followedBy>($threads)
 
-Register that the THREADS are follow-ups to this message. These
+Register that the $threads are follow-ups to this message. These
 follow-ups need not be related to each other in any way other than
 sharing the same parent.
 
 Defining the same relation more than once will not cause information to
 be duplicated.
 
-=item $obj-E<gt>B<follows>(THREAD, QUALITY)
+=item $obj-E<gt>B<follows>($thread, $quality)
 
-Register that the current thread is a reply to the specified THREAD. The
-QUALITY of the relation is specified by the second argument.  The method
+Register that the current thread is a reply to the specified $thread. The
+$quality of the relation is specified by the second argument.  The method
 returns C<undef> if the link is not accepted in order to avoid circular
 references.
 
 The relation may be specified more than once, but only the most confident
-relation is used. For example, if a reply (QUALITY equals C<REPLY>) is
+relation is used. For example, if a reply ($quality equals C<REPLY>) is
 specified, later calls to the follow method will have no effect. If
-C<follows> is called with a QUALITY that matches the current quality, the
+C<follows> is called with a $quality that matches the current quality, the
 new thread overrides the previous.
 
 =item $obj-E<gt>B<repliedTo>()
@@ -209,7 +209,7 @@ example:
  my ($question, $quality) = $answer->repliedTo;
  if($question && $quality eq 'REPLY') { ... };
 
-=item $obj-E<gt>B<sortedFollowUps>([PREPARE [,COMPARE]])
+=item $obj-E<gt>B<sortedFollowUps>( [$prepare, [$compare]] )
 
 Returns the list of L<followUps()|Mail::Box::Thread::Node/"The thread order">, but sorted.  By default
 sorting is based on the estimated time of the reply. See
@@ -243,7 +243,7 @@ example:
 Number of messages in the thread starting at the current thread node, but
 not counting the dummies.
 
-=item $obj-E<gt>B<recurse>(CODE-REF)
+=item $obj-E<gt>B<recurse>(CODE)
 
 Execute a function for all sub-threads.  If the subroutine returns true,
 sub-threads are visited recursively. Otherwise, the current branch
@@ -270,7 +270,7 @@ example:
                 ->threadStart
                 ->threadMessages;
 
-=item $obj-E<gt>B<threadToString>([CODE])
+=item $obj-E<gt>B<threadToString>( [CODE] )
 
 Translate a thread into a string. The string will contain at least one
 line for each message which was found, but tries to fold dummies.  This
@@ -315,75 +315,75 @@ Returns the sum of the size of all the messages in the thread.
 
 =head2 Error handling
 
-See L<documentation in the base class|Mail::Reporter/"Error handling">.
+Extends L<"Error handling" in Mail::Reporter|Mail::Reporter/"Error handling">.
  
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<addReport>(OBJECT)
+=item $obj-E<gt>B<addReport>($object)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-=item Mail::Box::Thread::Node-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Box::Thread::Node-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<errors>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>( [$level, [$strings]] )
 
-=item Mail::Box::Thread::Node-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Box::Thread::Node-E<gt>B<log>( [$level, [$strings]] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>($level)
 
-=item Mail::Box::Thread::Node-E<gt>B<logPriority>(LEVEL)
+=item Mail::Box::Thread::Node-E<gt>B<logPriority>($level)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logSettings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<notImplemented>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<report>([LEVEL])
+=item $obj-E<gt>B<report>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<reportAll>([LEVEL])
+=item $obj-E<gt>B<reportAll>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<trace>([LEVEL])
+=item $obj-E<gt>B<trace>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<warnings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =back
 
 =head2 Cleanup
 
-See L<documentation in the base class|Mail::Reporter/"Cleanup">.
+Extends L<"Cleanup" in Mail::Reporter|Mail::Reporter/"Cleanup">.
  
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
-See L<Mail::Reporter/"Cleanup">
+Inherited, see L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -403,8 +403,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

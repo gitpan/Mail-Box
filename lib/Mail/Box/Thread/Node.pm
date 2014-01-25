@@ -5,8 +5,7 @@
 
 use strict;
 package Mail::Box::Thread::Node;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Reporter';
 
@@ -64,8 +63,6 @@ sub message()
     $messages[0];
 }
 
-#-------------------------------------------
-
 
 sub addMessage($)
 {   my ($self, $message) = @_;
@@ -102,7 +99,6 @@ sub folded(;$)    # compatibility <2.0
 
 #-------------------------------------------
 
-
 sub repliedTo()
 {   my $self = shift;
 
@@ -110,8 +106,6 @@ sub repliedTo()
          ? ($self->{MBTN_parent}, $self->{MBTN_quality})
          : $self->{MBTN_parent};
 }
-
-#-------------------------------------------
 
 
 sub follows($$)
@@ -148,8 +142,6 @@ sub follows($$)
     $self;
 }
 
-#-------------------------------------------
-
 
 sub followedBy(@)
 {   my $self = shift;
@@ -157,15 +149,11 @@ sub followedBy(@)
     $self;
 }
 
-#-------------------------------------------
-
 
 sub followUps()
 {   my $self    = shift;
     $self->{MBTN_followUps} ? values %{$self->{MBTN_followUps}} : ();
 }
-
-#-------------------------------------------
 
 
 sub sortedFollowUps()
@@ -178,10 +166,6 @@ sub sortedFollowUps()
 }
 
 #-------------------------------------------
-
-
-#-------------------------------------------
-
 
 sub threadToString(;$$$)   # two undocumented parameters for layout args
 {   my $self    = shift;
@@ -220,8 +204,6 @@ sub threadToString(;$$$)   # two undocumented parameters for layout args
     join '', @out;
 }
 
-#-------------------------------------------
-
 
 sub startTimeEstimate()
 {   my $self = shift;
@@ -239,8 +221,6 @@ sub startTimeEstimate()
 
     $earliest;
 }
-
-#-------------------------------------------
 
 
 sub endTimeEstimate()

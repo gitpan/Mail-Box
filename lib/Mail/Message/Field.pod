@@ -48,13 +48,13 @@ added methods of a message:
 
  my $other   = $message->get('Reply-To');
 
-See L<documentation in the base class|Mail::Reporter/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Reporter|Mail::Reporter/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
 =over 4
 
-=item overload: B<"">()
+=item overload: B<"">
 
 (stringification) produces the unfolded body of the field, which may
 be what you expect.  This is what makes what the field object seems
@@ -68,13 +68,13 @@ example:
  my $subject = $msg->get('subject') || 'your mail';
  print "Re: $subject\n";
 
-=item overload: B<0+>()
+=item overload: B<0+>
 
 (numification) When the field is numeric, the value will be returned.
 The result is produced by L<toInt()|Mail::Message::Field/"Access to the content">.  If the value is not correct,
 a C<0> is produced, to simplify calculations.
 
-=item overload: B<<=>>()
+=item overload: B<<=>>
 
 (numeric comparison) Compare the integer field contents with something
 else.
@@ -84,11 +84,11 @@ example:
  if($msg->get('Content-Length') > 10000) ...
  if($msg->size > 10000) ... ; # same, but better
 
-=item overload: B<bool>()
+=item overload: B<bool>
 
 Always true, to make it possible to say C<if($field)>.
 
-=item overload: B<cmp>()
+=item overload: B<cmp>
 
 (string comparison) Compare the unfolded body of a field with an other
 field or a string, using the buildin C<cmp>.
@@ -97,11 +97,11 @@ field or a string, using the buildin C<cmp>.
 
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Reporter/"METHODS">.
+Extends L<"METHODS" in Mail::Reporter|Mail::Reporter/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Reporter/"Constructors">.
+Extends L<"Constructors" in Mail::Reporter|Mail::Reporter/"Constructors">.
  
 =over 4
 
@@ -109,7 +109,7 @@ See L<documentation in the base class|Mail::Reporter/"Constructors">.
 
 Create a copy of this field object.
 
-=item Mail::Message::Field-E<gt>B<new>(DATA)
+=item Mail::Message::Field-E<gt>B<new>($data)
 
 See L<Mail::Message::Field::Fast::new()|Mail::Message::Field::Fast/"METHODS">,
 L<Mail::Message::Field::Flex::new()|Mail::Message::Field::Flex/"METHODS">,
@@ -159,21 +159,21 @@ field's name, body and folding characters.
 
 Returns the number of lines needed to display this header-line.
 
-=item $obj-E<gt>B<print>([FILEHANDLE])
+=item $obj-E<gt>B<print>( [$fh] )
 
 Print the whole header-line to the specified file-handle. One line may
 result in more than one printed line, because of the folding of long
-lines.  The FILEHANDLE defaults to the selected handle.
+lines.  The $fh defaults to the selected handle.
 
 =item $obj-E<gt>B<size>()
 
 Returns the number of bytes needed to display this header-line, Same
 as L<length()|Mail::Message::Field/"The field">.
 
-=item $obj-E<gt>B<string>([WRAP])
+=item $obj-E<gt>B<string>( [$wrap] )
 
 Returns the field as string.  By default, this returns the same as
-L<folded()|Mail::Message::Field/"Access to the body">. However, the optional WRAP will cause to re-fold to take
+L<folded()|Mail::Message::Field/"Access to the body">. However, the optional $wrap will cause to re-fold to take
 place (without changing the folding stored inside the field).
 
 =item $obj-E<gt>B<toDisclose>()
@@ -198,7 +198,7 @@ Returns the name of this field in original casing.  See L<name()|Mail::Message::
 Returns the name of this field, with all characters lower-cased for
 ease of comparison.  See L<Name()|Mail::Message::Field/"Access to the name"> as well.
 
-=item $obj-E<gt>B<wellformedName>([STRING])
+=item $obj-E<gt>B<wellformedName>( [STRING] )
 
 (Instance method class method)
 As instance method, the current field's name is correctly formatted
@@ -247,18 +247,18 @@ example:
  print $field->folded;
  print scalar $field->folded; # faster
 
-=item $obj-E<gt>B<foldedBody>([BODY])
+=item $obj-E<gt>B<foldedBody>( [$body] )
 
 Returns the body as a set of lines. In scalar context, this will be one line
 containing newlines.  Be warned about the newlines when you do
 pattern-matching on the result of thie method.
 
-The optional BODY argument changes the field's body.  The folding of the
+The optional $body argument changes the field's body.  The folding of the
 argument must be correct.
 
-=item $obj-E<gt>B<stripCFWS>([STRING])
+=item $obj-E<gt>B<stripCFWS>( [STRING] )
 
-=item Mail::Message::Field-E<gt>B<stripCFWS>([STRING])
+=item Mail::Message::Field-E<gt>B<stripCFWS>( [STRING] )
 
 Remove the I<comments> and I<folding white spaces> from the STRING.  Without
 string and only as instance method, the L<unfoldedBody()|Mail::Message::Field/"Access to the body"> is being stripped
@@ -269,13 +269,13 @@ are defined by the various RFCs as being so.  You don't want parts within
 braces which are in the Subject header line to be removed, to give an
 example.
 
-=item $obj-E<gt>B<unfoldedBody>([BODY, [WRAP]])
+=item $obj-E<gt>B<unfoldedBody>( [$body, [$wrap]] )
 
 Returns the body as one single line, where all folding information (if
 available) is removed.  This line will also NOT end on a new-line.
 
-The optional BODY argument changes the field's body.  The right folding is
-performed before assignment.  The WRAP may be specified to enforce a
+The optional $body argument changes the field's body.  The right folding is
+performed before assignment.  The $wrap may be specified to enforce a
 folding size.
 
 example: 
@@ -299,7 +299,7 @@ example:
  my @addr = $message->head->get('to')->addresses;
  my @addr = $message->to;
 
-=item $obj-E<gt>B<attribute>(NAME [, VALUE])
+=item $obj-E<gt>B<attribute>( $name, [$value] )
 
 Get the value of an attribute, optionally after setting it to a new value.
 Attributes are part of some header lines, and hide themselves in the
@@ -331,7 +331,7 @@ example:
 
  my %attributes = $head->get('Content-Disposition')->attributes;
 
-=item $obj-E<gt>B<comment>([STRING])
+=item $obj-E<gt>B<comment>( [STRING] )
 
 Returns the unfolded comment (part after a semi-colon) in a structureed
 header-line. optionally after setting it to a new STRING first.
@@ -354,13 +354,13 @@ example:
  my $subject = $msg->head->study('subject');  # same
  my $subject = $msg->study('subject');        # same
 
-=item $obj-E<gt>B<toDate>([TIME])
+=item $obj-E<gt>B<toDate>( [$time] )
 
-=item Mail::Message::Field-E<gt>B<toDate>([TIME])
+=item Mail::Message::Field-E<gt>B<toDate>( [$time] )
 
 Convert a timestamp into an rfc2822 compliant date format.  This differs
 from the default output of C<localtime> in scalar context.  Without
-argument, the C<localtime> is used to get the current time. TIME can
+argument, the C<localtime> is used to get the current time. $time can
 be specified as one numeric (like the result of C<time()>) and as list
 (like produced by c<localtime()> in list context).
 
@@ -402,38 +402,38 @@ a timestamp like is produced by the C<time> function.
 
 =over 4
 
-=item $obj-E<gt>B<consume>(LINE | (NAME,BODY|OBJECTS))
+=item $obj-E<gt>B<consume>( $line | <$name,<$body|$objects>> )
 
-Accepts a whole field LINE, or a pair with the field's NAME and BODY. In
-the latter case, the BODY data may be specified as array of OBJECTS which
+Accepts a whole field $line, or a pair with the field's $name and $body. In
+the latter case, the $body data may be specified as array of $objects which
 are stringified.  Returned is a nicely formatted pair of two strings: the
 field's name and a folded body.
 
 This method is called by L<new()|Mail::Message::Field/"Constructors">, and usually not by an application
-program. The details about converting the OBJECTS to a field content
+program. The details about converting the $objects to a field content
 are explained in L</Specifying field data>.
 
-=item $obj-E<gt>B<defaultWrapLength>([LENGTH])
+=item $obj-E<gt>B<defaultWrapLength>( [$length] )
 
 Any field from any header for any message will have this default wrapping.
-This is maintained in one global variable.  Without a specified LENGTH,
+This is maintained in one global variable.  Without a specified $length,
 the current value is returned.  The default is 78.
 
-=item $obj-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
+=item $obj-E<gt>B<fold>( $name, $body, [$maxchars] )
 
-=item Mail::Message::Field-E<gt>B<fold>(NAME, BODY, [MAXCHARS])
+=item Mail::Message::Field-E<gt>B<fold>( $name, $body, [$maxchars] )
 
-Make the header field with NAME fold into multiple lines.
+Make the header field with $name fold into multiple lines.
 Wrapping is performed by inserting newlines before a blanks in the
-BODY, such that no line exceeds the MAXCHARS and each line is as long
+$body, such that no line exceeds the $maxchars and each line is as long
 as possible.
 
 The RFC requests for folding on nice spots, but this request is
 mainly ignored because it would make folding too slow.
 
-=item $obj-E<gt>B<setWrapLength>([LENGTH])
+=item $obj-E<gt>B<setWrapLength>( [$length] )
 
-Force the wrapping of this field to the specified LENGTH characters. The
+Force the wrapping of this field to the specified $length characters. The
 wrapping is performed with L<fold()|Mail::Message::Field/"Internals"> and the results stored within
 the field object.
 
@@ -441,7 +441,7 @@ example: refolding the field
 
  $field->setWrapLength(99);
 
-=item $obj-E<gt>B<stringifyData>(STRING|ARRAY|OBJECTS)
+=item $obj-E<gt>B<stringifyData>(STRING|ARRAY|$objects)
 
 This method implements the translation of user supplied objects into
 ascii fields.  The process is explained in L</Specifying field data>.
@@ -456,75 +456,75 @@ Possible leading blanks on the first line are removed as well.
 
 =head2 Error handling
 
-See L<documentation in the base class|Mail::Reporter/"Error handling">.
+Extends L<"Error handling" in Mail::Reporter|Mail::Reporter/"Error handling">.
  
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<addReport>(OBJECT)
+=item $obj-E<gt>B<addReport>($object)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-=item Mail::Message::Field-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Message::Field-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<errors>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>( [$level, [$strings]] )
 
-=item Mail::Message::Field-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Message::Field-E<gt>B<log>( [$level, [$strings]] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>($level)
 
-=item Mail::Message::Field-E<gt>B<logPriority>(LEVEL)
+=item Mail::Message::Field-E<gt>B<logPriority>($level)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logSettings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<notImplemented>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<report>([LEVEL])
+=item $obj-E<gt>B<report>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<reportAll>([LEVEL])
+=item $obj-E<gt>B<reportAll>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<trace>([LEVEL])
+=item $obj-E<gt>B<trace>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<warnings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =back
 
 =head2 Cleanup
 
-See L<documentation in the base class|Mail::Reporter/"Cleanup">.
+Extends L<"Cleanup" in Mail::Reporter|Mail::Reporter/"Cleanup">.
  
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
-See L<Mail::Reporter/"Cleanup">
+Inherited, see L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -808,8 +808,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

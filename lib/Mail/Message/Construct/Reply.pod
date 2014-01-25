@@ -21,7 +21,7 @@ functionality related to creating message replies.
 
 =over 4
 
-=item $obj-E<gt>B<reply>(OPTIONS)
+=item $obj-E<gt>B<reply>(%options)
 
 Start a reply to this message. Some of the header-lines of the original
 message will be taken. A message-id will be assigned. Some header lines
@@ -35,7 +35,7 @@ or you may do that later with C<set> on the header.
 ADDRESSES may be specified as string, or
 a L<Mail::Address|Mail::Address> object, or as array of L<Mail::Address|Mail::Address> objects.
 
-All OPTIONS which are not listed below AND start with a capital, will
+All %options which are not listed below AND start with a capital, will
 be added as additional headers to the reply message.
 
  -Option         --Default
@@ -182,12 +182,12 @@ example:
    , 'X-Extra'       => 'additional header'
    );
 
-=item $obj-E<gt>B<replyPrelude>([STRING|FIELD|ADDRESS|ARRAY-OF-THINGS])
+=item $obj-E<gt>B<replyPrelude>( [STRING|$field|$address|ARRAY-$of-$things] )
 
 Produces a list of lines (usually only one), which will preceded the
 quoted body of the message.  STRING must comply to the RFC822 email
 address specification, and is usually the content of a C<To> or C<From>
-header line.  If a FIELD is specified, the field's body must be
+header line.  If a $field is specified, the field's body must be
 compliant.  Without argument -or when the argument is C<undef>- a
 slightly different line is produced.
 
@@ -227,8 +227,8 @@ choices are C<NO>, C<INLINE>, and C<ATTACH>.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

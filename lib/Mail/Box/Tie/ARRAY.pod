@@ -75,7 +75,7 @@ example:
  delete $inbox[5];
  $inbox[5]->delete;   #same
 
-=item $obj-E<gt>B<FETCH>(INDEX)
+=item $obj-E<gt>B<FETCH>($index)
 
 Get the message which is at the indicated location in the list of
 messages contained in this folder.  Deleted messages will be returned
@@ -97,15 +97,15 @@ example:
  if(@inbox > 10)    # contains more than 10 messages?
  my $nrmsgs = @inbox;
 
-=item $obj-E<gt>B<PUSH>(MESSAGES)
+=item $obj-E<gt>B<PUSH>(@messages)
 
-Add MESSAGES to the end of the folder.
+Add @messages to the end of the folder.
 
 example: 
 
     push @inbox, $newmsg;
 
-=item $obj-E<gt>B<STORE>(INDEX, MESSAGE)
+=item $obj-E<gt>B<STORE>($index, $message)
 
 Random message replacement is not permitted --doing so would disturb threads
 etc.  An error occurs if you try to do this. The only thing which is allowed
@@ -118,9 +118,9 @@ example:
  $inbox[-1] = $add;
  push @inbox, $add;
 
-=item $obj-E<gt>B<STORESIZE>(LENGTH)
+=item $obj-E<gt>B<STORESIZE>($length)
 
-Sets all messages behind from LENGTH to the end of folder to be deleted.
+Sets all messages behind from $length to the end of folder to be deleted.
 
 =back
 
@@ -139,8 +139,8 @@ is not permitted to shrink or be mutilated.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

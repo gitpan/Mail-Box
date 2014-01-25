@@ -29,7 +29,7 @@ Therefore, this object can be frozen by L<Storable> if you want to.
 
 =over 4
 
-=item Mail::Server::IMAP4::Fetch-E<gt>B<new>(MESSAGE|PART, OPTIONS)
+=item Mail::Server::IMAP4::Fetch-E<gt>B<new>( <$message|$part>, %options )
 
  -Option      --Default
   md5checksums  0
@@ -58,11 +58,11 @@ Therefore, this object can be frozen by L<Storable> if you want to.
 
 =over 4
 
-=item $obj-E<gt>B<fetchBody>(EXTENDED)
+=item $obj-E<gt>B<fetchBody>($extended)
 
 Returns one string, representing the message's structure as defined by
 the IMAP protocol.  The boolean argument indicates whether you like to
-have the EXTENDED information, as the imap command 'FETCH BODYSTRUCTURE'
+have the $extended information, as the imap command 'FETCH BODYSTRUCTURE'
 defines or the limited information of 'FETCH BODY'.
 
 =item $obj-E<gt>B<fetchEnvelope>()
@@ -73,7 +73,7 @@ Returns a string representation of some header information.
 
 Returns the size of the message body.
 
-=item $obj-E<gt>B<part>([PARTNR])
+=item $obj-E<gt>B<part>( [$partnr] )
 
 The partnummer is a list of dot-separated positive integers, numbering
 (nested) parts in multi-part message bodies.  By default, the info of
@@ -84,9 +84,9 @@ example:
  my $partinfo = $msg->info->part('1.2.1');
  print $msg->info->part('3.3')->fetchBody;
 
-=item $obj-E<gt>B<printStructure>([FILEHANDLE|undef, [NUMBER]])
+=item $obj-E<gt>B<printStructure>( [<$fh|undef>, [$number]] )
 
-Print the structure of the fetch data to the specified FILEHANDLE or the
+Print the structure of the fetch data to the specified $fh or the
 selected filehandle.  When explicitly C<undef> is specified as handle,
 then the output will be returned as string.  
 Only a limited set of the information is displayed.
@@ -116,8 +116,8 @@ See
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

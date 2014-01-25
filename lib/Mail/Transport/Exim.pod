@@ -22,19 +22,19 @@ Implements mail transport using the external C<'Exim'> program.
 When instantiated, the mailer will look for the binary in specific system
 directories, and the first version found is taken.
 
-See L<documentation in the base class|Mail::Transport::Send/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Transport::Send|Mail::Transport::Send/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Transport::Send/"METHODS">.
+Extends L<"METHODS" in Mail::Transport::Send|Mail::Transport::Send/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Transport::Send/"Constructors">.
+Extends L<"Constructors" in Mail::Transport::Send|Mail::Transport::Send/"Constructors">.
  
 =over 4
 
-=item Mail::Transport::Exim-E<gt>B<new>(OPTIONS)
+=item Mail::Transport::Exim-E<gt>B<new>(%options)
 
 If you have Exim installed in a non-standard location, you will need to 
 specify the path, using L<new(proxy)|Mail::Transport/"METHODS">.
@@ -57,7 +57,7 @@ specify the path, using L<new(proxy)|Mail::Transport/"METHODS">.
 
 =item executable => FILENAME
 
-=item hostname => HOSTNAME|ARRAY-OF-HOSTNAMES
+=item hostname => HOSTNAME|ARRAY
 
 =item interval => SECONDS
 
@@ -85,117 +85,117 @@ specify the path, using L<new(proxy)|Mail::Transport/"METHODS">.
 
 =head2 Sending mail
 
-See L<documentation in the base class|Mail::Transport::Send/"Sending mail">.
+Extends L<"Sending mail" in Mail::Transport::Send|Mail::Transport::Send/"Sending mail">.
  
 =over 4
 
-=item $obj-E<gt>B<destinations>(MESSAGE, [ADDRESS|ARRAY-OF-ADDRESSES])
+=item $obj-E<gt>B<destinations>( $message, [$address|ARRAY] )
 
-See L<Mail::Transport::Send/"Sending mail">
+Inherited, see L<Mail::Transport::Send/"Sending mail">
 
-=item $obj-E<gt>B<putContent>(MESSAGE, FILEHANDLE, OPTIONS)
+=item $obj-E<gt>B<putContent>($message, $fh, %options)
 
-See L<Mail::Transport::Send/"Sending mail">
+Inherited, see L<Mail::Transport::Send/"Sending mail">
 
-=item $obj-E<gt>B<send>(MESSAGE, OPTIONS)
+=item $obj-E<gt>B<send>($message, %options)
 
-See L<Mail::Transport::Send/"Sending mail">
+Inherited, see L<Mail::Transport::Send/"Sending mail">
 
-=item $obj-E<gt>B<trySend>(MESSAGE, OPTIONS)
+=item $obj-E<gt>B<trySend>($message, %options)
 
 =back
 
 =head2 Server connection
 
-See L<documentation in the base class|Mail::Transport::Send/"Server connection">.
+Extends L<"Server connection" in Mail::Transport::Send|Mail::Transport::Send/"Server connection">.
  
 =over 4
 
-=item $obj-E<gt>B<findBinary>(NAME [, DIRECTORIES])
+=item $obj-E<gt>B<findBinary>( $name, [@directories] )
 
-See L<Mail::Transport/"Server connection">
+Inherited, see L<Mail::Transport/"Server connection">
 
 =item $obj-E<gt>B<remoteHost>()
 
-See L<Mail::Transport/"Server connection">
+Inherited, see L<Mail::Transport/"Server connection">
 
 =item $obj-E<gt>B<retry>()
 
-See L<Mail::Transport/"Server connection">
+Inherited, see L<Mail::Transport/"Server connection">
 
 =back
 
 =head2 Error handling
 
-See L<documentation in the base class|Mail::Transport::Send/"Error handling">.
+Extends L<"Error handling" in Mail::Transport::Send|Mail::Transport::Send/"Error handling">.
  
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<addReport>(OBJECT)
+=item $obj-E<gt>B<addReport>($object)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-=item Mail::Transport::Exim-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Transport::Exim-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<errors>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>( [$level, [$strings]] )
 
-=item Mail::Transport::Exim-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Transport::Exim-E<gt>B<log>( [$level, [$strings]] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>($level)
 
-=item Mail::Transport::Exim-E<gt>B<logPriority>(LEVEL)
+=item Mail::Transport::Exim-E<gt>B<logPriority>($level)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logSettings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<notImplemented>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<report>([LEVEL])
+=item $obj-E<gt>B<report>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<reportAll>([LEVEL])
+=item $obj-E<gt>B<reportAll>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<trace>([LEVEL])
+=item $obj-E<gt>B<trace>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<warnings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =back
 
 =head2 Cleanup
 
-See L<documentation in the base class|Mail::Transport::Send/"Cleanup">.
+Extends L<"Cleanup" in Mail::Transport::Send|Mail::Transport::Send/"Cleanup">.
  
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
-See L<Mail::Reporter/"Cleanup">
+Inherited, see L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -240,8 +240,8 @@ found in the message itself about the destination.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

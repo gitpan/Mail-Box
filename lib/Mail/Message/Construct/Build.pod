@@ -23,14 +23,14 @@ functionality related to building of messages from various components.
 
 =over 4
 
-=item Mail::Message-E<gt>B<build>([MESSAGE|PART|BODY], CONTENT)
+=item Mail::Message-E<gt>B<build>( [$message|$part|$body], $content )
 
-Simplified message object builder.  In case a MESSAGE or message PART is
+Simplified message object builder.  In case a $message or message $part is
 specified, a new message is created with the same body to start with, but
-new headers.  A BODY may be specified as well.  However, there are more
+new headers.  A $body may be specified as well.  However, there are more
 ways to add data simply.
 
-The CONTENT is a list of key-value pairs and header field objects.
+The $content is a list of key-value pairs and header field objects.
 The keys which start with a capital are used as header-lines.  Lower-cased
 fields are used for other purposes as listed below.  Each field may be used
 more than once.  Pairs where the value is C<undef> are ignored.
@@ -57,9 +57,9 @@ been constructed.  Together, they produce your message.
 
 =item attach => BODY|PART|MESSAGE|ARRAY
 
-One attachment to the message.  Each attachment can be full MESSAGE, a
-PART, or a BODY.
-Any MESSAGE will get encapsulated into a C<message/rfc822> body.
+One attachment to the message.  Each attachment can be full $message, a
+$part, or a $body.
+Any $message will get encapsulated into a C<message/rfc822> body.
 You can specify many items (may be of different types) at once.
 
  attach => $folder->message(3)->decoded  # body
@@ -123,13 +123,13 @@ example:
   , data   => "<html></html>"
   );
 
-=item Mail::Message-E<gt>B<buildFromBody>(BODY, [HEAD], HEADERS)
+=item Mail::Message-E<gt>B<buildFromBody>($body, [$head], $headers)
 
-Shape a message around a BODY.  Bodies have information about their
+Shape a message around a $body.  Bodies have information about their
 content in them, which is used to construct a header for the message.
-You may specify a HEAD object which is pre-initialized, or one is
-created for you (also when HEAD is C<undef>).
-Next to that, more HEADERS can be specified which are stored in that
+You may specify a $head object which is pre-initialized, or one is
+created for you (also when $head is C<undef>).
+Next to that, more $headers can be specified which are stored in that
 header.
 
 Header fields are added in order, and before the header lines as
@@ -300,8 +300,8 @@ into the right message type, adding storage information and the like.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -35,25 +35,25 @@ object.  This corresponds with IMAP's C<\NoSelect>, for instance.
 
 Nearly all methods can return undef.
 
-See L<documentation in the base class|Mail::Reporter/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Reporter|Mail::Reporter/"DESCRIPTION">.
  
-See L<documentation in the base class|User::Identity::Item/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in User::Identity::Item|User::Identity::Item/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Reporter/"METHODS">.
+Extends L<"METHODS" in Mail::Reporter|Mail::Reporter/"METHODS">.
  
-See L<documentation in the base class|User::Identity::Item/"METHODS">.
+Extends L<"METHODS" in User::Identity::Item|User::Identity::Item/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Reporter/"Constructors">.
+Extends L<"Constructors" in Mail::Reporter|Mail::Reporter/"Constructors">.
  
-See L<documentation in the base class|User::Identity::Item/"Constructors">.
+Extends L<"Constructors" in User::Identity::Item|User::Identity::Item/"Constructors">.
  
 =over 4
 
-=item Mail::Box::Identity-E<gt>B<new>([NAME], OPTIONS)
+=item Mail::Box::Identity-E<gt>B<new>( [$name], %options )
 
  -Option     --Defined in          --Default
   deleted                            <false>
@@ -124,30 +124,30 @@ L<Mail::Box::Collection|Mail::Box::Collection>.
 
 =head2 Attributes
 
-See L<documentation in the base class|User::Identity::Item/"Attributes">.
+Extends L<"Attributes" in User::Identity::Item|User::Identity::Item/"Attributes">.
  
 =over 4
 
 =item $obj-E<gt>B<description>()
 
-See L<User::Identity::Item/"Attributes">
+Inherited, see L<User::Identity::Item/"Attributes">
 
 =item $obj-E<gt>B<folderType>()
 
 Returns the type of this folder.
 
-=item $obj-E<gt>B<fullname>([DELIMETER])
+=item $obj-E<gt>B<fullname>( [$delimeter] )
 
 Returns the name of the folder, from the toplevel until this one, with
-the DELIMETER string between each level.  DELIMETER default to a forward
+the $delimeter string between each level.  $delimeter default to a forward
 slash (a C</>).
 
-=item $obj-E<gt>B<inferiors>([BOOLEAN])
+=item $obj-E<gt>B<inferiors>( [BOOLEAN] )
 
 C<Inferiors> are C<subfolders>.  When this flag is set, it is permitted
 to create subfolders.
 
-=item $obj-E<gt>B<location>([FILENAME|DIRECTORY|undef])
+=item $obj-E<gt>B<location>( [$filename|$directory|undef] )
 
 Returns the directory or filename of the folder.  If this is not pre-defined,
 it is computed based on the knowledge about the folder type.  Be sure to set
@@ -159,18 +159,18 @@ this to work.
 Returns the manager (usually a L<Mail::Box::Manage::User|Mail::Box::Manage::User> which owns
 the folders.  May be undefined, by default from parent.
 
-=item $obj-E<gt>B<marked>([BOOLEAN|undef])
+=item $obj-E<gt>B<marked>( [BOOLEAN|undef] )
 
 When something special has happened with the folder, this flag can
 be set (or cleared).  The C<undef> status is an "unknown".  In the
 IMAP4 protocol, C<0> will result in a C<\Unmarked>, a C<1> results
 in a C<\Marked>, and C<undef> in nothing.
 
-=item $obj-E<gt>B<name>([NEWNAME])
+=item $obj-E<gt>B<name>( [NEWNAME] )
 
-See L<User::Identity::Item/"Attributes">
+Inherited, see L<User::Identity::Item/"Attributes">
 
-=item $obj-E<gt>B<onlySubfolders>([BOOLEAN])
+=item $obj-E<gt>B<onlySubfolders>( [BOOLEAN] )
 
 Than this folder be opened (without trying) or not?  The default
 depends on the folder type, and whether this is the toplevel folder
@@ -184,43 +184,43 @@ Run up the tree to find the highest level folder.
 
 =head2 Collections
 
-See L<documentation in the base class|User::Identity::Item/"Collections">.
+Extends L<"Collections" in User::Identity::Item|User::Identity::Item/"Collections">.
  
 =over 4
 
 =item $obj-E<gt>B<add>(COLLECTION, ROLE)
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<addCollection>(OBJECT | ([TYPE], OPTIONS))
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<collection>(NAME)
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<find>(COLLECTION, ROLE)
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
-=item $obj-E<gt>B<parent>([PARENT])
+=item $obj-E<gt>B<parent>( [PARENT] )
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<removeCollection>(OBJECT|NAME)
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<type>()
 
 =item Mail::Box::Identity-E<gt>B<type>()
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<user>()
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =back
 
@@ -228,16 +228,16 @@ See L<User::Identity::Item/"Collections">
 
 =over 4
 
-=item $obj-E<gt>B<addSubfolder>(L<Mail::Box::Identity|Mail::Box::Identity>|DATA)
+=item $obj-E<gt>B<addSubfolder>($m<Mail::Box::Identity>|$data)
 
-Add a new folder into the administration.  With DATA, a new object
+Add a new folder into the administration.  With $data, a new object
 will be instantiated first.  The identity is returned on success.
 
-=item $obj-E<gt>B<folder>([[NAME, ...], NAME])
+=item $obj-E<gt>B<folder>( [..., $name] )
 
-Returns the subfolder's object with NAME or C<undef> if it does not
+Returns the subfolder's object with $name or C<undef> if it does not
 exist.  When multiple NAMEs are added, those super folders are traverst
-first.  Without any NAME, the current object is returned
+first.  Without any $name, the current object is returned
 
 example: get some folder
 
@@ -253,23 +253,23 @@ For each of the subfolders found below this point call CODE.  This current
 folder is called first.  Be warned that you may find identities with
 the Mail::Box::Identity subroutine deleted flag on.
 
-=item $obj-E<gt>B<open>(OPTIONS)
+=item $obj-E<gt>B<open>(%options)
 
 Open the folder which is described by this identity.  Returned is some
 L<Mail::Box|Mail::Box>.  The options are passed to L<Mail::Box::Manager::open()|Mail::Box::Manager/"Manage open folders">.
 
-=item $obj-E<gt>B<remove>([NAME])
+=item $obj-E<gt>B<remove>( [$name] )
 
-Remove the folder (plus subfolders) with the NAME.  Without NAME, this
+Remove the folder (plus subfolders) with the $name.  Without $name, this
 C<Mail::Box::Identity> itself is removed.
 
 The removed structure is returned, which is C<undef> if not
 found.  This is only an administrative remove, you still need a
 L<Mail::Box::Manager::delete()|Mail::Box::Manager/"Manage existing folders">.
 
-=item $obj-E<gt>B<rename>(FOLDER, [NEWSUBNAME])
+=item $obj-E<gt>B<rename>( $folder, [$newsubname] )
 
-Move the folder to a different super-FOLDER, under a NEW SUBfolder NAME.
+Move the folder to a different super-$folder, under a NEW SUBfolder NAME.
 
 example: renaming a folder
 
@@ -295,75 +295,75 @@ the collection, the L<Mail::Box::Collection|Mail::Box::Collection>.
 
 =head2 Error handling
 
-See L<documentation in the base class|Mail::Reporter/"Error handling">.
+Extends L<"Error handling" in Mail::Reporter|Mail::Reporter/"Error handling">.
  
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<addReport>(OBJECT)
+=item $obj-E<gt>B<addReport>($object)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-=item Mail::Box::Identity-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Box::Identity-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<errors>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>( [$level, [$strings]] )
 
-=item Mail::Box::Identity-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Box::Identity-E<gt>B<log>( [$level, [$strings]] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>($level)
 
-=item Mail::Box::Identity-E<gt>B<logPriority>(LEVEL)
+=item Mail::Box::Identity-E<gt>B<logPriority>($level)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logSettings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<notImplemented>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<report>([LEVEL])
+=item $obj-E<gt>B<report>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<reportAll>([LEVEL])
+=item $obj-E<gt>B<reportAll>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<trace>([LEVEL])
+=item $obj-E<gt>B<trace>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<warnings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =back
 
 =head2 Cleanup
 
-See L<documentation in the base class|Mail::Reporter/"Cleanup">.
+Extends L<"Cleanup" in Mail::Reporter|Mail::Reporter/"Cleanup">.
  
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
-See L<Mail::Reporter/"Cleanup">
+Inherited, see L<Mail::Reporter/"Cleanup">
 
 =back
 
@@ -396,7 +396,7 @@ the latter case, the type of collection must be specified.
 
 =item Error: It is not permitted to add subfolders to $name
 
-The L<inferiors()|Mail::Box::Identity/"Attributes"> flag prohibits the creation of subfolders to this
+The $m<inferiors()> flag prohibits the creation of subfolders to this
 folder.
 
 =item Warning: No collection $name
@@ -426,8 +426,8 @@ you have to look for a method of that object.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

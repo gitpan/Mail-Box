@@ -6,8 +6,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Body;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Reporter';
 
@@ -202,8 +201,9 @@ sub eol(;$)
 sub message(;$)
 {   my $self = shift;
     if(@_)
-    {   $self->{MMB_message} = shift;
-        weaken($self->{MMB_message});
+    {   if($self->{MMB_message} = shift)
+        {   weaken $self->{MMB_message};
+        }
     }
     $self->{MMB_message};
 }

@@ -27,42 +27,42 @@ information, and focusses solely on the correct handling of messages
 within a IMAP4 folder.  More than one IMAP4 folder can be handled by
 one single IMAP4 connection.
 
-See L<documentation in the base class|Mail::Box::Net/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Box::Net|Mail::Box::Net/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in the base class|Mail::Box::Net/"OVERLOADED">.
+Extends L<"OVERLOADED" in Mail::Box::Net|Mail::Box::Net/"OVERLOADED">.
  
 =over 4
 
-=item overload: B<"">()
+=item overload: B<"">
 
-See L<Mail::Box/"OVERLOADED">
+Inherited, see L<Mail::Box/"OVERLOADED">
 
-=item overload: B<@{}>()
+=item overload: B<@{}>
 
-See L<Mail::Box/"OVERLOADED">
+Inherited, see L<Mail::Box/"OVERLOADED">
 
-=item overload: B<cmp>()
+=item overload: B<cmp>
 
-See L<Mail::Box/"OVERLOADED">
+Inherited, see L<Mail::Box/"OVERLOADED">
 
 =back
 
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Box::Net/"METHODS">.
+Extends L<"METHODS" in Mail::Box::Net|Mail::Box::Net/"METHODS">.
  
 =head2 Constructors
 
-See L<documentation in the base class|Mail::Box::Net/"Constructors">.
+Extends L<"Constructors" in Mail::Box::Net|Mail::Box::Net/"Constructors">.
  
 =over 4
 
-=item Mail::Box::IMAP4-E<gt>B<new>(OPTIONS)
+=item Mail::Box::IMAP4-E<gt>B<new>(%options)
 
-The C<new> can have many OPTIONS.  Not only the ones listed here below,
-but also all the OPTIONS for L<Mail::Transport::IMAP4::new()|Mail::Transport::IMAP4/"METHODS"> can be
+The C<new> can have many %options.  Not only the ones listed here below,
+but also all the %options for L<Mail::Transport::IMAP4::new()|Mail::Transport::IMAP4/"METHODS"> can be
 passed.
 
 The default depends on the value of L<new(cache_head)|Mail::Box::IMAP4/"METHODS">.
@@ -259,23 +259,23 @@ example:
 
 =head2 The folder
 
-See L<documentation in the base class|Mail::Box::Net/"The folder">.
+Extends L<"The folder" in Mail::Box::Net|Mail::Box::Net/"The folder">.
  
 =over 4
 
-=item $obj-E<gt>B<addMessage>(MESSAGE, OPTIONS)
+=item $obj-E<gt>B<addMessage>($message, %options)
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
-=item $obj-E<gt>B<addMessages>(MESSAGE [, MESSAGE, ...])
+=item $obj-E<gt>B<addMessages>(@messages)
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
-=item Mail::Box::IMAP4-E<gt>B<appendMessages>(OPTIONS)
+=item Mail::Box::IMAP4-E<gt>B<appendMessages>(%options)
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
-=item $obj-E<gt>B<close>(OPTIONS)
+=item $obj-E<gt>B<close>(%options)
 
 Close the folder.  In the case of IMAP, more than one folder can use
 the same connection, therefore, closing a folder does not always close
@@ -298,168 +298,168 @@ L<Mail::Transport::IMAP4::DESTROY()|Mail::Transport::IMAP4/"Cleanup">
 
 =back
 
-=item $obj-E<gt>B<copyTo>(FOLDER, OPTIONS)
+=item $obj-E<gt>B<copyTo>($folder, %options)
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
-=item $obj-E<gt>B<delete>(OPTIONS)
+=item $obj-E<gt>B<delete>(%options)
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
-=item $obj-E<gt>B<folderdir>([DIRECTORY])
+=item $obj-E<gt>B<folderdir>( [$directory] )
 
-See L<Mail::Box::Net/"METHODS">
+Inherited, see L<Mail::Box::Net/"METHODS">
 
 =item $obj-E<gt>B<name>()
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
 =item $obj-E<gt>B<organization>()
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
 =item $obj-E<gt>B<size>()
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
 =item $obj-E<gt>B<type>()
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
-=item $obj-E<gt>B<update>(OPTIONS)
+=item $obj-E<gt>B<update>(%options)
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
 =item $obj-E<gt>B<url>()
 
-See L<Mail::Box/"The folder">
+Inherited, see L<Mail::Box/"The folder">
 
 =back
 
 =head2 Folder flags
 
-See L<documentation in the base class|Mail::Box::Net/"Folder flags">.
+Extends L<"Folder flags" in Mail::Box::Net|Mail::Box::Net/"Folder flags">.
  
 =over 4
 
 =item $obj-E<gt>B<access>()
 
-See L<Mail::Box/"Folder flags">
+Inherited, see L<Mail::Box/"Folder flags">
 
 =item $obj-E<gt>B<isModified>()
 
-See L<Mail::Box/"Folder flags">
+Inherited, see L<Mail::Box/"Folder flags">
 
-=item $obj-E<gt>B<modified>([BOOLEAN])
+=item $obj-E<gt>B<modified>( [BOOLEAN] )
 
-See L<Mail::Box/"Folder flags">
+Inherited, see L<Mail::Box/"Folder flags">
 
 =item $obj-E<gt>B<writable>()
 
-See L<Mail::Box/"Folder flags">
+Inherited, see L<Mail::Box/"Folder flags">
 
 =back
 
 =head2 The messages
 
-See L<documentation in the base class|Mail::Box::Net/"The messages">.
+Extends L<"The messages" in Mail::Box::Net|Mail::Box::Net/"The messages">.
  
 =over 4
 
-=item $obj-E<gt>B<current>([NUMBER|MESSAGE|MESSAGE-ID])
+=item $obj-E<gt>B<current>( [$number|$message|$message_id] )
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
-=item $obj-E<gt>B<find>(MESSAGE-ID)
+=item $obj-E<gt>B<find>($message_id)
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
-=item $obj-E<gt>B<findFirstLabeled>(LABEL, [BOOLEAN, [ARRAY-OF-MSGS]])
+=item $obj-E<gt>B<findFirstLabeled>( $label, [BOOLEAN, [$msgs]] )
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
-=item $obj-E<gt>B<message>(INDEX [,MESSAGE])
+=item $obj-E<gt>B<message>( $index, [$message] )
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
-=item $obj-E<gt>B<messageId>(MESSAGE-ID [,MESSAGE])
+=item $obj-E<gt>B<messageId>( $message_id, [$message] )
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
 =item $obj-E<gt>B<messageIds>()
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
-=item $obj-E<gt>B<messages>(['ALL',RANGE,'ACTIVE','DELETED',LABEL,!LABEL,FILTER])
+=item $obj-E<gt>B<messages>( <'ALL'|$range|'ACTIVE'|'DELETED'|$label| !$label|$filter> )
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
-=item $obj-E<gt>B<nrMessages>(OPTIONS)
+=item $obj-E<gt>B<nrMessages>(%options)
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
-=item $obj-E<gt>B<scanForMessages>(MESSAGE, MESSAGE-IDS, TIMESPAN, WINDOW)
+=item $obj-E<gt>B<scanForMessages>($message, $message_ids, $timespan, $window)
 
-See L<Mail::Box/"The messages">
+Inherited, see L<Mail::Box/"The messages">
 
 =back
 
 =head2 Sub-folders
 
-See L<documentation in the base class|Mail::Box::Net/"Sub-folders">.
+Extends L<"Sub-folders" in Mail::Box::Net|Mail::Box::Net/"Sub-folders">.
  
 =over 4
 
-=item $obj-E<gt>B<listSubFolders>(OPTIONS)
+=item $obj-E<gt>B<listSubFolders>(%options)
 
-=item Mail::Box::IMAP4-E<gt>B<listSubFolders>(OPTIONS)
+=item Mail::Box::IMAP4-E<gt>B<listSubFolders>(%options)
 
-See L<Mail::Box/"Sub-folders">
+Inherited, see L<Mail::Box/"Sub-folders">
 
-=item $obj-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
+=item $obj-E<gt>B<nameOfSubFolder>( $subname, [$parentname] )
 
-=item Mail::Box::IMAP4-E<gt>B<nameOfSubFolder>(SUBNAME, [PARENTNAME])
+=item Mail::Box::IMAP4-E<gt>B<nameOfSubFolder>( $subname, [$parentname] )
 
-See L<Mail::Box/"Sub-folders">
+Inherited, see L<Mail::Box/"Sub-folders">
 
-=item $obj-E<gt>B<openRelatedFolder>(OPTIONS)
+=item $obj-E<gt>B<openRelatedFolder>(%options)
 
-See L<Mail::Box/"Sub-folders">
+Inherited, see L<Mail::Box/"Sub-folders">
 
-=item $obj-E<gt>B<openSubFolder>(SUBNAME, OPTIONS)
+=item $obj-E<gt>B<openSubFolder>($subname, %options)
 
-See L<Mail::Box/"Sub-folders">
+Inherited, see L<Mail::Box/"Sub-folders">
 
 =item $obj-E<gt>B<topFolderWithMessages>()
 
 =item Mail::Box::IMAP4-E<gt>B<topFolderWithMessages>()
 
-See L<Mail::Box/"Sub-folders">
+Inherited, see L<Mail::Box/"Sub-folders">
 
 =back
 
 =head2 Internals
 
-See L<documentation in the base class|Mail::Box::Net/"Internals">.
+Extends L<"Internals" in Mail::Box::Net|Mail::Box::Net/"Internals">.
  
 =over 4
 
-=item $obj-E<gt>B<body>([BODY])
+=item $obj-E<gt>B<body>( [$body] )
 
-=item $obj-E<gt>B<coerce>(MESSAGE, OPTIONS)
+=item $obj-E<gt>B<coerce>($message, %options)
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<create>(FOLDER, OPTIONS)
+=item $obj-E<gt>B<create>($folder, %options)
 
-=item Mail::Box::IMAP4-E<gt>B<create>(FOLDER, OPTIONS)
+=item Mail::Box::IMAP4-E<gt>B<create>($folder, %options)
 
-See L<Mail::Box::Net/"METHODS">
+Inherited, see L<Mail::Box::Net/"METHODS">
 
-=item $obj-E<gt>B<createTransporter>(CLASS, OPTIONS)
+=item $obj-E<gt>B<createTransporter>($class, %options)
 
 Create a transporter object (an instance of L<Mail::Transport::IMAP4|Mail::Transport::IMAP4>), where
-CLASS defines the exact object type.  As OPTIONS, everything which is
+$class defines the exact object type.  As %options, everything which is
 acceptable to a transporter initiation can be used (see
 L<Mail::Transport::IMAP4::new()|Mail::Transport::IMAP4/"METHODS">.
 
@@ -475,11 +475,11 @@ with other IMAP mail boxes.
 
 =back
 
-=item $obj-E<gt>B<determineBodyType>(MESSAGE, HEAD)
+=item $obj-E<gt>B<determineBodyType>($message, $head)
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<fetch>(ARRAY-OF-MESSAGES|MESSAGE-SELECTION, INFO)
+=item $obj-E<gt>B<fetch>( <$messages|$selection>, $info )
 
 Low-level data retreival about one or more messages via IMAP4 from
 the remote server. Some of this data may differ from the information
@@ -488,68 +488,68 @@ so you should avoid the use of this method for your own purposes.
 The IMAP implementation provides some wrappers around this, providing
 the correct behavior.
 
-An array of MESSAGES may be specified or some MESSAGE SELECTION,
+An ARRAY of $messages may be specified or some message $selection,
 acceptable to L<Mail::Box::messages()|Mail::Box/"The messages">.  Examples of the latter are
 C<'ALL'>, C<'DELETED'>, or C<spam> (messages labelled to contain spam).
 
-The INFO contains one or more attributes as defined by the IMAP protocol.
+The $info contains one or more attributes as defined by the IMAP protocol.
 You have to read the full specs of the related RFCs to see these.
 
-=item Mail::Box::IMAP4-E<gt>B<foundIn>([FOLDERNAME], OPTIONS)
+=item Mail::Box::IMAP4-E<gt>B<foundIn>( [$foldername], %options )
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<getHead>(MESSAGE)
+=item $obj-E<gt>B<getHead>($message)
 
 Read the header for the specified message from the remote server.
 C<undef> is returned in case the message disappeared.
 
-=item $obj-E<gt>B<getHeadAndBody>(MESSAGE)
+=item $obj-E<gt>B<getHeadAndBody>($message)
 
 Read all data for the specified message from the remote server.
 Return head and body of the mesasge as list, or an empty list
-if the MESSAGE disappeared from the server.
+if the $message disappeared from the server.
 
-=item $obj-E<gt>B<lineSeparator>([STRING|'CR'|'LF'|'CRLF'])
+=item $obj-E<gt>B<lineSeparator>( [<STRING|'CR'|'LF'|'CRLF'>] )
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
 =item $obj-E<gt>B<locker>()
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<read>(OPTIONS)
+=item $obj-E<gt>B<read>(%options)
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<readMessages>(OPTIONS)
+=item $obj-E<gt>B<readMessages>(%options)
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<storeMessage>(MESSAGE)
+=item $obj-E<gt>B<storeMessage>($message)
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<toBeThreaded>(MESSAGES)
+=item $obj-E<gt>B<toBeThreaded>($messages)
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<toBeUnthreaded>(MESSAGES)
+=item $obj-E<gt>B<toBeUnthreaded>($messages)
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<transporter>([OBJECT])
+=item $obj-E<gt>B<transporter>( [$object] )
 
 Returns the object which is the interface to the IMAP4 protocol handler.
 The IMAP4 handler has the current folder selected.
-When an OBJECT is specified, it is set to be the transporter from
-that moment on.  The OBJECT must extend L<Mail::Transport::IMAP4|Mail::Transport::IMAP4>.
+When an $object is specified, it is set to be the transporter from
+that moment on.  The $object must extend L<Mail::Transport::IMAP4|Mail::Transport::IMAP4>.
 
-=item $obj-E<gt>B<updateMessages>(OPTIONS)
+=item $obj-E<gt>B<updateMessages>(%options)
 
-See L<Mail::Box/"Internals">
+Inherited, see L<Mail::Box/"Internals">
 
-=item $obj-E<gt>B<write>(OPTIONS)
+=item $obj-E<gt>B<write>(%options)
 
 The IMAP protocol usually writes the data immediately to the remote server,
 because that's what the protocol wants.  However, some options to L<new()|Mail::Box::IMAP4/"METHODS">
@@ -571,7 +571,7 @@ but they will be removed anyway when the folder is closed.
 
 =back
 
-=item $obj-E<gt>B<writeMessages>(OPTIONS)
+=item $obj-E<gt>B<writeMessages>(%options)
 
  -Option     --Defined in     --Default
   messages     Mail::Box        <required>
@@ -589,95 +589,95 @@ but they will be removed anyway when the folder is closed.
 
 =head2 Other methods
 
-See L<documentation in the base class|Mail::Box::Net/"Other methods">.
+Extends L<"Other methods" in Mail::Box::Net|Mail::Box::Net/"Other methods">.
  
 =over 4
 
-=item $obj-E<gt>B<timespan2seconds>(TIME)
+=item $obj-E<gt>B<timespan2seconds>($time)
 
-=item Mail::Box::IMAP4-E<gt>B<timespan2seconds>(TIME)
+=item Mail::Box::IMAP4-E<gt>B<timespan2seconds>($time)
 
-See L<Mail::Box/"Other methods">
+Inherited, see L<Mail::Box/"Other methods">
 
 =back
 
 =head2 Error handling
 
-See L<documentation in the base class|Mail::Box::Net/"Error handling">.
+Extends L<"Error handling" in Mail::Box::Net|Mail::Box::Net/"Error handling">.
  
 =over 4
 
 =item $obj-E<gt>B<AUTOLOAD>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<addReport>(OBJECT)
+=item $obj-E<gt>B<addReport>($object)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item $obj-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-=item Mail::Box::IMAP4-E<gt>B<defaultTrace>([LEVEL]|[LOGLEVEL, TRACELEVEL]|[LEVEL, CALLBACK])
+=item Mail::Box::IMAP4-E<gt>B<defaultTrace>( [$level]|[$loglevel, $tracelevel]|[$level, $callback] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<errors>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<log>([LEVEL [,STRINGS]])
+=item $obj-E<gt>B<log>( [$level, [$strings]] )
 
-=item Mail::Box::IMAP4-E<gt>B<log>([LEVEL [,STRINGS]])
+=item Mail::Box::IMAP4-E<gt>B<log>( [$level, [$strings]] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<logPriority>(LEVEL)
+=item $obj-E<gt>B<logPriority>($level)
 
-=item Mail::Box::IMAP4-E<gt>B<logPriority>(LEVEL)
+=item Mail::Box::IMAP4-E<gt>B<logPriority>($level)
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<logSettings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<notImplemented>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<report>([LEVEL])
+=item $obj-E<gt>B<report>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<reportAll>([LEVEL])
+=item $obj-E<gt>B<reportAll>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
-=item $obj-E<gt>B<trace>([LEVEL])
+=item $obj-E<gt>B<trace>( [$level] )
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =item $obj-E<gt>B<warnings>()
 
-See L<Mail::Reporter/"Error handling">
+Inherited, see L<Mail::Reporter/"Error handling">
 
 =back
 
 =head2 Cleanup
 
-See L<documentation in the base class|Mail::Box::Net/"Cleanup">.
+Extends L<"Cleanup" in Mail::Box::Net|Mail::Box::Net/"Cleanup">.
  
 =over 4
 
 =item $obj-E<gt>B<DESTROY>()
 
-See L<Mail::Box/"Cleanup">
+Inherited, see L<Mail::Box/"Cleanup">
 
 =back
 
 =head1 DETAILS
 
-See L<documentation in the base class|Mail::Box::Net/"DETAILS">.
+Extends L<"DETAILS" in Mail::Box::Net|Mail::Box::Net/"DETAILS">.
  
 =head1 DIAGNOSTICS
 
@@ -767,8 +767,8 @@ to copy one of these.  Copying will proceed for all other sub-folders.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

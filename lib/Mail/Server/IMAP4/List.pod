@@ -23,7 +23,7 @@ Mail::Server::IMAP4::List - folder related IMAP4 answers
 
 =over 4
 
-=item Mail::Server::IMAP4::List-E<gt>B<new>(USER)
+=item Mail::Server::IMAP4::List-E<gt>B<new>($user)
 
 Create a (temporary) object to handle the LIST requests for
 a certain user, based upon a set of folders.  The data is kept by
@@ -69,7 +69,7 @@ must get reported.
 
 =over 4
 
-=item $obj-E<gt>B<delimiter>([FOLDERNAME])
+=item $obj-E<gt>B<delimiter>( [$foldername] )
 
 Returns the delimiter string.  The foldername is only required when a
 CODE reference was specified at initiation.
@@ -109,7 +109,7 @@ Returns the L<Mail::Box::Manage::User|Mail::Box::Manage::User> object, if define
 
 =over 4
 
-=item $obj-E<gt>B<list>(BASE, PATTERN)
+=item $obj-E<gt>B<list>($base, $pattern)
 
 IMAP's LIST command.  The request must be partially decoded, the answer
 will need to be encoded.
@@ -144,8 +144,8 @@ sections 6.3.8 (LIST question) and 7.2.2 (LIST answer)
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

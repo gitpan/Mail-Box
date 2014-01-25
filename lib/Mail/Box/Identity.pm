@@ -6,8 +6,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Identity;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base qw/User::Identity::Item Mail::Reporter/;
 
@@ -199,13 +198,7 @@ sub folder(@)
 
 sub open(@)
 {   my $self = shift;
-    my $mgr  = $self->manager;
-
-    $mgr->open
-      ( $self->fullname
-      , type => $self->folderType
-      , @_
-      );
+    $self->manager->open($self->fullname, type => $self->folderType, @_);
 }
 
 #-------------------------------------------

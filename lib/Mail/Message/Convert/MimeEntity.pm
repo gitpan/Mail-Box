@@ -7,8 +7,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::MimeEntity;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Message::Convert';
 
@@ -30,8 +29,6 @@ sub export($$;$)
     $parser->parse($message->file);
 }
 
-#------------------------------------------
-
 
 sub from($)
 {   my ($self, $mime_ent) = @_;
@@ -43,7 +40,5 @@ sub from($)
 
     Mail::Message->read($mime_ent->as_string);
 }
-
-#------------------------------------------
 
 1;

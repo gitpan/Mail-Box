@@ -20,14 +20,14 @@ functionality related to bouncing messages off to other destinations.
 
 =over 4
 
-=item $obj-E<gt>B<bounce>([RG-OBJECT|OPTIONS])
+=item $obj-E<gt>B<bounce>( [<$rg_object|%options>] )
 
 The program calling this method considers itself as an intermediate step
 in the message delivery process; it therefore leaves a resent group
 of header fields as trace.
 
 When a message is received, the Mail Transfer Agent (MTA) adds a
-C<Received> field to the header.  As OPTIONS, you may specify lines
+C<Received> field to the header.  As %options, you may specify lines
 which are added to the resent group of that received field.  C<Resent-*>
 is prepended before the field-names automatically, unless already present.
 
@@ -70,8 +70,8 @@ L<forward()|Mail::Message::Construct::Forward/"Constructing a message">.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

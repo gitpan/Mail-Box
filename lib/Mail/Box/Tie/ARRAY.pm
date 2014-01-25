@@ -5,8 +5,7 @@
 
 use strict;
 package Mail::Box::Tie::ARRAY;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 
 use Carp;
@@ -43,12 +42,8 @@ sub STORE($$)
     $msg;
 }
 
-#-------------------------------------------
-
 
 sub FETCHSIZE()  { scalar shift->{MBT_folder}->messages }
-
-#-------------------------------------------
 
 
 sub PUSH(@)
@@ -58,12 +53,7 @@ sub PUSH(@)
 }
  
 
-#-------------------------------------------
-
-
 sub DELETE($) { shift->{MBT_folder}->message(shift)->delete }
-
-#-------------------------------------------
 
 
 sub STORESIZE($)

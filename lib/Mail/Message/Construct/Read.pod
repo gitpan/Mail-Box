@@ -21,11 +21,11 @@ handle.
 
 =over 4
 
-=item Mail::Message-E<gt>B<read>(FILEHANDLE|SCALAR|REF-SCALAR|ARRAY-OF-LINES, OPTIONS)
+=item Mail::Message-E<gt>B<read>($fh|STRING|SCALAR|ARRAY, %options)
 
-Read a message from a FILEHANDLE, SCALAR, a reference to a SCALAR, or
-a reference to an array of LINES.  Most OPTIONS are passed to the L<new()|Mail::Message/"Constructors">
-of the message which is created, but a few extra are defined.
+Read a message from a $fh, STRING, SCALAR, or a reference to an
+ARRAY of lines.  Most %options are passed to the L<new()|Mail::Message/"Constructors"> of the message
+which is created, but a few extra are defined.
 
 Please have a look at L<build()|Mail::Message::Construct::Build/"Constructing a message"> and L<buildFromBody()|Mail::Message::Construct::Build/"Constructing a message"> before thinking about
 this C<read> method.  Use this C<read> only when you have a file-handle
@@ -88,8 +88,8 @@ example:
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

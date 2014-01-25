@@ -26,19 +26,19 @@ Mail::Message::Field::AddrGroup - A group of Mail::Message::Field::Address objec
 An address group collects a set of e-mail addresses (in this case they
 are L<Mail::Message::Field::Address|Mail::Message::Field::Address> objects).
 
-See L<documentation in the base class|User::Identity::Collection::Emails/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in User::Identity::Collection::Emails|User::Identity::Collection::Emails/"DESCRIPTION">.
  
 =head1 OVERLOADED
 
-See L<documentation in the base class|User::Identity::Collection::Emails/"OVERLOADED">.
+Extends L<"OVERLOADED" in User::Identity::Collection::Emails|User::Identity::Collection::Emails/"OVERLOADED">.
  
 =over 4
 
-=item overload: B<@{}>()
+=item overload: B<@{}>
 
-See L<User::Identity::Collection/"OVERLOADED">
+Inherited, see L<User::Identity::Collection/"OVERLOADED">
 
-=item overload: B<stringification>()
+=item overload: B<stringification>
 
 Returns the L<string()|Mail::Message::Field::AddrGroup/"METHODS"> value.
 
@@ -46,7 +46,7 @@ Returns the L<string()|Mail::Message::Field::AddrGroup/"METHODS"> value.
 
 =head1 METHODS
 
-See L<documentation in the base class|User::Identity::Collection::Emails/"METHODS">.
+Extends L<"METHODS" in User::Identity::Collection::Emails|User::Identity::Collection::Emails/"METHODS">.
  
 =over 4
 
@@ -61,117 +61,117 @@ where included and there is no name, then C<undef> is returned.
 
 =head2 Constructors
 
-See L<documentation in the base class|User::Identity::Collection::Emails/"Constructors">.
+Extends L<"Constructors" in User::Identity::Collection::Emails|User::Identity::Collection::Emails/"Constructors">.
  
 =over 4
 
-=item $obj-E<gt>B<coerce>(OBJECT)
+=item $obj-E<gt>B<coerce>($object)
 
-Coerce an OBJECT into a L<Mail::Message::Field::AddrGroup|Mail::Message::Field::AddrGroup>.  Currently,
+Coerce an $object into a L<Mail::Message::Field::AddrGroup|Mail::Message::Field::AddrGroup>.  Currently,
 you can only coerce L<User::Identity::Collection::Emails|User::Identity::Collection::Emails> (which is
 the base class for this one) into this one.
 
-=item Mail::Message::Field::AddrGroup-E<gt>B<new>([NAME], OPTIONS)
+=item Mail::Message::Field::AddrGroup-E<gt>B<new>( [NAME], OPTIONS )
 
-See L<User::Identity::Collection::Emails/"Constructors">
+Inherited, see L<User::Identity::Collection::Emails/"Constructors">
 
 =back
 
 =head2 Attributes
 
-See L<documentation in the base class|User::Identity::Collection::Emails/"Attributes">.
+Extends L<"Attributes" in User::Identity::Collection::Emails|User::Identity::Collection::Emails/"Attributes">.
  
 =over 4
 
 =item $obj-E<gt>B<description>()
 
-See L<User::Identity::Item/"Attributes">
+Inherited, see L<User::Identity::Item/"Attributes">
 
 =item $obj-E<gt>B<itemType>()
 
-See L<User::Identity::Collection/"Attributes">
+Inherited, see L<User::Identity::Collection/"Attributes">
 
-=item $obj-E<gt>B<name>([NEWNAME])
+=item $obj-E<gt>B<name>( [NEWNAME] )
 
-See L<User::Identity::Item/"Attributes">
+Inherited, see L<User::Identity::Item/"Attributes">
 
 =item $obj-E<gt>B<roles>()
 
-See L<User::Identity::Collection/"Attributes">
+Inherited, see L<User::Identity::Collection/"Attributes">
 
 =back
 
 =head2 Collections
 
-See L<documentation in the base class|User::Identity::Collection::Emails/"Collections">.
+Extends L<"Collections" in User::Identity::Collection::Emails|User::Identity::Collection::Emails/"Collections">.
  
 =over 4
 
 =item $obj-E<gt>B<add>(COLLECTION, ROLE)
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<addCollection>(OBJECT | ([TYPE], OPTIONS))
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<collection>(NAME)
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
-=item $obj-E<gt>B<parent>([PARENT])
+=item $obj-E<gt>B<parent>( [PARENT] )
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<removeCollection>(OBJECT|NAME)
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<type>()
 
 =item Mail::Message::Field::AddrGroup-E<gt>B<type>()
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =item $obj-E<gt>B<user>()
 
-See L<User::Identity::Item/"Collections">
+Inherited, see L<User::Identity::Item/"Collections">
 
 =back
 
 =head2 Maintaining roles
 
-See L<documentation in the base class|User::Identity::Collection::Emails/"Maintaining roles">.
+Extends L<"Maintaining roles" in User::Identity::Collection::Emails|User::Identity::Collection::Emails/"Maintaining roles">.
  
 =over 4
 
-=item $obj-E<gt>B<addRole>(ROLE| ( [NAME],OPTIONS ) | ARRAY-OF-OPTIONS)
+=item $obj-E<gt>B<addRole>(ROLE| ([NAME],OPTIONS) | ARRAY)
 
-See L<User::Identity::Collection/"Maintaining roles">
+Inherited, see L<User::Identity::Collection/"Maintaining roles">
 
 =item $obj-E<gt>B<removeRole>(ROLE|NAME)
 
-See L<User::Identity::Collection/"Maintaining roles">
+Inherited, see L<User::Identity::Collection/"Maintaining roles">
 
-=item $obj-E<gt>B<renameRole>(ROLE|OLDNAME, NEWNAME)
+=item $obj-E<gt>B<renameRole>( <ROLE|OLDNAME>, NEWNAME )
 
-See L<User::Identity::Collection/"Maintaining roles">
+Inherited, see L<User::Identity::Collection/"Maintaining roles">
 
 =item $obj-E<gt>B<sorted>()
 
-See L<User::Identity::Collection/"Maintaining roles">
+Inherited, see L<User::Identity::Collection/"Maintaining roles">
 
 =back
 
 =head2 Searching
 
-See L<documentation in the base class|User::Identity::Collection::Emails/"Searching">.
+Extends L<"Searching" in User::Identity::Collection::Emails|User::Identity::Collection::Emails/"Searching">.
  
 =over 4
 
 =item $obj-E<gt>B<find>(NAME|CODE|undef)
 
-See L<User::Identity::Collection/"Searching">
+Inherited, see L<User::Identity::Collection/"Searching">
 
 =back
 
@@ -179,11 +179,11 @@ See L<User::Identity::Collection/"Searching">
 
 =over 4
 
-=item $obj-E<gt>B<addAddress>(STRING|ADDRESS|OPTIONS)
+=item $obj-E<gt>B<addAddress>(STRING|$address|%options)
 
 Add one e-mail address to the list which is maintained in the group. This
 is a wrapper around L<addRole()|User::Identity::Collection/"Maintaining roles"> adding flexibility on how addresses
-are specified.  An ADDRESS can be anything which is acceptable for
+are specified.  An $address can be anything which is acceptable for
 L<Mail::Message::Field::Address::coerce()|Mail::Message::Field::Address/"Constructors"> or a list of options which
 will create such an object.
 
@@ -264,8 +264,8 @@ cannot add objects of a different $type.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

@@ -4,8 +4,7 @@
 # Pod stripped from pm file by OODoc 2.01.
 use strict;
 package Tools;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 
 use lib qw(lib ../lib);

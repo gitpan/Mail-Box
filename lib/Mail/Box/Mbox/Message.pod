@@ -21,15 +21,15 @@ Mail::Box::Mbox::Message - one message in a Mbox folder
 
 Maintain one message in an L<Mail::Box::Mbox|Mail::Box::Mbox> folder.
 
-See L<documentation in the base class|Mail::Box::File::Message/"DESCRIPTION">.
+Extends L<"DESCRIPTION" in Mail::Box::File::Message|Mail::Box::File::Message/"DESCRIPTION">.
  
 =head1 METHODS
 
-See L<documentation in the base class|Mail::Box::File::Message/"METHODS">.
+Extends L<"METHODS" in Mail::Box::File::Message|Mail::Box::File::Message/"METHODS">.
  
 =head1 DETAILS
 
-See L<documentation in the base class|Mail::Box::File::Message/"DETAILS">.
+Extends L<"DETAILS" in Mail::Box::File::Message|Mail::Box::File::Message/"DETAILS">.
  
 =head1 DIAGNOSTICS
 
@@ -95,8 +95,8 @@ of the package.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.110,
-built on January 05, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.111,
+built on January 24, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 

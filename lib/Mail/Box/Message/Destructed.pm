@@ -6,8 +6,7 @@
 use strict;
 
 package Mail::Box::Message::Destructed;
-use vars '$VERSION';
-$VERSION = '2.110';
+our $VERSION = '2.111';
 
 use base 'Mail::Box::Message';
 
@@ -20,11 +19,7 @@ sub new(@)
     undef;
 }
  
-#-------------------------------------------
-
 sub isDummy()    { 1 }
-
-#-------------------------------------------
 
 
 sub head(;$)
@@ -35,8 +30,6 @@ sub head(;$)
      undef;
 }
 
-#-------------------------------------------
-
 
 sub body(;$)
 {    my $self = shift;
@@ -45,8 +38,6 @@ sub body(;$)
      $self->log(ERROR => "You cannot take the body of a destructed message");
      undef;
 }
-
-#-------------------------------------------
 
 
 sub coerce($)
@@ -64,8 +55,6 @@ sub coerce($)
    bless $message, $class;
 }
 
-#-------------------------------------------
-
 sub modified(;$)
 {  my $self = shift;
 
@@ -76,8 +65,6 @@ sub modified(;$)
 }
 
 sub isModified() { 0 }
-
-#-------------------------------------------
 
 
 sub label($;@)
@@ -102,8 +89,6 @@ sub label($;@)
    1;
 }
 
-#-------------------------------------------
-
-sub labels() { wantarray ? ('deleted') : { deleted => 1 } }
+sub labels() { wantarray ? ('deleted') : +{deleted => 1} }
 
 1;
