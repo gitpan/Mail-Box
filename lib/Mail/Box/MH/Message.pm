@@ -7,7 +7,7 @@ use strict;
 use warnings;
 
 package Mail::Box::MH::Message;
-our $VERSION = '2.111';
+our $VERSION = '2.112';
 
 use base 'Mail::Box::Dir::Message';
 

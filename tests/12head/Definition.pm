@@ -4,7 +4,7 @@
 # Pod stripped from pm file by OODoc 2.01.
 
 package MailBox::Test::12head::Definition;
-our $VERSION = '2.111';
+our $VERSION = '2.112';
 
 
 sub name     {"Mail::Message::Head; message headers"}

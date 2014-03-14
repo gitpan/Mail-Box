@@ -4,7 +4,7 @@
 # Pod stripped from pm file by OODoc 2.01.
 
 package MailBox::Test::43pop3::Definition;
-our $VERSION = '2.111';
+our $VERSION = '2.112';
 
 
 sub name     {"Mail::Box::POP3; pop3 folders"}

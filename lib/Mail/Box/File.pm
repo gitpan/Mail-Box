@@ -4,7 +4,7 @@
 # Pod stripped from pm file by OODoc 2.01.
 
 package Mail::Box::File;
-our $VERSION = '2.111';
+our $VERSION = '2.112';
 
 use base 'Mail::Box';
 
@@ -25,7 +25,6 @@ use File::Copy;
 use File::Spec;
 use File::Basename;
 use POSIX ':unistd_h';
-use IO::File ();
 
 my $windows;
 BEGIN { $windows = $^O =~ m/mswin32|cygwin/i }
@@ -123,15 +122,14 @@ sub create($@)
     $class->moveAwaySubFolder($filename, $subext)
         if -d $filename && defined $subext;
 
-    if(my $create = IO::File->new($filename, 'w'))
-    {   $class->log(PROGRESS => "Created folder $name.");
-        $create->close or return;
-    }
-    else
+    open my $create, '>:raw', $filename;
+    unless($create)
     {   $class->log(WARNING => "Cannot create folder file $name: $!");
         return;
     }
 
+    $class->log(PROGRESS => "Created folder $name.");
+    $create->close or return;
     $class;
 }
 
@@ -366,8 +364,8 @@ sub _write_replace($)
     my $filename = $self->filename;
     my $tmpnew   = $self->tmpNewFolder($filename);
 
-    my $new      = IO::File->new($tmpnew, 'w')   or return 0;
-    my $old      = IO::File->new($filename, 'r') or return 0;
+    open my $new, '>:raw', $tmpnew   or return 0;
+    open my $old, '<:raw', $filename or return 0;
 
     my ($reprint, $kept) = (0,0);
 
@@ -396,7 +394,7 @@ sub _write_replace($)
            unless $size == $need;
 
         $new->print($whole);
-        $new->print("\n");
+        $new->print($Mail::Message::crlf_platform ? "\r\n" : "\n");
 
         $message->moveLocation($newbegin - $oldbegin);
         $kept++;
@@ -450,10 +448,9 @@ sub _write_inplace($)
 
     $_->body->load foreach @messages;
 
-    my $mode     = $^O eq 'MSWin32' ? 'a' : 'r+';
+    my $mode     = $^O eq 'MSWin32' ? '>>' : '+<';
     my $filename = $self->filename;
-
-    my $old      = IO::File->new($filename, $mode) or return 0;
+    open my $old, "$mode:raw", $filename or return 0;
 
     # Chop the folder after the messages which does not have to change.
 

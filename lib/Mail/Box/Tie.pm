@@ -4,7 +4,7 @@
 # Pod stripped from pm file by OODoc 2.01.
 
 package Mail::Box::Tie;
-our $VERSION = '2.111';
+our $VERSION = '2.112';
 
 
 use strict;

@@ -6,7 +6,7 @@ use strict;
 use warnings;
 
 package Mail::Transport::SMTP;
-our $VERSION = '2.111';
+our $VERSION = '2.112';
 
 use base 'Mail::Transport::Send';
 
@@ -33,15 +33,13 @@ sub init($)
       || eval { require Net::Config; $Net::Config::inet_domain }
       || eval { require Net::Domain; Net::Domain::hostfqdn() };
 
-    $self->{MTS_net_smtp_opts}
-       = { Hello   => $helo
-         , Debug   => ($args->{smtp_debug} || 0)
-         };
+    $self->{MTS_net_smtp_opts} =
+     +{ Hello   => $helo
+      , Debug   => ($args->{smtp_debug} || 0)
+      };
 
     $self;
 }
-
-#------------------------------------------
 
 
 sub trySend($@)
@@ -136,7 +134,6 @@ sub trySend($@)
 
 #------------------------------------------
 
-
 sub contactAnyServer()
 {   my $self = shift;
 
@@ -170,14 +167,10 @@ sub contactAnyServer()
     undef;
 }
 
-#------------------------------------------
-
 
 sub tryConnectTo($@)
 {   my ($self, $host) = (shift, shift);
     Net::SMTP->new($host, @_);
 }
-
-#------------------------------------------
 
 1;

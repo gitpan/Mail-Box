@@ -4,7 +4,7 @@
 # Pod stripped from pm file by OODoc 2.01.
 
 package MailBox::Test::53threads::Definition;
-our $VERSION = '2.111';
+our $VERSION = '2.112';
 
 
 sub name     {"Mail::Box::Threads; message threads"}

@@ -4,7 +4,7 @@
 # Pod stripped from pm file by OODoc 2.01.
 
 package MailBox::Test::52manager::Definition;
-our $VERSION = '2.111';
+our $VERSION = '2.112';
 
 
 sub name     {"Mail::Box::Manager; library manager"}

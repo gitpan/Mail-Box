@@ -6,7 +6,7 @@ use strict;
 use warnings;
 
 package Mail::Box::Parser::Perl;
-our $VERSION = '2.111';
+our $VERSION = '2.112';
 
 use base 'Mail::Box::Parser';
 
@@ -269,7 +269,7 @@ sub openFile($)
     $self->{MBPP_file}       = $fh;
 
     $fh->binmode(':raw')
-        if ref($fh) eq 'GLOB' || $fh->can('BINMODE');
+        if $fh->can('binmode') || $fh->can('BINMODE');
 
     $self->{MBPP_separators} = [];
 

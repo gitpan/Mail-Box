@@ -6,7 +6,7 @@
 use strict;
 
 package Mail::Message;
-our $VERSION = '2.111';
+our $VERSION = '2.112';
 
 
 use Mail::Message::Head::Complete;

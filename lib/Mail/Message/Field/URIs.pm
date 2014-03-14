@@ -6,7 +6,7 @@ use warnings;
 use strict;
 
 package Mail::Message::Field::URIs;
-our $VERSION = '2.111';
+our $VERSION = '2.112';
 
 use base 'Mail::Message::Field::Structured';
 

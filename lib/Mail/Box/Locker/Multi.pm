@@ -6,7 +6,7 @@
 use strict;
 
 package Mail::Box::Locker::Multi;
-our $VERSION = '2.111';
+our $VERSION = '2.112';
 
 use base 'Mail::Box::Locker';
 
@@ -19,7 +19,7 @@ sub init($)
 
     my @use
      = exists $args->{use} ? @{delete $args->{use}}
-     : $^O =~ m/mswin/i    ? qw/    POSIX Flock/
+     : $^O eq 'MSWin32'    ? qw/Flock/
      :                       qw/NFS POSIX Flock/;
 
     my (@lockers, @used);

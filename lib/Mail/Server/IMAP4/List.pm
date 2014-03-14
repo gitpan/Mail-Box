@@ -7,7 +7,7 @@ use strict;
 use warnings;
 
 package Mail::Server::IMAP4::List;
-our $VERSION = '2.111';
+our $VERSION = '2.112';
 
 
 

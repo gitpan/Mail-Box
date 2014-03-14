@@ -6,7 +6,7 @@ use strict;
 use warnings;
 
 package Mail::Message::Convert::Html;
-our $VERSION = '2.111';
+our $VERSION = '2.112';
 
 use base 'Mail::Message::Convert';
 
