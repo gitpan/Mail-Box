@@ -6,7 +6,8 @@ use strict;
 use warnings;
 
 package Mail::Box::Parser::Perl;
-our $VERSION = '2.112';
+use vars '$VERSION';
+$VERSION = '2.113';
 
 use base 'Mail::Box::Parser';
 

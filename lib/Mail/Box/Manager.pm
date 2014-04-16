@@ -6,7 +6,8 @@ use strict;
 use warnings;
 
 package Mail::Box::Manager;
-our $VERSION = '2.112';
+use vars '$VERSION';
+$VERSION = '2.113';
 
 use base 'Mail::Reporter';
 
@@ -135,7 +136,7 @@ sub open(@)
     $name    = defined $args{folder} ? $args{folder} : ($ENV{MAIL} || '')
         unless defined $name;
 
-    if($name =~ m/^(\w+)\:/ && grep { $_ eq $1 } $self->folderTypes)
+    if($name =~ m/^(\w+)\:/ && grep $_ eq $1, $self->folderTypes)
     {   # Complicated folder URL
         my %decoded = $self->decodeFolderURL($name);
         if(keys %decoded)

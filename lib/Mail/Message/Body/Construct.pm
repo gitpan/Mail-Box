@@ -8,7 +8,8 @@ use warnings;
 # Mail::Message::Body::Construct adds functionality to Mail::Message::Body
 
 package Mail::Message::Body;
-our $VERSION = '2.112';
+use vars '$VERSION';
+$VERSION = '2.113';
 
 
 use Carp;

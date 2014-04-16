@@ -39,4 +39,4 @@ requires:
   Time::Zone: 0
   URI: 1.23
   User::Identity: 0.94
-version: 2.112
+version: 2.113

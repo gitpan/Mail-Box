@@ -3,7 +3,8 @@
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 2.01.
 package Mail::Box::FastScalar;
-our $VERSION = '2.112';
+use vars '$VERSION';
+$VERSION = '2.113';
 
 
 

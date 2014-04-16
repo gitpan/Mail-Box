@@ -6,7 +6,8 @@ use warnings;
 use strict;
 
 package Mail::Message::Field::Date;
-our $VERSION = '2.112';
+use vars '$VERSION';
+$VERSION = '2.113';
 
 use base 'Mail::Message::Field::Structured';
 

@@ -4,7 +4,8 @@
 # Pod stripped from pm file by OODoc 2.01.
 
 package Mail::Message::Head::SpamGroup;
-our $VERSION = '2.112';
+use vars '$VERSION';
+$VERSION = '2.113';
 
 use base 'Mail::Message::Head::FieldGroup';
 

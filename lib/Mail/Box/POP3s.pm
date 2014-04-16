@@ -4,7 +4,8 @@
 # Pod stripped from pm file by OODoc 2.01.
 
 package Mail::Box::POP3s;
-our $VERSION = '2.112';
+use vars '$VERSION';
+$VERSION = '2.113';
 
 use base 'Mail::Box::POP3';
 

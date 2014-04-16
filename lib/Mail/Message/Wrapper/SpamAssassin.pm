@@ -6,7 +6,8 @@ use strict;
 use warnings;
 
 package Mail::Message::Wrapper::SpamAssassin;
-our $VERSION = '2.112';
+use vars '$VERSION';
+$VERSION = '2.113';
 
 use base 'Mail::SpamAssassin::Message';
 

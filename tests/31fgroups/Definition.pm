@@ -4,7 +4,8 @@
 # Pod stripped from pm file by OODoc 2.01.
 
 package MailBox::Test::31fgroups::Definition;
-our $VERSION = '2.112';
+use vars '$VERSION';
+$VERSION = '2.113';
 
 
 sub name     {"Mail::Message::Head::FieldGroup; grouping fields"}
