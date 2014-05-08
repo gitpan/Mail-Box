@@ -253,8 +253,8 @@ The collection with $name does not exist and can not be created.
 
 =head1 SEE ALSO
 
-This module is part of Mail-Box distribution version 2.113,
-built on April 16, 2014. Website: F<http://perl.overmeer.net/mailbox/>
+This module is part of Mail-Box distribution version 2.114,
+built on May 08, 2014. Website: F<http://perl.overmeer.net/mailbox/>
 
 =head1 LICENSE
 
