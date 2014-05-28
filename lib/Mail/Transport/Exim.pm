@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Transport::Exim;
 use vars '$VERSION';
-$VERSION = '2.114';
+$VERSION = '2.115';
 
 use base 'Mail::Transport::Send';
 

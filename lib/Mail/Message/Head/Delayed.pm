@@ -6,7 +6,7 @@ use strict;
 
 package Mail::Message::Head::Delayed;
 use vars '$VERSION';
-$VERSION = '2.114';
+$VERSION = '2.115';
 
 use base 'Mail::Message::Head';
 

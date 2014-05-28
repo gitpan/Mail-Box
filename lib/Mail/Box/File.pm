@@ -5,7 +5,7 @@
 
 package Mail::Box::File;
 use vars '$VERSION';
-$VERSION = '2.114';
+$VERSION = '2.115';
 
 use base 'Mail::Box';
 
@@ -349,6 +349,7 @@ sub _write_new($)
     my $new      = IO::File->new($filename, 'w');
     return 0 unless defined $new;
 
+    $new->binmode;
     $_->write($new) foreach @{$args->{messages}};
 
     $new->close or return 0;
@@ -370,7 +371,10 @@ sub _write_replace($)
     my $tmpnew   = $self->tmpNewFolder($filename);
 
     my $new      = IO::File->new($tmpnew, 'w')   or return 0;
+    $new->binmode;
+
     my $old      = IO::File->new($filename, 'r') or return 0;
+    $old->binmode;
 
     my ($reprint, $kept) = (0,0);
 

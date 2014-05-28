@@ -8,7 +8,7 @@ use warnings;
 
 package Mail::Message::Replace::MailInternet;
 use vars '$VERSION';
-$VERSION = '2.114';
+$VERSION = '2.115';
 
 use base 'Mail::Message';
 
