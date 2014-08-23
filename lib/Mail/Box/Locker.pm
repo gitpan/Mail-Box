@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::Locker;
 use vars '$VERSION';
-$VERSION = '2.115';
+$VERSION = '2.116';
 
 use base 'Mail::Reporter';
 

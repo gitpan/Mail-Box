@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Message::Head;
 use vars '$VERSION';
-$VERSION = '2.115';
+$VERSION = '2.116';
 
 use base 'Mail::Reporter';
 
@@ -98,7 +98,7 @@ sub message(;$)
 }
 
 
-sub orderedFields() { grep {defined $_} @{shift->{MMH_order}} }
+sub orderedFields() { grep defined $_, @{shift->{MMH_order}} }
 
 
 sub knownNames() { keys %{shift->{MMH_fields}} }

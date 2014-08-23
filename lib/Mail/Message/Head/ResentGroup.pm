@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Message::Head::ResentGroup;
 use vars '$VERSION';
-$VERSION = '2.115';
+$VERSION = '2.116';
 
 use base 'Mail::Message::Head::FieldGroup';
 

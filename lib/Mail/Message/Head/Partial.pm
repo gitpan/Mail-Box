@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Message::Head::Partial;
 use vars '$VERSION';
-$VERSION = '2.115';
+$VERSION = '2.116';
 
 use base 'Mail::Message::Head::Complete';
 

@@ -5,7 +5,7 @@
 
 package MailBox::Test::54search::Definition;
 use vars '$VERSION';
-$VERSION = '2.115';
+$VERSION = '2.116';
 
 
 sub name     {"Mail::Box::Search; searching folders"}

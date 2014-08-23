@@ -6,7 +6,7 @@ use strict;
 
 package Mail::Box::IMAP4::Head;
 use vars '$VERSION';
-$VERSION = '2.115';
+$VERSION = '2.116';
 
 use base 'Mail::Message::Head';
 
@@ -55,6 +55,5 @@ sub guessBodySize() {undef}
 sub guessTimestamp() {undef}
 
 #------------------------------------------
-
 
 1;

@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Transport::SMTP;
 use vars '$VERSION';
-$VERSION = '2.115';
+$VERSION = '2.116';
 
 use base 'Mail::Transport::Send';
 
@@ -38,7 +38,8 @@ sub init($)
      +{ Hello   => $helo
       , Debug   => ($args->{smtp_debug} || 0)
       };
-
+    $self->{MTS_esmtp_options} = $args->{esmtp_options};
+    $self->{MTS_from}          = $args->{from};
     $self;
 }
 
@@ -46,8 +47,13 @@ sub init($)
 sub trySend($@)
 {   my ($self, $message, %args) = @_;
 
+    my %send_options =
+      ( %{$self->{MTS_esmtp_options} || {}}
+      , %{$args{esmtp_options}       || {}}
+      );
+
     # From whom is this message.
-    my $from = $args{from} || $message->sender || '<>';
+    my $from = $args{from} || $self->{MTS_from} || $message->sender || '<>';
     $from = $from->address if ref $from && $from->isa('Mail::Address');
 
     # Who are the destinations.
@@ -81,7 +87,7 @@ sub trySend($@)
             unless $server = $self->contactAnyServer;
 
         return (0, $server->code, $server->message, 'FROM', $server->quit)
-            unless $server->mail($from);
+            unless $server->mail($from, %send_options);
 
         foreach (@to)
         {     next if $server->to($_);
