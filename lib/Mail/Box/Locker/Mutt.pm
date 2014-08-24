@@ -7,7 +7,7 @@ use strict;
 
 package Mail::Box::Locker::Mutt;
 use vars '$VERSION';
-$VERSION = '2.116';
+$VERSION = '2.117';
 
 use base 'Mail::Box::Locker';
 

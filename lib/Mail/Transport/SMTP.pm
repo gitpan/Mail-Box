@@ -7,7 +7,7 @@ use warnings;
 
 package Mail::Transport::SMTP;
 use vars '$VERSION';
-$VERSION = '2.116';
+$VERSION = '2.117';
 
 use base 'Mail::Transport::Send';
 
@@ -115,7 +115,7 @@ sub trySend($@)
     return 0 unless $server = $self->contactAnyServer;
 
     $server->quit, return 0
-        unless $server->mail($from);
+        unless $server->mail($from, %send_options);
 
     foreach (@to)
     {

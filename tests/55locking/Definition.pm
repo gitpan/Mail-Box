@@ -5,7 +5,7 @@
 
 package MailBox::Test::55locking::Definition;
 use vars '$VERSION';
-$VERSION = '2.116';
+$VERSION = '2.117';
 
 
 sub name     {"Mail::Box::Locker; folder locking"}
